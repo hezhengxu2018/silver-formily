@@ -1,0 +1,5 @@
+:root:root {
+  --vp-c-brand: #4569d4;
+  --formily-primary-rgb: 69, 105, 212;
+  --vp-c-brand-soft: rgba(var(--formily-primary-rgb), .05);
+}

@@ -1,0 +1,48 @@
+{
+  "name": "@silver-formily/reactive-vue",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "Another @formily/reactive-vue",
+  "author": "Hezhengxu",
+  "license": "MIT",
+  "homepage": "https://reactive-vue.silver-formily.org",
+  "repository": {
+    "type": "github",
+    "url": "https://github.com/hezhengxu2018/silver-formily-reactive-vue"
+  },
+  "bugs": {
+    "url": "https://github.com/hezhengxu2018/silver-formily-reactive-vue/issues"
+  },
+  "exports": {
+    ".": "./dist/index.mjs",
+    "./package.json": "./package.json"
+  },
+  "main": "./dist/index.mjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.mts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsdown",
+    "dev": "tsdown --watch",
+    "test": "vitest",
+    "lint": "eslint ./ --fix",
+    "typecheck": "tsc --noEmit",
+    "prepublishOnly": "pnpm run build",
+    "docs:dev": "vitepress dev docs",
+    "docs:build": "vitepress build docs",
+    "release": "release-it"
+  },
+  "peerDependencies": {
+    "@formily/reactive": "^2",
+    "vue": "^3"
+  },
+  "devDependencies": {
+    "@release-it/conventional-changelog": "^10.0.1",
+    "@silver-formily/typescript-config": "workspace:*"
+  },
+  "lint-staged": {
+    "*.{vue,js,ts,jsx,tsx,md,json}": "eslint --fix"
+  }
+}
