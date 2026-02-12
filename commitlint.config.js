@@ -82,7 +82,12 @@ export default {
     useAI: false,
     aiNumber: 1,
     themeColorCode: '',
-    scopes: [],
+    scopes: [
+      { "value": "apps/reactive-vue-docs", "name": "apps/reactive-vue-docs" },
+      { "value": "packages/reactive-vue", "name": "packages/reactive-vue" },
+      { "value": "packages/docs-toolkit", "name": "packages/docs-toolkit" },
+      { "value": "packages/typescript-config", "name": "packages/typescript-config" }
+    ],
     allowCustomScopes: true,
     allowEmptyScopes: true,
     customScopesAlign: 'bottom',

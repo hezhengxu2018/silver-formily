@@ -1,24 +1,24 @@
-import mdContainer from "markdown-it-container"
-import { defineConfig } from "vitepress"
-import { createDemoContainer } from "vitepress-better-demo-plugin"
-import { groupIconMdPlugin, groupIconVitePlugin } from "vitepress-plugin-group-icons"
+import mdContainer from 'markdown-it-container'
+import { defineConfig } from 'vitepress'
+import { createDemoContainer } from 'vitepress-better-demo-plugin'
+import { groupIconMdPlugin, groupIconVitePlugin } from 'vitepress-plugin-group-icons'
 import {
   mdExternalLinkIcon,
   mdTableWrapper,
   mdTag,
   mdTaskList,
   mdTooltip,
-} from "vitepress-theme-element-plus/node"
+} from 'vitepress-theme-element-plus/node'
 
 const DEFAULT_HEAD = [
-  ["link", { rel: "icon", href: "/favicon.svg" }],
-  ["meta", { name: "theme-color", content: "#3b82f6" }],
+  ['link', { rel: 'icon', href: '/favicon.svg' }],
+  ['meta', { name: 'theme-color', content: '#3b82f6' }],
 ]
 const DEFAULT_NO_EXTERNAL = [
-  "vitepress-theme-element-plus",
-  "vitepress-better-demo-plugin",
+  'vitepress-theme-element-plus',
+  'vitepress-better-demo-plugin',
 ]
-const DEFAULT_OPTIMIZE_EXCLUDE = ["vitepress-theme-element-plus"]
+const DEFAULT_OPTIMIZE_EXCLUDE = ['vitepress-theme-element-plus']
 
 export function createDocsConfig(options = {}) {
   const {
@@ -83,7 +83,7 @@ export function createDocsConfig(options = {}) {
         md.use(mdTableWrapper)
         md.use(mdTaskList, { disabled: false })
         if (demoDir) {
-          md.use(mdContainer, "demo", createDemoContainer(md, {
+          md.use(mdContainer, 'demo', createDemoContainer(md, {
             demoDir,
             autoImportWrapper: false,
             codeFold: false,
@@ -93,8 +93,8 @@ export function createDocsConfig(options = {}) {
       },
     },
     themeConfig: {
-      logo: "/logo.svg",
-      search: { provider: "local" },
+      logo: '/logo.svg',
+      search: { provider: 'local' },
       externalLinkIcon: true,
       sidebar,
       footer,

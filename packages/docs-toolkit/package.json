@@ -1,20 +1,20 @@
 {
   "name": "@silver-formily/docs-toolkit",
+  "type": "module",
   "version": "0.0.0",
   "private": true,
-  "type": "module",
-  "main": "./index.js",
-  "types": "./index.d.ts",
   "exports": {
     ".": {
-      "import": "./index.js",
-      "types": "./index.d.ts"
+      "types": "./index.d.ts",
+      "import": "./index.js"
     },
     "./theme": {
-      "import": "./theme/index.js",
-      "types": "./theme/index.d.ts"
+      "types": "./theme/index.d.ts",
+      "import": "./theme/index.js"
     }
   },
+  "main": "./index.js",
+  "types": "./index.d.ts",
   "bin": {
     "vitepress": "./bin/vitepress.js"
   },
@@ -23,7 +23,6 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "axios": "^1.7.9",
     "element-plus": "^2.13.2",
     "markdown-it-container": "^4.0.0",
     "sass-embedded": "^1.97.3",
