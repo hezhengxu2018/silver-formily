@@ -66,7 +66,7 @@ export default createDocsConfig({
     ],
   },
   socialLinks: [
-    { icon: 'github', link: 'https://github.com/hezhengxu2018/silver-formily-reactive-vue' },
+    { icon: 'github', link: 'https://github.com/hezhengxu2018/silver-formily' },
   ],
   vite: {
     optimizeDeps: {
