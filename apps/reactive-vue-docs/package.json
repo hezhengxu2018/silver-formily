@@ -1,0 +1,19 @@
+{
+  "name": "reactive-vue-docs",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vitepress dev .",
+    "build": "vitepress build .",
+    "preview": "vitepress preview ."
+  },
+  "dependencies": {
+    "@formily/reactive": "^2.3.7",
+    "@silver-formily/docs-toolkit": "workspace:*",
+    "@silver-formily/reactive-vue": "workspace:*"
+  },
+  "devDependencies": {
+    "@silver-formily/typescript-config": "workspace:*",
+    "vitepress": "2.0.0-alpha.16"
+  }
+}

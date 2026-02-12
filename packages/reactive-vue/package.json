@@ -30,8 +30,6 @@
     "lint": "eslint ./ --fix",
     "typecheck": "tsc --noEmit",
     "prepublishOnly": "pnpm run build",
-    "docs:dev": "vitepress dev docs",
-    "docs:build": "vitepress build docs",
     "release": "release-it"
   },
   "peerDependencies": {
@@ -39,8 +37,15 @@
     "vue": "^3"
   },
   "devDependencies": {
+    "@formily/reactive": "^2.3.7",
     "@release-it/conventional-changelog": "^10.0.1",
-    "@silver-formily/typescript-config": "workspace:*"
+    "@silver-formily/typescript-config": "workspace:*",
+    "eslint": "^9.36.0",
+    "release-it": "^19.2.4",
+    "tsdown": "^0.18.1",
+    "typescript": "5.9.2",
+    "vitest": "^4.0.16",
+    "vue": "^3.5.27"
   },
   "lint-staged": {
     "*.{vue,js,ts,jsx,tsx,md,json}": "eslint --fix"
