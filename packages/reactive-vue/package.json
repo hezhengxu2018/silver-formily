@@ -8,10 +8,10 @@
   "homepage": "https://reactive-vue.silver-formily.org",
   "repository": {
     "type": "github",
-    "url": "https://github.com/hezhengxu2018/silver-formily-reactive-vue"
+    "url": "https://github.com/hezhengxu2018/silver-formily"
   },
   "bugs": {
-    "url": "https://github.com/hezhengxu2018/silver-formily-reactive-vue/issues"
+    "url": "https://github.com/hezhengxu2018/silver-formily/issues"
   },
   "exports": {
     ".": "./dist/index.mjs",
