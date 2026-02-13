@@ -1,0 +1,15 @@
+{
+  "extends": "@silver-formily/typescript-config/base.json",
+  "compilerOptions": {
+    "jsx": "preserve",
+    "experimentalDecorators": true,
+    "baseUrl": ".",
+    "paths": {
+      "@silver-formily/reactive-vue": ["../reactive-vue/src"],
+      "@silver-formily/reactive-vue/*": ["../reactive-vue/src/*"]
+    },
+    "outDir": "esm"
+  },
+  "include": ["src"],
+  "exclude": ["node_modules", "esm"]
+}

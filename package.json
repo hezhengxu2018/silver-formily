@@ -12,7 +12,8 @@
     "check-types": "turbo run check-types",
     "changeset": "changeset",
     "version-packages": "changeset version",
-    "release": "pnpm run build && changeset publish"
+    "release": "pnpm run build && changeset publish",
+    "prepare": "husky"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^4.19.0",

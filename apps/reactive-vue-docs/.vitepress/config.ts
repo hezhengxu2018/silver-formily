@@ -5,14 +5,10 @@ import pkg from '../../../packages/reactive-vue/package.json'
 
 const currentDir = dirname(fileURLToPath(import.meta.url))
 const demoDir = path.resolve(currentDir, '../demos')
-const sourceAlias = path.resolve(currentDir, '../../../packages/reactive-vue/src')
 
 export default createDocsConfig({
   pkg,
   demoDir,
-  alias: {
-    '@silver-formily/reactive-vue': sourceAlias,
-  },
   locales: {
     root: {
       label: '简体中文',

@@ -2,26 +2,6 @@
 /** @type {import('cz-git').UserConfig} */
 export default {
   extends: ['@commitlint/config-conventional'],
-  rules: {
-    'type-enum': [
-      2,
-      'always',
-      [
-        'feat',
-        'fix',
-        'docs',
-        'style',
-        'refactor',
-        'perf',
-        'test',
-        'build',
-        'ci',
-        'chore',
-        'revert',
-        'wip',
-      ],
-    ],
-  },
   prompt: {
     alias: { fd: 'docs: fix typos' },
     messages: {
@@ -82,14 +62,7 @@ export default {
     useAI: false,
     aiNumber: 1,
     themeColorCode: '',
-    scopes: [
-      { value: 'apps/reactive-vue-docs', name: 'apps/reactive-vue-docs' },
-      { value: 'apps/vue-docs', name: 'apps/vue-docs' },
-      { value: 'packages/docs-toolkit', name: 'packages/docs-toolkit' },
-      { value: 'packages/reactive-vue', name: 'packages/reactive-vue' },
-      { value: 'packages/typescript-config', name: 'packages/typescript-config' },
-      { value: 'packages/vue', name: 'packages/vue' },
-    ],
+    scopes: [],
     allowCustomScopes: true,
     allowEmptyScopes: true,
     customScopesAlign: 'bottom',

@@ -1,0 +1,71 @@
+import type { ComponentObjectPropsOptions, ExtractPropTypes } from 'vue'
+import type {
+  ISchemaFieldProps,
+  ISchemaMarkupFieldProps,
+  SchemaMarkupValidator,
+} from '../types'
+import { createBooleanProp, createProp } from './runtimeProps'
+
+export const schemaFieldProps = {
+  schema: createProp<ISchemaFieldProps['schema']>(),
+  scope: createProp<ISchemaFieldProps['scope']>(),
+  components: createProp<ISchemaFieldProps['components']>(),
+  name: createProp<ISchemaFieldProps['name']>(),
+  basePath: createProp<ISchemaFieldProps['basePath']>(),
+  onlyRenderProperties: createBooleanProp(),
+  onlyRenderSelf: createBooleanProp(),
+  mapProperties: createProp<ISchemaFieldProps['mapProperties']>(),
+  filterProperties: createProp<ISchemaFieldProps['filterProperties']>(),
+} as const satisfies ComponentObjectPropsOptions<ISchemaFieldProps>
+
+export const markupSchemaProps = {
+  'version': createProp<ISchemaMarkupFieldProps['version']>(),
+  'name': createProp<ISchemaMarkupFieldProps['name']>(),
+  'title': createProp<ISchemaMarkupFieldProps['title']>(),
+  'description': createProp<ISchemaMarkupFieldProps['description']>(),
+  'default': createProp<ISchemaMarkupFieldProps['default']>(),
+  'readOnly': createBooleanProp(),
+  'writeOnly': createBooleanProp(),
+  'enum': createProp<ISchemaMarkupFieldProps['enum']>(),
+  'const': createProp<ISchemaMarkupFieldProps['const']>(),
+  'multipleOf': createProp<ISchemaMarkupFieldProps['multipleOf']>(),
+  'maximum': createProp<ISchemaMarkupFieldProps['maximum']>(),
+  'exclusiveMaximum': createProp<ISchemaMarkupFieldProps['exclusiveMaximum']>(),
+  'minimum': createProp<ISchemaMarkupFieldProps['minimum']>(),
+  'exclusiveMinimum': createProp<ISchemaMarkupFieldProps['exclusiveMinimum']>(),
+  'maxLength': createProp<ISchemaMarkupFieldProps['maxLength']>(),
+  'minLength': createProp<ISchemaMarkupFieldProps['minLength']>(),
+  'pattern': createProp<ISchemaMarkupFieldProps['pattern']>(),
+  'maxItems': createProp<ISchemaMarkupFieldProps['maxItems']>(),
+  'minItems': createProp<ISchemaMarkupFieldProps['minItems']>(),
+  'uniqueItems': createBooleanProp(),
+  'maxProperties': createProp<ISchemaMarkupFieldProps['maxProperties']>(),
+  'minProperties': createProp<ISchemaMarkupFieldProps['minProperties']>(),
+  'required': createProp<ISchemaMarkupFieldProps['required']>(),
+  'format': createProp<ISchemaMarkupFieldProps['format']>(),
+  'properties': createProp<ISchemaMarkupFieldProps['properties']>(),
+  'items': createProp<ISchemaMarkupFieldProps['items']>(),
+  'additionalItems': createProp<ISchemaMarkupFieldProps['additionalItems']>(),
+  'patternProperties': createProp<ISchemaMarkupFieldProps['patternProperties']>(),
+  'additionalProperties': createProp<ISchemaMarkupFieldProps['additionalProperties']>(),
+  'x-index': createProp<ISchemaMarkupFieldProps['x-index']>(),
+  'x-pattern': createProp<ISchemaMarkupFieldProps['x-pattern']>(),
+  'x-display': createProp<ISchemaMarkupFieldProps['x-display']>(),
+  'x-validator': createProp<SchemaMarkupValidator>(),
+  'x-decorator': createProp<ISchemaMarkupFieldProps['x-decorator']>(),
+  'x-decorator-props': createProp<ISchemaMarkupFieldProps['x-decorator-props']>(),
+  'x-decorator-content': createProp<ISchemaMarkupFieldProps['x-decorator-content']>(),
+  'x-component': createProp<ISchemaMarkupFieldProps['x-component']>(),
+  'x-component-props': createProp<ISchemaMarkupFieldProps['x-component-props']>(),
+  'x-reactions': createProp<ISchemaMarkupFieldProps['x-reactions']>(),
+  'x-content': createProp<ISchemaMarkupFieldProps['x-content']>(),
+  'x-visible': createBooleanProp(),
+  'x-hidden': createBooleanProp(),
+  'x-disabled': createBooleanProp(),
+  'x-editable': createBooleanProp(),
+  'x-read-only': createBooleanProp(),
+  'x-read-pretty': createBooleanProp(),
+} as const satisfies ComponentObjectPropsOptions<ISchemaMarkupFieldProps>
+
+export type SchemaFieldProps = ExtractPropTypes<typeof schemaFieldProps>
+export type MarkupSchemaProps = ExtractPropTypes<typeof markupSchemaProps>
