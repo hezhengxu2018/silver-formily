@@ -96,7 +96,7 @@ pnpm build         # Build the library + types via Vite
 pnpm docs:dev      # Launch the VitePress docs site
 pnpm docs:build    # Generate static docs into docs/.vitepress/dist
 pnpm commit        # Conventional Commit helper (czg)
-pnpm release       # release-it workflow (requires clean tree)
+pnpm release       # Changeset-driven release (requires clean tree)
 ```
 
 - Build output is generated into `esm/`; do not hand-edit this directory.

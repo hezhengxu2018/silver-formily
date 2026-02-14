@@ -96,7 +96,7 @@ pnpm build         # 基于 Vite 生成库与类型
 pnpm docs:dev      # 启动 VitePress 文档站点
 pnpm docs:build    # 生成静态文档 (docs/.vitepress/dist)
 pnpm commit        # 使用 czg 编写 Conventional Commit
-pnpm release       # release-it 发布，需要干净工作区
+pnpm release       # Changeset 发布流程（需要干净工作区）
 ```
 
 - 构建输出位于 `esm/`，请勿手动修改。

@@ -16,7 +16,7 @@ This document only lists requirements unique to `packages/vue`. Follow the root-
 - `pnpm lint`: execute the Antfu ESLint preset across TS, Vue, Markdown, and JSON files.
 - `pnpm format`: auto-fix lintable issues; always review the resulting diff.
 - `pnpm commit`: launch the `czg` prompt to craft Conventional Commits with the repository’s custom type list.
-- `pnpm release`: call `release-it` for tagging and publishing once the tree is clean.
+- `pnpm release`: run the repo-level Changeset workflow (build + `changeset publish`) to tag and publish.
 
 ## Coding Style & Naming Conventions
 
