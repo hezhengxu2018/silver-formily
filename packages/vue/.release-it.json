@@ -11,16 +11,6 @@
   "npm": {
     "publish": true
   },
-  "plugins": {
-    "@release-it/conventional-changelog": {
-      "preset": "angular",
-      "infile": "CHANGELOG.md",
-      "header": "# 更新日志\n\n",
-      "ignoreRecommendedBump": true,
-      "strictSemVer": true,
-      "releaseCount": 0
-    }
-  },
   "hooks": {
     "before:init": ["pnpm run lint"],
     "after:release": "echo 发布完成！"

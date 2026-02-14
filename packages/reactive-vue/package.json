@@ -39,7 +39,6 @@
   },
   "devDependencies": {
     "@formily/reactive": "^2.3.7",
-    "@release-it/conventional-changelog": "^10.0.1",
     "@silver-formily/typescript-config": "workspace:*",
     "eslint": "^9.36.0",
     "release-it": "^19.2.4",
