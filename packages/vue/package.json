@@ -24,6 +24,9 @@
   },
   "main": "./esm/index.mjs",
   "types": "./esm/index.d.ts",
+  "publishConfig": {
+    "access": "public"
+  },
   "files": [
     "esm"
   ],
