@@ -1,4 +1,6 @@
-# Repository Guidelines
+# Vue Package Guide (extends root `AGENTS.md`)
+
+This document only lists requirements unique to `packages/vue`. Follow the root-level `AGENTS.md` for repo-wide workflows, commands, and conventions.
 
 ## Project Structure & Module Organization
 

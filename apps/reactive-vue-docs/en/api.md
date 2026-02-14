@@ -7,9 +7,11 @@ Internally, `useObserver` rewires Vue 3 reactivity with a non-public API. If you
 ## observer
 
 ### Description
+
 Turns the component render function into a Formily `Reaction`. Every re-render collects dependencies, and only the exact reactive fields are tracked for updates.
 
 ### Signature
+
 ```ts
 interface IObserverOptions {
   scheduler?: (updater: () => void) => void // optionally control when updates run
@@ -32,6 +34,7 @@ observer
 The hook that powers `observer`. Prefer calling it in `setup`/`<script setup>` to avoid extra wrapper components.
 
 ### Signature
+
 ```ts
 // Same options as observer
 interface IObserverOptions {

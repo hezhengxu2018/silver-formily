@@ -1,6 +1,6 @@
 # Silver Formily Vue
 
-[Documentation](https://vue.silver-formily.org/) · [Local docs index](../../apps/vue-docs/en/index.md) · [中文 README](./README.md)
+[Documentation](https://vue.silver-formily.org/) · [中文 README](./README.md)
 
 @silver-formily/vue is a Vue 3–first runtime wrapper around [Formily](https://formilyjs.org/). It keeps the orchestration power of `@formily/vue` while removing Vue 2 compatibility layers, redundant DOM wrappers, and inconsistent event contracts. The source lives in `src/`, docs in `docs/`, and build artifacts in `esm/`.
 

@@ -7,9 +7,11 @@
 ## observer
 
 ### 描述
+
 在 Vue 中，将组件渲染方法变成 Reaction，每次视图重新渲染就会收集依赖，依赖更新会自动重渲染。
 
 ### 签名
+
 ```ts
 interface IObserverOptions {
   scheduler?: (updater: () => void) => void // 调度器，可以手动控制更新时机
@@ -32,6 +34,7 @@ observer
 observer的内部实现，目前更推荐使用这种方式，可以减少不必要的组件包裹。
 
 ### 签名
+
 ```ts
 // 与observer一致
 interface IObserverOptions {
