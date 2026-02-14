@@ -1,11 +1,13 @@
 {
   "name": "reactive-vue-docs",
-  "private": true,
   "type": "module",
+  "private": true,
   "scripts": {
     "dev": "vitepress dev .",
     "build": "vitepress build .",
-    "preview": "vitepress preview ."
+    "preview": "vitepress preview .",
+    "lint": "eslint .",
+    "format": "eslint . --fix"
   },
   "dependencies": {
     "@formily/reactive": "^2.3.7",

@@ -11,21 +11,21 @@ String-based format validators. Register custom formats via `registerValidateFor
 ```ts twoslash include ValidatorFormats
 /** Built-in string-based format validators. Register extras via registerValidateFormats. */
 // ---cut---
-export type ValidatorFormats =
-  | "url"
-  | "email"
-  | "ipv6"
-  | "ipv4"
-  | "number"
-  | "integer"
-  | "idcard"
-  | "qq"
-  | "phone"
-  | "money"
-  | "zh"
-  | "date"
-  | "zip"
-  | (string & {});
+export type ValidatorFormats
+  = | 'url'
+    | 'email'
+    | 'ipv6'
+    | 'ipv4'
+    | 'number'
+    | 'integer'
+    | 'idcard'
+    | 'qq'
+    | 'phone'
+    | 'money'
+    | 'zh'
+    | 'date'
+    | 'zip'
+    | (string & {})
 ```
 
 ## Object Validators
@@ -35,10 +35,10 @@ export type ValidatorFormats =
 ```ts twoslash include IValidateResult
 /** Validation result structure for object-style validators. */
 // ---cut---
-export type IValidateResult = {
-  type: "error" | "warning" | "success" | (string & {});
-  message: string;
-};
+export interface IValidateResult {
+  type: 'error' | 'warning' | 'success' | (string & {})
+  message: string
+}
 ```
 
 ### IValidatorRules
@@ -46,45 +46,45 @@ export type IValidateResult = {
 ```ts twoslash include IValidatorRules
 // @include: ValidatorFormats
 // @include: IValidateResult
-export type ValidatorFunctionResponse =
-  | null
-  | string
-  | boolean
-  | IValidateResult;
+export type ValidatorFunctionResponse
+  = | null
+    | string
+    | boolean
+    | IValidateResult
 export type ValidatorFunction<Context = any> = (
   value: any,
   rule: IValidatorRules<Context>,
   ctx: Context,
   render: (message: string, scope?: any) => string,
-) => ValidatorFunctionResponse | Promise<ValidatorFunctionResponse> | null;
+) => ValidatorFunctionResponse | Promise<ValidatorFunctionResponse> | null
 /** Object-style validator rules. Extend via registerValidateRules for extra properties. */
 // ---cut---
 export interface IValidatorRules<Context = any> {
-  triggerType?: "onInput" | "onFocus" | "onBlur" | (string & {});
-  format?: ValidatorFormats;
-  validator?: ValidatorFunction<Context>;
-  required?: boolean;
-  pattern?: RegExp | string;
-  max?: number;
-  maximum?: number;
-  maxItems?: number;
-  minItems?: number;
-  maxLength?: number;
-  minLength?: number;
-  exclusiveMaximum?: number;
-  exclusiveMinimum?: number;
-  minimum?: number;
-  min?: number;
-  len?: number;
-  whitespace?: boolean;
-  enum?: any[];
-  const?: any;
-  multipleOf?: number;
-  uniqueItems?: boolean;
-  maxProperties?: number;
-  minProperties?: number;
-  message?: string;
-  [key: string]: any;
+  triggerType?: 'onInput' | 'onFocus' | 'onBlur' | (string & {})
+  format?: ValidatorFormats
+  validator?: ValidatorFunction<Context>
+  required?: boolean
+  pattern?: RegExp | string
+  max?: number
+  maximum?: number
+  maxItems?: number
+  minItems?: number
+  maxLength?: number
+  minLength?: number
+  exclusiveMaximum?: number
+  exclusiveMinimum?: number
+  minimum?: number
+  min?: number
+  len?: number
+  whitespace?: boolean
+  enum?: any[]
+  const?: any
+  multipleOf?: number
+  uniqueItems?: boolean
+  maxProperties?: number
+  minProperties?: number
+  message?: string
+  [key: string]: any
 }
 ```
 
@@ -96,11 +96,11 @@ export interface IValidatorRules<Context = any> {
 // @include: IValidateResult
 /** Return type for function validators. */
 // ---cut---
-export type ValidatorFunctionResponse =
-  | null
-  | string
-  | boolean
-  | IValidateResult;
+export type ValidatorFunctionResponse
+  = | null
+    | string
+    | boolean
+    | IValidateResult
 ```
 
 ### ValidatorFunction
@@ -115,7 +115,7 @@ export type ValidatorFunction<Context = any> = (
   rule: IValidatorRules<Context>,
   ctx: Context,
   render: (message: string, scope?: any) => string,
-) => ValidatorFunctionResponse | Promise<ValidatorFunctionResponse> | null;
+) => ValidatorFunctionResponse | Promise<ValidatorFunctionResponse> | null
 ```
 
 ## ValidatorDescription
@@ -124,10 +124,10 @@ export type ValidatorFunction<Context = any> = (
 // @include: IValidatorRules
 /** Non-array validator descriptor. */
 // ---cut---
-export type ValidatorDescription<Context = any> =
-  | ValidatorFormats
-  | ValidatorFunction<Context>
-  | IValidatorRules<Context>;
+export type ValidatorDescription<Context = any>
+  = | ValidatorFormats
+    | ValidatorFunction<Context>
+    | IValidatorRules<Context>
 ```
 
 ## MultiValidator
@@ -136,7 +136,7 @@ export type ValidatorDescription<Context = any> =
 // @include: ValidatorDescription
 /** Array form of validator descriptors. */
 // ---cut---
-export type MultiValidator<Context = any> = ValidatorDescription<Context>[];
+export type MultiValidator<Context = any> = ValidatorDescription<Context>[]
 ```
 
 ## FieldValidator
@@ -145,7 +145,7 @@ export type MultiValidator<Context = any> = ValidatorDescription<Context>[];
 // @include: MultiValidator
 /** Field-level validator that accepts single or multiple descriptors. */
 // ---cut---
-export type FieldValidator<Context = any> =
-  | ValidatorDescription<Context>
-  | MultiValidator<Context>;
+export type FieldValidator<Context = any>
+  = | ValidatorDescription<Context>
+    | MultiValidator<Context>
 ```

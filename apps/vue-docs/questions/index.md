@@ -69,13 +69,13 @@ export const schema = {
   type: object,
   properties: {
     email: {
-      type: string,
-      "x-decorator": FormItem,
-      "x-component": Input,
-      "x-decorator-content": {
+      'type': string,
+      'x-decorator': FormItem,
+      'x-component': Input,
+      'x-decorator-content': {
         extra: 支持企业邮箱,
       },
     },
   },
-};
+}
 ```

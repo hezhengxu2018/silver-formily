@@ -12,7 +12,7 @@
 - `pnpm install`: install deps after cloning or whenever `pnpm-lock.yaml` changes.
 - `pnpm build`: run `vite build` to emit the distributable bundle plus declarations.
 - `pnpm lint`: execute the Antfu ESLint preset across TS, Vue, Markdown, and JSON files.
-- `pnpm lint:fix`: auto-fix lintable issues; always review the resulting diff.
+- `pnpm format`: auto-fix lintable issues; always review the resulting diff.
 - `pnpm commit`: launch the `czg` prompt to craft Conventional Commits with the repository’s custom type list.
 - `pnpm release`: call `release-it` for tagging and publishing once the tree is clean.
 
@@ -34,4 +34,4 @@
 - Conventional Commits are enforced via `commitlint`; allowed types mirror the `czg` prompt (`feat`, `fix`, `docs`, `refactor`, etc.).
 - Keep scopes meaningful (e.g., `components`, `hooks`), detail breaking changes explicitly, and link issues with the configured `link` / `closed` prefixes in footers.
 - PRs must describe the problem, outline the solution, mention testing performed, and attach screenshots or GIFs for behavior changes.
-- Ensure Husky + lint-staged hooks pass locally before requesting review or running `pnpm release`.
+- Run `pnpm format` (the Husky pre-commit hook) locally before requesting review or running `pnpm release`.

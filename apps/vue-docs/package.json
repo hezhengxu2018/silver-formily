@@ -1,11 +1,13 @@
 {
   "name": "vue-docs",
-  "private": true,
   "type": "module",
+  "private": true,
   "scripts": {
     "dev": "vitepress dev .",
     "build": "vitepress build .",
-    "preview": "vitepress preview ."
+    "preview": "vitepress preview .",
+    "lint": "eslint .",
+    "format": "eslint . --fix"
   },
   "dependencies": {
     "@element-plus/icons-vue": "^2.3.2",
@@ -23,6 +25,7 @@
     "@silver-formily/typescript-config": "workspace:*",
     "@vitejs/plugin-vue-jsx": "^5.1.3",
     "typescript": "5.9.2",
-    "unplugin-vue-macros": "^2.14.5"
+    "unplugin-vue-macros": "^2.14.5",
+    "vitepress": "2.0.0-alpha.16"
   }
 }

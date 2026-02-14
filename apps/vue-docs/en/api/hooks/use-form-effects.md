@@ -8,7 +8,7 @@ Inject side effects into the current [Form](https://core.formilyjs.org/api/model
 
 ```ts
 interface useFormEffects {
-  (form: Form): void;
+  (form: Form): void
 }
 ```
 

@@ -5,5 +5,5 @@ See the official docs for the complete path system. The snippet below covers the
 ## FormPathPattern
 
 ```ts
-type FormPathPattern = string | number | Array<string | number> | RegExp;
+type FormPathPattern = string | number | Array<string | number> | RegExp
 ```

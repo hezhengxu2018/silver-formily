@@ -8,7 +8,7 @@ Read the schema associated with the current field. Works inside `SchemaField` or
 
 ```ts
 interface useFieldSchema {
-  (): Ref<Schema>;
+  (): Ref<Schema>
 }
 ```
 

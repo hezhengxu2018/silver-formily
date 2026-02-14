@@ -8,7 +8,7 @@
 
 ```ts
 interface useParentForm {
-  (): Form | ObjectField;
+  (): Form | ObjectField
 }
 ```
 

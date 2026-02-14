@@ -12,7 +12,7 @@
 
 ```ts
 interface useField {
-  (): Ref<Field>;
+  (): Ref<Field>
 }
 ```
 

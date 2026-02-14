@@ -8,7 +8,7 @@
 
 ```ts
 interface useFormEffects {
-  (form: Form): void;
+  (form: Form): void
 }
 ```
 

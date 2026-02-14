@@ -40,5 +40,5 @@ api/components/recursion-field-with-component
 #### FormPathPattern
 
 ```ts
-type FormPathPattern = string | number | Array<string | number> | RegExp;
+type FormPathPattern = string | number | Array<string | number> | RegExp
 ```

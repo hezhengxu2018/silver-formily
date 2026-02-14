@@ -8,7 +8,7 @@
 
 ```ts
 interface mapReadPretty {
-  (component: Vue.Component): Vue.Component;
+  (component: Vue.Component): Vue.Component
 }
 ```
 

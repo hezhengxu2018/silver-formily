@@ -5,11 +5,11 @@
 ## GeneralField
 
 ```ts
-type GeneralField = Field | VoidField | ArrayField | ObjectField;
+type GeneralField = Field | VoidField | ArrayField | ObjectField
 ```
 
 ## FieldReaction
 
 ```ts
-type FieldReaction = (field: GeneralField) => void;
+type FieldReaction = (field: GeneralField) => void
 ```

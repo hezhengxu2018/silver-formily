@@ -12,7 +12,7 @@ Wrap your component with [observer](/en/api/shared/observer) if it should react 
 
 ```ts
 interface useField {
-  (): Ref<Field>;
+  (): Ref<Field>
 }
 ```
 

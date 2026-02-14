@@ -19,39 +19,39 @@ SchemaField 有两种使用方式，一种是MarkupSchema，一种是JSONSchema�
 
 ```ts
 interface createSchemaField {
-  (props: ISchemaFieldFactoryProps): ComposeSchemaField;
+  (props: ISchemaFieldFactoryProps): ComposeSchemaField
 }
 ```
 
 ### 函数入参
 
 ```ts
-import type { Component } from "vue";
+import type { Component } from 'vue'
 
 interface ISchemaFieldFactoryProps {
   components?: {
-    [key: string]: Component; // 组件列表
-  };
-  scope?: string | number; // 全局作用域，用于实现协议表达式变量注入
+    [key: string]: Component // 组件列表
+  }
+  scope?: string | number // 全局作用域，用于实现协议表达式变量注入
 }
 ```
 
 ### 函数返回
 
 ```ts
-import type { Component } from "vue";
+import type { Component } from 'vue'
 
 interface ComposeSchemaField {
-  SchemaField: Component<ISchemaFieldProps>; // JSON-Schema 渲染组件
-  SchemaMarkupField: Component<ISchema>; // MarkupSchema 渲染组件
-  SchemaStringField: Component<Omit<ISchema, "type">>; // MarkupSchema 渲染组件
-  SchemaObjectField: Component<Omit<ISchema, "type">>; // MarkupSchema 渲染组件
-  SchemaArrayField: Component<Omit<ISchema, "type">>; // MarkupSchema 渲染组件
-  SchemaBooleanField: Component<Omit<ISchema, "type">>; // MarkupSchema 渲染组件
-  SchemaDateField: Component<Omit<ISchema, "type">>; // MarkupSchema 渲染组件
-  SchemaDateTimeField: Component<Omit<ISchema, "type">>; // MarkupSchema 渲染组件
-  SchemaVoidField: Component<Omit<ISchema, "type">>; // MarkupSchema 渲染组件
-  SchemaNumberField: Component<Omit<ISchema, "type">>; // MarkupSchema 渲染组件
+  SchemaField: Component<ISchemaFieldProps> // JSON-Schema 渲染组件
+  SchemaMarkupField: Component<ISchema> // MarkupSchema 渲染组件
+  SchemaStringField: Component<Omit<ISchema, 'type'>> // MarkupSchema 渲染组件
+  SchemaObjectField: Component<Omit<ISchema, 'type'>> // MarkupSchema 渲染组件
+  SchemaArrayField: Component<Omit<ISchema, 'type'>> // MarkupSchema 渲染组件
+  SchemaBooleanField: Component<Omit<ISchema, 'type'>> // MarkupSchema 渲染组件
+  SchemaDateField: Component<Omit<ISchema, 'type'>> // MarkupSchema 渲染组件
+  SchemaDateTimeField: Component<Omit<ISchema, 'type'>> // MarkupSchema 渲染组件
+  SchemaVoidField: Component<Omit<ISchema, 'type'>> // MarkupSchema 渲染组件
+  SchemaNumberField: Component<Omit<ISchema, 'type'>> // MarkupSchema 渲染组件
 }
 ```
 

@@ -5,5 +5,5 @@
 ## FormPathPattern
 
 ```ts twoslash
-type FormPathPattern = string | number | Array<string | number> | RegExp;
+type FormPathPattern = string | number | Array<string | number> | RegExp
 ```

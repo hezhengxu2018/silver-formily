@@ -27,7 +27,8 @@
     "build": "tsdown",
     "dev": "tsdown --watch",
     "test": "vitest",
-    "lint": "eslint ./ --fix",
+    "lint": "eslint .",
+    "format": "eslint . --fix",
     "typecheck": "tsc --noEmit",
     "prepublishOnly": "pnpm run build",
     "release": "release-it"

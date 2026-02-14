@@ -66,16 +66,16 @@ questions/decorator-slot
 
 ```ts
 export const schema = {
-  type: "object",
+  type: 'object',
   properties: {
     email: {
-      type: "string",
-      "x-decorator": "FormItem",
-      "x-component": "Input",
-      "x-decorator-content": {
-        extra: "Corporate domains are supported",
+      'type': 'string',
+      'x-decorator': 'FormItem',
+      'x-component': 'Input',
+      'x-decorator-content': {
+        extra: 'Corporate domains are supported',
       },
     },
   },
-};
+}
 ```

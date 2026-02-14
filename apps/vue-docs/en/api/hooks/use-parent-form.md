@@ -8,7 +8,7 @@ Returns the closest parent `Form` or `ObjectField` instance so nested structures
 
 ```ts
 interface useParentForm {
-  (): Form | ObjectField;
+  (): Form | ObjectField
 }
 ```
 

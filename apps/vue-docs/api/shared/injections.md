@@ -18,10 +18,10 @@ Form 上下文，可以获取当前 Form 实例
 #### 签名
 
 ```ts
-import type { Form } from "@formily/core";
-import type { InjectionKey, Ref } from "vue";
+import type { Form } from '@formily/core'
+import type { InjectionKey, Ref } from 'vue'
 
-export const FormSymbol: InjectionKey<Ref<Form>> = Symbol("form");
+export const FormSymbol: InjectionKey<Ref<Form>> = Symbol('form')
 ```
 
 ## FieldSymbol
@@ -33,10 +33,10 @@ export const FormSymbol: InjectionKey<Ref<Form>> = Symbol("form");
 #### 签名
 
 ```ts
-import type { GeneralField } from "@formily/core";
-import type { InjectionKey, Ref } from "vue";
+import type { GeneralField } from '@formily/core'
+import type { InjectionKey, Ref } from 'vue'
 
-export const FieldSymbol: InjectionKey<Ref<GeneralField>> = Symbol("field");
+export const FieldSymbol: InjectionKey<Ref<GeneralField>> = Symbol('field')
 ```
 
 ## SchemaMarkupSymbol
@@ -48,11 +48,11 @@ Schema 标签上下文，主要用于收集 JSX Markup 写法的 Schema 标签�
 #### 签名
 
 ```ts
-import type { Schema } from "@formily/json-schema";
-import type { InjectionKey, Ref } from "vue";
+import type { Schema } from '@formily/json-schema'
+import type { InjectionKey, Ref } from 'vue'
 
-export const SchemaMarkupSymbol: InjectionKey<Ref<Schema>> =
-  Symbol("schemaMarkup");
+export const SchemaMarkupSymbol: InjectionKey<Ref<Schema>>
+  = Symbol('schemaMarkup')
 ```
 
 ## SchemaSymbol
@@ -64,10 +64,10 @@ export const SchemaMarkupSymbol: InjectionKey<Ref<Schema>> =
 #### 签名
 
 ```ts
-import type { Schema } from "@formily/json-schema";
-import type { InjectionKey, Ref } from "vue";
+import type { Schema } from '@formily/json-schema'
+import type { InjectionKey, Ref } from 'vue'
 
-export const SchemaSymbol: InjectionKey<Ref<Schema>> = Symbol("schema");
+export const SchemaSymbol: InjectionKey<Ref<Schema>> = Symbol('schema')
 ```
 
 ## SchemaExpressionScopeSymbol
@@ -79,13 +79,13 @@ Schema 表达式作用域上下文
 #### 签名
 
 ```ts
-import type { InjectionKey, Ref } from "vue";
+import type { InjectionKey, Ref } from 'vue'
 
-export type SchemaExpressionScope = Record<string, unknown>;
+export type SchemaExpressionScope = Record<string, unknown>
 
 export const SchemaExpressionScopeSymbol: InjectionKey<
   Ref<SchemaExpressionScope>
-> = Symbol("schemaExpression");
+> = Symbol('schemaExpression')
 ```
 
 ## SchemaOptionsSymbol
@@ -97,16 +97,16 @@ Schema 全局参数上下文，主要用于获取从 createSchemaField 传入的
 #### 签名
 
 ```ts
-import type { InjectionKey, Ref } from "vue";
+import type { InjectionKey, Ref } from 'vue'
 
 export interface ISchemaFieldVueFactoryOptions<
   Components extends SchemaVueComponents = SchemaVueComponents,
 > {
-  components?: Components;
-  scope?: SchemaExpressionScope;
+  components?: Components
+  scope?: SchemaExpressionScope
 }
 
 export const SchemaOptionsSymbol: InjectionKey<
   Ref<ISchemaFieldVueFactoryOptions>
-> = Symbol("schemaOptions");
+> = Symbol('schemaOptions')
 ```

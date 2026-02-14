@@ -8,7 +8,7 @@
 
 ```ts
 interface useFieldSchema {
-  (): Ref<Schema>;
+  (): Ref<Schema>
 }
 ```
 

@@ -40,11 +40,11 @@ Ported from the [official definition](https://core.formilyjs.org/zh-CN/api/model
 #### FormPathPattern
 
 ```ts
-type FormPathPattern = string | number | Array<string | number> | RegExp;
+type FormPathPattern = string | number | Array<string | number> | RegExp
 ```
 
 #### FieldReaction
 
 ```ts
-type FieldReaction = (field: GeneralField) => void;
+type FieldReaction = (field: GeneralField) => void
 ```

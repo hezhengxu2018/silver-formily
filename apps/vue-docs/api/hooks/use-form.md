@@ -8,7 +8,7 @@
 
 ```ts
 interface useForm {
-  (): Form;
+  (): Form
 }
 ```
 

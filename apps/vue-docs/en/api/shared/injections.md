@@ -14,10 +14,10 @@ Symbols exposed by `@silver-formily/vue`. Inject them to consume lower-level con
 Provides the current `Form` instance.
 
 ```ts
-import type { Form } from "@formily/core";
-import type { InjectionKey, Ref } from "vue";
+import type { Form } from '@formily/core'
+import type { InjectionKey, Ref } from 'vue'
 
-export const FormSymbol: InjectionKey<Ref<Form>> = Symbol(form);
+export const FormSymbol: InjectionKey<Ref<Form>> = Symbol(form)
 ```
 
 ### FieldSymbol
@@ -25,10 +25,10 @@ export const FormSymbol: InjectionKey<Ref<Form>> = Symbol(form);
 Access the current field instance.
 
 ```ts
-import type { GeneralField } from "@formily/core";
-import type { InjectionKey, Ref } from "vue";
+import type { GeneralField } from '@formily/core'
+import type { InjectionKey, Ref } from 'vue'
 
-export const FieldSymbol: InjectionKey<Ref<GeneralField>> = Symbol(field);
+export const FieldSymbol: InjectionKey<Ref<GeneralField>> = Symbol(field)
 ```
 
 ### SchemaMarkupSymbol
@@ -36,11 +36,11 @@ export const FieldSymbol: InjectionKey<Ref<GeneralField>> = Symbol(field);
 Collects JSX/markup schema definitions before they are transformed into canonical JSON Schema.
 
 ```ts
-import type { Schema } from "@formily/json-schema";
-import type { InjectionKey, Ref } from "vue";
+import type { Schema } from '@formily/json-schema'
+import type { InjectionKey, Ref } from 'vue'
 
-export const SchemaMarkupSymbol: InjectionKey<Ref<Schema>> =
-  Symbol(schemaMarkup);
+export const SchemaMarkupSymbol: InjectionKey<Ref<Schema>>
+  = Symbol(schemaMarkup)
 ```
 
 ### SchemaSymbol
@@ -48,10 +48,10 @@ export const SchemaMarkupSymbol: InjectionKey<Ref<Schema>> =
 Provides the schema of the current field.
 
 ```ts
-import type { Schema } from "@formily/json-schema";
-import type { InjectionKey, Ref } from "vue";
+import type { Schema } from '@formily/json-schema'
+import type { InjectionKey, Ref } from 'vue'
 
-export const SchemaSymbol: InjectionKey<Ref<Schema>> = Symbol(schema);
+export const SchemaSymbol: InjectionKey<Ref<Schema>> = Symbol(schema)
 ```
 
 ### SchemaExpressionScopeSymbol
@@ -59,13 +59,13 @@ export const SchemaSymbol: InjectionKey<Ref<Schema>> = Symbol(schema);
 Gives access to the schema expression scope.
 
 ```ts
-import type { InjectionKey, Ref } from "vue";
+import type { InjectionKey, Ref } from 'vue'
 
-export type SchemaExpressionScope = Record<string, unknown>;
+export type SchemaExpressionScope = Record<string, unknown>
 
 export const SchemaExpressionScopeSymbol: InjectionKey<
   Ref<SchemaExpressionScope>
-> = Symbol(schemaExpression);
+> = Symbol(schemaExpression)
 ```
 
 ### SchemaOptionsSymbol
@@ -73,16 +73,16 @@ export const SchemaExpressionScopeSymbol: InjectionKey<
 Holds the global options passed to `createSchemaField` (components and expression scope).
 
 ```ts
-import type { InjectionKey, Ref } from "vue";
+import type { InjectionKey, Ref } from 'vue'
 
 export interface ISchemaFieldVueFactoryOptions<
   Components extends SchemaVueComponents = SchemaVueComponents,
 > {
-  components?: Components;
-  scope?: SchemaExpressionScope;
+  components?: Components
+  scope?: SchemaExpressionScope
 }
 
 export const SchemaOptionsSymbol: InjectionKey<
   Ref<ISchemaFieldVueFactoryOptions>
-> = Symbol(schemaOptions);
+> = Symbol(schemaOptions)
 ```

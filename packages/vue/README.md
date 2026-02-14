@@ -50,18 +50,18 @@ pnpm add @silver-formily/vue @formily/core @formily/json-schema @formily/reactiv
 
 ```vue
 <script setup lang="ts">
-import { createForm } from "@formily/core";
-import { connect, Field, FormProvider, mapProps } from "@silver-formily/vue";
-import { ElFormItem, ElInput } from "element-plus";
+import { createForm } from '@formily/core'
+import { connect, Field, FormProvider, mapProps } from '@silver-formily/vue'
+import { ElFormItem, ElInput } from 'element-plus'
 
-const form = createForm({ validateFirst: true });
+const form = createForm({ validateFirst: true })
 
 const FormItem = connect(
   ElFormItem,
-  mapProps({ title: "label", required: true }, (_, field) => ({
+  mapProps({ title: 'label', required: true }, (_, field) => ({
     error: field.selfErrors[0] || undefined,
   })),
-);
+)
 </script>
 
 <template>

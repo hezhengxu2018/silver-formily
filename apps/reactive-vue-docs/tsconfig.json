@@ -2,17 +2,12 @@
   "extends": "@silver-formily/typescript-config/base.json",
   "compilerOptions": {
     "lib": ["ES2023", "DOM", "DOM.Iterable"],
-    "types": ["vitepress/client", "node"],
     "baseUrl": ".",
     "paths": {
       "@silver-formily/reactive-vue": ["../../packages/reactive-vue/src"],
       "@silver-formily/reactive-vue/*": ["../../packages/reactive-vue/src/*"]
-    }
+    },
+    "types": ["vitepress/client", "node"]
   },
-  "include": [
-    ".vitepress/**/*.ts",
-    "demos/**/*.ts",
-    "*.ts",
-    "env.d.ts"
-  ]
+  "include": [".vitepress/**/*.ts", "demos/**/*.ts", "*.ts", "env.d.ts"]
 }

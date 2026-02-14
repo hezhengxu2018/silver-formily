@@ -17,37 +17,37 @@ You never import `SchemaField` directly. Call `createSchemaField` to obtain the 
 
 ```ts
 interface createSchemaField {
-  (props: ISchemaFieldFactoryProps): ComposeSchemaField;
+  (props: ISchemaFieldFactoryProps): ComposeSchemaField
 }
 ```
 
 #### Parameters
 
 ```ts
-import type { Component } from "vue";
+import type { Component } from 'vue'
 
 interface ISchemaFieldFactoryProps {
-  components?: Record<string, Component>;
-  scope?: string | number; // inject variables for schema expressions
+  components?: Record<string, Component>
+  scope?: string | number // inject variables for schema expressions
 }
 ```
 
 #### Return Value
 
 ```ts
-import type { Component } from "vue";
+import type { Component } from 'vue'
 
 interface ComposeSchemaField {
-  SchemaField: Component<ISchemaFieldProps>;
-  SchemaMarkupField: Component<ISchema>;
-  SchemaStringField: Component<Omit<ISchema, "type">>;
-  SchemaObjectField: Component<Omit<ISchema, "type">>;
-  SchemaArrayField: Component<Omit<ISchema, "type">>;
-  SchemaBooleanField: Component<Omit<ISchema, "type">>;
-  SchemaDateField: Component<Omit<ISchema, "type">>;
-  SchemaDateTimeField: Component<Omit<ISchema, "type">>;
-  SchemaVoidField: Component<Omit<ISchema, "type">>;
-  SchemaNumberField: Component<Omit<ISchema, "type">>;
+  SchemaField: Component<ISchemaFieldProps>
+  SchemaMarkupField: Component<ISchema>
+  SchemaStringField: Component<Omit<ISchema, 'type'>>
+  SchemaObjectField: Component<Omit<ISchema, 'type'>>
+  SchemaArrayField: Component<Omit<ISchema, 'type'>>
+  SchemaBooleanField: Component<Omit<ISchema, 'type'>>
+  SchemaDateField: Component<Omit<ISchema, 'type'>>
+  SchemaDateTimeField: Component<Omit<ISchema, 'type'>>
+  SchemaVoidField: Component<Omit<ISchema, 'type'>>
+  SchemaNumberField: Component<Omit<ISchema, 'type'>>
 }
 ```
 

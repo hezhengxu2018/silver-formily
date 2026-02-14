@@ -20,6 +20,7 @@
   },
   "scripts": {
     "lint": "eslint .",
+    "format": "eslint . --fix",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {

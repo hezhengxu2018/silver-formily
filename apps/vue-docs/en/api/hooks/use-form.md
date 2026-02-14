@@ -8,7 +8,7 @@ Retrieve the current [Form](https://core.formilyjs.org/api/models/form) instance
 
 ```ts
 interface useForm {
-  (): Form;
+  (): Form
 }
 ```
 

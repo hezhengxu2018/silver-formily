@@ -11,21 +11,21 @@
 ```ts twoslash include ValidatorFormats
 /** 字符串型格式校验器，其他格式校验器需要通过registerValidateFormats进行注册 */
 // ---cut---
-export type ValidatorFormats =
-  | "url"
-  | "email"
-  | "ipv6"
-  | "ipv4"
-  | "number"
-  | "integer"
-  | "idcard"
-  | "qq"
-  | "phone"
-  | "money"
-  | "zh"
-  | "date"
-  | "zip"
-  | (string & {});
+export type ValidatorFormats
+  = | 'url'
+    | 'email'
+    | 'ipv6'
+    | 'ipv4'
+    | 'number'
+    | 'integer'
+    | 'idcard'
+    | 'qq'
+    | 'phone'
+    | 'money'
+    | 'zh'
+    | 'date'
+    | 'zip'
+    | (string & {})
 ```
 
 ## 对象类型校验
@@ -37,10 +37,10 @@ export type ValidatorFormats =
 ```ts twoslash include IValidateResult
 /** 对象型校验结果 */
 // ---cut---
-export type IValidateResult = {
-  type: "error" | "warning" | "success" | (string & {});
-  message: string;
-};
+export interface IValidateResult {
+  type: 'error' | 'warning' | 'success' | (string & {})
+  message: string
+}
 ```
 
 ### IValidatorRules
@@ -50,45 +50,45 @@ export type IValidateResult = {
 ```ts twoslash include IValidatorRules
 // @include: ValidatorFormats
 // @include: IValidateResult
-export type ValidatorFunctionResponse =
-  | null
-  | string
-  | boolean
-  | IValidateResult;
+export type ValidatorFunctionResponse
+  = | null
+    | string
+    | boolean
+    | IValidateResult
 export type ValidatorFunction<Context = any> = (
   value: any,
   rule: IValidatorRules<Context>,
   ctx: Context,
   render: (message: string, scope?: any) => string,
-) => ValidatorFunctionResponse | Promise<ValidatorFunctionResponse> | null;
+) => ValidatorFunctionResponse | Promise<ValidatorFunctionResponse> | null
 /** 对象型校验器，其他属性需要通过registerValidateRules进行注册 */
 // ---cut---
 export interface IValidatorRules<Context = any> {
-  triggerType?: "onInput" | "onFocus" | "onBlur" | (string & {});
-  format?: ValidatorFormats;
-  validator?: ValidatorFunction<Context>;
-  required?: boolean;
-  pattern?: RegExp | string;
-  max?: number;
-  maximum?: number;
-  maxItems?: number;
-  minItems?: number;
-  maxLength?: number;
-  minLength?: number;
-  exclusiveMaximum?: number;
-  exclusiveMinimum?: number;
-  minimum?: number;
-  min?: number;
-  len?: number;
-  whitespace?: boolean;
-  enum?: any[];
-  const?: any;
-  multipleOf?: number;
-  uniqueItems?: boolean;
-  maxProperties?: number;
-  minProperties?: number;
-  message?: string;
-  [key: string]: any;
+  triggerType?: 'onInput' | 'onFocus' | 'onBlur' | (string & {})
+  format?: ValidatorFormats
+  validator?: ValidatorFunction<Context>
+  required?: boolean
+  pattern?: RegExp | string
+  max?: number
+  maximum?: number
+  maxItems?: number
+  minItems?: number
+  maxLength?: number
+  minLength?: number
+  exclusiveMaximum?: number
+  exclusiveMinimum?: number
+  minimum?: number
+  min?: number
+  len?: number
+  whitespace?: boolean
+  enum?: any[]
+  const?: any
+  multipleOf?: number
+  uniqueItems?: boolean
+  maxProperties?: number
+  minProperties?: number
+  message?: string
+  [key: string]: any
 }
 ```
 
@@ -102,11 +102,11 @@ export interface IValidatorRules<Context = any> {
 // @include: IValidateResult
 /** 函数型校验器校验结果类型 */
 // ---cut---
-export type ValidatorFunctionResponse =
-  | null
-  | string
-  | boolean
-  | IValidateResult;
+export type ValidatorFunctionResponse
+  = | null
+    | string
+    | boolean
+    | IValidateResult
 ```
 
 ### ValidatorFunction
@@ -123,7 +123,7 @@ export type ValidatorFunction<Context = any> = (
   rule: IValidatorRules<Context>,
   ctx: Context,
   render: (message: string, scope?: any) => string,
-) => ValidatorFunctionResponse | Promise<ValidatorFunctionResponse> | null;
+) => ValidatorFunctionResponse | Promise<ValidatorFunctionResponse> | null
 ```
 
 ## ValidatorDescription
@@ -134,10 +134,10 @@ export type ValidatorFunction<Context = any> = (
 // @include: IValidatorRules
 /** 非数组型校验器 */
 // ---cut---
-export type ValidatorDescription<Context = any> =
-  | ValidatorFormats
-  | ValidatorFunction<Context>
-  | IValidatorRules<Context>;
+export type ValidatorDescription<Context = any>
+  = | ValidatorFormats
+    | ValidatorFunction<Context>
+    | IValidatorRules<Context>
 ```
 
 ## MultiValidator
@@ -148,7 +148,7 @@ export type ValidatorDescription<Context = any> =
 // @include: ValidatorDescription
 /** 数组型校验器 */
 // ---cut---
-export type MultiValidator<Context = any> = ValidatorDescription<Context>[];
+export type MultiValidator<Context = any> = ValidatorDescription<Context>[]
 ```
 
 ## FieldValidator
@@ -159,7 +159,7 @@ export type MultiValidator<Context = any> = ValidatorDescription<Context>[];
 // @include: MultiValidator
 /** 表单项校验器 */
 // ---cut---
-export type FieldValidator<Context = any> =
-  | ValidatorDescription<Context>
-  | MultiValidator<Context>;
+export type FieldValidator<Context = any>
+  = | ValidatorDescription<Context>
+    | MultiValidator<Context>
 ```
