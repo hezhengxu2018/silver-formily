@@ -1,5 +1,11 @@
 # 更新日志
 
+## 2.3.0
+
+### Minor Changes
+
+- 6b041db: 将响应式依赖从@formily/reactive-vue改为@silver-formily/reactive-vue
+
 ## [2.2.1](https://github.com/hezhengxu2018/silver-formily-vue/compare/v2.1.1...v2.2.1) (2026-02-04)
 
 ### Features
