@@ -1,7 +1,7 @@
+import type { DocsThemeConfig } from '@silver-formily/docs-toolkit'
 import type { LocaleConfig } from 'vitepress'
-import type { EPThemeConfig } from 'vitepress-theme-element-plus'
 
-export const enSidebar: EPThemeConfig['sidebar'] = {
+export const enSidebar: DocsThemeConfig['sidebar'] = {
   '/en/guide/': [
     {
       text: 'Guide',
@@ -71,7 +71,7 @@ export const enSidebar: EPThemeConfig['sidebar'] = {
   ],
 }
 
-export const enLocale: LocaleConfig<EPThemeConfig>['root'] = {
+export const enLocale: LocaleConfig<DocsThemeConfig>['root'] = {
   label: 'English',
   lang: 'en-US',
   link: '/en/',

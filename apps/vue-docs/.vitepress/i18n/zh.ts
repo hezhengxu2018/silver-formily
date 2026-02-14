@@ -1,7 +1,7 @@
+import type { DocsThemeConfig } from '@silver-formily/docs-toolkit'
 import type { LocaleConfig } from 'vitepress'
-import type { EPThemeConfig } from 'vitepress-theme-element-plus'
 
-export const zhSidebar: EPThemeConfig['sidebar'] = {
+export const zhSidebar: DocsThemeConfig['sidebar'] = {
   '/guide/': [
     {
       text: '指南',
@@ -59,7 +59,7 @@ export const zhSidebar: EPThemeConfig['sidebar'] = {
   ],
 }
 
-export const zhLocale: LocaleConfig<EPThemeConfig>['root'] = {
+export const zhLocale: LocaleConfig<DocsThemeConfig>['root'] = {
   label: '简体中文',
   lang: 'zh-CN',
   title: 'Silver Formily Vue',
