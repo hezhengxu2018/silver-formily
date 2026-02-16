@@ -8,6 +8,7 @@
   },
   "scripts": {
     "build": "turbo run build",
+    "build:changed": "node scripts/build-changed.mjs",
     "dev": "turbo run dev",
     "lint": "turbo run lint",
     "format": "turbo run format",
@@ -15,7 +16,7 @@
     "check-types": "turbo run check-types",
     "changeset": "changeset",
     "version-packages": "changeset version",
-    "release": "pnpm run build && changeset publish",
+    "release": "pnpm run build:changed && changeset publish",
     "prepare": "husky"
   },
   "devDependencies": {
