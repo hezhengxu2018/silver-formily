@@ -8,10 +8,10 @@ import pkg from './package.json' with { type: 'json' }
 
 const externalPackages = [
   ...Object.keys(pkg.peerDependencies ?? {}),
-  ...Object.keys(pkg.dependencies ?? {}),
+  ...Object.keys(pkg.devDependencies ?? {}),
 ]
 
-function resolve(dir) {
+function resolve(dir: string) {
   const __filename = fileURLToPath(import.meta.url)
   const __dirname = path.dirname(__filename)
   return path.resolve(__dirname, dir)
@@ -63,8 +63,13 @@ export default defineConfig({
   plugins: [
     vue(),
     dts({
+      root: resolve('.'),
+      outDirs: [resolve('esm')],
       include: ['src'],
-      vue: true,
+      entryRoot: 'src',
+      insertTypesEntry: true,
+      tsconfigPath: resolve('tsconfig.json'),
+      processor: 'vue',
     }),
   ],
 })
