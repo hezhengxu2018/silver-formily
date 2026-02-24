@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 import { spawnSync } from 'node:child_process'
+import { readFileSync, rmSync } from 'node:fs'
 import process from 'node:process'
 
 function run(command, args, options = {}) {
@@ -14,8 +15,10 @@ function run(command, args, options = {}) {
   return result.stdout
 }
 
-const statusJson = run('pnpm', ['changeset', 'status', '--json'])
-const status = JSON.parse(statusJson || '{}')
+const statusFile = '.changeset-status.tmp.json'
+run('pnpm', ['exec', 'changeset', 'status', '--output', statusFile])
+const status = JSON.parse(readFileSync(statusFile, 'utf8') || '{}')
+rmSync(statusFile, { force: true })
 const releases = status.releases?.map(release => release.name) ?? []
 
 if (!releases.length) {
