@@ -1,5 +1,5 @@
 import type { Grid } from './index'
-import type { GridNode } from './types'
+import type { GridNode, IGridOptions } from './types'
 
 const SpanRegExp = /span\s*(\d+)/
 
@@ -12,6 +12,23 @@ export function calcBreakpointIndex(breakpoints: number[], width: number) {
     }
   }
   return -1
+}
+
+export function resolveSsrColumns(options: IGridOptions) {
+  if (typeof options.ssrColumns === 'number' && options.ssrColumns > 0) {
+    return options.ssrColumns
+  }
+
+  const minColumns = options.minColumns
+  if (Array.isArray(minColumns)) {
+    return Math.max(1, Number(minColumns[0] ?? 1))
+  }
+
+  if (typeof minColumns === 'number') {
+    return Math.max(1, minColumns)
+  }
+
+  return 1
 }
 
 export function calcFactor<T>(value: T | T[], breakpointIndex: number): T {
@@ -115,6 +132,9 @@ export function resolveChildren(grid: Grid) {
   if (!grid.ready)
     return
 
+  const applyVisibility
+    = !grid.options.deferVisibilityUntilHydration || grid.hydrated
+
   grid.children = grid.children.map((node) => {
     const columnIndex = walked % grid.columns
     const shadowColumnIndex = shadowWalked % grid.columns
@@ -153,7 +173,7 @@ export function resolveChildren(grid: Grid) {
       node.column = columnIndex + 1
     }
 
-    if (grid.options.shouldVisible) {
+    if (applyVisibility && grid.options.shouldVisible) {
       if (!grid.options.shouldVisible(node, grid)) {
         if (node.visible) {
           node.element.style.display = 'none'

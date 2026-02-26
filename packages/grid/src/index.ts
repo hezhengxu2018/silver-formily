@@ -10,6 +10,7 @@ import {
   nextTick,
   parseGridNode,
   resolveChildren,
+  resolveSsrColumns,
 } from './utils'
 
 export type { GridNode, IGridOptions } from './types'
@@ -25,9 +26,12 @@ export class Grid {
   childOriginTotalColumns = 0
   shadowChildOriginTotalColumns = 0
   ready = false
+  hydrated = false
 
   constructor(options?: IGridOptions) {
     this.options = {
+      ssrColumns: 1,
+      deferVisibilityUntilHydration: true,
       breakpoints: [720, 1280, 1920],
       columnGap: 8,
       rowGap: 4,
@@ -42,6 +46,7 @@ export class Grid {
       width: observable.ref,
       height: observable.ref,
       ready: observable.ref,
+      hydrated: observable.ref,
       children: observable.ref,
       childOriginTotalColumns: observable.ref,
       shadowChildOriginTotalColumns: observable.ref,
@@ -139,8 +144,9 @@ export class Grid {
   }
 
   get columns() {
-    if (!this.ready)
-      return 0
+    if (!this.ready) {
+      return resolveSsrColumns(this.options)
+    }
 
     const originTotalColumns = this.childOriginTotalColumns
 
@@ -218,8 +224,16 @@ export class Grid {
   }
 
   get templateColumns() {
-    if (!this.width)
-      return ''
+    if (!this.ready) {
+      if (this.options.ssrTemplateColumns) {
+        return this.options.ssrTemplateColumns
+      }
+      return `repeat(${this.columns},minmax(0,1fr))`
+    }
+
+    if (!this.width) {
+      return `repeat(${this.columns},minmax(0,1fr))`
+    }
 
     if (this.maxWidth === Infinity) {
       return `repeat(${this.columns},minmax(0,1fr))`
@@ -249,6 +263,7 @@ export class Grid {
 
   connect = (container: HTMLElement) => {
     this.container = container
+    this.hydrated = false
 
     const digest = batch.bound!(() => {
       this.children = parseGridNode(this.container.children)
@@ -278,6 +293,16 @@ export class Grid {
     const initialize = batch.bound!(() => {
       digest()
       this.ready = true
+      if (this.options.deferVisibilityUntilHydration === false) {
+        digest()
+      }
+      // Delay visibility side effects until hydration has settled.
+      nextTick(() => {
+        this.hydrated = true
+        if (this.options.deferVisibilityUntilHydration !== false) {
+          digest()
+        }
+      })
     })
 
     const mutationObserver = new ChildListMutationObserver(digest)
@@ -310,6 +335,9 @@ export class Grid {
   static id = (options: IGridOptions = {}) => {
     const keys: Array<keyof IGridOptions> = [
       'maxRows',
+      'ssrColumns',
+      'ssrTemplateColumns',
+      'deferVisibilityUntilHydration',
       'maxColumns',
       'minColumns',
       'maxWidth',

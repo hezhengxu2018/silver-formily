@@ -30,6 +30,8 @@
   "scripts": {
     "build": "tsdown",
     "dev": "tsdown --watch",
+    "test": "vitest run",
+    "coverage": "vitest run --coverage --browser.headless",
     "lint": "eslint .",
     "format": "eslint . --fix",
     "check-types": "tsc --noEmit",
@@ -41,8 +43,13 @@
   "devDependencies": {
     "@formily/reactive": "^2.3.7",
     "@silver-formily/typescript-config": "workspace:*",
+    "@vitest/browser-playwright": "^4.0.18",
+    "@vitest/coverage-istanbul": "4.0.18",
     "eslint": "^9.36.0",
+    "jsdom": "^26.1.0",
+    "playwright": "^1.58.2",
     "tsdown": "^0.18.1",
-    "typescript": "5.9.2"
+    "typescript": "5.9.2",
+    "vitest": "^4.0.16"
   }
 }

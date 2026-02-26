@@ -13,6 +13,9 @@ export type GridNode = {
 }
 
 export interface IGridOptions {
+  ssrColumns?: number
+  ssrTemplateColumns?: string
+  deferVisibilityUntilHydration?: boolean
   maxRows?: number
   maxColumns?: number | number[]
   minColumns?: number | number[]

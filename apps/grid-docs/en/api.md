@@ -1,3 +1,111 @@
 # API
 
-Placeholder page for Grid API documentation.
+## Grid
+
+### Constructor
+
+```ts
+declare const options: IGridOptions | undefined
+const grid = new Grid(options)
+```
+
+### Constructor Options Table
+
+| Option                          | Type                                      | Default             | Description                                       |
+| ------------------------------- | ----------------------------------------- | ------------------- | ------------------------------------------------- |
+| `ssrColumns`                    | `number`                                  | `1`                 | Fallback column count when `ready=false`          |
+| `ssrTemplateColumns`            | `string`                                  | -                   | Fallback template string when `ready=false`       |
+| `deferVisibilityUntilHydration` | `boolean`                                 | `true`              | Whether to defer `shouldVisible` DOM side effects |
+| `maxRows`                       | `number`                                  | `Infinity`          | Maximum rows                                      |
+| `maxColumns`                    | `number \| number[]`                      | `Infinity`          | Maximum columns, supports breakpoint arrays       |
+| `minColumns`                    | `number \| number[]`                      | `1`                 | Minimum columns, supports breakpoint arrays       |
+| `maxWidth`                      | `number \| number[]`                      | `Infinity`          | Max column width, supports breakpoint arrays      |
+| `minWidth`                      | `number \| number[]`                      | `100`               | Min column width, supports breakpoint arrays      |
+| `breakpoints`                   | `number[]`                                | `[720, 1280, 1920]` | Breakpoint list                                   |
+| `columnGap`                     | `number \| number[]`                      | `8`                 | Column gap, supports breakpoint arrays            |
+| `rowGap`                        | `number \| number[]`                      | `4`                 | Row gap, supports breakpoint arrays               |
+| `colWrap`                       | `boolean \| boolean[]`                    | `true`              | Whether column wrapping is enabled                |
+| `strictAutoFit`                 | `boolean`                                 | `false`             | Enforce strict min/max width boundaries           |
+| `shouldVisible`                 | `(node: GridNode, grid: Grid) => boolean` | -                   | Custom node visibility rule                       |
+| `onDigest`                      | `(grid: Grid) => void`                    | -                   | Called after each layout digest                   |
+| `onInitialized`                 | `(grid: Grid) => void`                    | -                   | Called after initial layout completes             |
+
+### connect
+
+```ts
+declare const container: HTMLElement
+const dispose = grid.connect(container)
+```
+
+- Returns `dispose` to clean up `ResizeObserver` / `MutationObserver` and internal state.
+
+## IGridOptions
+
+```ts
+interface IGridOptions {
+  ssrColumns?: number
+  ssrTemplateColumns?: string
+  deferVisibilityUntilHydration?: boolean
+
+  maxRows?: number
+  maxColumns?: number | number[]
+  minColumns?: number | number[]
+  maxWidth?: number | number[]
+  minWidth?: number | number[]
+  breakpoints?: number[]
+  columnGap?: number
+  rowGap?: number
+  colWrap?: boolean
+  strictAutoFit?: boolean
+
+  shouldVisible?: (node: GridNode, grid: Grid) => boolean
+  onDigest?: (grid: Grid) => void
+  onInitialized?: (grid: Grid) => void
+}
+```
+
+## GridNode
+
+```ts
+type GridNode = {
+  index: number
+  visible: boolean
+  column: number
+  shadowColumn: number
+  row: number
+  shadowRow: number
+  span: number
+  originSpan: number
+  element: HTMLElement
+}
+```
+
+## Grid Runtime State
+
+| Field             | Type      | Description                           |
+| ----------------- | --------- | ------------------------------------- |
+| `width`           | `number`  | Container width                       |
+| `height`          | `number`  | Container height                      |
+| `columns`         | `number`  | Current columns                       |
+| `rows`            | `number`  | Current rows                          |
+| `templateColumns` | `string`  | Current `grid-template-columns`       |
+| `gap`             | `string`  | Current CSS `gap` value               |
+| `breakpoint`      | `number`  | Current breakpoint index              |
+| `ready`           | `boolean` | Whether initial layout has completed  |
+| `hydrated`        | `boolean` | Whether hydration phase has completed |
+
+## data-grid-span
+
+Use `data-grid-span` on child nodes to control span:
+
+```html
+<div id="grid-container">
+  <div data-grid-span="1">span 1</div>
+  <div data-grid-span="2">span 2</div>
+  <div data-grid-span="3">span 3</div>
+</div>
+```
+
+## SSR-related Options
+
+Behavior details and examples for `ssrColumns`, `ssrTemplateColumns`, and `deferVisibilityUntilHydration` are centralized in the [SSR Guide](/en/ssr).

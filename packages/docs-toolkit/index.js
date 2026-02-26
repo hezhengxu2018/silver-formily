@@ -24,6 +24,7 @@ export function createDocsConfig(options = {}) {
   const {
     alias = {},
     demoDir,
+    demoCodeFold = false,
     head = [],
     locales,
     sidebar,
@@ -86,7 +87,7 @@ export function createDocsConfig(options = {}) {
           md.use(mdContainer, 'demo', createDemoContainer(md, {
             demoDir,
             autoImportWrapper: false,
-            codeFold: false,
+            codeFold: demoCodeFold,
           }))
         }
         markdownOptions.config?.(md)

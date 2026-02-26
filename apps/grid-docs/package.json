@@ -10,6 +10,7 @@
     "format": "eslint . --fix"
   },
   "dependencies": {
+    "@formily/reactive": "^2.3.7",
     "@silver-formily/docs-toolkit": "workspace:*",
     "@silver-formily/grid": "workspace:*"
   },
