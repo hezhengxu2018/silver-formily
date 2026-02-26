@@ -1,5 +1,5 @@
 import type { Grid } from './index'
-import type { GridNode, IGridOptions } from './types'
+import type { GridContainerTarget, GridNode, IGridOptions } from './types'
 
 const SpanRegExp = /span\s*(\d+)/
 
@@ -190,6 +190,23 @@ export function resolveChildren(grid: Grid) {
 
     return node
   })
+}
+
+export function resolveContainerElement(container: GridContainerTarget) {
+  if (container instanceof HTMLElement) {
+    return container
+  }
+
+  if (
+    container
+    && typeof container === 'object'
+    && 'value' in container
+    && container.value instanceof HTMLElement
+  ) {
+    return container.value
+  }
+
+  return null
 }
 
 export const nextTick = (callback?: () => void) => Promise.resolve(0).then(callback)

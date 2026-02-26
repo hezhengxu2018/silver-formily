@@ -33,11 +33,12 @@ const grid = new Grid(options)
 ### connect
 
 ```ts
-declare const container: HTMLElement
+declare const container: HTMLElement | { value?: HTMLElement | null } | null | undefined
 const dispose = grid.connect(container)
 ```
 
 - 返回 `dispose`，用于解绑 `ResizeObserver` / `MutationObserver` 与清理内部状态。
+- 当 `container` 暂时为空（例如 Vue 模板 ref 尚未挂载）时，会返回空操作 `dispose`，不会抛出异常。
 
 ## IGridOptions
 

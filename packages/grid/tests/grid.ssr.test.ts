@@ -95,4 +95,24 @@ describe('grid SSR fallback', () => {
 
     dispose()
   })
+
+  it('returns noop dispose when container is null', () => {
+    const grid = new Grid()
+    const dispose = grid.connect(null)
+
+    expect(typeof dispose).toBe('function')
+    expect(() => dispose()).not.toThrow()
+    expect(grid.ready).toBe(false)
+  })
+
+  it('accepts ref-like container target', async () => {
+    const { container } = createContainer()
+    const grid = new Grid()
+    const dispose = grid.connect({ value: container })
+
+    await Promise.resolve()
+    expect(grid.ready).toBe(true)
+
+    dispose()
+  })
 })

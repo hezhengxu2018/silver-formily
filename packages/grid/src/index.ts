@@ -1,4 +1,4 @@
-import type { GridNode, IGridOptions } from './types'
+import type { GridContainerTarget, GridNode, IGridOptions } from './types'
 import { batch, define, observable, reaction } from '@formily/reactive'
 import { ChildListMutationObserver } from './observer'
 import {
@@ -10,10 +10,11 @@ import {
   nextTick,
   parseGridNode,
   resolveChildren,
+  resolveContainerElement,
   resolveSsrColumns,
 } from './utils'
 
-export type { GridNode, IGridOptions } from './types'
+export type { GridContainerTarget, GridNode, IGridOptions } from './types'
 
 export class Grid {
   options: IGridOptions
@@ -261,8 +262,13 @@ export class Grid {
     return this.columns === this.children[this.childSize - 1]?.span
   }
 
-  connect = (container: HTMLElement) => {
-    this.container = container
+  connect = (container: GridContainerTarget) => {
+    const resolvedContainer = resolveContainerElement(container)
+    if (!resolvedContainer) {
+      return () => {}
+    }
+
+    this.container = resolvedContainer
     this.hydrated = false
 
     const digest = batch.bound!(() => {

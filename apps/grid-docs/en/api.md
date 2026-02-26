@@ -33,11 +33,12 @@ const grid = new Grid(options)
 ### connect
 
 ```ts
-declare const container: HTMLElement
+declare const container: HTMLElement | { value?: HTMLElement | null } | null | undefined
 const dispose = grid.connect(container)
 ```
 
 - Returns `dispose` to clean up `ResizeObserver` / `MutationObserver` and internal state.
+- When `container` is temporarily empty (for example, a Vue template ref before mount), it returns a noop `dispose` and does not throw.
 
 ## IGridOptions
 

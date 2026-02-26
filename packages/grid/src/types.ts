@@ -30,3 +30,11 @@ export interface IGridOptions {
   onDigest?: (grid: Grid) => void
   onInitialized?: (grid: Grid) => void
 }
+
+export type GridContainerTarget
+  = | HTMLElement
+    | null
+    | undefined
+    | {
+      value?: HTMLElement | null
+    }
