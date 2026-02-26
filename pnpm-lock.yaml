@@ -121,6 +121,22 @@ importers:
         specifier: 2.0.0-alpha.16
         version: 2.0.0-alpha.16(@types/node@24.10.13)(async-validator@4.2.5)(axios@1.13.5)(change-case@5.4.4)(jiti@2.6.1)(postcss@8.5.6)(sass-embedded@1.97.3)(sass@1.97.3)(typescript@5.9.2)(yaml@2.8.2)
 
+  apps/grid-docs:
+    dependencies:
+      '@silver-formily/docs-toolkit':
+        specifier: workspace:*
+        version: link:../../packages/docs-toolkit
+      '@silver-formily/grid':
+        specifier: workspace:*
+        version: link:../../packages/grid
+    devDependencies:
+      '@silver-formily/typescript-config':
+        specifier: workspace:*
+        version: link:../../packages/typescript-config
+      vitepress:
+        specifier: 2.0.0-alpha.16
+        version: 2.0.0-alpha.16(@types/node@24.10.13)(async-validator@4.2.5)(axios@1.13.5)(change-case@5.4.4)(jiti@2.6.1)(postcss@8.5.6)(sass-embedded@1.97.3)(sass@1.97.3)(typescript@5.9.2)(yaml@2.8.2)
+
   apps/reactive-vue-docs:
     dependencies:
       '@formily/reactive':
@@ -222,6 +238,9 @@ importers:
 
   packages/grid:
     devDependencies:
+      '@formily/reactive':
+        specifier: ^2.3.7
+        version: 2.3.7
       '@silver-formily/typescript-config':
         specifier: workspace:*
         version: link:../typescript-config

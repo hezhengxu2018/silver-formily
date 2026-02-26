@@ -15,12 +15,12 @@
     "url": "https://github.com/hezhengxu2018/silver-formily/issues"
   },
   "exports": {
-    ".": "./dist/demo.mjs",
+    ".": "./dist/index.mjs",
     "./package.json": "./package.json"
   },
-  "main": "./dist/demo.mjs",
-  "module": "./dist/demo.mjs",
-  "types": "./dist/demo.d.mts",
+  "main": "./dist/index.mjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.mts",
   "publishConfig": {
     "access": "public"
   },
@@ -35,7 +35,11 @@
     "check-types": "tsc --noEmit",
     "prepublishOnly": "pnpm run build"
   },
+  "peerDependencies": {
+    "@formily/reactive": "^2"
+  },
   "devDependencies": {
+    "@formily/reactive": "^2.3.7",
     "@silver-formily/typescript-config": "workspace:*",
     "eslint": "^9.36.0",
     "tsdown": "^0.18.1",
