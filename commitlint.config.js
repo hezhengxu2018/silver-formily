@@ -91,6 +91,7 @@ export default {
       { value: 'packages/reactive-vue', name: 'packages/reactive-vue' },
       { value: 'packages/typescript-config', name: 'packages/typescript-config' },
       { value: 'packages/vue', name: 'packages/vue' },
+      { value: 'packages/grid', name: 'packages/grid' },
     ],
     allowCustomScopes: true,
     allowEmptyScopes: true,
