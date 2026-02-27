@@ -1,0 +1,10 @@
+codecov:
+  require_ci_to_pass: true
+
+flags:
+  reactive-vue:
+    paths:
+      - packages/reactive-vue
+  element-plus:
+    paths:
+      - packages/element-plus

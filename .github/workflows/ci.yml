@@ -54,6 +54,7 @@ jobs:
           token: ${{ env.CODECOV_TOKEN }}
           files: ./packages/reactive-vue/coverage/coverage-final.json
           disable_search: true
+          plugins: noop
           flags: reactive-vue
           fail_ci_if_error: true
 
@@ -75,5 +76,6 @@ jobs:
           token: ${{ env.CODECOV_TOKEN }}
           files: ./packages/element-plus/coverage/coverage-final.json
           disable_search: true
+          plugins: noop
           flags: element-plus
           fail_ci_if_error: true
