@@ -8,14 +8,16 @@
       "outputs": ["dist/**", ".vitepress/dist/**", "esm/**"]
     },
     "lint": {
-      "dependsOn": ["^lint"]
+      "dependsOn": ["^lint"],
+      "outputs": []
     },
     "format": {
       "dependsOn": ["^format"],
       "outputs": []
     },
     "check-types": {
-      "dependsOn": ["^check-types"]
+      "dependsOn": ["^check-types"],
+      "outputs": []
     },
     "test": {
       "dependsOn": ["^build"],

@@ -21,6 +21,8 @@ jobs:
     name: Verify
     runs-on: ubuntu-latest
     env:
+      TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+      TURBO_TEAM: ${{ vars.TURBO_TEAM }}
       CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
     steps:
@@ -42,8 +44,18 @@ jobs:
       - name: Run lint
         run: pnpm lint
 
-      - name: Run reactive-vue tests
-        run: pnpm test -- --filter=@silver-formily/reactive-vue
+      - name: Run reactive-vue tests with coverage
+        run: pnpm --filter @silver-formily/reactive-vue test:coverage
+
+      - name: Upload reactive-vue coverage to Codecov
+        if: ${{ env.CODECOV_TOKEN != '' }}
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ env.CODECOV_TOKEN }}
+          files: ./packages/reactive-vue/coverage/coverage-final.json
+          disable_search: true
+          flags: reactive-vue
+          fail_ci_if_error: true
 
       - name: Build internal test dependencies
         run: |
