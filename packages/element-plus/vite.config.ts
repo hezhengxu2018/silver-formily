@@ -84,6 +84,8 @@ export default defineConfig({
     libInjectCss(),
     dts({
       outDir: ['./esm'],
+      entryRoot: 'src',
+      insertTypesEntry: true,
       include: ['src'],
       exclude: ['./**/style.ts', './**/*.test.{ts,tsx}'],
       cleanVueFileName: true,
