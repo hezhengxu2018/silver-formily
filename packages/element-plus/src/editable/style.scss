@@ -1,0 +1,37 @@
+@use '../__builtins__/styles/common.scss' as *;
+
+$editable-prefix-cls: '#{$formily-prefix}-editable';
+
+.#{$editable-prefix-cls} {
+  cursor: pointer;
+  display: inline-block !important;
+
+  &.is-disabled {
+    cursor: not-allowed;
+  }
+
+  &-content {
+    display: flex;
+    align-items: center;
+
+    > * {
+      margin-right: 3px;
+      &:last-child {
+        margin-right: 0;
+      }
+    }
+  }
+
+  .#{$editable-prefix-cls}-edit-btn,
+  .#{$editable-prefix-cls}-close-btn {
+    transition: all 0.25s ease-in-out;
+    width: 14px;
+    height: 14px;
+    display: inline;
+    vertical-align: sub;
+
+    &:hover {
+      color: var(--el-color-primary);
+    }
+  }
+}

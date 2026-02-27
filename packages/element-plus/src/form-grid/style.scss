@@ -1,0 +1,5 @@
+@use '../__builtins__/styles/common.scss' as *;
+
+.#{$formily-prefix}-form-grid {
+  display: grid;
+}

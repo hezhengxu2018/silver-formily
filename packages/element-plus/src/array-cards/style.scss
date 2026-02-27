@@ -1,0 +1,27 @@
+@use '../__builtins__/styles/common.scss' as *;
+
+$array-cards-prefix-cls: '#{$formily-prefix}-array-cards';
+
+.#{$array-cards-prefix-cls} {
+  width: 100%;
+  .el-card__header {
+    padding-top: 12.5px;
+    padding-bottom: 12.5px;
+  }
+  .el-empty {
+    padding: 0;
+  }
+
+  .#{$array-cards-prefix-cls}-item + .#{$array-cards-prefix-cls}-item {
+    margin-top: 8px;
+  }
+
+  .#{$array-cards-prefix-cls}-extra-container {
+    display: inline-flex;
+    gap: 8px;
+  }
+
+  .#{$formily-prefix}-array-base-addition {
+    margin-top: 8px;
+  }
+}

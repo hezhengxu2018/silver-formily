@@ -1,0 +1,106 @@
+@use '../__builtins__/styles/common.scss' as *;
+
+$array-list-prefix-cls: '#{$formily-prefix}-array-list-tabs';
+
+.#{$array-list-prefix-cls} {
+  display: flex;
+  border: 1px solid var(--el-border-color);
+  border-radius: var(--el-border-radius-base);
+  width: 100%;
+
+  .el-empty {
+    padding: 0;
+  }
+
+  .#{$array-list-prefix-cls}_list {
+    width: 220px;
+    border-right: 1px solid var(--el-border-color);
+    display: flex;
+    flex-direction: column;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+
+    &--scroll-wrapper {
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+
+    &-item {
+      padding: 0 12px;
+      height: 40px;
+      line-height: 40px;
+      border-radius: var(--el-border-radius-base);
+      box-sizing: border-box;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      list-style: none;
+      font-size: var(--el-font-size-base);
+      font-weight: 500;
+      color: var(--el-text-color-regular);
+      transition: all 0.3s;
+
+      &--content {
+        height: 100%;
+        flex: 1;
+        display: flex;
+        align-items: center;
+        overflow: hidden;
+      }
+
+      &--title {
+        display: block;
+        width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        user-select: none;
+      }
+
+      &--close {
+        visibility: hidden;
+        border-radius: 2px;
+        &:hover {
+          background-color: var(--el-fill-color-dark);
+        }
+      }
+
+      &:hover {
+        color: var(--el-color-primary);
+        background-color: var(--el-fill-color-light);
+        cursor: pointer;
+        .#{$array-list-prefix-cls}_list-item--close {
+          visibility: visible;
+        }
+      }
+
+      &.is-active {
+        color: var(--el-color-primary);
+        background-color: var(--el-fill-color-light);
+        .#{$array-list-prefix-cls}_list-item--title {
+          font-weight: 700;
+        }
+      }
+    }
+  }
+
+  .#{$array-list-prefix-cls}-tabpane {
+    flex: 1;
+    box-sizing: border-box;
+    padding: 15px;
+  }
+
+  .#{$array-list-prefix-cls}-errors-badge {
+    line-height: 1;
+    vertical-align: initial;
+    max-width: 90%;
+  }
+
+  .#{$formily-prefix}-array-base-addition {
+    width: auto;
+    margin: 6px;
+  }
+}

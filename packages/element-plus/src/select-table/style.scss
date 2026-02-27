@@ -1,0 +1,19 @@
+@use '../__builtins__/styles/common.scss' as *;
+
+.#{$formily-prefix}-select-table {
+  .--click-row-select {
+    cursor: pointer;
+  }
+
+  &-alert-container {
+    margin-bottom: 8px;
+    padding-block: 8px;
+    padding-inline: 16px;
+    display: flex;
+    align-items: center;
+    font-size: var(--el-font-size-base);
+    color: var(--el-color-info);
+    background-color: var(--el-color-info-light-9);
+    border-radius: var(--el-border-radius-base);
+  }
+}

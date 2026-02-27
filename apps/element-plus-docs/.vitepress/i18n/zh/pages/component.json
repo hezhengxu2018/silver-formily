@@ -1,0 +1,242 @@
+[
+  {
+    "text": "Overview 总览",
+    "items": [
+      {
+        "link": "/zh/component/quick-start",
+        "text": "Quick Start 快速开始"
+      }
+    ]
+  },
+  {
+    "text": "Layout 布局组件",
+    "items": [
+      {
+        "link": "/zh/component/form",
+        "text": "Form 表单"
+      },
+      {
+        "link": "/zh/component/form-item",
+        "text": "FormItem 表单项"
+      },
+      {
+        "link": "/zh/component/form-layout",
+        "text": "FormLayout 区块布局表单"
+      },
+      {
+        "link": "/zh/component/form-grid",
+        "text": "FormGrid 网格布局表单"
+      },
+      {
+        "link": "/zh/component/query-form",
+        "text": "QueryForm 查询表单",
+        "promotion": "2.4.0"
+      },
+      {
+        "link": "/zh/component/query-form-item",
+        "text": "QueryFormItem 查询表单项",
+        "promotion": "2.4.0"
+      },
+      {
+        "link": "/zh/component/space",
+        "text": "Space 弹性盒子布局表单"
+      },
+      {
+        "link": "/zh/component/form-button-group",
+        "text": "FormButtonGroup 按钮布局"
+      },
+      {
+        "link": "/zh/component/submit",
+        "text": "Submit 提交按钮"
+      },
+      {
+        "link": "/zh/component/reset",
+        "text": "Reset 重置按钮"
+      }
+    ]
+  },
+  {
+    "text": "Input 输入组件",
+    "items": [
+      {
+        "link": "/zh/component/input",
+        "text": "Input 输入框"
+      },
+      {
+        "link": "/zh/component/autocomplete",
+        "text": "Autocomplete 自动补全输入框",
+        "promotion": "2.3.0"
+      },
+      {
+        "link": "/zh/component/input-tag",
+        "text": "InputTag 标签输入框",
+        "promotion": "2.3.0"
+      },
+      {
+        "link": "/zh/component/mention",
+        "text": "Mention 提及输入框",
+        "promotion": "2.3.0"
+      },
+      {
+        "link": "/zh/component/input-number",
+        "text": "InputNumber 数字输入框"
+      },
+      {
+        "link": "/zh/component/password",
+        "text": "Password 密码输入框"
+      },
+      {
+        "link": "/zh/component/checkbox",
+        "text": "Checkbox 多选框"
+      },
+      {
+        "link": "/zh/component/radio",
+        "text": "Radio 单选框"
+      },
+      {
+        "link": "/zh/component/segmented",
+        "text": "Segmented 分段选择器",
+        "promotion": "2.2.0"
+      },
+      {
+        "link": "/zh/component/select",
+        "text": "Select 下拉选择框"
+      },
+      {
+        "link": "/zh/component/tree-select",
+        "text": "TreeSelect 树形选择框",
+        "promotion": "1.0.0"
+      },
+      {
+        "link": "/zh/component/select-table",
+        "text": "SelectTable 选择表格",
+        "promotion": "1.0.0"
+      },
+      {
+        "link": "/zh/component/cascader",
+        "text": "Cascader 级联选择器"
+      },
+      {
+        "link": "/zh/component/tree",
+        "text": "Tree 树形选择器",
+        "promotion": "1.0.0"
+      },
+      {
+        "link": "/zh/component/transfer",
+        "text": "Transfer 穿梭框"
+      },
+      {
+        "link": "/zh/component/switch",
+        "text": "Switch 开关"
+      },
+      {
+        "link": "/zh/component/rate",
+        "text": "Rate 评分",
+        "promotion": "2.2.0"
+      },
+      {
+        "link": "/zh/component/slider",
+        "text": "Slider 滑块",
+        "promotion": "2.2.0"
+      },
+      {
+        "link": "/zh/component/color-picker",
+        "text": "ColorPicker 颜色选择器",
+        "promotion": "2.3.0"
+      },
+      {
+        "link": "/zh/component/color-picker-panel",
+        "text": "ColorPickerPanel 颜色面板",
+        "promotion": "2.3.0"
+      },
+      {
+        "link": "/zh/component/date-picker",
+        "text": "DatePicker 日期选择器"
+      },
+      {
+        "link": "/zh/component/time-picker",
+        "text": "TimePicker 时间选择器"
+      },
+      {
+        "link": "/zh/component/date-picker-panel",
+        "text": "DatePickerPanel 日期选择器面板"
+      },
+      {
+        "link": "/zh/component/time-select",
+        "text": "TimeSelect 时间选择",
+        "promotion": "1.0.0"
+      },
+      {
+        "link": "/zh/component/upload",
+        "text": "Upload 上传"
+      }
+    ]
+  },
+  {
+    "text": "Scenario 场景组件",
+    "items": [
+      {
+        "link": "/zh/component/array-base",
+        "text": "ArrayBase Array通用控件"
+      },
+      {
+        "link": "/zh/component/array-cards",
+        "text": "ArrayCards 卡片列表"
+      },
+      {
+        "link": "/zh/component/array-items",
+        "text": "ArrayItems 自增列表"
+      },
+      {
+        "link": "/zh/component/array-collapse",
+        "text": "ArrayCollapse 自增折叠面板"
+      },
+      {
+        "link": "/zh/component/array-table",
+        "text": "ArrayTable 自增表格"
+      },
+      {
+        "link": "/zh/component/array-tabs",
+        "text": "ArrayTabs 自增选项卡"
+      },
+      {
+        "link": "/zh/component/array-list-tabs",
+        "text": "ArrayListTabs 自增选项卡列表",
+        "promotion": "1.0.0"
+      },
+      {
+        "link": "/zh/component/editable",
+        "text": "Editable 局部编辑器"
+      },
+      {
+        "link": "/zh/component/form-collapse",
+        "text": "FormCollapse 折叠面板"
+      },
+      {
+        "link": "/zh/component/form-dialog",
+        "text": "FormDialog 弹窗表单"
+      },
+      {
+        "link": "/zh/component/form-drawer",
+        "text": "FormDrawer 抽屉表单"
+      },
+      {
+        "link": "/zh/component/form-step",
+        "text": "FormStep 分步表单"
+      },
+      {
+        "link": "/zh/component/form-tab",
+        "text": "FormTab 选项卡表单"
+      }
+    ]
+  },
+  {
+    "text": "Read Pretty 阅读态组件",
+    "items": [
+      {
+        "link": "/zh/component/preview-text",
+        "text": "PreviewText 文本阅读态"
+      }
+    ]
+  }
+]

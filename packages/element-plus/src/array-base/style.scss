@@ -1,0 +1,51 @@
+@use '../__builtins__/styles/common.scss' as *;
+
+$array-base-prefix-cls: '#{$formily-prefix}-array-base';
+
+.#{$array-base-prefix-cls}-addition {
+  transition: var(--el-transition-duration);
+  user-select: none;
+  width: 100%;
+  border: 1px dashed var(--el-border-color);
+  border-radius: var(--el-border-radius-small);
+  line-height: 32px;
+
+  &:hover {
+    background-color: var(--el-button-hover-text-color);
+    border-color: var(--el-primary-color);
+  }
+
+  &:active {
+    background-color: var(--el-button-active-bg-color);
+    border-color: var(--el-color-primary);
+  }
+
+  .el-icon + .el-link__inner {
+    margin-left: 8px;
+  }
+}
+
+.#{$array-base-prefix-cls}-remove {
+  i {
+    font-size: var(--el-font-size-base);
+  }
+}
+
+.#{$array-base-prefix-cls}-move-down {
+  i {
+    font-size: var(--el-font-size-base);
+  }
+}
+
+.#{$array-base-prefix-cls}-move-up {
+  i {
+    font-size: var(--el-font-size-base);
+  }
+}
+
+.#{$array-base-prefix-cls}-sort-handle {
+  i {
+    font-size: var(--el-font-size-base);
+    cursor: move;
+  }
+}

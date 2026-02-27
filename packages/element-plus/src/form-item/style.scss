@@ -1,0 +1,205 @@
+@use 'sass:math';
+@use '../__builtins__/styles/common.scss' as *;
+
+$form-item-prefix: '#{$formily-prefix}-form-item';
+$form-item-isolated-prefix: '#{$form-item-prefix}--isolated';
+
+.#{$form-item-isolated-prefix} {
+  display: flex;
+  --font-size: 14px;
+  --el-form-label-font-size: var(--font-size);
+
+  &.is-required:not(.is-no-asterisk).asterisk-left > .el-form-item__label-wrap > .el-form-item__label::before,
+  &.is-required:not(.is-no-asterisk).asterisk-left > .el-form-item__label::before {
+    color: var(--el-color-danger);
+    content: '*';
+    margin-right: 4px;
+  }
+
+  &.is-required:not(.is-no-asterisk).asterisk-right > .el-form-item__label-wrap > .el-form-item__label::after,
+  &.is-required:not(.is-no-asterisk).asterisk-right > .el-form-item__label::after {
+    color: var(--el-color-danger);
+    content: '*';
+    margin-left: 4px;
+  }
+}
+
+.#{$form-item-prefix} {
+  .el-form-item__content {
+    display: block;
+  }
+
+  &.el-form-item--label-top .el-form-item__label {
+    display: inline-flex;
+    align-items: center;
+  }
+
+  @for $i from 0 through 24 {
+    .#{$form-item-prefix}-col-#{$i} {
+      @if $i == 0 {
+        display: none;
+      } @else {
+        flex: 0 0 math.percentage(math.div($i, 24));
+        max-width: math.percentage(math.div($i, 24));
+      }
+    }
+  }
+}
+
+// 标签包装器样式
+.#{$form-item-prefix}-label__wrapper {
+  display: flex;
+  overflow: hidden;
+}
+
+.is-warp {
+  .#{$form-item-prefix}-label-content > span {
+    overflow: visible;
+    white-space: wrap;
+  }
+
+  .el-form-item__content {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .el-form-item__label {
+    height: auto;
+  }
+}
+
+.#{$form-item-prefix}-label-content {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  overflow: hidden;
+
+  & > span {
+    display: inline;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &.is-tooltip {
+    border-bottom: 1px dashed;
+    border-color: var(--el-border-color);
+  }
+}
+
+.#{$form-item-prefix}-label-tooltip {
+  margin-left: 4px;
+  color: var(--el-text-color-secondary);
+  display: flex;
+  align-items: center;
+  height: 32px;
+  cursor: pointer;
+}
+
+.#{$form-item-prefix}-colon {
+  display: flex;
+  margin-left: 2px;
+  line-height: 2.3;
+}
+
+.#{$form-item-prefix}-content__wrapper {
+  display: flex;
+  flex: 1;
+  & .is-fullness > div {
+    width: 100%;
+  }
+}
+
+.#{$form-item-prefix}-addon-before {
+  margin-right: 8px;
+  font-size: var(--el-font-size-base);
+}
+
+.#{$form-item-prefix}-addon-after {
+  margin-left: 8px;
+}
+
+.#{$form-item-prefix}-addon-before,
+.#{$form-item-prefix}-addon-after {
+  display: inline-flex;
+  align-items: center;
+  min-height: 32px;
+  flex-shrink: 0;
+  font-size: var(--el-font-size-base);
+  color: var(--el-text-color-regular);
+}
+
+.el-form-item__content.is-addon-after {
+  flex: unset;
+}
+
+.#{$form-item-prefix}-feedback {
+  color: var(--el-text-color-secondary);
+  font-size: 12px;
+  line-height: 1;
+  padding-top: 2px;
+
+  &.is-error {
+    color: var(--el-color-danger);
+  }
+
+  &.is-success {
+    color: var(--el-color-success);
+  }
+
+  &.is-warning {
+    color: var(--el-color-warning);
+  }
+
+  &.is-loose {
+    position: absolute;
+    top: 100%;
+    left: 0;
+  }
+
+  &.is-tooltip {
+    font-size: var(--el-font-size-base);
+    display: inline-flex;
+
+    i {
+      margin-right: 4px;
+    }
+  }
+}
+
+.#{$form-item-prefix}-extra {
+  color: var(--el-text-color-secondary);
+  font-size: 12px;
+  line-height: 1;
+  padding-top: 2px;
+}
+
+// 布局样式
+.#{$form-item-prefix} {
+  margin-bottom: 6px;
+
+  &.is-loose {
+    margin-bottom: 18px;
+  }
+}
+
+.el-form-item.is-warning {
+  .el-input__wrapper,
+  .el-input__wrapper:hover,
+  .el-input__wrapper:focus,
+  .el-input__wrapper.is-focus,
+  .el-textarea__inner,
+  .el-textarea__inner:hover,
+  .el-textarea__inner:focus,
+  .el-textarea__inner.is-focus,
+  .el-select__wrapper,
+  .el-select__wrapper:hover,
+  .el-select__wrapper:focus,
+  .el-select__wrapper.is-focus,
+  .el-input-tag__wrapper,
+  .el-input-tag__wrapper:hover,
+  .el-input-tag__wrapper:focus,
+  .el-input-tag__wrapper.is-focus {
+    box-shadow: 0 0 0 1px var(--el-color-warning) inset;
+  }
+}

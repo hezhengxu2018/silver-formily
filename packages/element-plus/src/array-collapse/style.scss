@@ -1,0 +1,27 @@
+@use '../__builtins__/styles/common.scss' as *;
+
+$array-table-prefix-cls: '#{$formily-prefix}-array-collapse';
+
+.#{$array-table-prefix-cls} {
+  width: 100%;
+  .el-card__header {
+    padding-top: 12.5px;
+    padding-bottom: 12.5px;
+  }
+  .el-empty {
+    padding: 0;
+  }
+
+  .#{$array-table-prefix-cls}-item {
+    margin-bottom: 10px;
+  }
+
+  .#{$array-table-prefix-cls}-errors-badge {
+    line-height: 1;
+    vertical-align: initial;
+  }
+
+  .el-collapse-item__title {
+    display: flex;
+  }
+}

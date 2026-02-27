@@ -1,0 +1,29 @@
+@use '../__builtins__/styles/common.scss' as *;
+
+$array-items-prefix-cls: '#{$formily-prefix}-array-items';
+
+.#{$array-items-prefix-cls} {
+  width: 100%;
+
+  .#{$array-items-prefix-cls}-item-inner:last-child {
+    .#{$array-items-prefix-cls}-divide {
+      border-bottom: none;
+    }
+  }
+}
+
+.#{$array-items-prefix-cls}-card {
+  display: flex;
+  border: 1px solid var(--el-border-color);
+  margin-bottom: 10px;
+  padding: 3px 6px;
+  background: var(--el-bg-color-overlay);
+  justify-content: space-between;
+}
+
+.#{$array-items-prefix-cls}-divide {
+  display: flex;
+  border-bottom: 1px solid var(--el-border-color);
+  padding-top: 10px;
+  justify-content: space-between;
+}

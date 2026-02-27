@@ -1,0 +1,17 @@
+@use '../__builtins__/styles/common.scss' as *;
+
+$query-form-item-prefix-cls: '#{$formily-prefix}-query-form-item';
+
+.#{$query-form-item-prefix-cls} {
+  display: flex;
+  flex-direction: column;
+}
+
+.#{$query-form-item-prefix-cls}__pagination {
+  justify-content: flex-end;
+  margin-top: 8px;
+
+  .el-pagination__total {
+    flex: 1;
+  }
+}

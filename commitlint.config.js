@@ -83,9 +83,11 @@ export default {
     aiNumber: 1,
     themeColorCode: '',
     scopes: [
+      { value: 'apps/element-plus-docs', name: 'apps/element-plus-docs' },
       { value: 'apps/reactive-vue-docs', name: 'apps/reactive-vue-docs' },
       { value: 'apps/vue-docs', name: 'apps/vue-docs' },
       { value: 'packages/docs-toolkit', name: 'packages/docs-toolkit' },
+      { value: 'packages/element-plus', name: 'packages/element-plus' },
       { value: 'packages/reactive-vue', name: 'packages/reactive-vue' },
       { value: 'packages/typescript-config', name: 'packages/typescript-config' },
       { value: 'packages/vue', name: 'packages/vue' },
