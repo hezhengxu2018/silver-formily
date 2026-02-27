@@ -12,6 +12,8 @@ const SITE_URL = 'https://vue.silver-formily.org'
 
 const currentDir = dirname(fileURLToPath(import.meta.url))
 const demoDir = path.resolve(currentDir, '../demos')
+const reactiveVueSource = `${path.resolve(currentDir, '../../../packages/reactive-vue/src')}/`
+const vueSource = `${path.resolve(currentDir, '../../../packages/vue/src')}/`
 
 const footer = {
   message: 'Released under the MIT License.',
@@ -43,6 +45,10 @@ const sidebar = {
 export default createDocsConfig({
   pkg,
   demoDir,
+  alias: {
+    '@silver-formily/reactive-vue': reactiveVueSource,
+    '@silver-formily/vue': vueSource,
+  },
   locales: {
     root: zhLocale,
     en: enLocale,

@@ -1,23 +1,22 @@
-name: Release
+name: CI
 
 on:
-  workflow_dispatch:
-  push:
+  pull_request:
     branches:
       - main
+  workflow_dispatch:
 
 permissions:
-  contents: write
-  packages: write
+  contents: read
 
 jobs:
-  release:
+  test-element-plus:
+    name: Element Plus Test Coverage
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
       - name: Set up PNPM
         uses: pnpm/action-setup@v4
@@ -40,6 +39,7 @@ jobs:
         run: pnpm --filter @silver-formily/element-plus test:coverage
 
       - name: Upload element-plus coverage to Codecov
+        if: ${{ secrets.CODECOV_TOKEN != '' }}
         uses: codecov/codecov-action@v5
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
@@ -47,14 +47,3 @@ jobs:
           disable_search: true
           flags: element-plus
           fail_ci_if_error: true
-
-      - name: Configure npm auth
-        run: echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
-        env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-
-      - name: Build & publish changed packages
-        env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: pnpm release

@@ -1,8 +1,8 @@
 import path, { dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { createDocsConfig } from '@silver-formily/docs-toolkit'
+import pkg from '@silver-formily/element-plus/package.json' with { type: 'json' }
 import vueJsx from '@vitejs/plugin-vue-jsx'
-import pkg from '../../../packages/element-plus/package.json'
 import zhComponent from './i18n/zh/pages/component.json'
 import zhNav from './i18n/zh/pages/nav.json'
 
@@ -11,12 +11,15 @@ const SITE_URL = 'https://element-plus.silver-formily.org'
 const currentDir = dirname(fileURLToPath(import.meta.url))
 const demoDir = path.resolve(currentDir, '../zh/demos')
 const elementPlusSource = `${path.resolve(currentDir, '../../../packages/element-plus/src')}/`
-
+const reactiveVueSource = `${path.resolve(currentDir, '../../../packages/reactive-vue/src')}/`
+const vueSource = `${path.resolve(currentDir, '../../../packages/vue/src')}/`
 export default createDocsConfig({
   pkg,
   demoDir,
   alias: {
     '@silver-formily/element-plus': elementPlusSource,
+    '@silver-formily/reactive-vue': reactiveVueSource,
+    '@silver-formily/vue': vueSource,
   },
   locales: {
     root: {

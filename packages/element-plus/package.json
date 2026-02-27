@@ -24,7 +24,8 @@
       "import": "./esm/index.mjs",
       "default": "./esm/index.mjs"
     },
-    "./*": "./esm/*"
+    "./*": "./esm/*",
+    "./package.json": "./package.json"
   },
   "main": "./esm/index.mjs",
   "types": "./esm/index.d.ts",
@@ -39,8 +40,8 @@
     "test": "vitest",
     "test:run": "vitest run --browser.headless",
     "test:coverage": "vitest run --coverage --browser.headless",
-    "lint": "eslint . --ignore-pattern esm",
-    "format": "eslint . --fix --ignore-pattern esm",
+    "lint": "eslint .",
+    "format": "eslint . --fix",
     "docs:dev": "pnpm --filter element-plus-docs dev",
     "docs:build": "pnpm --filter element-plus-docs build",
     "prepublishOnly": "pnpm run build"

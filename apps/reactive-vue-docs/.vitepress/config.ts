@@ -1,14 +1,18 @@
 import path, { dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { createDocsConfig } from '@silver-formily/docs-toolkit'
-import pkg from '../../../packages/reactive-vue/package.json'
+import pkg from '@silver-formily/reactive-vue/package.json' with { type: 'json' }
 
 const currentDir = dirname(fileURLToPath(import.meta.url))
 const demoDir = path.resolve(currentDir, '../demos')
+const reactiveVueSource = `${path.resolve(currentDir, '../../../packages/reactive-vue/src')}/`
 
 export default createDocsConfig({
   pkg,
   demoDir,
+  alias: {
+    '@silver-formily/reactive-vue': reactiveVueSource,
+  },
   locales: {
     root: {
       label: '简体中文',
