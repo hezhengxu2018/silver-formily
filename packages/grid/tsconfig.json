@@ -1,7 +1,6 @@
 {
   "extends": "@silver-formily/typescript-config/base.json",
   "compilerOptions": {
-    "lib": ["ES2023", "DOM", "DOM.Iterable"],
     "outDir": "dist"
   },
   "include": ["src"],

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { Grid } from '@silver-formily/grid'
 import { onBeforeUnmount, onMounted, ref } from 'vue'
+import { useGridSsrVisibleList } from './useGridSsrVisibleList'
 
 const containerRef = ref<HTMLElement | null>(null)
 const ready = ref(false)
@@ -17,9 +18,10 @@ let dispose: (() => void) | undefined
 let timer: ReturnType<typeof setTimeout> | undefined
 
 const grid = new Grid({
-  ssrColumns: 3,
-  ssrTemplateColumns: 'repeat(3,minmax(0,1fr))',
-  deferVisibilityUntilHydration: true,
+  ssrWidth: 1000,
+  breakpoints: [720, 1280, 1920],
+  minColumns: [2, 3, 4, 5],
+  maxColumns: [2, 3, 4, 5],
   shouldVisible: node => node.index < 5,
   onInitialized(current) {
     ready.value = current.ready
@@ -34,6 +36,12 @@ const grid = new Grid({
     gap.value = current.gap
   },
 })
+
+const visibleItems = useGridSsrVisibleList(items, grid, (item, index) => ({
+  index,
+  span: item.span,
+  originSpan: item.span,
+}))
 
 templateColumns.value = grid.templateColumns
 
@@ -68,7 +76,7 @@ onBeforeUnmount(() => {
     </p>
     <div ref="containerRef" class="grid-board" :style="{ gridTemplateColumns: templateColumns, gap }">
       <div
-        v-for="item in items"
+        v-for="item in visibleItems"
         :key="item.title"
         class="grid-card"
         :data-grid-span="item.span"

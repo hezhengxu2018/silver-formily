@@ -11,24 +11,22 @@ const grid = new Grid(options)
 
 ### 构造函数配置表
 
-| 选项                            | 类型                                      | 默认值              | 描述                                             |
-| ------------------------------- | ----------------------------------------- | ------------------- | ------------------------------------------------ |
-| `ssrColumns`                    | `number`                                  | `1`                 | `ready=false` 时的回退列数                       |
-| `ssrTemplateColumns`            | `string`                                  | -                   | `ready=false` 时的回退模板字符串                 |
-| `deferVisibilityUntilHydration` | `boolean`                                 | `true`              | 是否延迟执行 `shouldVisible` 的 DOM 可见性副作用 |
-| `maxRows`                       | `number`                                  | `Infinity`          | 最大行数                                         |
-| `maxColumns`                    | `number \| number[]`                      | `Infinity`          | 最大列数，可按断点提供数组                       |
-| `minColumns`                    | `number \| number[]`                      | `1`                 | 最小列数，可按断点提供数组                       |
-| `maxWidth`                      | `number \| number[]`                      | `Infinity`          | 列最大宽度，可按断点提供数组                     |
-| `minWidth`                      | `number \| number[]`                      | `100`               | 列最小宽度，可按断点提供数组                     |
-| `breakpoints`                   | `number[]`                                | `[720, 1280, 1920]` | 断点数组                                         |
-| `columnGap`                     | `number \| number[]`                      | `8`                 | 列间距，可按断点提供数组                         |
-| `rowGap`                        | `number \| number[]`                      | `4`                 | 行间距，可按断点提供数组                         |
-| `colWrap`                       | `boolean \| boolean[]`                    | `true`              | 是否允许自动换列                                 |
-| `strictAutoFit`                 | `boolean`                                 | `false`             | 是否严格约束在最小/最大宽度范围内                |
-| `shouldVisible`                 | `(node: GridNode, grid: Grid) => boolean` | -                   | 自定义节点可见性                                 |
-| `onDigest`                      | `(grid: Grid) => void`                    | -                   | 每次布局计算后触发                               |
-| `onInitialized`                 | `(grid: Grid) => void`                    | -                   | 首次初始化完成后触发                             |
+| 选项            | 类型                                             | 默认值              | 描述                              |
+| --------------- | ------------------------------------------------ | ------------------- | --------------------------------- |
+| `ssrWidth`      | `number`                                         | -                   | SSR 预估容器宽度                  |
+| `maxRows`       | `number`                                         | `Infinity`          | 最大行数                          |
+| `maxColumns`    | `number \| number[]`                             | `Infinity`          | 最大列数，可按断点提供数组        |
+| `minColumns`    | `number \| number[]`                             | `1`                 | 最小列数，可按断点提供数组        |
+| `maxWidth`      | `number \| number[]`                             | `Infinity`          | 列最大宽度，可按断点提供数组      |
+| `minWidth`      | `number \| number[]`                             | `100`               | 列最小宽度，可按断点提供数组      |
+| `breakpoints`   | `number[]`                                       | `[720, 1280, 1920]` | 断点数组                          |
+| `columnGap`     | `number \| number[]`                             | `8`                 | 列间距，可按断点提供数组          |
+| `rowGap`        | `number \| number[]`                             | `4`                 | 行间距，可按断点提供数组          |
+| `colWrap`       | `boolean \| boolean[]`                           | `true`              | 是否允许自动换列                  |
+| `strictAutoFit` | `boolean`                                        | `false`             | 是否严格约束在最小/最大宽度范围内 |
+| `shouldVisible` | `(node: GridVisibleNode, grid: Grid) => boolean` | -                   | 自定义节点可见性                  |
+| `onDigest`      | `(grid: Grid) => void`                           | -                   | 每次布局计算后触发                |
+| `onInitialized` | `(grid: Grid) => void`                           | -                   | 首次初始化完成后触发              |
 
 ### connect
 
@@ -44,9 +42,7 @@ const dispose = grid.connect(container)
 
 ```ts
 interface IGridOptions {
-  ssrColumns?: number
-  ssrTemplateColumns?: string
-  deferVisibilityUntilHydration?: boolean
+  ssrWidth?: number
 
   maxRows?: number
   maxColumns?: number | number[]
@@ -59,11 +55,22 @@ interface IGridOptions {
   colWrap?: boolean
   strictAutoFit?: boolean
 
-  shouldVisible?: (node: GridNode, grid: Grid) => boolean
+  shouldVisible?: (node: GridVisibleNode, grid: Grid) => boolean
   onDigest?: (grid: Grid) => void
   onInitialized?: (grid: Grid) => void
 }
 ```
+
+## SSR Helpers
+
+```ts
+declare const node: GridSsrNodeInput
+const normalized = grid.normalizeSsrNode(node) // GridSsrNode
+const visible = grid.resolveSsrVisible(node) // boolean
+```
+
+- `normalizeSsrNode`：补齐 SSR 判定所需默认值（如 `span=1`、`visible=true`）。
+- `resolveSsrVisible`：执行 `shouldVisible`，未配置时默认返回 `true`。
 
 ## GridNode
 
@@ -78,6 +85,42 @@ type GridNode = {
   span: number
   originSpan: number
   element: HTMLElement
+}
+```
+
+## GridVisibleNode
+
+```ts
+type GridVisibleNode = GridSsrNode | GridNode
+```
+
+## GridSsrNode
+
+```ts
+type GridSsrNode = {
+  index: number
+  visible: boolean
+  column: number
+  shadowColumn: number
+  row: number
+  shadowRow: number
+  span: number
+  originSpan: number
+}
+```
+
+## GridSsrNodeInput
+
+```ts
+type GridSsrNodeInput = {
+  index: number
+  visible?: boolean
+  column?: number
+  shadowColumn?: number
+  row?: number
+  shadowRow?: number
+  span?: number
+  originSpan?: number
 }
 ```
 
@@ -109,4 +152,4 @@ type GridNode = {
 
 ## SSR 相关配置
 
-`ssrColumns`、`ssrTemplateColumns`、`deferVisibilityUntilHydration` 的行为说明与示例已集中到 [SSR 指南](/ssr)。
+`ssrWidth`、`shouldVisible` 的行为说明与示例已集中到 [SSR 指南](/ssr)。

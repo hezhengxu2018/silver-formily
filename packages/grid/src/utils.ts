@@ -1,5 +1,5 @@
 import type { Grid } from './index'
-import type { GridContainerTarget, GridNode, IGridOptions } from './types'
+import type { GridContainerTarget, GridNode, GridSsrNode, GridSsrNodeInput, IGridOptions } from './types'
 
 const SpanRegExp = /span\s*(\d+)/
 
@@ -14,21 +14,16 @@ export function calcBreakpointIndex(breakpoints: number[], width: number) {
   return -1
 }
 
-export function resolveSsrColumns(options: IGridOptions) {
-  if (typeof options.ssrColumns === 'number' && options.ssrColumns > 0) {
-    return options.ssrColumns
+export function resolveSsrWidth(options: IGridOptions) {
+  if (
+    typeof options.ssrWidth === 'number'
+    && Number.isFinite(options.ssrWidth)
+    && options.ssrWidth > 0
+  ) {
+    return options.ssrWidth
   }
 
-  const minColumns = options.minColumns
-  if (Array.isArray(minColumns)) {
-    return Math.max(1, Number(minColumns[0] ?? 1))
-  }
-
-  if (typeof minColumns === 'number') {
-    return Math.max(1, minColumns)
-  }
-
-  return 1
+  return 0
 }
 
 export function calcFactor<T>(value: T | T[], breakpointIndex: number): T {
@@ -43,6 +38,26 @@ export function calcFactor<T>(value: T | T[], breakpointIndex: number): T {
 
 export function parseSpan(gridColumnStart: string) {
   return Number(String(gridColumnStart).match(SpanRegExp)?.[1] ?? 1)
+}
+
+export function resolveSsrNode(input: GridSsrNodeInput): GridSsrNode {
+  const span = typeof input.span === 'number' && Number.isFinite(input.span) && input.span > 0
+    ? input.span
+    : 1
+  const originSpan = typeof input.originSpan === 'number' && Number.isFinite(input.originSpan)
+    ? input.originSpan
+    : span
+
+  return {
+    index: input.index,
+    visible: input.visible ?? true,
+    column: input.column ?? 0,
+    shadowColumn: input.shadowColumn ?? 0,
+    row: input.row ?? 0,
+    shadowRow: input.shadowRow ?? 0,
+    span,
+    originSpan,
+  }
 }
 
 export function parseGridNode(elements: HTMLCollection): GridNode[] {
@@ -129,11 +144,7 @@ export function resolveChildren(grid: Grid) {
   let shadowWalked = 0
   let rowIndex = 0
   let shadowRowIndex = 0
-  if (!grid.ready)
-    return
-
-  const applyVisibility
-    = !grid.options.deferVisibilityUntilHydration || grid.hydrated
+  const shouldVisible = grid.options.shouldVisible
 
   grid.children = grid.children.map((node) => {
     const columnIndex = walked % grid.columns
@@ -173,8 +184,8 @@ export function resolveChildren(grid: Grid) {
       node.column = columnIndex + 1
     }
 
-    if (applyVisibility && grid.options.shouldVisible) {
-      if (!grid.options.shouldVisible(node, grid)) {
+    if (shouldVisible) {
+      if (!shouldVisible(node, grid)) {
         if (node.visible) {
           node.element.style.display = 'none'
         }

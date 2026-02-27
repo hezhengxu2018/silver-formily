@@ -12,7 +12,8 @@
   "dependencies": {
     "@formily/reactive": "^2.3.7",
     "@silver-formily/docs-toolkit": "workspace:*",
-    "@silver-formily/grid": "workspace:*"
+    "@silver-formily/grid": "workspace:*",
+    "vue": "^3.3.0"
   },
   "devDependencies": {
     "@silver-formily/typescript-config": "workspace:*",

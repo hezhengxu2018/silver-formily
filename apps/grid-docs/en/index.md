@@ -39,6 +39,17 @@ In Vue apps, keep the `Grid` instance non-deep-reactive (for example: local vari
 basicGrid
 :::
 
+## Vue Example
+
+This demo shows the recommended Vue integration pattern:
+
+- Keep the instance non-deep-reactive with `markRaw(new Grid(...))`.
+- Update `grid.options` via `watch` to react to UI state changes.
+
+:::demo
+vueUsage
+:::
+
 ## SSR & Hydration
 
 Detailed SSR/hydration configuration and examples are centralized in the [SSR Guide](/en/ssr).

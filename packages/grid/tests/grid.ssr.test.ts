@@ -31,10 +31,11 @@ describe('grid SSR fallback', () => {
     document.body.innerHTML = ''
   })
 
-  it('uses ssr columns and template before ready', () => {
+  it('uses ssr width to resolve columns before ready', () => {
     const grid = new Grid({
-      ssrColumns: 3,
-      ssrTemplateColumns: 'repeat(3,minmax(0,1fr))',
+      ssrWidth: 1000,
+      breakpoints: [720, 1280, 1920],
+      minColumns: [2, 3, 4, 5],
     })
 
     expect(grid.ready).toBe(false)
@@ -42,7 +43,26 @@ describe('grid SSR fallback', () => {
     expect(grid.templateColumns).toBe('repeat(3,minmax(0,1fr))')
   })
 
-  it('defers visibility side effects until hydration by default', async () => {
+  it('resolves ssr visibility without requiring DOM nodes', () => {
+    const grid = new Grid({
+      shouldVisible: node => node.index < 2 && node.originSpan === -1,
+    })
+
+    expect(grid.normalizeSsrNode({ index: 0 })).toEqual({
+      index: 0,
+      visible: true,
+      column: 0,
+      shadowColumn: 0,
+      row: 0,
+      shadowRow: 0,
+      span: 1,
+      originSpan: 1,
+    })
+    expect(grid.resolveSsrVisible({ index: 1, span: 2, originSpan: -1 })).toBe(true)
+    expect(grid.resolveSsrVisible({ index: 3, span: 2, originSpan: -1 })).toBe(false)
+  })
+
+  it('applies shouldVisible before and after hydration', async () => {
     const { container, child } = createContainer()
     const grid = new Grid({
       shouldVisible: () => false,
@@ -52,26 +72,11 @@ describe('grid SSR fallback', () => {
 
     expect(grid.ready).toBe(true)
     expect(grid.hydrated).toBe(false)
-    expect(child.style.display).toBe('')
+    expect(child.style.display).toBe('none')
 
     await Promise.resolve()
 
     expect(grid.hydrated).toBe(true)
-    expect(child.style.display).toBe('none')
-
-    dispose()
-  })
-
-  it('applies visibility side effects immediately when defer is disabled', () => {
-    const { container, child } = createContainer()
-    const grid = new Grid({
-      deferVisibilityUntilHydration: false,
-      shouldVisible: () => false,
-    })
-
-    const dispose = grid.connect(container)
-
-    expect(grid.ready).toBe(true)
     expect(child.style.display).toBe('none')
 
     dispose()

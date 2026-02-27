@@ -1,4 +1,4 @@
-import type { GridContainerTarget, GridNode, IGridOptions } from './types'
+import type { GridContainerTarget, GridNode, GridSsrNode, GridSsrNodeInput, IGridOptions } from './types'
 import { batch, define, observable, reaction } from '@formily/reactive'
 import { ChildListMutationObserver } from './observer'
 import {
@@ -11,10 +11,19 @@ import {
   parseGridNode,
   resolveChildren,
   resolveContainerElement,
-  resolveSsrColumns,
+  resolveSsrNode,
+  resolveSsrWidth,
 } from './utils'
 
-export type { GridContainerTarget, GridNode, IGridOptions } from './types'
+export type {
+  GridContainerTarget,
+  GridNode,
+  GridNodeState,
+  GridSsrNode,
+  GridSsrNodeInput,
+  GridVisibleNode,
+  IGridOptions,
+} from './types'
 
 export class Grid {
   options: IGridOptions
@@ -31,8 +40,6 @@ export class Grid {
 
   constructor(options?: IGridOptions) {
     this.options = {
-      ssrColumns: 1,
-      deferVisibilityUntilHydration: true,
       breakpoints: [720, 1280, 1920],
       columnGap: 8,
       rowGap: 4,
@@ -68,6 +75,17 @@ export class Grid {
     })
   }
 
+  normalizeSsrNode(node: GridSsrNodeInput): GridSsrNode {
+    return resolveSsrNode(node)
+  }
+
+  resolveSsrVisible(node: GridSsrNodeInput): boolean {
+    if (!this.options.shouldVisible) {
+      return true
+    }
+    return this.options.shouldVisible(this.normalizeSsrNode(node), this)
+  }
+
   set breakpoints(breakpoints: number[]) {
     this.options.breakpoints = breakpoints
   }
@@ -76,8 +94,13 @@ export class Grid {
     return this.options.breakpoints ?? []
   }
 
+  get ssrWidth() {
+    return resolveSsrWidth(this.options)
+  }
+
   get breakpoint() {
-    return calcBreakpointIndex(this.breakpoints, this.width)
+    const width = this.ready ? this.width : this.width || this.ssrWidth
+    return calcBreakpointIndex(this.breakpoints, width)
   }
 
   set maxWidth(maxWidth: number | number[]) {
@@ -146,7 +169,11 @@ export class Grid {
 
   get columns() {
     if (!this.ready) {
-      return resolveSsrColumns(this.options)
+      const minColumns = Math.max(1, this.minColumns)
+      if (this.maxColumns === Infinity) {
+        return minColumns
+      }
+      return Math.max(1, Math.min(minColumns, this.maxColumns))
     }
 
     const originTotalColumns = this.childOriginTotalColumns
@@ -226,9 +253,6 @@ export class Grid {
 
   get templateColumns() {
     if (!this.ready) {
-      if (this.options.ssrTemplateColumns) {
-        return this.options.ssrTemplateColumns
-      }
       return `repeat(${this.columns},minmax(0,1fr))`
     }
 
@@ -299,15 +323,9 @@ export class Grid {
     const initialize = batch.bound!(() => {
       digest()
       this.ready = true
-      if (this.options.deferVisibilityUntilHydration === false) {
-        digest()
-      }
-      // Delay visibility side effects until hydration has settled.
       nextTick(() => {
         this.hydrated = true
-        if (this.options.deferVisibilityUntilHydration !== false) {
-          digest()
-        }
+        digest()
       })
     })
 
@@ -341,9 +359,7 @@ export class Grid {
   static id = (options: IGridOptions = {}) => {
     const keys: Array<keyof IGridOptions> = [
       'maxRows',
-      'ssrColumns',
-      'ssrTemplateColumns',
-      'deferVisibilityUntilHydration',
+      'ssrWidth',
       'maxColumns',
       'minColumns',
       'maxWidth',

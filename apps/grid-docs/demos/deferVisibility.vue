@@ -1,9 +1,8 @@
 <script setup lang="ts">
 import { Grid } from '@silver-formily/grid'
-import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import { onBeforeUnmount, onMounted, ref, watch } from 'vue'
 
 const containerRef = ref<HTMLElement | null>(null)
-const deferVisibility = ref(true)
 const hideEven = ref(true)
 const hydrated = ref(false)
 const visibleCount = ref(0)
@@ -16,17 +15,13 @@ const items = Array.from({ length: 8 }, (_, index) => ({
   span: 1,
 }))
 
-const status = computed(() => ({
-  deferVisibility: deferVisibility.value,
-  hideEven: hideEven.value,
-  hydrated: hydrated.value,
-  visibleCount: visibleCount.value,
-}))
+const createVisibleRule = () => (node: { index: number }) => (hideEven.value ? node.index % 2 === 1 : true)
 
 const grid = new Grid({
-  ssrColumns: 2,
-  deferVisibilityUntilHydration: deferVisibility.value,
-  shouldVisible: node => hideEven.value ? node.index % 2 === 1 : true,
+  ssrWidth: 960,
+  minColumns: 2,
+  maxColumns: 2,
+  shouldVisible: createVisibleRule(),
   onDigest(current) {
     hydrated.value = current.hydrated
     visibleCount.value = current.children.filter(node => node.visible).length
@@ -34,12 +29,8 @@ const grid = new Grid({
   },
 })
 
-watch(deferVisibility, (value) => {
-  grid.options.deferVisibilityUntilHydration = value
-})
-
 watch(hideEven, () => {
-  grid.options.shouldVisible = node => hideEven.value ? node.index % 2 === 1 : true
+  grid.options.shouldVisible = createVisibleRule()
 })
 
 onMounted(() => {
@@ -56,11 +47,10 @@ onBeforeUnmount(() => {
 <template>
   <div>
     <p>
-      <label><input v-model="deferVisibility" type="checkbox"> deferVisibilityUntilHydration</label>
-      <label style="margin-left: 12px;"><input v-model="hideEven" type="checkbox"> hideEven</label>
+      <label><input v-model="hideEven" type="checkbox"> hideEven</label>
     </p>
     <p>
-      hydrated={{ status.hydrated }}, visible={{ status.visibleCount }}/8
+      hydrated={{ hydrated }}, visible={{ visibleCount }}/8
     </p>
     <div ref="containerRef" class="grid-board" :style="{ gridTemplateColumns: templateColumns, gap: '10px' }">
       <div v-for="item in items" :key="item.title" class="grid-card" data-grid-span="1">

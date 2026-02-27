@@ -39,6 +39,17 @@ const dispose = grid.connect(container)
 basicGrid
 :::
 
+## Vue 示例
+
+展示在 Vue 中推荐的接入方式：
+
+- 使用 `markRaw(new Grid(...))` 避免深响应式代理实例。
+- 通过 `watch` 更新 `grid.options`，让布局规则与表单状态联动。
+
+:::demo
+vueUsage
+:::
+
 ## SSR 与 Hydration
 
 SSR / Hydration 的详细配置和示例已集中到 [SSR 指南](/ssr)。
