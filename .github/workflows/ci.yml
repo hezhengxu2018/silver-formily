@@ -4,14 +4,21 @@ on:
   pull_request:
     branches:
       - main
+  push:
+    branches:
+      - main
   workflow_dispatch:
 
 permissions:
   contents: read
 
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
-  test-element-plus:
-    name: Element Plus Test Coverage
+  verify:
+    name: Verify
     runs-on: ubuntu-latest
 
     steps:
@@ -29,6 +36,12 @@ jobs:
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
+
+      - name: Run lint
+        run: pnpm lint
+
+      - name: Run reactive-vue tests
+        run: pnpm test -- --filter=@silver-formily/reactive-vue
 
       - name: Build internal test dependencies
         run: |
