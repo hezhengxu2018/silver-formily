@@ -31,6 +31,11 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: Build internal test dependencies
+        run: |
+          pnpm --filter @silver-formily/reactive-vue build
+          pnpm --filter @silver-formily/vue build
+
       - name: Install Playwright browsers
         run: pnpm --filter @silver-formily/element-plus exec playwright install --with-deps chromium
 
