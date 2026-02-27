@@ -1,15 +1,19 @@
+import type { VNode } from 'vue'
+
+export type FormItemContent = string | VNode
+
 export interface IFormItemProps {
   /**
    * Internal: override Element Plus root class for isolated scenes (e.g. QueryFormItem).
    */
   internalFormItemClass?: string
-  label?: string
+  label?: FormItemContent
   for?: string
-  tooltip?: string
-  addonBefore?: string
-  addonAfter?: string
-  extra?: string
-  feedbackText?: string
+  tooltip?: FormItemContent
+  addonBefore?: FormItemContent
+  addonAfter?: FormItemContent
+  extra?: FormItemContent
+  feedbackText?: FormItemContent
   feedbackStatus?: 'error' | 'warning' | 'success' | 'pending'
   asterisk?: boolean
   colon?: boolean

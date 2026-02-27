@@ -24,7 +24,7 @@ describe('formDrawer', () => {
         const handleOpen = () => {
           FormDrawer('测试标题', () => (
             <div data-testid="drawer-content">抽屉内容</div>
-          )).open().catch(console.error)
+          )).open().catch(() => undefined)
         }
         return <ElButton onClick={handleOpen}>打开抽屉</ElButton>
       }
@@ -106,7 +106,7 @@ describe('formDrawer', () => {
       }
       const TestComponent = () => {
         const handleOpen = () => {
-          FormDrawer('测试标题', DialogForm).open().catch(console.error)
+          FormDrawer('测试标题', DialogForm).open().catch(() => undefined)
         }
         return <ElButton onClick={handleOpen}>打开抽屉</ElButton>
       }
@@ -147,7 +147,7 @@ describe('formDrawer', () => {
             next()
           })
           .open()
-          .catch(console.error)
+          .catch(() => undefined)
       }
 
       return <ElButton onClick={handleOpen}>打开回车抽屉</ElButton>
@@ -190,7 +190,7 @@ describe('formDrawer', () => {
             next()
           })
           .open()
-          .catch(console.error)
+          .catch(() => undefined)
       }
 
       const handleOpen = () => {
@@ -212,7 +212,7 @@ describe('formDrawer', () => {
             next()
           })
           .open()
-          .catch(console.error)
+          .catch(() => undefined)
       }
 
       return <ElButton onClick={handleOpen}>打开一级抽屉</ElButton>
@@ -260,7 +260,7 @@ describe('formDrawer', () => {
             next()
           })
           .open()
-          .catch(console.error)
+          .catch(() => undefined)
       }
 
       return <ElButton onClick={handleOpen}>打开禁用回车抽屉</ElButton>
@@ -304,7 +304,7 @@ describe('formDrawer', () => {
           ))
             .forOpen(openMiddleware)
             .open()
-            .catch(console.error)
+            .catch(() => undefined)
         }
         return <ElButton onClick={handleOpen}>打开抽屉</ElButton>
       }
@@ -347,7 +347,7 @@ describe('formDrawer', () => {
               }, 200)
             })
             .open()
-            .catch(console.error)
+            .catch(() => undefined)
         }
         return <ElButton onClick={handleOpen}>支持 forConfirm</ElButton>
       }
@@ -399,7 +399,7 @@ describe('formDrawer', () => {
               }, 200)
             })
             .open()
-            .catch(console.error)
+            .catch(() => undefined)
         }
         return <ElButton onClick={handleOpen}>打开抽屉</ElButton>
       }
@@ -461,7 +461,7 @@ describe('formDrawer', () => {
           }, ['extra']).forExtra((form, next) => {
             forExtra(form.values)
             next()
-          }).open().catch(console.error)
+          }).open().catch(() => undefined)
         }
 
         return <ElButton onClick={handleOpen}>打开表单</ElButton>
@@ -506,7 +506,7 @@ describe('formDrawer', () => {
           }).forCancel((form, next) => {
             forCancel(form.values)
             next()
-          }).open().catch(console.error)
+          }).open().catch(() => undefined)
         }
         return <ElButton onClick={handleOpen}>打开表单</ElButton>
       }
@@ -605,7 +605,7 @@ describe('formDrawer', () => {
               }, 200)
             })
             .open()
-            .catch(console.error)
+            .catch(() => undefined)
           fn1()
         }
         return <ElButton onClick={handleOpen}>打开抽屉</ElButton>
@@ -654,7 +654,7 @@ describe('formDrawer', () => {
                 required={true}
               />
             </SchemaField>
-          )).open().catch(console.error)
+          )).open().catch(() => undefined)
         }
         return <ElButton onClick={handleOpen}>打开抽屉</ElButton>
       }
@@ -710,7 +710,7 @@ describe('formDrawer', () => {
                 required={true}
               />
             </SchemaField>
-          )).open().catch(console.error)
+          )).open().catch(() => undefined)
         }
         return <ElButton onClick={handleOpen}>打开抽屉</ElButton>
       }
@@ -748,7 +748,7 @@ describe('formDrawer', () => {
         const handleOpen = () => {
           FormDrawer('测试标题', () => (
             <div data-testid="drawer-content">抽屉内容</div>
-          )).open().catch(console.error)
+          )).open().catch(() => undefined)
         }
         return <ElButton onClick={handleOpen}>打开抽屉</ElButton>
       }
@@ -791,7 +791,7 @@ describe('formDrawer', () => {
         const handleOpen = () => {
           FormDrawer('测试标题', () => (
             <div data-testid="drawer-content">抽屉内容</div>
-          )).open().catch(console.error)
+          )).open().catch(() => undefined)
         }
         return <ElButton onClick={handleOpen}>打开抽屉</ElButton>
       }
@@ -835,7 +835,7 @@ describe('formDrawer', () => {
         const handleOpen = () => {
           FormDrawer({ title: '测试标题', beforeClose: beforeCloseMock }, () => (
             <div data-testid="drawer-content">抽屉内容</div>
-          )).open().catch(console.error)
+          )).open().catch(() => undefined)
         }
         return <ElButton onClick={handleOpen}>打开抽屉</ElButton>
       }

@@ -120,9 +120,7 @@ export function FormDialog<T extends object = any>(
                 res(toJS(env.form.values))
                 formDialog.close()
                 disposeDialog()
-              }).catch((error) => {
-                console.warn(error)
-              })
+              }).catch(() => undefined)
             }, async () => {
               await loading(props.loadingText, () =>
                 applyMiddleware(env.form, env.cancelMiddlewares))

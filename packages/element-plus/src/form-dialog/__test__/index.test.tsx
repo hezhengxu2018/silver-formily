@@ -20,7 +20,7 @@ describe('formDialog', () => {
         const handleOpen = () => {
           FormDialog('测试标题', () => (
             <div data-testid="dialog-content">对话框内容</div>
-          )).open().catch(console.error)
+          )).open().catch(() => undefined)
         }
         return <ElButton onClick={handleOpen}>打开对话框</ElButton>
       }
@@ -98,7 +98,7 @@ describe('formDialog', () => {
       }
       const TestComponent = () => {
         const handleOpen = () => {
-          FormDialog('测试标题', DialogForm).open().catch(console.error)
+          FormDialog('测试标题', DialogForm).open().catch(() => undefined)
         }
         return <ElButton onClick={handleOpen}>打开抽屉</ElButton>
       }
@@ -137,7 +137,7 @@ describe('formDialog', () => {
             next()
           })
           .open()
-          .catch(console.error)
+          .catch(() => undefined)
       }
 
       return <ElButton onClick={handleOpen}>打开回车对话框</ElButton>
@@ -180,7 +180,7 @@ describe('formDialog', () => {
             next()
           })
           .open()
-          .catch(console.error)
+          .catch(() => undefined)
       }
 
       const handleOpen = () => {
@@ -202,7 +202,7 @@ describe('formDialog', () => {
             next()
           })
           .open()
-          .catch(console.error)
+          .catch(() => undefined)
       }
 
       return <ElButton onClick={handleOpen}>打开一级对话框</ElButton>
@@ -249,7 +249,7 @@ describe('formDialog', () => {
             next()
           })
           .open()
-          .catch(console.error)
+          .catch(() => undefined)
       }
 
       return <ElButton onClick={handleOpen}>打开禁用回车对话框</ElButton>
@@ -293,7 +293,7 @@ describe('formDialog', () => {
           ))
             .forOpen(openMiddleware)
             .open()
-            .catch(console.error)
+            .catch(() => undefined)
         }
         return <ElButton onClick={handleOpen}>打开对话框</ElButton>
       }
@@ -336,7 +336,7 @@ describe('formDialog', () => {
               }, 200)
             })
             .open()
-            .catch(console.error)
+            .catch(() => undefined)
         }
         return <ElButton onClick={handleOpen}>支持 forConfirm</ElButton>
       }
@@ -388,7 +388,7 @@ describe('formDialog', () => {
               }, 200)
             })
             .open()
-            .catch(console.error)
+            .catch(() => undefined)
         }
         return <ElButton onClick={handleOpen}>打开对话框</ElButton>
       }
@@ -450,7 +450,7 @@ describe('formDialog', () => {
           }, ['extra']).forExtra((form, next) => {
             forExtra(form.values)
             next()
-          }).open().catch(console.error)
+          }).open().catch(() => undefined)
         }
 
         return <ElButton onClick={handleOpen}>打开表单</ElButton>
@@ -495,7 +495,7 @@ describe('formDialog', () => {
           }).forCancel((form, next) => {
             forCancel(form.values)
             next()
-          }).open().catch(console.error)
+          }).open().catch(() => undefined)
         }
         return <ElButton onClick={handleOpen}>打开表单</ElButton>
       }
@@ -594,7 +594,7 @@ describe('formDialog', () => {
               }, 200)
             })
             .open()
-            .catch(console.error)
+            .catch(() => undefined)
           fn1()
         }
         return <ElButton onClick={handleOpen}>打开对话框</ElButton>
@@ -643,7 +643,7 @@ describe('formDialog', () => {
                 required={true}
               />
             </SchemaField>
-          )).open().catch(console.error)
+          )).open().catch(() => undefined)
         }
         return <ElButton onClick={handleOpen}>打开对话框</ElButton>
       }
@@ -699,7 +699,7 @@ describe('formDialog', () => {
                 required={true}
               />
             </SchemaField>
-          )).open().catch(console.error)
+          )).open().catch(() => undefined)
         }
         return <ElButton onClick={handleOpen}>打开对话框</ElButton>
       }
@@ -733,7 +733,7 @@ describe('formDialog', () => {
         const handleOpen = () => {
           FormDialog('测试标题', () => (
             <div data-testid="dialog-content">对话框内容</div>
-          )).open().catch(console.error)
+          )).open().catch(() => undefined)
         }
         return <ElButton onClick={handleOpen}>打开对话框</ElButton>
       }
@@ -776,7 +776,7 @@ describe('formDialog', () => {
         const handleOpen = () => {
           FormDialog('测试标题', () => (
             <div data-testid="dialog-content">对话框内容</div>
-          )).open().catch(console.error)
+          )).open().catch(() => undefined)
         }
         return <ElButton onClick={handleOpen}>打开对话框</ElButton>
       }
@@ -820,7 +820,7 @@ describe('formDialog', () => {
         const handleOpen = () => {
           FormDialog({ title: '测试标题', beforeClose: beforeCloseMock }, () => (
             <div data-testid="dialog-content">对话框内容</div>
-          )).open().catch(console.error)
+          )).open().catch(() => undefined)
         }
         return <ElButton onClick={handleOpen}>打开对话框</ElButton>
       }

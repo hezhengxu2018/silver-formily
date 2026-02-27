@@ -118,9 +118,7 @@ export function FormDrawer<T extends object = any>(
                 res(toJS(env.form.values))
                 formDrawer.close()
                 disposeDrawer()
-              }).catch((error) => {
-                console.warn(error)
-              })
+              }).catch(() => undefined)
             }, async () => {
               await loading(props.loadingText, () =>
                 applyMiddleware(env.form, env.cancelMiddlewares))

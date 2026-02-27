@@ -222,7 +222,7 @@ export const ArrayCollapseUnshiftTest = defineComponent({
     return () => (
       <FormProvider form={form}>
         <SchemaField schema={schema} />
-        <Submit onSubmit={console.error}>提交</Submit>
+        <Submit onSubmit={() => undefined}>提交</Submit>
       </FormProvider>
     )
   },

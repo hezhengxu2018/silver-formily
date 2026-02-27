@@ -141,34 +141,42 @@ describe('upload', () => {
 
   describe('事件触发', () => {
     it('应该on Error', async () => {
-      const form = createForm()
-      const file = new File(['file'], 'file.png', { type: 'image/png' })
-      const httpRequest = async () => {
-        throw new Error('上传失败')
+      const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => undefined)
+      try {
+        const form = createForm()
+        const file = new File(['file'], 'file.png', { type: 'image/png' })
+        const httpRequest = vi.fn().mockImplementation(async (options: any) => {
+          options.onError?.(new Error('上传失败'))
+          return undefined
+        })
+
+        const mockFormatValue = vi.fn((fileList: UploadFiles) => fileList.map(file => file.response))
+        const mockOnError = vi.fn()
+
+        const { container } = render(() => (
+          <FormProvider form={form}>
+            <Field
+              name="upload"
+              component={[Upload, {
+                action: '#',
+                textContent: '上传文件',
+                httpRequest,
+                autoUpload: true,
+                formatValue: mockFormatValue,
+                onError: mockOnError,
+              }]}
+            />
+          </FormProvider>
+        ))
+        const input = container.querySelector('input')
+        await userEvent.upload(input, file)
+        expect(httpRequest).toHaveBeenCalled()
+        expect(mockOnError).toHaveBeenCalled()
+        expect(mockFormatValue).toHaveBeenCalled()
       }
-
-      const mockFormatValue = vi.fn((fileList: UploadFiles) => fileList.map(file => file.response))
-      const mockOnError = vi.fn()
-
-      const { container } = render(() => (
-        <FormProvider form={form}>
-          <Field
-            name="upload"
-            component={[Upload, {
-              action: '#',
-              textContent: '上传文件',
-              httpRequest,
-              autoUpload: true,
-              formatValue: mockFormatValue,
-              onError: mockOnError,
-            }]}
-          />
-        </FormProvider>
-      ))
-      const input = container.querySelector('input')
-      await userEvent.upload(input, file)
-      expect(mockOnError).toHaveBeenCalled()
-      expect(mockFormatValue).toHaveBeenCalled()
+      finally {
+        consoleErrorSpy.mockRestore()
+      }
     })
 
     it('应该on Exceed', async () => {
