@@ -74,7 +74,8 @@ export class Grid<Container extends HTMLElement> {
   }
 
   get breakpoint() {
-    return calcBreakpointIndex(this.breakpoints, this.width)
+    const width = this.ready ? this.width : Number.POSITIVE_INFINITY
+    return calcBreakpointIndex(this.breakpoints, width)
   }
 
   set maxWidth(maxWidth: number) {
@@ -143,7 +144,11 @@ export class Grid<Container extends HTMLElement> {
 
   get columns() {
     if (!this.ready) {
-      return 0
+      const minColumns = Math.max(1, this.minColumns)
+      if (this.maxColumns === Infinity) {
+        return minColumns
+      }
+      return Math.max(minColumns, Math.max(1, this.maxColumns))
     }
 
     const originTotalColumns = this.childOriginTotalColumns
@@ -222,6 +227,10 @@ export class Grid<Container extends HTMLElement> {
   }
 
   get templateColumns() {
+    if (!this.ready) {
+      return `repeat(${this.columns},minmax(0,1fr))`
+    }
+
     if (!this.width) {
       return ''
     }

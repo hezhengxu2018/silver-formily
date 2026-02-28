@@ -36,15 +36,17 @@ describe('grid core behavior', () => {
     document.body.innerHTML = ''
   })
 
-  it('returns zero columns and empty template before ready', () => {
+  it('uses pre-connect default columns and template', () => {
     const grid = new Grid({
       breakpoints: [720, 1280, 1920],
       minColumns: [2, 3, 4, 5],
+      maxColumns: [4, 5, 6, 7],
     })
 
     expect(grid.ready).toBe(false)
-    expect(grid.columns).toBe(0)
-    expect(grid.templateColumns).toBe('')
+    expect(grid.breakpoint).toBe(-1)
+    expect(grid.columns).toBe(4)
+    expect(grid.templateColumns).toBe('repeat(4,minmax(0,1fr))')
   })
 
   it('computes columns and template columns after connect', async () => {
