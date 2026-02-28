@@ -49,7 +49,3 @@ basicGrid
 :::demo
 vueUsage
 :::
-
-## SSR 与 Hydration
-
-SSR / Hydration 的详细配置和示例已集中到 [SSR 指南](/ssr)。

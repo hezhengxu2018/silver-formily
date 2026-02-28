@@ -49,7 +49,3 @@ This demo shows the recommended Vue integration pattern:
 :::demo
 vueUsage
 :::
-
-## SSR & Hydration
-
-Detailed SSR/hydration configuration and examples are centralized in the [SSR Guide](/en/ssr).

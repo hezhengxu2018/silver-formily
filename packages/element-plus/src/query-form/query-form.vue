@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { ISchema } from '@formily/json-schema'
-import type { Grid, GridVisibleNode, IGridOptions } from '@silver-formily/grid'
+import type { Grid, GridNode, IGridOptions } from '@silver-formily/grid'
 import type { IQueryFormProps, SchemaEntry } from './types'
 import { ArrowDown, ArrowUp } from '@element-plus/icons-vue'
 import { Schema } from '@formily/json-schema'
@@ -71,8 +71,8 @@ function resolveField(name?: string | number) {
 }
 
 function createVisibleContext(
-  node: GridVisibleNode,
-  grid: Grid,
+  node: GridNode,
+  grid: Grid<HTMLElement>,
   collapsedOverride?: boolean,
 ) {
   const index = node.index ?? 0
@@ -118,14 +118,14 @@ function resolveVisibleWhen(context: ReturnType<typeof createVisibleContext>) {
   return visible !== false
 }
 
-function isActionsNode(node: GridVisibleNode, grid: Grid) {
+function isActionsNode(node: GridNode, grid: Grid<HTMLElement>) {
   if ('element' in node && node.element) {
     return node.element.dataset.queryFormActions !== undefined
   }
   return node.index === grid.childSize - 1
 }
 
-function getFieldRowCount(grid: Grid) {
+function getFieldRowCount(grid: Grid<HTMLElement>) {
   const rows = (grid.children ?? [])
     .filter(node => !isActionsNode(node, grid))
     .map(node => node.shadowRow ?? 0)

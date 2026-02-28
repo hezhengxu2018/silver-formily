@@ -1,5 +1,5 @@
 import type { Grid } from './index'
-import type { GridContainerTarget, GridNode, GridSsrNode, GridSsrNodeInput, IGridOptions } from './types'
+import type { GridNode } from './types'
 
 const SpanRegExp = /span\s*(\d+)/
 
@@ -14,24 +14,15 @@ function isHTMLElement(value: unknown): value is HTMLElement {
 }
 
 export function calcBreakpointIndex(breakpoints: number[], width: number) {
-  for (let i = 0; i < breakpoints.length; i++) {
-    if (width <= breakpoints[i]) {
-      return i
+  if (Array.isArray(breakpoints)) {
+    for (let i = 0; i < breakpoints.length; i++) {
+      if (width <= breakpoints[i]) {
+        return i
+      }
     }
   }
+
   return -1
-}
-
-export function resolveSsrWidth(options: IGridOptions) {
-  if (
-    typeof options.ssrWidth === 'number'
-    && Number.isFinite(options.ssrWidth)
-    && options.ssrWidth > 0
-  ) {
-    return options.ssrWidth
-  }
-
-  return 0
 }
 
 export function calcFactor<T>(value: T | T[], breakpointIndex: number): T {
@@ -46,26 +37,6 @@ export function calcFactor<T>(value: T | T[], breakpointIndex: number): T {
 
 export function parseSpan(gridColumnStart: string) {
   return Number(String(gridColumnStart).match(SpanRegExp)?.[1] ?? 1)
-}
-
-export function resolveSsrNode(input: GridSsrNodeInput): GridSsrNode {
-  const span = typeof input.span === 'number' && Number.isFinite(input.span) && input.span > 0
-    ? input.span
-    : 1
-  const originSpan = typeof input.originSpan === 'number' && Number.isFinite(input.originSpan)
-    ? input.originSpan
-    : span
-
-  return {
-    index: input.index,
-    visible: input.visible ?? true,
-    column: input.column ?? 0,
-    shadowColumn: input.shadowColumn ?? 0,
-    row: input.row ?? 0,
-    shadowRow: input.shadowRow ?? 0,
-    span,
-    originSpan,
-  }
 }
 
 export function parseGridNode(elements: HTMLCollection): GridNode[] {
@@ -104,17 +75,21 @@ export function calcChildTotalColumns(nodes: GridNode[], shadow = false) {
   return nodes.reduce((buf, node) => {
     if (!shadow && !node.visible)
       return buf
-    return buf + node.span
+    return buf + (node.span ?? 1)
   }, 0)
 }
 
 export function calcChildOriginTotalColumns(nodes: GridNode[], shadow = false) {
   return nodes.reduce((buf, node) => {
+    const span = node.span ?? 1
+    const originSpan = node.originSpan ?? span
+
     if (!shadow && !node.visible)
       return buf
-    if (node.originSpan === -1)
-      return buf + node.span
-    return buf + node.originSpan
+    if (originSpan === -1)
+      return buf + span
+
+    return buf + originSpan
   }, 0)
 }
 
@@ -140,14 +115,17 @@ export function calcSatisfyColumns(width: number, maxColumns: number, minColumns
   return Math.max(...results)
 }
 
-export function factor<T>(value: T | T[] | undefined, grid: Grid): T | undefined {
+export function factor<T, Container extends HTMLElement>(value: T | T[] | undefined, grid: Grid<Container>): T | undefined {
   if (!isValid(value))
     return undefined
 
   return calcFactor(value, grid.breakpoint)
 }
 
-export function resolveChildren(grid: Grid) {
+export function resolveChildren<Container extends HTMLElement>(grid: Grid<Container>) {
+  if (!grid.ready)
+    return
+
   let walked = 0
   let shadowWalked = 0
   let rowIndex = 0
@@ -159,7 +137,7 @@ export function resolveChildren(grid: Grid) {
     const columnIndex = walked % grid.columns
     const shadowColumnIndex = shadowWalked % grid.columns
     const remainColumns = grid.columns - columnIndex
-    const originSpan = node.originSpan
+    const originSpan = node.originSpan ?? node.span ?? 1
     const targetSpan = originSpan > grid.columns ? grid.columns : originSpan
     const span = grid.options.strictAutoFit
       ? targetSpan
@@ -194,7 +172,7 @@ export function resolveChildren(grid: Grid) {
     }
 
     if (shouldVisible) {
-      if (!shouldVisible(node, grid)) {
+      if (!shouldVisible(node, grid as unknown as Grid<HTMLElement>)) {
         if (node.visible && element) {
           element.style.display = 'none'
         }
@@ -210,23 +188,6 @@ export function resolveChildren(grid: Grid) {
 
     return node
   })
-}
-
-export function resolveContainerElement(container: GridContainerTarget) {
-  if (isHTMLElement(container)) {
-    return container
-  }
-
-  if (
-    container
-    && typeof container === 'object'
-    && 'value' in container
-    && isHTMLElement(container.value)
-  ) {
-    return container.value
-  }
-
-  return null
 }
 
 export const nextTick = (callback?: () => void) => Promise.resolve(0).then(callback)

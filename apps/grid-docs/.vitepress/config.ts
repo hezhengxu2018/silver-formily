@@ -31,7 +31,6 @@ export default createDocsConfig({
         items: [
           { text: '快速上手', link: '/' },
           { text: 'API 文档', link: '/api' },
-          { text: 'SSR 指南', link: '/ssr' },
         ],
       },
     ],
@@ -41,7 +40,6 @@ export default createDocsConfig({
         items: [
           { text: 'Quick Start', link: '/en/' },
           { text: 'API Reference', link: '/en/api' },
-          { text: 'SSR Guide', link: '/en/ssr' },
         ],
       },
     ],

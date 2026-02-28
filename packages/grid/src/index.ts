@@ -1,4 +1,4 @@
-import type { GridContainerTarget, GridNode, GridSsrNode, GridSsrNodeInput, IGridOptions } from './types'
+import type { GridNode, IGridOptions } from './types'
 import { batch, define, observable, reaction } from '@formily/reactive'
 import { ChildListMutationObserver } from './observer'
 import {
@@ -10,33 +10,24 @@ import {
   nextTick,
   parseGridNode,
   resolveChildren,
-  resolveContainerElement,
-  resolveSsrNode,
-  resolveSsrWidth,
 } from './utils'
 
 export type {
-  GridContainerTarget,
   GridNode,
-  GridNodeState,
-  GridSsrNode,
-  GridSsrNodeInput,
-  GridVisibleNode,
   IGridOptions,
 } from './types'
 
-export class Grid {
+export class Grid<Container extends HTMLElement> {
   options: IGridOptions
   width = 0
   height = 0
-  container!: HTMLElement
+  container!: Container
   children: GridNode[] = []
   childTotalColumns = 0
   shadowChildTotalColumns = 0
   childOriginTotalColumns = 0
   shadowChildOriginTotalColumns = 0
   ready = false
-  hydrated = false
 
   constructor(options?: IGridOptions) {
     this.options = {
@@ -54,7 +45,6 @@ export class Grid {
       width: observable.ref,
       height: observable.ref,
       ready: observable.ref,
-      hydrated: observable.ref,
       children: observable.ref,
       childOriginTotalColumns: observable.ref,
       shadowChildOriginTotalColumns: observable.ref,
@@ -75,17 +65,6 @@ export class Grid {
     })
   }
 
-  normalizeSsrNode(node: GridSsrNodeInput): GridSsrNode {
-    return resolveSsrNode(node)
-  }
-
-  resolveSsrVisible(node: GridSsrNodeInput): boolean {
-    if (!this.options.shouldVisible) {
-      return true
-    }
-    return this.options.shouldVisible(this.normalizeSsrNode(node), this)
-  }
-
   set breakpoints(breakpoints: number[]) {
     this.options.breakpoints = breakpoints
   }
@@ -94,16 +73,11 @@ export class Grid {
     return this.options.breakpoints ?? []
   }
 
-  get ssrWidth() {
-    return resolveSsrWidth(this.options)
-  }
-
   get breakpoint() {
-    const width = this.ready ? this.width : this.width || this.ssrWidth
-    return calcBreakpointIndex(this.breakpoints, width)
+    return calcBreakpointIndex(this.breakpoints, this.width)
   }
 
-  set maxWidth(maxWidth: number | number[]) {
+  set maxWidth(maxWidth: number) {
     this.options.maxWidth = maxWidth
   }
 
@@ -111,7 +85,7 @@ export class Grid {
     return factor(this.options.maxWidth, this) ?? Infinity
   }
 
-  set minWidth(minWidth: number | number[]) {
+  set minWidth(minWidth: number) {
     this.options.minWidth = minWidth
   }
 
@@ -119,7 +93,7 @@ export class Grid {
     return factor(this.options.minWidth, this) ?? 100
   }
 
-  set maxColumns(maxColumns: number | number[]) {
+  set maxColumns(maxColumns: number) {
     this.options.maxColumns = maxColumns
   }
 
@@ -135,7 +109,7 @@ export class Grid {
     return this.options.maxRows ?? Infinity
   }
 
-  set minColumns(minColumns: number | number[]) {
+  set minColumns(minColumns: number) {
     this.options.minColumns = minColumns
   }
 
@@ -169,11 +143,7 @@ export class Grid {
 
   get columns() {
     if (!this.ready) {
-      const minColumns = Math.max(1, this.minColumns)
-      if (this.maxColumns === Infinity) {
-        return minColumns
-      }
-      return Math.max(1, Math.min(minColumns, this.maxColumns))
+      return 0
     }
 
     const originTotalColumns = this.childOriginTotalColumns
@@ -252,12 +222,8 @@ export class Grid {
   }
 
   get templateColumns() {
-    if (!this.ready) {
-      return `repeat(${this.columns},minmax(0,1fr))`
-    }
-
     if (!this.width) {
-      return `repeat(${this.columns},minmax(0,1fr))`
+      return ''
     }
 
     if (this.maxWidth === Infinity) {
@@ -286,14 +252,12 @@ export class Grid {
     return this.columns === this.children[this.childSize - 1]?.span
   }
 
-  connect = (container: GridContainerTarget) => {
-    const resolvedContainer = resolveContainerElement(container)
-    if (!resolvedContainer) {
+  connect = (container: Container) => {
+    if (!container) {
       return () => {}
     }
 
-    this.container = resolvedContainer
-    this.hydrated = false
+    this.container = container
 
     const digest = batch.bound!(() => {
       this.children = parseGridNode(this.container.children)
@@ -310,12 +274,12 @@ export class Grid {
 
       resolveChildren(this)
       nextTick(() => {
-        this.options.onDigest?.(this)
+        this.options.onDigest?.(this as unknown as Grid<HTMLElement>)
       })
 
       if (!this.ready) {
         nextTick(() => {
-          this.options.onInitialized?.(this)
+          this.options.onInitialized?.(this as unknown as Grid<HTMLElement>)
         })
       }
     })
@@ -323,10 +287,6 @@ export class Grid {
     const initialize = batch.bound!(() => {
       digest()
       this.ready = true
-      nextTick(() => {
-        this.hydrated = true
-        digest()
-      })
     })
 
     const mutationObserver = new ChildListMutationObserver(digest)
@@ -359,7 +319,6 @@ export class Grid {
   static id = (options: IGridOptions = {}) => {
     const keys: Array<keyof IGridOptions> = [
       'maxRows',
-      'ssrWidth',
       'maxColumns',
       'minColumns',
       'maxWidth',

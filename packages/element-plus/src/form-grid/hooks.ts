@@ -4,10 +4,10 @@ import { markRaw } from '@formily/reactive'
 import { Grid } from '@silver-formily/grid'
 import { inject } from 'vue'
 
-export const FormGridSymbol: InjectionKey<Ref<IGrid>> = Symbol('FormGridContext')
+export const FormGridSymbol: InjectionKey<Ref<IGrid<HTMLElement>>> = Symbol('FormGridContext')
 
-export function createFormGrid(props): IGrid {
+export function createFormGrid(props): IGrid<HTMLElement> {
   return markRaw(new Grid(props))
 }
 
-export const useFormGrid = (): Ref<IGrid> => inject(FormGridSymbol)
+export const useFormGrid = (): Ref<IGrid<HTMLElement>> => inject(FormGridSymbol)

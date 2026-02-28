@@ -48,7 +48,7 @@ const props = defineProps({
     },
   },
   grid: {
-    type: Object as PropType<Grid>,
+    type: Object as PropType<Grid<HTMLElement>>,
   },
 })
 
