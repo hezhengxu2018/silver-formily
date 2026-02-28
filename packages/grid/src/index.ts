@@ -75,7 +75,15 @@ export class Grid<Container extends HTMLElement> {
 
   get breakpoint() {
     const width = this.ready ? this.width : Number.POSITIVE_INFINITY
-    return calcBreakpointIndex(this.breakpoints, width)
+    const breakpoint = calcBreakpointIndex(this.breakpoints, width)
+
+    // Before connect, Infinity may not match finite breakpoint arrays.
+    // Use the last configured breakpoint bucket as a stable fallback.
+    if (!this.ready && breakpoint === -1 && this.breakpoints.length > 0) {
+      return this.breakpoints.length - 1
+    }
+
+    return breakpoint
   }
 
   set maxWidth(maxWidth: number) {

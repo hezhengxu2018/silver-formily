@@ -44,9 +44,9 @@ describe('grid core behavior', () => {
     })
 
     expect(grid.ready).toBe(false)
-    expect(grid.breakpoint).toBe(-1)
-    expect(grid.columns).toBe(4)
-    expect(grid.templateColumns).toBe('repeat(4,minmax(0,1fr))')
+    expect(grid.breakpoint).toBe(2)
+    expect(grid.columns).toBe(6)
+    expect(grid.templateColumns).toBe('repeat(6,minmax(0,1fr))')
   })
 
   it('computes columns and template columns after connect', async () => {

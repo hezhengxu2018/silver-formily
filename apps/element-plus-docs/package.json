@@ -24,6 +24,7 @@
     "element-plus": "^2.13.2",
     "lodash-es": "^4.17.23",
     "shiki": "^3.22.0",
+    "vue": "^3.3.0",
     "vue-draggable-plus": "^0.5.6"
   },
   "devDependencies": {
