@@ -5,6 +5,14 @@ const SpanRegExp = /span\s*(\d+)/
 
 const isValid = (value: unknown) => value !== undefined && value !== null
 
+function isHTMLElement(value: unknown): value is HTMLElement {
+  const HTMLElementCtor = (globalThis as { HTMLElement?: typeof HTMLElement }).HTMLElement
+  if (typeof HTMLElementCtor !== 'function') {
+    return false
+  }
+  return value instanceof HTMLElementCtor
+}
+
 export function calcBreakpointIndex(breakpoints: number[], width: number) {
   for (let i = 0; i < breakpoints.length; i++) {
     if (width <= breakpoints[i]) {
@@ -62,7 +70,7 @@ export function resolveSsrNode(input: GridSsrNodeInput): GridSsrNode {
 
 export function parseGridNode(elements: HTMLCollection): GridNode[] {
   return Array.from(elements).reduce<GridNode[]>((buf, element, index) => {
-    if (!(element instanceof HTMLElement)) {
+    if (!isHTMLElement(element)) {
       return buf
     }
 
@@ -205,7 +213,7 @@ export function resolveChildren(grid: Grid) {
 }
 
 export function resolveContainerElement(container: GridContainerTarget) {
-  if (container instanceof HTMLElement) {
+  if (isHTMLElement(container)) {
     return container
   }
 
@@ -213,7 +221,7 @@ export function resolveContainerElement(container: GridContainerTarget) {
     container
     && typeof container === 'object'
     && 'value' in container
-    && container.value instanceof HTMLElement
+    && isHTMLElement(container.value)
   ) {
     return container.value
   }
