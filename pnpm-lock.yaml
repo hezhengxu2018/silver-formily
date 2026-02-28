@@ -272,9 +272,9 @@ importers:
         specifier: ^0.5.6
         version: 0.5.6(@types/sortablejs@1.15.9)
     devDependencies:
-      '@formily/grid':
-        specifier: ^2.3.7
-        version: 2.3.7(typescript@5.9.2)
+      '@silver-formily/grid':
+        specifier: workspace:*
+        version: link:../grid
       '@silver-formily/reactive-vue':
         specifier: workspace:*
         version: link:../reactive-vue

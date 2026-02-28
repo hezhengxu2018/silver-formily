@@ -147,6 +147,7 @@ export function resolveChildren(grid: Grid) {
   const shouldVisible = grid.options.shouldVisible
 
   grid.children = grid.children.map((node) => {
+    const element = node.element
     const columnIndex = walked % grid.columns
     const shadowColumnIndex = shadowWalked % grid.columns
     const remainColumns = grid.columns - columnIndex
@@ -160,8 +161,8 @@ export function resolveChildren(grid: Grid) {
 
     const gridColumn = originSpan === -1 ? `span ${remainColumns} / -1` : `span ${span} / auto`
 
-    if (node.element.style.gridColumn !== gridColumn) {
-      node.element.style.gridColumn = gridColumn
+    if (element && element.style.gridColumn !== gridColumn) {
+      element.style.gridColumn = gridColumn
     }
 
     if (node.visible) {
@@ -186,14 +187,14 @@ export function resolveChildren(grid: Grid) {
 
     if (shouldVisible) {
       if (!shouldVisible(node, grid)) {
-        if (node.visible) {
-          node.element.style.display = 'none'
+        if (node.visible && element) {
+          element.style.display = 'none'
         }
         node.visible = false
       }
       else {
-        if (!node.visible) {
-          node.element.style.display = ''
+        if (!node.visible && element) {
+          element.style.display = ''
         }
         node.visible = true
       }

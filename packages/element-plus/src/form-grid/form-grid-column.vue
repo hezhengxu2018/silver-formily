@@ -12,7 +12,7 @@ const props = defineProps({
 </script>
 
 <template>
-  <!-- @formily/grid 会优先使用这个值，如果没有会自动生成 -->
+  <!-- @silver-formily/grid 会优先使用这个值，如果没有会自动生成 -->
   <div :data-grid-span="props.gridSpan">
     <slot />
   </div>

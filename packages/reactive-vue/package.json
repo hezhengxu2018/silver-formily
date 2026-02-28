@@ -29,7 +29,8 @@
   "scripts": {
     "build": "tsdown",
     "dev": "tsdown --watch",
-    "test": "vitest",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "test:coverage": "vitest run --coverage --coverage.provider=istanbul --coverage.reporter=clover --coverage.reporter=json --coverage.reporter=html",
     "lint": "eslint .",
     "format": "eslint . --fix",

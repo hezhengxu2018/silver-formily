@@ -37,7 +37,8 @@
   ],
   "scripts": {
     "build": "vite build",
-    "test": "vitest",
+    "test": "vitest run --reporter=dot",
+    "test:watch": "vitest",
     "test:run": "vitest run --browser.headless",
     "test:coverage": "vitest run --coverage --browser.headless",
     "lint": "eslint .",
@@ -48,10 +49,10 @@
   },
   "peerDependencies": {
     "@formily/core": "^2.0.8",
-    "@formily/grid": "^2.0.8",
     "@formily/json-schema": "^2.0.8",
     "@formily/reactive": "^2.0.8",
     "@formily/shared": "^2.0.8",
+    "@silver-formily/grid": "^0.0.2",
     "@silver-formily/reactive-vue": "^1",
     "@silver-formily/vue": "^2.3.1",
     "@vueuse/core": "*",
@@ -63,7 +64,7 @@
     "vue-draggable-plus": "^0.5.6"
   },
   "devDependencies": {
-    "@formily/grid": "^2.3.7",
+    "@silver-formily/grid": "workspace:*",
     "@silver-formily/reactive-vue": "workspace:*",
     "@silver-formily/typescript-config": "workspace:*",
     "@silver-formily/vue": "workspace:*",

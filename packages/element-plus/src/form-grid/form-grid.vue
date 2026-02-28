@@ -1,8 +1,8 @@
 <script lang="ts" setup>
-import type { IGridOptions } from '@formily/grid'
+import type { IGridOptions } from '@silver-formily/grid'
 import type { PropType } from 'vue'
-import { Grid } from '@formily/grid'
 import { markRaw } from '@formily/reactive'
+import { Grid } from '@silver-formily/grid'
 import { computed, provide, ref, watchEffect } from 'vue'
 import { stylePrefix } from '../__builtins__'
 import { FormGridSymbol } from './hooks'
@@ -48,7 +48,7 @@ const props = defineProps({
     },
   },
   grid: {
-    type: Object as PropType<Grid<HTMLElement>>,
+    type: Object as PropType<Grid>,
   },
 })
 
