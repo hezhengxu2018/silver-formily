@@ -35,6 +35,9 @@
     "lint": "eslint .",
     "format": "eslint . --fix",
     "check-types": "tsc --noEmit",
+    "docs:dev": "pnpm --filter grid-docs dev",
+    "docs:build": "pnpm turbo run docs:build --filter=grid-docs",
+    "docs:preview": "pnpm --filter grid-docs preview",
     "prepublishOnly": "pnpm run build"
   },
   "peerDependencies": {

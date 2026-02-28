@@ -86,14 +86,15 @@ type GridNode = {
 | `breakpoint`      | `number`  | Current breakpoint index             |
 | `ready`           | `boolean` | Whether initial layout has completed |
 
-## data-grid-span
+## Grid Span
 
-Use `data-grid-span` on child nodes to control span:
+`data-grid-span` defines how many columns a node occupies:
 
-```html
-<div id="grid-container">
-  <div data-grid-span="1">span 1</div>
-  <div data-grid-span="2">span 2</div>
-  <div data-grid-span="3">span 3</div>
-</div>
-```
+- `data-grid-span="n"`: Occupy `n` columns.
+- `data-grid-span="-1"`: Auto-fill from the current column to the end of the row.
+
+The demo below toggles the `Actions` block between `-1` and `1` so you can compare the layout behavior:
+
+:::demo
+gridSpan
+:::

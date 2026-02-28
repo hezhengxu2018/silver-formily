@@ -49,6 +49,11 @@ describe('grid core behavior', () => {
     expect(grid.templateColumns).toBe('repeat(6,minmax(0,1fr))')
   })
 
+  it('marks instance as raw for Vue proxy skip', () => {
+    const grid = new Grid()
+    expect((grid as { __v_skip?: boolean }).__v_skip).toBe(true)
+  })
+
   it('computes columns and template columns after connect', async () => {
     const { container } = createContainer([1, 1, 1, 1])
     const grid = new Grid({

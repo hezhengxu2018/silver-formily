@@ -86,14 +86,15 @@ type GridNode = {
 | `breakpoint`      | `number`  | 当前断点索引                 |
 | `ready`           | `boolean` | 是否已执行初始化布局         |
 
-## data-grid-span
+## Grid Span
 
-子节点可通过 `data-grid-span` 指定占列数：
+`data-grid-span` 用于声明节点占列规则：
 
-```html
-<div id="grid-container">
-  <div data-grid-span="1">span 1</div>
-  <div data-grid-span="2">span 2</div>
-  <div data-grid-span="3">span 3</div>
-</div>
-```
+- `data-grid-span="n"`: 占 `n` 列。
+- `data-grid-span="-1"`: 从当前列自动填满到本行末尾（用于尾部补齐）。
+
+下面的 demo 可以切换 `Actions` 的 `span` 为 `-1` 或 `1`，直观看到自动补齐差异：
+
+:::demo
+gridSpan
+:::

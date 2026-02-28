@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Grid } from '@silver-formily/grid'
-import { markRaw, onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import { onBeforeUnmount, onMounted, ref, watch } from 'vue'
 
 const containerRef = ref<HTMLElement | null>(null)
 const compactMode = ref(false)
@@ -22,8 +22,7 @@ let dispose: (() => void) | undefined
 
 const createVisibleRule = () => (node: { originSpan: number }) => (hideSpan2.value ? node.originSpan !== 2 : true)
 
-// Keep Grid non-deep-reactive in Vue apps.
-const grid = markRaw(new Grid({
+const grid = new Grid({
   minColumns: 2,
   maxColumns: 4,
   minWidth: 140,
@@ -36,7 +35,7 @@ const grid = markRaw(new Grid({
     gap.value = current.gap
     visibleCount.value = current.children.filter(node => node.visible).length
   },
-}))
+})
 
 watch(compactMode, (enabled) => {
   grid.options.columnGap = enabled ? 6 : 10

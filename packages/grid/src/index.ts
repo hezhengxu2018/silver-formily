@@ -1,5 +1,5 @@
 import type { GridNode, IGridOptions } from './types'
-import { batch, define, observable, reaction } from '@formily/reactive'
+import { batch, define, markRaw, observable, reaction } from '@formily/reactive'
 import { ChildListMutationObserver } from './observer'
 import {
   calcBreakpointIndex,
@@ -30,6 +30,13 @@ export class Grid<Container extends HTMLElement> {
   ready = false
 
   constructor(options?: IGridOptions) {
+    markRaw(this)
+    // Ensure Vue 3 skips proxy wrapping when Grid is placed in reactive state.
+    Reflect.defineProperty(this as object, '__v_skip', {
+      value: true,
+      configurable: true,
+    })
+
     this.options = {
       breakpoints: [720, 1280, 1920],
       columnGap: 8,
