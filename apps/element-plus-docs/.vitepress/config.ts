@@ -16,6 +16,7 @@ const vueSource = `${path.resolve(currentDir, '../../../packages/vue/src')}/`
 export default createDocsConfig({
   pkg,
   demoDir,
+  demoCodeFold: true,
   alias: {
     '@silver-formily/element-plus': elementPlusSource,
     '@silver-formily/reactive-vue': reactiveVueSource,

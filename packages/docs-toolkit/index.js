@@ -88,6 +88,7 @@ export function createDocsConfig(options = {}) {
             demoDir,
             autoImportWrapper: false,
             codeFold: demoCodeFold,
+            ssg: true,
           }))
         }
         markdownOptions.config?.(md)
