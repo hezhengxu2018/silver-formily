@@ -44,7 +44,8 @@
     "lint": "eslint .",
     "format": "eslint . --fix",
     "docs:dev": "pnpm --filter element-plus-docs dev",
-    "docs:build": "pnpm --filter element-plus-docs build",
+    "docs:build": "pnpm turbo run docs:build --filter=element-plus-docs",
+    "docs:preview": "pnpm --filter element-plus-docs preview",
     "prepublishOnly": "pnpm run build"
   },
   "peerDependencies": {

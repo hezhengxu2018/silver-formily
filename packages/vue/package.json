@@ -35,7 +35,7 @@
     "lint": "eslint .",
     "format": "eslint . --fix",
     "docs:dev": "pnpm --filter vue-docs dev",
-    "docs:build": "pnpm --filter vue-docs build",
+    "docs:build": "pnpm turbo run docs:build --filter=vue-docs",
     "commit": "czg",
     "prepublishOnly": "pnpm run build"
   },
