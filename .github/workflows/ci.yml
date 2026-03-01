@@ -60,6 +60,7 @@ jobs:
 
       - name: Build internal test dependencies
         run: |
+          pnpm --filter @silver-formily/grid build
           pnpm --filter @silver-formily/reactive-vue build
           pnpm --filter @silver-formily/vue build
 
