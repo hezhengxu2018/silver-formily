@@ -13,6 +13,8 @@
       "@silver-formily/element-plus/*": ["./src/*"],
       "@silver-formily/reactive-vue": ["../reactive-vue/src"],
       "@silver-formily/reactive-vue/*": ["../reactive-vue/src/*"],
+      "@silver-formily/grid": ["../grid/src"],
+      "@silver-formily/grid/*": ["../grid/src/*"],
       "@silver-formily/vue": ["../vue/src"],
       "@silver-formily/vue/*": ["../vue/src/*"]
     },

@@ -8,6 +8,7 @@
   },
   "scripts": {
     "build": "turbo run build",
+    "docs:build": "turbo run docs:build",
     "build:changed": "node scripts/build-changed.mjs",
     "dev": "turbo run dev",
     "lint": "turbo run lint",

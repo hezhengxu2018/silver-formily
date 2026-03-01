@@ -29,7 +29,8 @@
   "scripts": {
     "build": "tsdown",
     "dev": "tsdown --watch",
-    "test": "vitest",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "test:coverage": "vitest run --coverage --coverage.provider=istanbul --coverage.reporter=clover --coverage.reporter=json --coverage.reporter=html",
     "lint": "eslint .",
     "format": "eslint . --fix",
@@ -38,7 +39,7 @@
   },
   "peerDependencies": {
     "@formily/reactive": "^2",
-    "vue": "^3"
+    "vue": "^3.3.0"
   },
   "devDependencies": {
     "@formily/reactive": "^2.3.7",

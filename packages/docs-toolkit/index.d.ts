@@ -29,6 +29,7 @@ export interface DocsThemeConfig {
 export interface DocsConfigOptions extends Omit<UserConfig<DocsThemeConfig>, 'vite' | 'markdown' | 'themeConfig' | 'head' | 'locales'> {
   alias?: Record<string, string>
   demoDir?: string
+  demoCodeFold?: boolean
   head?: UserConfig['head']
   locales?: UserConfig['locales']
   sidebar?: DocsThemeConfig['sidebar']
