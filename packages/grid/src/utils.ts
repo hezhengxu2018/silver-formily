@@ -138,14 +138,19 @@ export function resolveChildren<Container extends HTMLElement>(grid: Grid<Contai
     const shadowColumnIndex = shadowWalked % grid.columns
     const remainColumns = grid.columns - columnIndex
     const originSpan = node.originSpan ?? node.span ?? 1
-    const targetSpan = originSpan > grid.columns ? grid.columns : originSpan
+    const isFillRemainSpan = originSpan === -1
+    const targetSpan = isFillRemainSpan
+      ? remainColumns
+      : originSpan > grid.columns
+        ? grid.columns
+        : originSpan
     const span = grid.options.strictAutoFit
       ? targetSpan
       : targetSpan > remainColumns
         ? remainColumns
         : targetSpan
 
-    const gridColumn = originSpan === -1 ? `span ${remainColumns} / -1` : `span ${span} / auto`
+    const gridColumn = isFillRemainSpan ? `span ${remainColumns} / -1` : `span ${span} / auto`
 
     if (element && element.style.gridColumn !== gridColumn) {
       element.style.gridColumn = gridColumn
