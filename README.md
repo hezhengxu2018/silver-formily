@@ -1,135 +1,95 @@
-# Turborepo starter
+# Silver Formily
 
-This Turborepo starter is maintained by the Turborepo core team.
+Silver Formily 是一个基于 `pnpm workspace + Turborepo` 的 monorepo，围绕 Formily 生态提供 Vue 3 运行时封装、Element Plus 组件封装、Grid 工具库和文档站点体系。
 
-## Using this example
+## 文档站点
 
-Run the following command:
+- Vue: <https://vue.silver-formily.org>
+- Reactive Vue: <https://reactive-vue.silver-formily.org>
+- Element Plus: <https://element-plus.silver-formily.org>
+- Grid: 本地运行 `pnpm --filter grid-docs dev`
 
-```sh
-npx create-turbo@latest
+## 核心包
+
+| 包名                                | 说明                                |
+| ----------------------------------- | ----------------------------------- |
+| `@silver-formily/reactive-vue`      | Vue 3 版 `@formily/reactive` 封装   |
+| `@silver-formily/vue`               | Vue 3 版 Formily 运行时绑定         |
+| `@silver-formily/element-plus`      | Formily + Element Plus 组件封装     |
+| `@silver-formily/grid`              | 与 Formily 生态配套的网格布局运行时 |
+| `@silver-formily/docs-toolkit`      | 内部文档主题与 VitePress 配置工具   |
+| `@silver-formily/typescript-config` | 内部 TypeScript 配置共享包          |
+
+## 仓库结构
+
+```text
+.
+|- apps/                   # VitePress 文档站点
+|  |- vue-docs
+|  |- reactive-vue-docs
+|  |- element-plus-docs
+|  `- grid-docs
+|- packages/               # 可发布或内部复用包
+|  |- vue
+|  |- reactive-vue
+|  |- element-plus
+|  |- grid
+|  |- docs-toolkit
+|  `- typescript-config
+`- scripts/                # 仓库级脚本（如按 changeset 增量构建）
 ```
 
-## What's inside?
+## 环境要求
 
-This Turborepo includes the following packages/apps:
+- Node.js `>= 18`
+- `pnpm@9`
 
-### Apps and Packages
-
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
-
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
-
-### Utilities
-
-This Turborepo has some additional tools already setup for you:
-
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
-
-### Build
-
-To build all apps and packages, run the following command:
-
-```
-cd my-turborepo
-
-# With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended)
-turbo build
-
-# Without [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation), use your package manager
-npx turbo build
-yarn dlx turbo build
-pnpm exec turbo build
+```bash
+pnpm install
 ```
 
-You can build a specific package by using a [filter](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters):
+## 常用命令
 
-```
-# With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended)
-turbo build --filter=docs
+| 命令                 | 说明                                       |
+| -------------------- | ------------------------------------------ |
+| `pnpm dev`           | 启动 monorepo 内声明了 `dev` 的任务        |
+| `pnpm build`         | 构建所有包与应用（经 Turbo 调度）          |
+| `pnpm docs:build`    | 构建所有文档站点                           |
+| `pnpm lint`          | 运行所有 workspace 的 lint                 |
+| `pnpm format`        | 使用 ESLint 规则统一格式                   |
+| `pnpm check-types`   | 运行类型检查任务                           |
+| `pnpm test`          | 运行测试任务                               |
+| `pnpm build:changed` | 仅构建 changeset 需要发布的包              |
+| `pnpm release`       | `build:changed` 后执行 `changeset publish` |
 
-# Without [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation), use your package manager
-npx turbo build --filter=docs
-yarn exec turbo build --filter=docs
-pnpm exec turbo build --filter=docs
-```
+## 按包开发（推荐）
 
-### Develop
+```bash
+# 仅启动某个文档站
+pnpm --filter element-plus-docs dev
 
-To develop all apps and packages, run the following command:
+# 仅构建某个包
+pnpm --filter @silver-formily/vue build
 
-```
-cd my-turborepo
-
-# With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended)
-turbo dev
-
-# Without [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation), use your package manager
-npx turbo dev
-yarn exec turbo dev
-pnpm exec turbo dev
-```
-
-You can develop a specific package by using a [filter](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters):
-
-```
-# With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended)
-turbo dev --filter=web
-
-# Without [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation), use your package manager
-npx turbo dev --filter=web
-yarn exec turbo dev --filter=web
-pnpm exec turbo dev --filter=web
+# 仅运行某个包的测试
+pnpm --filter @silver-formily/reactive-vue test
 ```
 
-### Remote Caching
+## 工程约定
 
-> [!TIP]
-> Vercel Remote Cache is free for all plans. Get started today at [vercel.com](https://vercel.com/signup?/signup?utm_source=remote-cache-sdk&utm_campaign=free_remote_cache).
+- 代码风格：`@antfu/eslint-config`（2 空格、单引号、无分号）。
+- 提交规范：Conventional Commits（可使用 `pnpm commit` 调用 `czg`）。
+- CI：`main` 分支和 PR 会执行 lint、测试与覆盖率上传（含 `reactive-vue`、`element-plus`）。
+- 发布：使用 Changesets，建议在变更包时同步提交 changeset 文件。
 
-Turborepo can use a technique known as [Remote Caching](https://turborepo.dev/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
+## 贡献前检查
 
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup?utm_source=turborepo-examples), then enter the following commands:
-
-```
-cd my-turborepo
-
-# With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended)
-turbo login
-
-# Without [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation), use your package manager
-npx turbo login
-yarn exec turbo login
-pnpm exec turbo login
+```bash
+pnpm install
+pnpm format
+pnpm lint
+pnpm check-types
+pnpm build
 ```
 
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
-
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
-
-```
-# With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended)
-turbo link
-
-# Without [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation), use your package manager
-npx turbo link
-yarn exec turbo link
-pnpm exec turbo link
-```
-
-## Useful Links
-
-Learn more about the power of Turborepo:
-
-- [Tasks](https://turborepo.dev/docs/crafting-your-repository/running-tasks)
-- [Caching](https://turborepo.dev/docs/crafting-your-repository/caching)
-- [Remote Caching](https://turborepo.dev/docs/core-concepts/remote-caching)
-- [Filtering](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters)
-- [Configuration Options](https://turborepo.dev/docs/reference/configuration)
-- [CLI Usage](https://turborepo.dev/docs/reference/command-line-reference)
+如果你修改了包行为或文档示例，请在 PR 里补充手动验证步骤。
