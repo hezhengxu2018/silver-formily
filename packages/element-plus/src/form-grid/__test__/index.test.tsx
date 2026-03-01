@@ -10,6 +10,13 @@ import { useFormGrid } from '../hooks'
 import 'element-plus/theme-chalk/index.css'
 import '../style.scss'
 
+function queryElement(container: Element, selector: string): HTMLElement {
+  const element = container.querySelector<HTMLElement>(selector)
+  if (!element)
+    throw new Error(`Element not found: ${selector}`)
+  return element
+}
+
 const FormGridTest = defineComponent({
   props: {
     displayKey: {
@@ -40,8 +47,8 @@ describe('formgrid', () => {
         </FormProvider>
       ))
 
-      await expect.element(container.querySelector('.formily-element-plus-form-grid')).toBeInTheDocument()
-      await expect.element(container.querySelector('[data-testid="content"]')).toBeInTheDocument()
+      await expect.element(queryElement(container, '.formily-element-plus-form-grid')).toBeInTheDocument()
+      await expect.element(queryElement(container, '[data-testid="content"]')).toBeInTheDocument()
     })
 
     it('应该支持网格项渲染', async () => {
@@ -55,8 +62,8 @@ describe('formgrid', () => {
         </FormProvider>
       ))
 
-      await expect.element(container.querySelector('.formily-element-plus-form-grid')).toBeInTheDocument()
-      await expect.element(container.querySelector('[data-testid="grid-item"]')).toBeInTheDocument()
+      await expect.element(queryElement(container, '.formily-element-plus-form-grid')).toBeInTheDocument()
+      await expect.element(queryElement(container, '[data-testid="grid-item"]')).toBeInTheDocument()
     })
   })
 
@@ -125,7 +132,7 @@ describe('formgrid', () => {
         </FormProvider>
       ))
 
-      const gridItem = container.querySelector('[data-testid="grid-item"]')
+      const gridItem = queryElement(container, '[data-testid="grid-item"]')
       await expect.element(gridItem).toBeInTheDocument()
       await vi.waitFor(() => {
         expect(gridItem).toHaveStyle({ gridColumn: 'span 2' })
@@ -143,7 +150,7 @@ describe('formgrid', () => {
         </FormProvider>
       ))
 
-      const gridItem = container.querySelector('[data-testid="grid-item"]')
+      const gridItem = queryElement(container, '[data-testid="grid-item"]')
       await expect.element(gridItem).toBeInTheDocument()
       await expect.element(gridItem).toHaveStyle({ gridColumnStart: 'span 1' })
     })
@@ -165,7 +172,7 @@ describe('formgrid', () => {
         </FormProvider>
       ))
 
-      await expect.element(container.querySelector('[data-testid="nested-item"]')).toBeInTheDocument()
+      await expect.element(queryElement(container, '[data-testid="nested-item"]')).toBeInTheDocument()
       const nestedGrid = container.querySelectorAll('.formily-element-plus-form-grid')
       expect(nestedGrid.length).toBe(2)
     })

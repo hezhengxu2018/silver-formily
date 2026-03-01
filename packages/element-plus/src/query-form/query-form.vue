@@ -5,6 +5,7 @@ import type { IQueryFormProps, SchemaEntry } from './types'
 import { ArrowDown, ArrowUp } from '@element-plus/icons-vue'
 import { Schema } from '@formily/json-schema'
 import { autorun } from '@formily/reactive'
+import { createGrid } from '@silver-formily/grid'
 import { useFieldSchema, useForm } from '@silver-formily/vue'
 import { ElIcon, ElLink } from 'element-plus'
 import { computed, onUnmounted, ref, useSlots } from 'vue'
@@ -12,7 +13,6 @@ import { compatibleUnderlineProp, stylePrefix, useCleanAttrs } from '../__builti
 import { Form } from '../form'
 import { FormButtonGroup } from '../form-button-group'
 import { FormGrid } from '../form-grid'
-import { createFormGrid } from '../form-grid/hooks'
 import { Reset } from '../reset'
 import { Submit } from '../submit'
 import { useQueryFormForm, useQueryFormSchemaField } from './hooks'
@@ -150,8 +150,7 @@ const gridOptions: IGridOptions = {
   shouldVisible: defaultShouldVisible,
 }
 
-const internalGrid = createFormGrid(gridOptions)
-const grid = internalGrid
+const grid = createGrid(gridOptions)
 
 const expanded = ref(grid.maxRows === Infinity)
 const gridType = ref<'incomplete-wrap' | 'collapsible' | 'complete-wrap'>('complete-wrap')
