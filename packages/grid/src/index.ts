@@ -17,6 +17,12 @@ export type {
   IGridOptions,
 } from './types'
 
+export function createGrid<Container extends HTMLElement>(
+  options?: IGridOptions,
+) {
+  return markRaw(new Grid<Container>(options))
+}
+
 export class Grid<Container extends HTMLElement> {
   options: IGridOptions
   width = 0
@@ -30,7 +36,6 @@ export class Grid<Container extends HTMLElement> {
   ready = false
 
   constructor(options?: IGridOptions) {
-    markRaw(this)
     // Ensure Vue 3 skips proxy wrapping when Grid is placed in reactive state.
     Reflect.defineProperty(this as object, '__v_skip', {
       value: true,

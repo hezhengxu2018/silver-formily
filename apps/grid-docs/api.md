@@ -9,6 +9,15 @@ declare const options: IGridOptions | undefined
 const grid = new Grid(options)
 ```
 
+### createGrid
+
+```ts
+declare const options: IGridOptions | undefined
+const grid = createGrid(options)
+```
+
+- `createGrid` 是 `new Grid(options)` 的轻量封装，他返回一个markRaw的Grid实例。
+
 ### 构造函数配置表
 
 | 选项            | 类型                                      | 默认值              | 描述                              |

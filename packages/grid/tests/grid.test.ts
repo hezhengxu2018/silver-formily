@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it } from 'vitest'
-import { Grid } from '../src'
+import { createGrid, Grid } from '../src'
 
 function createContainer(spans: number[] = [1], width = 960) {
   const container = document.createElement('div')
@@ -52,6 +52,15 @@ describe('grid core behavior', () => {
   it('marks instance as raw for Vue proxy skip', () => {
     const grid = new Grid()
     expect((grid as { __v_skip?: boolean }).__v_skip).toBe(true)
+  })
+
+  it('creates grid instance via createGrid helper', () => {
+    const grid = createGrid({
+      minColumns: 2,
+    })
+    expect(grid).toBeInstanceOf(Grid)
+    expect((grid as { __v_skip?: boolean }).__v_skip).toBe(true)
+    expect(grid.minColumns).toBe(2)
   })
 
   it('computes columns and template columns after connect', async () => {

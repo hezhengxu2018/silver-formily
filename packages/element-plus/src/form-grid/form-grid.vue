@@ -1,8 +1,7 @@
 <script lang="ts" setup>
-import type { IGridOptions } from '@silver-formily/grid'
+import type { Grid, IGridOptions } from '@silver-formily/grid'
 import type { PropType } from 'vue'
-import { markRaw } from '@formily/reactive'
-import { Grid } from '@silver-formily/grid'
+import { createGrid } from '@silver-formily/grid'
 import { computed, provide, ref, watchEffect } from 'vue'
 import { stylePrefix } from '../__builtins__'
 import { FormGridSymbol } from './hooks'
@@ -66,7 +65,7 @@ const gridInstance = computed(() => {
         .map(([k, v]) => [k, v]),
     ),
   }
-  return markRaw(grid ?? new Grid(options))
+  return grid ?? createGrid(options)
 })
 
 provide(FormGridSymbol, gridInstance)

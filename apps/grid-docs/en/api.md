@@ -9,6 +9,15 @@ declare const options: IGridOptions | undefined
 const grid = new Grid(options)
 ```
 
+### createGrid
+
+```ts
+declare const options: IGridOptions | undefined
+const grid = createGrid(options)
+```
+
+- `createGrid` is a lightweight wrapper around `new Grid(options)` and it returns a grid instances which wrapped by markRaw.
+
 ### Constructor Options Table
 
 | Option          | Type                                      | Default             | Description                                  |
