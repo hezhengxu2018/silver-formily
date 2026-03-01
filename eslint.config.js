@@ -7,6 +7,8 @@ export const baseOptions = {
   rules: {
     'vue/one-component-per-file': 'off',
     'ts/consistent-type-definitions': 'off',
+    'no-console': ['error', { allow: ['warn', 'error', 'log'] }],
+    'style/no-multiple-empty-lines': 'off',
   },
   formatters: {
     css: true,
