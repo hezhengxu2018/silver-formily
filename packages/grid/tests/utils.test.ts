@@ -104,6 +104,39 @@ describe('grid utils', () => {
     resolveChildren(fillGrid)
     expect(fillElement.style.gridColumn).toBe('span 3 / -1')
 
+    const fillThenNextElement = document.createElement('div')
+    const nextElement = document.createElement('div')
+    const fillThenNextGrid = {
+      ready: true,
+      columns: 3,
+      options: {
+        strictAutoFit: false,
+      },
+      children: [
+        {
+          index: 0,
+          visible: true,
+          span: 1,
+          originSpan: -1,
+          element: fillThenNextElement,
+        },
+        {
+          index: 1,
+          visible: true,
+          span: 1,
+          originSpan: 1,
+          element: nextElement,
+        },
+      ],
+    } as unknown as Grid<HTMLElement>
+    resolveChildren(fillThenNextGrid)
+    expect(fillThenNextElement.style.gridColumn).toBe('span 3 / -1')
+    expect(nextElement.style.gridColumn).toContain('span 1')
+    expect(fillThenNextGrid.children[1].column).toBe(1)
+    expect(fillThenNextGrid.children[1].row).toBe(2)
+    expect(fillThenNextGrid.children[1].shadowColumn).toBe(1)
+    expect(fillThenNextGrid.children[1].shadowRow).toBe(2)
+
     const hiddenElement = document.createElement('div')
     const strictElement = document.createElement('div')
     const grid = {

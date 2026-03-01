@@ -14,9 +14,9 @@ const props = defineProps({
 
 const gridColumnStyle = computed(() => {
   if (props.gridSpan === -1) {
-    return {
-      gridColumn: '1 / -1',
-    }
+    // gridSpan=-1 means "fill remaining columns in current row".
+    // Leave gridColumn unset so @silver-formily/grid can manage it dynamically.
+    return {}
   }
   return {
     gridColumn: `span ${props.gridSpan} / auto`,
