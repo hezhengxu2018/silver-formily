@@ -1,0 +1,58 @@
+{
+  "name": "@silver-formily/grid",
+  "type": "module",
+  "version": "0.0.2",
+  "description": "Grid package scaffold for silver-formily",
+  "author": "hezhengxu",
+  "license": "MIT",
+  "homepage": "https://github.com/hezhengxu2018/silver-formily",
+  "repository": {
+    "type": "github",
+    "url": "https://github.com/hezhengxu2018/silver-formily",
+    "directory": "packages/grid"
+  },
+  "bugs": {
+    "url": "https://github.com/hezhengxu2018/silver-formily/issues"
+  },
+  "exports": {
+    ".": "./dist/index.mjs",
+    "./package.json": "./package.json"
+  },
+  "main": "./dist/index.mjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.mts",
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsdown",
+    "dev": "tsdown --watch",
+    "test": "vitest run",
+    "coverage": "vitest run --coverage --browser.headless",
+    "lint": "eslint .",
+    "format": "eslint . --fix",
+    "check-types": "tsc --noEmit",
+    "docs:dev": "pnpm --filter grid-docs dev",
+    "docs:build": "pnpm turbo run docs:build --filter=grid-docs",
+    "docs:preview": "pnpm --filter grid-docs preview",
+    "prepublishOnly": "pnpm run build"
+  },
+  "peerDependencies": {
+    "@formily/reactive": "^2"
+  },
+  "devDependencies": {
+    "@formily/reactive": "^2.3.7",
+    "@silver-formily/typescript-config": "workspace:*",
+    "@vitest/browser-playwright": "^4.0.18",
+    "@vitest/coverage-istanbul": "4.0.18",
+    "eslint": "^9.36.0",
+    "jsdom": "^26.1.0",
+    "playwright": "^1.58.2",
+    "tsdown": "^0.18.1",
+    "typescript": "5.9.2",
+    "vitest": "^4.0.16"
+  }
+}

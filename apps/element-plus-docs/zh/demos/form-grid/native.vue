@@ -22,9 +22,9 @@ const FormGridColumn = FormGrid.GridColumn
 
 <template>
   <div>
-    <p>maxColumns 3 + minColumns 2</p>
+    <p>maxColumns 3 + minColumns 2（稳定）</p>
     <FormGrid :max-columns="3" :min-columns="2" :column-gap="4">
-      <FormGridColumn :grid-span="4">
+      <FormGridColumn :grid-span="3">
         <Cell>1</Cell>
       </FormGridColumn>
       <FormGridColumn>
@@ -43,7 +43,7 @@ const FormGridColumn = FormGrid.GridColumn
         <Cell>6</Cell>
       </FormGridColumn>
     </FormGrid>
-    <p>maxColumns 3</p>
+    <p>maxColumns 3（稳定）</p>
     <FormGrid :max-columns="3" :column-gap="4">
       <FormGridColumn :grid-span="2">
         <Cell>1</Cell>
@@ -64,8 +64,8 @@ const FormGridColumn = FormGrid.GridColumn
         <Cell>6</Cell>
       </FormGridColumn>
     </FormGrid>
-    <p>minColumns 2</p>
-    <FormGrid :min-columns="2" :column-gap="4">
+    <p>minColumns 2 + maxColumns 2（稳定）</p>
+    <FormGrid :min-columns="2" :max-columns="2" :column-gap="4">
       <FormGridColumn :grid-span="2">
         <Cell>1</Cell>
       </FormGridColumn>

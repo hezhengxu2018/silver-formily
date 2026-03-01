@@ -1,7 +1,10 @@
 {
   "extends": "@silver-formily/typescript-config/base.json",
   "compilerOptions": {
-    "baseUrl": "."
+    "jsx": "preserve",
+    "jsxImportSource": "vue",
+    "baseUrl": ".",
+    "types": ["node", "vue/jsx"]
   },
   "exclude": ["node_modules", ".vitepress/cache", ".vitepress/dist"]
 }

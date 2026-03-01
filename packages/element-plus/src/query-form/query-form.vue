@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import type { Grid, GridNode, IGridOptions } from '@formily/grid'
 import type { ISchema } from '@formily/json-schema'
+import type { Grid, GridNode, IGridOptions } from '@silver-formily/grid'
 import type { IQueryFormProps, SchemaEntry } from './types'
 import { ArrowDown, ArrowUp } from '@element-plus/icons-vue'
 import { Schema } from '@formily/json-schema'
@@ -119,7 +119,7 @@ function resolveVisibleWhen(context: ReturnType<typeof createVisibleContext>) {
 }
 
 function isActionsNode(node: GridNode, grid: Grid<HTMLElement>) {
-  if (node.element) {
+  if ('element' in node && node.element) {
     return node.element.dataset.queryFormActions !== undefined
   }
   return node.index === grid.childSize - 1

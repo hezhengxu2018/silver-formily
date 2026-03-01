@@ -1,0 +1,23 @@
+{
+  "name": "grid-docs",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "vitepress dev .",
+    "build": "vitepress build .",
+    "preview": "vitepress preview .",
+    "lint": "eslint .",
+    "format": "eslint . --fix",
+    "docs:build": "vitepress build ."
+  },
+  "dependencies": {
+    "@formily/reactive": "^2.3.7",
+    "@silver-formily/docs-toolkit": "workspace:*",
+    "@silver-formily/grid": "workspace:*",
+    "vue": "^3.3.0"
+  },
+  "devDependencies": {
+    "@silver-formily/typescript-config": "workspace:*",
+    "vitepress": "2.0.0-alpha.16"
+  }
+}
