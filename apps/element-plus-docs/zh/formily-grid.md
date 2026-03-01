@@ -104,19 +104,20 @@ interface GridNode {
 
 可以通过设置元素的 `data-grid-span` 属性来指定元素的跨度：
 
-```html
+```
 <div id="grid-container">
   <div data-grid-span="1">跨度为1</div>
   <div data-grid-span="2">跨度为2</div>
   <div data-grid-span="3">跨度为3</div>
 </div>
+
 ```
 
 ## 示例
 
 ### 基本响应式网格
 
-```html
+```
 <div id="grid-container" style="width: 100%">
   <div data-grid-span="1">Item 1</div>
   <div data-grid-span="2">Item 2</div>
@@ -137,6 +138,7 @@ interface GridNode {
 
   grid.connect(document.getElementById('grid-container'))
 </script>
+
 ```
 
 ### 自定义可见性

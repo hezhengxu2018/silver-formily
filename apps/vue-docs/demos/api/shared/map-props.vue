@@ -31,7 +31,6 @@ const FormItem = connect(
 const form = createForm({ validateFirst: true })
 
 function log(...args: unknown[]) {
-  // eslint-disable-next-line no-console
   console.log(...args)
 }
 

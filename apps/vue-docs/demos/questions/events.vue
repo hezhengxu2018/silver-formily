@@ -10,12 +10,10 @@ const { SchemaField } = createSchemaField({
 })
 
 function handleChange(e: unknown) {
-  // eslint-disable-next-line no-console
   console.log(e)
 }
 
 function handleFocus(e: unknown) {
-  // eslint-disable-next-line no-console
   console.log(e)
 }
 
