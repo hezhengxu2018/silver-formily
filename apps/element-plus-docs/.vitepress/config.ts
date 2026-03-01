@@ -80,6 +80,7 @@ export default createDocsConfig({
         children: [
           { text: 'Vue', link: 'https://vue.silver-formily.org' },
           { text: 'Reactive Vue', link: 'https://reactive-vue.silver-formily.org' },
+          { text: 'Grid', link: 'https://grid.silver-formily.org/' },
         ],
       },
     ],

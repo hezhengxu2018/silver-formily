@@ -88,7 +88,7 @@ interface useFormGrid {
 }
 ```
 
-- Grid 实例属性方法参考 [文档](/zh/formily-grid.html)
+- Grid 实例属性方法参考 [Grid 文档](https://grid.silver-formily.org/)
 
 ### FormGrid.createFormGrid
 

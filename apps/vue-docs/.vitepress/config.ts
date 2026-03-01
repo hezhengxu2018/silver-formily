@@ -29,9 +29,9 @@ const footer = {
     {
       title: 'Silver Formily',
       children: [
-        { text: 'Vue', link: SITE_URL },
         { text: 'Element Plus', link: 'https://element-plus.silver-formily.org/' },
         { text: 'Reactive Vue', link: 'https://reactive-vue.silver-formily.org/' },
+        { text: 'Grid', link: 'https://grid.silver-formily.org/' },
       ],
     },
   ],

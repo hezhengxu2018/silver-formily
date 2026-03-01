@@ -61,6 +61,7 @@ export default createDocsConfig({
         children: [
           { text: 'Element Plus', link: 'https://element-plus.silver-formily.org/' },
           { text: 'Vue', link: 'https://vue.silver-formily.org/' },
+          { text: 'Grid', link: 'https://grid.silver-formily.org/' },
         ],
       },
     ],
