@@ -8,10 +8,5 @@
     "text": "组件",
     "link": "/zh/component/quick-start",
     "activeMatch": "/zh/component/"
-  },
-  {
-    "text": "@formily/grid 文档",
-    "link": "/zh/formily-grid",
-    "activeMatch": "/zh/formily-grid"
   }
 ]
