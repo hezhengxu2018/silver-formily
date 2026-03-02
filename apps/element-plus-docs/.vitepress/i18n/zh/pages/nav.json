@@ -1,12 +1,12 @@
 [
   {
     "text": "指南",
-    "link": "/zh/guide/introduction",
-    "activeMatch": "/zh/guide/"
+    "link": "/guide/introduction",
+    "activeMatch": "/guide/"
   },
   {
     "text": "组件",
-    "link": "/zh/component/quick-start",
-    "activeMatch": "/zh/component/"
+    "link": "/component/quick-start",
+    "activeMatch": "/component/"
   }
 ]

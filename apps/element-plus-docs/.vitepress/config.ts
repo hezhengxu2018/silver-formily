@@ -24,30 +24,23 @@ export default createDocsConfig({
   },
   locales: {
     root: {
-      label: 'English',
-      lang: 'en',
-      title: 'Silver Formily Element Plus',
-      description: 'Formily bindings for Element Plus',
-    },
-    zh: {
       label: '简体中文',
       lang: 'zh-CN',
-      link: '/zh/',
       title: 'Silver Formily Element Plus',
       description: 'Element Plus 的 Formily 封装',
       themeConfig: {
         nav: zhNav,
         sidebar: {
-          '/zh/guide/': [
+          '/guide/': [
             {
               text: 'Guide',
               items: [
-                { text: '介绍', link: '/zh/guide/introduction' },
-                { text: '重大改动', link: '/zh/guide/breaking-changes' },
+                { text: '介绍', link: '/guide/introduction' },
+                { text: '重大改动', link: '/guide/breaking-changes' },
               ],
             },
           ],
-          '/zh/component/': zhComponent,
+          '/component/': zhComponent,
         },
         footer: {
           message: '本项目基于 MIT 协议开源',
@@ -116,6 +109,9 @@ export default createDocsConfig({
     },
   },
   extra: {
+    rewrites: {
+      'zh/:slug*': ':slug*',
+    },
     title: 'Silver Formily Element Plus',
     description: 'Formily bindings for Element Plus',
     sitemap: {
