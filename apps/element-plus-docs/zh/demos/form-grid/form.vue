@@ -20,7 +20,7 @@ import {
 } from '@silver-formily/vue'
 import { defineComponent, onUnmounted, ref } from 'vue'
 
-function useCollapseGrid(maxRows) {
+function useCollapseGrid(maxRows: number) {
   const grid = new Grid({
     maxColumns: 4,
     maxWidth: 240,
@@ -30,14 +30,14 @@ function useCollapseGrid(maxRows) {
         return true
       if (grid.maxRows === Infinity)
         return true
-      return node.shadowRow < maxRows + 1
+      return node.shadowRow ? node.shadowRow < maxRows + 1 : true
     },
   })
 
   const expanded = ref(false)
   const type = ref('')
 
-  const takeType = (realRows, computeRows) => {
+  const takeType = (realRows: number, computeRows: number) => {
     if (realRows < maxRows + 1)
       return 'incomplete-wrap'
     if (computeRows > maxRows)
@@ -121,9 +121,9 @@ const QueryForm = observer(
 
       return () => {
         return (
-          <Form {...props} layout="vertical" feedbackLayout="terse">
+          <Form {...props}>
             <FormGrid grid={grid}>
-              {slots.default()}
+              {slots.default?.()}
               <FormGrid.GridColumn
                 gridSpan={-1}
                 style={{ display: 'flex', justifyContent: 'space-between' }}

@@ -1,0 +1,8 @@
+{
+  "extends": "./docs.json",
+  "compilerOptions": {
+    "jsx": "preserve",
+    "jsxImportSource": "vue",
+    "types": ["node", "vue/jsx"]
+  }
+}

@@ -12,17 +12,22 @@ const FormItem = observer(
   defineComponent({
     setup(_props, { slots }) {
       const fieldRef = useField<FieldType>()
-      return () => (
-        <ElFormItem
-          label={fieldRef.value?.title}
-          required={fieldRef.value?.required}
-          help={fieldRef.value?.selfErrors?.length ? fieldRef.value?.selfErrors : undefined}
-          extra={fieldRef.value?.description}
-          validateStatus={fieldRef.value?.validateStatus}
-        >
-          {slots?.default?.()}
-        </ElFormItem>
-      )
+      return () => {
+        const validateStatus
+          = fieldRef.value?.validateStatus === 'warning'
+            ? ''
+            : fieldRef.value?.validateStatus
+        return (
+          <ElFormItem
+            label={fieldRef.value?.title}
+            required={fieldRef.value?.required}
+            error={fieldRef.value?.selfErrors?.[0]}
+            validateStatus={validateStatus}
+          >
+            {slots?.default?.()}
+          </ElFormItem>
+        )
+      }
     },
   }),
 )

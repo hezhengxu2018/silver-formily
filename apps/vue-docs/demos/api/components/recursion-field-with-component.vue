@@ -27,11 +27,13 @@ const ArrayItems = observer(
       return () => {
         const field = fieldRef.value
         const schema = schemaRef.value
+        const itemSchema = schema?.items
+        const normalizedItemSchema = Array.isArray(itemSchema) ? itemSchema[0] : itemSchema
         const items = isArrayField(field) && Array.isArray(field.value)
           ? field.value.map((item, index) => (
               <div key={item.id ?? index} style={{ marginBottom: '10px' }}>
                 <ElSpace>
-                  <RecursionField schema={schema?.items} name={index} />
+                  <RecursionField schema={normalizedItemSchema} name={index} />
                   <ElButton onClick={() => field?.remove(index)}>
                     Remove
                   </ElButton>

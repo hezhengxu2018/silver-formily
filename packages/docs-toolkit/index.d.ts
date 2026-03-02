@@ -43,4 +43,4 @@ export interface DocsConfigOptions extends Omit<UserConfig<DocsThemeConfig>, 'vi
 }
 
 export function createDocsConfig(options?: DocsConfigOptions): UserConfig<DocsThemeConfig>
-export type { DocsSidebar, DocsSidebarItem, DocsThemeConfig as ThemeConfig }
+export type { DocsThemeConfig as ThemeConfig }

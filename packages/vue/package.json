@@ -34,6 +34,7 @@
     "build": "vite build",
     "lint": "eslint .",
     "format": "eslint . --fix",
+    "check-types": "vue-tsc --noEmit",
     "docs:dev": "pnpm --filter vue-docs dev",
     "docs:build": "pnpm turbo run docs:build --filter=vue-docs",
     "commit": "czg",
