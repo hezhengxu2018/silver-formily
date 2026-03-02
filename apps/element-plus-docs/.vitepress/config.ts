@@ -103,11 +103,11 @@ export default createDocsConfig({
     optimizeDeps: {
       include: [
         '@formily/core',
-        '@formily/grid',
         '@formily/reactive',
         '@formily/shared',
         '@silver-formily/reactive-vue',
         '@silver-formily/vue',
+        '@silver-formily/grid',
         '@element-plus/icons-vue',
         'element-plus',
         'lodash-es',

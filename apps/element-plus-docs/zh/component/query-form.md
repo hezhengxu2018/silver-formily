@@ -16,7 +16,7 @@
 ## Markup Schema 案例
 
 :::tip 提示
-配置跨列可以使用`@formily/grid`的`data-grid-span`属性，减少GridColumn的额外嵌套。
+配置跨列可以使用`@silver-formily/grid`的`data-grid-span`属性，减少GridColumn的额外嵌套。
 :::
 
 :::demo
