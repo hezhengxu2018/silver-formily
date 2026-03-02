@@ -3,7 +3,6 @@ import { fileURLToPath } from 'node:url'
 import { transformerTwoslash } from '@shikijs/vitepress-twoslash'
 import { createDocsConfig } from '@silver-formily/docs-toolkit'
 import vueJsx from '@vitejs/plugin-vue-jsx'
-import VueMacros from 'unplugin-vue-macros/vite'
 import pkg from '../../../packages/vue/package.json'
 import { enLocale, enSidebar } from './i18n/en'
 import { zhLocale, zhSidebar } from './i18n/zh'
@@ -73,13 +72,7 @@ export default createDocsConfig({
   },
   vite: {
     plugins: [
-      VueMacros({
-        setupComponent: false,
-        setupSFC: false,
-        plugins: {
-          vueJsx: vueJsx(),
-        },
-      }),
+      vueJsx(),
     ],
     optimizeDeps: {
       include: [
