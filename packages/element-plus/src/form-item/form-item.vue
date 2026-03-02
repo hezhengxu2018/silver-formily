@@ -254,7 +254,7 @@ provide(formItemContextKey, context)
             </div>
           </template>
         </ElTooltip>
-        <ElTooltip v-if="props.tooltip && formlayout.tooltipLayout !== 'text'" :content="props.tooltip">
+        <ElTooltip v-if="props.tooltip && !isVNode(props.tooltip) && formlayout.tooltipLayout !== 'text'" :content="props.tooltip">
           <ElIcon :class="`${prefixCls}-label-tooltip`">
             <InfoFilled />
           </ElIcon>

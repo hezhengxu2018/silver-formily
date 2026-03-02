@@ -14,7 +14,7 @@ This workspace provides the shared VitePress configuration + CLI wrapper consume
 | ---------------------------------- | ------------------------------------------------------------------------------------------ |
 | `pnpm lint`                        | Runs the Antfu ESLint preset across JS/TS/Vue files in this package only.                  |
 | `pnpm lint:fix`                    | Same as above with `--fix`.                                                                |
-| `pnpm typecheck`                   | Executes `tsc --noEmit` using the local tsconfig—run this after editing type declarations. |
+| `pnpm check-types`                 | Executes `tsc --noEmit` using the local tsconfig—run this after editing type declarations. |
 | `pnpm format` / `pnpm lint` (root) | Still required—this package participates in the repo-wide Turborepo tasks.                 |
 
 ## Development Notes

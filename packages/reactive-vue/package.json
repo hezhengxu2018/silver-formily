@@ -34,7 +34,7 @@
     "test:coverage": "vitest run --coverage --coverage.provider=istanbul --coverage.reporter=clover --coverage.reporter=json --coverage.reporter=html",
     "lint": "eslint .",
     "format": "eslint . --fix",
-    "typecheck": "tsc --noEmit",
+    "check-types": "vue-tsc --noEmit",
     "prepublishOnly": "pnpm run build"
   },
   "peerDependencies": {

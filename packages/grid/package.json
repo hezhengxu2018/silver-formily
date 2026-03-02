@@ -34,7 +34,7 @@
     "coverage": "vitest run --coverage --browser.headless",
     "lint": "eslint .",
     "format": "eslint . --fix",
-    "check-types": "tsc --noEmit",
+    "check-types": "vue-tsc --noEmit",
     "docs:dev": "pnpm --filter grid-docs dev",
     "docs:build": "pnpm turbo run docs:build --filter=grid-docs",
     "docs:preview": "pnpm --filter grid-docs preview",

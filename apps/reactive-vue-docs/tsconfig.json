@@ -1,5 +1,5 @@
 {
-  "extends": "@silver-formily/typescript-config/base.json",
+  "extends": "@silver-formily/typescript-config/docs.json",
   "compilerOptions": {
     "baseUrl": "."
   },

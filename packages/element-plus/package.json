@@ -43,6 +43,7 @@
     "test:coverage": "vitest run --coverage --browser.headless",
     "lint": "eslint .",
     "format": "eslint . --fix",
+    "check-types": "vue-tsc --noEmit --project tsconfig.check.json",
     "docs:dev": "pnpm --filter element-plus-docs dev",
     "docs:build": "pnpm turbo run docs:build --filter=element-plus-docs",
     "docs:preview": "pnpm --filter element-plus-docs preview",

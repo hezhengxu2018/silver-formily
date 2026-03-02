@@ -8,6 +8,7 @@
     "preview": "vitepress preview .",
     "lint": "eslint .",
     "format": "eslint . --fix",
+    "check-types": "vue-tsc --noEmit",
     "docs:build": "vitepress build ."
   },
   "dependencies": {

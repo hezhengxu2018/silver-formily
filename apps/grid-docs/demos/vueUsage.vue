@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { GridNode } from '@silver-formily/grid'
 import { Grid } from '@silver-formily/grid'
 import { onBeforeUnmount, onMounted, ref, watch } from 'vue'
 
@@ -20,7 +21,7 @@ const items = [
 
 let dispose: (() => void) | undefined
 
-const createVisibleRule = () => (node: { originSpan: number }) => (hideSpan2.value ? node.originSpan !== 2 : true)
+const createVisibleRule = () => (node: GridNode) => (hideSpan2.value ? node.originSpan !== 2 : true)
 
 const grid = new Grid({
   minColumns: 2,

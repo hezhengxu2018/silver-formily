@@ -8,6 +8,7 @@
     "preview": "vitepress preview .",
     "lint": "eslint .",
     "format": "eslint . --fix",
+    "check-types": "vue-tsc --noEmit",
     "docs:build": "vitepress build ."
   },
   "dependencies": {
@@ -19,7 +20,8 @@
     "@silver-formily/docs-toolkit": "workspace:*",
     "@silver-formily/reactive-vue": "workspace:*",
     "@silver-formily/vue": "workspace:*",
-    "element-plus": "^2.13.0"
+    "element-plus": "^2.13.0",
+    "vue": "^3.3.0"
   },
   "devDependencies": {
     "@shikijs/vitepress-twoslash": "^3.21.0",
