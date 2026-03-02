@@ -39,8 +39,7 @@ basicGrid
 
 展示在 Vue 中推荐的接入方式：
 
-- 直接 `new Grid(...)`，实例已默认跳过 Vue 深响应式代理。
-- 通过 `watch` 更新 `grid.options`，让布局规则与表单状态联动。
+- 使用 `createGrid` 创建实例来跳过 @formily/reactive 的深响应式代理。
 
 :::demo
 vueUsage
@@ -48,9 +47,7 @@ vueUsage
 
 ## 重大改动
 
-- `Grid` 在构造时会自动标记为 raw（内置 Vue `__v_skip`），通常不需要再手动 `markRaw`。
-
-- 在重构时去掉了polyfill的ResizeObserver，现在依赖浏览器原生的ResizeObserver，在使用时需要注意浏览器的版本。
+- 在重构时去掉了polyfill的ResizeObserver，现在依赖浏览器原生的ResizeObserver，在使用时需要注意浏览器的版本需要 Chrome 64 及以上。
 
 - 本库略微添加了一些对SSR的支持，但算不上完善，因为从定位上来说这就是一个运行时才会获取与浏览器DOM绑定的库，其核心的功能也是在运行时计算正确的节点。
 
