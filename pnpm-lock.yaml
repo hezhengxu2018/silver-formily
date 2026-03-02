@@ -74,9 +74,6 @@ importers:
       '@formily/core':
         specifier: ^2.3.7
         version: 2.3.7
-      '@formily/grid':
-        specifier: ^2.3.7
-        version: 2.3.7(typescript@5.9.2)
       '@formily/json-schema':
         specifier: ^2.3.7
         version: 2.3.7(typescript@5.9.2)
@@ -92,6 +89,9 @@ importers:
       '@silver-formily/element-plus':
         specifier: workspace:*
         version: link:../../packages/element-plus
+      '@silver-formily/grid':
+        specifier: workspace:*
+        version: link:../../packages/grid
       '@silver-formily/reactive-vue':
         specifier: workspace:*
         version: link:../../packages/reactive-vue
@@ -1245,12 +1245,6 @@ packages:
     resolution: {integrity: sha512-oqLE6gOoM2xjwlUrfH4cyjscO4kZJNpidtVytZeBvYp9v4OgL9EUm89laPcF4cnpWE2lZIqqzfGluOySxku8WQ==}
     engines: {npm: '>=3.0.0'}
 
-  '@formily/grid@2.3.7':
-    resolution: {integrity: sha512-QTmmFkNVxcL+nQVvrqhBrUwhRCXDVy5iycTb4IJILqK4puYUKRajbsbm0oudTE0Yyo6ovpM6SD8QtdFU/cwLLw==}
-    engines: {npm: '>=3.0.0'}
-    peerDependencies:
-      typescript: 4.x || 5.x
-
   '@formily/json-schema@2.3.7':
     resolution: {integrity: sha512-YmDmH98sJLOPO5GAq5NJw+NP3i2vCELBoz4Y4w+nhpKI5n8eQHe2GczQKntWDOnTfchXD2dXcgpb0ub6KNeATw==}
     engines: {npm: '>=3.0.0'}
@@ -1341,9 +1335,6 @@ packages:
 
   '@jridgewell/trace-mapping@0.3.31':
     resolution: {integrity: sha512-zzNR+SdQSDJzc8joaeP8QQoCQr8NuYx2dIIytl1QeBEZHJ9uW6hebsrYgbz8hJwUQao3TWCMtmfV8Nu1twOLAw==}
-
-  '@juggle/resize-observer@3.4.0':
-    resolution: {integrity: sha512-dfLbk+PwWvFzSxwk3n5ySL0hfBog779o8h68wK/7/APo/7cgyWp5jcXockbxdk5kFRkbeXWm4Fbi9FrdN381sA==}
 
   '@manypkg/find-root@1.1.0':
     resolution: {integrity: sha512-mki5uBvhHzO8kYYix/WRy2WX8S3B5wdVSc9D6KcU5lQNglP2yt58/VfLuAK49glRXChosY8ap2oJ1qgma3GUVA==}
@@ -7139,12 +7130,6 @@ snapshots:
       '@formily/shared': 2.3.7
       '@formily/validator': 2.3.7
 
-  '@formily/grid@2.3.7(typescript@5.9.2)':
-    dependencies:
-      '@formily/reactive': 2.3.7
-      '@juggle/resize-observer': 3.4.0
-      typescript: 5.9.2
-
   '@formily/json-schema@2.3.7(typescript@5.9.2)':
     dependencies:
       '@formily/core': 2.3.7
@@ -7242,8 +7227,6 @@ snapshots:
     dependencies:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.5
-
-  '@juggle/resize-observer@3.4.0': {}
 
   '@manypkg/find-root@1.1.0':
     dependencies:

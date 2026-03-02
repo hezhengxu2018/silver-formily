@@ -1,6 +1,5 @@
 <script setup lang="tsx">
 import { createForm } from '@formily/core'
-import { Grid } from '@formily/grid'
 import { autorun } from '@formily/reactive'
 import {
   DatePicker,
@@ -13,6 +12,7 @@ import {
   Select,
   Submit,
 } from '@silver-formily/element-plus'
+import { Grid } from '@silver-formily/grid'
 import { observer } from '@silver-formily/reactive-vue'
 import {
   createSchemaField,
