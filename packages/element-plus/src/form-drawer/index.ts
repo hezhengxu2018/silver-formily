@@ -11,11 +11,14 @@ import { createApp, h, ref } from 'vue'
 import { getTransitionDuration, isVueOptions, loading } from '../__builtins__'
 import DrawerContent from './drawer-content.vue'
 
-export function FormDrawer<T extends object = any>(
+export function FormDrawer<
+  T extends object = any,
+  const DynamicMiddlewareNames extends readonly string[] = [],
+>(
   title: IFormDrawerProps | string,
   content?: Component | FormDrawerSlotContent,
-  dynamicMiddlewareNames?: string[],
-): IFormDrawer<T> {
+  dynamicMiddlewareNames?: DynamicMiddlewareNames,
+): IFormDrawer<T, DynamicMiddlewareNames[number]> {
   const env: {
     root?: HTMLElement
     form?: Form<T>
@@ -149,7 +152,7 @@ export function FormDrawer<T extends object = any>(
     }
   }
 
-  return formDrawer as IFormDrawer<T>
+  return formDrawer as IFormDrawer<T, DynamicMiddlewareNames[number]>
 }
 
 export default FormDrawer

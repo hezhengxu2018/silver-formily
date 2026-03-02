@@ -33,12 +33,33 @@ export type FormDrawerSlotContent = SlotsType<FormDrawerSlots> | {
 }
 
 // #region iformdrawer
-export interface IFormDrawer<T extends object = any> {
-  forOpen: (middleware: IMiddleware<IFormProps<T>>) => IFormDrawer<T>
-  forConfirm: (middleware: IMiddleware<Form<T>>) => IFormDrawer<T>
-  forCancel: (middleware: IMiddleware<Form<T>>) => IFormDrawer<T>
-  [key: `for${string}`]: (middleware: IMiddleware<IFormProps<T>> | IMiddleware<Form<T>>) => IFormDrawer<T>
+type ReservedFormDrawerMiddlewareName = 'open' | 'confirm' | 'cancel'
+type ReservedFormDrawerMiddlewareMethodName = `for${Capitalize<ReservedFormDrawerMiddlewareName>}`
+
+type NormalizeFormDrawerDynamicMiddlewareName<T extends string> = string extends T
+  ? string
+  : T extends `${infer Head}-${infer Tail}`
+    ? `${Lowercase<Head>}${Capitalize<NormalizeFormDrawerDynamicMiddlewareName<Tail>>}`
+    : T extends `${infer Head}_${infer Tail}`
+      ? `${Lowercase<Head>}${Capitalize<NormalizeFormDrawerDynamicMiddlewareName<Tail>>}`
+      : T extends `${infer Head} ${infer Tail}`
+        ? `${Lowercase<Head>}${Capitalize<NormalizeFormDrawerDynamicMiddlewareName<Tail>>}`
+        : T
+
+type FormDrawerDynamicMiddlewareMethodName<T extends string> = `for${Capitalize<NormalizeFormDrawerDynamicMiddlewareName<T>>}`
+
+type FormDrawerDynamicMiddlewareMethods<T extends object, DynamicMiddlewareName extends string> = {
+  [K in FormDrawerDynamicMiddlewareMethodName<DynamicMiddlewareName> as K extends ReservedFormDrawerMiddlewareMethodName ? never : K]: (middleware: IMiddleware<Form<T>>) => IFormDrawer<T, DynamicMiddlewareName>
+}
+
+interface IFormDrawerBase<T extends object = any, DynamicMiddlewareName extends string = never> {
+  forOpen: (middleware: IMiddleware<IFormProps<T>>) => IFormDrawer<T, DynamicMiddlewareName>
+  forConfirm: (middleware: IMiddleware<Form<T>>) => IFormDrawer<T, DynamicMiddlewareName>
+  forCancel: (middleware: IMiddleware<Form<T>>) => IFormDrawer<T, DynamicMiddlewareName>
   open: (props?: IFormProps<T>) => Promise<any>
   close: () => void
 }
+
+export type IFormDrawer<T extends object = any, DynamicMiddlewareName extends string = never>
+  = IFormDrawerBase<T, DynamicMiddlewareName> & FormDrawerDynamicMiddlewareMethods<T, DynamicMiddlewareName>
 // #endregion iformdrawer
