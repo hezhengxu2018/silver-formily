@@ -9,7 +9,7 @@ const { SchemaField, SchemaStringField } = createSchemaField({
 
 const form = createForm()
 
-function handleSubmit(values) {
+function handleSubmit(values: Record<string, any>) {
   return new Promise((resolve) => {
     setTimeout(() => {
       console.log(values)

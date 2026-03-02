@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { createForm, onFieldChange, onFieldReact } from '@formily/core'
+import { createForm, isField, onFieldChange, onFieldReact } from '@formily/core'
 import { ArrayCollapse, FormItem, Input, Submit } from '@silver-formily/element-plus'
 import { createSchemaField, FormProvider } from '@silver-formily/vue'
 
@@ -22,6 +22,8 @@ const form = createForm({
     // 主动联动模式
     onFieldChange('array.*.aa', ['value'], (field, form) => {
       form.setFieldState(field.query('.bb'), (state) => {
+        if (!isField(field))
+          return
         state.visible = field.value !== '123'
       })
     })
@@ -32,7 +34,7 @@ const form = createForm({
   },
 })
 
-async function log(values) {
+async function log(values: Record<string, any>) {
   console.log(values)
 }
 </script>

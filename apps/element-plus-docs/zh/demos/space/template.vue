@@ -12,7 +12,7 @@ import { Field, FormProvider, VoidField } from '@silver-formily/vue'
 
 const form = createForm()
 
-async function log(value) {
+function log(value: Record<string, any>) {
   console.log(value)
 }
 </script>

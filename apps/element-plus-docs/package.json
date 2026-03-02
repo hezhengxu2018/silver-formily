@@ -21,6 +21,7 @@
     "@silver-formily/element-plus": "workspace:*",
     "@silver-formily/reactive-vue": "workspace:*",
     "@silver-formily/vue": "workspace:*",
+    "@types/lodash-es": "^4.17.12",
     "element-plus": "^2.13.2",
     "lodash-es": "^4.17.23",
     "shiki": "^3.22.0",

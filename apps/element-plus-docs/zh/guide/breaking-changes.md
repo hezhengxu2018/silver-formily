@@ -6,6 +6,8 @@
 
 - 从 2.x 版本起，组件库的vue绑定库从 `@formily/vue` 迁移至 `@silver-formily/vue`。安装 `peerDependencies` 时请注意。使用时 Field、SchemaField等组件也需要从 `@silver-formily/vue` 中引入。具体的使用方式请参考[官方文档](https://vue.silver-formily.org/)
 
+- 从 3.x 版本起，组件库的grid封装从 `@formily/grid` 迁移到了 `@silver-formily/grid`，详细的使用请参考独立文档，新建Grid实例请使用其内置的 `createGrid` 函数。
+
 ::: warning 注意
 `@silver-formily/vue` 对的绑定方式也做了修改，不再是`value` / `onChange`的方式。使用自定义组件时请务必注意。
 :::

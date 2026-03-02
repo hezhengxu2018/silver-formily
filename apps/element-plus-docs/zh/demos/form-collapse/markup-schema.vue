@@ -21,7 +21,7 @@ const { SchemaField, SchemaVoidField, SchemaStringField } = createSchemaField({
 
 const form = createForm()
 const formCollapse = FormCollapse.createFormCollapse()
-async function log(values) {
+async function log(values: Record<string, any>) {
   console.log(values)
 }
 </script>

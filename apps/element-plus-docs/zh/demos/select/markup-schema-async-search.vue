@@ -70,7 +70,7 @@ const { SchemaField, SchemaStringField } = createSchemaField({
   },
 })
 
-async function log(value) {
+function log(value: Record<string, any>) {
   console.log(value)
 }
 </script>

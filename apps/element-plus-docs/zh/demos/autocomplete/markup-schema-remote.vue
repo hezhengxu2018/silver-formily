@@ -30,7 +30,7 @@ function remoteFetch(query: string, cb: (items: typeof languageOptions) => void)
   setTimeout(() => cb(results), 400)
 }
 
-async function log(value: any) {
+async function log(value: Record<string, any>) {
   console.log(value)
 }
 </script>
