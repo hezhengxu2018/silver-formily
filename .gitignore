@@ -14,6 +14,9 @@ node_modules
 
 # Testing
 coverage
+codecov
+codecov.SHA256SUM
+codecov.SHA256SUM.sig
 
 # Turbo
 .turbo
