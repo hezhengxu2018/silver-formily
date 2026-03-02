@@ -53,7 +53,7 @@ const schema = {
   },
 }
 
-async function log(values) {
+async function log(values: Record<string, any>) {
   console.log(values)
 }
 </script>

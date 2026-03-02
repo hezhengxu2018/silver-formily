@@ -91,7 +91,7 @@ const schema = {
 const form = createForm()
 const formTab = FormTab.createFormTab()
 
-async function log(values) {
+async function log(values: Record<string, any>) {
   console.log(values)
 }
 </script>

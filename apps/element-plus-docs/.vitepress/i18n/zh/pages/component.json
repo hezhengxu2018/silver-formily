@@ -29,13 +29,11 @@
       },
       {
         "link": "/zh/component/query-form",
-        "text": "QueryForm 查询表单",
-        "promotion": "2.4.0"
+        "text": "QueryForm 查询表单"
       },
       {
         "link": "/zh/component/query-form-item",
-        "text": "QueryFormItem 查询表单项",
-        "promotion": "2.4.0"
+        "text": "QueryFormItem 查询表单项"
       },
       {
         "link": "/zh/component/space",
@@ -64,18 +62,15 @@
       },
       {
         "link": "/zh/component/autocomplete",
-        "text": "Autocomplete 自动补全输入框",
-        "promotion": "2.3.0"
+        "text": "Autocomplete 自动补全输入框"
       },
       {
         "link": "/zh/component/input-tag",
-        "text": "InputTag 标签输入框",
-        "promotion": "2.3.0"
+        "text": "InputTag 标签输入框"
       },
       {
         "link": "/zh/component/mention",
-        "text": "Mention 提及输入框",
-        "promotion": "2.3.0"
+        "text": "Mention 提及输入框"
       },
       {
         "link": "/zh/component/input-number",
@@ -95,8 +90,7 @@
       },
       {
         "link": "/zh/component/segmented",
-        "text": "Segmented 分段选择器",
-        "promotion": "2.2.0"
+        "text": "Segmented 分段选择器"
       },
       {
         "link": "/zh/component/select",
@@ -104,13 +98,11 @@
       },
       {
         "link": "/zh/component/tree-select",
-        "text": "TreeSelect 树形选择框",
-        "promotion": "1.0.0"
+        "text": "TreeSelect 树形选择框"
       },
       {
         "link": "/zh/component/select-table",
-        "text": "SelectTable 选择表格",
-        "promotion": "1.0.0"
+        "text": "SelectTable 选择表格"
       },
       {
         "link": "/zh/component/cascader",
@@ -118,8 +110,7 @@
       },
       {
         "link": "/zh/component/tree",
-        "text": "Tree 树形选择器",
-        "promotion": "1.0.0"
+        "text": "Tree 树形选择器"
       },
       {
         "link": "/zh/component/transfer",
@@ -131,23 +122,19 @@
       },
       {
         "link": "/zh/component/rate",
-        "text": "Rate 评分",
-        "promotion": "2.2.0"
+        "text": "Rate 评分"
       },
       {
         "link": "/zh/component/slider",
-        "text": "Slider 滑块",
-        "promotion": "2.2.0"
+        "text": "Slider 滑块"
       },
       {
         "link": "/zh/component/color-picker",
-        "text": "ColorPicker 颜色选择器",
-        "promotion": "2.3.0"
+        "text": "ColorPicker 颜色选择器"
       },
       {
         "link": "/zh/component/color-picker-panel",
-        "text": "ColorPickerPanel 颜色面板",
-        "promotion": "2.3.0"
+        "text": "ColorPickerPanel 颜色面板"
       },
       {
         "link": "/zh/component/date-picker",
@@ -163,8 +150,7 @@
       },
       {
         "link": "/zh/component/time-select",
-        "text": "TimeSelect 时间选择",
-        "promotion": "1.0.0"
+        "text": "TimeSelect 时间选择"
       },
       {
         "link": "/zh/component/upload",
@@ -201,8 +187,7 @@
       },
       {
         "link": "/zh/component/array-list-tabs",
-        "text": "ArrayListTabs 自增选项卡列表",
-        "promotion": "1.0.0"
+        "text": "ArrayListTabs 自增选项卡列表"
       },
       {
         "link": "/zh/component/editable",

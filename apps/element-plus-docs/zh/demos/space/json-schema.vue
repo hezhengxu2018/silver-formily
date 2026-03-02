@@ -103,7 +103,7 @@ const schema = {
 
 const form = createForm()
 
-async function log(value) {
+function log(value: Record<string, any>) {
   console.log(value)
 }
 </script>

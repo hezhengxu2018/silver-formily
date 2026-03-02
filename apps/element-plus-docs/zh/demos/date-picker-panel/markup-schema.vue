@@ -11,7 +11,7 @@ const { SchemaField, SchemaStringField, SchemaArrayField } = createSchemaField({
   },
 })
 
-async function onSubmit(value) {
+async function onSubmit(value: Record<string, any>) {
   console.log(value)
 }
 </script>

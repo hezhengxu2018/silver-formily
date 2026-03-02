@@ -12,7 +12,7 @@ const predefineColors = [
   '#909399',
 ]
 
-async function log(value) {
+function log(value: Record<string, any>) {
   console.log(value)
 }
 </script>
