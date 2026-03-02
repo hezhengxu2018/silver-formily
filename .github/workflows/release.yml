@@ -140,12 +140,15 @@ jobs:
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
-      - name: Release packages
+      - name: Publish packages and create GitHub releases
         if: steps.commit.outputs.has_changes == 'true'
+        uses: changesets/action@v1
+        with:
+          publish: pnpm release
+          createGithubReleases: true
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: pnpm release
 
       - name: Skip release
         if: steps.commit.outputs.has_changes != 'true'
