@@ -17,6 +17,7 @@ const DEFAULT_HEAD = [
 const DEFAULT_NO_EXTERNAL = [
   'vitepress-theme-element-plus',
   'vitepress-better-demo-plugin',
+  'vitepress-plugin-nprogress',
 ]
 const DEFAULT_OPTIMIZE_EXCLUDE = ['vitepress-theme-element-plus']
 
