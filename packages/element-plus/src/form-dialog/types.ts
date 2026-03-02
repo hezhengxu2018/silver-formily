@@ -33,12 +33,33 @@ export type FormDialogSlotContent = SlotsType<FormDialogSlots> | {
 }
 
 // #region iformdialog
-export interface IFormDialog<T extends object = any> {
-  forOpen: (middleware: IMiddleware<IFormProps<T>>) => IFormDialog<T>
-  forConfirm: (middleware: IMiddleware<Form<T>>) => IFormDialog<T>
-  forCancel: (middleware: IMiddleware<Form<T>>) => IFormDialog<T>
-  [key: `for${string}`]: (middleware: IMiddleware<IFormProps<T>> | IMiddleware<Form<T>>) => IFormDialog<T>
+type ReservedFormDialogMiddlewareName = 'open' | 'confirm' | 'cancel'
+type ReservedFormDialogMiddlewareMethodName = `for${Capitalize<ReservedFormDialogMiddlewareName>}`
+
+type NormalizeFormDialogDynamicMiddlewareName<T extends string> = string extends T
+  ? string
+  : T extends `${infer Head}-${infer Tail}`
+    ? `${Lowercase<Head>}${Capitalize<NormalizeFormDialogDynamicMiddlewareName<Tail>>}`
+    : T extends `${infer Head}_${infer Tail}`
+      ? `${Lowercase<Head>}${Capitalize<NormalizeFormDialogDynamicMiddlewareName<Tail>>}`
+      : T extends `${infer Head} ${infer Tail}`
+        ? `${Lowercase<Head>}${Capitalize<NormalizeFormDialogDynamicMiddlewareName<Tail>>}`
+        : T
+
+type FormDialogDynamicMiddlewareMethodName<T extends string> = `for${Capitalize<NormalizeFormDialogDynamicMiddlewareName<T>>}`
+
+type FormDialogDynamicMiddlewareMethods<T extends object, DynamicMiddlewareName extends string> = {
+  [K in FormDialogDynamicMiddlewareMethodName<DynamicMiddlewareName> as K extends ReservedFormDialogMiddlewareMethodName ? never : K]: (middleware: IMiddleware<Form<T>>) => IFormDialog<T, DynamicMiddlewareName>
+}
+
+interface IFormDialogBase<T extends object = any, DynamicMiddlewareName extends string = never> {
+  forOpen: (middleware: IMiddleware<IFormProps<T>>) => IFormDialog<T, DynamicMiddlewareName>
+  forConfirm: (middleware: IMiddleware<Form<T>>) => IFormDialog<T, DynamicMiddlewareName>
+  forCancel: (middleware: IMiddleware<Form<T>>) => IFormDialog<T, DynamicMiddlewareName>
   open: (props?: IFormProps<T>) => Promise<any>
   close: () => void
 }
+
+export type IFormDialog<T extends object = any, DynamicMiddlewareName extends string = never>
+  = IFormDialogBase<T, DynamicMiddlewareName> & FormDialogDynamicMiddlewareMethods<T, DynamicMiddlewareName>
 // #endregion iformdialog

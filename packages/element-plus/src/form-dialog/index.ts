@@ -11,11 +11,14 @@ import { createApp, h, ref } from 'vue'
 import { getTransitionDuration, isVueOptions, loading } from '../__builtins__'
 import DialogContent from './dialog-content.vue'
 
-export function FormDialog<T extends object = any>(
+export function FormDialog<
+  T extends object = any,
+  const DynamicMiddlewareNames extends readonly string[] = [],
+>(
   title: IFormDialogProps | string,
   content?: Component | FormDialogSlotContent,
-  dynamicMiddlewareNames?: string[],
-): IFormDialog<T> {
+  dynamicMiddlewareNames?: DynamicMiddlewareNames,
+): IFormDialog<T, DynamicMiddlewareNames[number]> {
   const env: {
     root?: HTMLElement
     form?: Form<T>
@@ -150,7 +153,7 @@ export function FormDialog<T extends object = any>(
     }
   }
 
-  return formDialog as IFormDialog<T>
+  return formDialog as IFormDialog<T, DynamicMiddlewareNames[number]>
 }
 
 export default FormDialog
