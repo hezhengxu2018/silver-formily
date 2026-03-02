@@ -61,6 +61,7 @@
     "@silver-formily/typescript-config": "workspace:*",
     "@types/node": "^24.3.0",
     "@vitejs/plugin-vue": "^6.0.3",
+    "@vue/language-core": "~3.0.1",
     "@vue/shared": "^3.5.27",
     "commitlint": "^19.8.1",
     "cz-git": "^1.12.0",
