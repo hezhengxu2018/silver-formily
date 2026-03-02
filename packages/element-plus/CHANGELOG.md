@@ -1,5 +1,14 @@
 # 更新日志
 
+## 3.0.1
+
+### Patch Changes
+
+- e062a07: 修复在grid-span值为-1时的布局异常
+- 64e96c8: 增强form-dialog和form-drawer的类型推断
+- Updated dependencies [e062a07]
+  - @silver-formily/grid@1.0.1
+
 ## 3.0.0
 
 ### Major Changes
