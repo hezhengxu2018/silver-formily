@@ -128,7 +128,7 @@ importers:
         version: 5.9.2
       vitepress:
         specifier: 2.0.0-alpha.16
-        version: 2.0.0-alpha.16(@types/node@24.10.13)(async-validator@4.2.5)(axios@1.13.5)(change-case@5.4.4)(jiti@2.6.1)(postcss@8.5.6)(sass-embedded@1.97.3)(sass@1.97.3)(typescript@5.9.2)(yaml@2.8.2)
+        version: 2.0.0-alpha.16(@types/node@24.10.13)(async-validator@4.2.5)(axios@1.13.5)(change-case@5.4.4)(jiti@2.6.1)(nprogress@0.2.0)(postcss@8.5.6)(sass-embedded@1.97.3)(sass@1.97.3)(typescript@5.9.2)(yaml@2.8.2)
 
   apps/grid-docs:
     dependencies:
@@ -150,7 +150,7 @@ importers:
         version: link:../../packages/typescript-config
       vitepress:
         specifier: 2.0.0-alpha.16
-        version: 2.0.0-alpha.16(@types/node@24.10.13)(async-validator@4.2.5)(axios@1.13.5)(change-case@5.4.4)(jiti@2.6.1)(postcss@8.5.6)(sass-embedded@1.97.3)(sass@1.97.3)(typescript@5.9.2)(yaml@2.8.2)
+        version: 2.0.0-alpha.16(@types/node@24.10.13)(async-validator@4.2.5)(axios@1.13.5)(change-case@5.4.4)(jiti@2.6.1)(nprogress@0.2.0)(postcss@8.5.6)(sass-embedded@1.97.3)(sass@1.97.3)(typescript@5.9.2)(yaml@2.8.2)
 
   apps/reactive-vue-docs:
     dependencies:
@@ -169,7 +169,7 @@ importers:
         version: link:../../packages/typescript-config
       vitepress:
         specifier: 2.0.0-alpha.16
-        version: 2.0.0-alpha.16(@types/node@24.10.13)(async-validator@4.2.5)(axios@1.13.5)(change-case@5.4.4)(jiti@2.6.1)(postcss@8.5.6)(sass-embedded@1.97.3)(sass@1.97.3)(typescript@5.9.2)(yaml@2.8.2)
+        version: 2.0.0-alpha.16(@types/node@24.10.13)(async-validator@4.2.5)(axios@1.13.5)(change-case@5.4.4)(jiti@2.6.1)(nprogress@0.2.0)(postcss@8.5.6)(sass-embedded@1.97.3)(sass@1.97.3)(typescript@5.9.2)(yaml@2.8.2)
 
   apps/vue-docs:
     dependencies:
@@ -221,7 +221,7 @@ importers:
         version: 2.14.5(@vueuse/core@14.2.1(vue@3.5.28(typescript@5.9.2)))(esbuild@0.27.3)(rolldown@1.0.0-rc.3)(rollup@4.57.1)(typescript@5.9.2)(vite@7.3.1(@types/node@24.10.13)(jiti@2.6.1)(sass-embedded@1.97.3)(sass@1.97.3)(yaml@2.8.2))(vue-tsc@3.2.5(typescript@5.9.2))(vue@3.5.28(typescript@5.9.2))
       vitepress:
         specifier: 2.0.0-alpha.16
-        version: 2.0.0-alpha.16(@types/node@24.10.13)(async-validator@4.2.5)(axios@1.13.5)(change-case@5.4.4)(jiti@2.6.1)(postcss@8.5.6)(sass-embedded@1.97.3)(sass@1.97.3)(typescript@5.9.2)(yaml@2.8.2)
+        version: 2.0.0-alpha.16(@types/node@24.10.13)(async-validator@4.2.5)(axios@1.13.5)(change-case@5.4.4)(jiti@2.6.1)(nprogress@0.2.0)(postcss@8.5.6)(sass-embedded@1.97.3)(sass@1.97.3)(typescript@5.9.2)(yaml@2.8.2)
 
   packages/docs-toolkit:
     dependencies:
@@ -236,16 +236,19 @@ importers:
         version: 1.97.3
       vitepress:
         specifier: 2.0.0-alpha.16
-        version: 2.0.0-alpha.16(@types/node@24.10.13)(async-validator@4.2.5)(axios@1.13.5)(change-case@5.4.4)(jiti@2.6.1)(postcss@8.5.6)(sass-embedded@1.97.3)(sass@1.97.3)(typescript@5.9.2)(yaml@2.8.2)
+        version: 2.0.0-alpha.16(@types/node@24.10.13)(async-validator@4.2.5)(axios@1.13.5)(change-case@5.4.4)(jiti@2.6.1)(nprogress@0.2.0)(postcss@8.5.6)(sass-embedded@1.97.3)(sass@1.97.3)(typescript@5.9.2)(yaml@2.8.2)
       vitepress-better-demo-plugin:
         specifier: ^0.6.2
-        version: 0.6.2(element-plus@2.13.2(vue@3.5.28(typescript@5.9.2)))(vitepress@2.0.0-alpha.16(@types/node@24.10.13)(async-validator@4.2.5)(axios@1.13.5)(change-case@5.4.4)(jiti@2.6.1)(postcss@8.5.6)(sass-embedded@1.97.3)(sass@1.97.3)(typescript@5.9.2)(yaml@2.8.2))(vue@3.5.28(typescript@5.9.2))
+        version: 0.6.2(element-plus@2.13.2(vue@3.5.28(typescript@5.9.2)))(vitepress@2.0.0-alpha.16(@types/node@24.10.13)(async-validator@4.2.5)(axios@1.13.5)(change-case@5.4.4)(jiti@2.6.1)(nprogress@0.2.0)(postcss@8.5.6)(sass-embedded@1.97.3)(sass@1.97.3)(typescript@5.9.2)(yaml@2.8.2))(vue@3.5.28(typescript@5.9.2))
       vitepress-plugin-group-icons:
         specifier: ^1.7.1
         version: 1.7.1(vite@7.3.1(@types/node@24.10.13)(jiti@2.6.1)(sass-embedded@1.97.3)(sass@1.97.3)(yaml@2.8.2))
+      vitepress-plugin-nprogress:
+        specifier: ^0.1.1
+        version: 0.1.1
       vitepress-theme-element-plus:
         specifier: ^1.3.1
-        version: 1.3.1(vitepress@2.0.0-alpha.16(@types/node@24.10.13)(async-validator@4.2.5)(axios@1.13.5)(change-case@5.4.4)(jiti@2.6.1)(postcss@8.5.6)(sass-embedded@1.97.3)(sass@1.97.3)(typescript@5.9.2)(yaml@2.8.2))(vue@3.5.28(typescript@5.9.2))
+        version: 1.3.1(vitepress@2.0.0-alpha.16(@types/node@24.10.13)(async-validator@4.2.5)(axios@1.13.5)(change-case@5.4.4)(jiti@2.6.1)(nprogress@0.2.0)(postcss@8.5.6)(sass-embedded@1.97.3)(sass@1.97.3)(typescript@5.9.2)(yaml@2.8.2))(vue@3.5.28(typescript@5.9.2))
     devDependencies:
       '@types/markdown-it-container':
         specifier: ^4.0.0
@@ -4660,6 +4663,9 @@ packages:
     resolution: {integrity: sha512-lJxZYlT4DW/bRUtFh1MQIWqmLwQfAxnqWG4HhEdjMlkrJYnJn0Jrr2u3mgxqaWsdiBc76TYkTG/mhrnYTuzfHw==}
     engines: {node: '>=4'}
 
+  nprogress@0.2.0:
+    resolution: {integrity: sha512-I19aIingLgR1fmhftnbWWO3dXc0hSxqHQHQb3H8m+K3TnEn/iSeTZZOyvKXWqQESMwuUVnatlCnZdLBZZt2VSA==}
+
   nth-check@2.1.1:
     resolution: {integrity: sha512-lqjrjmaOoAnWfMmBPL+XNnynZh2+swxiX3WUE0s4yEHI6m+AwrK2UZOimIRl3X/4QctVqS8AiZjFqyOGrMXb/w==}
 
@@ -5994,6 +6000,9 @@ packages:
     peerDependenciesMeta:
       vite:
         optional: true
+
+  vitepress-plugin-nprogress@0.1.1:
+    resolution: {integrity: sha512-rpiFJjAUkF2judTaqfk36L+Y8mJxoHWgkUgp2HMBGIfy60HDADGSxgIPQ//bpsSLdtiRq+YPKugYXl+Yr03Pfw==}
 
   vitepress-theme-element-plus@1.3.1:
     resolution: {integrity: sha512-yqxtSfa8e44JLL6GjPZtvKAT8MSQQyOC2KBmTZ5jUouzycN7aWprT7YJjvUAIpfLHxK8nzN7r1lj0dzvVct49Q==}
@@ -8490,7 +8499,7 @@ snapshots:
       '@vueuse/shared': 14.2.1(vue@3.5.28(typescript@5.9.2))
       vue: 3.5.28(typescript@5.9.2)
 
-  '@vueuse/integrations@14.2.1(async-validator@4.2.5)(axios@1.13.5)(change-case@5.4.4)(focus-trap@7.8.0)(vue@3.5.28(typescript@5.9.2))':
+  '@vueuse/integrations@14.2.1(async-validator@4.2.5)(axios@1.13.5)(change-case@5.4.4)(focus-trap@7.8.0)(nprogress@0.2.0)(vue@3.5.28(typescript@5.9.2))':
     dependencies:
       '@vueuse/core': 14.2.1(vue@3.5.28(typescript@5.9.2))
       '@vueuse/shared': 14.2.1(vue@3.5.28(typescript@5.9.2))
@@ -8500,6 +8509,7 @@ snapshots:
       axios: 1.13.5
       change-case: 5.4.4
       focus-trap: 7.8.0
+      nprogress: 0.2.0
 
   '@vueuse/metadata@10.11.1': {}
 
@@ -11032,6 +11042,8 @@ snapshots:
     dependencies:
       path-key: 2.0.1
 
+  nprogress@0.2.0: {}
+
   nth-check@2.1.1:
     dependencies:
       boolbase: 1.0.0
@@ -12384,11 +12396,11 @@ snapshots:
       sass-embedded: 1.97.3
       yaml: 2.8.2
 
-  vitepress-better-demo-plugin@0.6.2(element-plus@2.13.2(vue@3.5.28(typescript@5.9.2)))(vitepress@2.0.0-alpha.16(@types/node@24.10.13)(async-validator@4.2.5)(axios@1.13.5)(change-case@5.4.4)(jiti@2.6.1)(postcss@8.5.6)(sass-embedded@1.97.3)(sass@1.97.3)(typescript@5.9.2)(yaml@2.8.2))(vue@3.5.28(typescript@5.9.2)):
+  vitepress-better-demo-plugin@0.6.2(element-plus@2.13.2(vue@3.5.28(typescript@5.9.2)))(vitepress@2.0.0-alpha.16(@types/node@24.10.13)(async-validator@4.2.5)(axios@1.13.5)(change-case@5.4.4)(jiti@2.6.1)(nprogress@0.2.0)(postcss@8.5.6)(sass-embedded@1.97.3)(sass@1.97.3)(typescript@5.9.2)(yaml@2.8.2))(vue@3.5.28(typescript@5.9.2)):
     dependencies:
       '@stackblitz/sdk': 1.11.0
       codesandbox: 2.2.3
-      vitepress: 2.0.0-alpha.16(@types/node@24.10.13)(async-validator@4.2.5)(axios@1.13.5)(change-case@5.4.4)(jiti@2.6.1)(postcss@8.5.6)(sass-embedded@1.97.3)(sass@1.97.3)(typescript@5.9.2)(yaml@2.8.2)
+      vitepress: 2.0.0-alpha.16(@types/node@24.10.13)(async-validator@4.2.5)(axios@1.13.5)(change-case@5.4.4)(jiti@2.6.1)(nprogress@0.2.0)(postcss@8.5.6)(sass-embedded@1.97.3)(sass@1.97.3)(typescript@5.9.2)(yaml@2.8.2)
       vue: 3.5.28(typescript@5.9.2)
     optionalDependencies:
       element-plus: 2.13.2(vue@3.5.28(typescript@5.9.2))
@@ -12403,14 +12415,18 @@ snapshots:
     optionalDependencies:
       vite: 7.3.1(@types/node@24.10.13)(jiti@2.6.1)(sass-embedded@1.97.3)(sass@1.97.3)(yaml@2.8.2)
 
-  vitepress-theme-element-plus@1.3.1(vitepress@2.0.0-alpha.16(@types/node@24.10.13)(async-validator@4.2.5)(axios@1.13.5)(change-case@5.4.4)(jiti@2.6.1)(postcss@8.5.6)(sass-embedded@1.97.3)(sass@1.97.3)(typescript@5.9.2)(yaml@2.8.2))(vue@3.5.28(typescript@5.9.2)):
+  vitepress-plugin-nprogress@0.1.1:
+    dependencies:
+      nprogress: 0.2.0
+
+  vitepress-theme-element-plus@1.3.1(vitepress@2.0.0-alpha.16(@types/node@24.10.13)(async-validator@4.2.5)(axios@1.13.5)(change-case@5.4.4)(jiti@2.6.1)(nprogress@0.2.0)(postcss@8.5.6)(sass-embedded@1.97.3)(sass@1.97.3)(typescript@5.9.2)(yaml@2.8.2))(vue@3.5.28(typescript@5.9.2)):
     dependencies:
       '@iconify/vue': 4.3.0(vue@3.5.28(typescript@5.9.2))
-      vitepress: 2.0.0-alpha.16(@types/node@24.10.13)(async-validator@4.2.5)(axios@1.13.5)(change-case@5.4.4)(jiti@2.6.1)(postcss@8.5.6)(sass-embedded@1.97.3)(sass@1.97.3)(typescript@5.9.2)(yaml@2.8.2)
+      vitepress: 2.0.0-alpha.16(@types/node@24.10.13)(async-validator@4.2.5)(axios@1.13.5)(change-case@5.4.4)(jiti@2.6.1)(nprogress@0.2.0)(postcss@8.5.6)(sass-embedded@1.97.3)(sass@1.97.3)(typescript@5.9.2)(yaml@2.8.2)
     transitivePeerDependencies:
       - vue
 
-  vitepress@2.0.0-alpha.16(@types/node@24.10.13)(async-validator@4.2.5)(axios@1.13.5)(change-case@5.4.4)(jiti@2.6.1)(postcss@8.5.6)(sass-embedded@1.97.3)(sass@1.97.3)(typescript@5.9.2)(yaml@2.8.2):
+  vitepress@2.0.0-alpha.16(@types/node@24.10.13)(async-validator@4.2.5)(axios@1.13.5)(change-case@5.4.4)(jiti@2.6.1)(nprogress@0.2.0)(postcss@8.5.6)(sass-embedded@1.97.3)(sass@1.97.3)(typescript@5.9.2)(yaml@2.8.2):
     dependencies:
       '@docsearch/css': 4.5.4
       '@docsearch/js': 4.5.4
@@ -12424,7 +12440,7 @@ snapshots:
       '@vue/devtools-api': 8.0.6
       '@vue/shared': 3.5.28
       '@vueuse/core': 14.2.1(vue@3.5.28(typescript@5.9.2))
-      '@vueuse/integrations': 14.2.1(async-validator@4.2.5)(axios@1.13.5)(change-case@5.4.4)(focus-trap@7.8.0)(vue@3.5.28(typescript@5.9.2))
+      '@vueuse/integrations': 14.2.1(async-validator@4.2.5)(axios@1.13.5)(change-case@5.4.4)(focus-trap@7.8.0)(nprogress@0.2.0)(vue@3.5.28(typescript@5.9.2))
       focus-trap: 7.8.0
       mark.js: 8.11.1
       minisearch: 7.2.0
