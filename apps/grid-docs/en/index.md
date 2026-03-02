@@ -39,16 +39,13 @@ basicGrid
 
 This demo shows the recommended Vue integration pattern:
 
-- Use `new Grid(...)` directly. The instance already skips Vue deep proxy wrapping.
-- Update `grid.options` via `watch` to react to UI state changes.
+- Use `createGrid` to create instance which skips `@formily/reactive` deep proxy wrapping.
 
 :::demo
 vueUsage
 :::
 
 ## Breaking Changes
-
-- `Grid` instances are now automatically marked as raw on construction (via Vue `__v_skip`), so manual `markRaw` is usually unnecessary.
 
 - The ResizeObserver polyfill was removed during the refactor. The package now relies on the native browser ResizeObserver, so make sure your target browsers support it.
 
