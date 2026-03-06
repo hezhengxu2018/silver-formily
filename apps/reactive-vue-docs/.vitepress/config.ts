@@ -64,6 +64,12 @@ export default createDocsConfig({
           { text: 'Grid', link: 'https://grid.silver-formily.org/' },
         ],
       },
+      {
+        title: 'Rebuilt Formily Docs',
+        children: [
+          { text: 'JSON Schema', link: 'https://json-schema.silver-formily.org/' },
+        ],
+      },
     ],
   },
   socialLinks: [

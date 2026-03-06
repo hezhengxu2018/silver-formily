@@ -45,6 +45,8 @@ export const FieldSymbol: InjectionKey<Ref<GeneralField>> = Symbol('field')
 
 Schema 标签上下文，主要用于收集 JSX Markup 写法的 Schema 标签，然后转换成标准 JSON Schema
 
+完整的 Schema 协议、属性定义和联动规则请查看 [JSON Schema 重建文档站](https://json-schema.silver-formily.org/)。当前页只说明 `@silver-formily/vue` 暴露出来的注入点。
+
 #### 签名
 
 ```ts
@@ -60,6 +62,8 @@ export const SchemaMarkupSymbol: InjectionKey<Ref<Schema>>
 #### 描述
 
 字段 Schema 上下文，主要用于获取当前字段的 Schema 信息
+
+`Schema` 类型的完整 API 已迁移到 [JSON Schema 重建文档站](https://json-schema.silver-formily.org/)，本页不重复维护协议细节。站内桥接页见 [Schema](/api/shared/schema)。
 
 #### 签名
 

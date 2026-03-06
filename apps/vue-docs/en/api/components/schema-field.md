@@ -7,10 +7,14 @@ outline: [2, 3]
 
 ## Description
 
-`SchemaField` parses a [JSON Schema](/en/api/shared/schema) tree and renders it declaratively. You can work with two styles: **MarkupSchema**, which organizes fields by Vue components for readability, and **JSON Schema**, which feeds the raw schema object.
+`SchemaField` parses a [JSON Schema](https://json-schema.silver-formily.org/en/) tree and renders it declaratively. You can work with two styles: **MarkupSchema**, which organizes fields by Vue components for readability, and **JSON Schema**, which feeds the raw schema object.
 
 ::: tip
 You never import `SchemaField` directly. Call `createSchemaField` to obtain the renderer suite—both the markup flavoured helpers and the JSON-Schema renderer come from the returned object.
+:::
+
+::: tip Schema Protocol
+This page only documents how `@silver-formily/vue` consumes schema objects. For the full `Schema`, `ISchema`, `x-reactions`, and `x-component-props` reference, see the [rebuilt JSON Schema docs](https://json-schema.silver-formily.org/en/).
 :::
 
 ### Function Signature
@@ -61,7 +65,7 @@ api/components/schema-field
 
 ## JSON Schema
 
-`SchemaField` can render a form directly from a [JSON Schema](/en/api/shared/schema) object.
+`SchemaField` can render a form directly from a [JSON Schema](https://json-schema.silver-formily.org/en/) object.
 
 ::: demo
 api/components/schema-field-with-schema
@@ -71,7 +75,7 @@ api/components/schema-field-with-schema
 
 `SchemaField` extends the `Field` props, so you inherit everything from [Field’s API](/en/api/components/field#field-props) plus the following additions:
 
-| Prop   | Description                                      | Type                                     | Default |
-| ------ | ------------------------------------------------ | ---------------------------------------- | ------- |
-| schema | Schema node to render                            | [ISchema](/en/api/shared/schema#ischema) | —       |
-| scope  | Extra variables injected into schema expressions | ^[object]`Record<string, unknown>`       | —       |
+| Prop   | Description                                      | Type                                                                   | Default |
+| ------ | ------------------------------------------------ | ---------------------------------------------------------------------- | ------- |
+| schema | Schema node to render                            | [ISchema](https://json-schema.silver-formily.org/en/api/types#ischema) | —       |
+| scope  | Extra variables injected into schema expressions | ^[object]`Record<string, unknown>`                                     | —       |
