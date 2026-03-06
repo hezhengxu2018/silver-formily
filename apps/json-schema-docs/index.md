@@ -10,7 +10,7 @@ outline: [2, 3]
 
 - `@formily/core` 负责 Form 实例、字段状态、校验与副作用
 - `@formily/json-schema` 负责 Schema 协议、表达式编译与 Schema 类能力
-- 前端框架绑定库（如：`@silver-formily/vue`、`@formily/vue`、`@silver-formily/react`） 负责把 Schema 递归渲染成组件树。
+- 前端框架绑定库（如：`@silver-formily/vue`、`@formily/vue`、`@formily/react`） 负责把 Schema 递归渲染成组件树。
 
 ::: tip 提示
 Formily 官方示例使用的是 `@formily/vue`。当前重构的文档使用的是 `@silver-formily/vue`，两者在能力上没有区别，在接口上也大致相同，具体区别请参考[官方文档](https://vue.silver-formily.org/)。
