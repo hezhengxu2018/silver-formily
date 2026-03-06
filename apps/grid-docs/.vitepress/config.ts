@@ -55,6 +55,12 @@ export default createDocsConfig({
           { text: 'Element Plus', link: 'https://element-plus.silver-formily.org/' },
         ],
       },
+      {
+        title: 'Rebuilt Formily Docs',
+        children: [
+          { text: 'JSON Schema', link: 'https://json-schema.silver-formily.org/' },
+        ],
+      },
     ],
   },
   socialLinks: [
