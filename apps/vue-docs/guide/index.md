@@ -16,4 +16,4 @@
 如果你还没有做好升级的准备，可以使用 `@silver-formily/vue` 的 1.x 版本。这是一个与 `@formily/vue` 的 API 完全对齐的版本。
 :::
 
-- `@silver-formily/vue` 移除了对 Schema 的导出，请从 `@formily/json-schema` 导入。
+- `@silver-formily/vue` 移除了对 Schema 的导出，请从 `@formily/json-schema` 导入。完整的 Schema、`ISchema` 和联动协议文档请查看 [JSON Schema 重建文档站](https://json-schema.silver-formily.org/)。

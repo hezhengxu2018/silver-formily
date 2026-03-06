@@ -7,7 +7,11 @@ outline: [2, 3]
 
 ## Description
 
-`RecursionField` is the low-level renderer that walks a [JSON Schema](/en/api/shared/schema) tree and renders each node recursively. It powers `SchemaField`, but you can also import it directly when building custom components that need recursive rendering.
+`RecursionField` is the low-level renderer that walks a [JSON Schema](https://json-schema.silver-formily.org/en/) tree and renders each node recursively. It powers `SchemaField`, but you can also import it directly when building custom components that need recursive rendering.
+
+::: tip Schema Protocol
+This page only explains how `@silver-formily/vue` recursively consumes schema objects. For the full `Schema`, `ISchema`, property contracts, and linkage rules, see the [rebuilt JSON Schema docs](https://json-schema.silver-formily.org/en/).
+:::
 
 ## Basic Recursion
 
@@ -27,15 +31,15 @@ api/components/recursion-field-with-component
 
 ## API
 
-| Prop                 | Description                                                 | Type                                                      | Default            |
-| -------------------- | ----------------------------------------------------------- | --------------------------------------------------------- | ------------------ |
-| schema               | Schema node to render                                       | [ISchema](/en/api/shared/schema)                          | —                  |
-| name                 | Field name to mount. Often derived from `basePath`.         | `string`                                                  | `schema.name`      |
-| basePath             | Base path for resolving `name`.                             | [FormPathPattern](#formpathpattern)                       | Current field path |
-| onlyRenderProperties | Render only `properties` children, skip the current node.   | `boolean`                                                 | `false`            |
-| onlyRenderSelf       | Render the current node only, do not recurse into children. | `boolean`                                                 | `false`            |
-| mapProperties        | Mapper run before rendering each property.                  | ^[Function]`(schema: Schema, name: SchemaKey) => Schema`  | —                  |
-| filterProperties     | Filter function; return `false` to skip a node.             | ^[Function]`(schema: Schema, name: SchemaKey) => boolean` | —                  |
+| Prop                 | Description                                                 | Type                                                                   | Default            |
+| -------------------- | ----------------------------------------------------------- | ---------------------------------------------------------------------- | ------------------ |
+| schema               | Schema node to render                                       | [ISchema](https://json-schema.silver-formily.org/en/api/types#ischema) | —                  |
+| name                 | Field name to mount. Often derived from `basePath`.         | `string`                                                               | `schema.name`      |
+| basePath             | Base path for resolving `name`.                             | [FormPathPattern](#formpathpattern)                                    | Current field path |
+| onlyRenderProperties | Render only `properties` children, skip the current node.   | `boolean`                                                              | `false`            |
+| onlyRenderSelf       | Render the current node only, do not recurse into children. | `boolean`                                                              | `false`            |
+| mapProperties        | Mapper run before rendering each property.                  | ^[Function]`(schema: Schema, name: SchemaKey) => Schema`               | —                  |
+| filterProperties     | Filter function; return `false` to skip a node.             | ^[Function]`(schema: Schema, name: SchemaKey) => boolean`              | —                  |
 
 #### FormPathPattern
 

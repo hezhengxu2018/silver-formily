@@ -16,4 +16,4 @@ Starting with `2.2.0`, `@silver-formily/vue` adds support for decorator slots. T
 If you are not ready to migrate, stay on `@silver-formily/vue@1.x`, which keeps 100% API compatibility with `@formily/vue`.
 :::
 
-- Schema exports were removed from `@silver-formily/vue`. Import Schema helpers directly from `@formily/json-schema` instead.
+- Schema exports were removed from `@silver-formily/vue`. Import Schema helpers directly from `@formily/json-schema` instead, and use the [rebuilt JSON Schema docs](https://json-schema.silver-formily.org/en/) for the full `Schema`, `ISchema`, and linkage reference.
