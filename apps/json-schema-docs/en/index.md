@@ -10,7 +10,7 @@ In simple terms, different packages are responsible for different parts:
 
 - `@formily/core` manages the form instance, field state, validation, and effects
 - `@formily/json-schema` defines the schema protocol, expression compilation, and `Schema` class APIs
-- front-end binding libraries such as `@silver-formily/vue`, `@formily/vue`, and `@silver-formily/react` recursively render the schema into a component tree
+- front-end binding libraries such as `@silver-formily/vue`, `@formily/vue`, and `@formily/react` recursively render the schema into a component tree
 
 ::: tip Note
 The official Formily examples use `@formily/vue`. This rewritten documentation uses `@silver-formily/vue`. There is no capability gap between them, and the APIs are broadly similar. For the detailed differences, see the related documentation at [vue.silver-formily.org](https://vue.silver-formily.org/).
