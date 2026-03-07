@@ -88,6 +88,7 @@ export default {
       { value: 'apps/vue-docs', name: 'apps/vue-docs' },
       { value: 'apps/grid-docs', name: 'apps/grid-docs' },
       { value: 'apps/json-schema-docs', name: 'apps/json-schema-docs' },
+      { value: 'apps/reactive-docs', name: 'apps/reactive-docs' },
       { value: 'packages/docs-toolkit', name: 'packages/docs-toolkit' },
       { value: 'packages/element-plus', name: 'packages/element-plus' },
       { value: 'packages/reactive-vue', name: 'packages/reactive-vue' },

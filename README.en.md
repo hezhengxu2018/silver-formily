@@ -20,6 +20,7 @@ Silver Formily is a Vue 3 / Formily monorepo built with `pnpm workspace` and `Tu
 
 ## Documentation Sites
 
+- Reactive: <https://reactive.silver-formily.org>
 - Vue: <https://vue.silver-formily.org>
 - Reactive Vue: <https://reactive-vue.silver-formily.org>
 - Element Plus: <https://element-plus.silver-formily.org>
@@ -37,13 +38,14 @@ Silver Formily is a Vue 3 / Formily monorepo built with `pnpm workspace` and `Tu
 | `@silver-formily/docs-toolkit`      | `0.0.0` | Shared VitePress theme, plugins, and site config     | `vitepress 2.0.0-alpha.16`                                                        |
 | `@silver-formily/typescript-config` | `0.0.0` | Shared TypeScript presets for the workspace          | Internal workspace use                                                            |
 
-The five apps under `apps/*` are private VitePress sites. They all use the standard `vitepress dev/build/preview` scripts and share theme configuration through `@silver-formily/docs-toolkit`.
+The six apps under `apps/*` are private VitePress sites. They all use the standard `vitepress dev/build/preview` scripts and share theme configuration through `@silver-formily/docs-toolkit`.
 
 ## Repository Layout
 
 ```text
 .
 |- apps/                   # VitePress documentation sites
+|  |- reactive-docs
 |  |- vue-docs
 |  |- reactive-vue-docs
 |  |- element-plus-docs
