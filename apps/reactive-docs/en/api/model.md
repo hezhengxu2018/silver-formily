@@ -1,5 +1,9 @@
 # model
 
+## Core Idea
+
+model is an automated way to define a domain model. It is useful when you want to turn a plain object into an observable model quickly: getter/setter members become computed properties, functions become actions, and ordinary fields become deep observables.
+
 ## Description
 
 Quickly define the domain model, and automatically declare the model attributes:

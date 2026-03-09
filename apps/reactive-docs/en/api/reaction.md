@@ -1,5 +1,15 @@
 # reaction
 
+## Core Idea
+
+reaction is the subscriber side of an observable. It accepts a tracker function. When the tracker reads observable properties, those properties become dependencies. Once any of them is written elsewhere, the tracker runs again.
+
+Unlike autorun, reaction also performs a dirty check on the tracker result. The subscriber is called only when the tracked value actually changes, which makes reaction more suitable for precise side effects.
+
+![](https://img.alicdn.com/imgextra/i4/O1CN01DQMGUL22mFICDsKfY_!!6000000007162-2-tps-1234-614.png)
+
+Like autorun, reaction recollects dependencies on every run, so it should be disposed manually when it is no longer needed.
+
 ## Description
 
 Receive a tracker function and a callback response function. If there is observable data in the tracker, the tracker function will be executed repeatedly when the data changes, but the callback execution must be executed when the tracker function return value changes.

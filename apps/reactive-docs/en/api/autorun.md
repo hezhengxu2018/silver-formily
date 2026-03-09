@@ -1,5 +1,11 @@
 # autorun
 
+## Core Idea
+
+autorun is the most direct form of reaction. It runs the tracker immediately and records every observable property that gets read during execution. When any of those properties is written later, the tracker runs again.
+
+Dependencies are collected again on every rerun, so when you no longer need the subscription you should call the returned dispose function to avoid stale subscriptions or memory leaks.
+
 ## Description
 
 Receive a tracker function, if there is observable data in the function, the tracker function will be executed repeatedly when the data changes

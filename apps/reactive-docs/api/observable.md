@@ -2,6 +2,12 @@
 
 > 主要用于创建不同响应式行为的 observable 对象，同时可以作为 annotation 给 define 用于标记响应式属性
 
+## 核心概念
+
+observable 是整个响应式模型的基础。通过创建可订阅对象，@formily/reactive 可以在属性被读取时收集依赖，在属性被写入时通知订阅者。底层主要基于 ES Proxy 实现，因此可以完整拦截对象上的数据操作。
+
+除了直接使用 observable 系列 API，也可以结合 [define](/api/define) 和 [model](/api/model) 组织领域模型，本质上仍然是在组合 observable、computed 与 action/batch 的能力。
+
 ## observable/observable.deep
 
 ### 描述
@@ -76,6 +82,12 @@ obs.aa = { bb: 333 } // 可以响应
 ### 描述
 
 创建一个计算缓存器
+
+### 核心概念
+
+computed 可以理解为一个带缓存的 reaction。只要它依赖的 observable 数据没有变化，就会一直复用上一次的计算结果；只有依赖发生变化时才会重新计算。
+
+这也要求 computed 尽量保持纯函数：内部依赖的数据要么是 observable 数据，要么是外部常量。如果依赖的是普通外部变量，外部变量变化不会触发重新计算。
 
 ### 签名
 

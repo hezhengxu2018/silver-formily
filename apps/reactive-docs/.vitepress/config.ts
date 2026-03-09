@@ -33,7 +33,6 @@ export default createDocsConfig({
         text: 'Guide',
         items: [
           { text: '介绍', link: '/' },
-          { text: '核心概念', link: '/guide/concept' },
           { text: '最佳实践', link: '/guide/best-practice' },
         ],
       },
@@ -43,7 +42,6 @@ export default createDocsConfig({
         text: 'Guide',
         items: [
           { text: '介绍', link: '/' },
-          { text: '核心概念', link: '/guide/concept' },
           { text: '最佳实践', link: '/guide/best-practice' },
         ],
       },
@@ -82,7 +80,6 @@ export default createDocsConfig({
         text: 'Guide',
         items: [
           { text: 'Introduction', link: '/en/' },
-          { text: 'Concepts', link: '/en/guide/concept' },
           { text: 'Best Practices', link: '/en/guide/best-practice' },
         ],
       },
@@ -92,7 +89,6 @@ export default createDocsConfig({
         text: 'Guide',
         items: [
           { text: 'Introduction', link: '/en/' },
-          { text: 'Concepts', link: '/en/guide/concept' },
           { text: 'Best Practices', link: '/en/guide/best-practice' },
         ],
       },

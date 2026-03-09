@@ -2,6 +2,12 @@
 
 > Mainly used to create observable objects with different responsive behaviors, and can be used as an annotation to define to mark responsive attributes
 
+## Core Idea
+
+observable is the foundation of the reactive model. By creating a subscribable object, @formily/reactive can collect dependencies when a property is read and notify subscribers when a property is written. Internally it is mainly implemented with ES Proxy, so data operations on objects can be intercepted completely.
+
+Besides using the observable APIs directly, you can also build domain models with [define](/en/api/define) and [model](/en/api/model). Under the hood, they are still combining observable, computed, and action/batch capabilities.
+
 ## observable/observable.deep
 
 ### Description
@@ -76,6 +82,12 @@ obs.aa = { bb: 333 } // can respond
 ### Description
 
 Create a calculation buffer
+
+### Core Idea
+
+computed can be understood as a cached reaction. As long as the observable data it depends on does not change, it keeps reusing the previous calculation result. It only recalculates when its dependencies change.
+
+That also means a computed function should stay pure whenever possible. Its dependencies should be observable data or external constants. If it depends on ordinary external variables, changing those variables will not trigger a recalculation.
 
 ### Signature
 

@@ -1,5 +1,9 @@
 # define
 
+## Core Idea
+
+define is suitable when you want to declare a domain model explicitly. It lets you assign different observable behaviors, computed properties, and action/batch methods to the same object so the reactive behavior stays aligned with the domain semantics.
+
 ## Description
 
 Manually define the domain model, you can specify the responsive behavior of specific attributes, or you can specify a method as batch mode
@@ -18,6 +22,8 @@ interface define<Target extends object> {
 ```
 
 ## Annotations
+
+Here, an annotation means the marker function passed to `define`, used to declare which reactive wrapper should be applied to each property or method.
 
 All Annotations currently supported are:
 

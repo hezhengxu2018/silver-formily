@@ -1,5 +1,9 @@
 # model
 
+## 核心概念
+
+model 是对领域模型定义的自动化封装，适合快速把普通对象转换为 observable 模型。它会自动把 getter/setter 包装为 computed，把函数包装为 action，把普通属性包装为深度 observable。
+
 ## 描述
 
 快速定义领域模型，会对模型属性做自动声明：

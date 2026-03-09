@@ -1,5 +1,9 @@
 # define
 
+## 核心概念
+
+define 适合需要显式声明领域模型的场景。你可以把不同的 observable 形态、computed 计算属性以及 action/batch 方法精确地标注到同一个对象上，让响应式行为和领域语义保持一致。
+
 ## 描述
 
 手动定义领域模型，可以指定具体属性的响应式行为，也可以指定某个方法为 batch 模式
@@ -18,6 +22,8 @@ interface define<Target extends object> {
 ```
 
 ## Annotations
+
+这里的 Annotation 指的就是传给 `define` 的标记函数，用来声明每个属性或方法应该采用哪种响应式包装方式。
 
 目前支持的所有 Annotation 有：
 

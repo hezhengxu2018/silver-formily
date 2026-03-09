@@ -1,5 +1,11 @@
 # autorun
 
+## 核心概念
+
+autorun 是最直接的 reaction 形式。它会立即执行 tracker，并在执行过程中为函数内部读取过的 observable 属性建立依赖；当这些属性被写入时，tracker 就会再次执行。
+
+每次重跑都会重新收集依赖，所以在不再需要订阅时应及时调用返回的 dispose 函数，否则会产生额外订阅甚至内存泄漏。
+
 ## 描述
 
 接收一个 tracker 函数，如果函数内部有消费 observable 数据，数据发生变化时，tracker 函数会重复执行
