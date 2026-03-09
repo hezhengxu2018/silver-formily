@@ -53,7 +53,7 @@ interface useObserver {
 useObserver
 :::
 
-## formilyComputed <ElTag>New</ElTag>
+## formilyComputed <ElTag>1.0.0</ElTag>
 
 Converts a `@formily/reactive` computation into a Vue 3 `ComputedRef`. You can use it anywhere Vue expects a computed value (Pinia, props, etc.).
 
@@ -73,4 +73,48 @@ interface formilyComputed {
 
 :::demo
 formilyComputed
+:::
+
+## autorunEffect <ElTag>1.1.0</ElTag>
+
+Wraps `autorun` as a Vue composable. It subscribes immediately inside `setup()` or any active effect scope, automatically calls `dispose` when that scope is disposed, and still returns a stopper so you can end it earlier when needed.
+
+### Signature
+
+```ts
+import type { Dispose, Reaction } from '@formily/reactive'
+
+interface autorunEffect {
+  (tracker: Reaction, name?: string): Dispose
+}
+```
+
+### Usage
+
+:::demo
+autorunEffect
+:::
+
+## reactionWatch <ElTag>1.1.0</ElTag>
+
+Wraps `reaction` as a Vue composable. It keeps the same `tracker`, `subscriber`, and `options` API, but wires the disposer into Vue scope disposal so subscriptions are released automatically after unmount or scope teardown.
+
+### Signature
+
+```ts
+import type { Dispose, IReactionOptions } from '@formily/reactive'
+
+interface reactionWatch {
+  <T>(
+    tracker: () => T,
+    subscriber?: (value: T, oldValue: T) => void,
+    options?: IReactionOptions<T>,
+  ): Dispose
+}
+```
+
+### Usage
+
+:::demo
+reactionWatch
 :::

@@ -6,6 +6,7 @@
 
 - **`observer` / `useObserver`**：把组件渲染函数托管给 Formily Tracker，自动收集依赖并精准更新。
 - **`formilyComputed`**：将 Formily 的响应式表达式包装成 Vue `computed`，充分复用生态能力（Pinia、组件 props 等）。
+- **`autorunEffect` / `reactionWatch`**：为 `autorun` 与 `reaction` 提供 Vue 生命周期封装，组件卸载时自动释放订阅，也支持手动提前停止。
 
 ## 📦 安装
 
@@ -21,7 +22,11 @@ pnpm add @silver-formily/reactive-vue @formily/reactive
 ```vue
 <script setup lang="ts">
 import { observable } from '@formily/reactive'
-import { formilyComputed, useObserver } from '@silver-formily/reactive-vue'
+import {
+  autorunEffect,
+  formilyComputed,
+  useObserver,
+} from '@silver-formily/reactive-vue'
 
 const state = observable({
   name: 'Formily',
@@ -29,6 +34,9 @@ const state = observable({
 })
 
 const uppercaseName = formilyComputed(() => state.name.toUpperCase())
+autorunEffect(() => {
+  console.log('name changed:', state.name)
+})
 
 useObserver()
 
@@ -50,6 +58,8 @@ function handleInput(event: Event) {
   </div>
 </template>
 ```
+
+`autorunEffect` / `reactionWatch` 必须在 `setup()` 或任意活动中的 effect scope 里调用，这样才能把 `dispose` 绑定到作用域释放时机。如果它们运行在组件 `setup()` 中，组件卸载时会自动清理；如果需要更早停止订阅，也可以接住它们返回的清理函数并手动调用。
 
 更多 demo：`docs/demos` 或在线文档（见下文）。
 
