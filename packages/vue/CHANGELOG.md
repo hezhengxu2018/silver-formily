@@ -1,12 +1,5 @@
 # 更新日志
 
-## 3.0.0
-
-### Patch Changes
-
-- Updated dependencies [1ead170]
-  - @silver-formily/reactive-vue@1.1.0
-
 ## 2.3.1
 
 ### Patch Changes

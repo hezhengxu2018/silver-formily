@@ -1,7 +1,7 @@
 {
   "name": "@silver-formily/vue",
   "type": "module",
-  "version": "3.0.0",
+  "version": "2.3.1",
   "description": "Vue3 版本的 @formily/vue",
   "author": "hezhengxu",
   "license": "MIT",
@@ -45,7 +45,7 @@
     "@formily/json-schema": "^2",
     "@formily/reactive": "^2",
     "@formily/shared": "^2",
-    "@silver-formily/reactive-vue": "^1.1.0",
+    "@silver-formily/reactive-vue": "^1.0.0",
     "vue": "^3.3.0"
   },
   "config": {

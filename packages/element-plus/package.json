@@ -1,7 +1,7 @@
 {
   "name": "@silver-formily/element-plus",
   "type": "module",
-  "version": "4.0.0",
+  "version": "3.0.1",
   "description": "Formily 的 Element Plus 封装",
   "author": "hezhengxu",
   "license": "MIT",
@@ -56,7 +56,7 @@
     "@formily/shared": "^2.0.8",
     "@silver-formily/grid": "^1.0.1",
     "@silver-formily/reactive-vue": "^1.1.0",
-    "@silver-formily/vue": "^3.0.0",
+    "@silver-formily/vue": "^2.3.1",
     "@vueuse/core": "*",
     "element-plus": "^2.1.8",
     "vue": "^3.3.0"
