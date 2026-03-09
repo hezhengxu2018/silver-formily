@@ -1,5 +1,11 @@
 # 更新日志
 
+## 2.3.2
+
+### Patch Changes
+
+- 15e30dd: 同步更新 @silver-formily/reactive-vue 到 1.1.0
+
 ## 2.3.1
 
 ### Patch Changes
