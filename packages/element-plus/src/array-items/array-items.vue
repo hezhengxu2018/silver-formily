@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { ArrayField } from '@formily/core'
-import { autorun } from '@formily/reactive'
 import { isArr } from '@formily/shared'
+import { autorunEffect } from '@silver-formily/reactive-vue'
 import { RecursionField, useField, useFieldSchema } from '@silver-formily/vue'
 import { ref } from 'vue'
 import { VueDraggable } from 'vue-draggable-plus'
@@ -25,7 +25,7 @@ const { getKey, keyMap } = useKey(schemaRef.value)
 const dataSource = ref(isArr(field.value) ? field.value : [])
 const triggerUpdateKey = ref(0)
 
-autorun(() => {
+autorunEffect(() => {
   dataSource.value = isArr(field.value) ? [...field.value] : []
 })
 

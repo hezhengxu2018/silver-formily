@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import type { IFormTabProps } from './types.ts'
-import { reaction } from '@formily/reactive'
-import { formilyComputed } from '@silver-formily/reactive-vue'
+import { formilyComputed, reactionWatch } from '@silver-formily/reactive-vue'
 import { RecursionField, useField, useFieldSchema } from '@silver-formily/vue'
 import { ElBadge, ElTabPane, ElTabs } from 'element-plus'
 import { computed, ref, watch } from 'vue'
@@ -23,7 +22,7 @@ const formTabRef = computed(() => props.formTab ?? createFormTab())
 const tabs = formilyComputed(() => useTabs(field.value, schema.value))
 const _activeKey = ref(props?.modelValue ?? formTabRef.value.activeKey ?? tabs.value?.[0]?.name)
 
-reaction(() => {
+reactionWatch(() => {
   return tabs.value.length
 }, () => {
   !tabs.value.some(tab => tab.name === _activeKey.value) && (_activeKey.value = tabs.value?.[0]?.name)

@@ -1,8 +1,8 @@
 <script lang="ts" setup>
 import type { ArrayField } from '@formily/core'
 import type { ISchema } from '@formily/json-schema'
-import { autorun } from '@formily/reactive'
 import { isArr } from '@formily/shared'
+import { autorunEffect } from '@silver-formily/reactive-vue'
 import { RecursionField, useField, useFieldSchema } from '@silver-formily/vue'
 import { ElCard, ElEmpty, ElRow } from 'element-plus'
 import { ref } from 'vue'
@@ -35,7 +35,7 @@ const { getKey, keyMap } = ArrayBase.useKey(schemaRef.value)
 
 const dataSource = ref(isArr(field.value) ? field.value : [])
 
-autorun(() => {
+autorunEffect(() => {
   dataSource.value = isArr(field.value) ? [...field.value] : []
 })
 </script>

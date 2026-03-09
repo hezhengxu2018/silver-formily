@@ -1,9 +1,8 @@
 <script setup lang="ts">
 import type { ArrayField } from '@formily/core'
 import type { ISchema } from '@formily/json-schema'
-import { autorun } from '@formily/reactive'
 import { isArr } from '@formily/shared'
-import { formilyComputed } from '@silver-formily/reactive-vue'
+import { autorunEffect, formilyComputed } from '@silver-formily/reactive-vue'
 import { RecursionField, useField, useFieldSchema } from '@silver-formily/vue'
 import { ElBadge, ElEmpty, ElScrollbar } from 'element-plus'
 import { ref } from 'vue'
@@ -61,7 +60,7 @@ const errorCountList = formilyComputed(() => {
 // 保证arrayBase在必要时重新渲染
 const arrayBaseKey = ref()
 
-autorun(() => {
+autorunEffect(() => {
   if (props.showTitleFieldInTab) {
     const key = field.value.map((item, index) => {
       const keyParts = [
@@ -85,7 +84,7 @@ autorun(() => {
   }
 })
 
-autorun(() => {
+autorunEffect(() => {
   if (field.value.length > 0 && activeIndex.value >= field.value.length) {
     activeIndex.value = field.value.length - 1
   }

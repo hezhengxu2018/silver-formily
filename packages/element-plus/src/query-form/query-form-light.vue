@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import type { Form } from '@formily/core'
 import type { IQueryFormLightProps } from './types'
-import { reaction, toJS } from '@formily/reactive'
+import { toJS } from '@formily/reactive'
+import { reactionWatch } from '@silver-formily/reactive-vue'
 import { useFieldSchema, useForm } from '@silver-formily/vue'
 import { throttle } from 'lodash-es'
 import { computed, onUnmounted, useSlots } from 'vue'
@@ -61,7 +62,7 @@ const triggerSubmit = throttle(() => {
   trailing: true,
 })
 
-const dispose = reaction(() => {
+reactionWatch(() => {
   const form = activeForm.value
   if (!form)
     return
@@ -71,7 +72,6 @@ const dispose = reaction(() => {
 })
 
 onUnmounted(() => {
-  dispose()
   triggerSubmit.cancel()
 })
 

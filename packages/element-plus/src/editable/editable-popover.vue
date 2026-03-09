@@ -2,8 +2,8 @@
 import type { Field } from '@formily/core'
 import type { IFormItemProps } from '../form-item/types'
 import { Edit } from '@element-plus/icons-vue'
-import { reaction } from '@formily/reactive'
 import { isValid } from '@formily/shared'
+import { reactionWatch } from '@silver-formily/reactive-vue'
 import { useField } from '@silver-formily/vue'
 import { ElPopover, ElText, ClickOutside as vClickOutside } from 'element-plus'
 import { ref } from 'vue'
@@ -47,7 +47,7 @@ function onClick() {
   visible.value = true
 }
 
-reaction(
+reactionWatch(
   () => fieldRef.value.form.queryFeedbacks({
     type: 'error',
     address: `${fieldRef.value.address.entire}.*`,
