@@ -90,6 +90,12 @@ export default createDocsConfig({
           { text: 'Grid', link: 'https://grid.silver-formily.org/' },
         ],
       },
+      {
+        title: 'Rebuilt Formily Docs',
+        children: [
+          { text: 'Reactive', link: 'https://reactive.silver-formily.org/' },
+        ],
+      },
     ],
   },
   socialLinks: [

@@ -36,6 +36,7 @@ const footer = {
     {
       title: 'Rebuilt Formily Docs',
       children: [
+        { text: 'Reactive', link: 'https://reactive.silver-formily.org/' },
         { text: 'JSON Schema', link: 'https://json-schema.silver-formily.org/' },
       ],
     },
