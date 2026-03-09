@@ -48,6 +48,12 @@ interface observe {
 
 ## 用例
 
+::: demo
+api/observe/basic
+:::
+
+#### 示例代码
+
 ```ts
 import { observable, observe } from '@formily/reactive'
 

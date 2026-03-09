@@ -20,6 +20,12 @@ interface autorun {
 
 ## 用例
 
+::: demo
+api/autorun/basic
+:::
+
+#### 示例代码
+
 ```ts
 import { autorun, observable } from '@formily/reactive'
 
@@ -53,6 +59,12 @@ interface memo<T> {
 注意：依赖默认为`[]`，也就是如果不传依赖，代表永远不会执行第二次
 
 ### 用例
+
+::: demo
+api/autorun/memo
+:::
+
+#### 示例代码
 
 ```ts
 import { autorun, observable } from '@formily/reactive'
@@ -103,6 +115,12 @@ interface effect {
 注意：依赖默认为`[{}]`，也就是如果不传依赖，代表会持续执行，因为内部脏检查是浅比较
 
 ### 用例
+
+::: demo
+api/autorun/effect
+:::
+
+#### 示例代码
 
 ```ts
 import { autorun, observable } from '@formily/reactive'

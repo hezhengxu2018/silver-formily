@@ -14,6 +14,12 @@ interface untracked<T extends () => any> {
 
 ## Example
 
+::: demo
+api/untracked-en/basic
+:::
+
+#### Example Code
+
 ```ts
 import { autorun, observable, untracked } from '@formily/reactive'
 

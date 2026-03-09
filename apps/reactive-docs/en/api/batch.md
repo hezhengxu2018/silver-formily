@@ -12,6 +12,12 @@ Define batch operations, internal dependencies can be collected
 
 ## Why batch matters
 
+### Interactive Comparison
+
+::: demo
+api/batch-en/compare
+:::
+
 Without batching, changing several properties in sequence can trigger repeated reactions:
 
 ```ts
@@ -64,6 +70,12 @@ interface batch {
 ```
 
 ## Example
+
+::: demo
+api/batch-en/scope
+:::
+
+#### Example Code
 
 ```ts
 import { autorun, batch, observable } from '@formily/reactive'

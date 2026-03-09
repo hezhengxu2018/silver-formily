@@ -22,6 +22,12 @@ interface model<Target extends object> {
 
 ## 用例
 
+::: demo
+api/model/basic
+:::
+
+#### 示例代码
+
 ```ts
 import { autorun, model } from '@formily/reactive'
 

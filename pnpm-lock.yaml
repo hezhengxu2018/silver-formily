@@ -197,6 +197,9 @@ importers:
       '@silver-formily/docs-toolkit':
         specifier: workspace:*
         version: link:../../packages/docs-toolkit
+      vue:
+        specifier: ^3.3.0
+        version: 3.5.28(typescript@5.9.2)
     devDependencies:
       '@silver-formily/typescript-config':
         specifier: workspace:*

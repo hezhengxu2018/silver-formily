@@ -18,6 +18,12 @@ interface raw<T extends object> {
 
 ## Example
 
+::: demo
+api/raw-en/basic
+:::
+
+#### Example Code
+
 ```ts
 import { observable, raw } from '@formily/reactive'
 

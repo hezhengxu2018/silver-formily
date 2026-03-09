@@ -34,6 +34,12 @@ interface reaction<T> {
 
 ## 用例
 
+::: demo
+api/reaction/basic
+:::
+
+#### 示例代码
+
 ```ts
 import { batch, observable, reaction } from '@formily/reactive'
 

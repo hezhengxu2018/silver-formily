@@ -36,6 +36,12 @@ All Annotations currently supported are:
 
 ## Example
 
+::: demo
+api/define-en/basic
+:::
+
+#### Example Code
+
 ```ts
 import { action, autorun, define, observable } from '@formily/reactive'
 

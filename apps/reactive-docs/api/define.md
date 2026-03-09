@@ -36,6 +36,12 @@ interface define<Target extends object> {
 
 ## 用例
 
+::: demo
+api/define/basic
+:::
+
+#### 示例代码
+
 ```ts
 import { action, autorun, define, observable } from '@formily/reactive'
 

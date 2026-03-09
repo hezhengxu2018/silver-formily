@@ -16,6 +16,12 @@ interface toJS<T> {
 
 ## 用例
 
+::: demo
+api/to-js/basic
+:::
+
+#### 示例代码
+
 ```ts
 import { autorun, observable, toJS } from '@formily/reactive'
 

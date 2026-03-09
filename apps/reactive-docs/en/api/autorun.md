@@ -20,6 +20,12 @@ interface autorun {
 
 ## Example
 
+::: demo
+api/autorun-en/basic
+:::
+
+#### Example Code
+
 ```ts
 import { autorun, observable } from '@formily/reactive'
 
@@ -53,6 +59,12 @@ interface memo<T> {
 Note: The default dependency is `[]`, that is, if the dependency is not passed, it means that the second time will never be executed
 
 ### Example
+
+::: demo
+api/autorun-en/memo
+:::
+
+#### Example Code
 
 ```ts
 import { autorun, observable } from '@formily/reactive'
@@ -103,6 +115,12 @@ interface effect {
 Note: The default dependency is `[{}]`, that is, if the dependency is not passed, the representative will continue to execute, because the internal dirty check is a shallow comparison
 
 ### Example
+
+::: demo
+api/autorun-en/effect
+:::
+
+#### Example Code
 
 ```ts
 import { autorun, observable } from '@formily/reactive'

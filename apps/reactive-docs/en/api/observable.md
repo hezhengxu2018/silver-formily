@@ -28,6 +28,12 @@ interface deep<T extends object> {
 
 ### Example
 
+::: demo
+api/observable-en/deep
+:::
+
+#### Example Code
+
 ```ts
 import { autorun, observable } from '@formily/reactive'
 
@@ -59,6 +65,12 @@ interface shallow<T extends object> {
 ```
 
 ### Example
+
+::: demo
+api/observable-en/shallow
+:::
+
+#### Example Code
 
 ```ts
 import { autorun, observable } from '@formily/reactive'
@@ -102,6 +114,12 @@ interface computed {
 
 ### Example
 
+::: demo
+api/observable-en/computed
+:::
+
+#### Example Code
+
 ```ts
 import { autorun, observable } from '@formily/reactive'
 
@@ -135,6 +153,12 @@ interface ref<T extends object> {
 
 ### Example
 
+::: demo
+api/observable-en/ref
+:::
+
+#### Example Code
+
 ```ts
 import { autorun, observable } from '@formily/reactive'
 
@@ -162,6 +186,12 @@ interface box<T extends object> {
 ```
 
 ### Example
+
+::: demo
+api/observable-en/box
+:::
+
+#### Example Code
 
 ```ts
 import { autorun, observable } from '@formily/reactive'

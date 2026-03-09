@@ -1,6 +1,15 @@
+import path, { dirname } from 'node:path'
+import { fileURLToPath } from 'node:url'
+import pkg from '@formily/reactive/package.json' with { type: 'json' }
 import { createDocsConfig } from '@silver-formily/docs-toolkit'
 
+const currentDir = dirname(fileURLToPath(import.meta.url))
+const demoDir = path.resolve(currentDir, '../demos')
+
 export default createDocsConfig({
+  pkg,
+  demoDir,
+  demoCodeFold: true,
   locales: {
     root: {
       label: '简体中文',
@@ -60,6 +69,11 @@ export default createDocsConfig({
           { text: 'raw', link: '/api/raw' },
           { text: 'markRaw', link: '/api/mark-raw' },
           { text: 'markObservable', link: '/api/mark-observable' },
+        ],
+      },
+      {
+        text: 'Utils',
+        items: [
           { text: 'hasCollected', link: '/api/has-collected' },
           { text: 'typeChecker', link: '/api/type-checker' },
         ],
@@ -97,6 +111,11 @@ export default createDocsConfig({
           { text: 'raw', link: '/en/api/raw' },
           { text: 'markRaw', link: '/en/api/mark-raw' },
           { text: 'markObservable', link: '/en/api/mark-observable' },
+        ],
+      },
+      {
+        text: 'Utils',
+        items: [
           { text: 'hasCollected', link: '/en/api/has-collected' },
           { text: 'typeChecker', link: '/en/api/type-checker' },
         ],

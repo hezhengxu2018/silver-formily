@@ -28,6 +28,12 @@ interface deep<T extends object> {
 
 ### 用例
 
+::: demo
+api/observable/deep
+:::
+
+#### 示例代码
+
 ```ts
 import { autorun, observable } from '@formily/reactive'
 
@@ -59,6 +65,12 @@ interface shallow<T extends object> {
 ```
 
 ### 用例
+
+::: demo
+api/observable/shallow
+:::
+
+#### 示例代码
 
 ```ts
 import { autorun, observable } from '@formily/reactive'
@@ -102,6 +114,12 @@ interface computed {
 
 ### 用例
 
+::: demo
+api/observable/computed
+:::
+
+#### 示例代码
+
 ```ts
 import { autorun, observable } from '@formily/reactive'
 
@@ -135,6 +153,12 @@ interface ref<T extends object> {
 
 ### 用例
 
+::: demo
+api/observable/ref
+:::
+
+#### 示例代码
+
 ```ts
 import { autorun, observable } from '@formily/reactive'
 
@@ -162,6 +186,12 @@ interface box<T extends object> {
 ```
 
 ### 用例
+
+::: demo
+api/observable/box
+:::
+
+#### 示例代码
 
 ```ts
 import { autorun, observable } from '@formily/reactive'
