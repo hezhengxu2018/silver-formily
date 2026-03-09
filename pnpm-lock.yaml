@@ -189,6 +189,25 @@ importers:
         specifier: 2.0.0-alpha.16
         version: 2.0.0-alpha.16(@types/node@24.10.13)(async-validator@4.2.5)(axios@1.13.5)(change-case@5.4.4)(jiti@2.6.1)(nprogress@0.2.0)(postcss@8.5.6)(sass-embedded@1.97.3)(sass@1.97.3)(typescript@5.9.2)(yaml@2.8.2)
 
+  apps/reactive-docs:
+    dependencies:
+      '@formily/reactive':
+        specifier: ^2.3.7
+        version: 2.3.7
+      '@silver-formily/docs-toolkit':
+        specifier: workspace:*
+        version: link:../../packages/docs-toolkit
+      vue:
+        specifier: ^3.3.0
+        version: 3.5.28(typescript@5.9.2)
+    devDependencies:
+      '@silver-formily/typescript-config':
+        specifier: workspace:*
+        version: link:../../packages/typescript-config
+      vitepress:
+        specifier: 2.0.0-alpha.16
+        version: 2.0.0-alpha.16(@types/node@24.10.13)(async-validator@4.2.5)(axios@1.13.5)(change-case@5.4.4)(jiti@2.6.1)(nprogress@0.2.0)(postcss@8.5.6)(sass-embedded@1.97.3)(sass@1.97.3)(typescript@5.9.2)(yaml@2.8.2)
+
   apps/reactive-vue-docs:
     dependencies:
       '@formily/reactive':

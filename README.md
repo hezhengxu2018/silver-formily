@@ -20,6 +20,7 @@ Silver Formily 是一个基于 `pnpm workspace` 和 `Turborepo` 的 Vue 3 / Form
 
 ## 文档站点
 
+- Reactive: <https://reactive.silver-formily.org>
 - Vue: <https://vue.silver-formily.org>
 - Reactive Vue: <https://reactive-vue.silver-formily.org>
 - Element Plus: <https://element-plus.silver-formily.org>
@@ -37,13 +38,14 @@ Silver Formily 是一个基于 `pnpm workspace` 和 `Turborepo` 的 Vue 3 / Form
 | `@silver-formily/docs-toolkit`      | `0.0.0`  | 内部共享的 VitePress 主题、插件与站点配置工具 | `vitepress 2.0.0-alpha.16`                                                        |
 | `@silver-formily/typescript-config` | `0.0.0`  | 内部 TypeScript 配置共享包                    | 供 workspace 复用                                                                 |
 
-`apps/*` 下的 5 个文档应用均为私有 workspace，当前统一使用 VitePress 站点脚本（`vitepress dev/build/preview`）并通过 `@silver-formily/docs-toolkit` 复用主题配置。
+`apps/*` 下的 6 个文档应用均为私有 workspace，当前统一使用 VitePress 站点脚本（`vitepress dev/build/preview`）并通过 `@silver-formily/docs-toolkit` 复用主题配置。
 
 ## 仓库结构
 
 ```text
 .
 |- apps/                   # VitePress 文档站点
+|  |- reactive-docs
 |  |- vue-docs
 |  |- reactive-vue-docs
 |  |- element-plus-docs
