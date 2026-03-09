@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { createForm } from '@formily/core'
-import { ColorPicker, FormItem, Submit } from '@sliver/formily-element-plus'
 import { createSchemaField, FormProvider } from '@silver-formily/vue'
+import { ColorPicker, FormItem, Submit } from '@sliver/formily-element-plus'
 
 const predefineColors = [
   '#409EFF',

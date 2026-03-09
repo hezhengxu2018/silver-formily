@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { createForm } from '@formily/core'
-import { DatePicker, FormItem, FormLayout, Input } from '@sliver/formily-element-plus'
 import { Field, FormProvider } from '@silver-formily/vue'
+import { DatePicker, FormItem, FormLayout, Input } from '@sliver/formily-element-plus'
 
 const form = createForm()
 </script>

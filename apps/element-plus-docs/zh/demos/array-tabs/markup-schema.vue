@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { createForm } from '@formily/core'
+import { createSchemaField, FormProvider } from '@silver-formily/vue'
 import {
   ArrayTabs,
   FormButtonGroup,
@@ -8,7 +9,6 @@ import {
   Select,
   Submit,
 } from '@sliver/formily-element-plus'
-import { createSchemaField, FormProvider } from '@silver-formily/vue'
 
 const { SchemaField, SchemaArrayField, SchemaObjectField, SchemaStringField }
   = createSchemaField({

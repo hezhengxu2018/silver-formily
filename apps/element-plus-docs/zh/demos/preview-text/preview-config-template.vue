@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { createForm } from '@formily/core'
+import { Field, VoidField } from '@silver-formily/vue'
 import {
   DatePicker,
   Form,
@@ -9,7 +10,6 @@ import {
   PreviewText,
   Select,
 } from '@sliver/formily-element-plus'
-import { Field, VoidField } from '@silver-formily/vue'
 import { ElButton } from 'element-plus'
 
 const form = createForm({ readPretty: true })

@@ -1,13 +1,13 @@
 <script lang="ts" setup>
 import { Close } from '@element-plus/icons-vue'
 import { createForm } from '@formily/core'
+import { createSchemaField, FormProvider } from '@silver-formily/vue'
 import {
   ArrayListTabs,
   FormItem,
   Input,
   Submit,
 } from '@sliver/formily-element-plus'
-import { createSchemaField, FormProvider } from '@silver-formily/vue'
 
 const {
   SchemaField,

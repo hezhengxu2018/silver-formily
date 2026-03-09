@@ -1,6 +1,7 @@
 <script setup lang="tsx">
 import type { DataField } from '@formily/core'
 import { createForm, onFieldChange } from '@formily/core'
+import { createSchemaField } from '@silver-formily/vue'
 import {
   Cascader,
   DatePicker,
@@ -12,7 +13,6 @@ import {
   Select,
   Switch,
 } from '@sliver/formily-element-plus'
-import { createSchemaField } from '@silver-formily/vue'
 
 function Div(props, { slots }) {
   return <div {...props}>{slots?.default()}</div>

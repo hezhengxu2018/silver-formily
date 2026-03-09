@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { createForm } from '@formily/core'
+import { createSchemaField } from '@silver-formily/vue'
 import {
   Cascader,
   DatePicker,
@@ -11,7 +12,6 @@ import {
   Select,
   TimePicker,
 } from '@sliver/formily-element-plus'
-import { createSchemaField } from '@silver-formily/vue'
 import { ElButton } from 'element-plus'
 
 const { SchemaField, SchemaStringField, SchemaVoidField } = createSchemaField({

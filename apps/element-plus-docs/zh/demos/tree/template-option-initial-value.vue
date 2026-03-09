@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { createForm } from '@formily/core'
-import { FormItem, FormLayout, Tree } from '@sliver/formily-element-plus'
 import { Field, FormProvider } from '@silver-formily/vue'
+import { FormItem, FormLayout, Tree } from '@sliver/formily-element-plus'
 import { ElText } from 'element-plus'
 import { codeToHtml } from 'shiki'
 import { ref } from 'vue'

@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { createForm } from '@formily/core'
-import { Autocomplete, FormItem, Submit } from '@sliver/formily-element-plus'
 import { Field, FormProvider } from '@silver-formily/vue'
+import { Autocomplete, FormItem, Submit } from '@sliver/formily-element-plus'
 import { ref } from 'vue'
 
 const form = createForm()

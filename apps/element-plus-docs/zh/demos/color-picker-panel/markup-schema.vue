@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { createForm } from '@formily/core'
-import { ColorPickerPanel, Form, FormItem, Submit } from '@sliver/formily-element-plus'
 import { createSchemaField } from '@silver-formily/vue'
+import { ColorPickerPanel, Form, FormItem, Submit } from '@sliver/formily-element-plus'
 
 const form = createForm()
 const predefine = ['#409eff', '#67c23a', '#e6a23c', 'rgba(255, 69, 0, 0.68)']

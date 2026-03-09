@@ -26,8 +26,8 @@ pnpm add @formily/core @formily/json-schema @silver-formily/vue @sliver/formily-
 ### 2. 注册组件与 SchemaField
 
 ```ts
-import { FormItem, Input, Select, Submit } from '@sliver/formily-element-plus'
 import { createSchemaField } from '@silver-formily/vue'
+import { FormItem, Input, Select, Submit } from '@sliver/formily-element-plus'
 
 export const { SchemaField } = createSchemaField({
   components: { FormItem, Input, Select, Submit },
@@ -60,8 +60,8 @@ const form = createForm({
 ```vue
 <script setup lang="ts">
 import { createForm, onFieldValueChange } from '@formily/core'
-import { FormItem, Input, Select, Submit } from '@sliver/formily-element-plus'
 import { createSchemaField, FormProvider } from '@silver-formily/vue'
+import { FormItem, Input, Select, Submit } from '@sliver/formily-element-plus'
 
 const { SchemaField } = createSchemaField({
   components: { FormItem, Input, Select, Submit },

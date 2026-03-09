@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { createForm } from '@formily/core'
+import { createSchemaField, FormProvider } from '@silver-formily/vue'
 import {
   DatePicker,
   FormItem,
@@ -7,7 +8,6 @@ import {
   QueryForm,
   Select,
 } from '@sliver/formily-element-plus'
-import { createSchemaField, FormProvider } from '@silver-formily/vue'
 import { ElMessage } from 'element-plus'
 
 const form = createForm()

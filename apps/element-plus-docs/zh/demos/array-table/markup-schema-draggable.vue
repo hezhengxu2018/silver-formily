@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { createForm } from '@formily/core'
+import { createSchemaField, FormProvider } from '@silver-formily/vue'
 import {
   ArrayTable,
   Editable,
@@ -8,7 +9,6 @@ import {
   Space,
   Submit,
 } from '@sliver/formily-element-plus'
-import { createSchemaField, FormProvider } from '@silver-formily/vue'
 
 function range(count) {
   return Array.from({ length: count }).map((_, index) => ({ a1: index }))

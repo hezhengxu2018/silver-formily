@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { createForm } from '@formily/core'
+import { createSchemaField, FormProvider } from '@silver-formily/vue'
 import {
   FormItem,
   FormLayout,
   Input,
   Select,
 } from '@sliver/formily-element-plus'
-import { createSchemaField, FormProvider } from '@silver-formily/vue'
 
 const schema = {
   type: 'object',
