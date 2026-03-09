@@ -11,6 +11,56 @@ export interface UseEnterSubmitOptions {
 }
 
 const runtimeWindow = globalThis.window === undefined ? undefined : globalThis
+const submitOnEnterInputTypes = new Set([
+  'text',
+  'search',
+  'email',
+  'password',
+  'tel',
+  'url',
+  'number',
+])
+const defaultEnterBehaviorSelector = [
+  'button',
+  'a[href]',
+  'select',
+  'summary',
+  '[role=button]',
+  '[role=link]',
+  '[role=checkbox]',
+  '[role=radio]',
+  '[role=switch]',
+  '[role=tab]',
+  '[role=menuitem]',
+  '[role=option]',
+  '[role=combobox]',
+  '[role=listbox]',
+].join(',')
+
+function shouldSubmitOnEnter(target: HTMLElement | null) {
+  const input = target?.closest('input') as HTMLInputElement | null
+  if (!input)
+    return false
+
+  const inputType = (input.getAttribute('type') ?? 'text').toLowerCase()
+  return submitOnEnterInputTypes.has(inputType)
+}
+
+function shouldRespectDefaultEnterBehavior(target: HTMLElement | null) {
+  if (!target || shouldSubmitOnEnter(target))
+    return false
+
+  if (target.closest(defaultEnterBehaviorSelector))
+    return true
+
+  const activeElement = target.ownerDocument?.activeElement
+  if (!(activeElement instanceof HTMLElement))
+    return false
+
+  return activeElement !== target.ownerDocument.body
+    && activeElement !== target.ownerDocument.documentElement
+    && activeElement === target
+}
 
 export function useEnterSubmit({ visible, resolve, submitting, getContainer, enabled = true }: UseEnterSubmitOptions) {
   let stopListener: (() => void) | null = null
@@ -42,6 +92,8 @@ export function useEnterSubmit({ visible, resolve, submitting, getContainer, ena
 
     const target = event.target as HTMLElement | null
     if (target?.closest('textarea,[contenteditable=true]'))
+      return true
+    if (shouldRespectDefaultEnterBehavior(target))
       return true
 
     return false

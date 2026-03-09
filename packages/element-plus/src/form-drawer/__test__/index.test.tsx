@@ -169,6 +169,59 @@ describe('formDrawer', () => {
     await vi.waitFor(() => expect(confirmSpy).toHaveBeenCalledTimes(1))
   })
 
+  it('应该在取消按钮聚焦时触发默认行为而不是直接提交', async () => {
+    const confirmSpy = vi.fn()
+    const cancelSpy = vi.fn()
+
+    const TestComponent = () => {
+      const handleOpen = () => {
+        FormDrawer('测试标题', () => (
+          <SchemaField>
+            <SchemaStringField
+              name="input"
+              title="输入框"
+              x-decorator="FormItem"
+              x-component="Input"
+            />
+          </SchemaField>
+        ))
+          .forConfirm((form, next) => {
+            confirmSpy(form.values)
+            next()
+          })
+          .forCancel((form, next) => {
+            cancelSpy(form.values)
+            next()
+          })
+          .open()
+          .catch(() => undefined)
+      }
+
+      return <ElButton onClick={handleOpen}>打开回车抽屉</ElButton>
+    }
+
+    const { getByText } = render(() => <TestComponent />, {
+      global: {
+        stubs: {
+          Transition: false,
+        },
+      },
+    })
+
+    await getByText('打开回车抽屉').click()
+    const cancelButton = Array.from(document.querySelectorAll('button'))
+      .find(button => button.textContent?.includes('取消')) as HTMLButtonElement
+
+    cancelButton.focus()
+    await userEvent.keyboard('{Enter}')
+
+    await vi.waitFor(() => {
+      expect(cancelSpy).toHaveBeenCalledTimes(1)
+      expect(document.querySelector('.el-drawer')).toBeNull()
+    })
+    expect(confirmSpy).not.toHaveBeenCalled()
+  })
+
   it('应该只让最近打开的抽屉响应回车', async () => {
     const firstConfirm = vi.fn()
     const secondConfirm = vi.fn()
