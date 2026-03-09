@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { createForm } from '@formily/core'
-import { FormItem, Password, Submit } from '@silver-formily/element-plus'
+import { FormItem, Password, Submit } from '@sliver/formily-element-plus'
 import { createSchemaField, FormProvider } from '@silver-formily/vue'
 
 const form = createForm()

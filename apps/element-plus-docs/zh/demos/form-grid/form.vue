@@ -11,7 +11,7 @@ import {
   Reset,
   Select,
   Submit,
-} from '@silver-formily/element-plus'
+} from '@sliver/formily-element-plus'
 import { Grid } from '@silver-formily/grid'
 import { observer } from '@silver-formily/reactive-vue'
 import {

@@ -7,7 +7,7 @@ import {
   Input,
   Space,
   Submit,
-} from '@silver-formily/element-plus'
+} from '@sliver/formily-element-plus'
 import { Field, FormProvider, VoidField } from '@silver-formily/vue'
 
 const form = createForm()

@@ -32,7 +32,7 @@ Silver Formily 是一个基于 `pnpm workspace` 和 `Turborepo` 的 Vue 3 / Form
 | ----------------------------------- | -------- | --------------------------------------------- | --------------------------------------------------------------------------------- |
 | `@silver-formily/reactive-vue`      | `1.0.0`  | Vue 3 版 `@formily/reactive` 响应式适配层     | `vue ^3.3.0`、`@formily/reactive ^2`                                              |
 | `@silver-formily/vue`               | `2.3.1`  | Vue 3 版 Formily 运行时绑定                   | `@formily/core/json-schema/reactive/shared ^2`、`@silver-formily/reactive-vue ^1` |
-| `@silver-formily/element-plus`      | `3.0.1`  | Formily + Element Plus 组件封装与场景组件     | `element-plus ^2.1.8`、`vue ^3.3.0`、`@vueuse/core`                               |
+| `@sliver/formily-element-plus`      | `3.0.1`  | Formily + Element Plus 组件封装与场景组件     | `element-plus ^2.1.8`、`vue ^3.3.0`、`@vueuse/core`                               |
 | `@silver-formily/grid`              | `1.0.1`  | 与 Formily 生态配套的网格布局运行时           | `@formily/reactive ^2`                                                            |
 | `@silver-formily/docs-toolkit`      | `0.0.0`  | 内部共享的 VitePress 主题、插件与站点配置工具 | `vitepress 2.0.0-alpha.16`                                                        |
 | `@silver-formily/typescript-config` | `0.0.0`  | 内部 TypeScript 配置共享包                    | 供 workspace 复用                                                                 |
@@ -92,7 +92,7 @@ pnpm --filter vue-docs dev
 pnpm --filter @silver-formily/vue build
 
 # 仅运行某个包的覆盖率测试
-pnpm --filter @silver-formily/element-plus test:coverage
+pnpm --filter @sliver/formily-element-plus test:coverage
 
 # 仅构建待发布包
 pnpm run build:changed

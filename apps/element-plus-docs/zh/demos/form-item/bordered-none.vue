@@ -9,7 +9,7 @@ import {
   InputNumber,
   Select,
   Switch,
-} from '@silver-formily/element-plus'
+} from '@sliver/formily-element-plus'
 import { createSchemaField } from '@silver-formily/vue'
 
 const form = createForm()

@@ -11,7 +11,7 @@ import {
   Radio,
   Select,
   Switch,
-} from '@silver-formily/element-plus'
+} from '@sliver/formily-element-plus'
 import { createSchemaField } from '@silver-formily/vue'
 
 function Div(props, { slots }) {

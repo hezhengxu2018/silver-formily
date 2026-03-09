@@ -1,5 +1,5 @@
 <script setup lang="tsx">
-import { FormGrid } from '@silver-formily/element-plus'
+import { FormGrid } from '@sliver/formily-element-plus'
 
 function Cell(_props, { slots }) {
   return (

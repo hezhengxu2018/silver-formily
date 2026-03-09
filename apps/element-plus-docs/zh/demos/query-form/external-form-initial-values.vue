@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { ISchema } from '@formily/json-schema'
 import { createForm } from '@formily/core'
-import { QueryForm } from '@silver-formily/element-plus'
+import { QueryForm } from '@sliver/formily-element-plus'
 import { ElMessage } from 'element-plus'
 
 const form = createForm({

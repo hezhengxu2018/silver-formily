@@ -13,7 +13,7 @@
 :::
 
 ::: tip 提示
-如果你还没有做好迁移`@formily/vue`的准备，可以继续使用 `@silver-formily/element-plus` 的 1.x 版本。
+如果你还没有做好迁移`@formily/vue`的准备，可以继续使用 `@sliver/formily-element-plus` 的 1.x 版本。
 :::
 
 ## 组件重构

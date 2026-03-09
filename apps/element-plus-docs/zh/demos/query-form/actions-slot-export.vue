@@ -6,7 +6,7 @@ import {
   QueryForm,
   Reset,
   Submit,
-} from '@silver-formily/element-plus'
+} from '@sliver/formily-element-plus'
 import { ElButton, ElMessage } from 'element-plus'
 
 const form = createForm()

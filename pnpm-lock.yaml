@@ -89,7 +89,7 @@ importers:
       '@silver-formily/docs-toolkit':
         specifier: workspace:*
         version: link:../../packages/docs-toolkit
-      '@silver-formily/element-plus':
+      '@sliver/formily-element-plus':
         specifier: workspace:*
         version: link:../../packages/element-plus
       '@silver-formily/grid':

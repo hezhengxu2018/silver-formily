@@ -1,5 +1,5 @@
 <script setup lang="tsx">
-import { FormDialog, FormItem, FormLayout, Input } from '@silver-formily/element-plus'
+import { FormDialog, FormItem, FormLayout, Input } from '@sliver/formily-element-plus'
 import { Field } from '@silver-formily/vue'
 import { ElButton, ElSpace } from 'element-plus'
 

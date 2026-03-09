@@ -19,4 +19,4 @@
 ## 维护约定
 
 - 组件行为变化需同步更新 `zh/component/*` 与对应 demo。
-- 示例优先从 `@silver-formily/element-plus` 导入，不直接耦合内部实现细节。
+- 示例优先从 `@sliver/formily-element-plus` 导入，不直接耦合内部实现细节。

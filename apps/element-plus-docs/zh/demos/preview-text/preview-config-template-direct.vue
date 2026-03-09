@@ -8,7 +8,7 @@ import {
   Input,
   PreviewText,
   Select,
-} from '@silver-formily/element-plus'
+} from '@sliver/formily-element-plus'
 import { Field } from '@silver-formily/vue'
 import { ElButton } from 'element-plus'
 

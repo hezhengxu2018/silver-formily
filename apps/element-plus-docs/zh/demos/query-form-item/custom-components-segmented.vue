@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { ISchema } from '@formily/json-schema'
 import { createForm } from '@formily/core'
-import { QueryFormItem, Segmented, SelectTable } from '@silver-formily/element-plus'
+import { QueryFormItem, Segmented, SelectTable } from '@sliver/formily-element-plus'
 import { createSchemaField, FormProvider } from '@silver-formily/vue'
 import { ElButton, ElMessage } from 'element-plus'
 import { createUserRequest } from './mock-user-request'

@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { createForm } from '@formily/core'
-import { FormItem, FormLayout, PreviewText } from '@silver-formily/element-plus'
+import { FormItem, FormLayout, PreviewText } from '@sliver/formily-element-plus'
 import { createSchemaField, FormProvider } from '@silver-formily/vue'
 
 const { SchemaField, SchemaNumberField, SchemaStringField } = createSchemaField({

@@ -8,7 +8,7 @@ import {
   Reset,
   Select,
   Submit,
-} from '@silver-formily/element-plus'
+} from '@sliver/formily-element-plus'
 import { createSchemaField, FormProvider } from '@silver-formily/vue'
 
 const fields = createSchemaField({ components: { FormItem, Input, Select } })

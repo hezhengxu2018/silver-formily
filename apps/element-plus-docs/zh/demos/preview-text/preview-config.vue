@@ -10,7 +10,7 @@ import {
   PreviewText,
   Select,
   TimePicker,
-} from '@silver-formily/element-plus'
+} from '@sliver/formily-element-plus'
 import { createSchemaField } from '@silver-formily/vue'
 import { ElButton } from 'element-plus'
 

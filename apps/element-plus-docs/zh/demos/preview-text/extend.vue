@@ -13,7 +13,7 @@ import {
   Slider,
   TimePicker,
   Tree,
-} from '@silver-formily/element-plus'
+} from '@sliver/formily-element-plus'
 import { createSchemaField } from '@silver-formily/vue'
 import { ElButton } from 'element-plus'
 
@@ -305,7 +305,7 @@ const options = [
   },
 ]
 
-const warpText = `aaaaa   bbbbbb 
+const warpText = `aaaaa   bbbbbb
   adasdb
   alh`
 </script>

@@ -1,7 +1,7 @@
 import path, { dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { createDocsConfig } from '@silver-formily/docs-toolkit'
-import pkg from '@silver-formily/element-plus/package.json' with { type: 'json' }
+import pkg from '@sliver/formily-element-plus/package.json' with { type: 'json' }
 import vueJsx from '@vitejs/plugin-vue-jsx'
 import zhComponent from './i18n/zh/pages/component.json'
 import zhNav from './i18n/zh/pages/nav.json'
@@ -18,7 +18,7 @@ export default createDocsConfig({
   demoDir,
   demoCodeFold: true,
   alias: {
-    '@silver-formily/element-plus': elementPlusSource,
+    '@sliver/formily-element-plus': elementPlusSource,
     '@silver-formily/reactive-vue': reactiveVueSource,
     '@silver-formily/vue': vueSource,
   },
@@ -26,7 +26,7 @@ export default createDocsConfig({
     root: {
       label: '简体中文',
       lang: 'zh-CN',
-      title: 'Silver Formily Element Plus',
+      title: 'Sliver Formily Element Plus',
       description: 'Element Plus 的 Formily 封装',
       themeConfig: {
         nav: zhNav,
@@ -52,8 +52,8 @@ export default createDocsConfig({
     ['meta', { name: 'description', content: 'Element Plus 的 Formily 封装组件库和使用指南' }],
     ['meta', { name: 'keywords', content: 'Formily, Element Plus, 表单, 组件库, Vue' }],
     ['meta', { property: 'og:type', content: 'website' }],
-    ['meta', { property: 'og:site_name', content: 'Silver Formily Element Plus' }],
-    ['meta', { property: 'og:title', content: 'Silver Formily Element Plus' }],
+    ['meta', { property: 'og:site_name', content: 'Sliver Formily Element Plus' }],
+    ['meta', { property: 'og:title', content: 'Sliver Formily Element Plus' }],
     ['meta', { property: 'og:description', content: 'Formily + Element Plus 组件库文档、示例与最佳实践' }],
     ['meta', { property: 'og:url', content: SITE_URL }],
     ['link', { rel: 'canonical', href: SITE_URL }],
@@ -69,7 +69,7 @@ export default createDocsConfig({
         ],
       },
       {
-        title: 'Silver Formily',
+        title: 'Sliver Formily',
         children: [
           { text: 'Vue', link: 'https://vue.silver-formily.org' },
           { text: 'Reactive Vue', link: 'https://reactive-vue.silver-formily.org' },
@@ -118,7 +118,7 @@ export default createDocsConfig({
     rewrites: {
       'zh/:slug*': ':slug*',
     },
-    title: 'Silver Formily Element Plus',
+    title: 'Sliver Formily Element Plus',
     description: 'Formily bindings for Element Plus',
     sitemap: {
       hostname: SITE_URL,

@@ -2,7 +2,7 @@
 import { createForm } from '@formily/core'
 import { autorun, toJS } from '@formily/reactive'
 import { isPlainObj } from '@formily/shared'
-import { FormItem, FormLayout, Select, Switch, Tree } from '@silver-formily/element-plus'
+import { FormItem, FormLayout, Select, Switch, Tree } from '@sliver/formily-element-plus'
 import { Field, FormProvider } from '@silver-formily/vue'
 import { omit } from 'lodash-es'
 import { codeToHtml } from 'shiki'

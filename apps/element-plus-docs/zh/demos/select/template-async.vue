@@ -2,7 +2,7 @@
 import type { DataField } from '@formily/core'
 import { createForm, onFieldReact } from '@formily/core'
 import { action } from '@formily/reactive'
-import { Form, FormItem, Select, Submit } from '@silver-formily/element-plus'
+import { Form, FormItem, Select, Submit } from '@sliver/formily-element-plus'
 import { Field } from '@silver-formily/vue'
 
 function useAsyncDataSource(pattern, service) {

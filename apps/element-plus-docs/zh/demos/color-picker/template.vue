@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { createForm } from '@formily/core'
-import { ColorPicker, FormItem, Submit } from '@silver-formily/element-plus'
+import { ColorPicker, FormItem, Submit } from '@sliver/formily-element-plus'
 import { Field, FormProvider } from '@silver-formily/vue'
 
 const form = createForm()

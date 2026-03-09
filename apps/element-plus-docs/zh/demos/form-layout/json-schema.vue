@@ -5,7 +5,7 @@ import {
   FormLayout,
   Input,
   Select,
-} from '@silver-formily/element-plus'
+} from '@sliver/formily-element-plus'
 import { createSchemaField, FormProvider } from '@silver-formily/vue'
 
 const schema = {

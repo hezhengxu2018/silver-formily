@@ -6,7 +6,7 @@ import {
   FormStep,
   Input,
   Submit,
-} from '@silver-formily/element-plus'
+} from '@sliver/formily-element-plus'
 import { createSchemaField, FormConsumer, FormProvider } from '@silver-formily/vue'
 import { ElButton } from 'element-plus'
 

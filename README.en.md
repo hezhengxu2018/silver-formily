@@ -32,7 +32,7 @@ Silver Formily is a Vue 3 / Formily monorepo built with `pnpm workspace` and `Tu
 | ----------------------------------- | ------- | ---------------------------------------------------- | --------------------------------------------------------------------------------- |
 | `@silver-formily/reactive-vue`      | `1.0.0` | Vue 3 adapter layer around `@formily/reactive`       | `vue ^3.3.0`, `@formily/reactive ^2`                                              |
 | `@silver-formily/vue`               | `2.3.1` | Vue 3 Formily runtime binding                        | `@formily/core/json-schema/reactive/shared ^2`, `@silver-formily/reactive-vue ^1` |
-| `@silver-formily/element-plus`      | `3.0.1` | Formily + Element Plus bindings and scenario widgets | `element-plus ^2.1.8`, `vue ^3.3.0`, `@vueuse/core`                               |
+| `@sliver/formily-element-plus`      | `3.0.1` | Formily + Element Plus bindings and scenario widgets | `element-plus ^2.1.8`, `vue ^3.3.0`, `@vueuse/core`                               |
 | `@silver-formily/grid`              | `1.0.1` | Grid runtime package for the Formily ecosystem       | `@formily/reactive ^2`                                                            |
 | `@silver-formily/docs-toolkit`      | `0.0.0` | Shared VitePress theme, plugins, and site config     | `vitepress 2.0.0-alpha.16`                                                        |
 | `@silver-formily/typescript-config` | `0.0.0` | Shared TypeScript presets for the workspace          | Internal workspace use                                                            |
@@ -92,7 +92,7 @@ pnpm --filter vue-docs dev
 pnpm --filter @silver-formily/vue build
 
 # Run coverage for one package
-pnpm --filter @silver-formily/element-plus test:coverage
+pnpm --filter @sliver/formily-element-plus test:coverage
 
 # Build packages that are pending release
 pnpm run build:changed

@@ -22,7 +22,7 @@ https://element-plus.silver-formily.org/
 ## 安装
 
 ```bash
-pnpm add @silver-formily/element-plus
+pnpm add @sliver/formily-element-plus
 ```
 
 本包依赖 Formily、Element Plus、Vue、@silver-formily/vue 等 peerDependencies。请查看文档或 package.json 获取兼容版本与配置说明。

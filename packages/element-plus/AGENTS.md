@@ -10,9 +10,9 @@
 
 ## 常用命令
 
-- `pnpm --filter @silver-formily/element-plus build`：执行库构建并输出到 `esm/`。
-- `pnpm --filter @silver-formily/element-plus lint`：执行 ESLint 校验。
-- `pnpm --filter @silver-formily/element-plus format`：执行 ESLint 自动修复。
+- `pnpm --filter @sliver/formily-element-plus build`：执行库构建并输出到 `esm/`。
+- `pnpm --filter @sliver/formily-element-plus lint`：执行 ESLint 校验。
+- `pnpm --filter @sliver/formily-element-plus format`：执行 ESLint 自动修复。
 
 ## 迁移约定
 

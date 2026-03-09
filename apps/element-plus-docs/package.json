@@ -18,7 +18,7 @@
     "@formily/reactive": "^2.3.7",
     "@formily/shared": "^2.3.7",
     "@silver-formily/docs-toolkit": "workspace:*",
-    "@silver-formily/element-plus": "workspace:*",
+    "@sliver/formily-element-plus": "workspace:*",
     "@silver-formily/grid": "workspace:*",
     "@silver-formily/reactive-vue": "workspace:*",
     "@silver-formily/vue": "workspace:*",

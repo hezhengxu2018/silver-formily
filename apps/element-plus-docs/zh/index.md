@@ -3,10 +3,10 @@ layout: home
 page: true
 
 hero:
-  name: Silver Formily Element Plus
+  name: Sliver Formily Element Plus
   image:
     src: /logo.svg
-    alt: Silver Formily Element Plus
+    alt: Sliver Formily Element Plus
   tagline: 另一个 @formily/element-plus 组件库
   actions:
     - theme: alt
