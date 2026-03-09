@@ -1,7 +1,7 @@
 {
   "name": "@silver-formily/reactive-vue",
   "type": "module",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Another @formily/reactive-vue",
   "author": "Hezhengxu",
   "license": "MIT",
