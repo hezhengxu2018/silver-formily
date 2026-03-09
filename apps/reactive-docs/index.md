@@ -1,16 +1,25 @@
 # 介绍
 
-@formily/reactive 的核心思想是参考 [Mobx](https://mobx.js.org/) 的，那为什么要重新造轮子呢？
+本文档网站是对 `@formily/reactive` 官方文档的一次重构。移除了官方文档中对Mobx的介绍部分，减少额外的理解负担；同时对文档中的例子添加了可交互的Demo，方便理解。
 
-主要有 4 点原因：
+## 背景
 
-- mobx 不支持 action 内部进行依赖收集
-- mobx 的 observable 函数不支持过滤 react node,moment,immutable 之类的特殊对象
-- mobx 的 observable 函数会自动将函数变成 action
-- mobx-react-lite 的 observer 不支持 React 并发渲染
+`@formily/reactive` 在架构上与 `mobx` 是一致的。它是整个 `formily` 框架的响应式基础，一套独立的响应式方案可以更简洁的与不同的前端框架整合。
 
-基于以上原因，formily 不得不重新造轮子，不过该轮子是强依赖 Proxy 的，也就是不支持 IE 浏览器，当然，重新造轮子也有它的好处：
+如果不是自己封装组件是不需要查阅本文档的，formily的前端框架绑定库已经抹平了这部分差距，在使用上是无感的。
 
-- 把控性更强，可以为 formily 场景做更深的优化定制
-- 不用考虑 Mobx 的历史包袱，代码可以更干净
-- 如果 Mobx 版本 Break Change 或者存在安全漏洞，对 Formily 无影响
+如果你刚刚开始接触formily可以先跳过本文档的阅读，当你有了组件封装的需求之后再开始学习本文档。
+
+## 最佳实践
+
+官方文档的最佳实践可以总结成一下三条：
+
+1. 能不深度包装，就不要用深度包装。
+2. 尽量使用 `computed` / `batch`。
+3. `autorun` / `reaction` 调用后记得 `dispose`。
+
+## 删减章节
+
+文档在重构时移除了对前端框架绑定库的文档，最核心的原因当然是前端框架是独立的一个库，他应该有一份独立的文档。如果你想找 `@formily/reactive-vue` 或者 `@formily/reactive-react` 可以去[Formily官方文档](https://reactive.formilyjs.org/)中查看。
+
+如果你已经在使用 `silver-formily` 了，可以查看 `@silver-formily/reactive-vue` 的[官方文档](https://reactive-vue.silver-formily.org/)，他在原来的官方文档的基础上补充添加了部分工具函数。

@@ -16,23 +16,11 @@ interface isObservable {
 
 ## isAnnotation
 
-#### What is an Annotation
-
-In `define(target, annotations)`, an annotation is a marker function used to declare the reactive behavior of a property or method. It is not the business data itself. Instead, it tells `define` how the target member should be wrapped.
-
-Common annotations include:
-
-- `observable` / `observable.deep`
-- `observable.shallow`
-- `observable.ref`
-- `observable.box`
-- `observable.computed`
-- `action`
-- `batch`
-
 #### Description
 
-Determine whether a value is an annotation, which means it can be used as a reactive marker function in `define`
+Determine whether a value is an annotation, which means it can be used as a reactive marker function in `define`.
+
+See the [corresponding section in `define`](/en/api/define.html#annotations) for details.
 
 #### Signature
 

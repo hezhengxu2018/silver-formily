@@ -33,16 +33,6 @@ export default createDocsConfig({
         text: 'Guide',
         items: [
           { text: '介绍', link: '/' },
-          { text: '最佳实践', link: '/guide/best-practice' },
-        ],
-      },
-    ],
-    '/guide/': [
-      {
-        text: 'Guide',
-        items: [
-          { text: '介绍', link: '/' },
-          { text: '最佳实践', link: '/guide/best-practice' },
         ],
       },
     ],
@@ -80,16 +70,6 @@ export default createDocsConfig({
         text: 'Guide',
         items: [
           { text: 'Introduction', link: '/en/' },
-          { text: 'Best Practices', link: '/en/guide/best-practice' },
-        ],
-      },
-    ],
-    '/en/guide/': [
-      {
-        text: 'Guide',
-        items: [
-          { text: 'Introduction', link: '/en/' },
-          { text: 'Best Practices', link: '/en/guide/best-practice' },
         ],
       },
     ],
