@@ -2,7 +2,7 @@
 
 [Documentation](https://vue.silver-formily.org/) · [中文 README](./README.md)
 
-@silver-formily/vue is a Vue 3–first runtime wrapper around [Formily](https://formilyjs.org/). It keeps the orchestration power of `@formily/vue` while removing Vue 2 compatibility layers, redundant DOM wrappers, and inconsistent event contracts. The source lives in `src/`, docs in `docs/`, and build artifacts in `esm/`.
+@silver-formily/vue is a Vue 3–first runtime wrapper around [Formily](https://formilyjs.org/). It keeps the orchestration power of `@formily/vue` while removing Vue 2 compatibility layers, redundant DOM wrappers, and inconsistent event contracts. The source lives in `src/`, the docs app lives in `apps/vue-docs/`, and build artifacts live in `esm/`.
 
 ## ✨ Features
 
@@ -11,7 +11,7 @@
 - **Richer TypeScript hints** – explicit generics and shared interfaces sit beside the runtime to keep emitted `.d.ts` files in sync.
 - **Formily ecosystem alignment** – works with `@formily/core`, `@formily/json-schema`, and other official packages, keeping migration costs low.
 - **Decorator slots** – wire `FormItem` and other wrappers to the form schema via `:decorator-content` / `x-decorator-content`, covering `default`, `label`, `extra`, or any named slot. See the [FAQ entry](../../apps/vue-docs/en/questions/index.md#how-do-i-pass-slots-to-a-decorator).
-- **Docs & demos included** – VitePress docs describe APIs, migration notes, and Element Plus demos; run `pnpm docs:dev` to browse locally.
+- **Docs & demos included** – the VitePress docs app covers APIs, migration notes, and Element Plus demos; run `pnpm dev -- vue-docs` from the repo root to browse locally.
 
 ## 🔄 Differences vs `@formily/vue`
 
@@ -77,7 +77,7 @@ const FormItem = connect(
 </template>
 ```
 
-Explore more components (`SchemaField`, `RecursionField`, `ArrayField`, etc.) and composables in [`docs/api`](../../apps/vue-docs/api).
+Explore more components (`SchemaField`, `RecursionField`, `ArrayField`, etc.) and composables in [`apps/vue-docs/api`](../../apps/vue-docs/api).
 
 ## 🧱 API Overview
 
@@ -93,8 +93,8 @@ All public symbols are re-exported from `src/index.ts`, and the published bundle
 pnpm install       # Install dependencies
 pnpm lint          # Run Antfu ESLint rules
 pnpm build         # Build the library + types via Vite
-pnpm docs:dev      # Launch the VitePress docs site
-pnpm docs:build    # Generate static docs into docs/.vitepress/dist
+pnpm dev -- vue-docs # Launch the docs app from the repo root
+pnpm --filter vue-docs build # Build the docs site
 pnpm commit        # Conventional Commit helper (czg)
 pnpm release       # Changeset-driven release (requires clean tree)
 ```
@@ -106,7 +106,7 @@ pnpm release       # Changeset-driven release (requires clean tree)
 ## 📚 Docs & Examples
 
 - Visit the published site: <https://vue.silver-formily.org/>.
-- `docs/demos` contains Element Plus playgrounds that double as regression samples.
+- `apps/vue-docs/demos` contains Element Plus playgrounds that double as regression samples.
 
 ## 📄 License
 

@@ -51,7 +51,7 @@ jobs:
         run: pnpm --filter @silver-formily/element-plus exec playwright install --with-deps chromium
 
       - name: Run unit tests
-        run: pnpm test
+        run: pnpm test:all
 
       - name: Run reactive-vue tests with coverage
         run: pnpm --filter @silver-formily/reactive-vue test:coverage
@@ -68,7 +68,7 @@ jobs:
           fail_ci_if_error: true
 
       - name: Run grid tests with coverage
-        run: pnpm --filter @silver-formily/grid coverage
+        run: pnpm --filter @silver-formily/grid test:coverage
 
       - name: Upload grid coverage to Codecov
         if: ${{ env.CODECOV_TOKEN != '' }}

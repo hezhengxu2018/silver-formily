@@ -30,14 +30,11 @@
   "scripts": {
     "build": "tsdown",
     "dev": "tsdown --watch",
-    "test": "vitest run",
-    "coverage": "vitest run --coverage --browser.headless",
     "lint": "eslint .",
     "format": "eslint . --fix",
     "check-types": "vue-tsc --noEmit",
-    "docs:dev": "pnpm --filter grid-docs dev",
-    "docs:build": "pnpm turbo run docs:build --filter=grid-docs",
-    "docs:preview": "pnpm --filter grid-docs preview",
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage --browser.headless",
     "prepublishOnly": "pnpm run build"
   },
   "peerDependencies": {

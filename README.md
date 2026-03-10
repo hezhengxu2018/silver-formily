@@ -69,24 +69,47 @@ pnpm install
 
 ## 根目录脚本
 
-| 命令                    | 实际行为                                           |
-| ----------------------- | -------------------------------------------------- |
-| `pnpm dev`              | `turbo run dev`，并行启动声明了 `dev` 的 workspace |
-| `pnpm build`            | `turbo run build`，构建所有包与文档应用            |
-| `pnpm docs:build`       | `turbo run docs:build`，仅构建文档站点             |
-| `pnpm lint`             | `turbo run lint`                                   |
-| `pnpm format`           | `turbo run format`                                 |
-| `pnpm check-types`      | `turbo run check-types`                            |
-| `pnpm test`             | `turbo run test`                                   |
-| `pnpm build:changed`    | 读取 Changesets 状态，仅构建待发布包               |
-| `pnpm changeset`        | 创建 Changeset                                     |
-| `pnpm version-packages` | 执行 `changeset version`                           |
-| `pnpm release`          | 先执行 `build:changed`，再执行 `changeset publish` |
-| `pnpm commit`           | 启动 `czg` 生成 Conventional Commit                |
+| 命令                    | 实际行为                                                  |
+| ----------------------- | --------------------------------------------------------- |
+| `pnpm dev`              | 打开可搜索的 workspace 选择器，默认展示文档与应用的 `dev` |
+| `pnpm dev:all`          | `turbo run dev`，并行启动声明了 `dev` 的 workspace        |
+| `pnpm build`            | `turbo run build`，构建所有包与文档应用                   |
+| `pnpm docs:build`       | `turbo run docs:build`，仅构建文档站点                    |
+| `pnpm lint`             | `turbo run lint`                                          |
+| `pnpm format`           | `turbo run format`                                        |
+| `pnpm check-types`      | `turbo run check-types`                                   |
+| `pnpm test`             | 打开可搜索的 workspace 选择器，仅运行选中包的 `test`      |
+| `pnpm test:all`         | `turbo run test`，运行全部测试任务                        |
+| `pnpm build:changed`    | 读取 Changesets 状态，仅构建待发布包                      |
+| `pnpm changeset`        | 创建 Changeset                                            |
+| `pnpm version-packages` | 执行 `changeset version`                                  |
+| `pnpm release`          | 先执行 `build:changed`，再执行 `changeset publish`        |
+| `pnpm commit`           | 启动 `czg` 生成 Conventional Commit                       |
 
 ## 按包开发
 
 ```bash
+# 打开交互式选择器，可直接输入关键字过滤
+pnpm dev
+
+# 直接启动某个 workspace（支持包名 / 路径 / 目录名）
+pnpm dev -- vue-docs
+
+# 直接启动某个包级 dev/watch
+pnpm dev -- @silver-formily/grid
+
+# 启动全部 dev workspace
+pnpm dev:all
+
+# 打开测试选择器，只跑目标包的 test，构建链由 turbo 自动补齐
+pnpm test
+
+# 直接运行某个包的测试
+pnpm test -- @silver-formily/element-plus
+
+# 运行全部测试
+pnpm test:all
+
 # 仅启动某个文档站
 pnpm --filter vue-docs dev
 
@@ -99,6 +122,14 @@ pnpm --filter @silver-formily/element-plus test:coverage
 # 仅构建待发布包
 pnpm run build:changed
 ```
+
+## 文档开发策略
+
+- 所有文档站的根级入口统一走 `pnpm dev` 选择器，且默认只启动文档应用自身；依赖处理由各个 docs app 自己决定。
+- 如果文档站就是某个内部包自己的文档，优先给该包配置 VitePress `alias` 指向源码，例如 `element-plus-docs`、`vue-docs`、`grid-docs`、`reactive-vue-docs`。
+- 如果文档站只是 demo 顺带用到其他内部包，不要拉这些包进入 `dev/watch`，改用 `dev:deps` 先构建产物，例如 `json-schema-docs` 对 `@silver-formily/reactive-vue`、`@silver-formily/vue`。
+- 如果某个依赖既不是文档主题本身，也不需要源码热更新，就不要配置 `alias`，只保留产物依赖。
+- 新增 docs app 时，优先按这条规则判断：文档主题包走 `alias`，辅助依赖走 `dev:deps`，无关依赖不要加入 `dev` 链路。
 
 ## 工程约定
 
@@ -113,7 +144,7 @@ pnpm run build:changed
 
 - CI 在 `main` 分支 push / PR 时运行 `pnpm lint`，并执行 `reactive-vue`、`element-plus` 覆盖率测试。
 - CI 还会先构建 `@silver-formily/grid`、`@silver-formily/reactive-vue`、`@silver-formily/vue`，再运行 `element-plus` 浏览器测试链路。
-- 发布工作流通过手动触发执行，包含构建内部依赖包、`pnpm check-types`、`pnpm test`、`grid` / `reactive-vue` / `element-plus` 覆盖率测试，以及 Changesets 版本发布。
+- 发布工作流通过手动触发执行，包含构建内部依赖包、`pnpm check-types`、`pnpm test:all`、`grid` / `reactive-vue` / `element-plus` 覆盖率测试，以及 Changesets 版本发布。
 - 修改可发布包时，建议同步提交 `.changeset/*` 文件。
 
 ## 贡献前检查

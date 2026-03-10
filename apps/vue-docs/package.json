@@ -3,13 +3,21 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "dev": "vitepress dev .",
+    "dev": "pnpm run dev:deps && vitepress dev .",
+    "dev:deps": "pnpm --dir ../.. exec turbo run build --filter=@silver-formily/reactive-vue",
     "build": "vitepress build .",
     "preview": "vitepress preview .",
     "lint": "eslint .",
     "format": "eslint . --fix",
     "check-types": "vue-tsc --noEmit",
     "docs:build": "vitepress build ."
+  },
+  "silverFormily": {
+    "tasks": {
+      "dev": {
+        "filterMode": "workspace-only"
+      }
+    }
   },
   "dependencies": {
     "@element-plus/icons-vue": "^2.3.2",

@@ -37,16 +37,13 @@
   ],
   "scripts": {
     "build": "vite build",
+    "lint": "eslint .",
+    "format": "eslint . --fix",
+    "check-types": "vue-tsc --noEmit --project tsconfig.check.json",
     "test": "vitest run --reporter=dot",
     "test:watch": "vitest",
     "test:run": "vitest run --browser.headless",
     "test:coverage": "vitest run --coverage --browser.headless",
-    "lint": "eslint .",
-    "format": "eslint . --fix",
-    "check-types": "vue-tsc --noEmit --project tsconfig.check.json",
-    "docs:dev": "pnpm --filter element-plus-docs dev",
-    "docs:build": "pnpm turbo run docs:build --filter=element-plus-docs",
-    "docs:preview": "pnpm --filter element-plus-docs preview",
     "prepublishOnly": "pnpm run build"
   },
   "peerDependencies": {

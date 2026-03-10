@@ -11,16 +11,12 @@ const SITE_URL = 'https://element-plus.silver-formily.org'
 const currentDir = dirname(fileURLToPath(import.meta.url))
 const demoDir = path.resolve(currentDir, '../zh/demos')
 const elementPlusSource = `${path.resolve(currentDir, '../../../packages/element-plus/src')}/`
-const reactiveVueSource = `${path.resolve(currentDir, '../../../packages/reactive-vue/src')}/`
-const vueSource = `${path.resolve(currentDir, '../../../packages/vue/src')}/`
 export default createDocsConfig({
   pkg,
   demoDir,
   demoCodeFold: true,
   alias: {
     '@silver-formily/element-plus': elementPlusSource,
-    '@silver-formily/reactive-vue': reactiveVueSource,
-    '@silver-formily/vue': vueSource,
   },
   locales: {
     root: {

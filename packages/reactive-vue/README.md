@@ -61,21 +61,21 @@ function handleInput(event: Event) {
 
 `autorunEffect` / `reactionWatch` 必须在 `setup()` 或任意活动中的 effect scope 里调用，这样才能把 `dispose` 绑定到作用域释放时机。如果它们运行在组件 `setup()` 中，组件卸载时会自动清理；如果需要更早停止订阅，也可以接住它们返回的清理函数并手动调用。
 
-更多 demo：`docs/demos` 或在线文档（见下文）。
+更多 demo：`apps/reactive-vue-docs/demos` 或在线文档（见下文）。
 
 ## 📚 文档与示例
 
 - 官网（VitePress）：<https://reactive-vue.silver-formily.org>
 - English docs：<https://reactive-vue.silver-formily.org/en/>（或在文档站右上角切换语言）
-- 快速入门、API、Demo：`docs/index.md`
-- 运行文档站点：`pnpm docs:dev`
+- 快速入门、API、Demo：`apps/reactive-vue-docs/index.md`
+- 运行文档站点：在仓库根目录执行 `pnpm dev -- reactive-vue-docs`
 
 ## 🤝 贡献
 
 欢迎 Issue/PR！请确保：
 
 1. 运行 `pnpm lint && pnpm test` 保持通过。
-2. 如涉及文档/示例，更新 `docs/` 并附上复现步骤。
+2. 如涉及文档/示例，更新 `apps/reactive-vue-docs/` 并附上复现步骤。
 3. 遵循项目约定的 Commit 规范（可使用 `pnpm commit`）。
 
 ## 📄 许可证

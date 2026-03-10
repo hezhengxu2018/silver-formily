@@ -2,7 +2,7 @@
 
 [文档网站](https://vue.silver-formily.org/) · [本地文档首页](../../apps/vue-docs/index.md) · [English README](./README.en.md)
 
-@silver-formily/vue 是一个专注于 Vue 3 生态的 [Formily](https://formilyjs.org/) 运行时封装。它保留了 `@formily/vue` 的编排能力，同时去除了 Vue 2 兼容层、冗余 DOM 包裹以及不一致的事件契约。源码位于 `src/`，文档位于 `docs/`，构建产物存放在 `esm/`。
+@silver-formily/vue 是一个专注于 Vue 3 生态的 [Formily](https://formilyjs.org/) 运行时封装。它保留了 `@formily/vue` 的编排能力，同时去除了 Vue 2 兼容层、冗余 DOM 包裹以及不一致的事件契约。源码位于 `src/`，文档应用位于 `apps/vue-docs/`，构建产物存放在 `esm/`。
 
 ## ✨ 特性
 
@@ -11,7 +11,7 @@
 - **完善的 TypeScript 类型**：在运行时附近维护显式泛型与公共接口，确保生成的 `.d.ts` 与实现同步。
 - **Formily 生态对齐**：与 `@formily/core`、`@formily/json-schema` 等官方包保持兼容，迁移成本低。
 - **Decorator 插槽支持**：通过 `:decorator-content` 与 `x-decorator-content` 将 `FormItem` 等装饰器的 `default`、`label`、`extra` 插槽与 schema 数据解耦，详见[常见问题](../../apps/vue-docs/questions/index.md#如何向装饰器传递插槽)。
-- **配套文档与示例**：内置 VitePress 文档，包含 API、迁移提示以及 Element Plus 示例，执行 `pnpm docs:dev` 即可查看。
+- **配套文档与示例**：内置 VitePress 文档应用，包含 API、迁移提示以及 Element Plus 示例，可在仓库根目录执行 `pnpm dev -- vue-docs` 本地查看。
 
 ## 🔄 与 `@formily/vue` 的差异
 
@@ -77,7 +77,7 @@ const FormItem = connect(
 </template>
 ```
 
-更多组件（`SchemaField`、`RecursionField`、`ArrayField` 等）与组合式 API 请参阅 [`docs/api`](../../apps/vue-docs/api)。
+更多组件（`SchemaField`、`RecursionField`、`ArrayField` 等）与组合式 API 请参阅 [`apps/vue-docs/api`](../../apps/vue-docs/api)。
 
 ## 🧱 API 速览
 
@@ -93,8 +93,8 @@ const FormItem = connect(
 pnpm install       # 安装依赖
 pnpm lint          # 运行 Antfu ESLint 规则
 pnpm build         # 基于 Vite 生成库与类型
-pnpm docs:dev      # 启动 VitePress 文档站点
-pnpm docs:build    # 生成静态文档 (docs/.vitepress/dist)
+pnpm dev -- vue-docs # 从仓库根目录启动文档应用
+pnpm --filter vue-docs build # 构建文档站点
 pnpm commit        # 使用 czg 编写 Conventional Commit
 pnpm release       # Changeset 发布流程（需要干净工作区）
 ```
@@ -106,7 +106,7 @@ pnpm release       # Changeset 发布流程（需要干净工作区）
 ## 📚 文档与示例
 
 - 在线站点：<https://vue.silver-formily.org/>
-- `docs/demos` 提供 Element Plus 示例，可作为封装自定义组件的起点。
+- `apps/vue-docs/demos` 提供 Element Plus 示例，可作为封装自定义组件的起点。
 
 ## 📄 License
 

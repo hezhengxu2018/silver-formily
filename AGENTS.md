@@ -16,14 +16,23 @@ This document defines repository-wide expectations for anyone automating tasks (
 
 ## Standard Workflows
 
-| Task              | Command            | Notes                                                                  |
-| ----------------- | ------------------ | ---------------------------------------------------------------------- |
-| Format everything | `pnpm format`      | Uses ESLint (Antfu preset) everywhere. Required before pushing.        |
-| Lint only         | `pnpm lint`        | Runs `turbo run lint`, so each workspace must provide a `lint` script. |
-| Type-check        | `pnpm check-types` | Executes `turbo run check-types`. Add package scripts if missing.      |
-| Build             | `pnpm build`       | Caches through Turborepo; declare outputs for file-generating steps.   |
-| Dev servers       | `pnpm dev`         | Fan-out via `turbo run dev`; use `--filter` for specific apps.         |
-| Releases          | `pnpm release`     | Runs `pnpm build` first, then `changeset publish`. Repo must be clean. |
+| Task              | Command            | Notes                                                                               |
+| ----------------- | ------------------ | ----------------------------------------------------------------------------------- |
+| Format everything | `pnpm format`      | Uses ESLint (Antfu preset) everywhere. Required before pushing.                     |
+| Lint only         | `pnpm lint`        | Runs `turbo run lint`, so each workspace must provide a `lint` script.              |
+| Type-check        | `pnpm check-types` | Executes `turbo run check-types`. Add package scripts if missing.                   |
+| Build             | `pnpm build`       | Caches through Turborepo; declare outputs for file-generating steps.                |
+| Dev servers       | `pnpm dev`         | Opens a searchable picker for apps/docs by default; use `pnpm dev:all` for fan-out. |
+| Test              | `pnpm test`        | Opens a searchable workspace picker; use `pnpm test:all` for full run.              |
+| Releases          | `pnpm release`     | Runs `pnpm build` first, then `changeset publish`. Repo must be clean.              |
+
+## Docs Apps
+
+- Root `pnpm dev` is the default entry for docs work. The picker only shows apps/docs by default and starts the selected docs app itself.
+- A docs app that documents one internal package directly should usually alias that package to source in VitePress.
+- Internal packages that only appear in demos should not be started in `dev/watch`; build them first via a package-local `dev:deps` script instead.
+- If an internal dependency does not need source-level hot updates, prefer built artifacts and skip VitePress `alias`.
+- Package-level `dev` tasks still exist for explicit use (`pnpm dev -- <workspace-name>`), but they are not the default docs workflow.
 
 ## Code Style & Quality Gates
 

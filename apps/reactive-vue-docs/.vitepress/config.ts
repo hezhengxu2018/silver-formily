@@ -78,7 +78,7 @@ export default createDocsConfig({
   ],
   vite: {
     optimizeDeps: {
-      include: ['@formily/core', '@silver-formily/reactive-vue', '@formily/reactive', 'element-plus', 'dayjs'],
+      include: ['@silver-formily/reactive-vue', '@formily/reactive'],
     },
   },
   extra: {

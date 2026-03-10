@@ -69,24 +69,47 @@ pnpm install
 
 ## Root Scripts
 
-| Command                 | What it does                                                       |
-| ----------------------- | ------------------------------------------------------------------ |
-| `pnpm dev`              | Runs `turbo run dev` and starts every workspace that exposes `dev` |
-| `pnpm build`            | Runs `turbo run build` for all packages and docs apps              |
-| `pnpm docs:build`       | Runs `turbo run docs:build` for documentation sites only           |
-| `pnpm lint`             | Runs `turbo run lint`                                              |
-| `pnpm format`           | Runs `turbo run format`                                            |
-| `pnpm check-types`      | Runs `turbo run check-types`                                       |
-| `pnpm test`             | Runs `turbo run test`                                              |
-| `pnpm build:changed`    | Reads Changesets status and builds publishable packages only       |
-| `pnpm changeset`        | Creates a changeset                                                |
-| `pnpm version-packages` | Runs `changeset version`                                           |
-| `pnpm release`          | Runs `build:changed` and then `changeset publish`                  |
-| `pnpm commit`           | Starts `czg` for Conventional Commit messages                      |
+| Command                 | What it does                                                         |
+| ----------------------- | -------------------------------------------------------------------- |
+| `pnpm dev`              | Opens a searchable picker and shows docs/apps `dev` tasks by default |
+| `pnpm dev:all`          | Runs `turbo run dev` and starts every workspace that exposes `dev`   |
+| `pnpm build`            | Runs `turbo run build` for all packages and docs apps                |
+| `pnpm docs:build`       | Runs `turbo run docs:build` for documentation sites only             |
+| `pnpm lint`             | Runs `turbo run lint`                                                |
+| `pnpm format`           | Runs `turbo run format`                                              |
+| `pnpm check-types`      | Runs `turbo run check-types`                                         |
+| `pnpm test`             | Opens a searchable picker and runs `test` for the selected package   |
+| `pnpm test:all`         | Runs `turbo run test` for every available test task                  |
+| `pnpm build:changed`    | Reads Changesets status and builds publishable packages only         |
+| `pnpm changeset`        | Creates a changeset                                                  |
+| `pnpm version-packages` | Runs `changeset version`                                             |
+| `pnpm release`          | Runs `build:changed` and then `changeset publish`                    |
+| `pnpm commit`           | Starts `czg` for Conventional Commit messages                        |
 
 ## Package-Level Development
 
 ```bash
+# Open the interactive picker and filter by typing
+pnpm dev
+
+# Start one workspace directly (package name / path / folder name)
+pnpm dev -- vue-docs
+
+# Start one package-level dev/watch task directly
+pnpm dev -- @silver-formily/grid
+
+# Start every dev workspace
+pnpm dev:all
+
+# Open the test picker; Turbo still builds required dependency artifacts first
+pnpm test
+
+# Run tests for one package directly
+pnpm test -- @silver-formily/element-plus
+
+# Run every test task
+pnpm test:all
+
 # Start one docs site
 pnpm --filter vue-docs dev
 
@@ -99,6 +122,14 @@ pnpm --filter @silver-formily/element-plus test:coverage
 # Build packages that are pending release
 pnpm run build:changed
 ```
+
+## Docs Dev Strategy
+
+- All docs sites go through the root `pnpm dev` picker, and the picker starts only the docs app itself by default. Each docs app is responsible for its own dependency strategy.
+- If a docs site documents one internal package directly, prefer a VitePress `alias` to that package source, as in `element-plus-docs`, `vue-docs`, `grid-docs`, and `reactive-vue-docs`.
+- If a docs site only uses other internal packages inside demos, do not pull those packages into `dev/watch`; use `dev:deps` to build their artifacts first, as `json-schema-docs` does for `@silver-formily/reactive-vue` and `@silver-formily/vue`.
+- If a dependency is neither the subject of the docs nor something that needs source-level hot updates, keep it on built artifacts and do not add an `alias`.
+- For new docs apps, apply the same rule: the primary package gets `alias`, supporting internal packages go through `dev:deps`, unrelated packages stay out of the `dev` chain.
 
 ## Engineering Conventions
 
@@ -113,7 +144,7 @@ pnpm run build:changed
 
 - CI runs on `main` pushes and pull requests, executes `pnpm lint`, and runs coverage for `reactive-vue` and `element-plus`.
 - CI also builds `@silver-formily/grid`, `@silver-formily/reactive-vue`, and `@silver-formily/vue` before the `element-plus` browser test flow.
-- The release workflow is manually triggered on `main` and includes internal package builds, `pnpm check-types`, `pnpm test`, coverage for `grid` / `reactive-vue` / `element-plus`, and Changesets publishing.
+- The release workflow is manually triggered on `main` and includes internal package builds, `pnpm check-types`, `pnpm test:all`, coverage for `grid` / `reactive-vue` / `element-plus`, and Changesets publishing.
 - When you change a publishable package, add the matching `.changeset/*` entry.
 
 ## Before Opening a PR

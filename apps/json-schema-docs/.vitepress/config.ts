@@ -5,17 +5,11 @@ import { createDocsConfig } from '@silver-formily/docs-toolkit'
 
 const currentDir = dirname(fileURLToPath(import.meta.url))
 const demoDir = path.resolve(currentDir, '../demos')
-const reactiveVueSource = `${path.resolve(currentDir, '../../../packages/reactive-vue/src')}/`
-const vueSource = `${path.resolve(currentDir, '../../../packages/vue/src')}/`
 
 export default createDocsConfig({
   pkg,
   demoDir,
   demoCodeFold: true,
-  alias: {
-    '@silver-formily/reactive-vue': reactiveVueSource,
-    '@silver-formily/vue': vueSource,
-  },
   locales: {
     root: {
       label: '简体中文',
@@ -109,6 +103,7 @@ export default createDocsConfig({
         '@formily/shared',
         '@formily/json-schema',
         '@silver-formily/reactive-vue',
+        '@silver-formily/vue',
         'vue',
       ],
     },
