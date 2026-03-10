@@ -1,5 +1,5 @@
 import type { Form } from '@formily/core'
-import { reaction } from '@formily/reactive'
+import { reactionWatch } from '@silver-formily/reactive-vue'
 import { useDebounceFn } from '@vueuse/core'
 import { ElLoading } from 'element-plus'
 import { ref } from 'vue'
@@ -60,7 +60,7 @@ export function useDebonceSubmitting(form: Form) {
     internalSubmitting.value = false
   }, () => transitionDuration)
 
-  reaction(() => form.submitting, (val) => {
+  reactionWatch(() => form.submitting, (val) => {
     if (val === false) {
       setSubmittingFalse()
     }

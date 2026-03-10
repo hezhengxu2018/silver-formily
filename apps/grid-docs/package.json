@@ -4,12 +4,18 @@
   "private": true,
   "scripts": {
     "dev": "vitepress dev .",
-    "build": "vitepress build .",
     "preview": "vitepress preview .",
     "lint": "eslint .",
     "format": "eslint . --fix",
     "check-types": "vue-tsc --noEmit",
     "docs:build": "vitepress build ."
+  },
+  "silverFormily": {
+    "tasks": {
+      "dev": {
+        "filterMode": "workspace-only"
+      }
+    }
   },
   "dependencies": {
     "@formily/reactive": "^2.3.7",

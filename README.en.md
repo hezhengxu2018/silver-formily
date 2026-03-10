@@ -4,22 +4,9 @@ English | [简体中文](./README.md)
 
 Silver Formily is a Vue 3 / Formily monorepo built with `pnpm workspace` and `Turborepo`. It combines runtime bindings, Element Plus integrations, a grid utility package, shared docs tooling, and multiple documentation sites in one workspace.
 
-## Current Dependency Baseline
-
-- Node.js `>= 18`
-- `pnpm@9`
-- Vue `^3.3.0`
-- Formily `^2`
-- Element Plus `^2`
-- TypeScript `5.9.2`
-- Turbo `^2.8.5`
-- Vite `^7.3.1`
-- VitePress `2.0.0-alpha.16`
-- Vitest `^4.0.16`
-- tsdown `^0.18.1`
-
 ## Documentation Sites
 
+- Reactive: <https://reactive.silver-formily.org>
 - Vue: <https://vue.silver-formily.org>
 - Reactive Vue: <https://reactive-vue.silver-formily.org>
 - Element Plus: <https://element-plus.silver-formily.org>
@@ -28,22 +15,23 @@ Silver Formily is a Vue 3 / Formily monorepo built with `pnpm workspace` and `Tu
 
 ## Workspace Packages
 
-| Package                             | Version | Purpose                                              | Baseline                                                                          |
-| ----------------------------------- | ------- | ---------------------------------------------------- | --------------------------------------------------------------------------------- |
-| `@silver-formily/reactive-vue`      | `1.0.0` | Vue 3 adapter layer around `@formily/reactive`       | `vue ^3.3.0`, `@formily/reactive ^2`                                              |
-| `@silver-formily/vue`               | `2.3.1` | Vue 3 Formily runtime binding                        | `@formily/core/json-schema/reactive/shared ^2`, `@silver-formily/reactive-vue ^1` |
-| `@sliver/formily-element-plus`      | `3.0.1` | Formily + Element Plus bindings and scenario widgets | `element-plus ^2.1.8`, `vue ^3.3.0`, `@vueuse/core`                               |
-| `@silver-formily/grid`              | `1.0.1` | Grid runtime package for the Formily ecosystem       | `@formily/reactive ^2`                                                            |
-| `@silver-formily/docs-toolkit`      | `0.0.0` | Shared VitePress theme, plugins, and site config     | `vitepress 2.0.0-alpha.16`                                                        |
-| `@silver-formily/typescript-config` | `0.0.0` | Shared TypeScript presets for the workspace          | Internal workspace use                                                            |
+| Package                             | Purpose                                              |
+| ----------------------------------- | ---------------------------------------------------- |
+| `@silver-formily/reactive-vue`      | Vue 3 adapter layer around `@formily/reactive`       |
+| `@silver-formily/vue`               | Vue 3 Formily runtime binding                        |
+| `@silver-formily/element-plus`      | Formily + Element Plus bindings and scenario widgets |
+| `@silver-formily/grid`              | Grid runtime package for the Formily ecosystem       |
+| `@silver-formily/docs-toolkit`      | Shared VitePress theme, plugins, and site config     |
+| `@silver-formily/typescript-config` | Shared TypeScript presets for the workspace          |
 
-The five apps under `apps/*` are private VitePress sites. They all use the standard `vitepress dev/build/preview` scripts and share theme configuration through `@silver-formily/docs-toolkit`.
+The six apps under `apps/*` are private VitePress sites. They all use the standard `vitepress dev/build/preview` scripts and share theme configuration through `@silver-formily/docs-toolkit`.
 
 ## Repository Layout
 
 ```text
 .
 |- apps/                   # VitePress documentation sites
+|  |- reactive-docs
 |  |- vue-docs
 |  |- reactive-vue-docs
 |  |- element-plus-docs
@@ -67,36 +55,72 @@ pnpm install
 
 ## Root Scripts
 
-| Command                 | What it does                                                       |
-| ----------------------- | ------------------------------------------------------------------ |
-| `pnpm dev`              | Runs `turbo run dev` and starts every workspace that exposes `dev` |
-| `pnpm build`            | Runs `turbo run build` for all packages and docs apps              |
-| `pnpm docs:build`       | Runs `turbo run docs:build` for documentation sites only           |
-| `pnpm lint`             | Runs `turbo run lint`                                              |
-| `pnpm format`           | Runs `turbo run format`                                            |
-| `pnpm check-types`      | Runs `turbo run check-types`                                       |
-| `pnpm test`             | Runs `turbo run test`                                              |
-| `pnpm build:changed`    | Reads Changesets status and builds publishable packages only       |
-| `pnpm changeset`        | Creates a changeset                                                |
-| `pnpm version-packages` | Runs `changeset version`                                           |
-| `pnpm release`          | Runs `build:changed` and then `changeset publish`                  |
-| `pnpm commit`           | Starts `czg` for Conventional Commit messages                      |
+| Command                 | What it does                                                         |
+| ----------------------- | -------------------------------------------------------------------- |
+| `pnpm dev`              | Opens a searchable picker and shows docs/apps `dev` tasks by default |
+| `pnpm dev:all`          | Runs `turbo run dev` and starts every workspace that exposes `dev`   |
+| `pnpm build`            | Filters workspaces that expose `build`, then runs Turbo              |
+| `pnpm docs:build`       | Filters workspaces that expose `docs:build`, then runs Turbo         |
+| `pnpm lint`             | Runs `turbo run lint`                                                |
+| `pnpm format`           | Runs `turbo run format`                                              |
+| `pnpm check-types`      | Runs `turbo run check-types`                                         |
+| `pnpm test`             | Opens a searchable picker and runs `test` for the selected package   |
+| `pnpm test:all`         | Runs `turbo run test` for every available test task                  |
+| `pnpm build:changed`    | Reads Changesets status and builds publishable packages only         |
+| `pnpm changeset`        | Creates a changeset                                                  |
+| `pnpm version-packages` | Runs `changeset version`                                             |
+| `pnpm release`          | Runs `build:changed` and then `changeset publish`                    |
+| `pnpm commit`           | Starts `czg` for Conventional Commit messages                        |
 
 ## Package-Level Development
 
 ```bash
+# Open the interactive picker and filter by typing
+pnpm dev
+
+# Start one workspace directly (package name / path / folder name)
+pnpm dev -- vue-docs
+
+# Start one package-level dev/watch task directly
+pnpm dev -- @silver-formily/grid
+
+# Start every dev workspace
+pnpm dev:all
+
+# Open the test picker; Turbo still builds required dependency artifacts first
+pnpm test
+
+# Run tests for one package directly
+pnpm test -- @silver-formily/element-plus
+
+# Run every test task
+pnpm test:all
+
 # Start one docs site
 pnpm --filter vue-docs dev
+
+# Build one docs site
+pnpm --filter vue-docs docs:build
 
 # Build one runtime package
 pnpm --filter @silver-formily/vue build
 
 # Run coverage for one package
-pnpm --filter @sliver/formily-element-plus test:coverage
+pnpm --filter @silver-formily/element-plus test:coverage
 
 # Build packages that are pending release
 pnpm run build:changed
 ```
+
+## Docs Dev Strategy
+
+- All docs sites go through the root `pnpm dev` picker, and the picker starts only the docs app itself by default. Each docs app is responsible for its own dependency strategy.
+- If a docs site documents one internal package directly, prefer a VitePress `alias` to that package source, as in `element-plus-docs`, `vue-docs`, `grid-docs`, and `reactive-vue-docs`.
+- If a docs site only uses other internal packages inside demos, do not pull those packages into `dev/watch`; use `docs:deps` to build their artifacts first, as `json-schema-docs` does for `@silver-formily/reactive-vue` and `@silver-formily/vue`.
+- Docs apps no longer expose a regular `build`; use `docs:build` consistently. Whenever a docs app defines `docs:deps`, both `dev` and `docs:build` should reuse it so direct docs builds do not fail on missing package artifacts.
+- Do not hardcode Turbo commands inside `docs:deps`. Put the prebuilt internal packages in `silverFormily.docs.buildDependencies`, then let the shared script translate that metadata into Turbo `build` filters.
+- If a dependency is neither the subject of the docs nor something that needs source-level hot updates, keep it on built artifacts and do not add an `alias`.
+- For new docs apps, apply the same rule: the primary package gets `alias`, supporting internal packages go through `docs:deps`, unrelated packages stay out of the `dev` chain.
 
 ## Engineering Conventions
 
@@ -111,7 +135,7 @@ pnpm run build:changed
 
 - CI runs on `main` pushes and pull requests, executes `pnpm lint`, and runs coverage for `reactive-vue` and `element-plus`.
 - CI also builds `@silver-formily/grid`, `@silver-formily/reactive-vue`, and `@silver-formily/vue` before the `element-plus` browser test flow.
-- The release workflow is manually triggered on `main` and includes internal package builds, `pnpm check-types`, `pnpm test`, coverage for `grid` / `reactive-vue` / `element-plus`, and Changesets publishing.
+- The release workflow is manually triggered on `main` and includes internal package builds, `pnpm check-types`, `pnpm test:all`, coverage for `grid` / `reactive-vue` / `element-plus`, and Changesets publishing.
 - When you change a publishable package, add the matching `.changeset/*` entry.
 
 ## Before Opening a PR

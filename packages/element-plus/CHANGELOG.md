@@ -1,5 +1,12 @@
 # 更新日志
 
+## 3.0.2
+
+### Patch Changes
+
+- 15e30dd: 修复聚焦取消按钮时回车键无法生效的问题
+- 15e30dd: 使用新的@silver-formily/reactive-vue管理响应式,减少内存泄露.
+
 ## 3.0.1
 
 ### Patch Changes

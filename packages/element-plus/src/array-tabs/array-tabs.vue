@@ -1,11 +1,11 @@
 <script lang="ts" setup>
 import type { ArrayField } from '@formily/core'
 import type { TabPaneName } from 'element-plus'
-import { reaction } from '@formily/reactive'
 import { isEqual, isFn } from '@formily/shared'
+import { reactionWatch } from '@silver-formily/reactive-vue'
 import { RecursionField, useField, useFieldSchema } from '@silver-formily/vue'
 import { ElBadge, ElTabPane, ElTabs } from 'element-plus'
-import { onUnmounted, ref } from 'vue'
+import { ref } from 'vue'
 import { useCleanAttrs } from '../__builtins__'
 import { stylePrefix } from '../__builtins__/configs'
 import { getArrayItemSchema } from '../array-base/utils'
@@ -32,7 +32,7 @@ function getTabTitle(index: number) {
 }
 
 const errorCountList = ref([])
-const dispose = reaction(() => {
+reactionWatch(() => {
   return field.value.map((item, index) => {
     const panelErrors = field.form.queryFeedbacks({
       type: 'error',
@@ -44,9 +44,6 @@ const dispose = reaction(() => {
   errorCountList.value = newVal
 }, {
   equals: isEqual,
-})
-onUnmounted(() => {
-  dispose()
 })
 const { props: elTabProps } = useCleanAttrs(['value', 'modelValue', 'onUpdate:modelValue'])
 </script>

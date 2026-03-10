@@ -3,13 +3,26 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "dev": "vitepress dev .",
-    "build": "vitepress build .",
+    "dev": "pnpm run docs:deps && vitepress dev .",
+    "docs:deps": "node ../../scripts/docs-deps.mjs",
     "preview": "vitepress preview .",
     "lint": "eslint .",
     "format": "eslint . --fix",
     "check-types": "vue-tsc --noEmit",
-    "docs:build": "vitepress build ."
+    "docs:build": "pnpm run docs:deps && vitepress build ."
+  },
+  "silverFormily": {
+    "docs": {
+      "buildDependencies": [
+        "@silver-formily/reactive-vue",
+        "@silver-formily/vue"
+      ]
+    },
+    "tasks": {
+      "dev": {
+        "filterMode": "workspace-only"
+      }
+    }
   },
   "dependencies": {
     "@formily/core": "^2.3.7",

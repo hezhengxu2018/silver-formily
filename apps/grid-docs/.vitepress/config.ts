@@ -5,11 +5,15 @@ import pkg from '../../../packages/grid/package.json'
 
 const currentDir = dirname(fileURLToPath(import.meta.url))
 const demoDir = path.resolve(currentDir, '../demos')
+const gridSource = `${path.resolve(currentDir, '../../../packages/grid/src')}/`
 
 export default createDocsConfig({
   pkg,
   demoDir,
   demoCodeFold: true,
+  alias: {
+    '@silver-formily/grid': gridSource,
+  },
   locales: {
     root: {
       label: '简体中文',
@@ -58,6 +62,7 @@ export default createDocsConfig({
       {
         title: 'Rebuilt Formily Docs',
         children: [
+          { text: 'Reactive', link: 'https://reactive.silver-formily.org/' },
           { text: 'JSON Schema', link: 'https://json-schema.silver-formily.org/' },
         ],
       },

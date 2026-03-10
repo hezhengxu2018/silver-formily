@@ -1,6 +1,7 @@
 import type { Ref } from 'vue'
 import { describe, expect, it, vi } from 'vitest'
 import { render } from 'vitest-browser-vue'
+import { userEvent } from 'vitest/browser'
 import { defineComponent, h, nextTick, ref } from 'vue'
 import { useEnterSubmit } from '../use-enter-submit'
 
@@ -9,6 +10,7 @@ interface HookHarness {
   visible: Ref<boolean>
   submitting: Ref<boolean>
   resolve: ReturnType<typeof vi.fn>
+  buttonClick: ReturnType<typeof vi.fn>
 }
 
 function createHarness(enabled: Ref<boolean> | boolean = true): HookHarness {
@@ -17,6 +19,7 @@ function createHarness(enabled: Ref<boolean> | boolean = true): HookHarness {
     visible: ref(true),
     submitting: ref(false),
     resolve: vi.fn(),
+    buttonClick: vi.fn(),
   }
 
   const TestComp = defineComponent({
@@ -35,6 +38,7 @@ function createHarness(enabled: Ref<boolean> | boolean = true): HookHarness {
           h('input', { class: 'hook-input' }),
           h('textarea', { class: 'hook-textarea' }),
           h('div', { class: 'hook-contenteditable', contenteditable: 'true' }),
+          h('button', { class: 'hook-button', onClick: harness.buttonClick }, '取消'),
         ])
     },
   })
@@ -113,6 +117,20 @@ describe('useEnterSubmit', () => {
     dispatchKeydown(textarea)
     dispatchKeydown(contenteditable)
 
+    expect(harness.resolve).not.toHaveBeenCalled()
+  })
+
+  it('should respect default enter behavior for focused button', async () => {
+    const harness = createHarness(true)
+    await vi.waitFor(() => {
+      expect(harness.containerRef.value).not.toBeNull()
+    })
+    const button = harness.containerRef.value?.querySelector('.hook-button') as HTMLButtonElement
+
+    button.focus()
+    await userEvent.keyboard('{Enter}')
+
+    expect(harness.buttonClick).toHaveBeenCalledTimes(1)
     expect(harness.resolve).not.toHaveBeenCalled()
   })
 

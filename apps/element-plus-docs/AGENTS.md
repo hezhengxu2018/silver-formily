@@ -11,7 +11,7 @@
 ## 常用命令
 
 - `pnpm --filter element-plus-docs dev`：本地启动文档站。
-- `pnpm --filter element-plus-docs build`：构建静态站点。
+- `pnpm --filter element-plus-docs docs:build`：构建静态站点。
 - `pnpm --filter element-plus-docs preview`：预览构建产物。
 - `pnpm --filter element-plus-docs lint`：执行 ESLint 校验。
 - `pnpm --filter element-plus-docs format`：执行 ESLint 自动修复。

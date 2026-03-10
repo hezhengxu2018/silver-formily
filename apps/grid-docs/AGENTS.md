@@ -5,7 +5,7 @@
 ## Commands
 
 - `pnpm dev`: `vitepress dev .`
-- `pnpm build`: `vitepress build .`
+- `pnpm docs:build`: `vitepress build .`
 - `pnpm preview`: 本地预览构建产物
 - `pnpm lint` / `pnpm format`: 运行并修复 ESLint
 

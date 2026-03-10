@@ -67,6 +67,7 @@ export default createDocsConfig({
       {
         title: 'Rebuilt Formily Docs',
         children: [
+          { text: 'Reactive', link: 'https://reactive.silver-formily.org/' },
           { text: 'JSON Schema', link: 'https://json-schema.silver-formily.org/' },
         ],
       },
@@ -77,7 +78,7 @@ export default createDocsConfig({
   ],
   vite: {
     optimizeDeps: {
-      include: ['@formily/core', '@silver-formily/reactive-vue', '@formily/reactive', 'element-plus', 'dayjs'],
+      include: ['@silver-formily/reactive-vue', '@formily/reactive'],
     },
   },
   extra: {

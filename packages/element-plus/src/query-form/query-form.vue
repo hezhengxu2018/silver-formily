@@ -4,11 +4,11 @@ import type { Grid, GridNode, IGridOptions } from '@silver-formily/grid'
 import type { IQueryFormProps, SchemaEntry } from './types'
 import { ArrowDown, ArrowUp } from '@element-plus/icons-vue'
 import { Schema } from '@formily/json-schema'
-import { autorun } from '@formily/reactive'
 import { createGrid } from '@silver-formily/grid'
+import { autorunEffect } from '@silver-formily/reactive-vue'
 import { useFieldSchema, useForm } from '@silver-formily/vue'
 import { ElIcon, ElLink } from 'element-plus'
-import { computed, onUnmounted, ref, useSlots } from 'vue'
+import { computed, ref, useSlots } from 'vue'
 import { compatibleUnderlineProp, stylePrefix, useCleanAttrs } from '../__builtins__'
 import { Form } from '../form'
 import { FormButtonGroup } from '../form-button-group'
@@ -183,12 +183,10 @@ function updateType() {
   gridType.value = realRows < COLLAPSED_ROWS + 1 ? 'incomplete-wrap' : 'complete-wrap'
 }
 
-const dispose = autorun(() => {
+autorunEffect(() => {
   expanded.value = grid.maxRows === Infinity
   updateType()
 })
-
-onUnmounted(dispose)
 
 function toggle() {
   if (!props.showToggle)

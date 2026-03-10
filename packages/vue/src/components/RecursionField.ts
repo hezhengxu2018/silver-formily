@@ -1,6 +1,8 @@
 import type { GeneralField } from '@formily/core'
 import type { Slots, VNode } from 'vue'
 import type { IRecursionFieldProps, SchemaExpressionScope } from '../types'
+import type { RecursionFieldProps } from '../utils/recursionFieldProps'
+import type { NamedSlotMap } from '../utils/slotMap'
 import { Schema } from '@formily/json-schema'
 import { isFn, isValid, lazyMerge } from '@formily/shared'
 import { computed, defineComponent, Fragment, h, inject, markRaw, provide, shallowRef, watch } from 'vue'
@@ -15,13 +17,13 @@ import VoidField from './VoidField'
 
 type PropertyRenderFn = (field?: GeneralField) => VNode
 interface ScopedSlotPayload { field?: GeneralField }
-type SlotRender = (payload?: ScopedSlotPayload) => VNode[] | undefined
-type SlotMap = Record<string, SlotRender>
+type SlotRender = (payload?: ScopedSlotPayload) => VNode[]
+type SlotMap = NamedSlotMap<SlotRender>
 
 function resolveEmptySlot(slots: SlotMap) {
   const slotKeys = Object.keys(slots)
   if (!slotKeys.length)
-    return undefined
+    return null
   const children = slotKeys.reduce<VNode[]>((acc, key) => {
     const slot = slots[key]
     if (!slot)
@@ -34,7 +36,7 @@ function resolveEmptySlot(slots: SlotMap) {
     return acc
   }, [])
   if (!children.length)
-    return undefined
+    return null
   return h(Fragment, null, children)
 }
 
@@ -42,7 +44,7 @@ const RecursionField = defineComponent({
   name: 'RecursionField',
   inheritAttrs: false,
   props: recursionFieldProps,
-  setup(props: IRecursionFieldProps) {
+  setup(props: RecursionFieldProps) {
     const parentRef = useField()
     const optionsRef = inject(SchemaOptionsSymbol)
     const scopeRef = inject(SchemaExpressionScopeSymbol)
@@ -52,7 +54,7 @@ const RecursionField = defineComponent({
     }
     const createSchema = (schemaProp: IRecursionFieldProps['schema']) =>
       markRaw(Schema.isSchemaInstance(schemaProp) ? schemaProp : new Schema(schemaProp))
-    const fieldSchemaRef = computed(() => createSchema(props.schema))
+    const fieldSchemaRef = computed<Schema>(() => createSchema(props.schema ?? {}))
 
     const getPropsFromSchema = (schema: Schema) =>
       schema?.toFieldProps?.({
@@ -172,9 +174,6 @@ const RecursionField = defineComponent({
           basePath,
         })
       }
-
-      if (!fieldSchemaRef.value)
-        return
 
       return render()
     }

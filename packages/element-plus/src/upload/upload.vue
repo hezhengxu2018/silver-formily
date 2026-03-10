@@ -7,12 +7,12 @@ import {
   UploadFilled as UploadFilledIcon,
   Upload as UploadIcon,
 } from '@element-plus/icons-vue'
-import { reaction } from '@formily/reactive'
 import { isFn } from '@formily/shared'
+import { reactionWatch } from '@silver-formily/reactive-vue'
 import { useField } from '@silver-formily/vue'
 import { ElButton, ElIcon, ElImageViewer, ElUpload, genFileId } from 'element-plus'
 import { omit } from 'lodash-es'
-import { computed, onBeforeUnmount, ref, useAttrs } from 'vue'
+import { computed, ref, useAttrs } from 'vue'
 import { hasSlotContent } from '../__builtins__'
 
 defineOptions({
@@ -127,14 +127,11 @@ function onPreviewClick(uploadFile: UploadFile) {
   isShowImgViewer.value = true
 }
 
-const dispose = reaction(() => {
+reactionWatch(() => {
   return fieldRef.value?.dataSource ?? []
 }, () => {
   const emitValue = props.formatValue(fieldRef.value.dataSource as UploadFile[])
   emit('update:modelValue', emitValue)
-})
-onBeforeUnmount(() => {
-  dispose()
 })
 </script>
 

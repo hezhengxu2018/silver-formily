@@ -3,9 +3,8 @@ import type { ArrayField } from '@formily/core'
 import type { Schema } from '@formily/json-schema'
 import type { TableInstance } from 'element-plus'
 import type { IArrayTableProps } from './types'
-import { autorun, reaction } from '@formily/reactive'
 import { isArr, isEqual } from '@formily/shared'
-import { formilyComputed } from '@silver-formily/reactive-vue'
+import { autorunEffect, formilyComputed, reactionWatch } from '@silver-formily/reactive-vue'
 import { RecursionField, useField, useFieldSchema } from '@silver-formily/vue'
 import { ElTable, ElTableColumn, vLoading } from 'element-plus'
 import { omit } from 'lodash-es'
@@ -65,7 +64,7 @@ function createTableSource(schema: Schema): any[] {
 }
 
 const triggerUpdateKey = ref(0)
-reaction(() => {
+reactionWatch(() => {
   const path = field.path.entire
   return field.query(`${path}.*`).map((item) => {
     return {
@@ -94,7 +93,7 @@ function updateDataSource() {
   dataSource.value = field.value.slice((currentPage.value - 1) * pageSize.value, (currentPage.value) * pageSize.value)
 }
 watch([pageSize, currentPage], updateDataSource)
-autorun(updateDataSource)
+autorunEffect(updateDataSource)
 
 const sources = formilyComputed(() => {
   const schema = schemaRef.value.items

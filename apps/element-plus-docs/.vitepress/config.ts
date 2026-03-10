@@ -11,22 +11,18 @@ const SITE_URL = 'https://element-plus.silver-formily.org'
 const currentDir = dirname(fileURLToPath(import.meta.url))
 const demoDir = path.resolve(currentDir, '../zh/demos')
 const elementPlusSource = `${path.resolve(currentDir, '../../../packages/element-plus/src')}/`
-const reactiveVueSource = `${path.resolve(currentDir, '../../../packages/reactive-vue/src')}/`
-const vueSource = `${path.resolve(currentDir, '../../../packages/vue/src')}/`
 export default createDocsConfig({
   pkg,
   demoDir,
   demoCodeFold: true,
   alias: {
-    '@sliver/formily-element-plus': elementPlusSource,
-    '@silver-formily/reactive-vue': reactiveVueSource,
-    '@silver-formily/vue': vueSource,
+    '@silver-formily/element-plus': elementPlusSource,
   },
   locales: {
     root: {
       label: '简体中文',
       lang: 'zh-CN',
-      title: 'Sliver Formily Element Plus',
+      title: 'Silver Formily Element Plus',
       description: 'Element Plus 的 Formily 封装',
       themeConfig: {
         nav: zhNav,
@@ -79,6 +75,7 @@ export default createDocsConfig({
       {
         title: 'Rebuilt Formily Docs',
         children: [
+          { text: 'Reactive', link: 'https://reactive.silver-formily.org/' },
           { text: 'JSON Schema', link: 'https://json-schema.silver-formily.org/' },
         ],
       },
@@ -118,7 +115,7 @@ export default createDocsConfig({
     rewrites: {
       'zh/:slug*': ':slug*',
     },
-    title: 'Sliver Formily Element Plus',
+    title: 'Silver Formily Element Plus',
     description: 'Formily bindings for Element Plus',
     sitemap: {
       hostname: SITE_URL,

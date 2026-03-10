@@ -1,7 +1,7 @@
 {
   "name": "@silver-formily/vue",
   "type": "module",
-  "version": "2.3.1",
+  "version": "2.3.2",
   "description": "Vue3 版本的 @formily/vue",
   "author": "hezhengxu",
   "license": "MIT",
@@ -35,8 +35,6 @@
     "lint": "eslint .",
     "format": "eslint . --fix",
     "check-types": "vue-tsc --noEmit",
-    "docs:dev": "pnpm --filter vue-docs dev",
-    "docs:build": "pnpm turbo run docs:build --filter=vue-docs",
     "commit": "czg",
     "prepublishOnly": "pnpm run build"
   },

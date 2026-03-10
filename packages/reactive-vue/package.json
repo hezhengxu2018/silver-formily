@@ -1,7 +1,7 @@
 {
   "name": "@silver-formily/reactive-vue",
   "type": "module",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Another @formily/reactive-vue",
   "author": "Hezhengxu",
   "license": "MIT",
@@ -44,12 +44,12 @@
   "devDependencies": {
     "@formily/reactive": "^2.3.7",
     "@silver-formily/typescript-config": "workspace:*",
-    "@vitest/coverage-istanbul": "^4.0.16",
+    "@vitest/coverage-istanbul": "^4.0.18",
     "eslint": "^9.36.0",
     "oxc-resolver": "^11.19.1",
     "tsdown": "^0.18.1",
     "typescript": "5.9.2",
-    "vitest": "^4.0.16",
+    "vitest": "^4.0.18",
     "vue": "^3.5.27"
   }
 }

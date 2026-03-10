@@ -1,0 +1,43 @@
+# tracker
+
+## Core Idea
+
+Tracker provides manual dependency tracking, which is commonly used when integrating with React or Vue rendering. It still records the observable dependencies read inside the tracker, but it does not rerun the tracker automatically after a change. Instead, it only triggers the scheduler and leaves the next `track` call to the consumer.
+
+## Description
+
+Mainly used to access the manual tracking dependency tool of React/Vue. The tracker function will not be executed repeatedly when the dependency changes. It requires the user to manually execute it repeatedly, which will only trigger the scheduler
+
+## Signature
+
+```ts
+class Tracker {
+  constructor(scheduler?: (reaction: this['track']) => void, name?: string)
+  track: <T>(tracker?: () => T) => T
+  dispose: () => void
+}
+```
+
+## Example
+
+```ts
+import { observable, Tracker } from '@formily/reactive'
+
+const obs = observable({
+  aa: 11,
+})
+
+function view() {
+  console.log(obs.aa)
+}
+
+const tracker = new Tracker(() => {
+  tracker.track(view)
+})
+
+tracker.track(view)
+
+obs.aa = 22
+
+tracker.dispose()
+```

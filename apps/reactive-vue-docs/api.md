@@ -43,7 +43,7 @@ interface IObserverOptions {
 }
 
 interface useObserver {
-  (options?: IObserverOptions): viod
+  (options?: IObserverOptions): void
 }
 ```
 
@@ -53,7 +53,7 @@ interface useObserver {
 useObserver
 :::
 
-## formilyComputed <ElTag>New</ElTag>
+## formilyComputed <ElTag>1.0.0</ElTag>
 
 将一个 `@formily/reactive`的响应式转为 Vue3 的响应式（ComputedRef）。在Vue3中可以完全替代 `observable.computed`
 
@@ -73,4 +73,48 @@ interface formilyComputed {
 
 :::demo
 formilyComputed
+:::
+
+## autorunEffect <ElTag>1.1.0</ElTag>
+
+将 `autorun` 封装成 Vue 组合式函数。它会在 `setup()` 或活动中的 effect scope 内立即建立订阅，并在对应作用域释放时自动调用 `dispose`，同时返回一个可提前手动停止的清理函数。
+
+### 签名
+
+```ts
+import type { Dispose, Reaction } from '@formily/reactive'
+
+interface autorunEffect {
+  (tracker: Reaction, name?: string): Dispose
+}
+```
+
+### 用例
+
+:::demo
+autorunEffect
+:::
+
+## reactionWatch <ElTag>1.1.0</ElTag>
+
+将 `reaction` 封装成 Vue 组合式函数。和原始 API 一样支持 `tracker`、`subscriber` 与 `options`，差别在于它会自动注册作用域清理，避免组件卸载或作用域结束后遗留订阅。
+
+### 签名
+
+```ts
+import type { Dispose, IReactionOptions } from '@formily/reactive'
+
+interface reactionWatch {
+  <T>(
+    tracker: () => T,
+    subscriber?: (value: T, oldValue: T) => void,
+    options?: IReactionOptions<T>,
+  ): Dispose
+}
+```
+
+### 用例
+
+:::demo
+reactionWatch
 :::
