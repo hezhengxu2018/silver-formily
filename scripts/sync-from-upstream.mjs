@@ -40,11 +40,15 @@ Examples:
   pnpm sync:upstream -- reactive
 
 Flow:
-  1. fetch upstream and origin
+  1. fetch upstream and origin branches (skip tags)
   2. checkout <branch>
   3. fast-forward local branch from origin/<branch>
   4. merge upstream/<branch> into local branch
   5. push local branch to origin/<branch>
+
+Tags are intentionally skipped because this workflow only syncs branch history.
+If upstream retags an existing release, fetching tags here can fail with
+"would clobber existing tag" and block the branch sync.
 
 If merge conflicts happen, resolve them manually and then run:
   git add <files>
@@ -68,8 +72,8 @@ if (workingTree) {
   process.exit(1)
 }
 
-run('git', ['fetch', 'upstream', '--prune', '--tags'])
-run('git', ['fetch', 'origin', '--prune'])
+run('git', ['fetch', 'upstream', '--prune', '--no-tags'])
+run('git', ['fetch', 'origin', '--prune', '--no-tags'])
 run('git', ['rev-parse', '--verify', `upstream/${branch}`])
 
 if (currentBranch !== branch)
