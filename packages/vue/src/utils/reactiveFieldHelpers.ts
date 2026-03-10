@@ -1,5 +1,6 @@
 import type { GeneralField } from '@formily/core'
 import type { Component, Slot, Slots, VNode } from 'vue'
+import type { NamedSlotMap } from './slotMap'
 import { createTextVNode, Fragment, h } from 'vue'
 
 interface VueLikeOptions {
@@ -9,7 +10,7 @@ interface VueLikeOptions {
 }
 
 type SlotContent = string | Component | null | undefined
-type SlotContentMap = Record<string, SlotContent>
+type SlotContentMap = NamedSlotMap<SlotContent>
 type FieldContent = SlotContent | SlotContentMap | null | undefined
 
 type EventHandler = (...args: unknown[]) => unknown
@@ -140,7 +141,7 @@ export function mergeSlots(field: GeneralField, slots: Slots, content: FieldCont
         return slots[slotName]?.({ field, form: field.form, ...scopedProps }) ?? []
       }
 
-  const patchedSlots: Record<string, Slot> = {}
+  const patchedSlots: NamedSlotMap<Slot> = {}
   slotNames.forEach((name) => {
     patchedSlots[name] = patchSlot(name)
   })
