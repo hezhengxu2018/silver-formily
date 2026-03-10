@@ -1,10 +1,10 @@
 #!/usr/bin/env node
-import { spawnSync } from 'node:child_process'
 import { readFileSync, rmSync } from 'node:fs'
 import process from 'node:process'
+import { spawnPnpmSync } from './pnpm-process.mjs'
 
-function run(command, args, options = {}) {
-  const result = spawnSync(command, args, { encoding: 'utf8', ...options })
+function runPnpm(args, options = {}) {
+  const result = spawnPnpmSync(args, { encoding: 'utf8', ...options })
   if (result.error)
     throw result.error
   if (result.status !== 0) {
@@ -16,7 +16,7 @@ function run(command, args, options = {}) {
 }
 
 const statusFile = '.changeset-status.tmp.json'
-run('pnpm', ['exec', 'changeset', 'status', '--output', statusFile])
+runPnpm(['exec', 'changeset', 'status', '--output', statusFile])
 const status = JSON.parse(readFileSync(statusFile, 'utf8') || '{}')
 rmSync(statusFile, { force: true })
 const releases = status.releases?.map(release => release.name) ?? []
@@ -28,7 +28,7 @@ if (!releases.length) {
 
 console.log('Building packages:', releases.join(', '))
 const filters = releases.flatMap(name => ['--filter', name])
-const build = spawnSync('pnpm', ['turbo', 'run', 'build', ...filters], {
+const build = spawnPnpmSync(['turbo', 'run', 'build', ...filters], {
   stdio: 'inherit',
 })
 
