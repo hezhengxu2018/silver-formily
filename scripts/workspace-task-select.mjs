@@ -1,10 +1,10 @@
-import { spawn } from 'node:child_process'
 import { readdir, readFile } from 'node:fs/promises'
 import path from 'node:path'
 import process from 'node:process'
 import { fileURLToPath } from 'node:url'
 import { consola } from 'consola'
 import prompts from 'prompts'
+import { spawnPnpm } from './pnpm-process.mjs'
 
 const currentDir = path.dirname(fileURLToPath(import.meta.url))
 const rootDir = path.resolve(currentDir, '..')
@@ -144,7 +144,7 @@ function runTurbo(selection, options, extraTurboArgs) {
   consola.start(`准备${startActionLabel} ${commandName}: ${label}`)
   consola.info(`执行命令: pnpm ${args.join(' ')}`)
 
-  const child = spawn('pnpm', args, {
+  const child = spawnPnpm(args, {
     cwd: rootDir,
     env: process.env,
     stdio: 'inherit',
@@ -170,7 +170,7 @@ function runWorkspaceScript(selection, options, extraArgs) {
   consola.start(`准备${startActionLabel} ${commandName}: ${label}`)
   consola.info(`执行命令: pnpm ${args.join(' ')}`)
 
-  const child = spawn('pnpm', args, {
+  const child = spawnPnpm(args, {
     cwd: rootDir,
     env: process.env,
     stdio: 'inherit',

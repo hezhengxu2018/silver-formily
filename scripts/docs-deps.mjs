@@ -1,9 +1,9 @@
 #!/usr/bin/env node
-import { spawnSync } from 'node:child_process'
 import { readFile } from 'node:fs/promises'
 import path from 'node:path'
 import process from 'node:process'
 import { fileURLToPath } from 'node:url'
+import { spawnPnpmSync } from './pnpm-process.mjs'
 
 const currentDir = path.dirname(fileURLToPath(import.meta.url))
 const rootDir = path.resolve(currentDir, '..')
@@ -33,7 +33,7 @@ if (!uniqueDependencies.length) {
 console.log(`Preparing docs dependencies for ${packageJson.name}: ${uniqueDependencies.join(', ')}`)
 
 const filters = uniqueDependencies.flatMap(name => ['--filter', name])
-const result = spawnSync('pnpm', ['exec', 'turbo', 'run', 'build', ...filters, ...extraArgs], {
+const result = spawnPnpmSync(['exec', 'turbo', 'run', 'build', ...filters, ...extraArgs], {
   cwd: rootDir,
   env: process.env,
   stdio: 'inherit',
