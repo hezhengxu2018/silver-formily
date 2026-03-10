@@ -16,9 +16,11 @@
 
 ### 1. 安装依赖
 
+本组件库有大量的peerDependencies，推荐开启自动安装对等依赖。
+
 ```bash
 pnpm config set auto-install-peers true
-pnpm add @formily/core @formily/json-schema @silver-formily/vue @silver-formily/element-plus element-plus
+pnpm add @silver-formily/element-plus
 ```
 
 > 如果团队需要锁定 Element Plus 或 Formily 的特定版本，请在 package.json 中明确指定，以避免 peerDependencies 带来的漂移。

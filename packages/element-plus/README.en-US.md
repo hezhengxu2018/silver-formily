@@ -25,7 +25,7 @@ https://element-plus.silver-formily.org/
 pnpm add @silver-formily/element-plus
 ```
 
-This package relies on peer dependencies such as Formily, Element Plus, Vue, and @silver-formily/vue. Refer to the documentation or package.json for compatible versions and setup details.
+This package relies on peer dependencies such as Formily, Element Plus, Vue, @silver-formily/vue, and @silver-formily/reactive-vue. Refer to the documentation or package.json for compatible versions and setup details.
 
 ## License
 

@@ -25,7 +25,7 @@ https://element-plus.silver-formily.org/
 pnpm add @silver-formily/element-plus
 ```
 
-本包依赖 Formily、Element Plus、Vue、@silver-formily/vue 等 peerDependencies。请查看文档或 package.json 获取兼容版本与配置说明。
+本包依赖 Formily、Element Plus、Vue、@silver-formily/vue、@silver-formily/reactive-vue 等 peerDependencies。请查看文档或 package.json 获取兼容版本与配置说明。
 
 ## 开源协议
 
