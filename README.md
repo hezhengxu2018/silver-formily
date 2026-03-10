@@ -4,20 +4,6 @@
 
 Silver Formily 是一个基于 `pnpm workspace` 和 `Turborepo` 的 Vue 3 / Formily monorepo，聚合了运行时封装、Element Plus 组件封装、Grid 工具库、共享文档主题与多站点文档工程。
 
-## 当前依赖基线
-
-- Node.js `>= 18`
-- `pnpm@9`
-- Vue `^3.3.0`
-- Formily `^2`
-- Element Plus `^2`
-- TypeScript `5.9.2`
-- Turbo `^2.8.5`
-- Vite `^7.3.1`
-- VitePress `2.0.0-alpha.16`
-- Vitest `^4.0.16`
-- tsdown `^0.18.1`
-
 ## 文档站点
 
 - Reactive: <https://reactive.silver-formily.org>
@@ -29,14 +15,14 @@ Silver Formily 是一个基于 `pnpm workspace` 和 `Turborepo` 的 Vue 3 / Form
 
 ## 工作区包
 
-| 包名                                | 当前版本 | 说明                                          | 依赖基线                                                                          |
-| ----------------------------------- | -------- | --------------------------------------------- | --------------------------------------------------------------------------------- |
-| `@silver-formily/reactive-vue`      | `1.0.0`  | Vue 3 版 `@formily/reactive` 响应式适配层     | `vue ^3.3.0`、`@formily/reactive ^2`                                              |
-| `@silver-formily/vue`               | `2.3.1`  | Vue 3 版 Formily 运行时绑定                   | `@formily/core/json-schema/reactive/shared ^2`、`@silver-formily/reactive-vue ^1` |
-| `@silver-formily/element-plus`      | `3.0.1`  | Formily + Element Plus 组件封装与场景组件     | `element-plus ^2.1.8`、`vue ^3.3.0`、`@vueuse/core`                               |
-| `@silver-formily/grid`              | `1.0.1`  | 与 Formily 生态配套的网格布局运行时           | `@formily/reactive ^2`                                                            |
-| `@silver-formily/docs-toolkit`      | `0.0.0`  | 内部共享的 VitePress 主题、插件与站点配置工具 | `vitepress 2.0.0-alpha.16`                                                        |
-| `@silver-formily/typescript-config` | `0.0.0`  | 内部 TypeScript 配置共享包                    | 供 workspace 复用                                                                 |
+| 包名                                | 说明                                          |
+| ----------------------------------- | --------------------------------------------- |
+| `@silver-formily/reactive-vue`      | Vue 3 版 `@formily/reactive` 响应式适配层     |
+| `@silver-formily/vue`               | Vue 3 版 Formily 运行时绑定                   |
+| `@silver-formily/element-plus`      | Formily + Element Plus 组件封装与场景组件     |
+| `@silver-formily/grid`              | 与 Formily 生态配套的网格布局运行时           |
+| `@silver-formily/docs-toolkit`      | 内部共享的 VitePress 主题、插件与站点配置工具 |
+| `@silver-formily/typescript-config` | 内部 TypeScript 配置共享包                    |
 
 `apps/*` 下的 6 个文档应用均为私有 workspace，当前统一使用 VitePress 站点脚本（`vitepress dev/build/preview`）并通过 `@silver-formily/docs-toolkit` 复用主题配置。
 

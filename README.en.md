@@ -4,20 +4,6 @@ English | [简体中文](./README.md)
 
 Silver Formily is a Vue 3 / Formily monorepo built with `pnpm workspace` and `Turborepo`. It combines runtime bindings, Element Plus integrations, a grid utility package, shared docs tooling, and multiple documentation sites in one workspace.
 
-## Current Dependency Baseline
-
-- Node.js `>= 18`
-- `pnpm@9`
-- Vue `^3.3.0`
-- Formily `^2`
-- Element Plus `^2`
-- TypeScript `5.9.2`
-- Turbo `^2.8.5`
-- Vite `^7.3.1`
-- VitePress `2.0.0-alpha.16`
-- Vitest `^4.0.16`
-- tsdown `^0.18.1`
-
 ## Documentation Sites
 
 - Reactive: <https://reactive.silver-formily.org>
@@ -29,14 +15,14 @@ Silver Formily is a Vue 3 / Formily monorepo built with `pnpm workspace` and `Tu
 
 ## Workspace Packages
 
-| Package                             | Version | Purpose                                              | Baseline                                                                          |
-| ----------------------------------- | ------- | ---------------------------------------------------- | --------------------------------------------------------------------------------- |
-| `@silver-formily/reactive-vue`      | `1.0.0` | Vue 3 adapter layer around `@formily/reactive`       | `vue ^3.3.0`, `@formily/reactive ^2`                                              |
-| `@silver-formily/vue`               | `2.3.1` | Vue 3 Formily runtime binding                        | `@formily/core/json-schema/reactive/shared ^2`, `@silver-formily/reactive-vue ^1` |
-| `@silver-formily/element-plus`      | `3.0.1` | Formily + Element Plus bindings and scenario widgets | `element-plus ^2.1.8`, `vue ^3.3.0`, `@vueuse/core`                               |
-| `@silver-formily/grid`              | `1.0.1` | Grid runtime package for the Formily ecosystem       | `@formily/reactive ^2`                                                            |
-| `@silver-formily/docs-toolkit`      | `0.0.0` | Shared VitePress theme, plugins, and site config     | `vitepress 2.0.0-alpha.16`                                                        |
-| `@silver-formily/typescript-config` | `0.0.0` | Shared TypeScript presets for the workspace          | Internal workspace use                                                            |
+| Package                             | Purpose                                              |
+| ----------------------------------- | ---------------------------------------------------- |
+| `@silver-formily/reactive-vue`      | Vue 3 adapter layer around `@formily/reactive`       |
+| `@silver-formily/vue`               | Vue 3 Formily runtime binding                        |
+| `@silver-formily/element-plus`      | Formily + Element Plus bindings and scenario widgets |
+| `@silver-formily/grid`              | Grid runtime package for the Formily ecosystem       |
+| `@silver-formily/docs-toolkit`      | Shared VitePress theme, plugins, and site config     |
+| `@silver-formily/typescript-config` | Shared TypeScript presets for the workspace          |
 
 The six apps under `apps/*` are private VitePress sites. They all use the standard `vitepress dev/build/preview` scripts and share theme configuration through `@silver-formily/docs-toolkit`.
 
