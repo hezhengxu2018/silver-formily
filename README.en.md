@@ -73,8 +73,8 @@ pnpm install
 | ----------------------- | -------------------------------------------------------------------- |
 | `pnpm dev`              | Opens a searchable picker and shows docs/apps `dev` tasks by default |
 | `pnpm dev:all`          | Runs `turbo run dev` and starts every workspace that exposes `dev`   |
-| `pnpm build`            | Runs `turbo run build` for all packages and docs apps                |
-| `pnpm docs:build`       | Runs `turbo run docs:build` for documentation sites only             |
+| `pnpm build`            | Filters workspaces that expose `build`, then runs Turbo              |
+| `pnpm docs:build`       | Filters workspaces that expose `docs:build`, then runs Turbo         |
 | `pnpm lint`             | Runs `turbo run lint`                                                |
 | `pnpm format`           | Runs `turbo run format`                                              |
 | `pnpm check-types`      | Runs `turbo run check-types`                                         |
@@ -113,6 +113,9 @@ pnpm test:all
 # Start one docs site
 pnpm --filter vue-docs dev
 
+# Build one docs site
+pnpm --filter vue-docs docs:build
+
 # Build one runtime package
 pnpm --filter @silver-formily/vue build
 
@@ -127,9 +130,10 @@ pnpm run build:changed
 
 - All docs sites go through the root `pnpm dev` picker, and the picker starts only the docs app itself by default. Each docs app is responsible for its own dependency strategy.
 - If a docs site documents one internal package directly, prefer a VitePress `alias` to that package source, as in `element-plus-docs`, `vue-docs`, `grid-docs`, and `reactive-vue-docs`.
-- If a docs site only uses other internal packages inside demos, do not pull those packages into `dev/watch`; use `dev:deps` to build their artifacts first, as `json-schema-docs` does for `@silver-formily/reactive-vue` and `@silver-formily/vue`.
+- If a docs site only uses other internal packages inside demos, do not pull those packages into `dev/watch`; use `docs:deps` to build their artifacts first, as `json-schema-docs` does for `@silver-formily/reactive-vue` and `@silver-formily/vue`.
+- Docs apps no longer expose a regular `build`; use `docs:build` consistently. Whenever a docs app defines `docs:deps`, both `dev` and `docs:build` should reuse it so direct docs builds do not fail on missing package artifacts.
 - If a dependency is neither the subject of the docs nor something that needs source-level hot updates, keep it on built artifacts and do not add an `alias`.
-- For new docs apps, apply the same rule: the primary package gets `alias`, supporting internal packages go through `dev:deps`, unrelated packages stay out of the `dev` chain.
+- For new docs apps, apply the same rule: the primary package gets `alias`, supporting internal packages go through `docs:deps`, unrelated packages stay out of the `dev` chain.
 
 ## Engineering Conventions
 

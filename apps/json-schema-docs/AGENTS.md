@@ -4,8 +4,9 @@
 
 ## Commands
 
-- `pnpm dev`: `vitepress dev .`
-- `pnpm build`: `vitepress build .`
+- `pnpm dev`: `pnpm run docs:deps && vitepress dev .`
+- `pnpm docs:build`: `pnpm run docs:deps && vitepress build .`
+- `pnpm docs:deps`: 先构建 `@silver-formily/reactive-vue` 与 `@silver-formily/vue` 产物
 - `pnpm preview`: 本地预览构建产物
 - `pnpm lint` / `pnpm format`: 运行并修复 ESLint
 

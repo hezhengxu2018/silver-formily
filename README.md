@@ -73,8 +73,8 @@ pnpm install
 | ----------------------- | --------------------------------------------------------- |
 | `pnpm dev`              | 打开可搜索的 workspace 选择器，默认展示文档与应用的 `dev` |
 | `pnpm dev:all`          | `turbo run dev`，并行启动声明了 `dev` 的 workspace        |
-| `pnpm build`            | `turbo run build`，构建所有包与文档应用                   |
-| `pnpm docs:build`       | `turbo run docs:build`，仅构建文档站点                    |
+| `pnpm build`            | 先筛选声明了 `build` 的 workspace，再执行 Turbo 构建      |
+| `pnpm docs:build`       | 先筛选声明了 `docs:build` 的 workspace，再执行 Turbo 构建 |
 | `pnpm lint`             | `turbo run lint`                                          |
 | `pnpm format`           | `turbo run format`                                        |
 | `pnpm check-types`      | `turbo run check-types`                                   |
@@ -113,6 +113,9 @@ pnpm test:all
 # 仅启动某个文档站
 pnpm --filter vue-docs dev
 
+# 仅构建某个文档站
+pnpm --filter vue-docs docs:build
+
 # 仅构建某个运行时包
 pnpm --filter @silver-formily/vue build
 
@@ -127,9 +130,10 @@ pnpm run build:changed
 
 - 所有文档站的根级入口统一走 `pnpm dev` 选择器，且默认只启动文档应用自身；依赖处理由各个 docs app 自己决定。
 - 如果文档站就是某个内部包自己的文档，优先给该包配置 VitePress `alias` 指向源码，例如 `element-plus-docs`、`vue-docs`、`grid-docs`、`reactive-vue-docs`。
-- 如果文档站只是 demo 顺带用到其他内部包，不要拉这些包进入 `dev/watch`，改用 `dev:deps` 先构建产物，例如 `json-schema-docs` 对 `@silver-formily/reactive-vue`、`@silver-formily/vue`。
+- 如果文档站只是 demo 顺带用到其他内部包，不要拉这些包进入 `dev/watch`，改用 `docs:deps` 先构建产物，例如 `json-schema-docs` 对 `@silver-formily/reactive-vue`、`@silver-formily/vue`。
+- 文档站不再暴露普通 `build`；统一使用 `docs:build`。只要 docs app 定义了 `docs:deps`，`dev` 与 `docs:build` 都应复用它，避免直接打包时缺少产物依赖。
 - 如果某个依赖既不是文档主题本身，也不需要源码热更新，就不要配置 `alias`，只保留产物依赖。
-- 新增 docs app 时，优先按这条规则判断：文档主题包走 `alias`，辅助依赖走 `dev:deps`，无关依赖不要加入 `dev` 链路。
+- 新增 docs app 时，优先按这条规则判断：文档主题包走 `alias`，辅助依赖走 `docs:deps`，无关依赖不要加入 `dev` 链路。
 
 ## 工程约定
 

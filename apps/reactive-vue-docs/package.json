@@ -4,7 +4,6 @@
   "private": true,
   "scripts": {
     "dev": "vitepress dev .",
-    "build": "vitepress build .",
     "preview": "vitepress preview .",
     "lint": "eslint .",
     "format": "eslint . --fix",

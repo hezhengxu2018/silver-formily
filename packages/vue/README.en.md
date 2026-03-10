@@ -94,7 +94,7 @@ pnpm install       # Install dependencies
 pnpm lint          # Run Antfu ESLint rules
 pnpm build         # Build the library + types via Vite
 pnpm dev -- vue-docs # Launch the docs app from the repo root
-pnpm --filter vue-docs build # Build the docs site
+pnpm --filter vue-docs docs:build # Build the docs site
 pnpm commit        # Conventional Commit helper (czg)
 pnpm release       # Changeset-driven release (requires clean tree)
 ```

@@ -7,7 +7,7 @@ This workspace hosts `reactive-vue.silver-formily.org`. It shares most conventio
 | Script                        | Description                                                                      |
 | ----------------------------- | -------------------------------------------------------------------------------- |
 | `pnpm dev`                    | `vitepress dev .`; run via `pnpm --filter reactive-vue-docs dev`.                |
-| `pnpm build`                  | `vitepress build .`; outputs to `.vitepress/dist`.                               |
+| `pnpm docs:build`             | `vitepress build .`; outputs to `.vitepress/dist`.                               |
 | `pnpm preview`                | Preview the production build locally.                                            |
 | `pnpm lint` / `pnpm lint:fix` | ESLint against docs Markdown/demos. Included in the repo-wide `turbo run lint*`. |
 
@@ -21,7 +21,7 @@ This workspace hosts `reactive-vue.silver-formily.org`. It shares most conventio
 ## Workflow Tips
 
 - Run `pnpm format` after editing Markdown to keep code fences aligned with ESLint rules.
-- Use `pnpm --filter reactive-vue-docs build` in CI/pipelines so only this app builds.
+- Use `pnpm --filter reactive-vue-docs docs:build` in CI/pipelines so only this app builds.
 - Assets belong under `public/`; use locale-specific subfolders if necessary.
 
 ## Split Repos

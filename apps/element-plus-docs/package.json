@@ -3,14 +3,13 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "dev": "pnpm run dev:deps && vitepress dev .",
-    "dev:deps": "pnpm --dir ../.. exec turbo run build --filter=@silver-formily/grid --filter=@silver-formily/reactive-vue --filter=@silver-formily/vue",
-    "build": "vitepress build .",
+    "dev": "pnpm run docs:deps && vitepress dev .",
+    "docs:deps": "pnpm --dir ../.. exec turbo run build --filter=@silver-formily/grid --filter=@silver-formily/reactive-vue --filter=@silver-formily/vue",
     "preview": "vitepress preview .",
     "lint": "eslint .",
     "format": "eslint . --fix",
     "check-types": "vue-tsc --noEmit",
-    "docs:build": "vitepress build ."
+    "docs:build": "pnpm run docs:deps && vitepress build ."
   },
   "silverFormily": {
     "tasks": {

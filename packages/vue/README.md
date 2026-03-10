@@ -94,7 +94,7 @@ pnpm install       # 安装依赖
 pnpm lint          # 运行 Antfu ESLint 规则
 pnpm build         # 基于 Vite 生成库与类型
 pnpm dev -- vue-docs # 从仓库根目录启动文档应用
-pnpm --filter vue-docs build # 构建文档站点
+pnpm --filter vue-docs docs:build # 构建文档站点
 pnpm commit        # 使用 czg 编写 Conventional Commit
 pnpm release       # Changeset 发布流程（需要干净工作区）
 ```
