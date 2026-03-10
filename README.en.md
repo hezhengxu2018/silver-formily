@@ -19,7 +19,7 @@ Silver Formily is a Vue 3 / Formily monorepo built with `pnpm workspace` and `Tu
 | ----------------------------------- | ---------------------------------------------------- |
 | `@silver-formily/reactive-vue`      | Vue 3 adapter layer around `@formily/reactive`       |
 | `@silver-formily/vue`               | Vue 3 Formily runtime binding                        |
-| `@silver-formily/element-plus`      | Formily + Element Plus bindings and scenario widgets |
+| `@sliver/formily-element-plus`      | Formily + Element Plus bindings and scenario widgets |
 | `@silver-formily/grid`              | Grid runtime package for the Formily ecosystem       |
 | `@silver-formily/docs-toolkit`      | Shared VitePress theme, plugins, and site config     |
 | `@silver-formily/typescript-config` | Shared TypeScript presets for the workspace          |
@@ -91,7 +91,7 @@ pnpm dev:all
 pnpm test
 
 # Run tests for one package directly
-pnpm test -- @silver-formily/element-plus
+pnpm test -- @sliver/formily-element-plus
 
 # Run every test task
 pnpm test:all
@@ -106,7 +106,7 @@ pnpm --filter vue-docs docs:build
 pnpm --filter @silver-formily/vue build
 
 # Run coverage for one package
-pnpm --filter @silver-formily/element-plus test:coverage
+pnpm --filter @sliver/formily-element-plus test:coverage
 
 # Build packages that are pending release
 pnpm run build:changed

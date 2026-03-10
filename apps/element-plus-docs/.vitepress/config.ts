@@ -16,7 +16,7 @@ export default createDocsConfig({
   demoDir,
   demoCodeFold: true,
   alias: {
-    '@silver-formily/element-plus': elementPlusSource,
+    '@sliver/formily-element-plus': elementPlusSource,
   },
   locales: {
     root: {

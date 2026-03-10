@@ -19,7 +19,7 @@ Silver Formily 是一个基于 `pnpm workspace` 和 `Turborepo` 的 Vue 3 / Form
 | ----------------------------------- | --------------------------------------------- |
 | `@silver-formily/reactive-vue`      | Vue 3 版 `@formily/reactive` 响应式适配层     |
 | `@silver-formily/vue`               | Vue 3 版 Formily 运行时绑定                   |
-| `@silver-formily/element-plus`      | Formily + Element Plus 组件封装与场景组件     |
+| `@sliver/formily-element-plus`      | Formily + Element Plus 组件封装与场景组件     |
 | `@silver-formily/grid`              | 与 Formily 生态配套的网格布局运行时           |
 | `@silver-formily/docs-toolkit`      | 内部共享的 VitePress 主题、插件与站点配置工具 |
 | `@silver-formily/typescript-config` | 内部 TypeScript 配置共享包                    |
@@ -91,7 +91,7 @@ pnpm dev:all
 pnpm test
 
 # 直接运行某个包的测试
-pnpm test -- @silver-formily/element-plus
+pnpm test -- @sliver/formily-element-plus
 
 # 运行全部测试
 pnpm test:all
@@ -106,7 +106,7 @@ pnpm --filter vue-docs docs:build
 pnpm --filter @silver-formily/vue build
 
 # 仅运行某个包的覆盖率测试
-pnpm --filter @silver-formily/element-plus test:coverage
+pnpm --filter @sliver/formily-element-plus test:coverage
 
 # 仅构建待发布包
 pnpm run build:changed
