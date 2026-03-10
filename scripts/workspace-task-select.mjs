@@ -120,6 +120,16 @@ function getTurboArgs(selection, options, extraTurboArgs) {
   return [...args, ...extraTurboArgs]
 }
 
+function shouldRunWorkspaceDirectly(selection, options, extraArgs) {
+  return selection?.type === 'workspace'
+    && options.runSelectedWorkspaceDirectly
+    && (extraArgs.length === 0 || extraArgs[0] === '--')
+}
+
+function getWorkspaceScriptArgs(selection, options, extraArgs) {
+  return ['--filter', selection.workspace.name, 'run', options.task, ...extraArgs]
+}
+
 function formatSelectionLabel(selection) {
   return selection?.type === 'workspace'
     ? `${selection.workspace.path} (${selection.workspace.name})`
@@ -129,6 +139,32 @@ function formatSelectionLabel(selection) {
 function runTurbo(selection, options, extraTurboArgs) {
   const { commandName, startActionLabel } = options
   const args = getTurboArgs(selection, options, extraTurboArgs)
+  const label = formatSelectionLabel(selection)
+
+  consola.start(`准备${startActionLabel} ${commandName}: ${label}`)
+  consola.info(`执行命令: pnpm ${args.join(' ')}`)
+
+  const child = spawn('pnpm', args, {
+    cwd: rootDir,
+    env: process.env,
+    stdio: 'inherit',
+  })
+
+  child.on('error', (error) => {
+    consola.error(error)
+    process.exit(1)
+  })
+
+  child.on('exit', (code, signal) => {
+    if (signal)
+      process.kill(process.pid, signal)
+    process.exit(code ?? 0)
+  })
+}
+
+function runWorkspaceScript(selection, options, extraArgs) {
+  const { commandName, startActionLabel } = options
+  const args = getWorkspaceScriptArgs(selection, options, extraArgs)
   const label = formatSelectionLabel(selection)
 
   consola.start(`准备${startActionLabel} ${commandName}: ${label}`)
@@ -263,7 +299,7 @@ async function promptSelection(workspaces, options) {
 }
 
 function parseCliArgs(rawArgs) {
-  const args = rawArgs.filter(arg => arg !== '--')
+  const args = rawArgs[0] === '--' ? rawArgs.slice(1) : rawArgs
   const firstArg = args[0]
 
   if (!firstArg)
@@ -306,7 +342,17 @@ export async function runWorkspaceTaskSelector(options) {
       process.exit(1)
     }
 
+    if (shouldRunWorkspaceDirectly(selection, options, extraTurboArgs)) {
+      runWorkspaceScript(selection, options, extraTurboArgs)
+      return
+    }
+
     runTurbo(selection, options, extraTurboArgs)
+    return
+  }
+
+  if (extraTurboArgs.length > 0) {
+    runTurbo({ type: 'all' }, options, extraTurboArgs)
     return
   }
 
@@ -317,5 +363,11 @@ export async function runWorkspaceTaskSelector(options) {
   }
 
   const selection = await promptSelection(visibleWorkspaces, options)
+
+  if (shouldRunWorkspaceDirectly(selection, options, extraTurboArgs)) {
+    runWorkspaceScript(selection, options, extraTurboArgs)
+    return
+  }
+
   runTurbo(selection, options, extraTurboArgs)
 }
