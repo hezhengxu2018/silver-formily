@@ -132,6 +132,7 @@ pnpm run build:changed
 - If a docs site documents one internal package directly, prefer a VitePress `alias` to that package source, as in `element-plus-docs`, `vue-docs`, `grid-docs`, and `reactive-vue-docs`.
 - If a docs site only uses other internal packages inside demos, do not pull those packages into `dev/watch`; use `docs:deps` to build their artifacts first, as `json-schema-docs` does for `@silver-formily/reactive-vue` and `@silver-formily/vue`.
 - Docs apps no longer expose a regular `build`; use `docs:build` consistently. Whenever a docs app defines `docs:deps`, both `dev` and `docs:build` should reuse it so direct docs builds do not fail on missing package artifacts.
+- Do not hardcode Turbo commands inside `docs:deps`. Put the prebuilt internal packages in `silverFormily.docs.buildDependencies`, then let the shared script translate that metadata into Turbo `build` filters.
 - If a dependency is neither the subject of the docs nor something that needs source-level hot updates, keep it on built artifacts and do not add an `alias`.
 - For new docs apps, apply the same rule: the primary package gets `alias`, supporting internal packages go through `docs:deps`, unrelated packages stay out of the `dev` chain.
 

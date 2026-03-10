@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "pnpm run docs:deps && vitepress dev .",
-    "docs:deps": "pnpm --dir ../.. exec turbo run build --filter=@silver-formily/reactive-vue",
+    "docs:deps": "node ../../scripts/docs-deps.mjs",
     "preview": "vitepress preview .",
     "lint": "eslint .",
     "format": "eslint . --fix",
@@ -12,6 +12,11 @@
     "docs:build": "pnpm run docs:deps && vitepress build ."
   },
   "silverFormily": {
+    "docs": {
+      "buildDependencies": [
+        "@silver-formily/reactive-vue"
+      ]
+    },
     "tasks": {
       "dev": {
         "filterMode": "workspace-only"

@@ -132,6 +132,7 @@ pnpm run build:changed
 - 如果文档站就是某个内部包自己的文档，优先给该包配置 VitePress `alias` 指向源码，例如 `element-plus-docs`、`vue-docs`、`grid-docs`、`reactive-vue-docs`。
 - 如果文档站只是 demo 顺带用到其他内部包，不要拉这些包进入 `dev/watch`，改用 `docs:deps` 先构建产物，例如 `json-schema-docs` 对 `@silver-formily/reactive-vue`、`@silver-formily/vue`。
 - 文档站不再暴露普通 `build`；统一使用 `docs:build`。只要 docs app 定义了 `docs:deps`，`dev` 与 `docs:build` 都应复用它，避免直接打包时缺少产物依赖。
+- `docs:deps` 不要手写 Turbo 命令，统一把需要预构建的内部包写在 `silverFormily.docs.buildDependencies` 里，再由共享脚本转换成 Turbo `build` filters。
 - 如果某个依赖既不是文档主题本身，也不需要源码热更新，就不要配置 `alias`，只保留产物依赖。
 - 新增 docs app 时，优先按这条规则判断：文档主题包走 `alias`，辅助依赖走 `docs:deps`，无关依赖不要加入 `dev` 链路。
 

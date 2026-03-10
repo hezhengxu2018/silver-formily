@@ -4,13 +4,13 @@ This workspace powers the public Vue documentation site (`vue.silver-formily.org
 
 ## Commands
 
-| Script                        | Description                                                                                                                            |
-| ----------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
-| `pnpm dev`                    | `pnpm run docs:deps && vitepress dev .`; preview the site locally. Use `pnpm --filter vue-docs dev` from the repo root.                |
-| `pnpm docs:build`             | `pnpm run docs:deps && vitepress build .`; emits static HTML into `.vitepress/dist`. Run before publishing or testing deploy previews. |
-| `pnpm docs:deps`              | Builds the `@silver-formily/reactive-vue` artifacts consumed by demos before `dev`/`docs:build`.                                       |
-| `pnpm preview`                | Serves the built output for smoke testing.                                                                                             |
-| `pnpm lint` / `pnpm lint:fix` | ESLint (Antfu preset) across Markdown, Vue demos, and config files. These tasks are part of `turbo run lint*`.                         |
+| Script                        | Description                                                                                                                                       |
+| ----------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `pnpm dev`                    | `pnpm run docs:deps && vitepress dev .`; preview the site locally. Use `pnpm --filter vue-docs dev` from the repo root.                           |
+| `pnpm docs:build`             | `pnpm run docs:deps && vitepress build .`; emits static HTML into `.vitepress/dist`. Run before publishing or testing deploy previews.            |
+| `pnpm docs:deps`              | Reads `silverFormily.docs.buildDependencies` and builds the `@silver-formily/reactive-vue` artifacts consumed by demos before `dev`/`docs:build`. |
+| `pnpm preview`                | Serves the built output for smoke testing.                                                                                                        |
+| `pnpm lint` / `pnpm lint:fix` | ESLint (Antfu preset) across Markdown, Vue demos, and config files. These tasks are part of `turbo run lint*`.                                    |
 
 ## Content & Structure
 

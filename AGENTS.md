@@ -32,6 +32,7 @@ This document defines repository-wide expectations for anyone automating tasks (
 - A docs app that documents one internal package directly should usually alias that package to source in VitePress.
 - Internal packages that only appear in demos should not be started in `dev/watch`; build them first via a package-local `docs:deps` script instead.
 - Docs apps should expose `docs:build` instead of a regular `build`. If a docs app has `docs:deps`, both `dev` and `docs:build` should reuse that same dependency preparation so direct docs builds stay reproducible.
+- Docs dependency build targets belong in `silverFormily.docs.buildDependencies`; keep `docs:deps` itself as a shared script entry instead of repeating Turbo filter commands in every docs app.
 - If an internal dependency does not need source-level hot updates, prefer built artifacts and skip VitePress `alias`.
 - Package-level `dev` tasks still exist for explicit use (`pnpm dev -- <workspace-name>`), but they are not the default docs workflow.
 
