@@ -1,0 +1,70 @@
+{
+  "name": "@silver-formily/vant",
+  "type": "module",
+  "version": "0.0.0",
+  "description": "Formily 的 Vant 封装",
+  "author": "hezhengxu",
+  "license": "MIT",
+  "homepage": "https://vant.silver-formily.org/",
+  "repository": {
+    "type": "github",
+    "url": "https://github.com/hezhengxu2018/silver-formily",
+    "directory": "packages/vant"
+  },
+  "bugs": {
+    "url": "https://github.com/hezhengxu2018/silver-formily/issues"
+  },
+  "sideEffects": [
+    "**/*.css",
+    "**/*.scss"
+  ],
+  "exports": {
+    ".": {
+      "types": "./esm/index.d.ts",
+      "import": "./esm/index.mjs",
+      "default": "./esm/index.mjs"
+    },
+    "./*": "./esm/*",
+    "./package.json": "./package.json"
+  },
+  "main": "./esm/index.mjs",
+  "types": "./esm/index.d.ts",
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "esm"
+  ],
+  "scripts": {
+    "build": "vite build",
+    "lint": "eslint .",
+    "format": "eslint . --fix",
+    "check-types": "vue-tsc --noEmit",
+    "prepublishOnly": "pnpm run build"
+  },
+  "peerDependencies": {
+    "@formily/core": "^2.0.8",
+    "@formily/json-schema": "^2.0.8",
+    "@formily/reactive": "^2.0.8",
+    "@formily/shared": "^2.0.8",
+    "@silver-formily/reactive-vue": "^1.1.0",
+    "@silver-formily/vue": "^2.3.2",
+    "vant": "^4.9.22",
+    "vue": "^3.3.0"
+  },
+  "devDependencies": {
+    "@silver-formily/reactive-vue": "workspace:*",
+    "@silver-formily/typescript-config": "workspace:*",
+    "@silver-formily/vue": "workspace:*",
+    "@types/node": "^24.3.0",
+    "@vitejs/plugin-vue": "^6.0.3",
+    "fast-glob": "^3.3.3",
+    "sass-embedded": "^1.97.3",
+    "typescript": "5.9.2",
+    "vant": "^4.9.22",
+    "vite": "^7.3.1",
+    "vite-plugin-dts": "^4.5.4",
+    "vite-plugin-lib-inject-css": "^2.2.2",
+    "vue": "^3.5.27"
+  }
+}

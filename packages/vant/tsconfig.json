@@ -1,0 +1,35 @@
+{
+  "extends": "@silver-formily/typescript-config/base.json",
+  "compilerOptions": {
+    "target": "ES2022",
+    "jsx": "preserve",
+    "lib": ["DOM", "ES2022"],
+    "experimentalDecorators": true,
+    "baseUrl": ".",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "paths": {
+      "@silver-formily/vant": ["./src"],
+      "@silver-formily/vant/*": ["./src/*"],
+      "@silver-formily/reactive-vue": ["../reactive-vue/src"],
+      "@silver-formily/reactive-vue/*": ["../reactive-vue/src/*"],
+      "@silver-formily/vue": ["../vue/src"],
+      "@silver-formily/vue/*": ["../vue/src/*"]
+    },
+    "resolveJsonModule": true,
+    "types": ["node"],
+    "allowJs": false,
+    "strict": false,
+    "noUnusedLocals": false,
+    "declaration": true,
+    "downlevelIteration": true,
+    "inlineSources": true,
+    "outDir": "esm",
+    "preserveConstEnums": true,
+    "sourceMap": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true
+  },
+  "include": ["src"],
+  "exclude": ["node_modules", "esm"]
+}

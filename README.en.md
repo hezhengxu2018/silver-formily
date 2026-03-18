@@ -2,7 +2,7 @@
 
 English | [简体中文](./README.md)
 
-Silver Formily is a Vue 3 / Formily monorepo built with `pnpm workspace` and `Turborepo`. It combines runtime bindings, Element Plus integrations, a grid utility package, shared docs tooling, and multiple documentation sites in one workspace.
+Silver Formily is a Vue 3 / Formily monorepo built with `pnpm workspace` and `Turborepo`. It combines runtime bindings, Element Plus and Vant integrations, a grid utility package, shared docs tooling, and multiple documentation sites in one workspace.
 
 ## Documentation Sites
 
@@ -10,6 +10,7 @@ Silver Formily is a Vue 3 / Formily monorepo built with `pnpm workspace` and `Tu
 - Vue: <https://vue.silver-formily.org>
 - Reactive Vue: <https://reactive-vue.silver-formily.org>
 - Element Plus: <https://element-plus.silver-formily.org>
+- Vant: `apps/vant-docs` (scaffold wired in, site not published yet)
 - Grid: <https://grid.silver-formily.org>
 - Reworked JSON Schema docs: <https://json-schema.silver-formily.org>
 
@@ -20,11 +21,12 @@ Silver Formily is a Vue 3 / Formily monorepo built with `pnpm workspace` and `Tu
 | `@silver-formily/reactive-vue`      | Vue 3 adapter layer around `@formily/reactive`       |
 | `@silver-formily/vue`               | Vue 3 Formily runtime binding                        |
 | `@silver-formily/element-plus`      | Formily + Element Plus bindings and scenario widgets |
+| `@silver-formily/vant`              | Formily + Vant mobile component scaffold             |
 | `@silver-formily/grid`              | Grid runtime package for the Formily ecosystem       |
 | `@silver-formily/docs-toolkit`      | Shared VitePress theme, plugins, and site config     |
 | `@silver-formily/typescript-config` | Shared TypeScript presets for the workspace          |
 
-The six apps under `apps/*` are private VitePress sites. They all use the standard `vitepress dev/build/preview` scripts and share theme configuration through `@silver-formily/docs-toolkit`.
+The seven apps under `apps/*` are private VitePress sites. They all use the standard `vitepress dev/build/preview` scripts and share theme configuration through `@silver-formily/docs-toolkit`.
 
 ## Repository Layout
 
@@ -35,12 +37,14 @@ The six apps under `apps/*` are private VitePress sites. They all use the standa
 |  |- vue-docs
 |  |- reactive-vue-docs
 |  |- element-plus-docs
+|  |- vant-docs
 |  |- grid-docs
 |  `- json-schema-docs
 |- packages/               # Publishable or internal reusable packages
 |  |- vue
 |  |- reactive-vue
 |  |- element-plus
+|  |- vant
 |  |- grid
 |  |- docs-toolkit
 |  `- typescript-config

@@ -84,6 +84,7 @@ export default {
     themeColorCode: '',
     scopes: [
       { value: 'apps/element-plus-docs', name: 'apps/element-plus-docs' },
+      { value: 'apps/vant-docs', name: 'apps/vant-docs' },
       { value: 'apps/reactive-vue-docs', name: 'apps/reactive-vue-docs' },
       { value: 'apps/vue-docs', name: 'apps/vue-docs' },
       { value: 'apps/grid-docs', name: 'apps/grid-docs' },
@@ -91,6 +92,7 @@ export default {
       { value: 'apps/reactive-docs', name: 'apps/reactive-docs' },
       { value: 'packages/docs-toolkit', name: 'packages/docs-toolkit' },
       { value: 'packages/element-plus', name: 'packages/element-plus' },
+      { value: 'packages/vant', name: 'packages/vant' },
       { value: 'packages/reactive-vue', name: 'packages/reactive-vue' },
       { value: 'packages/typescript-config', name: 'packages/typescript-config' },
       { value: 'packages/vue', name: 'packages/vue' },
