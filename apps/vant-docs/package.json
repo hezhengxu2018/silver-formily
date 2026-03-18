@@ -1,0 +1,44 @@
+{
+  "name": "vant-docs",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "pnpm run docs:deps && vitepress dev .",
+    "docs:deps": "node ../../scripts/docs-deps.mjs",
+    "preview": "vitepress preview .",
+    "lint": "eslint .",
+    "format": "eslint . --fix",
+    "check-types": "vue-tsc --noEmit",
+    "docs:build": "pnpm run docs:deps && vitepress build ."
+  },
+  "silverFormily": {
+    "docs": {
+      "buildDependencies": [
+        "@silver-formily/reactive-vue",
+        "@silver-formily/vue"
+      ]
+    },
+    "tasks": {
+      "dev": {
+        "filterMode": "workspace-only"
+      }
+    }
+  },
+  "dependencies": {
+    "@formily/core": "^2.3.7",
+    "@formily/json-schema": "^2.3.7",
+    "@formily/reactive": "^2.3.7",
+    "@formily/shared": "^2.3.7",
+    "@silver-formily/docs-toolkit": "workspace:*",
+    "@silver-formily/reactive-vue": "workspace:*",
+    "@silver-formily/vant": "workspace:*",
+    "@silver-formily/vue": "workspace:*",
+    "vant": "^4.9.22",
+    "vue": "^3.3.0"
+  },
+  "devDependencies": {
+    "@silver-formily/typescript-config": "workspace:*",
+    "typescript": "5.9.2",
+    "vitepress": "2.0.0-alpha.16"
+  }
+}
