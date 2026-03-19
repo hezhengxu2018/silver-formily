@@ -56,6 +56,50 @@ describe('formItem', () => {
       await expect.element(getHtmlElement(container, '.custom-extra')).toBeInTheDocument()
       await expect.element(getHtmlElement(container, '.custom-error')).toBeInTheDocument()
     })
+
+    it('应该支持通过插槽自定义结构', async () => {
+      const { container } = render(() => (
+        <FormBaseItem feedbackStatus="error" feedbackText="插槽错误">
+          {{
+            'label': () => <span class="slot-label">插槽标签</span>,
+            'left-icon': () => <span class="slot-left-icon">左图标</span>,
+            'input': () => <span class="slot-input">自定义输入</span>,
+            'button': () => <span class="slot-button">操作按钮</span>,
+            'right-icon': () => <span class="slot-right-icon">右图标</span>,
+            'extra': () => <span class="slot-extra">额外说明</span>,
+            'error-message': ({ message }: { message: string }) => <span class="slot-error">{`错误:${message}`}</span>,
+          }}
+        </FormBaseItem>
+      ))
+
+      await expect.element(getHtmlElement(container, '.slot-label')).toBeInTheDocument()
+      await expect.element(getHtmlElement(container, '.slot-left-icon')).toBeInTheDocument()
+      await expect.element(getHtmlElement(container, '.slot-input')).toBeInTheDocument()
+      await expect.element(getHtmlElement(container, '.slot-button')).toBeInTheDocument()
+      await expect.element(getHtmlElement(container, '.slot-right-icon')).toBeInTheDocument()
+      await expect.element(getHtmlElement(container, '.slot-extra')).toBeInTheDocument()
+      await expect.element(getHtmlElement(container, '.slot-error')).toHaveTextContent('错误:插槽错误')
+    })
+
+    it('应该支持纯文本补充信息', async () => {
+      const { container } = render(() => (
+        <FormBaseItem label="标题" extra="文本说明">
+          <Input modelValue="hello" />
+        </FormBaseItem>
+      ))
+
+      expect(container.textContent).toContain('文本说明')
+    })
+
+    it('应该在未显式传入 asterisk 时回退到 required attrs', async () => {
+      const { container } = render(() => (
+        <FormBaseItem label="标题" required={true}>
+          <Input modelValue="hello" />
+        </FormBaseItem>
+      ))
+
+      await expect.element(getHtmlElement(container, '.van-field__label')).toHaveClass('van-field__label--required')
+    })
   })
 
   describe('字段集成', () => {

@@ -3,8 +3,13 @@ import { Field, FormProvider } from '@silver-formily/vue'
 import { describe, expect, it, vi } from 'vitest'
 import { render } from 'vitest-browser-vue'
 import { userEvent } from 'vitest/browser'
+import FormItem from '../../form-item'
 import Input from '../index'
 import 'vant/lib/index.css'
+
+function getNativeInputs(container: Element) {
+  return Array.from(container.querySelectorAll<HTMLInputElement>('input.van-field__control'))
+}
 
 describe('input', () => {
   describe('基础功能', () => {
@@ -64,6 +69,31 @@ describe('input', () => {
 
       expect(document.querySelector('input')).toHaveAttribute('type', 'password')
     })
+
+    it('应该让 FormItem 读取并应用 Input 的桥接属性', async () => {
+      const { container } = render(() => (
+        <FormProvider form={createForm()}>
+          <Field
+            name="description"
+            title="详细描述"
+            initialValue="hello"
+            decorator={[FormItem]}
+            component={[Input.TextArea, {
+              rows: 4,
+              maxlength: 10,
+              showWordLimit: true,
+              clearable: true,
+            }]}
+          />
+        </FormProvider>
+      ))
+
+      const textarea = container.querySelector('textarea')
+
+      expect(textarea).toHaveAttribute('rows', '4')
+      expect(container.querySelector('.van-field__clear')).not.toBeNull()
+      expect(container.querySelector('.van-field__word-limit')?.textContent).toContain('5/10')
+    })
   })
 
   describe('事件处理', () => {
@@ -97,6 +127,129 @@ describe('input', () => {
       await userEvent.click(document.querySelector('button')!)
 
       expect(onBlur).toHaveBeenCalled()
+    })
+  })
+})
+
+describe('input reactions', () => {
+  it('应该在 Field reactions 中动态修改 component props 后同步到 FormItem 和 Input', async () => {
+    const { container } = render(() => (
+      <FormProvider form={createForm({
+        values: {
+          target: 'hello',
+        },
+      })}
+      >
+        <Field
+          name="source"
+          title="联动开关"
+          decorator={[FormItem]}
+          component={[Input, {
+            placeholder: '输入 enable 激活联动',
+          }]}
+        />
+        <Field
+          name="target"
+          title="目标输入框"
+          decorator={[FormItem]}
+          component={[Input, {
+            placeholder: '默认占位',
+            clearable: false,
+            maxlength: 5,
+            showWordLimit: false,
+          }]}
+          reactions={(field) => {
+            const enabled = field.query('source').get('value') === 'enable'
+
+            field.setComponentProps({
+              placeholder: enabled ? '联动占位' : '默认占位',
+              clearable: enabled,
+              maxlength: enabled ? 10 : 5,
+              showWordLimit: enabled,
+            })
+          }}
+        />
+      </FormProvider>
+    ))
+
+    const [sourceInput, targetInput] = getNativeInputs(container)
+
+    expect(targetInput).toHaveAttribute('placeholder', '默认占位')
+    expect(targetInput).toHaveAttribute('maxlength', '5')
+    expect(container.querySelector('.van-field__clear')).toBeNull()
+    expect(container.querySelector('.van-field__word-limit')).toBeNull()
+
+    await userEvent.type(sourceInput, 'enable')
+
+    await vi.waitFor(() => {
+      expect(targetInput).toHaveAttribute('placeholder', '联动占位')
+      expect(targetInput).toHaveAttribute('maxlength', '10')
+      expect(container.querySelector('.van-field__clear')).not.toBeNull()
+      expect(container.querySelector('.van-field__word-limit')?.textContent).toContain('5/10')
+    })
+  })
+
+  it('应该在 Field reactions 中动态修改 pattern 并由 FormItem 正常应用', async () => {
+    const { container } = render(() => (
+      <FormProvider form={createForm({
+        values: {
+          target: 'hello',
+        },
+      })}
+      >
+        <Field
+          name="source"
+          title="联动模式"
+          decorator={[FormItem]}
+          component={[Input, {
+            placeholder: '输入 readonly 或 disabled',
+          }]}
+        />
+        <Field
+          name="target"
+          title="目标输入框"
+          decorator={[FormItem]}
+          component={[Input, {
+            clearable: true,
+          }]}
+          reactions={(field) => {
+            const mode = field.query('source').get('value')
+
+            if (mode === 'readonly') {
+              field.setPattern('readOnly')
+              return
+            }
+
+            if (mode === 'disabled') {
+              field.setPattern('disabled')
+              return
+            }
+
+            field.setPattern('editable')
+          }}
+        />
+      </FormProvider>
+    ))
+
+    const [sourceInput, targetInput] = getNativeInputs(container)
+
+    expect(targetInput).not.toHaveAttribute('readonly')
+    expect(targetInput).not.toBeDisabled()
+    expect(container.querySelector('.van-field__clear')).not.toBeNull()
+
+    await userEvent.type(sourceInput, 'readonly')
+
+    await vi.waitFor(() => {
+      expect(targetInput).toHaveAttribute('readonly')
+      expect(container.querySelector('.van-field__clear')).toBeNull()
+    })
+
+    await userEvent.clear(sourceInput)
+    await userEvent.type(sourceInput, 'disabled')
+
+    await vi.waitFor(() => {
+      expect(targetInput).toBeDisabled()
+      expect(container.querySelector('.van-field--disabled')).not.toBeNull()
     })
   })
 })

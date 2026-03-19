@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { VNode } from 'vue'
+import type { PropType, VNode } from 'vue'
 import { Field as VanField } from 'vant'
 import { computed, isVNode } from 'vue'
 import { useCleanAttrs } from '../__builtins__'
@@ -9,13 +9,28 @@ defineOptions({
   inheritAttrs: false,
 })
 
-const props = defineProps<{
-  label?: FormItemContent
-  extra?: FormItemContent
-  feedbackText?: FormItemContent
-  feedbackStatus?: 'error' | 'warning' | 'success' | 'pending'
-  asterisk?: boolean
-}>()
+const props = defineProps({
+  label: {
+    type: [String, Number, Object] as PropType<FormItemContent>,
+    default: undefined,
+  },
+  extra: {
+    type: [String, Number, Object] as PropType<FormItemContent>,
+    default: undefined,
+  },
+  feedbackText: {
+    type: [String, Number, Object] as PropType<FormItemContent>,
+    default: undefined,
+  },
+  feedbackStatus: {
+    type: String as PropType<'error' | 'warning' | 'success' | 'pending'>,
+    default: undefined,
+  },
+  asterisk: {
+    type: Boolean as PropType<boolean | undefined>,
+    default: undefined,
+  },
+})
 
 const slots = defineSlots<{
   'default'?: () => any
@@ -36,13 +51,6 @@ const hasLabelSlot = computed(() => Boolean(slots.label) || isVNode(props.label)
 const hasExtraSlot = computed(() => Boolean(slots.extra) || props.extra != null)
 const hasErrorMessageSlot = computed(() => Boolean(slots['error-message']) || isVNode(props.feedbackText))
 
-const resolvedLabel = computed<string | number | undefined>(() => {
-  if (isVNode(props.label))
-    return undefined
-
-  return props.label
-})
-
 const resolvedFeedbackMessage = computed(() => {
   if (props.feedbackText == null)
     return undefined
@@ -58,7 +66,7 @@ const formItemProps = computed(() => {
 
   return {
     ...attrs.value,
-    label: hasLabelSlot.value ? undefined : resolvedLabel.value,
+    label: hasLabelSlot.value ? undefined : props.label as string | number | undefined,
     required: props.asterisk ?? attrs.value.required,
     error: showError || attrs.value.error,
     errorMessage: resolvedFeedbackMessage.value ?? attrs.value.errorMessage,
