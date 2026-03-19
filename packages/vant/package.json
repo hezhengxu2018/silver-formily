@@ -39,7 +39,11 @@
     "build": "vite build",
     "lint": "eslint .",
     "format": "eslint . --fix",
-    "check-types": "vue-tsc --noEmit",
+    "check-types": "vue-tsc --noEmit --project tsconfig.check.json",
+    "test": "vitest run --reporter=dot",
+    "test:watch": "vitest",
+    "test:run": "vitest run --browser.headless",
+    "test:coverage": "vitest run --coverage --browser.headless",
     "prepublishOnly": "pnpm run build"
   },
   "peerDependencies": {
@@ -58,13 +62,20 @@
     "@silver-formily/vue": "workspace:*",
     "@types/node": "^24.3.0",
     "@vitejs/plugin-vue": "^6.0.3",
+    "@vitejs/plugin-vue-jsx": "^5.1.3",
+    "@vitest/browser": "^4.0.18",
+    "@vitest/browser-playwright": "^4.0.18",
+    "@vitest/coverage-istanbul": "^4.0.18",
     "fast-glob": "^3.3.3",
+    "playwright": "^1.58.2",
     "sass-embedded": "^1.97.3",
     "typescript": "5.9.2",
     "vant": "^4.9.22",
     "vite": "^7.3.1",
     "vite-plugin-dts": "^4.5.4",
     "vite-plugin-lib-inject-css": "^2.2.2",
+    "vitest": "^4.0.18",
+    "vitest-browser-vue": "^2.0.2",
     "vue": "^3.5.27"
   }
 }

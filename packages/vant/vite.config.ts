@@ -1,6 +1,7 @@
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import vue from '@vitejs/plugin-vue'
+import vueJsx from '@vitejs/plugin-vue-jsx'
 import glob from 'fast-glob'
 import { defineConfig } from 'vite'
 import dts from 'vite-plugin-dts'
@@ -75,11 +76,13 @@ export default defineConfig({
       entryRoot: 'src',
       insertTypesEntry: true,
       include: ['src'],
+      exclude: ['./**/style.ts', './**/*.test.{ts,tsx}'],
       cleanVueFileName: true,
       skipDiagnostics: true,
       logDiagnostics: false,
       tsconfigPath: resolve('tsconfig.json'),
     }),
     vue(),
+    vueJsx(),
   ],
 })
