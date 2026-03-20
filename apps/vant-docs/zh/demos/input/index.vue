@@ -10,8 +10,20 @@ import { NavBar } from 'vant'
         <DocsDemoRenderer path="@/zh/demos/input/basic.vue" />
       </MobileDemoSection>
 
-      <MobileDemoSection title="预览态">
-        <DocsDemoRenderer path="@/zh/demos/input/read-pretty.vue" />
+      <MobileDemoSection title="常见类型">
+        <DocsDemoRenderer path="@/zh/demos/input/types.vue" />
+      </MobileDemoSection>
+
+      <MobileDemoSection title="只读与禁用">
+        <DocsDemoRenderer path="@/zh/demos/input/status.vue" />
+      </MobileDemoSection>
+
+      <MobileDemoSection title="图标与清空">
+        <DocsDemoRenderer path="@/zh/demos/input/icons.vue" />
+      </MobileDemoSection>
+
+      <MobileDemoSection title="字数统计">
+        <DocsDemoRenderer path="@/zh/demos/input/word-limit.vue" />
       </MobileDemoSection>
     </div>
   </div>

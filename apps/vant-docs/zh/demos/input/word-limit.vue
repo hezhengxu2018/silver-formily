@@ -5,8 +5,8 @@ import { Field, FormProvider } from '@silver-formily/vue'
 
 const form = createForm({
   values: {
-    username: '',
-    email: '',
+    summary: '',
+    remark: '已经支持字数统计和清空交互。',
   },
 })
 </script>
@@ -15,25 +15,31 @@ const form = createForm({
   <FormProvider :form="form">
     <div class="demo-panel">
       <Field
-        name="username"
-        title="用户名"
+        name="summary"
+        title="简介"
         :decorator="[FormItem]"
         :component="[
-          Input,
+          Input.TextArea,
           {
-            placeholder: '请输入用户名',
+            rows: 2,
+            maxlength: 40,
+            showWordLimit: true,
+            placeholder: '请输入 40 字以内的简介',
           },
         ]"
       />
       <Field
-        name="email"
-        title="邮箱"
+        name="remark"
+        title="备注"
         :decorator="[FormItem]"
         :component="[
-          Input,
+          Input.TextArea,
           {
-            type: 'email',
-            placeholder: '请输入联系邮箱',
+            rows: 3,
+            maxlength: 80,
+            showWordLimit: true,
+            clearable: true,
+            placeholder: '可以继续补充更多说明',
           },
         ]"
       />

@@ -5,8 +5,9 @@ import { Field, FormProvider } from '@silver-formily/vue'
 
 const form = createForm({
   values: {
-    username: '',
-    email: '',
+    readonlyName: 'silver-formily',
+    disabledValue: '当前不可编辑',
+    alignValue: '这项内容右对齐展示',
   },
 })
 </script>
@@ -15,25 +16,36 @@ const form = createForm({
   <FormProvider :form="form">
     <div class="demo-panel">
       <Field
-        name="username"
-        title="用户名"
+        name="readonlyName"
+        title="只读输入框"
         :decorator="[FormItem]"
         :component="[
           Input,
           {
-            placeholder: '请输入用户名',
+            readonly: true,
           },
         ]"
       />
       <Field
-        name="email"
-        title="邮箱"
+        name="disabledValue"
+        title="禁用输入框"
         :decorator="[FormItem]"
         :component="[
           Input,
           {
-            type: 'email',
-            placeholder: '请输入联系邮箱',
+            disabled: true,
+          },
+        ]"
+      />
+      <Field
+        name="alignValue"
+        title="内容对齐"
+        :decorator="[FormItem]"
+        :component="[
+          Input,
+          {
+            inputAlign: 'right',
+            placeholder: '输入内容会右对齐',
           },
         ]"
       />
