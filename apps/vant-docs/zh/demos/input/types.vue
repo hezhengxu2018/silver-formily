@@ -5,8 +5,9 @@ import { Field, FormProvider } from '@silver-formily/vue'
 
 const form = createForm({
   values: {
-    username: '',
-    email: '',
+    mobile: '',
+    password: '',
+    website: '',
   },
 })
 </script>
@@ -15,25 +16,38 @@ const form = createForm({
   <FormProvider :form="form">
     <div class="demo-panel">
       <Field
-        name="username"
-        title="用户名"
+        name="mobile"
+        title="手机号"
         :decorator="[FormItem]"
         :component="[
           Input,
           {
-            placeholder: '请输入用户名',
+            type: 'tel',
+            placeholder: '请输入手机号',
           },
         ]"
       />
       <Field
-        name="email"
-        title="邮箱"
+        name="password"
+        title="密码"
         :decorator="[FormItem]"
         :component="[
           Input,
           {
-            type: 'email',
-            placeholder: '请输入联系邮箱',
+            type: 'password',
+            placeholder: '请输入密码',
+          },
+        ]"
+      />
+      <Field
+        name="website"
+        title="个人主页"
+        :decorator="[FormItem]"
+        :component="[
+          Input,
+          {
+            type: 'url',
+            placeholder: 'https://example.com',
           },
         ]"
       />

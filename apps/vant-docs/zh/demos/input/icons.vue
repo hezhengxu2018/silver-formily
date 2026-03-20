@@ -2,11 +2,12 @@
 import { createForm } from '@formily/core'
 import { FormItem, Input } from '@silver-formily/vant'
 import { Field, FormProvider } from '@silver-formily/vue'
+import { showToast } from 'vant'
 
 const form = createForm({
   values: {
-    username: '',
-    email: '',
+    keyword: 'Formily',
+    captcha: '',
   },
 })
 </script>
@@ -15,25 +16,28 @@ const form = createForm({
   <FormProvider :form="form">
     <div class="demo-panel">
       <Field
-        name="username"
-        title="用户名"
+        name="keyword"
+        title="搜索"
         :decorator="[FormItem]"
         :component="[
           Input,
           {
-            placeholder: '请输入用户名',
+            leftIcon: 'search',
+            clearable: true,
+            placeholder: '输入关键词后可以直接清空',
           },
         ]"
       />
       <Field
-        name="email"
-        title="邮箱"
+        name="captcha"
+        title="验证码"
         :decorator="[FormItem]"
         :component="[
           Input,
           {
-            type: 'email',
-            placeholder: '请输入联系邮箱',
+            rightIcon: 'question-o',
+            placeholder: '点击右侧图标查看说明',
+            onClickRightIcon: () => showToast('验证码示例仅用于展示交互能力'),
           },
         ]"
       />

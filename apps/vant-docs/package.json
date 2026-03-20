@@ -33,6 +33,7 @@
     "@silver-formily/reactive-vue": "workspace:*",
     "@silver-formily/vant": "workspace:*",
     "@silver-formily/vue": "workspace:*",
+    "@vant/touch-emulator": "^1.5.0",
     "vant": "^4.9.22",
     "vue": "^3.3.0"
   },

@@ -4,35 +4,11 @@ mobileDemo: form-item/index.vue
 
 # FormItem
 
-> `FormItem` 是当前 Vant 封装里的装饰器组件，内部复用了 Vant 的 `Field`，并把默认插槽放进 `#input`
+> `FormItem` 是当前 Vant 封装里的装饰器组件，负责承接 `VanField` 的展示、布局和反馈层能力。
 
 :::tip 提示
-Vant实际上并没有`FormItem`组件，在Vant的设计概念中`FormItem`和`Input`是绑定在一起的，即`Field`组件。这里强行拆成两个组件是因为在`formily`的设计体系中`component`和`decorator`是两个独立的概念。
+Vant 并没有单独的 `FormItem` 组件，官方是把“表单项壳层”和“文本输入”统一放进 `Field` 里。这里拆成 `FormItem + Input`，是为了继续保持 Formily 的 `decorator + component` 心智。
 :::
-
-## 职责划分
-
-为了兼容 Formily 的 `decorator + component` 结构，当前 Vant 适配采用了下面这套约定：
-
-- `FormItem` 负责标签、额外说明、校验反馈、必填态等装饰器能力
-- `Input` 负责值、只读态、预览态，以及 `clearable`、`showWordLimit` 这类输入行为
-- 当输入行为属性写在 `Input` 上时，内部会自动桥接到 `FormItem` 对应的 `VanField`
-
-这意味着日常使用里仍然推荐把输入相关属性写在 `Input` 上，而不是手动分散到 `FormItem`。
-
-## 什么时候写在 FormItem 上
-
-下面这些更适合放在 `FormItem`：
-
-- `feedbackStatus`
-- `feedbackText`
-- `labelWidth`
-- `labelAlign`
-- `colon`
-- `asterisk`
-- `extra`
-
-如果某个属性本身属于 Vant `Field` 的装饰层语义，而不是输入交互，也建议优先写在 `FormItem` 上。
 
 ## 基础使用
 
@@ -41,3 +17,67 @@ Vant实际上并没有`FormItem`组件，在Vant的设计概念中`FormItem`和`
 ## 直接使用
 
 <<< @/zh/demos/form-item/manual-feedback.vue
+
+## API
+
+### 使用约定
+
+- `title` 会自动映射到 `label`
+- `description` 会自动映射到 `extra`
+- `field.required`、`field.validateStatus`、`field.selfErrors` 等字段状态会自动映射到外层 `VanField`
+- `clearable`、`showWordLimit`、`leftIcon` 这类输入增强属性请写在 `Input` 上，由 `FormItem` 内部负责桥接
+- `tag`、`titleStyle`、`valueClass`、`clickable` 这类更偏布局和展示层的属性，建议写在 `FormItem` 上
+
+### FormItem 封装属性
+
+| 属性名           | 类型                                                    | 描述                                             | 默认值                                             |
+| ---------------- | ------------------------------------------------------- | ------------------------------------------------ | -------------------------------------------------- |
+| `label`          | `string` \| `number` \| `VNode`                         | 左侧标签内容；未传时优先读取 `field.title`       | `field.title`                                      |
+| `extra`          | `string` \| `number` \| `VNode`                         | 额外说明内容；未传时优先读取 `field.description` | `field.description`                                |
+| `feedbackStatus` | ^[enum]`'error' \| 'warning' \| 'success' \| 'pending'` | 手动覆盖反馈状态                                 | `field.validateStatus`                             |
+| `feedbackText`   | `string` \| `number` \| `VNode`                         | 手动覆盖底部反馈文案                             | 自动读取字段反馈                                   |
+| `asterisk`       | `boolean`                                               | 手动控制必填星号展示                             | `field.required && field.pattern !== 'readPretty'` |
+
+### FormItem 展示与布局属性
+
+| 属性名              | 类型                                                         | 描述                                                   | 默认值                     |
+| ------------------- | ------------------------------------------------------------ | ------------------------------------------------------ | -------------------------- |
+| `tag`               | `keyof HTMLElementTagNameMap`                                | 根节点标签名                                           | `'div'`                    |
+| `required`          | `boolean` \| ^[enum]`'auto'`                                 | 是否显示必填态                                         | `field.required`           |
+| `colon`             | `boolean`                                                    | 是否在标签后显示冒号                                   | `-`                        |
+| `size`              | ^[enum]`'normal' \| 'large'`                                 | 表单项尺寸                                             | `-`                        |
+| `border`            | `boolean`                                                    | 是否显示内边框                                         | `true`                     |
+| `center`            | `boolean`                                                    | 是否让内容垂直居中                                     | `false`                    |
+| `labelWidth`        | `number` \| `string`                                         | 左侧标签宽度                                           | `-`                        |
+| `labelAlign`        | ^[enum]`'left' \| 'center' \| 'right' \| 'top'`              | 标签对齐方式                                           | `-`                        |
+| `labelClass`        | `string` \| `string[]` \| ^[object]`Record<string, boolean>` | 标签区域额外类名                                       | `-`                        |
+| `titleClass`        | `string` \| `string[]` \| ^[object]`Record<string, boolean>` | 标题区域额外类名                                       | `-`                        |
+| `titleStyle`        | `string` \| ^[object]`CSSProperties`                         | 标题区域样式                                           | `-`                        |
+| `valueClass`        | `string` \| `string[]` \| ^[object]`Record<string, boolean>` | 内容区域额外类名                                       | `-`                        |
+| `error`             | `boolean`                                                    | 手动指定错误态；也会被 `feedbackStatus` 的推导结果覆盖 | 根据字段状态与反馈配置推导 |
+| `errorMessage`      | `string`                                                     | 手动指定错误文案；也会被 `feedbackText` 的推导结果覆盖 | 根据字段状态与反馈配置推导 |
+| `errorMessageAlign` | ^[enum]`'left' \| 'center' \| 'right' \| 'top'`              | 底部错误文案对齐方式                                   | `-`                        |
+| `clickable`         | `boolean` \| `null`                                          | 是否开启点击反馈                                       | 未传时跟随 `isLink`        |
+| `isLink`            | `boolean`                                                    | 是否展示右侧箭头并开启链接态样式                       | `false`                    |
+| `arrowDirection`    | ^[enum]`'left' \| 'right' \| 'up' \| 'down'`                 | 右侧箭头方向，仅在 `isLink` 为 `true` 时有明显视觉效果 | `-`                        |
+
+### FormItem Slots
+
+| 插槽名          | 描述                                           | 插槽参数                       |
+| --------------- | ---------------------------------------------- | ------------------------------ |
+| `default`       | 默认内容，会被放进 `VanField` 的 `#input` 区域 | `-`                            |
+| `input`         | 自定义输入区域，优先级高于默认插槽             | `-`                            |
+| `label`         | 自定义标签区域                                 | `-`                            |
+| `extra`         | 自定义额外说明区域                             | `-`                            |
+| `button`        | 自定义右侧按钮区域                             | `-`                            |
+| `left-icon`     | 自定义左侧图标区域                             | `-`                            |
+| `right-icon`    | 自定义右侧图标区域                             | `-`                            |
+| `error-message` | 自定义底部反馈区域                             | ^[object]`{ message: string }` |
+
+### FormItem.BaseItem
+
+纯展示组件，保留和 `FormItem` 相同的视觉结构与插槽能力，但不会和 Formily `Field` 状态做自动桥接。适合只想复用 `VanField` 布局壳层、不需要接入字段状态的场景。
+
+### 参考
+
+属性命名、布局能力和默认值主要参考 [Vant Field 官方文档（正式站）](https://vant-ui.github.io/vant/#/zh-CN/field)。
