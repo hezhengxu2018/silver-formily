@@ -1,6 +1,7 @@
 import type { Field, GeneralField } from '@formily/core'
 import { toJS } from '@formily/reactive'
 import { isArr } from '@formily/shared'
+import { Input } from '../input'
 
 const vantFieldBridgePropKeys = [
   'autofocus',
@@ -67,13 +68,18 @@ export function getVanFieldBridgedProps(field: GeneralField) {
   const componentProps = typeof componentEntry === 'object' && componentEntry != null
     ? componentEntry as Record<string, any>
     : {}
+
+  if (component !== Input && component !== Input.TextArea) {
+    return {}
+  }
+
   const bridgedProps = pickKeys(componentProps, vantFieldBridgePropKeys)
 
   if (!('readonly' in bridgedProps) && 'readOnly' in componentProps) {
     bridgedProps.readonly = componentProps.readOnly
   }
 
-  const componentType = componentProps.type ?? (component as any)?.__VANT_FIELD_TYPE__
+  const componentType = componentProps.type ?? (component === Input.TextArea ? 'textarea' : undefined)
   if (componentType != null) {
     bridgedProps.type = componentType
   }
