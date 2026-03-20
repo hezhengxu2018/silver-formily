@@ -1,5 +1,6 @@
 import { createForm } from '@formily/core'
 import { describe, expect, it, vi } from 'vitest'
+import { defineComponent } from 'vue'
 import { Input } from '../../input'
 import { fieldFeedbackMapper } from '../index'
 import { determineFeedbackStatus, getFeedbackMessage, getVanFieldBridgedProps } from '../utils'
@@ -37,7 +38,7 @@ describe('form-item utils', () => {
     } as any)).toBe('success')
   })
 
-  it('应该只桥接允许的 Vant Field 属性，并兼容 readOnly', () => {
+  it('应该只为 Input 组件桥接允许的 Vant Field 属性，并兼容 readOnly', () => {
     const onClear = () => {}
     const onUpdateModelValue = () => {}
 
@@ -63,7 +64,7 @@ describe('form-item utils', () => {
     expect(bridgedProps).not.toHaveProperty('unrelated')
   })
 
-  it('应该从组件静态标记推导类型，并允许显式 type 覆盖', () => {
+  it('应该从 Input.TextArea 推导类型，并允许显式 type 覆盖', () => {
     expect(getVanFieldBridgedProps({
       component: [Input.TextArea, { rows: 4 }],
     } as any)).toMatchObject({
@@ -83,6 +84,23 @@ describe('form-item utils', () => {
 
     expect(getVanFieldBridgedProps({
       component: [Input, 'not-an-object'],
+    } as any)).toEqual({})
+  })
+
+  it('不应该为非 Input 组件透传 VanField 属性', () => {
+    const PlainComponent = defineComponent({
+      name: 'PlainComponent',
+      setup() {
+        return () => null
+      },
+    })
+
+    expect(getVanFieldBridgedProps({
+      component: [PlainComponent, {
+        clearable: true,
+        maxlength: 20,
+        readOnly: true,
+      }],
     } as any)).toEqual({})
   })
 })
@@ -218,5 +236,37 @@ describe('fieldFeedbackMapper', () => {
 
     expect(fieldOnInput).toHaveBeenCalledWith('next-value')
     expect(decoratorListener).toHaveBeenCalledWith('next-value')
+  })
+
+  it('包裹普通组件时不应该误桥接 Input 专属属性', () => {
+    const PlainComponent = defineComponent({
+      name: 'PlainComponent',
+      setup() {
+        return () => null
+      },
+    })
+
+    const mapped = fieldFeedbackMapper({}, {
+      component: [PlainComponent, {
+        clearable: true,
+        disabled: true,
+        readOnly: true,
+        maxlength: 20,
+      }],
+      decorator: ['FormItem'],
+      validateStatus: 'success',
+      selfErrors: [],
+      selfWarnings: [],
+      selfSuccesses: [],
+      value: 'value',
+      required: false,
+      pattern: 'editable',
+      onInput: vi.fn(),
+    } as any)
+
+    expect(mapped.clearable).toBeUndefined()
+    expect(mapped.maxlength).toBeUndefined()
+    expect(mapped.disabled).toBe(false)
+    expect(mapped.readonly).toBe(false)
   })
 })

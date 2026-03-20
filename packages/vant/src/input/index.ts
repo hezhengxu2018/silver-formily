@@ -23,10 +23,6 @@ const TextArea = connect<typeof FInput>(
   mapReadPretty(PreviewText.Input),
 )
 
-Object.assign(TextArea, {
-  __VANT_FIELD_TYPE__: 'textarea',
-})
-
 export const Input = composeExport(InnerInput, {
   TextArea,
 })
