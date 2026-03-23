@@ -32,6 +32,11 @@ export function fieldFeedbackMapper(props, field) {
     ? props.asterisk
     : field.required && field.pattern !== 'readPretty'
   const decoratorModelValueHandler = props['onUpdate:modelValue']
+  const shouldBridgeFieldValue = Boolean(
+    componentModelValueHandler
+    || decoratorModelValueHandler
+    || Object.keys(bridgedProps).length,
+  )
 
   return {
     ...bridgedProps,
@@ -39,14 +44,18 @@ export function fieldFeedbackMapper(props, field) {
     feedbackStatus,
     feedbackText,
     asterisk,
-    'modelValue': field.value,
-    'onUpdate:modelValue': (...args) => {
-      field.onInput(...args)
-      callListener(decoratorModelValueHandler, ...args)
-      callListener(componentModelValueHandler, ...args)
-    },
-    'disabled': props.disabled || bridgedProps.disabled || field.pattern === 'disabled',
-    'readonly': props.readonly || bridgedProps.readonly || field.pattern === 'readOnly',
+    ...(shouldBridgeFieldValue
+      ? {
+          'modelValue': field.value,
+          'onUpdate:modelValue': (...args) => {
+            field.onInput(...args)
+            callListener(decoratorModelValueHandler, ...args)
+            callListener(componentModelValueHandler, ...args)
+          },
+        }
+      : {}),
+    disabled: props.disabled || bridgedProps.disabled || field.pattern === 'disabled',
+    readonly: props.readonly || bridgedProps.readonly || field.pattern === 'readOnly',
   }
 }
 

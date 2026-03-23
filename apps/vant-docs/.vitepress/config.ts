@@ -32,6 +32,7 @@ export default createDocsConfig({
             {
               text: '基础组件',
               items: [
+                { text: 'Calendar', link: '/component/calendar' },
                 { text: 'FormItem', link: '/component/form-item' },
                 { text: 'Input', link: '/component/input' },
               ],
