@@ -56,6 +56,10 @@
     "vant": "^4.9.22",
     "vue": "^3.3.0"
   },
+  "dependencies": {
+    "dayjs": "^1.11.20",
+    "lodash-es": "^4.17.23"
+  },
   "devDependencies": {
     "@silver-formily/reactive-vue": "workspace:*",
     "@silver-formily/typescript-config": "workspace:*",
