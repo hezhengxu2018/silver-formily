@@ -11,6 +11,7 @@ import {
   vantFormContextKey,
   vantFormInheritedPropKeys,
   vantFormItemRegistryKey,
+  vantFormRootKey,
 } from './context'
 
 defineOptions({
@@ -80,6 +81,7 @@ const inheritedProps = computed(() => {
 })
 
 provide(vantFormContextKey, inheritedProps)
+provide(vantFormRootKey, formElementRef)
 
 provide(vantFormItemRegistryKey, {
   get(identifier) {

@@ -34,6 +34,7 @@ export default createDocsConfig({
               items: [
                 { text: 'Calendar', link: '/component/calendar' },
                 { text: 'Form', link: '/component/form' },
+                { text: 'FormButtonGroup', link: '/component/form-button-group' },
                 { text: 'FormItem', link: '/component/form-item' },
                 { text: 'Input', link: '/component/input' },
                 { text: 'Reset', link: '/component/reset' },

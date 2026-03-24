@@ -2,8 +2,9 @@
 import type { PropType } from 'vue'
 import { formilyComputed } from '@silver-formily/reactive-vue'
 import { useParentForm } from '@silver-formily/vue'
-import { buttonProps, Button as VanButton } from 'vant'
-import { computed, getCurrentInstance } from 'vue'
+import { buttonProps, ActionBarButton as VanActionBarButton, Button as VanButton } from 'vant'
+import { computed, getCurrentInstance, useSlots } from 'vue'
+import { useVantFormButtonGroupContext } from '../form-button-group/context'
 
 defineOptions({
   name: 'FReset',
@@ -26,13 +27,17 @@ const props = defineProps({
 })
 
 const formRef = useParentForm()
+const buttonGroupContext = useVantFormButtonGroupContext()
 const rawProps = getCurrentInstance()?.vnode.props ?? {}
+const slots = useSlots()
 
 function hasExplicitProp(key: string) {
   return Object.prototype.hasOwnProperty.call(rawProps, key)
 }
 
+const isCompactGroup = computed(() => buttonGroupContext?.value.layout === 'compact')
 const isDisabled = formilyComputed(() => Boolean(formRef.value?.submitting || props.disabled))
+const resolvedText = computed(() => props.text ?? '重置')
 const resolvedType = computed(() => (hasExplicitProp('type') ? props.type : 'default'))
 const resolvedRound = computed(() => (hasExplicitProp('round') ? props.round : true))
 const resolvedBlock = computed(() => (hasExplicitProp('block') ? props.block : true))
@@ -54,6 +59,20 @@ const buttonBindings = computed(() => {
 
   return {
     ...buttonOptions,
+  }
+})
+
+const compactButtonBindings = computed(() => {
+  return {
+    color: props.color,
+    disabled: isDisabled.value,
+    icon: props.icon,
+    loading: props.loading,
+    replace: props.replace,
+    text: resolvedText.value,
+    to: props.to,
+    type: resolvedType.value,
+    url: props.url,
   }
 })
 
@@ -79,7 +98,17 @@ function handleClick(event: MouseEvent) {
 </script>
 
 <template>
+  <VanActionBarButton
+    v-if="isCompactGroup"
+    v-bind="compactButtonBindings"
+    @click="handleClick"
+  >
+    <template v-if="slots.default" #default>
+      <slot />
+    </template>
+  </VanActionBarButton>
   <VanButton
+    v-else
     v-bind="buttonBindings"
     :block="resolvedBlock"
     :disabled="isDisabled"
@@ -89,7 +118,10 @@ function handleClick(event: MouseEvent) {
     @click="handleClick"
   >
     <template #default>
-      <slot>重置</slot>
+      <slot v-if="slots.default" />
+      <template v-else>
+        {{ resolvedText }}
+      </template>
     </template>
   </VanButton>
 </template>

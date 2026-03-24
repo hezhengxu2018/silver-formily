@@ -1,5 +1,5 @@
 import type { FormPathPattern } from '@formily/shared'
-import type { ComputedRef, InjectionKey } from 'vue'
+import type { ComputedRef, InjectionKey, Ref } from 'vue'
 import { FormPath } from '@formily/shared'
 import { inject } from 'vue'
 
@@ -34,6 +34,7 @@ export interface VantFormItemRegistry {
 }
 
 export const vantFormItemRegistryKey: InjectionKey<VantFormItemRegistry> = Symbol('silver-formily-vant-form-item-registry')
+export const vantFormRootKey: InjectionKey<Ref<HTMLFormElement | undefined>> = Symbol('silver-formily-vant-form-root')
 
 export function hasDefinedValue<T>(value: T | null | undefined): value is T {
   return value !== undefined && value !== null
@@ -53,4 +54,8 @@ export function useVantFormContext() {
 
 export function useVantFormItemRegistry() {
   return inject(vantFormItemRegistryKey, null)
+}
+
+export function useVantFormRoot() {
+  return inject(vantFormRootKey, null)
 }
