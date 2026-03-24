@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { stickyProps, Sticky as VanSticky } from 'vant'
 import { computed } from 'vue'
-import { useVantFormRoot } from '../form/context'
+import { useVantFormRoot } from '../form/hooks'
 
 defineOptions({
   name: 'FFormButtonGroupSticky',

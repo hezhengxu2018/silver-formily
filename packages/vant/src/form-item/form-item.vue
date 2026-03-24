@@ -1,15 +1,11 @@
 <script setup lang="ts">
 import type { ComponentPublicInstance, PropType, VNode } from 'vue'
+import { isNil } from 'lodash-es'
 import { Field as VanField } from 'vant'
-import { computed, isVNode, onBeforeUnmount, provide, ref, watch } from 'vue'
+import { computed, isVNode, provide, ref } from 'vue'
 import { useCleanAttrs } from '../__builtins__'
-import {
-  hasDefinedValue,
-  normalizeFormPath,
-  useVantFormContext,
-  useVantFormItemRegistry,
-  vantFormInheritedPropKeys,
-} from '../form/context'
+import { useVantFormContext, vantFormInheritedPropKeys } from '../form/context'
+import { useVantFormItemRegistration } from '../form/hooks'
 import { vantFormItemControlContextKey } from './context'
 
 defineOptions({
@@ -63,17 +59,16 @@ type FormItemContent = string | number | VNode
 
 const { props: attrs } = useCleanAttrs()
 const formContext = useVantFormContext()
-const formItemRegistry = useVantFormItemRegistry()
 const fieldRef = ref<ComponentPublicInstance | null>(null)
 
 function resolveControlFlag(name: 'showError' | 'showErrorMessage', defaultValue: boolean) {
   const localValue = attrs.value[name]
-  if (hasDefinedValue(localValue)) {
+  if (!isNil(localValue)) {
     return Boolean(localValue)
   }
 
   const inheritedValue = formContext?.value[name]
-  if (hasDefinedValue(inheritedValue)) {
+  if (!isNil(inheritedValue)) {
     return Boolean(inheritedValue)
   }
 
@@ -108,7 +103,7 @@ const resolvedFieldProps = computed(() => {
   const mergedProps = { ...attrs.value }
 
   vantFormInheritedPropKeys.forEach((key) => {
-    if (!hasDefinedValue(mergedProps[key]) && hasDefinedValue(inheritedProps[key])) {
+    if (isNil(mergedProps[key]) && !isNil(inheritedProps[key])) {
       mergedProps[key] = inheritedProps[key]
     }
   })
@@ -147,45 +142,11 @@ const rootClass = computed(() => {
   ]
 })
 
-const normalizedFieldAddress = computed(() => normalizeFormPath(props.fieldAddress))
-const normalizedFieldPath = computed(() => normalizeFormPath(props.fieldPath))
-
-function resolveFieldElement() {
-  const target = fieldRef.value
-  const element = target?.$el
-  return element instanceof HTMLElement ? element : null
-}
-
-let registeredEntry: { address?: string, el: HTMLElement, path?: string } | null = null
-
-function syncFormItemRegistry() {
-  if (!formItemRegistry) {
-    return
-  }
-
-  if (registeredEntry) {
-    formItemRegistry.unregister(registeredEntry)
-    registeredEntry = null
-  }
-
-  const el = resolveFieldElement()
-  if (!el) {
-    return
-  }
-
-  const address = normalizedFieldAddress.value
-  const path = normalizedFieldPath.value
-  if (!address && !path) {
-    return
-  }
-
-  registeredEntry = {
-    address,
-    el,
-    path,
-  }
-  formItemRegistry.register(registeredEntry)
-}
+useVantFormItemRegistration({
+  fieldAddress: () => props.fieldAddress,
+  fieldPath: () => props.fieldPath,
+  fieldRef,
+})
 
 provide(vantFormItemControlContextKey, computed(() => ({
   disabled: resolvedFieldProps.value.fieldProps.disabled,
@@ -193,17 +154,6 @@ provide(vantFormItemControlContextKey, computed(() => ({
   inputAlign: resolvedFieldProps.value.fieldProps.inputAlign,
   readonly: resolvedFieldProps.value.fieldProps.readonly,
 })))
-
-watch([fieldRef, normalizedFieldAddress, normalizedFieldPath], syncFormItemRegistry, {
-  flush: 'post',
-  immediate: true,
-})
-
-onBeforeUnmount(() => {
-  if (registeredEntry && formItemRegistry) {
-    formItemRegistry.unregister(registeredEntry)
-  }
-})
 </script>
 
 <template>
