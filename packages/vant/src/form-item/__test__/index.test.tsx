@@ -31,7 +31,7 @@ describe('formItem', () => {
 
     it('应该支持反馈信息展示', async () => {
       const { container } = render(() => (
-        <FormBaseItem label="用户名" feedbackStatus="error" feedbackText="校验失败">
+        <FormBaseItem label="用户名" feedbackStatus="error" feedbackText="校验失败" showError={true}>
           <Input modelValue="hello" />
         </FormBaseItem>
       ))
@@ -54,6 +54,9 @@ describe('formItem', () => {
 
       await expect.element(getHtmlElement(container, '.custom-label')).toBeInTheDocument()
       await expect.element(getHtmlElement(container, '.custom-extra')).toBeInTheDocument()
+      expect(container.querySelector('.van-cell .custom-extra')).toBeNull()
+      await expect.element(getHtmlElement(container, '.silver-formily-vant-form-item__extra-wrapper')).toBeInTheDocument()
+      await expect.element(getHtmlElement(container, '.silver-formily-vant-form-item__extra')).toBeInTheDocument()
       await expect.element(getHtmlElement(container, '.custom-error')).toBeInTheDocument()
     })
 
@@ -78,6 +81,8 @@ describe('formItem', () => {
       await expect.element(getHtmlElement(container, '.slot-button')).toBeInTheDocument()
       await expect.element(getHtmlElement(container, '.slot-right-icon')).toBeInTheDocument()
       await expect.element(getHtmlElement(container, '.slot-extra')).toBeInTheDocument()
+      expect(container.querySelector('.van-cell .slot-extra')).not.toBeNull()
+      expect(container.querySelector('.silver-formily-vant-form-item__extra .slot-extra')).toBeNull()
       await expect.element(getHtmlElement(container, '.slot-error')).toHaveTextContent('错误:插槽错误')
     })
 
@@ -88,7 +93,23 @@ describe('formItem', () => {
         </FormBaseItem>
       ))
 
-      expect(container.textContent).toContain('文本说明')
+      await expect.element(getHtmlElement(container, '.silver-formily-vant-form-item__extra')).toHaveTextContent('文本说明')
+    })
+
+    it('应该让 extra 属性和 extra 插槽互不影响', async () => {
+      const { container } = render(() => (
+        <FormBaseItem label="标题" extra="属性说明">
+          {{
+            default: () => <Input modelValue="hello" />,
+            extra: () => <span class="slot-extra">插槽说明</span>,
+          }}
+        </FormBaseItem>
+      ))
+
+      await expect.element(getHtmlElement(container, '.silver-formily-vant-form-item__extra')).toHaveTextContent('属性说明')
+      await expect.element(getHtmlElement(container, '.slot-extra')).toBeInTheDocument()
+      expect(container.querySelector('.van-cell .slot-extra')).not.toBeNull()
+      expect(container.querySelector('.silver-formily-vant-form-item__extra .slot-extra')).toBeNull()
     })
 
     it('应该在未显式传入 asterisk 时回退到 required attrs', async () => {
@@ -99,6 +120,19 @@ describe('formItem', () => {
       ))
 
       await expect.element(getHtmlElement(container, '.van-field__label')).toHaveClass('van-field__label--required')
+    })
+
+    it('应该在没有 extra 时仍然显示原生分割线', async () => {
+      const { container } = render(() => (
+        <FormBaseItem label="标题">
+          <Input modelValue="hello" />
+        </FormBaseItem>
+      ))
+
+      const field = getHtmlElement(container, '.van-cell')
+      const style = window.getComputedStyle(field, '::after')
+      expect(style.display).toBe('block')
+      expect(style.borderBottomStyle).toBe('solid')
     })
   })
 

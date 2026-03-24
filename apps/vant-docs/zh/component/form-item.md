@@ -18,12 +18,19 @@ Vant 并没有单独的 `FormItem` 组件，官方是把“表单项壳层”和
 
 <<< @/zh/demos/form-item/manual-feedback.vue
 
+## 边框与说明
+
+<<< @/zh/demos/form-item/border-extra.vue
+
 ## API
 
 ### 使用约定
 
 - `title` 会自动映射到 `label`
 - `description` 会自动映射到 `extra`
+- `extra` 属性会作为表单项下方的独立说明区域渲染
+- `extra` 插槽仍然保持 Vant 原生 `VanField #extra` 的布局语义
+- `extra` 属性和 `extra` 插槽互不影响，可以同时存在
 - `field.required`、`field.validateStatus`、`field.selfErrors` 等字段状态会自动映射到外层 `VanField`
 - `clearable`、`showWordLimit`、`leftIcon` 这类输入增强属性请写在 `Input` 上，由 `FormItem` 内部负责桥接
 - `tag`、`titleStyle`、`valueClass`、`clickable` 这类更偏布局和展示层的属性，建议写在 `FormItem` 上

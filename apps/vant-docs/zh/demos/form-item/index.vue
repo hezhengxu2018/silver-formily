@@ -13,6 +13,10 @@ import { NavBar } from 'vant'
       <MobileDemoSection title="直接使用">
         <DocsDemoRenderer path="@/zh/demos/form-item/manual-feedback.vue" />
       </MobileDemoSection>
+
+      <MobileDemoSection title="边框与说明">
+        <DocsDemoRenderer path="@/zh/demos/form-item/border-extra.vue" />
+      </MobileDemoSection>
     </div>
   </div>
 </template>
