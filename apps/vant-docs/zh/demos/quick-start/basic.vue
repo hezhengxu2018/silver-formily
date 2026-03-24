@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { createForm } from '@formily/core'
-import { FormItem, Input } from '@silver-formily/vant'
-import { Field, FormConsumer, FormProvider } from '@silver-formily/vue'
+import { Form, FormItem, Input } from '@silver-formily/vant'
+import { Field } from '@silver-formily/vue'
 
 const form = createForm({
   values: {
@@ -9,10 +9,14 @@ const form = createForm({
     bio: '正在为 Vant 做最小基础封装',
   },
 })
+
+async function handleSubmit(values: typeof form.values) {
+  await Prompts.alert(`提交结果\n\n${JSON.stringify(values, null, 2)}`)
+}
 </script>
 
 <template>
-  <FormProvider :form="form">
+  <Form :form="form" label-width="4.5em" :on-auto-submit="handleSubmit">
     <div class="demo-panel">
       <Field
         name="username"
@@ -42,14 +46,13 @@ const form = createForm({
           },
         ]"
       />
+      <div class="demo-actions">
+        <button class="demo-submit" type="submit">
+          提交
+        </button>
+      </div>
     </div>
-
-    <FormConsumer>
-      <template #default="{ form: consumerForm }">
-        <pre class="demo-result">{{ JSON.stringify(consumerForm.values, null, 2) }}</pre>
-      </template>
-    </FormConsumer>
-  </FormProvider>
+  </Form>
 </template>
 
 <style scoped>
@@ -59,12 +62,16 @@ const form = createForm({
   background: var(--van-background-2);
 }
 
-.demo-result {
-  margin-top: 16px;
-  padding: 12px;
-  overflow: auto;
-  color: var(--van-text-color);
-  background: var(--van-gray-1);
-  border-radius: 12px;
+.demo-actions {
+  padding: 12px 16px 16px;
+}
+
+.demo-submit {
+  width: 100%;
+  padding: 10px 16px;
+  color: var(--van-white);
+  background: var(--van-primary-color);
+  border: 0;
+  border-radius: 999px;
 }
 </style>

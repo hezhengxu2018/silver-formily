@@ -33,6 +33,7 @@ export default createDocsConfig({
               text: '基础组件',
               items: [
                 { text: 'Calendar', link: '/component/calendar' },
+                { text: 'Form', link: '/component/form' },
                 { text: 'FormItem', link: '/component/form-item' },
                 { text: 'Input', link: '/component/input' },
               ],
@@ -48,6 +49,7 @@ export default createDocsConfig({
   socialLinks: [
     { icon: 'github', link: 'https://github.com/hezhengxu2018/silver-formily' },
   ],
+  heads: ['script', { src: 'https://cdn.jsdelivr.net/npm/prompts-js' }],
   themeConfig: {
     outline: [2, 4],
     mobilePreview: {

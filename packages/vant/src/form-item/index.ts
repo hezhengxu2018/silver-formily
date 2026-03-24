@@ -43,6 +43,8 @@ export function fieldFeedbackMapper(props, field) {
     ...props,
     feedbackStatus,
     feedbackText,
+    fieldAddress: field.address.toString(),
+    fieldPath: field.path.toString(),
     asterisk,
     ...(shouldBridgeFieldValue
       ? {
