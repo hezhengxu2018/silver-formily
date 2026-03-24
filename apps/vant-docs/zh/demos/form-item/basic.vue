@@ -22,7 +22,7 @@ const form = createForm({
           FormItem,
           {
             labelWidth: '5em',
-            extra: 'labelWidth、required、extra 都会透传到 Vant Field',
+            extra: 'labelWidth、required 仍走表单项壳层，extra 属性会显示在下方说明区',
           },
         ]"
         :component="[
@@ -52,5 +52,4 @@ const form = createForm({
     </div>
   </FormProvider>
 </template>
-
 

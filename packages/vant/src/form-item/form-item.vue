@@ -81,7 +81,7 @@ function resolveControlFlag(name: 'showError' | 'showErrorMessage', defaultValue
 }
 
 const hasLabelSlot = computed(() => Boolean(slots.label) || isVNode(props.label))
-const hasExtraSlot = computed(() => Boolean(slots.extra) || props.extra != null)
+const hasExtraProp = computed(() => props.extra != null)
 const showError = computed(() => resolveControlFlag('showError', false))
 const showErrorMessage = computed(() => resolveControlFlag('showErrorMessage', true))
 const hasErrorMessageSlot = computed(() => {
@@ -135,6 +135,16 @@ const formItemProps = computed(() => {
     error: resolvedFieldProps.value.error,
     errorMessage: resolvedFeedbackMessage.value ?? resolvedFieldProps.value.fieldProps.errorMessage,
   }
+})
+
+const hasFieldBorder = computed(() => resolvedFieldProps.value.fieldProps.border !== false)
+
+const rootClass = computed(() => {
+  return [
+    'silver-formily-vant-form-item',
+    hasExtraProp.value && 'silver-formily-vant-form-item--with-extra',
+    !hasFieldBorder.value && 'silver-formily-vant-form-item--borderless',
+  ]
 })
 
 const normalizedFieldAddress = computed(() => normalizeFormPath(props.fieldAddress))
@@ -197,40 +207,88 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <VanField ref="fieldRef" v-bind="formItemProps">
-    <template v-if="slots['left-icon']" #left-icon>
-      <slot name="left-icon" />
-    </template>
-
-    <template v-if="hasLabelSlot" #label>
-      <slot v-if="slots.label" name="label" />
-      <component :is="props.label" v-else />
-    </template>
-
-    <template #input>
-      <slot v-if="slots.input" name="input" />
-      <slot v-else />
-    </template>
-
-    <template v-if="slots.button" #button>
-      <slot name="button" />
-    </template>
-
-    <template v-if="slots['right-icon']" #right-icon>
-      <slot name="right-icon" />
-    </template>
-
-    <template v-if="hasExtraSlot" #extra>
-      <slot v-if="slots.extra" name="extra" />
-      <component :is="props.extra" v-else-if="isVNode(props.extra)" />
-      <template v-else>
-        {{ props.extra }}
+  <div :class="rootClass">
+    <VanField ref="fieldRef" v-bind="formItemProps">
+      <template v-if="slots['left-icon']" #left-icon>
+        <slot name="left-icon" />
       </template>
-    </template>
 
-    <template v-if="hasErrorMessageSlot" #error-message="{ message }">
-      <slot v-if="slots['error-message']" name="error-message" :message="message" />
-      <component :is="props.feedbackText" v-else />
-    </template>
-  </VanField>
+      <template v-if="hasLabelSlot" #label>
+        <slot v-if="slots.label" name="label" />
+        <component :is="props.label" v-else />
+      </template>
+
+      <template #input>
+        <slot v-if="slots.input" name="input" />
+        <slot v-else />
+      </template>
+
+      <template v-if="slots.button" #button>
+        <slot name="button" />
+      </template>
+
+      <template v-if="slots['right-icon']" #right-icon>
+        <slot name="right-icon" />
+      </template>
+
+      <template v-if="slots.extra" #extra>
+        <slot name="extra" />
+      </template>
+
+      <template v-if="hasErrorMessageSlot" #error-message="{ message }">
+        <slot v-if="slots['error-message']" name="error-message" :message="message" />
+        <component :is="props.feedbackText" v-else />
+      </template>
+    </VanField>
+
+    <div v-if="hasExtraProp" class="silver-formily-vant-form-item__extra-wrapper">
+      <div class="silver-formily-vant-form-item__extra">
+        <component :is="props.extra" v-if="isVNode(props.extra)" />
+        <template v-else>
+          {{ props.extra }}
+        </template>
+      </div>
+    </div>
+  </div>
 </template>
+
+<style scoped>
+.silver-formily-vant-form-item {
+  position: relative;
+  background: var(--van-background-2);
+}
+
+.silver-formily-vant-form-item:not(.silver-formily-vant-form-item--with-extra):deep(.van-cell:after) {
+  display: block;
+}
+
+.silver-formily-vant-form-item--borderless:deep(.van-cell:after) {
+  display: none;
+}
+
+.silver-formily-vant-form-item--with-extra:deep(.van-cell:after) {
+  display: none;
+}
+
+.silver-formily-vant-form-item--with-extra:not(.silver-formily-vant-form-item--borderless)::after {
+  position: absolute;
+  right: var(--van-padding-md);
+  bottom: 0;
+  left: var(--van-padding-md);
+  border-bottom: 1px solid var(--van-cell-border-color);
+  transform: scaleY(0.5);
+  content: '';
+  pointer-events: none;
+}
+
+.silver-formily-vant-form-item__extra-wrapper {
+  padding: 0 var(--van-cell-horizontal-padding) var(--van-cell-vertical-padding);
+  background: var(--van-background-2);
+}
+
+.silver-formily-vant-form-item__extra {
+  color: var(--van-text-color-2);
+  font-size: var(--van-font-size-sm);
+  line-height: var(--van-line-height-sm);
+}
+</style>
