@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { createForm } from '@formily/core'
-import { Form, FormItem, Input } from '@silver-formily/vant'
+import { Form, FormItem, Input, Submit } from '@silver-formily/vant'
 import { Field } from '@silver-formily/vue'
 
 const form = createForm({
@@ -52,9 +52,7 @@ async function handleSubmit(values: typeof form.values) {
       ]"
     />
     <div class="demo-actions">
-      <button class="demo-submit" type="submit">
-        提交
-      </button>
+      <Submit />
     </div>
   </Form>
 </template>
@@ -62,14 +60,5 @@ async function handleSubmit(values: typeof form.values) {
 <style scoped>
 .demo-actions {
   padding: 12px 16px 16px;
-}
-
-.demo-submit {
-  width: 100%;
-  padding: 10px 16px;
-  color: var(--van-white);
-  background: var(--van-primary-color);
-  border: 0;
-  border-radius: 999px;
 }
 </style>
