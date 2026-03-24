@@ -1,18 +1,13 @@
 <script setup lang="ts">
 import type { Form as FormType, IFormFeedback } from '@formily/core'
 import type { PropType } from 'vue'
+import { paramCase } from '@formily/shared'
 import { FormProvider, useForm } from '@silver-formily/vue'
+import { isNil } from 'lodash-es'
 import { formProps } from 'vant'
 import { computed, getCurrentInstance, nextTick, provide, ref } from 'vue'
-import { PreviewText } from '../preview-text'
-import {
-  hasDefinedValue,
-  normalizeFormPath,
-  vantFormContextKey,
-  vantFormInheritedPropKeys,
-  vantFormItemRegistryKey,
-  vantFormRootKey,
-} from './context'
+import { vantFormContextKey, vantFormInheritedPropKeys } from './context'
+import { useVantFormScroll } from './hooks'
 
 defineOptions({
   name: 'FForm',
@@ -23,10 +18,6 @@ const props = defineProps({
   ...formProps,
   form: {
     type: Object as PropType<FormType>,
-    default: undefined,
-  },
-  previewTextPlaceholder: {
-    type: String,
     default: undefined,
   },
   onAutoSubmit: {
@@ -43,11 +34,11 @@ const instance = getCurrentInstance()
 const top = useForm()
 const currentForm = computed(() => props.form ?? top.value)
 const formElementRef = ref<HTMLFormElement>()
-const formItemElements = new Map<string, HTMLElement>()
-
-function toKebabCase(value: string) {
-  return value.replaceAll(/([a-z0-9])([A-Z])/g, '$1-$2').toLowerCase()
-}
+const { scrollToFirstError } = useVantFormScroll({
+  formElementRef,
+  scrollToError: () => props.scrollToError,
+  scrollToErrorPosition: () => props.scrollToErrorPosition as ScrollLogicalPosition | undefined,
+})
 
 function hasExplicitFormProp(key: string) {
   const vnodeProps = instance?.vnode.props
@@ -55,93 +46,29 @@ function hasExplicitFormProp(key: string) {
     return false
   }
 
-  return key in vnodeProps || toKebabCase(key) in vnodeProps
+  return key in vnodeProps || paramCase(key) in vnodeProps
 }
 
 const inheritedProps = computed(() => {
-  const entries: [string, any][] = []
+  const form = currentForm.value
+  return Object.fromEntries(
+    vantFormInheritedPropKeys.flatMap((key) => {
+      if (hasExplicitFormProp(key)) {
+        return [[key, props[key]]] as const
+      }
 
-  vantFormInheritedPropKeys.forEach((key) => {
-    if (hasExplicitFormProp(key)) {
-      entries.push([key, props[key]])
-      return
-    }
+      const inheritedValue = key === 'disabled'
+        ? form?.disabled
+        : key === 'readonly'
+          ? form?.readOnly
+          : undefined
 
-    if (key === 'disabled' && hasDefinedValue(currentForm.value?.disabled)) {
-      entries.push([key, currentForm.value.disabled])
-      return
-    }
-
-    if (key === 'readonly' && hasDefinedValue(currentForm.value?.readOnly)) {
-      entries.push([key, currentForm.value.readOnly])
-    }
-  })
-
-  return Object.fromEntries(entries)
+      return isNil(inheritedValue) ? [] : [[key, inheritedValue]] as const
+    }),
+  )
 })
 
 provide(vantFormContextKey, inheritedProps)
-provide(vantFormRootKey, formElementRef)
-
-provide(vantFormItemRegistryKey, {
-  get(identifier) {
-    const key = normalizeFormPath(identifier)
-    return key ? formItemElements.get(key) : undefined
-  },
-  register(entry) {
-    ;[entry.address, entry.path].forEach((identifier) => {
-      const key = normalizeFormPath(identifier)
-      if (key) {
-        formItemElements.set(key, entry.el)
-      }
-    })
-  },
-  unregister(entry) {
-    ;[entry.address, entry.path].forEach((identifier) => {
-      const key = normalizeFormPath(identifier)
-      if (!key) {
-        return
-      }
-
-      if (!entry.el || formItemElements.get(key) === entry.el) {
-        formItemElements.delete(key)
-      }
-    })
-  },
-})
-
-function resolveScrollTarget(errors: IFormFeedback[]) {
-  for (const feedback of errors) {
-    const candidateIdentifiers = [feedback.address, feedback.path]
-
-    for (const identifier of candidateIdentifiers) {
-      const key = normalizeFormPath(identifier)
-      const target = key ? formItemElements.get(key) : undefined
-      if (target && formElementRef.value?.contains(target)) {
-        return target
-      }
-    }
-  }
-
-  return undefined
-}
-
-function scrollToFirstError(errors: IFormFeedback[]) {
-  if (!props.scrollToError) {
-    return
-  }
-
-  const target = resolveScrollTarget(errors)
-  if (!target) {
-    return
-  }
-
-  target.scrollIntoView(
-    props.scrollToErrorPosition
-      ? { block: props.scrollToErrorPosition as ScrollLogicalPosition }
-      : undefined,
-  )
-}
 
 async function handleSubmit(event: Event) {
   event.preventDefault()
@@ -164,15 +91,11 @@ async function handleSubmit(event: Event) {
 
 <template>
   <FormProvider v-if="props.form" :form="props.form">
-    <PreviewText :placeholder="props.previewTextPlaceholder">
-      <form ref="formElementRef" class="van-form" v-bind="$attrs" @submit="handleSubmit">
-        <slot />
-      </form>
-    </PreviewText>
-  </FormProvider>
-  <PreviewText v-else :placeholder="props.previewTextPlaceholder">
     <form ref="formElementRef" class="van-form" v-bind="$attrs" @submit="handleSubmit">
       <slot />
     </form>
-  </PreviewText>
+  </FormProvider>
+  <form v-else ref="formElementRef" class="van-form" v-bind="$attrs" @submit="handleSubmit">
+    <slot />
+  </form>
 </template>
