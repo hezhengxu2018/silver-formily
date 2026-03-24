@@ -5,6 +5,7 @@
 ## 当前可用
 
 - `FormItem`
+- `Form`
 - `Input`
 - `Input.TextArea`
 - `PreviewText.Input`
@@ -12,6 +13,7 @@
 ## 快速入口
 
 - [快速开始](/component/quick-start)
+- [Form 示例](/component/form)
 - [FormItem 示例](/component/form-item)
 - [Input 示例](/component/input)
 

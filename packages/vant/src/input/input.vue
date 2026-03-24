@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useCleanAttrs } from '../__builtins__'
+import { useVantFormItemControlContext } from '../form-item/context'
 
 defineOptions({
   name: 'FInput',
@@ -21,10 +22,22 @@ const emit = defineEmits<{
 }>()
 
 const { props: inputProps } = useCleanAttrs(['modelValue', 'onUpdate:modelValue', 'type'])
+const formItemControlContext = useVantFormItemControlContext()
 
 const isTextArea = computed(() => props.type === 'textarea')
 const inputValue = computed(() => {
   return props.modelValue == null ? '' : String(props.modelValue)
+})
+const controlClasses = computed(() => [
+  'van-field__control',
+  formItemControlContext?.value.error && 'van-field__control--error',
+  formItemControlContext?.value.inputAlign && `van-field__control--${formItemControlContext.value.inputAlign}`,
+])
+const resolvedDisabled = computed(() => {
+  return inputProps.value.disabled ?? formItemControlContext?.value.disabled
+})
+const resolvedReadonly = computed(() => {
+  return inputProps.value.readonly ?? formItemControlContext?.value.readonly
 })
 
 function onInput(event: Event) {
@@ -45,7 +58,9 @@ function onBlur(event: FocusEvent) {
   <component
     :is="isTextArea ? 'textarea' : 'input'"
     v-bind="inputProps"
-    class="van-field__control"
+    :class="controlClasses"
+    :disabled="resolvedDisabled"
+    :readonly="resolvedReadonly"
     :type="isTextArea ? undefined : props.type"
     :value="inputValue"
     @input="onInput"

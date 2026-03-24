@@ -1,8 +1,16 @@
 <script setup lang="ts">
-import type { PropType, VNode } from 'vue'
+import type { ComponentPublicInstance, PropType, VNode } from 'vue'
 import { Field as VanField } from 'vant'
-import { computed, isVNode } from 'vue'
+import { computed, isVNode, onBeforeUnmount, provide, ref, watch } from 'vue'
 import { useCleanAttrs } from '../__builtins__'
+import {
+  hasDefinedValue,
+  normalizeFormPath,
+  useVantFormContext,
+  useVantFormItemRegistry,
+  vantFormInheritedPropKeys,
+} from '../form/context'
+import { vantFormItemControlContextKey } from './context'
 
 defineOptions({
   name: 'FFormItem',
@@ -26,6 +34,14 @@ const props = defineProps({
     type: String as PropType<'error' | 'warning' | 'success' | 'pending'>,
     default: undefined,
   },
+  fieldAddress: {
+    type: String,
+    default: undefined,
+  },
+  fieldPath: {
+    type: String,
+    default: undefined,
+  },
   asterisk: {
     type: Boolean as PropType<boolean | undefined>,
     default: undefined,
@@ -46,12 +62,37 @@ const slots = defineSlots<{
 type FormItemContent = string | number | VNode
 
 const { props: attrs } = useCleanAttrs()
+const formContext = useVantFormContext()
+const formItemRegistry = useVantFormItemRegistry()
+const fieldRef = ref<ComponentPublicInstance | null>(null)
+
+function resolveControlFlag(name: 'showError' | 'showErrorMessage', defaultValue: boolean) {
+  const localValue = attrs.value[name]
+  if (hasDefinedValue(localValue)) {
+    return Boolean(localValue)
+  }
+
+  const inheritedValue = formContext?.value[name]
+  if (hasDefinedValue(inheritedValue)) {
+    return Boolean(inheritedValue)
+  }
+
+  return defaultValue
+}
 
 const hasLabelSlot = computed(() => Boolean(slots.label) || isVNode(props.label))
 const hasExtraSlot = computed(() => Boolean(slots.extra) || props.extra != null)
-const hasErrorMessageSlot = computed(() => Boolean(slots['error-message']) || isVNode(props.feedbackText))
+const showError = computed(() => resolveControlFlag('showError', false))
+const showErrorMessage = computed(() => resolveControlFlag('showErrorMessage', true))
+const hasErrorMessageSlot = computed(() => {
+  return showErrorMessage.value
+    && (Boolean(slots['error-message']) || isVNode(props.feedbackText))
+})
 
 const resolvedFeedbackMessage = computed(() => {
+  if (!showErrorMessage.value)
+    return undefined
+
   if (props.feedbackText == null)
     return undefined
 
@@ -61,21 +102,102 @@ const resolvedFeedbackMessage = computed(() => {
   return String(props.feedbackText)
 })
 
-const formItemProps = computed(() => {
-  const showError = ['error', 'warning'].includes(props.feedbackStatus ?? '')
+const resolvedFieldProps = computed(() => {
+  const hasFeedbackError = ['error', 'warning'].includes(props.feedbackStatus ?? '')
+  const inheritedProps = formContext?.value ?? {}
+  const mergedProps = { ...attrs.value }
+
+  vantFormInheritedPropKeys.forEach((key) => {
+    if (!hasDefinedValue(mergedProps[key]) && hasDefinedValue(inheritedProps[key])) {
+      mergedProps[key] = inheritedProps[key]
+    }
+  })
+
+  const {
+    showError: _showError,
+    showErrorMessage: _showErrorMessage,
+    ...fieldProps
+  } = mergedProps
+
+  const error = fieldProps.error || (showError.value && hasFeedbackError)
 
   return {
-    ...attrs.value,
+    error,
+    fieldProps,
+  }
+})
+
+const formItemProps = computed(() => {
+  return {
+    ...resolvedFieldProps.value.fieldProps,
     label: hasLabelSlot.value ? undefined : props.label as string | number | undefined,
-    required: props.asterisk ?? attrs.value.required,
-    error: showError || attrs.value.error,
-    errorMessage: resolvedFeedbackMessage.value ?? attrs.value.errorMessage,
+    required: props.asterisk ?? resolvedFieldProps.value.fieldProps.required,
+    error: resolvedFieldProps.value.error,
+    errorMessage: resolvedFeedbackMessage.value ?? resolvedFieldProps.value.fieldProps.errorMessage,
+  }
+})
+
+const normalizedFieldAddress = computed(() => normalizeFormPath(props.fieldAddress))
+const normalizedFieldPath = computed(() => normalizeFormPath(props.fieldPath))
+
+function resolveFieldElement() {
+  const target = fieldRef.value
+  const element = target?.$el
+  return element instanceof HTMLElement ? element : null
+}
+
+let registeredEntry: { address?: string, el: HTMLElement, path?: string } | null = null
+
+function syncFormItemRegistry() {
+  if (!formItemRegistry) {
+    return
+  }
+
+  if (registeredEntry) {
+    formItemRegistry.unregister(registeredEntry)
+    registeredEntry = null
+  }
+
+  const el = resolveFieldElement()
+  if (!el) {
+    return
+  }
+
+  const address = normalizedFieldAddress.value
+  const path = normalizedFieldPath.value
+  if (!address && !path) {
+    return
+  }
+
+  registeredEntry = {
+    address,
+    el,
+    path,
+  }
+  formItemRegistry.register(registeredEntry)
+}
+
+provide(vantFormItemControlContextKey, computed(() => ({
+  disabled: resolvedFieldProps.value.fieldProps.disabled,
+  error: resolvedFieldProps.value.error,
+  inputAlign: resolvedFieldProps.value.fieldProps.inputAlign,
+  readonly: resolvedFieldProps.value.fieldProps.readonly,
+})))
+
+watch([fieldRef, normalizedFieldAddress, normalizedFieldPath], syncFormItemRegistry, {
+  flush: 'post',
+  immediate: true,
+})
+
+onBeforeUnmount(() => {
+  if (registeredEntry && formItemRegistry) {
+    formItemRegistry.unregister(registeredEntry)
   }
 })
 </script>
 
 <template>
-  <VanField v-bind="formItemProps">
+  <VanField ref="fieldRef" v-bind="formItemProps">
     <template v-if="slots['left-icon']" #left-icon>
       <slot name="left-icon" />
     </template>

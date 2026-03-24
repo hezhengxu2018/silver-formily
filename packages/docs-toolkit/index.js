@@ -38,7 +38,7 @@ export function createDocsConfig(options = {}) {
     extra = {},
   } = options
 
-  const mergedHead = [...DEFAULT_HEAD, ...head, ['script', { src: 'https://cdn.jsdelivr.net/npm/prompts-js' }]]
+  const mergedHead = [...DEFAULT_HEAD, ...head]
   const markdownOptions = markdown ?? {}
 
   return defineConfig({
