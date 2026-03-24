@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { createForm } from '@formily/core'
-import { Form, FormItem, Input, Submit } from '@silver-formily/vant'
+import { Form, FormButtonGroup, FormItem, Input, Submit } from '@silver-formily/vant'
 import { Field } from '@silver-formily/vue'
 
 const form = createForm({
@@ -31,14 +31,8 @@ async function handleSubmit(values: typeof form.values) {
       :decorator="[FormItem]"
       :component="[Input, { type: 'tel', placeholder: '请输入手机号' }]"
     />
-    <div class="demo-actions">
+    <FormButtonGroup>
       <Submit :on-submit="handleSubmit" />
-    </div>
+    </FormButtonGroup>
   </Form>
 </template>
-
-<style scoped>
-.demo-actions {
-  padding: 12px 16px 16px;
-}
-</style>

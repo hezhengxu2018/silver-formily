@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { createForm } from '@formily/core'
-import { Form, FormItem, Input, Submit } from '@silver-formily/vant'
+import { Form, FormButtonGroup, FormItem, Input, Submit } from '@silver-formily/vant'
 import { Field } from '@silver-formily/vue'
 
 const form = createForm({
@@ -24,19 +24,13 @@ async function handleSubmit(values: typeof form.values) {
       :decorator="[FormItem]"
       :component="[Input, { placeholder: '点击提交后观察按钮 loading' }]"
     />
-    <div class="demo-actions">
+    <FormButtonGroup>
       <Submit
         loading-text="提交中..."
         :on-submit="handleSubmit"
       >
         异步提交
       </Submit>
-    </div>
+    </FormButtonGroup>
   </Form>
 </template>
-
-<style scoped>
-.demo-actions {
-  padding: 12px 16px 16px;
-}
-</style>

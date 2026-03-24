@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { createForm } from '@formily/core'
-import { Form, FormItem, Input, Reset } from '@silver-formily/vant'
+import { Form, FormButtonGroup, FormItem, Input, Reset } from '@silver-formily/vant'
 import { Field } from '@silver-formily/vue'
 
 const form = createForm({
@@ -31,7 +31,7 @@ async function handleValidateFailed(error: unknown) {
       :decorator="[FormItem]"
       :component="[Input, { placeholder: '请输入关键词' }]"
     />
-    <div class="demo-actions">
+    <FormButtonGroup>
       <Reset
         validate
         :on-reset-validate-success="handleValidateSuccess"
@@ -46,7 +46,7 @@ async function handleValidateFailed(error: unknown) {
       >
         强制清空并校验
       </Reset>
-    </div>
+    </FormButtonGroup>
   </Form>
 </template>
 
@@ -56,11 +56,5 @@ async function handleValidateFailed(error: unknown) {
   color: var(--van-text-color-2);
   font-size: 13px;
   line-height: 1.6;
-}
-
-.demo-actions {
-  display: grid;
-  gap: 12px;
-  padding: 12px 16px 16px;
 }
 </style>

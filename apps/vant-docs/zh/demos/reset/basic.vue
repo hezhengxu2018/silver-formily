@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { createForm } from '@formily/core'
-import { Form, FormItem, Input, Reset } from '@silver-formily/vant'
+import { Form, FormButtonGroup, FormItem, Input, Reset } from '@silver-formily/vant'
 import { Field } from '@silver-formily/vue'
 
 const form = createForm({
@@ -29,9 +29,9 @@ const form = createForm({
       :decorator="[FormItem]"
       :component="[Input, { placeholder: '请输入城市' }]"
     />
-    <div class="demo-actions">
+    <FormButtonGroup>
       <Reset />
-    </div>
+    </FormButtonGroup>
   </Form>
 </template>
 
@@ -41,9 +41,5 @@ const form = createForm({
   color: var(--van-text-color-2);
   font-size: 13px;
   line-height: 1.6;
-}
-
-.demo-actions {
-  padding: 12px 16px 16px;
 }
 </style>
