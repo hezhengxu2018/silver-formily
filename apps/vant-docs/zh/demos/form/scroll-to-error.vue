@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { createForm } from '@formily/core'
-import { Form, FormItem, Input } from '@silver-formily/vant'
+import { Form, FormItem, Input, Submit } from '@silver-formily/vant'
 import { Field } from '@silver-formily/vue'
 import { Radio, RadioGroup } from 'vant'
 import { ref } from 'vue'
@@ -53,9 +53,7 @@ async function handleSubmit(values: typeof form.values) {
     :on-auto-submit="handleSubmit"
   >
     <div class="demo-actions">
-      <button class="demo-submit" type="submit">
-        提交并定位错误
-      </button>
+      <Submit>提交并定位错误</Submit>
     </div>
 
     <Field
@@ -139,14 +137,5 @@ async function handleSubmit(values: typeof form.values) {
 
 .demo-actions {
   padding: 0 16px 12px;
-}
-
-.demo-submit {
-  width: 100%;
-  padding: 10px 16px;
-  color: var(--van-white);
-  background: var(--van-primary-color);
-  border: 0;
-  border-radius: 999px;
 }
 </style>

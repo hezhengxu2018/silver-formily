@@ -36,6 +36,8 @@ export default createDocsConfig({
                 { text: 'Form', link: '/component/form' },
                 { text: 'FormItem', link: '/component/form-item' },
                 { text: 'Input', link: '/component/input' },
+                { text: 'Reset', link: '/component/reset' },
+                { text: 'Submit', link: '/component/submit' },
               ],
             },
           ],
@@ -49,7 +51,7 @@ export default createDocsConfig({
   socialLinks: [
     { icon: 'github', link: 'https://github.com/hezhengxu2018/silver-formily' },
   ],
-  heads: ['script', { src: 'https://cdn.jsdelivr.net/npm/prompts-js' }],
+  head: [['script', { src: 'https://cdn.jsdelivr.net/npm/prompts-js' }]],
   themeConfig: {
     outline: [2, 4],
     mobilePreview: {

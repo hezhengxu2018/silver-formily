@@ -7,6 +7,8 @@
 - 已接入 `pnpm workspace` / `Turborepo`
 - 已提供 `FormItem` 装饰器封装
 - 已提供 `Form` 轻量表单容器封装
+- 已提供 `Reset` 表单重置按钮封装
+- 已提供 `Submit` 表单提交按钮封装
 - 已提供 `Input` / `Input.TextArea` 基础输入组件
 - 已提供 `Calendar` 弹层日期选择组件
 - 已提供 `PreviewText.Input` / `PreviewText.Calendar` 预览态组件
