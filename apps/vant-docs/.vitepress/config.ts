@@ -24,21 +24,26 @@ export default createDocsConfig({
         sidebar: {
           '/component/': [
             {
-              text: '开始',
+              text: 'Overview 总览',
               items: [
-                { text: '快速开始', link: '/component/quick-start' },
+                { text: 'Quick Start 快速开始', link: '/component/quick-start' },
               ],
             },
             {
-              text: '基础组件',
+              text: 'Layout 布局组件',
               items: [
-                { text: 'Calendar', link: '/component/calendar' },
-                { text: 'Form', link: '/component/form' },
-                { text: 'FormButtonGroup', link: '/component/form-button-group' },
-                { text: 'FormItem', link: '/component/form-item' },
-                { text: 'Input', link: '/component/input' },
-                { text: 'Reset', link: '/component/reset' },
-                { text: 'Submit', link: '/component/submit' },
+                { text: 'Form 表单', link: '/component/form' },
+                { text: 'FormItem 表单项', link: '/component/form-item' },
+                { text: 'FormButtonGroup 按钮布局', link: '/component/form-button-group' },
+                { text: 'Submit 提交按钮', link: '/component/submit' },
+                { text: 'Reset 重置按钮', link: '/component/reset' },
+              ],
+            },
+            {
+              text: 'Input 输入组件',
+              items: [
+                { text: 'Input 输入框', link: '/component/input' },
+                { text: 'Calendar 日期选择', link: '/component/calendar' },
               ],
             },
           ],
