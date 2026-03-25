@@ -2,13 +2,13 @@
 import type { CalendarDayItem } from 'vant'
 import type {
   CalendarModelValue,
+  CalendarProps,
   VanCalendarInstance,
 } from './types'
 import { omit } from 'lodash-es'
 import { Calendar as VanCalendar } from 'vant'
 import { computed, ref, useSlots } from 'vue'
 import { useCleanAttrs } from '../__builtins__'
-import { calendarWrapperProps } from './props'
 import {
   cloneCalendarValue,
   formatCalendarValue,
@@ -22,7 +22,19 @@ defineOptions({
   inheritAttrs: false,
 })
 
-const props = defineProps(calendarWrapperProps)
+const props = withDefaults(defineProps<CalendarProps>(), {
+  type: 'single',
+  round: true,
+  showMark: true,
+  showTitle: true,
+  lazyRender: true,
+  showConfirm: true,
+  showSubtitle: true,
+  closeOnPopstate: true,
+  showRangePrompt: true,
+  closeOnClickOverlay: true,
+  safeAreaInsetBottom: true,
+})
 
 const emit = defineEmits<{
   'update:modelValue': [value: Date | Date[] | null]

@@ -3,10 +3,12 @@ import type {
   CalendarDayType,
   CalendarThemeVars,
   CalendarType,
+  PopupPosition,
   CalendarInstance as VanCalendarInstance,
   CalendarProps as VanCalendarProps,
 } from 'vant'
 import type { CalendarSwitchMode } from 'vant/es/calendar/types'
+import type { TeleportProps } from 'vue'
 
 export type CalendarModelValue = Date | Date[] | null | undefined
 
@@ -14,6 +16,42 @@ export type CalendarDisplayFormatter = (
   value: Date | Date[] | null,
   type: CalendarType,
 ) => string
+
+export interface CalendarProps {
+  type?: CalendarType
+  switchMode?: CalendarSwitchMode
+  title?: string
+  color?: string
+  round?: boolean
+  readonly?: boolean
+  maxRange?: number | string | null
+  position?: PopupPosition
+  teleport?: TeleportProps['to']
+  showMark?: boolean
+  showTitle?: boolean
+  formatter?: (item: CalendarDayItem) => CalendarDayItem
+  rowHeight?: number | string
+  confirmText?: string
+  rangePrompt?: string
+  lazyRender?: boolean
+  showConfirm?: boolean
+  defaultDate?: CalendarModelValue
+  allowSameDay?: boolean
+  showSubtitle?: boolean
+  closeOnPopstate?: boolean
+  showRangePrompt?: boolean
+  confirmDisabledText?: string
+  closeOnClickOverlay?: boolean
+  safeAreaInsetTop?: boolean
+  safeAreaInsetBottom?: boolean
+  minDate?: Date
+  maxDate?: Date
+  firstDayOfWeek?: number | string
+  modelValue?: CalendarModelValue
+  placeholder?: string
+  displayFormatter?: CalendarDisplayFormatter
+  disabled?: boolean
+}
 
 export interface CalendarSubtitleSlotProps {
   text: string

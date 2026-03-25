@@ -1,11 +1,9 @@
 <script setup lang="ts">
-import type { Form as FormType, IFormFeedback } from '@formily/core'
-import type { PropType } from 'vue'
-import { paramCase } from '@formily/shared'
+import type { VantFormProps } from './types'
 import { FormProvider, useForm } from '@silver-formily/vue'
 import { isNil } from 'lodash-es'
-import { formProps } from 'vant'
-import { computed, getCurrentInstance, nextTick, provide, ref } from 'vue'
+import { computed, nextTick, provide, ref } from 'vue'
+import { useHasExplicitVNodeProp } from '../__builtins__'
 import { vantFormContextKey, vantFormInheritedPropKeys } from './context'
 import { useVantFormScroll } from './hooks'
 
@@ -14,23 +12,12 @@ defineOptions({
   inheritAttrs: false,
 })
 
-const props = defineProps({
-  ...formProps,
-  form: {
-    type: Object as PropType<FormType>,
-    default: undefined,
-  },
-  onAutoSubmit: {
-    type: Function as PropType<(values: FormType['values']) => Promise<any> | any>,
-    default: undefined,
-  },
-  onAutoSubmitFailed: {
-    type: Function as PropType<(error: IFormFeedback[]) => void>,
-    default: undefined,
-  },
+const props = withDefaults(defineProps<VantFormProps>(), {
+  submitOnEnter: true,
+  showErrorMessage: true,
+  validateTrigger: 'onBlur',
 })
 
-const instance = getCurrentInstance()
 const top = useForm()
 const currentForm = computed(() => props.form ?? top.value)
 const formElementRef = ref<HTMLFormElement>()
@@ -39,15 +26,7 @@ const { scrollToFirstError } = useVantFormScroll({
   scrollToError: () => props.scrollToError,
   scrollToErrorPosition: () => props.scrollToErrorPosition as ScrollLogicalPosition | undefined,
 })
-
-function hasExplicitFormProp(key: string) {
-  const vnodeProps = instance?.vnode.props
-  if (!vnodeProps) {
-    return false
-  }
-
-  return key in vnodeProps || paramCase(key) in vnodeProps
-}
+const hasExplicitFormProp = useHasExplicitVNodeProp()
 
 const inheritedProps = computed(() => {
   const form = currentForm.value

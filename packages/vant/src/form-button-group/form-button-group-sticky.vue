@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { stickyProps, Sticky as VanSticky } from 'vant'
+import type { FormButtonGroupStickyProps } from './types'
+import { Sticky as VanSticky } from 'vant'
 import { computed } from 'vue'
 import { useVantFormRoot } from '../form/hooks'
 import { b } from './utils'
@@ -9,12 +10,10 @@ defineOptions({
   inheritAttrs: false,
 })
 
-const props = defineProps({
-  ...stickyProps,
-  position: {
-    ...stickyProps.position,
-    default: 'bottom',
-  },
+const props = withDefaults(defineProps<FormButtonGroupStickyProps>(), {
+  position: 'bottom',
+  offsetTop: 0,
+  offsetBottom: 0,
 })
 
 const formRootRef = useVantFormRoot()
