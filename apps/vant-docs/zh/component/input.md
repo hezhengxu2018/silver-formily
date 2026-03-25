@@ -58,6 +58,7 @@ mobileDemo: input/index.vue
 ### 使用约定
 
 - `Input` 和 `Input.TextArea` 都会透传未单独列出的原生 `input` / `textarea` 属性与 DOM 事件
+- 在 Formily 场景里无需手动处理 `modelValue` / `update:modelValue`；值同步由字段内部驱动，业务侧请通过 `field.value`、`form.values` 等 Formily 方式获取
 - 标准写法推荐使用 `readonly`；如果沿用了 Formily 生态里更常见的 `readOnly`，当前封装也会兼容映射
 - `clearable`、`showWordLimit`、`leftIcon`、`rightIcon` 等增强属性在单独使用 `Input` 时不会渲染 `VanField` UI；和 `FormItem` 搭配时会自动桥接到外层 `VanField`
 
@@ -65,7 +66,6 @@ mobileDemo: input/index.vue
 
 | 属性名           | 类型                                                                                         | 描述                                                                      | 默认值   |
 | ---------------- | -------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------- | -------- |
-| `modelValue`     | `string` \| `number` \| `null`                                                               | 当前输入值                                                                | `-`      |
 | `id`             | `string`                                                                                     | 原生输入框 `id`                                                           | `-`      |
 | `name`           | `string`                                                                                     | 原生输入框 `name`                                                         | `-`      |
 | `type`           | `string`                                                                                     | 输入类型；常见值包括 `text`、`tel`、`url`、`number`、`password`、`search` | `'text'` |
@@ -121,11 +121,10 @@ mobileDemo: input/index.vue
 
 ### Input Events
 
-| 事件名              | 描述             | 回调参数                                 |
-| ------------------- | ---------------- | ---------------------------------------- |
-| `update:modelValue` | 输入值变化时触发 | ^[Function]`(value: string) => void`     |
-| `focus`             | 获得焦点时触发   | ^[Function]`(event: FocusEvent) => void` |
-| `blur`              | 失去焦点时触发   | ^[Function]`(event: FocusEvent) => void` |
+| 事件名  | 描述           | 回调参数                                 |
+| ------- | -------------- | ---------------------------------------- |
+| `focus` | 获得焦点时触发 | ^[Function]`(event: FocusEvent) => void` |
+| `blur`  | 失去焦点时触发 | ^[Function]`(event: FocusEvent) => void` |
 
 ### 参考
 

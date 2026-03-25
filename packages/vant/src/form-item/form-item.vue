@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { ComponentPublicInstance, PropType, VNode } from 'vue'
+import { isValid } from '@formily/shared'
 import { isNil } from 'lodash-es'
 import { Field as VanField } from 'vant'
 import { computed, isVNode, provide, ref } from 'vue'
@@ -77,7 +78,7 @@ function resolveControlFlag(name: 'showError' | 'showErrorMessage', defaultValue
 }
 
 const hasLabelSlot = computed(() => Boolean(slots.label) || isVNode(props.label))
-const hasExtraProp = computed(() => props.extra != null)
+const hasExtraProp = computed(() => isValid(props.extra))
 const showError = computed(() => resolveControlFlag('showError', false))
 const showErrorMessage = computed(() => resolveControlFlag('showErrorMessage', true))
 const hasErrorMessageSlot = computed(() => {
@@ -89,7 +90,7 @@ const resolvedFeedbackMessage = computed(() => {
   if (!showErrorMessage.value)
     return undefined
 
-  if (props.feedbackText == null)
+  if (!isValid(props.feedbackText))
     return undefined
 
   if (isVNode(props.feedbackText))

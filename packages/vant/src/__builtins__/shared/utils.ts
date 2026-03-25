@@ -1,29 +1,48 @@
+import type { ComputedRef } from 'vue'
 import { isPlainObj } from '@formily/shared'
 import bem from 'easy-bem'
-import { computed, useAttrs } from 'vue'
+import { omit } from 'lodash-es'
+import { computed, getCurrentInstance } from 'vue'
 
-function omitKeys(source: Record<string, any>, keys: string[]) {
-  const result = { ...source }
-
-  keys.forEach((key) => {
-    delete result[key]
-  })
-
-  return result
+interface UseAttrsParams {
+  excludeListeners?: boolean
+  excludeKeys?: ComputedRef<string[]>
 }
 
-export function useCleanAttrs(removeAttrsList: string[] = []) {
-  const attrs = useAttrs() as Record<string, any>
+const DEFAULT_EXCLUDE_KEYS: string[] = []
+const LISTENER_PREFIX = /^on[A-Z]/
 
-  const props = computed(() => {
-    const defaultRemoveAttrs = ['value', 'onChange', 'attrs', 'on', 'readOnly']
-    const mergedAttrs = isPlainObj(attrs.attrs)
-      ? { ...attrs, ...attrs.attrs }
-      : { ...attrs }
-
-    return omitKeys(mergedAttrs, defaultRemoveAttrs.concat(removeAttrsList))
+export function useAttrs(params: UseAttrsParams = {}): ComputedRef<Record<string, any>> {
+  const { excludeListeners = false, excludeKeys } = params
+  const allExcludeKeys = computed(() => {
+    return (excludeKeys?.value || []).concat(DEFAULT_EXCLUDE_KEYS)
   })
+  const instance = getCurrentInstance()
 
+  if (!instance) {
+    return computed(() => ({}))
+  }
+
+  return computed(() => {
+    return Object.fromEntries(
+      Object.entries(instance.proxy?.$attrs ?? {}).filter(([key]) => {
+        return !allExcludeKeys.value.includes(key) && !(excludeListeners && LISTENER_PREFIX.test(key))
+      }),
+    )
+  })
+}
+
+export function useCleanAttrs(removeAttrsList: string[] = []): {
+  props: ComputedRef<Record<string, any>>
+} {
+  const attrs = useAttrs()
+  const props = computed(() => {
+    const DEFAULT_REMOVE_ATTRS = ['value', 'onChange', 'attrs', 'on', 'readOnly']
+    if (isPlainObj(attrs.value.attrs)) {
+      return omit({ ...attrs.value, ...attrs.value.attrs }, DEFAULT_REMOVE_ATTRS.concat(removeAttrsList))
+    }
+    return omit(attrs.value, DEFAULT_REMOVE_ATTRS.concat(removeAttrsList))
+  })
   return {
     props,
   }
