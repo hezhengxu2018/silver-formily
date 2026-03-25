@@ -3,6 +3,7 @@ import { Field, FormProvider } from '@silver-formily/vue'
 import { describe, expect, it, vi } from 'vitest'
 import { render } from 'vitest-browser-vue'
 import { userEvent } from 'vitest/browser'
+import { ref } from 'vue'
 import FormItem from '../../form-item'
 import Input from '../index'
 import 'vant/lib/index.css'
@@ -68,6 +69,29 @@ describe('input', () => {
       ))
 
       expect(document.querySelector('input')).toHaveAttribute('type', 'password')
+    })
+
+    it('应该在 attrs 更新后同步透传到原生输入框', async () => {
+      const disabled = ref(false)
+      const placeholder = ref('初始占位')
+
+      const { getByRole } = render(() => (
+        <Input disabled={disabled.value} placeholder={placeholder.value} />
+      ))
+
+      const input = getByRole('textbox')
+
+      await expect.element(input).toBeInTheDocument()
+      await expect.element(input).not.toBeDisabled()
+      expect(document.querySelector('input')).toHaveAttribute('placeholder', '初始占位')
+
+      disabled.value = true
+      placeholder.value = '更新占位'
+
+      await vi.waitFor(() => {
+        expect(document.querySelector('input')).toBeDisabled()
+        expect(document.querySelector('input')).toHaveAttribute('placeholder', '更新占位')
+      })
     })
 
     it('应该让 FormItem 读取并应用 Input 的桥接属性', async () => {

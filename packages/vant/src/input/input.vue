@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { isValid } from '@formily/shared'
 import { computed } from 'vue'
 import { useCleanAttrs } from '../__builtins__'
 import { useVantFormItemControlContext } from '../form-item/context'
@@ -17,17 +18,13 @@ const props = withDefaults(defineProps<{
 
 const emit = defineEmits<{
   'update:modelValue': [value: string]
-  'focus': [event: FocusEvent]
-  'blur': [event: FocusEvent]
 }>()
 
 const { props: inputProps } = useCleanAttrs(['modelValue', 'onUpdate:modelValue', 'type'])
 const formItemControlContext = useVantFormItemControlContext()
-
+console.log(inputProps.value)
 const isTextArea = computed(() => props.type === 'textarea')
-const inputValue = computed(() => {
-  return props.modelValue == null ? '' : String(props.modelValue)
-})
+const inputValue = computed(() => isValid(props.modelValue) ? String(props.modelValue) : '')
 const controlClasses = computed(() => [
   'van-field__control',
   formItemControlContext?.value.error && 'van-field__control--error',
@@ -44,14 +41,6 @@ function onInput(event: Event) {
   const target = event.target as HTMLInputElement | HTMLTextAreaElement
   emit('update:modelValue', target.value)
 }
-
-function onFocus(event: FocusEvent) {
-  emit('focus', event)
-}
-
-function onBlur(event: FocusEvent) {
-  emit('blur', event)
-}
 </script>
 
 <template>
@@ -61,10 +50,8 @@ function onBlur(event: FocusEvent) {
     :class="controlClasses"
     :disabled="resolvedDisabled"
     :readonly="resolvedReadonly"
-    :type="isTextArea ? undefined : props.type"
+    :type="props.type"
     :value="inputValue"
     @input="onInput"
-    @focus="onFocus"
-    @blur="onBlur"
   />
 </template>

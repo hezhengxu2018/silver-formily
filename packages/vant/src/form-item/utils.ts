@@ -1,6 +1,7 @@
 import type { Field, GeneralField } from '@formily/core'
 import { toJS } from '@formily/reactive'
-import { isArr } from '@formily/shared'
+import { isArr, isValid } from '@formily/shared'
+import { pick } from 'lodash-es'
 import { createNamespace } from '../__builtins__'
 import { Input } from '../input'
 
@@ -33,18 +34,6 @@ const vantFieldBridgePropKeys = [
   'type',
 ] as const
 
-function pickKeys(source: Record<string, any>, keys: readonly string[]) {
-  const result: Record<string, any> = {}
-
-  keys.forEach((key) => {
-    if (key in source) {
-      result[key] = source[key]
-    }
-  })
-
-  return result
-}
-
 export function getFeedbackMessage(field: Field) {
   const messages = {
     errors: field.selfErrors.join(', '),
@@ -68,7 +57,7 @@ export function getVanFieldBridgedProps(field: GeneralField) {
   const componentEntry = isArr(field.component)
     ? toJS(field.component[1]) || {}
     : {}
-  const componentProps = typeof componentEntry === 'object' && componentEntry != null
+  const componentProps = typeof componentEntry === 'object' && isValid(componentEntry)
     ? componentEntry as Record<string, any>
     : {}
 
@@ -76,14 +65,14 @@ export function getVanFieldBridgedProps(field: GeneralField) {
     return {}
   }
 
-  const bridgedProps = pickKeys(componentProps, vantFieldBridgePropKeys)
+  const bridgedProps = pick(componentProps, vantFieldBridgePropKeys)
 
   if (!('readonly' in bridgedProps) && 'readOnly' in componentProps) {
     bridgedProps.readonly = componentProps.readOnly
   }
 
   const componentType = componentProps.type ?? (component === Input.TextArea ? 'textarea' : undefined)
-  if (componentType != null) {
+  if (isValid(componentType)) {
     bridgedProps.type = componentType
   }
 
