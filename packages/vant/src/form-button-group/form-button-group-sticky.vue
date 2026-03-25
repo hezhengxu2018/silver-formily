@@ -2,6 +2,7 @@
 import { stickyProps, Sticky as VanSticky } from 'vant'
 import { computed } from 'vue'
 import { useVantFormRoot } from '../form/hooks'
+import { b } from './utils'
 
 defineOptions({
   name: 'FFormButtonGroupSticky',
@@ -18,11 +19,12 @@ const props = defineProps({
 
 const formRootRef = useVantFormRoot()
 const resolvedContainer = computed(() => props.container ?? formRootRef?.value)
+const stickyClass = b('sticky')
 </script>
 
 <template>
   <VanSticky
-    class="silver-formily-vant-form-button-group__sticky"
+    :class="stickyClass"
     v-bind="$attrs"
     :container="resolvedContainer"
     :offset-bottom="props.offsetBottom"
@@ -33,9 +35,3 @@ const resolvedContainer = computed(() => props.container ?? formRootRef?.value)
     <slot />
   </VanSticky>
 </template>
-
-<style scoped>
-.silver-formily-vant-form-button-group__sticky:deep(.van-sticky--fixed) {
-  background: var(--van-background-2);
-}
-</style>

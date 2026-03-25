@@ -1,0 +1,42 @@
+@use '../__builtins__/styles/common.scss' as *;
+
+$form-item-prefix: '#{$style-prefix}-form-item';
+
+.#{$form-item-prefix} {
+  position: relative;
+  background: var(--van-background-2);
+
+  &:not(.#{$form-item-prefix}--with-extra) .van-cell::after {
+    display: block;
+  }
+
+  &--borderless .van-cell::after {
+    display: none;
+  }
+
+  &--with-extra .van-cell::after {
+    display: none;
+  }
+
+  &--with-extra:not(.#{$form-item-prefix}--borderless)::after {
+    position: absolute;
+    right: var(--van-padding-md);
+    bottom: 0;
+    left: var(--van-padding-md);
+    border-bottom: 1px solid var(--van-cell-border-color);
+    transform: scaleY(0.5);
+    content: '';
+    pointer-events: none;
+  }
+
+  &__extra-wrapper {
+    padding: 0 var(--van-cell-horizontal-padding) var(--van-cell-vertical-padding);
+    background: var(--van-background-2);
+  }
+
+  &__extra {
+    color: var(--van-text-color-2);
+    font-size: var(--van-font-size-sm);
+    line-height: var(--van-line-height-sm);
+  }
+}

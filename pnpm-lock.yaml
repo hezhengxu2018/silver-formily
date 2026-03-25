@@ -542,8 +542,11 @@ importers:
         specifier: ^2.0.8
         version: 2.3.7
       dayjs:
-        specifier: ^1.11.20
+        specifier: ^1
         version: 1.11.20
+      easy-bem:
+        specifier: ^1.1.1
+        version: 1.1.1
       lodash-es:
         specifier: ^4.17.23
         version: 4.17.23
@@ -3219,6 +3222,9 @@ packages:
 
   eastasianwidth@0.2.0:
     resolution: {integrity: sha512-I88TYZWc9XiYHRQ4/3c5rjjfgkjhLyW2luGIheGERbNQ6OY7yTybanSpDXZa8y7VUP9YmDcYa+eyq4ca7iLqWA==}
+
+  easy-bem@1.1.1:
+    resolution: {integrity: sha512-GJRqdiy2h+EXy6a8E6R+ubmqUM08BK0FWNq41k24fup6045biQ8NXxoXimiwegMQvFFV3t1emADdGNL1TlS61A==}
 
   editions@2.3.1:
     resolution: {integrity: sha512-ptGvkwTvGdGfC0hfhKg0MT+TRLRKGtUiWGBInxOm5pz7ssADezahjCUaYuZ8Dr+C05FW0AECIIPt4WBxVINEhA==}
@@ -8981,6 +8987,8 @@ snapshots:
       stream-shift: 1.0.3
 
   eastasianwidth@0.2.0: {}
+
+  easy-bem@1.1.1: {}
 
   editions@2.3.1:
     dependencies:
