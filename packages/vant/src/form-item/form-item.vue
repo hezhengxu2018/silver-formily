@@ -7,6 +7,7 @@ import { useCleanAttrs } from '../__builtins__'
 import { useVantFormContext, vantFormInheritedPropKeys } from '../form/context'
 import { useVantFormItemRegistration } from '../form/hooks'
 import { vantFormItemControlContextKey } from './context'
+import { b } from './utils'
 
 defineOptions({
   name: 'FFormItem',
@@ -133,12 +134,16 @@ const formItemProps = computed(() => {
 })
 
 const hasFieldBorder = computed(() => resolvedFieldProps.value.fieldProps.border !== false)
+const extraClass = b('extra')
+const extraWrapperClass = b('extra-wrapper')
 
 const rootClass = computed(() => {
   return [
-    'silver-formily-vant-form-item',
-    hasExtraProp.value && 'silver-formily-vant-form-item--with-extra',
-    !hasFieldBorder.value && 'silver-formily-vant-form-item--borderless',
+    b(),
+    b({
+      'with-extra': hasExtraProp.value,
+      'borderless': !hasFieldBorder.value,
+    }),
   ]
 })
 
@@ -191,8 +196,8 @@ provide(vantFormItemControlContextKey, computed(() => ({
       </template>
     </VanField>
 
-    <div v-if="hasExtraProp" class="silver-formily-vant-form-item__extra-wrapper">
-      <div class="silver-formily-vant-form-item__extra">
+    <div v-if="hasExtraProp" :class="extraWrapperClass">
+      <div :class="extraClass">
         <component :is="props.extra" v-if="isVNode(props.extra)" />
         <template v-else>
           {{ props.extra }}
@@ -201,44 +206,3 @@ provide(vantFormItemControlContextKey, computed(() => ({
     </div>
   </div>
 </template>
-
-<style scoped>
-.silver-formily-vant-form-item {
-  position: relative;
-  background: var(--van-background-2);
-}
-
-.silver-formily-vant-form-item:not(.silver-formily-vant-form-item--with-extra):deep(.van-cell:after) {
-  display: block;
-}
-
-.silver-formily-vant-form-item--borderless:deep(.van-cell:after) {
-  display: none;
-}
-
-.silver-formily-vant-form-item--with-extra:deep(.van-cell:after) {
-  display: none;
-}
-
-.silver-formily-vant-form-item--with-extra:not(.silver-formily-vant-form-item--borderless)::after {
-  position: absolute;
-  right: var(--van-padding-md);
-  bottom: 0;
-  left: var(--van-padding-md);
-  border-bottom: 1px solid var(--van-cell-border-color);
-  transform: scaleY(0.5);
-  content: '';
-  pointer-events: none;
-}
-
-.silver-formily-vant-form-item__extra-wrapper {
-  padding: 0 var(--van-cell-horizontal-padding) var(--van-cell-vertical-padding);
-  background: var(--van-background-2);
-}
-
-.silver-formily-vant-form-item__extra {
-  color: var(--van-text-color-2);
-  font-size: var(--van-font-size-sm);
-  line-height: var(--van-line-height-sm);
-}
-</style>

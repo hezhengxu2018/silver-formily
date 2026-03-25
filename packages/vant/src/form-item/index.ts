@@ -3,6 +3,7 @@ import { connect, mapProps } from '@silver-formily/vue'
 import { composeExport } from '../__builtins__'
 import FormBaseItem from './form-item.vue'
 import { determineFeedbackStatus, getFeedbackMessage, getVanFieldBridgedProps } from './utils'
+import './style.scss'
 
 function callListener(listener, ...args) {
   if (Array.isArray(listener)) {
@@ -43,8 +44,8 @@ export function fieldFeedbackMapper(props, field) {
     ...props,
     feedbackStatus,
     feedbackText,
-    fieldAddress: field.address.toString(),
-    fieldPath: field.path.toString(),
+    fieldAddress: field.address?.toString(),
+    fieldPath: field.path?.toString(),
     asterisk,
     ...(shouldBridgeFieldValue
       ? {

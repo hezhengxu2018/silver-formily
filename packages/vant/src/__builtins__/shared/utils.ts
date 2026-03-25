@@ -1,4 +1,5 @@
 import { isPlainObj } from '@formily/shared'
+import bem from 'easy-bem'
 import { computed, useAttrs } from 'vue'
 
 function omitKeys(source: Record<string, any>, keys: string[]) {
@@ -33,4 +34,15 @@ export function composeExport<T0 extends object, T1 extends object>(
   s1: T1,
 ): T0 & T1 {
   return Object.assign(s0, s1)
+}
+
+const stylePrefix = 'silver-formily-vant'
+
+export function createNamespace(name: string) {
+  const prefixCls = `${stylePrefix}-${name}`
+
+  return {
+    prefixCls,
+    b: bem(prefixCls),
+  }
 }

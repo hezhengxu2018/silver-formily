@@ -1,0 +1,57 @@
+@use '../__builtins__/styles/common.scss' as *;
+
+$form-button-group-prefix: '#{$style-prefix}-form-button-group';
+
+.#{$form-button-group-prefix} {
+  --f-form-button-group-gap: 12px;
+
+  &--inset {
+    padding: 12px 16px 16px;
+  }
+
+  &__inner {
+    display: flex;
+    gap: var(--f-form-button-group-gap);
+  }
+
+  &--vertical .#{$form-button-group-prefix}__inner {
+    flex-direction: column;
+  }
+
+  &--horizontal {
+    .#{$form-button-group-prefix}__inner {
+      align-items: stretch;
+    }
+
+    .van-button {
+      flex: 1;
+      width: auto;
+    }
+  }
+
+  &--compact {
+    .van-action-bar {
+      position: static;
+      box-sizing: border-box;
+      height: auto;
+      background: transparent;
+    }
+
+    .van-action-bar-button {
+      min-width: 0;
+
+      &--default {
+        color: var(--van-primary-color);
+        border: var(--van-border-width) solid var(--van-primary-color);
+      }
+    }
+
+    .van-button__text {
+      white-space: nowrap;
+    }
+  }
+
+  &__sticky .van-sticky--fixed {
+    background: var(--van-background-2);
+  }
+}

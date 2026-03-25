@@ -1,7 +1,10 @@
 import type { Field, GeneralField } from '@formily/core'
 import { toJS } from '@formily/reactive'
 import { isArr } from '@formily/shared'
+import { createNamespace } from '../__builtins__'
 import { Input } from '../input'
+
+export const { prefixCls, b } = createNamespace('form-item')
 
 const vantFieldBridgePropKeys = [
   'autofocus',
