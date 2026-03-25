@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { PreviewTextProps } from './utils'
+import type { PreviewTextProps } from './types'
 import { provide, reactive } from 'vue'
 import { previewTextConfigKey } from './utils'
 

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { CalendarDisplayFormatter, CalendarModelValue, VanCalendarProps } from '../calendar/types'
+import type { PreviewTextCalendarProps } from './types'
 import { computed } from 'vue'
 import { formatCalendarValue, normalizeCalendarValue } from '../calendar/utils'
 import { usePreviewConfig } from './utils'
@@ -9,12 +9,7 @@ defineOptions({
   inheritAttrs: false,
 })
 
-const props = withDefaults(defineProps<{
-  modelValue?: CalendarModelValue
-  type?: VanCalendarProps['type']
-  placeholder?: string
-  displayFormatter?: CalendarDisplayFormatter
-}>(), {
+const props = withDefaults(defineProps<PreviewTextCalendarProps>(), {
   type: 'single',
   placeholder: undefined,
   displayFormatter: undefined,

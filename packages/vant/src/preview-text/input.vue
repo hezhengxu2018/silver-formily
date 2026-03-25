@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { PreviewTextInputProps } from './types'
 import { isFn, isValid } from '@formily/shared'
 import { useCleanAttrs } from '../__builtins__'
 import { usePreviewConfig } from './utils'
@@ -8,9 +9,7 @@ defineOptions({
   inheritAttrs: false,
 })
 
-const props = defineProps<{
-  modelValue?: any
-}>()
+const props = defineProps<PreviewTextInputProps>()
 
 const { props: attrs } = useCleanAttrs(['modelValue', 'onUpdate:modelValue'])
 const { placeholder } = usePreviewConfig()

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { InputProps } from './types'
 import { isValid } from '@formily/shared'
 import { computed } from 'vue'
 import { useCleanAttrs } from '../__builtins__'
@@ -9,10 +10,7 @@ defineOptions({
   inheritAttrs: false,
 })
 
-const props = withDefaults(defineProps<{
-  modelValue?: string | number | null
-  type?: string
-}>(), {
+const props = withDefaults(defineProps<InputProps>(), {
   type: 'text',
 })
 
@@ -22,7 +20,6 @@ const emit = defineEmits<{
 
 const { props: inputProps } = useCleanAttrs(['modelValue', 'onUpdate:modelValue', 'type'])
 const formItemControlContext = useVantFormItemControlContext()
-console.log(inputProps.value)
 const isTextArea = computed(() => props.type === 'textarea')
 const inputValue = computed(() => isValid(props.modelValue) ? String(props.modelValue) : '')
 const controlClasses = computed(() => [

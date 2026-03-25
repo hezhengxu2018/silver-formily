@@ -1,11 +1,10 @@
 <script setup lang="ts">
-import type { IFormFeedback } from '@formily/core'
-import type { ButtonNativeType } from 'vant'
-import type { PropType } from 'vue'
+import type { SubmitProps } from './types'
 import { formilyComputed } from '@silver-formily/reactive-vue'
 import { useParentForm } from '@silver-formily/vue'
-import { buttonProps, ActionBarButton as VanActionBarButton, Button as VanButton } from 'vant'
-import { computed, getCurrentInstance, useSlots } from 'vue'
+import { omit } from 'lodash-es'
+import { ActionBarButton as VanActionBarButton, Button as VanButton } from 'vant'
+import { computed, useSlots } from 'vue'
 import { useVantFormButtonGroupContext } from '../form-button-group/context'
 
 defineOptions({
@@ -13,52 +12,36 @@ defineOptions({
   inheritAttrs: false,
 })
 
-const props = defineProps({
-  ...buttonProps,
-  onClick: Function as PropType<(event: MouseEvent) => void | boolean>,
-  onSubmit: Function as PropType<(values: any) => Promise<any> | any>,
-  onSubmitSuccess: Function as PropType<(payload: any) => void>,
-  onSubmitFailed: Function as PropType<(feedbacks: IFormFeedback[]) => void>,
-  submit: Boolean,
+const props = withDefaults(defineProps<SubmitProps>(), {
+  text: '提交',
+  type: 'primary',
+  round: true,
+  block: true,
+  submit: false,
 })
 
 const formRef = useParentForm()
 const buttonGroupContext = useVantFormButtonGroupContext()
-const rawProps = getCurrentInstance()?.vnode.props ?? {}
 const slots = useSlots()
-
-function hasExplicitProp(key: string) {
-  return Object.prototype.hasOwnProperty.call(rawProps, key)
-}
-
-const resolvedNativeType = computed<ButtonNativeType>(() => (props.submit || props.onSubmit ? 'button' : 'submit'))
-const isCompactGroup = computed(() => buttonGroupContext?.value.layout === 'compact')
+const nativeType = computed(() => (props.submit || props.onSubmit ? 'button' : 'submit'))
 const isLoading = formilyComputed(() => Boolean(formRef.value?.submitting || props.loading))
 const isDisabled = computed(() => Boolean(isLoading.value || props.disabled))
-const resolvedText = computed(() => props.text ?? '提交')
-const resolvedType = computed(() => (hasExplicitProp('type') ? props.type : 'primary'))
-const resolvedRound = computed(() => (hasExplicitProp('round') ? props.round : true))
-const resolvedBlock = computed(() => (hasExplicitProp('block') ? props.block : true))
+const isCompactGroup = computed(() => buttonGroupContext?.value.layout === 'compact')
 
 const buttonBindings = computed(() => {
-  const {
-    block: _block,
-    disabled: _disabled,
-    loading: _loading,
-    nativeType: _nativeType,
-    onClick: _onClick,
-    onSubmit: _onSubmit,
-    onSubmitFailed: _onSubmitFailed,
-    onSubmitSuccess: _onSubmitSuccess,
-    round: _round,
-    submit: _submit,
-    type: _type,
-    ...buttonOptions
-  } = props
-
-  return {
-    ...buttonOptions,
-  }
+  return omit(props, [
+    'block',
+    'disabled',
+    'loading',
+    'nativeType',
+    'onClick',
+    'onSubmit',
+    'onSubmitFailed',
+    'onSubmitSuccess',
+    'round',
+    'submit',
+    'type',
+  ])
 })
 
 const compactButtonBindings = computed(() => {
@@ -68,9 +51,9 @@ const compactButtonBindings = computed(() => {
     icon: props.icon,
     loading: isLoading.value,
     replace: props.replace,
-    text: resolvedText.value,
+    text: props.text,
     to: props.to,
-    type: resolvedType.value,
+    type: props.type,
     url: props.url,
   }
 })
@@ -135,18 +118,18 @@ function handleClick(event: MouseEvent) {
   <VanButton
     v-else
     v-bind="buttonBindings"
-    :block="resolvedBlock"
+    :block="props.block"
     :disabled="isDisabled"
     :loading="isLoading"
-    :native-type="resolvedNativeType"
-    :round="resolvedRound"
-    :type="resolvedType"
+    :native-type="nativeType"
+    :round="props.round"
+    :type="props.type"
     @click="handleClick"
   >
     <template #default>
       <slot v-if="slots.default" />
       <template v-else>
-        {{ resolvedText }}
+        {{ props.text }}
       </template>
     </template>
   </VanButton>

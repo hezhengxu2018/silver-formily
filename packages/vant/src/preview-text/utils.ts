@@ -1,8 +1,5 @@
+import type { PreviewTextProps } from './types'
 import { computed, inject } from 'vue'
-
-export interface PreviewTextProps {
-  placeholder?: string
-}
 
 export const previewTextConfigKey = Symbol('vantPreviewTextConfig')
 

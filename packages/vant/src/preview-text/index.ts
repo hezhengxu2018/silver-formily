@@ -9,3 +9,5 @@ export const PreviewText = composeExport(Preview, {
 })
 
 export default PreviewText
+
+export type { PreviewTextCalendarProps, PreviewTextInputProps, PreviewTextProps } from './types'

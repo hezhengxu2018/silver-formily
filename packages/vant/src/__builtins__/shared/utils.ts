@@ -1,5 +1,5 @@
 import type { ComputedRef } from 'vue'
-import { isPlainObj } from '@formily/shared'
+import { isPlainObj, paramCase } from '@formily/shared'
 import bem from 'easy-bem'
 import { omit } from 'lodash-es'
 import { computed, getCurrentInstance } from 'vue'
@@ -53,6 +53,19 @@ export function composeExport<T0 extends object, T1 extends object>(
   s1: T1,
 ): T0 & T1 {
   return Object.assign(s0, s1)
+}
+
+export function useHasExplicitVNodeProp() {
+  const instance = getCurrentInstance()
+
+  return (key: string) => {
+    const vnodeProps = instance?.vnode.props
+    if (!vnodeProps) {
+      return false
+    }
+
+    return key in vnodeProps || paramCase(key) in vnodeProps
+  }
 }
 
 const stylePrefix = 'silver-formily-vant'

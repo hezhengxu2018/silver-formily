@@ -28,3 +28,5 @@ export const Input = composeExport(InnerInput, {
 })
 
 export default Input
+
+export type { InputProps } from './types'

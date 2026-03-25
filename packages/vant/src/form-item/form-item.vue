@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import type { ComponentPublicInstance, PropType, VNode } from 'vue'
+import type { ComponentPublicInstance } from 'vue'
+import type { FormItemProps } from './types'
 import { isValid } from '@formily/shared'
 import { isNil } from 'lodash-es'
 import { Field as VanField } from 'vant'
 import { computed, isVNode, provide, ref } from 'vue'
-import { useCleanAttrs } from '../__builtins__'
+import { useCleanAttrs, useHasExplicitVNodeProp } from '../__builtins__'
 import { useVantFormContext, vantFormInheritedPropKeys } from '../form/context'
 import { useVantFormItemRegistration } from '../form/hooks'
 import { vantFormItemControlContextKey } from './context'
@@ -15,36 +16,7 @@ defineOptions({
   inheritAttrs: false,
 })
 
-const props = defineProps({
-  label: {
-    type: [String, Number, Object] as PropType<FormItemContent>,
-    default: undefined,
-  },
-  extra: {
-    type: [String, Number, Object] as PropType<FormItemContent>,
-    default: undefined,
-  },
-  feedbackText: {
-    type: [String, Number, Object] as PropType<FormItemContent>,
-    default: undefined,
-  },
-  feedbackStatus: {
-    type: String as PropType<'error' | 'warning' | 'success' | 'pending'>,
-    default: undefined,
-  },
-  fieldAddress: {
-    type: String,
-    default: undefined,
-  },
-  fieldPath: {
-    type: String,
-    default: undefined,
-  },
-  asterisk: {
-    type: Boolean as PropType<boolean | undefined>,
-    default: undefined,
-  },
-})
+const props = defineProps<FormItemProps>()
 
 const slots = defineSlots<{
   'default'?: () => any
@@ -57,9 +29,8 @@ const slots = defineSlots<{
   'error-message'?: (props: { message: string }) => any
 }>()
 
-type FormItemContent = string | number | VNode
-
 const { props: attrs } = useCleanAttrs()
+const hasExplicitVNodeProp = useHasExplicitVNodeProp()
 const formContext = useVantFormContext()
 const fieldRef = ref<ComponentPublicInstance | null>(null)
 
@@ -128,7 +99,9 @@ const formItemProps = computed(() => {
   return {
     ...resolvedFieldProps.value.fieldProps,
     label: hasLabelSlot.value ? undefined : props.label as string | number | undefined,
-    required: props.asterisk ?? resolvedFieldProps.value.fieldProps.required,
+    required: hasExplicitVNodeProp('asterisk')
+      ? props.asterisk
+      : resolvedFieldProps.value.fieldProps.required,
     error: resolvedFieldProps.value.error,
     errorMessage: resolvedFeedbackMessage.value ?? resolvedFieldProps.value.fieldProps.errorMessage,
   }

@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import type { CSSProperties, PropType } from 'vue'
-import type { VantFormButtonGroupLayout } from './context'
+import type { CSSProperties } from 'vue'
+import type { FormButtonGroupProps } from './types'
 import { ActionBar as VanActionBar } from 'vant'
 import { computed, provide } from 'vue'
 import { vantFormButtonGroupContextKey } from './context'
@@ -11,23 +11,11 @@ defineOptions({
   inheritAttrs: false,
 })
 
-const props = defineProps({
-  layout: {
-    type: String as PropType<VantFormButtonGroupLayout>,
-    default: 'vertical',
-  },
-  gap: {
-    type: [Number, String] as PropType<number | string>,
-    default: 12,
-  },
-  inset: {
-    type: Boolean,
-    default: true,
-  },
-  safeAreaInsetBottom: {
-    type: Boolean,
-    default: false,
-  },
+const props = withDefaults(defineProps<FormButtonGroupProps>(), {
+  layout: 'vertical',
+  gap: 12,
+  inset: true,
+  safeAreaInsetBottom: false,
 })
 
 const isCompact = computed(() => props.layout === 'compact')

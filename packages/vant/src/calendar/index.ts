@@ -53,6 +53,7 @@ export type {
   CalendarDisplayFormatter,
   CalendarModelValue,
   CalendarMonthTitleSlotProps,
+  CalendarProps,
   CalendarSlots,
   CalendarSubtitleSlotProps,
   CalendarSwitchMode,
