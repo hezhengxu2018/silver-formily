@@ -1,7 +1,7 @@
 import type { ComputedRef } from 'vue'
 import { isPlainObj, paramCase } from '@formily/shared'
 import bem from 'easy-bem'
-import { omit } from 'lodash-es'
+import { omit } from 'es-toolkit'
 import { computed, getCurrentInstance } from 'vue'
 
 interface UseAttrsParams {

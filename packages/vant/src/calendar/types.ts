@@ -10,10 +10,12 @@ import type {
 import type { CalendarSwitchMode } from 'vant/es/calendar/types'
 import type { TeleportProps } from 'vue'
 
-export type CalendarModelValue = Date | Date[] | null | undefined
+export type CalendarResolvedValue = Date | Date[] | null
+
+export type CalendarModelValue = CalendarResolvedValue | undefined
 
 export type CalendarDisplayFormatter = (
-  value: Date | Date[] | null,
+  value: CalendarResolvedValue,
   type: CalendarType,
 ) => string
 

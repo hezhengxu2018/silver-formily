@@ -1,7 +1,7 @@
 import type { FormPathPattern } from '@formily/shared'
 import type { ComputedRef, InjectionKey } from 'vue'
 import { FormPath } from '@formily/shared'
-import { isNil } from 'lodash-es'
+import { isNil } from 'es-toolkit'
 import { inject } from 'vue'
 
 export const vantFormInheritedPropKeys = [

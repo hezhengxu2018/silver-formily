@@ -1,3 +1,4 @@
+import type { GeneralField } from '@formily/core'
 import { isVoidField } from '@formily/core'
 import { connect, mapProps } from '@silver-formily/vue'
 import { composeExport } from '../__builtins__'
@@ -5,7 +6,14 @@ import FormBaseItem from './form-item.vue'
 import { determineFeedbackStatus, getFeedbackMessage, getVanFieldBridgedProps } from './utils'
 import './style.scss'
 
-function callListener(listener, ...args) {
+type FormItemMappedProps = Record<string, unknown> & {
+  'asterisk'?: boolean
+  'disabled'?: boolean | null
+  'readonly'?: boolean | null
+  'onUpdate:modelValue'?: unknown
+}
+
+function callListener(listener: unknown, ...args: unknown[]) {
   if (Array.isArray(listener)) {
     listener.forEach(fn => typeof fn === 'function' && fn(...args))
     return
@@ -16,11 +24,12 @@ function callListener(listener, ...args) {
   }
 }
 
-export function fieldFeedbackMapper(props, field) {
+export function fieldFeedbackMapper(props: Record<string, unknown>, field: GeneralField | null | undefined) {
   if (isVoidField(field) || !field) {
     return props
   }
 
+  const mappedProps = props as FormItemMappedProps
   const {
     'onUpdate:modelValue': componentModelValueHandler,
     ...bridgedProps
@@ -29,10 +38,10 @@ export function fieldFeedbackMapper(props, field) {
   const feedbackText = ['error', 'warning'].includes(feedbackStatus)
     ? getFeedbackMessage(field)
     : undefined
-  const asterisk = 'asterisk' in props
-    ? props.asterisk
+  const asterisk = 'asterisk' in mappedProps
+    ? mappedProps.asterisk
     : field.required && field.pattern !== 'readPretty'
-  const decoratorModelValueHandler = props['onUpdate:modelValue']
+  const decoratorModelValueHandler = mappedProps['onUpdate:modelValue']
   const shouldBridgeFieldValue = Boolean(
     componentModelValueHandler
     || decoratorModelValueHandler
@@ -41,7 +50,7 @@ export function fieldFeedbackMapper(props, field) {
 
   return {
     ...bridgedProps,
-    ...props,
+    ...mappedProps,
     feedbackStatus,
     feedbackText,
     fieldAddress: field.address?.toString(),
@@ -57,8 +66,8 @@ export function fieldFeedbackMapper(props, field) {
           },
         }
       : {}),
-    disabled: props.disabled || bridgedProps.disabled || field.pattern === 'disabled',
-    readonly: props.readonly || bridgedProps.readonly || field.pattern === 'readOnly',
+    disabled: mappedProps.disabled || bridgedProps.disabled || field.pattern === 'disabled',
+    readonly: mappedProps.readonly || bridgedProps.readonly || field.pattern === 'readOnly',
   }
 }
 

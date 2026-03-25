@@ -3,9 +3,10 @@ import type { CalendarDayItem } from 'vant'
 import type {
   CalendarModelValue,
   CalendarProps,
+  CalendarResolvedValue,
   VanCalendarInstance,
 } from './types'
-import { omit } from 'lodash-es'
+import { omit } from 'es-toolkit'
 import { Calendar as VanCalendar } from 'vant'
 import { computed, ref, useSlots } from 'vue'
 import { useCleanAttrs } from '../__builtins__'
@@ -14,7 +15,6 @@ import {
   formatCalendarValue,
   normalizeCalendarValue,
   resolveCalendarPlaceholder,
-  resolveCalendarResetValue,
 } from './utils'
 
 defineOptions({
@@ -74,31 +74,46 @@ const forwardedSlotNames = computed(() => {
 })
 
 const normalizedValue = computed(() => normalizeCalendarValue(props.modelValue, props.type))
-
-const displayText = computed(() => {
-  if (props.displayFormatter) {
-    return props.displayFormatter(cloneCalendarValue(normalizedValue.value), props.type)
+const normalizedDefaultValue = computed<CalendarResolvedValue | undefined>(() => {
+  if (props.defaultDate === undefined) {
+    return undefined
   }
 
-  return formatCalendarValue(normalizedValue.value, props.type)
+  return normalizeCalendarValue(props.defaultDate, props.type)
+})
+
+const displayText = computed(() => {
+  const value = normalizedValue.value
+
+  if (props.displayFormatter) {
+    return props.displayFormatter(cloneCalendarValue(value), props.type)
+  }
+
+  return formatCalendarValue(value, props.type)
 })
 
 const resolvedPlaceholder = computed(() => resolveCalendarPlaceholder(props.placeholder, props.type))
 
-function getResetValue(value?: CalendarModelValue) {
+function resolveResetValue(value?: CalendarModelValue): CalendarResolvedValue | undefined {
   if (value !== undefined) {
-    return cloneCalendarValue(resolveCalendarResetValue(value, props.type))
+    return normalizeCalendarValue(value, props.type)
   }
 
   if (normalizedValue.value !== null) {
-    return cloneCalendarValue(normalizedValue.value)
+    return normalizedValue.value
   }
 
-  if (props.defaultDate !== undefined) {
-    return cloneCalendarValue(resolveCalendarResetValue(props.defaultDate, props.type))
+  return normalizedDefaultValue.value
+}
+
+function getResetValue(value?: CalendarModelValue) {
+  const resolvedValue = resolveResetValue(value)
+
+  if (resolvedValue === undefined) {
+    return undefined
   }
 
-  return undefined
+  return cloneCalendarValue(resolvedValue)
 }
 
 const innerCalendarProps = computed(() => {

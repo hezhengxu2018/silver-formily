@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { PreviewTextCalendarProps } from './types'
 import { computed } from 'vue'
-import { formatCalendarValue, normalizeCalendarValue } from '../calendar/utils'
+import { cloneCalendarValue, formatCalendarValue, normalizeCalendarValue } from '../calendar/utils'
 import { usePreviewConfig } from './utils'
 
 defineOptions({
@@ -16,15 +16,16 @@ const props = withDefaults(defineProps<PreviewTextCalendarProps>(), {
 })
 
 const { placeholder } = usePreviewConfig()
+const normalizedValue = computed(() => normalizeCalendarValue(props.modelValue, props.type))
 
 const displayText = computed(() => {
-  const normalizedValue = normalizeCalendarValue(props.modelValue, props.type)
+  const value = normalizedValue.value
 
   if (props.displayFormatter) {
-    return props.displayFormatter(normalizedValue, props.type)
+    return props.displayFormatter(cloneCalendarValue(value), props.type)
   }
 
-  return formatCalendarValue(normalizedValue, props.type)
+  return formatCalendarValue(value, props.type)
 })
 
 const resolvedPlaceholder = computed(() => props.placeholder || placeholder.value)

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { VantFormProps } from './types'
 import { FormProvider, useForm } from '@silver-formily/vue'
-import { isNil } from 'lodash-es'
+import { isNil } from 'es-toolkit'
 import { computed, nextTick, provide, ref } from 'vue'
 import { useHasExplicitVNodeProp } from '../__builtins__'
 import { vantFormContextKey, vantFormInheritedPropKeys } from './context'
