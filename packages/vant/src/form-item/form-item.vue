@@ -2,7 +2,7 @@
 import type { ComponentPublicInstance } from 'vue'
 import type { FormItemProps } from './types'
 import { isValid } from '@formily/shared'
-import { isNil } from 'lodash-es'
+import { isNil } from 'es-toolkit'
 import { Field as VanField } from 'vant'
 import { computed, isVNode, provide, ref } from 'vue'
 import { useCleanAttrs, useHasExplicitVNodeProp } from '../__builtins__'

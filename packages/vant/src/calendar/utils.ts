@@ -1,19 +1,7 @@
 import type { CalendarType } from 'vant'
-import type { CalendarModelValue } from './types'
+import type { CalendarModelValue, CalendarResolvedValue } from './types'
 import dayjs from 'dayjs'
-import {
-  castArray,
-  clone,
-  defaultTo,
-  filter,
-  first,
-  isArray,
-  isDate,
-  isUndefined,
-  join,
-  map,
-  take,
-} from 'lodash-es'
+import { isDate } from 'es-toolkit'
 
 function isValidDate(value: unknown): value is Date {
   if (!isDate(value)) {
@@ -23,84 +11,67 @@ function isValidDate(value: unknown): value is Date {
   return dayjs(value as Date).isValid()
 }
 
-function cloneDate(value: Date) {
-  return clone(value)
-}
-
 function formatDate(value: Date) {
   return dayjs(value).format('YYYY-MM-DD')
 }
 
 function normalizeCalendarDates(value: CalendarModelValue) {
-  return map(filter(castArray(value), isValidDate), cloneDate)
+  const values = Array.isArray(value) ? value : [value]
+  return values.filter(isValidDate).map(value => new Date(value))
 }
 
-export function cloneCalendarValue(value: CalendarModelValue): Date | Date[] | null {
-  const dates = normalizeCalendarDates(value)
-
-  if (isArray(value)) {
-    return dates
+export function cloneCalendarValue(value: CalendarResolvedValue): CalendarResolvedValue {
+  if (value === null) {
+    return null
   }
 
-  return first(dates) ?? null
+  if (Array.isArray(value)) {
+    return value.map(date => new Date(date))
+  }
+
+  return new Date(value)
 }
 
 export function normalizeCalendarValue(
   value: CalendarModelValue,
   type: CalendarType = 'single',
-): Date | Date[] | null {
+): CalendarResolvedValue {
   const dates = normalizeCalendarDates(value)
 
   if (type === 'single') {
-    return first(dates) ?? null
+    return dates[0] ?? null
   }
 
   if (type === 'range') {
-    return dates.length >= 2 ? take(dates, 2) : null
+    return dates.length >= 2 ? dates.slice(0, 2) : null
   }
 
   return dates.length ? dates : null
 }
 
 export function formatCalendarValue(
-  value: CalendarModelValue,
+  value: CalendarResolvedValue,
   type: CalendarType = 'single',
 ): string {
-  const normalizedValue = normalizeCalendarValue(value, type)
-
-  if (!normalizedValue) {
+  if (!value) {
     return ''
   }
 
-  if (Array.isArray(normalizedValue)) {
-    if (!normalizedValue.length) {
+  if (Array.isArray(value)) {
+    if (!value.length) {
       return ''
     }
 
     const separator = type === 'range' ? ' ~ ' : ', '
-    return join(map(normalizedValue, formatDate), separator)
+    return value.map(formatDate).join(separator)
   }
 
-  return formatDate(normalizedValue)
+  return formatDate(value)
 }
 
 export function resolveCalendarPlaceholder(
   placeholder: string | undefined,
   type: CalendarType = 'single',
 ) {
-  return defaultTo(
-    placeholder || undefined,
-    type === 'range' ? '请选择日期范围' : '请选择日期',
-  )
-}
-
-export function resolveCalendarResetValue(
-  value: CalendarModelValue,
-  type: CalendarType = 'single',
-) {
-  if (isUndefined(value)) {
-    return undefined
-  }
-
-  return normalizeCalendarValue(value, type)
+  return placeholder || (type === 'range' ? '请选择日期范围' : '请选择日期')
 }

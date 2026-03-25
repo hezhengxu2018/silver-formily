@@ -1,7 +1,7 @@
 import type { Field, GeneralField } from '@formily/core'
+import type { Field as VanField } from 'vant'
 import { toJS } from '@formily/reactive'
 import { isArr, isValid } from '@formily/shared'
-import { pick } from 'lodash-es'
 import { createNamespace } from '../__builtins__'
 import { Input } from '../input'
 
@@ -34,6 +34,22 @@ const vantFieldBridgePropKeys = [
   'type',
 ] as const
 
+type VanFieldBridgePropKey = (typeof vantFieldBridgePropKeys)[number]
+type VanFieldPublicProps = InstanceType<typeof VanField>['$props']
+type Mutable<T> = {
+  -readonly [K in keyof T]: T[K]
+}
+
+export type VanFieldBridgedProps = Mutable<Partial<Pick<VanFieldPublicProps, VanFieldBridgePropKey>>>
+
+function assignBridgedProp<Key extends keyof VanFieldBridgedProps>(
+  props: VanFieldBridgedProps,
+  key: Key,
+  value: VanFieldBridgedProps[Key],
+) {
+  Object.assign(props, { [key]: value })
+}
+
 export function getFeedbackMessage(field: Field) {
   const messages = {
     errors: field.selfErrors.join(', '),
@@ -58,29 +74,35 @@ export function getVanFieldBridgedProps(field: GeneralField) {
     ? toJS(field.component[1]) || {}
     : {}
   const componentProps = typeof componentEntry === 'object' && isValid(componentEntry)
-    ? componentEntry as Record<string, any>
+    ? componentEntry as Record<string, unknown>
     : {}
 
   if (component !== Input && component !== Input.TextArea) {
-    return {}
+    return {} as VanFieldBridgedProps
   }
 
-  const bridgedProps = pick(componentProps, vantFieldBridgePropKeys)
+  const bridgedProps: VanFieldBridgedProps = {}
+
+  vantFieldBridgePropKeys.forEach((key) => {
+    if (key in componentProps) {
+      assignBridgedProp(bridgedProps, key, componentProps[key] as VanFieldBridgedProps[typeof key])
+    }
+  })
 
   if (!('readonly' in bridgedProps) && 'readOnly' in componentProps) {
-    bridgedProps.readonly = componentProps.readOnly
+    assignBridgedProp(bridgedProps, 'readonly', componentProps.readOnly as VanFieldBridgedProps['readonly'])
   }
 
   const componentType = componentProps.type ?? (component === Input.TextArea ? 'textarea' : undefined)
   if (isValid(componentType)) {
-    bridgedProps.type = componentType
+    assignBridgedProp(bridgedProps, 'type', componentType as VanFieldBridgedProps['type'])
   }
 
   // `VanField`'s built-in clear icon visibility depends on its internal focused state.
   // With a custom input slot that state is not synced automatically, so default to
   // `always` unless the user explicitly chooses another trigger.
   if (bridgedProps.clearable && !('clearTrigger' in bridgedProps)) {
-    bridgedProps.clearTrigger = 'always'
+    assignBridgedProp(bridgedProps, 'clearTrigger', 'always' as VanFieldBridgedProps['clearTrigger'])
   }
 
   return bridgedProps

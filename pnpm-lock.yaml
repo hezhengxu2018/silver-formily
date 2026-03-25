@@ -547,9 +547,9 @@ importers:
       easy-bem:
         specifier: ^1.1.1
         version: 1.1.1
-      lodash-es:
-        specifier: ^4.17.23
-        version: 4.17.23
+      es-toolkit:
+        specifier: ^1
+        version: 1.45.1
     devDependencies:
       '@silver-formily/reactive-vue':
         specifier: workspace:*
@@ -3311,6 +3311,9 @@ packages:
   es-set-tostringtag@2.1.0:
     resolution: {integrity: sha512-j6vWzfrGVfyXxge+O0x5sh6cvxAog0a/4Rdd2K36zCMV5eJ+/+tOAngRO8cODMNWbVRdVlmGZQL2YS3yR8bIUA==}
     engines: {node: '>= 0.4'}
+
+  es-toolkit@1.45.1:
+    resolution: {integrity: sha512-/jhoOj/Fx+A+IIyDNOvO3TItGmlMKhtX8ISAHKE90c4b/k1tqaqEZ+uUqfpU8DMnW5cgNJv606zS55jGvza0Xw==}
 
   es6-promise@4.2.8:
     resolution: {integrity: sha512-HJDGx5daxeIvxdBxvG2cb9g4tEvwIk3i8+nhX0yGrYmZUzbkdg8QbDevheDB8gd0//uPj4c1EQua8Q+MViT0/w==}
@@ -9082,6 +9085,8 @@ snapshots:
       has-tostringtag: 1.0.2
       hasown: 2.0.2
     optional: true
+
+  es-toolkit@1.45.1: {}
 
   es6-promise@4.2.8: {}
 

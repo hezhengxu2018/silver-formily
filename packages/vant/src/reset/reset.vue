@@ -2,7 +2,7 @@
 import type { ResetProps } from './types'
 import { formilyComputed } from '@silver-formily/reactive-vue'
 import { useParentForm } from '@silver-formily/vue'
-import { omit } from 'lodash-es'
+import { omit } from 'es-toolkit'
 import { ActionBarButton as VanActionBarButton, Button as VanButton } from 'vant'
 import { computed, useSlots } from 'vue'
 import { useVantFormButtonGroupContext } from '../form-button-group/context'
