@@ -24,6 +24,12 @@ mobileDemo: radio/index.vue
 
 <<< @/zh/demos/radio/cell.vue
 
+## 配合 Grid 做宫格布局
+
+当选项更像“卡片入口”而不是普通文案时，可以给 `Radio.Group` 传默认插槽，再在内部用 `Grid + Radio` 自己组织布局。
+
+<<< @/zh/demos/radio/grid.vue
+
 ## 自定义选项内容
 
 <<< @/zh/demos/radio/slot.vue
@@ -41,6 +47,7 @@ mobileDemo: radio/index.vue
 - `readonly` 会把单选框组切换为“不可切换”的只读效果；由于 Vant 原生没有 `readonly` 单选框，这里会以禁用交互的方式实现
 - 对象选项推荐写成 `{ label, value }`，同时也兼容直接传字符串 / 数字 / 布尔值数组
 - 如果要复刻 Vant 官方“搭配单元格组件使用”的布局，可以给 `Radio.Group` 传默认插槽，内部直接放原始 `Radio` 子节点
+- 如果要做宫格/卡片式选择器，也可以给 `Radio.Group` 传默认插槽，在内部配合 `Grid` 组织布局
 
 ### Radio.Group 扩展属性
 
