@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { cloneCalendarValue, formatCalendarValue, normalizeCalendarValue } from '../utils'
+import { cloneCalendarValue, formatCalendarValue, normalizeCalendarValue, resolveCalendarPlaceholder } from '../utils'
 
 describe('calendar utils', () => {
   it('应该按日历类型归一化外部值，并返回新的 Date 实例', () => {
@@ -51,7 +51,23 @@ describe('calendar utils', () => {
 
     expect(formatCalendarValue(null)).toBe('')
     expect(formatCalendarValue(singleValue)).toBe('2026-03-23')
+    expect(formatCalendarValue([])).toBe('')
+    expect(formatCalendarValue(rangeValue)).toBe('2026-03-23, 2026-03-25')
     expect(formatCalendarValue(rangeValue, 'range')).toBe('2026-03-23 ~ 2026-03-25')
     expect(formatCalendarValue(rangeValue, 'multiple')).toBe('2026-03-23, 2026-03-25')
+  })
+
+  it('应该在非法或不足量的日期值下返回空结果', () => {
+    const firstDate = new Date(2026, 2, 23)
+
+    expect(normalizeCalendarValue('invalid' as any)).toBeNull()
+    expect(normalizeCalendarValue([firstDate], 'range')).toBeNull()
+    expect(normalizeCalendarValue([firstDate, 'invalid'] as any, 'range')).toBeNull()
+  })
+
+  it('应该按类型返回对应的默认占位符', () => {
+    expect(resolveCalendarPlaceholder(undefined)).toBe('请选择日期')
+    expect(resolveCalendarPlaceholder(undefined, 'range')).toBe('请选择日期范围')
+    expect(resolveCalendarPlaceholder('自定义占位', 'range')).toBe('自定义占位')
   })
 })
