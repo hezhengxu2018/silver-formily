@@ -5,6 +5,7 @@ defineOptions({
 
 defineProps<{
   title: string
+  description?: string
 }>()
 </script>
 
@@ -14,6 +15,9 @@ defineProps<{
       <h2 class="mobile-demo-section__title">
         {{ title }}
       </h2>
+      <p v-if="description" class="mobile-demo-section__description">
+        {{ description }}
+      </p>
     </header>
 
     <div class="mobile-demo-section__body">
@@ -32,15 +36,24 @@ defineProps<{
 }
 
 .mobile-demo-section__header {
+  display: grid;
+  gap: 6px;
   padding: 16px;
 }
 
 .mobile-demo-section__title {
   margin: 0;
-  color: var(--van-text-color-2);
+  color: var(--van-text-color);
   font-size: 14px;
-  font-weight: 400;
-  line-height: 16px;
+  font-weight: 500;
+  line-height: 18px;
+}
+
+.mobile-demo-section__description {
+  margin: 0;
+  color: var(--van-text-color-2);
+  font-size: 12px;
+  line-height: 1.6;
 }
 
 .mobile-demo-section__body {

@@ -8,6 +8,10 @@ export interface PreviewTextInputProps {
   modelValue?: any
 }
 
+export interface PreviewTextSelectProps {
+  modelValue?: any
+}
+
 export interface PreviewTextCalendarProps {
   modelValue?: CalendarModelValue
   type?: CalendarType
