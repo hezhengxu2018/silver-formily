@@ -34,6 +34,7 @@ export default createDocsConfig({
               items: [
                 { text: 'Form 表单', link: '/component/form' },
                 { text: 'FormItem 表单项', link: '/component/form-item' },
+                { text: 'Grid 宫格', link: '/component/grid' },
                 { text: 'FormButtonGroup 按钮布局', link: '/component/form-button-group' },
                 { text: 'Submit 提交按钮', link: '/component/submit' },
                 { text: 'Reset 重置按钮', link: '/component/reset' },
@@ -80,6 +81,7 @@ export default createDocsConfig({
         '@formily/core',
         '@formily/reactive',
         '@formily/shared',
+        '@silver-formily/grid',
         '@silver-formily/reactive-vue',
         '@silver-formily/vue',
         'vant',

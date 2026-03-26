@@ -21,6 +21,13 @@ import { NavBar } from 'vant'
         <DocsDemoRenderer path="@/zh/demos/radio/cell.vue" />
       </MobileDemoSection>
 
+      <MobileDemoSection
+        title="宫格卡片布局"
+        description="使用 Radio.Group 默认插槽配合 Grid，可以把单选项做成更适合移动端入口选择的卡片宫格。"
+      >
+        <DocsDemoRenderer path="@/zh/demos/radio/grid.vue" />
+      </MobileDemoSection>
+
       <MobileDemoSection title="自定义选项内容">
         <DocsDemoRenderer path="@/zh/demos/radio/slot.vue" />
       </MobileDemoSection>

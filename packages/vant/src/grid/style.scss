@@ -1,0 +1,21 @@
+@use '../__builtins__/styles/common.scss' as *;
+
+$grid-prefix: '#{$style-prefix}-grid';
+
+.#{$grid-prefix} {
+  display: grid;
+
+  > [data-grid-span='-1'],
+  > [gridspan='-1'],
+  > [gridspan='span -1'] {
+    grid-column: 1 / -1;
+  }
+
+  @for $span from 1 through 24 {
+    > [data-grid-span='#{$span}'],
+    > [gridspan='#{$span}'],
+    > [gridspan='span #{$span}'] {
+      grid-column: span #{$span} / auto;
+    }
+  }
+}

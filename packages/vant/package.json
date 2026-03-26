@@ -51,6 +51,7 @@
     "@formily/json-schema": "^2.0.8",
     "@formily/reactive": "^2.0.8",
     "@formily/shared": "^2.0.8",
+    "@silver-formily/grid": "^1.0.1",
     "@silver-formily/reactive-vue": "^1.1.0",
     "@silver-formily/vue": "^2.3.2",
     "dayjs": "^1",
@@ -62,6 +63,7 @@
     "es-toolkit": "^1"
   },
   "devDependencies": {
+    "@silver-formily/grid": "workspace:*",
     "@silver-formily/reactive-vue": "workspace:*",
     "@silver-formily/typescript-config": "workspace:*",
     "@silver-formily/vue": "workspace:*",

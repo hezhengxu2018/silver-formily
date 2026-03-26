@@ -24,7 +24,7 @@ const isReadonly = computed(() => {
   return props.readonly ?? props.readOnly ?? attrs.value.readonly ?? false
 })
 const hasCustomDefaultSlot = computed(() => {
-  return Boolean(slots.default?.().length)
+  return Boolean(slots.default?.({}).length)
 })
 
 function isRadioOptionObject(option: RadioOptionLike): option is RadioOption {
