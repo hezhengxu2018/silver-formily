@@ -551,9 +551,6 @@ importers:
         specifier: ^1
         version: 1.45.1
     devDependencies:
-      '@silver-formily/grid':
-        specifier: workspace:*
-        version: link:../grid
       '@silver-formily/reactive-vue':
         specifier: workspace:*
         version: link:../reactive-vue

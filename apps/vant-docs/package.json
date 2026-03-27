@@ -14,7 +14,6 @@
   "silverFormily": {
     "docs": {
       "buildDependencies": [
-        "@silver-formily/grid",
         "@silver-formily/reactive-vue",
         "@silver-formily/vue"
       ]

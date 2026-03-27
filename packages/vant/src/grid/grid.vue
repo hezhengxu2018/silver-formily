@@ -1,8 +1,6 @@
 <script setup lang="ts">
-import type { Grid as GridInstance, IGridOptions } from '@silver-formily/grid'
-import type { PropType } from 'vue'
-import { createGrid } from '@silver-formily/grid'
-import { computed, provide, ref, watchEffect } from 'vue'
+import type { GridInstance, GridProps } from './types'
+import { computed, provide } from 'vue'
 import { createNamespace } from '../__builtins__'
 import { GridSymbol } from './hooks'
 
@@ -10,78 +8,47 @@ defineOptions({
   name: 'FGrid',
 })
 
-const props = defineProps({
-  columnGap: {
-    type: Number,
-  },
-  rowGap: {
-    type: Number,
-  },
-  minColumns: {
-    type: [Number, Array],
-  },
-  minWidth: {
-    type: [Number, Array],
-  },
-  maxColumns: {
-    type: [Number, Array],
-  },
-  maxWidth: {
-    type: [Number, Array],
-  },
-  breakpoints: {
-    type: Array as PropType<number[]>,
-  },
-  colWrap: {
-    type: Boolean,
-    default: true,
-  },
-  strictAutoFit: {
-    type: Boolean,
-    default: false,
-  },
-  shouldVisible: {
-    type: Function as PropType<IGridOptions['shouldVisible']>,
-    default() {
-      return () => true
-    },
-  },
-  grid: {
-    type: Object as PropType<GridInstance<HTMLElement>>,
-  },
+const props = withDefaults(defineProps<GridProps>(), {
+  columns: 1,
+  columnGap: 8,
+  rowGap: 4,
 })
 
 const { prefixCls } = createNamespace('grid')
-const rootRef = ref<HTMLElement>()
 
-const gridInstance = computed(() => {
-  const { grid, ...restProps } = props
-  const options = {
-    columnGap: props.columnGap ?? 8,
-    rowGap: props.rowGap ?? 4,
-    ...Object.fromEntries(
-      Object.entries(restProps)
-        .filter(([_, value]) => value !== undefined)
-        .map(([key, value]) => [key, value]),
-    ),
+function normalizeColumns(columns?: number) {
+  if (!Number.isFinite(columns))
+    return 1
+
+  return Math.max(1, Math.round(columns))
+}
+
+function normalizeGap(gap: number | undefined, fallback: number) {
+  if (typeof gap !== 'number' || !Number.isFinite(gap) || gap < 0)
+    return fallback
+
+  return gap
+}
+
+const gridInstance = computed<GridInstance>(() => {
+  const columns = normalizeColumns(props.columns)
+  const columnGap = normalizeGap(props.columnGap, 8)
+  const rowGap = normalizeGap(props.rowGap, 4)
+
+  return {
+    columns,
+    columnGap,
+    rowGap,
+    templateColumns: `repeat(${columns}, minmax(0, 1fr))`,
+    gap: `${rowGap}px ${columnGap}px`,
   }
-
-  return grid ?? createGrid(options)
 })
 
 provide(GridSymbol, gridInstance)
-
-watchEffect((onInvalidate) => {
-  const dispose = gridInstance.value.connect(rootRef.value)
-  onInvalidate(() => {
-    dispose()
-  })
-})
 </script>
 
 <template>
   <div
-    ref="rootRef"
     :class="prefixCls"
     :style="{
       gridTemplateColumns: gridInstance.templateColumns,

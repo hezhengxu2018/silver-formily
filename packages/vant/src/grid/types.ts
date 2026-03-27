@@ -1,25 +1,17 @@
-import type { Grid as FormGridInstance, GridNode, IGridOptions } from '@silver-formily/grid'
-
-export type GridResponsiveValue = number | number[]
-
 export interface GridProps {
+  columns?: number
   columnGap?: number
   rowGap?: number
-  minColumns?: GridResponsiveValue
-  minWidth?: GridResponsiveValue
-  maxColumns?: GridResponsiveValue
-  maxWidth?: GridResponsiveValue
-  breakpoints?: number[]
-  colWrap?: boolean
-  strictAutoFit?: boolean
-  shouldVisible?: IGridOptions['shouldVisible']
-  grid?: FormGridInstance<HTMLElement>
+}
+
+export interface GridInstance {
+  readonly columns: number
+  readonly columnGap: number
+  readonly rowGap: number
+  readonly templateColumns: string
+  readonly gap: string
 }
 
 export interface GridColumnProps {
   gridSpan?: number
 }
-
-export type GridInstance = FormGridInstance<HTMLElement>
-
-export type { GridNode, IGridOptions }

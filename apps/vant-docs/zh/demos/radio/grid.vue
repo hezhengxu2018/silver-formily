@@ -44,7 +44,7 @@ const GridColumn = Grid.GridColumn
         :decorator="[FormItem, { labelAlign: 'top' }]"
         :component="[Radio.Group]"
       >
-        <Grid :min-columns="2" :max-columns="2" :column-gap="10" :row-gap="10">
+        <Grid :columns="2" :column-gap="10" :row-gap="10">
           <GridColumn
             v-for="option in sceneOptions"
             :key="option.value"

@@ -11,7 +11,7 @@ const GridColumn = Grid.GridColumn
 </script>
 
 <template>
-  <Grid :min-columns="2" :max-columns="2" :column-gap="8" :row-gap="8">
+  <Grid :columns="2" :column-gap="8" :row-gap="8">
     <div v-for="shortcut in shortcuts" :key="shortcut" class="shortcut-card">
       {{ shortcut }}
     </div>
