@@ -42,6 +42,10 @@ mobileDemo: calendar/index.vue
 
 <<< @/zh/demos/calendar/formatter.vue
 
+## 自定义插槽
+
+<<< @/zh/demos/calendar/slot.vue
+
 ## 自定义弹出位置
 
 <<< @/zh/demos/calendar/popup-position.vue

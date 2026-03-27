@@ -34,6 +34,13 @@ import { NavBar } from 'vant'
         <DocsDemoRenderer path="@/zh/demos/calendar/formatter.vue" />
       </MobileDemoSection>
 
+      <MobileDemoSection
+        title="自定义插槽"
+        description="这个示例会直接用到 title、bottom-info 和 footer 插槽，方便确认封装后的 Calendar 已经把官方 slot 正常透传出来。"
+      >
+        <DocsDemoRenderer path="@/zh/demos/calendar/slot.vue" />
+      </MobileDemoSection>
+
       <MobileDemoSection title="自定义弹出位置">
         <DocsDemoRenderer path="@/zh/demos/calendar/popup-position.vue" />
       </MobileDemoSection>

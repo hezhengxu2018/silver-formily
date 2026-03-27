@@ -2,7 +2,7 @@ import type { ComputedRef } from 'vue'
 import { isPlainObj, paramCase } from '@formily/shared'
 import bem from 'easy-bem'
 import { omit } from 'es-toolkit'
-import { computed, getCurrentInstance } from 'vue'
+import { computed, getCurrentInstance, ref } from 'vue'
 
 interface UseAttrsParams {
   excludeListeners?: boolean
@@ -65,6 +65,68 @@ export function useHasExplicitVNodeProp() {
     }
 
     return key in vnodeProps || paramCase(key) in vnodeProps
+  }
+}
+
+interface UsePopupStateOptions {
+  disabled?: () => boolean
+  onBeforeOpen?: () => void
+  onRestore?: () => void
+  onVisibilityChange?: (value: boolean) => void
+}
+
+export function usePopupState(options: UsePopupStateOptions = {}) {
+  const popupVisible = ref(false)
+
+  function restore() {
+    options.onRestore?.()
+  }
+
+  function setPopupVisible(value: boolean, restoreSelection = true) {
+    if (popupVisible.value === value) {
+      if (!value && restoreSelection) {
+        restore()
+      }
+
+      return
+    }
+
+    popupVisible.value = value
+    options.onVisibilityChange?.(value)
+
+    if (!value && restoreSelection) {
+      restore()
+    }
+  }
+
+  function open() {
+    if (options.disabled?.()) {
+      return
+    }
+
+    options.onBeforeOpen?.()
+    setPopupVisible(true, false)
+  }
+
+  function close(restoreSelection = true) {
+    setPopupVisible(false, restoreSelection)
+  }
+
+  function onPopupShowChange(value: boolean) {
+    if (value) {
+      setPopupVisible(true, false)
+      return
+    }
+
+    close()
+  }
+
+  return {
+    popupVisible,
+    setPopupVisible,
+    open,
+    close,
+    onPopupShowChange,
   }
 }
 
