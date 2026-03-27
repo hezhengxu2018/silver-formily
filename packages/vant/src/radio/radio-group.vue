@@ -20,9 +20,6 @@ const emit = defineEmits<{
 
 const slots = useSlots()
 const { props: attrs } = useCleanAttrs(['options', 'onChange', 'onUpdate:modelValue'])
-const isReadonly = computed(() => {
-  return props.readonly ?? props.readOnly ?? attrs.value.readonly ?? false
-})
 const hasCustomDefaultSlot = computed(() => {
   return Boolean(slots.default?.({}).length)
 })
@@ -88,25 +85,18 @@ const radioGroupProps = computed(() => {
     ...attrs.value,
     checkedColor: props.checkedColor,
     direction: props.direction,
-    disabled: props.disabled || isReadonly.value,
+    disabled: props.disabled,
     iconSize: props.iconSize,
     modelValue: props.modelValue,
     shape: props.shape,
   }
 })
-
-function handleUpdateModelValue(value: unknown) {
-  if (isReadonly.value)
-    return
-
-  emit('update:modelValue', value)
-}
 </script>
 
 <template>
   <VanRadioGroup
     v-bind="radioGroupProps"
-    @update:model-value="handleUpdateModelValue"
+    @update:model-value="(value) => emit('update:modelValue', value)"
   >
     <slot v-if="hasCustomDefaultSlot" />
     <template v-else>
