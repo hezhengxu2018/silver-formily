@@ -169,6 +169,47 @@ describe('cascader', () => {
     })
   })
 
+  it('应该在 change 和 finish 事件中暴露当前字段实例', async () => {
+    const form = createForm()
+    const handleChange = vi.fn()
+    const handleFinish = vi.fn()
+
+    const { container } = render(() => (
+      <FormProvider form={form}>
+        <Field
+          name="region"
+          title="地区"
+          decorator={[FormItem]}
+          component={[Cascader, {
+            onChange: handleChange,
+            onFinish: handleFinish,
+          }]}
+          dataSource={options}
+        />
+      </FormProvider>
+    ))
+
+    await userEvent.click(getTrigger(container))
+
+    await vi.waitFor(() => {
+      expect(getVisibleCascader()).not.toBeNull()
+    })
+
+    await userEvent.click(getVisibleOption('浙江'))
+    await userEvent.click(getVisibleOption('杭州'))
+    await userEvent.click(getVisibleOption('西湖区'))
+
+    const field = form.query('region').take()
+
+    await vi.waitFor(() => {
+      expect(handleChange).toHaveBeenCalled()
+      expect(handleFinish).toHaveBeenCalledTimes(1)
+      expect(handleChange.mock.calls.at(-1)?.[0]?.field).toBe(field)
+      expect(handleFinish.mock.calls[0]?.[0]?.field).toBe(field)
+      expect(handleFinish.mock.calls[0]?.[0]?.selectedOptions.map(({ value }) => value)).toEqual(['zj', 'hz', 'xh'])
+    })
+  })
+
   it('应该在关闭弹层时回滚未完成的临时选择', async () => {
     const form = createForm({
       values: {

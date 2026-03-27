@@ -19,7 +19,31 @@ mobileDemo: cascader/index.vue
 
 <<< @/zh/demos/cascader/basic.vue
 
-## 自定义标题与选项
+## 中国省市区数据
+
+文档站已经安装 `@vant/area-data`，这里直接使用官方推荐的 `useCascaderAreaData()` 来生成选项数据。
+
+<<< @/zh/demos/cascader/area-data.vue
+
+## 自定义颜色
+
+<<< @/zh/demos/cascader/custom-color.vue
+
+## 异步加载选项
+
+`change` 事件的 payload 会额外携带当前字段实例 `field`，因此可以直接在回调里通过 `field.setDataSource(...)` 更新当前字段的数据源，不需要再额外维护一份本地 `options` 状态。
+
+<<< @/zh/demos/cascader/async-options.vue
+
+## 自定义字段名
+
+<<< @/zh/demos/cascader/field-names.vue
+
+## 自定义选项上方内容
+
+<<< @/zh/demos/cascader/options-top.vue
+
+## 补充：自定义标题与选项
 
 <<< @/zh/demos/cascader/slot.vue
 
@@ -30,6 +54,8 @@ mobileDemo: cascader/index.vue
 - `readPretty` 模式下会自动展示完整路径文案
 - `readonly` / `readOnly` / `disabled` 都会阻止弹层打开
 - `change` 事件仍然保留逐级选择时的中间态；真正写回字段的是叶子节点触发后的 `update:modelValue`
+- `change` / `finish` 的 payload 会额外暴露当前 `field`
+- 异步联动场景里更推荐在 `change` 回调中直接使用 `payload.field.setDataSource(...)` 更新字段数据源
 
 ### 封装补充 Props
 
@@ -90,18 +116,18 @@ mobileDemo: cascader/index.vue
 
 ### Events
 
-| 事件名              | 描述                       | 回调参数                                                             |
-| ------------------- | -------------------------- | -------------------------------------------------------------------- |
-| `update:modelValue` | 选中叶子节点后同步字段值   | ^[Function]`(value: string[] \| number[] \| null) => void`           |
-| `change`            | 任意层级切换时触发         | ^[Function]`(payload: { value, tabIndex, selectedOptions }) => void` |
-| `finish`            | 选中叶子节点时触发         | ^[Function]`(payload: { value, tabIndex, selectedOptions }) => void` |
-| `open`              | 弹层打开时触发             | `-`                                                                  |
-| `close`             | 弹层关闭时触发             | `-`                                                                  |
-| `opened`            | 弹层打开且动画结束后触发   | `-`                                                                  |
-| `closed`            | 弹层关闭且动画结束后触发   | `-`                                                                  |
-| `clickTab`          | 点击任意级别的标签页时触发 | ^[Function]`(tabIndex: string \| number, title: string) => void`     |
-| `clickOverlay`      | 点击遮罩层时触发           | ^[Function]`(event: MouseEvent) => void`                             |
-| `update:show`       | 弹层开关变化时触发         | ^[Function]`(visible: boolean) => void`                              |
+| 事件名              | 描述                       | 回调参数                                                                                                          |
+| ------------------- | -------------------------- | ----------------------------------------------------------------------------------------------------------------- |
+| `update:modelValue` | 选中叶子节点后同步字段值   | ^[Function]`(value: string[] \| number[] \| null) => void`                                                        |
+| `change`            | 任意层级切换时触发         | ^[Function]`(payload: { value, tabIndex, selectedOptions, field? }) => void`，其中 `payload.field` 为当前字段实例 |
+| `finish`            | 选中叶子节点时触发         | ^[Function]`(payload: { value, tabIndex, selectedOptions, field? }) => void`                                      |
+| `open`              | 弹层打开时触发             | `-`                                                                                                               |
+| `close`             | 弹层关闭时触发             | `-`                                                                                                               |
+| `opened`            | 弹层打开且动画结束后触发   | `-`                                                                                                               |
+| `closed`            | 弹层关闭且动画结束后触发   | `-`                                                                                                               |
+| `clickTab`          | 点击任意级别的标签页时触发 | ^[Function]`(tabIndex: string \| number, title: string) => void`                                                  |
+| `clickOverlay`      | 点击遮罩层时触发           | ^[Function]`(event: MouseEvent) => void`                                                                          |
+| `update:show`       | 弹层开关变化时触发         | ^[Function]`(visible: boolean) => void`                                                                           |
 
 ### 参考
 

@@ -7,7 +7,7 @@ import { cityOptions } from './shared'
 
 const form = createForm({
   values: {
-    serviceRegion: ['js', 'nj', 'gl'],
+    serviceRegion: ['320000', '320100', '320106'],
   },
 })
 </script>

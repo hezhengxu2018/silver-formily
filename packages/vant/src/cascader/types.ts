@@ -1,3 +1,4 @@
+import type { Field } from '@formily/core'
 import type {
   CascaderFieldNames,
   CascaderOption,
@@ -18,6 +19,7 @@ export interface CascaderChangeEvent {
   value: CascaderOptionValue
   tabIndex: number
   selectedOptions: CascaderOption[]
+  field?: Field
 }
 
 export interface CascaderProps extends Pick<VanCascaderProps, 'activeColor' | 'closeIcon' | 'closeable' | 'fieldNames' | 'options' | 'placeholder' | 'showHeader' | 'swipeable' | 'title'>, Pick<VanPopupProps, 'closeOnClickOverlay' | 'closeOnPopstate' | 'duration' | 'lazyRender' | 'lockScroll' | 'overlay' | 'position' | 'round' | 'safeAreaInsetBottom' | 'safeAreaInsetTop' | 'teleport' | 'transition' | 'zIndex'> {
