@@ -1,6 +1,6 @@
 import { createForm } from '@formily/core'
 import { Field, FormProvider } from '@silver-formily/vue'
-import { describe, expect, it, vi } from 'vitest'
+import { afterEach, describe, expect, it, vi } from 'vitest'
 import { render } from 'vitest-browser-vue'
 import FormItem from '../../form-item'
 import Calendar from '../index'
@@ -9,6 +9,18 @@ import 'vant/lib/index.css'
 const marchStart = new Date(2026, 2, 1)
 const marchEnd = new Date(2026, 2, 31)
 const defaultDate = new Date(2026, 2, 23)
+
+function waitForAnimationFrame() {
+  return new Promise<void>((resolve) => {
+    window.requestAnimationFrame(() => resolve())
+  })
+}
+
+afterEach(async () => {
+  await waitForAnimationFrame()
+  await waitForAnimationFrame()
+  await waitForAnimationFrame()
+})
 
 function getTrigger(container: Element) {
   return container.querySelector<HTMLInputElement>('input.van-field__control')!
@@ -23,6 +35,12 @@ function getVisibleCalendar() {
     }
 
     return window.getComputedStyle(popup).display !== 'none'
+  }) ?? null
+}
+
+function getVisibleOverlay() {
+  return Array.from(document.querySelectorAll<HTMLElement>('.van-overlay')).find((overlay) => {
+    return window.getComputedStyle(overlay).display !== 'none'
   }) ?? null
 }
 
@@ -57,6 +75,12 @@ describe('calendar', () => {
 
     await vi.waitFor(() => {
       expect(getVisibleCalendar()).not.toBeNull()
+    })
+
+    getVisibleOverlay()?.click()
+
+    await vi.waitFor(() => {
+      expect(getVisibleCalendar()).toBeNull()
     })
   })
 
@@ -129,6 +153,31 @@ describe('calendar', () => {
     })
   })
 
+  it('应该兼容 readOnly 形式的只读属性', async () => {
+    const { container } = render(() => (
+      <FormProvider form={createForm()}>
+        <Field
+          name="date"
+          title="日期"
+          decorator={[FormItem]}
+          component={[Calendar, {
+            readOnly: true,
+            minDate: marchStart,
+            maxDate: marchEnd,
+          }]}
+        />
+      </FormProvider>
+    ))
+
+    const trigger = getTrigger(container)
+
+    trigger.click()
+
+    await vi.waitFor(() => {
+      expect(getVisibleCalendar()).toBeNull()
+    })
+  })
+
   it('应该透传官方插槽', async () => {
     const { container } = render(() => (
       <Calendar
@@ -148,6 +197,12 @@ describe('calendar', () => {
       expect(document.querySelector('.calendar-slot-title')).not.toBeNull()
       expect(document.querySelector('.calendar-slot-footer')).not.toBeNull()
       expect(getVisibleCalendar()).not.toBeNull()
+    })
+
+    getVisibleOverlay()?.click()
+
+    await vi.waitFor(() => {
+      expect(getVisibleCalendar()).toBeNull()
     })
   })
 })

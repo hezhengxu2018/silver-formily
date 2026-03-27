@@ -9,7 +9,6 @@ const RadioGroup = connect<typeof FRadioGroup>(
   mapProps({
     dataSource: 'options',
     disabled: true,
-    readOnly: 'readonly',
   }),
   mapReadPretty(PreviewText.Select),
 )

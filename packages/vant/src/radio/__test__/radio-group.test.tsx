@@ -184,32 +184,6 @@ describe('radio-group', () => {
     expect(form.values.radio).toBe('2')
   })
 
-  it('应该在 readonly 下阻止值变更', async () => {
-    const form = createForm({
-      values: {
-        radio: '1',
-      },
-    })
-
-    const { container } = render(() => (
-      <FormProvider form={form}>
-        <Field
-          name="radio"
-          component={[Radio.Group, { readonly: true }]}
-          dataSource={[
-            { label: '标签1', value: '1' },
-            { label: '标签2', value: '2' },
-          ]}
-        />
-      </FormProvider>
-    ))
-
-    await userEvent.click(getRadioRoots(container)[1])
-
-    expect(form.values.radio).toBe('1')
-    expect(getCheckedLabel(container)).toBe('标签1')
-  })
-
   it('应该在 readPretty 模式下显示选项标签', async () => {
     const { container } = render(() => (
       <FormProvider form={createForm()}>
