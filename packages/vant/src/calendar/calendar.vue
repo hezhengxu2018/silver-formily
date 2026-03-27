@@ -9,7 +9,7 @@ import type {
 import { omit } from 'es-toolkit'
 import { Calendar as VanCalendar } from 'vant'
 import { computed, ref, useSlots } from 'vue'
-import { useCleanAttrs } from '../__builtins__'
+import { PopupTriggerInput, useCleanAttrs, usePopupState } from '../__builtins__'
 import {
   cloneCalendarValue,
   formatCalendarValue,
@@ -58,7 +58,6 @@ const slots = useSlots()
 const { props: triggerInputProps } = useCleanAttrs(['modelValue', 'onUpdate:modelValue', 'type'])
 
 const calendarRef = ref<VanCalendarInstance>()
-const popupVisible = ref(false)
 const innerCalendarExcludedProps = [
   'modelValue',
   'placeholder',
@@ -116,18 +115,6 @@ function getResetValue(value?: CalendarModelValue) {
   return cloneCalendarValue(resolvedValue)
 }
 
-const innerCalendarProps = computed(() => {
-  const passthroughProps = omit({ ...props }, innerCalendarExcludedProps)
-
-  return {
-    ...passthroughProps,
-    defaultDate: getResetValue(),
-    show: popupVisible.value,
-    poppable: true,
-    readonly: props.readonly || props.disabled,
-  }
-})
-
 function reset(date?: CalendarModelValue) {
   calendarRef.value?.reset(getResetValue(date) as any)
 }
@@ -147,35 +134,29 @@ function emitVisibilityChange(value: boolean) {
   emit('close')
 }
 
-function setPopupVisible(value: boolean, restoreSelection = true) {
-  if (popupVisible.value === value) {
-    if (!value && restoreSelection) {
-      resetCalendarSelection()
-    }
+const {
+  popupVisible,
+  open,
+  close,
+  onPopupShowChange: onCalendarShowChange,
+} = usePopupState({
+  disabled: () => props.disabled || props.readonly,
+  onBeforeOpen: resetCalendarSelection,
+  onRestore: resetCalendarSelection,
+  onVisibilityChange: emitVisibilityChange,
+})
 
-    return
+const innerCalendarProps = computed(() => {
+  const passthroughProps = omit({ ...props }, innerCalendarExcludedProps)
+
+  return {
+    ...passthroughProps,
+    defaultDate: getResetValue(),
+    show: popupVisible.value,
+    poppable: true,
+    readonly: props.readonly || props.disabled,
   }
-
-  popupVisible.value = value
-  emitVisibilityChange(value)
-
-  if (!value && restoreSelection) {
-    resetCalendarSelection()
-  }
-}
-
-function open() {
-  if (props.disabled || props.readonly) {
-    return
-  }
-
-  resetCalendarSelection()
-  setPopupVisible(true, false)
-}
-
-function close(restoreSelection = true) {
-  setPopupVisible(false, restoreSelection)
-}
+})
 
 function onSelect(value: Date | Date[] | null) {
   emit('select', cloneCalendarValue(value))
@@ -192,28 +173,16 @@ function onConfirm(value: Date | Date[] | null) {
 function onUnselect(value: Date) {
   emit('unselect', new Date(value))
 }
-
-function onCalendarShowChange(value: boolean) {
-  if (value) {
-    setPopupVisible(true, false)
-    return
-  }
-
-  close()
-}
 </script>
 
 <template>
-  <input
-    v-bind="triggerInputProps"
-    type="text"
-    class="van-field__control"
+  <PopupTriggerInput
+    :input-props="triggerInputProps"
     :disabled="props.disabled"
-    readonly
     :value="displayText"
     :placeholder="resolvedPlaceholder"
     @click="open"
-  >
+  />
 
   <VanCalendar
     ref="calendarRef"
