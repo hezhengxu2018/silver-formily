@@ -1,4 +1,3 @@
-import { createGrid } from '@silver-formily/grid'
 import { observer } from '@silver-formily/reactive-vue'
 import { composeExport } from '../__builtins__'
 import GridColumnBase from './grid-column.vue'
@@ -18,13 +17,10 @@ export const Grid = composeExport(GridInner, {
 
 export default Grid
 
-export { createGrid, useFormGrid, useGrid }
+export { useFormGrid, useGrid }
 
 export type {
   GridColumnProps,
   GridInstance,
-  GridNode,
   GridProps,
-  GridResponsiveValue,
-  IGridOptions,
 } from './types'

@@ -22,7 +22,7 @@ const cards = [
 </script>
 
 <template>
-  <Grid :min-columns="2" :max-columns="2" :column-gap="8" :row-gap="8">
+  <Grid :columns="2" :column-gap="8" :row-gap="8">
     <article v-for="card in cards" :key="card.title" class="feature-card">
       <strong>{{ card.title }}</strong>
       <p>{{ card.description }}</p>

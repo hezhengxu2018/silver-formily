@@ -56,22 +56,20 @@ describe('grid', () => {
 
   it('应该通过 useGrid 暴露网格实例配置', async () => {
     const { getByTestId } = render(() => (
-      <Grid columnGap={16} rowGap={20} minColumns={2} maxColumns={4} colWrap={false}>
-        <GridProbe displayKeys={['columnGap', 'rowGap', 'minColumns', 'maxColumns', 'colWrap']} />
+      <Grid columns={2} columnGap={16} rowGap={20}>
+        <GridProbe displayKeys={['columns', 'columnGap', 'rowGap']} />
       </Grid>
     ))
 
+    await expect.element(getByTestId('columns')).toHaveTextContent('2')
     await expect.element(getByTestId('columnGap')).toHaveTextContent('16')
     await expect.element(getByTestId('rowGap')).toHaveTextContent('20')
-    await expect.element(getByTestId('minColumns')).toHaveTextContent('2')
-    await expect.element(getByTestId('maxColumns')).toHaveTextContent('4')
-    await expect.element(getByTestId('colWrap')).toHaveTextContent('false')
   })
 
   it('应该支持通过 Grid.GridColumn 设置跨列', async () => {
     const GridColumn = Grid.GridColumn
     const { container } = render(() => (
-      <Grid minColumns={2} maxColumns={2}>
+      <Grid columns={2}>
         <GridColumn gridSpan={2} data-testid="grid-column">
           <div>跨列内容</div>
         </GridColumn>
@@ -86,7 +84,7 @@ describe('grid', () => {
 
   it('应该支持普通节点通过 data-grid-span 控制跨列', async () => {
     const { container } = render(() => (
-      <Grid minColumns={2} maxColumns={2}>
+      <Grid columns={2}>
         <div data-testid="fill-column" data-grid-span="-1">
           自动铺满
         </div>
@@ -97,7 +95,7 @@ describe('grid', () => {
 
     await expect.element(fillColumn).toHaveAttribute('data-grid-span', '-1')
     await vi.waitFor(() => {
-      expect(fillColumn.style.gridColumn).toBe('span 2 / -1')
+      expect(getComputedStyle(fillColumn).gridColumn).toBe('1 / -1')
     })
   })
 
@@ -105,7 +103,7 @@ describe('grid', () => {
     const form = createForm()
     const { container } = render(() => (
       <FormProvider form={form}>
-        <Grid minColumns={2} maxColumns={2} columnGap={12} rowGap={12}>
+        <Grid columns={2} columnGap={12} rowGap={12}>
           <Field
             name="username"
             title="用户名"
