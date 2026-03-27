@@ -2,13 +2,15 @@
 import { createForm } from '@formily/core'
 import { Cascader, Form, FormButtonGroup, FormItem, Submit } from '@silver-formily/vant'
 import { Field } from '@silver-formily/vue'
-import { cityOptions } from './shared'
+import { useCascaderAreaData } from '@vant/area-data'
 
 const form = createForm({
   values: {
-    area: ['330000', '330100', '330106'],
+    areaCode: null,
   },
 })
+
+const areaOptions = useCascaderAreaData()
 
 async function handleSubmit(values: typeof form.values) {
   await Prompts.alert(`提交结果\n\n${JSON.stringify(values, null, 2)}`)
@@ -18,11 +20,11 @@ async function handleSubmit(values: typeof form.values) {
 <template>
   <Form :form="form">
     <Field
-      name="area"
-      title="所在地区"
+      name="areaCode"
+      title="省市区"
       :decorator="[FormItem, { isLink: true }]"
       :component="[Cascader]"
-      :data-source="cityOptions"
+      :data-source="areaOptions"
     />
 
     <FormButtonGroup>

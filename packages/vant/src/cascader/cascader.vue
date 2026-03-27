@@ -1,10 +1,12 @@
 <script setup lang="ts">
+import type { Field } from '@formily/core'
 import type {
   CascaderChangeEvent,
   CascaderOptionValue,
   CascaderProps,
   CascaderResolvedValue,
 } from './types'
+import { useField } from '@silver-formily/vue'
 import { Cascader as VanCascader, Popup as VanPopup } from 'vant'
 import { computed, ref, useSlots } from 'vue'
 import { PopupTriggerInput, useCleanAttrs, usePopupState } from '../__builtins__'
@@ -53,6 +55,7 @@ const emit = defineEmits<{
 }>()
 
 const slots = useSlots()
+const fieldRef = useField<Field>()
 const { props: triggerInputProps } = useCleanAttrs(['modelValue', 'onUpdate:modelValue', 'options'])
 const innerValue = ref<CascaderOptionValue>()
 const forwardedSlotNames = computed(() => {
@@ -143,20 +146,26 @@ const cascaderProps = computed(() => {
   }
 })
 
+function createEventPayload(payload: CascaderChangeEvent): CascaderChangeEvent {
+  return {
+    ...payload,
+    field: fieldRef.value,
+    selectedOptions: [...payload.selectedOptions],
+  }
+}
+
 function onChange(payload: CascaderChangeEvent) {
   innerValue.value = payload.value
-  emit('change', payload)
+  emit('change', createEventPayload(payload))
 }
 
 function onFinish(payload: CascaderChangeEvent) {
   const nextValue = mapSelectedOptionsToValues(payload.selectedOptions, props.fieldNames)
+  const eventPayload = createEventPayload(payload)
 
   innerValue.value = payload.value
   emit('update:modelValue', nextValue)
-  emit('finish', {
-    ...payload,
-    selectedOptions: [...payload.selectedOptions],
-  })
+  emit('finish', eventPayload)
   close(false)
 }
 </script>
