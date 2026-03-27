@@ -1,63 +1,71 @@
 <script setup lang="ts">
-import type { RadioGroupProps, RadioOption, ResolvedRadioOption, VanRadioProps } from './types'
-import { Radio as VanRadio, RadioGroup as VanRadioGroup } from 'vant'
+import type {
+  CheckboxGroupProps,
+  CheckboxOption,
+  ResolvedCheckboxOption,
+  VanCheckboxProps,
+} from './types'
+import { Checkbox as VanCheckbox, CheckboxGroup as VanCheckboxGroup } from 'vant'
 import { computed, useSlots } from 'vue'
 import { resolveCheckerGroupOptions, useCleanAttrs, useHasCustomDefaultSlot } from '../__builtins__'
 
 defineOptions({
-  name: 'FRadioGroup',
+  name: 'FCheckboxGroup',
   inheritAttrs: false,
 })
 
-const props = withDefaults(defineProps<RadioGroupProps>(), {
+const props = withDefaults(defineProps<CheckboxGroupProps>(), {
   options: () => [],
 })
 
 const emit = defineEmits<{
-  'update:modelValue': [value: unknown]
+  'update:modelValue': [value: unknown[]]
+  'change': [value: unknown[]]
 }>()
 
 const slots = useSlots()
-const { props: attrs } = useCleanAttrs(['options', 'onChange', 'onUpdate:modelValue'])
+const { props: attrs } = useCleanAttrs(['options'])
 const hasCustomDefaultSlot = useHasCustomDefaultSlot(slots.default)
 
-const resolvedOptions = computed<ResolvedRadioOption[]>(() => {
-  return resolveCheckerGroupOptions<VanRadioProps, RadioOption, 'radioProps'>({
+const resolvedOptions = computed<ResolvedCheckboxOption[]>(() => {
+  return resolveCheckerGroupOptions<VanCheckboxProps, CheckboxOption, 'checkboxProps'>({
     options: props.options,
-    optionPropsKey: 'radioProps',
+    optionPropsKey: 'checkboxProps',
     labelPosition: props.labelPosition,
     labelDisabled: props.labelDisabled,
   })
 })
 
-const radioGroupProps = computed(() => {
+const checkboxGroupProps = computed(() => {
   return {
     ...attrs.value,
     checkedColor: props.checkedColor,
     direction: props.direction,
     disabled: props.disabled,
     iconSize: props.iconSize,
-    modelValue: props.modelValue,
+    max: props.max,
+    modelValue: props.modelValue ?? [],
     shape: props.shape,
   }
 })
 </script>
 
 <template>
-  <VanRadioGroup
-    v-bind="radioGroupProps"
+  <VanCheckboxGroup
+    v-bind="checkboxGroupProps"
     @update:model-value="(value) => emit('update:modelValue', value)"
+    @change="(value) => emit('change', value)"
   >
     <slot v-if="hasCustomDefaultSlot" />
     <template v-else>
       <template v-for="(option, index) in resolvedOptions" :key="index">
-        <VanRadio v-bind="option.radioProps">
-          <slot v-if="slots.option" name="option" :option="option" />
+        <VanCheckbox v-bind="option.checkboxProps">
+          <slot v-if="$slots.option" name="option" :option="option" />
           <template v-else>
             {{ option.label }}
           </template>
-        </VanRadio>
+        </VanCheckbox>
       </template>
     </template>
-  </VanRadioGroup>
+  </VanCheckboxGroup>
 </template>

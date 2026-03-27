@@ -44,6 +44,7 @@ export default createDocsConfig({
               text: 'Input 输入组件',
               items: [
                 { text: 'Input 输入框', link: '/component/input' },
+                { text: 'Checkbox 复选框', link: '/component/checkbox' },
                 { text: 'Radio 单选框', link: '/component/radio' },
                 { text: 'Cascader 级联选择', link: '/component/cascader' },
                 { text: 'Calendar 日期选择', link: '/component/calendar' },

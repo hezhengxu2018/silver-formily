@@ -5,32 +5,27 @@ import type {
   RadioGroupProps as VanRadioGroupProps,
   RadioProps as VanRadioProps,
 } from 'vant'
+import type {
+  CheckerOptionLike as BaseCheckerOptionLike,
+  CheckerOptionValue as BaseCheckerOptionValue,
+  CheckerGroupOptionSettings,
+  CheckerOptionBase,
+  CheckerResolvedOption,
+} from '../__builtins__'
 
-export type RadioOptionValue = unknown
+export type RadioOptionValue = BaseCheckerOptionValue
 
-export interface RadioOption extends Partial<Omit<VanRadioProps, 'modelValue' | 'name'>> {
-  label?: any
-  value?: RadioOptionValue
-  name?: RadioOptionValue
-}
+export interface RadioOption extends CheckerOptionBase<VanRadioProps, RadioOptionValue> {}
 
-export type RadioOptionLike = RadioOption | string | number | boolean
+export type RadioOptionLike = BaseCheckerOptionLike<RadioOption>
 
-export interface RadioGroupProps extends Pick<VanRadioGroupProps, 'checkedColor' | 'direction' | 'disabled' | 'iconSize' | 'modelValue' | 'shape'> {
+export interface RadioGroupProps extends Pick<VanRadioGroupProps, 'checkedColor' | 'direction' | 'disabled' | 'iconSize' | 'modelValue' | 'shape'>, CheckerGroupOptionSettings<RadioLabelPosition> {
   options?: RadioOptionLike[]
   readonly?: boolean
   readOnly?: boolean
-  labelPosition?: RadioLabelPosition
-  labelDisabled?: boolean
 }
 
-export interface ResolvedRadioOption extends Omit<RadioOption, 'name'> {
-  label?: any
-  value: RadioOptionValue
-  radioProps: Partial<Omit<VanRadioProps, 'modelValue'>> & {
-    name: RadioOptionValue
-  }
-}
+export interface ResolvedRadioOption extends CheckerResolvedOption<VanRadioProps, RadioOption, 'radioProps', RadioOptionValue> {}
 
 export interface RadioOptionSlotProps {
   option: ResolvedRadioOption

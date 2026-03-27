@@ -1,5 +1,6 @@
 export * from './calendar'
 export * from './cascader'
+export * from './checkbox'
 export * from './form'
 export * from './form-button-group'
 export * from './form-item'
