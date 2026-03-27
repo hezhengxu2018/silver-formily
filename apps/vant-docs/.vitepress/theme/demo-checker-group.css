@@ -1,0 +1,15 @@
+.van-checkbox {
+  margin: 0 20px 8px 0;
+}
+
+.van-checkbox:last-child {
+  margin-bottom: 0;
+}
+
+.van-radio {
+  margin: 0 20px 8px 0px;
+}
+
+.van-radio:last-child {
+  margin-bottom: 0;
+}
