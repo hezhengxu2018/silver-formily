@@ -47,6 +47,7 @@ export default createDocsConfig({
                 { text: 'Checkbox 复选框', link: '/component/checkbox' },
                 { text: 'Radio 单选框', link: '/component/radio' },
                 { text: 'Cascader 级联选择', link: '/component/cascader' },
+                { text: 'Picker 选择器', link: '/component/picker' },
                 { text: 'Calendar 日期选择', link: '/component/calendar' },
               ],
             },

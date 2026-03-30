@@ -37,6 +37,9 @@ const externalPackages = [
 ]
 
 export default defineConfig({
+  optimizeDeps: {
+    include: ['es-toolkit/compat'],
+  },
   build: {
     lib: {
       entry: getComponentEntries(),

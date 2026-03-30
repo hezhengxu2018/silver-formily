@@ -1,3 +1,4 @@
+import type { TreeFieldNames } from '../__builtins__'
 import type {
   CascaderFieldNames,
   CascaderModelValue,
@@ -6,12 +7,7 @@ import type {
   CascaderResolvedValue,
 } from './types'
 import { isValid } from '@formily/shared'
-
-const defaultFieldNames = {
-  text: 'text',
-  value: 'value',
-  children: 'children',
-} satisfies Required<CascaderFieldNames>
+import { cloneValue, resolveSelectionPlaceholder, resolveTreeFieldNames } from '../__builtins__'
 
 function isCascaderOptionValue(value: unknown): value is CascaderOptionValue {
   return typeof value === 'string' || typeof value === 'number'
@@ -19,7 +15,7 @@ function isCascaderOptionValue(value: unknown): value is CascaderOptionValue {
 
 function getOptionValue(
   option: CascaderOption,
-  fieldNames: Required<CascaderFieldNames>,
+  fieldNames: Required<TreeFieldNames>,
 ): CascaderOptionValue | undefined {
   const value = option[fieldNames.value]
 
@@ -28,7 +24,7 @@ function getOptionValue(
 
 function getOptionText(
   option: CascaderOption,
-  fieldNames: Required<CascaderFieldNames>,
+  fieldNames: Required<TreeFieldNames>,
 ): string {
   const text = option[fieldNames.text]
   const value = getOptionValue(option, fieldNames)
@@ -42,7 +38,7 @@ function getOptionText(
 
 function getOptionChildren(
   option: CascaderOption,
-  fieldNames: Required<CascaderFieldNames>,
+  fieldNames: Required<TreeFieldNames>,
 ): CascaderOption[] | undefined {
   const children = option[fieldNames.children]
 
@@ -62,14 +58,11 @@ function normalizeValueList(value: unknown): CascaderOptionValue[] {
 export function resolveCascaderFieldNames(
   fieldNames?: CascaderFieldNames,
 ): Required<CascaderFieldNames> {
-  return {
-    ...defaultFieldNames,
-    ...fieldNames,
-  }
+  return resolveTreeFieldNames(fieldNames) as Required<CascaderFieldNames>
 }
 
 export function cloneCascaderValue(value: CascaderResolvedValue): CascaderResolvedValue {
-  return value ? [...value] : null
+  return cloneValue(value)
 }
 
 export function mapSelectedOptionsToValues(
@@ -223,5 +216,5 @@ export function getCascaderLeafValue(
 }
 
 export function resolveCascaderPlaceholder(placeholder?: string) {
-  return placeholder || '请选择选项'
+  return resolveSelectionPlaceholder(placeholder)
 }

@@ -1,7 +1,7 @@
 import type { ComputedRef } from 'vue'
 import { isPlainObj, paramCase } from '@formily/shared'
 import bem from 'easy-bem'
-import { omit } from 'es-toolkit'
+import { cloneDeep, omit } from 'es-toolkit/compat'
 import { computed, getCurrentInstance, ref } from 'vue'
 
 interface UseAttrsParams {
@@ -9,8 +9,19 @@ interface UseAttrsParams {
   excludeKeys?: ComputedRef<string[]>
 }
 
+export interface TreeFieldNames {
+  text?: string
+  value?: string
+  children?: string
+}
+
 const DEFAULT_EXCLUDE_KEYS: string[] = []
 const LISTENER_PREFIX = /^on[A-Z]/
+const DEFAULT_TREE_FIELD_NAMES = {
+  text: 'text',
+  value: 'value',
+  children: 'children',
+} satisfies Required<TreeFieldNames>
 
 export function useAttrs(params: UseAttrsParams = {}): ComputedRef<Record<string, any>> {
   const { excludeListeners = false, excludeKeys } = params
@@ -53,6 +64,21 @@ export function composeExport<T0 extends object, T1 extends object>(
   s1: T1,
 ): T0 & T1 {
   return Object.assign(s0, s1)
+}
+
+export function cloneValue<T>(value: T): T {
+  return cloneDeep(value)
+}
+
+export function resolveTreeFieldNames(fieldNames?: TreeFieldNames): Required<TreeFieldNames> {
+  return {
+    ...DEFAULT_TREE_FIELD_NAMES,
+    ...fieldNames,
+  }
+}
+
+export function resolveSelectionPlaceholder(placeholder?: string) {
+  return placeholder || '请选择选项'
 }
 
 export function useHasExplicitVNodeProp() {
