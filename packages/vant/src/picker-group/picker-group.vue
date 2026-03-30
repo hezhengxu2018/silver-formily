@@ -25,11 +25,13 @@ import {
   defineComponent,
   Fragment,
   isVNode,
+  provide,
   ref,
   useSlots,
   watch,
 } from 'vue'
 import { cloneValue, PopupTriggerInput, useCleanAttrs, usePopupState } from '../__builtins__'
+import { pickerGroupInlineContextKey } from './context'
 import {
   clonePickerGroupValue,
   formatPickerGroupDisplay,
@@ -118,6 +120,7 @@ const INTERNAL_NEXT_STEP_TEXT = '下一步'
 
 const slots = useSlots()
 const fieldRef = useField<Field>()
+provide(pickerGroupInlineContextKey, true)
 const { props: triggerInputProps } = useCleanAttrs(['dataSource', 'modelValue', 'onUpdate:modelValue'])
 const activeTab = ref(0)
 const innerValue = ref<Array<PickerGroupValueItem | undefined>>([])
