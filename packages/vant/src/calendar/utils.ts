@@ -2,6 +2,7 @@ import type { CalendarType } from 'vant'
 import type { CalendarModelValue, CalendarResolvedValue } from './types'
 import dayjs from 'dayjs'
 import { isDate } from 'es-toolkit'
+import { cloneValue } from '../__builtins__'
 
 function isValidDate(value: unknown): value is Date {
   if (!isDate(value)) {
@@ -21,15 +22,7 @@ function normalizeCalendarDates(value: CalendarModelValue) {
 }
 
 export function cloneCalendarValue(value: CalendarResolvedValue): CalendarResolvedValue {
-  if (value === null) {
-    return null
-  }
-
-  if (Array.isArray(value)) {
-    return value.map(date => new Date(date))
-  }
-
-  return new Date(value)
+  return cloneValue(value)
 }
 
 export function normalizeCalendarValue(

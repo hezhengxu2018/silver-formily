@@ -5,6 +5,12 @@ import type {
   CascaderModelValue,
   CascaderOption,
 } from '../cascader/types'
+import type {
+  PickerColumns,
+  PickerDisplayFormatter,
+  PickerFieldNames,
+  PickerModelValue,
+} from '../picker/types'
 
 export interface PreviewTextProps {
   placeholder?: string
@@ -32,4 +38,13 @@ export interface PreviewTextCascaderProps {
   separator?: string
   fieldNames?: CascaderFieldNames
   displayFormatter?: CascaderDisplayFormatter
+}
+
+export interface PreviewTextPickerProps {
+  modelValue?: PickerModelValue
+  columns?: PickerColumns
+  columnsFieldNames?: PickerFieldNames
+  placeholder?: string
+  separator?: string
+  displayFormatter?: PickerDisplayFormatter
 }
