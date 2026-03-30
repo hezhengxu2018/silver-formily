@@ -4,7 +4,7 @@ import DocsDemoRenderer from './components/docs-demo-renderer.vue'
 import MobileDemoSection from './components/mobile-demo-section.vue'
 import { docsDemoRegistryKey } from './docs-demo-registry'
 import 'vant/lib/index.css'
-import './demo-checker-group.css'
+import './style.css'
 
 if (!import.meta.env.SSR) {
   import('@vant/touch-emulator')
