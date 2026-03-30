@@ -49,6 +49,7 @@ export default createDocsConfig({
                 { text: 'Cascader 级联选择', link: '/component/cascader' },
                 { text: 'Picker 选择器', link: '/component/picker' },
                 { text: 'DatePicker 日期滚轮', link: '/component/date-picker' },
+                { text: 'TimePicker 时间滚轮', link: '/component/time-picker' },
                 { text: 'PickerGroup 分步选择器', link: '/component/picker-group' },
                 { text: 'Calendar 日期选择', link: '/component/calendar' },
               ],

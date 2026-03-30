@@ -22,6 +22,12 @@ import type {
   PickerFieldNames,
   PickerModelValue,
 } from '../picker/types'
+import type {
+  TimePickerColumnType,
+  TimePickerDisplayFormatter,
+  TimePickerModelValue,
+  VanTimePickerProps,
+} from '../time-picker/types'
 
 export interface PreviewTextProps {
   placeholder?: string
@@ -53,6 +59,26 @@ export interface PreviewTextDatePickerProps {
   placeholder?: string
   separator?: string
   displayFormatter?: DatePickerDisplayFormatter
+  valueFormat?: string
+}
+
+export interface PreviewTextTimePickerProps {
+  modelValue?: TimePickerModelValue
+  columnsType?: TimePickerColumnType[]
+  filter?: VanTimePickerProps['filter']
+  format?: string
+  formatter?: VanTimePickerProps['formatter']
+  maxHour?: VanTimePickerProps['maxHour']
+  maxMinute?: VanTimePickerProps['maxMinute']
+  maxSecond?: VanTimePickerProps['maxSecond']
+  maxTime?: VanTimePickerProps['maxTime']
+  minHour?: VanTimePickerProps['minHour']
+  minMinute?: VanTimePickerProps['minMinute']
+  minSecond?: VanTimePickerProps['minSecond']
+  minTime?: VanTimePickerProps['minTime']
+  placeholder?: string
+  separator?: string
+  displayFormatter?: TimePickerDisplayFormatter
   valueFormat?: string
 }
 
