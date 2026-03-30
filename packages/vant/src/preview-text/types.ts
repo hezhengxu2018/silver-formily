@@ -6,6 +6,11 @@ import type {
   CascaderOption,
 } from '../cascader/types'
 import type {
+  PickerGroupDataSource,
+  PickerGroupDisplayFormatter,
+  PickerGroupModelValue,
+} from '../picker-group/types'
+import type {
   PickerColumns,
   PickerDisplayFormatter,
   PickerFieldNames,
@@ -47,4 +52,13 @@ export interface PreviewTextPickerProps {
   placeholder?: string
   separator?: string
   displayFormatter?: PickerDisplayFormatter
+}
+
+export interface PreviewTextPickerGroupProps {
+  modelValue?: PickerGroupModelValue
+  dataSource?: PickerGroupDataSource
+  columnsFieldNames?: PickerFieldNames
+  placeholder?: string
+  separator?: string
+  displayFormatter?: PickerGroupDisplayFormatter
 }

@@ -48,6 +48,7 @@ export default createDocsConfig({
                 { text: 'Radio 单选框', link: '/component/radio' },
                 { text: 'Cascader 级联选择', link: '/component/cascader' },
                 { text: 'Picker 选择器', link: '/component/picker' },
+                { text: 'PickerGroup 分步选择器', link: '/component/picker-group' },
                 { text: 'Calendar 日期选择', link: '/component/calendar' },
               ],
             },
