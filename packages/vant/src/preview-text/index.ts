@@ -7,6 +7,7 @@ import PickerGroup from './picker-group.vue'
 import Picker from './picker.vue'
 import Preview from './preview.vue'
 import Select from './select.vue'
+import TimePicker from './time-picker.vue'
 
 export const PreviewText = composeExport(Preview, {
   Calendar,
@@ -16,6 +17,7 @@ export const PreviewText = composeExport(Preview, {
   Picker,
   PickerGroup,
   Select,
+  TimePicker,
 })
 
 export default PreviewText
@@ -29,4 +31,5 @@ export type {
   PreviewTextPickerProps,
   PreviewTextProps,
   PreviewTextSelectProps,
+  PreviewTextTimePickerProps,
 } from './types'
