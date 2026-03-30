@@ -1,7 +1,11 @@
 {
   "extends": "@silver-formily/typescript-config/docs-vue-jsx.json",
   "compilerOptions": {
-    "baseUrl": "."
+    "baseUrl": ".",
+    "paths": {
+      "@silver-formily/vant": ["../../packages/vant/src"],
+      "@silver-formily/vant/*": ["../../packages/vant/src/*"]
+    }
   },
   "exclude": ["node_modules", ".vitepress/cache", ".vitepress/dist"]
 }

@@ -38,7 +38,11 @@ const externalPackages = [
 
 export default defineConfig({
   optimizeDeps: {
-    include: ['es-toolkit/compat'],
+    include: [
+      'dayjs',
+      'dayjs/plugin/customParseFormat',
+      'es-toolkit/compat',
+    ],
   },
   build: {
     lib: {

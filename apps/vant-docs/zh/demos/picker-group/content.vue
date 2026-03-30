@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import type { PickerGroupResolvedValue } from '@silver-formily/vant'
 import { createForm } from '@formily/core'
-import { Form, FormButtonGroup, FormItem, PickerGroup, Submit } from '@silver-formily/vant'
+import { DatePicker, Form, FormButtonGroup, FormItem, PickerGroup, Submit } from '@silver-formily/vant'
 import { Field } from '@silver-formily/vue'
-import { DatePicker, TimePicker } from 'vant'
+import { TimePicker } from 'vant'
 import { scheduleTabs } from './shared'
 
 const form = createForm({
   values: {
-    schedule: [['2026', '03', '30'], ['09', '30']],
+    schedule: ['2026-03-30', ['09', '30']],
   },
 })
 
@@ -16,11 +16,9 @@ const minDate = new Date(2025, 0, 1)
 const maxDate = new Date(2027, 11, 31)
 
 function formatSchedule(value: PickerGroupResolvedValue) {
-  const [date = [], time = []] = value ?? []
+  const [date = '', time = []] = value ?? []
 
-  const dateText = Array.isArray(date)
-    ? date.join('-')
-    : String(date ?? '')
+  const dateText = String(date ?? '')
   const timeText = Array.isArray(time)
     ? time.join(':')
     : String(time ?? '')

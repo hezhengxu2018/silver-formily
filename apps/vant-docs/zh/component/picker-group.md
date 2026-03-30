@@ -52,7 +52,7 @@ type PickerGroupDataSource = PickerGroupDataSourceItem[]
 - 不提供默认插槽时，`options` 作为对应步骤的单列选项
 - 提供默认插槽时，`options` 可以省略，`dataSource` 仅用于提供 tab 标题
 - 默认模式下最终字段值类型为 `Array<string | number> | null`
-- 默认插槽模式下，最终字段值会按 tab 保留每个子组件自己的 `modelValue` 结构，例如 `[['2026', '03', '30'], ['09', '30']]`
+- 默认插槽模式下，最终字段值会按 tab 保留每个子组件自己的 `modelValue` 结构，例如 `['2026-03-30', ['09', '30']]`
 - 触发区默认把每个 tab 的选中文案用 `separator` 拼接，默认值为 `' / '`
 - `readPretty` 模式下会自动回显当前选项文案；如果使用默认插槽模式，推荐同时提供 `displayFormatter`
 - 当前仍然不提供外部 `activeTab` prop / `v-model:active-tab` 控制模型

@@ -6,6 +6,12 @@ import type {
   CascaderOption,
 } from '../cascader/types'
 import type {
+  DatePickerColumnType,
+  DatePickerDisplayFormatter,
+  DatePickerModelValue,
+  VanDatePickerProps,
+} from '../date-picker/types'
+import type {
   PickerGroupDataSource,
   PickerGroupDisplayFormatter,
   PickerGroupModelValue,
@@ -34,6 +40,20 @@ export interface PreviewTextCalendarProps {
   type?: CalendarType
   placeholder?: string
   displayFormatter?: CalendarDisplayFormatter
+}
+
+export interface PreviewTextDatePickerProps {
+  modelValue?: DatePickerModelValue
+  columnsType?: DatePickerColumnType[]
+  filter?: VanDatePickerProps['filter']
+  format?: string
+  formatter?: VanDatePickerProps['formatter']
+  maxDate?: Date
+  minDate?: Date
+  placeholder?: string
+  separator?: string
+  displayFormatter?: DatePickerDisplayFormatter
+  valueFormat?: string
 }
 
 export interface PreviewTextCascaderProps {
