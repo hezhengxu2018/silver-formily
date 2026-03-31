@@ -74,10 +74,6 @@ interface TimePickerPropsForResolve {
   valueFormat?: string
 }
 
-function clamp(value: number, min: number, max: number) {
-  return Math.min(Math.max(value, min), max)
-}
-
 function times<T>(count: number, iteratee: (index: number) => T) {
   if (count < 0)
     return [] as T[]
@@ -263,20 +259,6 @@ function genOptions(
     : options
 }
 
-function normalizeTimePickerValues(values: string[], columns: PickerOption[][]) {
-  return values.map((value, index) => {
-    const column = columns[index]
-
-    if (!column?.length)
-      return value
-
-    const minValue = Number(column[0]?.value)
-    const maxValue = Number(column[column.length - 1]?.value)
-
-    return padZero(clamp(Number(value), minValue, maxValue))
-  })
-}
-
 function buildTimePickerColumns(values: string[], context: TimePickerResolvedContext) {
   let minHour = context.minHour
   let maxHour = context.maxHour
@@ -334,21 +316,7 @@ function resolveTimePickerState(
   options: TimePickerResolvedOptions = {},
   context = resolveTimePickerContext(options),
 ) {
-  let currentValues = createTimePickerInnerValue(modelValue, context)
-
-  for (let index = 0; index < 4; index += 1) {
-    const columns = buildTimePickerColumns(currentValues, context)
-    const nextValues = normalizeTimePickerValues(currentValues, columns)
-
-    if (nextValues.length === currentValues.length && nextValues.every((value, currentIndex) => value === currentValues[currentIndex])) {
-      return {
-        columns,
-        values: currentValues,
-      }
-    }
-
-    currentValues = nextValues
-  }
+  const currentValues = createTimePickerInnerValue(modelValue, context)
 
   return {
     columns: buildTimePickerColumns(currentValues, context),

@@ -273,6 +273,26 @@ describe('time-picker', () => {
     expect(container.textContent?.trim()).toBe('09:30')
   })
 
+  it('应该保留超出范围的原始字段值展示，不在封装层自动修正', async () => {
+    const { container } = render(() => (
+      <FormProvider form={createForm({
+        values: {
+          appointmentTime: '08:20',
+        },
+      })}
+      >
+        <Field
+          name="appointmentTime"
+          title="预约时间"
+          decorator={[FormItem]}
+          component={[TimePicker, { maxTime, minTime }]}
+        />
+      </FormProvider>
+    ))
+
+    expect(getTrigger(container).value).toBe('08:20')
+  })
+
   it('应该能作为 PickerGroup 默认插槽子组件以内联模式工作', async () => {
     const form = createForm({
       values: {
