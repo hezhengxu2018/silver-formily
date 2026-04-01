@@ -48,7 +48,6 @@ export const voidFieldProps = {
   disabled: createBooleanProp(),
   readOnly: createBooleanProp(),
   readPretty: createBooleanProp(),
-  loading: createBooleanProp(),
   reactions: createProp<IVoidFieldProps['reactions']>(),
   content: createProp<IVoidFieldProps['content']>(),
   data: createProp<IVoidFieldProps['data']>(),

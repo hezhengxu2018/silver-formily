@@ -67,7 +67,6 @@ export type IVoidFieldProps<
   D extends Component = Component,
   C extends Component = Component,
 > = IVoidFieldFactoryProps<D, C> & {
-  loading?: boolean
   decoratorContent?: any
 }
 
