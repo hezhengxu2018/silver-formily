@@ -33,6 +33,7 @@ api/components/field
 | disabled                 | 是否禁用（组件不可交互）                                              | `boolean`                                                                                              | `false`        |
 | readOnly                 | 是否只读（仍可聚焦但不可修改）                                        | `boolean`                                                                                              | `false`        |
 | readPretty               | 是否进入只读展示态（常配合 Pretty 组件）                              | `boolean`                                                                                              | `false`        |
+| loading                  | 字段加载态                                                            | `boolean`                                                                                              | `false`        |
 | dataSource               | 组件可选项数据源，数据结构实际上并无要求，组件能消费即可              | `any`                                                                                                  | -              |
 | validateFirst            | 校验失败时是否立即停止后续规则                                        | `boolean`                                                                                              | `false`        |
 | validatePattern          | 仅在指定 `pattern` 下触发的校验                                       | ^[enum]`'editable' \| 'readOnly' \| 'disabled' \| 'readPretty'`                                        | —              |

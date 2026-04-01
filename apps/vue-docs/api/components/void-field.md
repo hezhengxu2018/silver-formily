@@ -34,6 +34,7 @@ api/components/void-field
 | disabled                 | 是否禁用交互                                               | `boolean`                                                                                              | `false`        |
 | readOnly                 | 是否进入只读模式                                           | `boolean`                                                                                              | `false`        |
 | readPretty               | 是否使用 ReadPretty 组件渲染                               | `boolean`                                                                                              | `false`        |
+| loading                  | 字段加载态                                                 | `boolean`                                                                                              | `false`        |
 | decorator                | 装饰器组件及其 props，形如 `[Decorator, props]`            | `[Component, Props?]` \| `false`                                                                       | `false`        |
 | decoratorContent ^(beta) | 装饰器插槽内容，避免使用default插槽。                      | `Slots`                                                                                                | —              |
 | component                | 布局渲染组件及其 props，形如 `[Component, props]`          | `[Component, Props?]` \| `false`                                                                       | `false`        |
