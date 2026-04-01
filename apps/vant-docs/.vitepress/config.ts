@@ -47,6 +47,7 @@ export default createDocsConfig({
                 { text: 'PasswordInput 密码框', link: '/component/password-input' },
                 { text: 'Checkbox 复选框', link: '/component/checkbox' },
                 { text: 'Radio 单选框', link: '/component/radio' },
+                { text: 'Switch 开关', link: '/component/switch' },
                 { text: 'Rate 评分', link: '/component/rate' },
                 { text: 'Slider 滑块', link: '/component/slider' },
                 { text: 'Cascader 级联选择', link: '/component/cascader' },
