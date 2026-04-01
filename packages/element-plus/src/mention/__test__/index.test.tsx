@@ -12,12 +12,12 @@ const options = [
   { value: 'Vue', label: 'Vue.js' },
 ]
 
-function getInputEl() {
-  const textarea = document.querySelector('textarea')
+function getInputEl(container: Element) {
+  const textarea = container.querySelector('textarea')
   if (textarea) {
     return textarea
   }
-  return document.querySelector('input')
+  return container.querySelector('input')
 }
 
 const mentionSlots = {
@@ -40,13 +40,13 @@ describe('mention', () => {
   describe('基础功能', () => {
     it('应该支持选择提及项并更新表单值', async () => {
       const form = createForm()
-      render(() => (
+      const { container } = render(() => (
         <FormProvider form={form}>
           <Field name="content" component={[Mention]} dataSource={options} />
         </FormProvider>
       ))
 
-      const input = getInputEl()
+      const input = getInputEl(container)
       expect(input).toBeTruthy()
       await userEvent.click(input!)
       await userEvent.type(input!, '@Fo')
@@ -65,7 +65,7 @@ describe('mention', () => {
 
   describe('插槽', () => {
     it('应该向下拉插槽注入 field 引用', async () => {
-      render(() => (
+      const { container } = render(() => (
         <FormProvider form={createForm()}>
           <Field
             name="content"
@@ -78,7 +78,7 @@ describe('mention', () => {
         </FormProvider>
       ))
 
-      const input = getInputEl()
+      const input = getInputEl(container)
       expect(input).toBeTruthy()
       await userEvent.click(input!)
       await userEvent.type(input!, '@')
@@ -93,7 +93,7 @@ describe('mention', () => {
     })
 
     it('should render prefix/suffix/prepend/append/loading slots', async () => {
-      render(() => (
+      const { container } = render(() => (
         <FormProvider form={createForm()}>
           <Field
             name="content"
@@ -110,12 +110,13 @@ describe('mention', () => {
       expect(document.querySelector('.mention-prepend')).toBeInTheDocument()
       expect(document.querySelector('.mention-append')).toBeInTheDocument()
 
-      const input = getInputEl()
+      const input = getInputEl(container)
       expect(input).toBeTruthy()
       await userEvent.click(input!)
       await userEvent.type(input!, '@')
 
       await vi.waitFor(() => {
+        expect(document.querySelector('.el-mention-dropdown__loading')).toBeInTheDocument()
         expect(document.querySelector('.mention-loading')).toBeInTheDocument()
       })
     })
@@ -124,13 +125,13 @@ describe('mention', () => {
   describe('事件扩展', () => {
     it('search 事件应该注入 field 引用', async () => {
       const onSearch = vi.fn()
-      render(() => (
+      const { container } = render(() => (
         <FormProvider form={createForm()}>
           <Field name="content" component={[Mention]} dataSource={options} onSearch={onSearch} />
         </FormProvider>
       ))
 
-      const input = getInputEl()
+      const input = getInputEl(container)
       expect(input).toBeTruthy()
       await userEvent.click(input!)
       await userEvent.type(input!, '@V')
