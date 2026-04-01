@@ -6,12 +6,11 @@ import type {
   CalendarResolvedValue,
   VanCalendarInstance,
 } from './types'
-import { omit } from 'es-toolkit'
+import { cloneDeep, omit } from 'es-toolkit'
 import { Calendar as VanCalendar } from 'vant'
 import { computed, ref, useSlots } from 'vue'
 import { PopupTriggerInput, useCleanAttrs, usePopupState } from '../__builtins__'
 import {
-  cloneCalendarValue,
   formatCalendarValue,
   normalizeCalendarValue,
   resolveCalendarPlaceholder,
@@ -85,13 +84,11 @@ const displayText = computed(() => {
   const value = normalizedValue.value
 
   if (props.displayFormatter) {
-    return props.displayFormatter(cloneCalendarValue(value), props.type)
+    return props.displayFormatter(cloneDeep(value), props.type)
   }
 
   return formatCalendarValue(value, props.type)
 })
-
-const resolvedPlaceholder = computed(() => resolveCalendarPlaceholder(props.placeholder, props.type))
 
 function resolveResetValue(value?: CalendarModelValue): CalendarResolvedValue | undefined {
   if (value !== undefined) {
@@ -112,7 +109,7 @@ function getResetValue(value?: CalendarModelValue) {
     return undefined
   }
 
-  return cloneCalendarValue(resolvedValue)
+  return cloneDeep(resolvedValue)
 }
 
 function reset(date?: CalendarModelValue) {
@@ -159,11 +156,11 @@ const innerCalendarProps = computed(() => {
 })
 
 function onSelect(value: Date | Date[] | null) {
-  emit('select', cloneCalendarValue(value))
+  emit('select', cloneDeep(value))
 }
 
 function onConfirm(value: Date | Date[] | null) {
-  const nextValue = cloneCalendarValue(value)
+  const nextValue = cloneDeep(value)
 
   emit('update:modelValue', nextValue)
   emit('confirm', nextValue)
@@ -180,7 +177,7 @@ function onUnselect(value: Date) {
     :input-props="triggerInputProps"
     :disabled="props.disabled"
     :value="displayText"
-    :placeholder="resolvedPlaceholder"
+    :placeholder="resolveCalendarPlaceholder(props.placeholder, props.type)"
     @click="open"
   />
 

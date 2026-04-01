@@ -60,12 +60,10 @@ const displayText = computed(() => {
     props.separator,
   )
 })
-
-const resolvedPlaceholder = computed(() => props.placeholder || placeholder.value)
 </script>
 
 <template>
   <span class="van-field__control">
-    {{ displayText || resolvedPlaceholder }}
+    {{ displayText || placeholder }}
   </span>
 </template>

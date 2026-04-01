@@ -14,14 +14,14 @@ describe('previewText.Calendar', () => {
     expect(container.textContent?.trim()).toBe('暂无日期')
   })
 
-  it('应该在空值时优先使用组件自身占位符', async () => {
+  it('应该在空值时忽略输入态占位符并使用 PreviewText 占位符', async () => {
     const { container } = render(() => (
       <PreviewText placeholder="暂无日期">
         <PreviewText.Calendar modelValue={null} placeholder="请选择日期" />
       </PreviewText>
     ))
 
-    expect(container.textContent?.trim()).toBe('请选择日期')
+    expect(container.textContent?.trim()).toBe('暂无日期')
   })
 
   it('应该支持自定义 displayFormatter，并传入克隆后的值', async () => {

@@ -11,7 +11,8 @@ import type {
   PickerResolvedValue,
 } from './types'
 import { isPlainObj, isValid } from '@formily/shared'
-import { cloneValue, resolveSelectionPlaceholder, resolveTreeFieldNames } from '../__builtins__'
+import { clone } from 'es-toolkit'
+import { resolveTreeFieldNames } from '../__builtins__'
 
 type NormalizedPickerOption = Omit<PickerOption, 'children' | 'label' | 'name' | 'text' | 'value'> & {
   children?: NormalizedPickerColumn
@@ -138,14 +139,6 @@ export function normalizePickerValue(modelValue: PickerModelValue): PickerOption
     : []
 }
 
-export function clonePickerValue(value: PickerResolvedValue): PickerResolvedValue {
-  return cloneValue(value)
-}
-
-export function resolvePickerPlaceholder(placeholder?: string) {
-  return resolveSelectionPlaceholder(placeholder)
-}
-
 export function getFirstEnabledPickerOption(options: NormalizedPickerColumn) {
   return options.find(option => !option.disabled)
 }
@@ -196,7 +189,7 @@ export function resolvePickerSelectedOptions(
     const matchedOption = findPickerOptionByValue(options, selectedValues[index])
 
     return matchedOption
-      ? cloneValue(matchedOption)
+      ? clone(matchedOption)
       : undefined
   })
 }

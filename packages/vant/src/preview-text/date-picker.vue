@@ -22,6 +22,9 @@ const props = withDefaults(defineProps<PreviewTextDatePickerProps>(), {
 
 const { placeholder } = usePreviewConfig()
 const resolvedValue = computed(() => {
+  if (!props.displayFormatter)
+    return props.modelValue ?? null
+
   return resolveDatePickerModelValue(props.modelValue, {
     columnsType: props.columnsType,
     filter: props.filter,
@@ -34,6 +37,9 @@ const resolvedValue = computed(() => {
   })
 })
 const selectedOptions = computed(() => {
+  if (!props.displayFormatter)
+    return []
+
   return resolveDatePickerSelectedOptions(props.modelValue, {
     columnsType: props.columnsType,
     filter: props.filter,
@@ -53,7 +59,7 @@ const displayText = computed(() => {
     )
   }
 
-  return formatDatePickerValue(resolvedValue.value, {
+  return formatDatePickerValue(props.modelValue ?? null, {
     columnsType: props.columnsType,
     format: props.format,
     separator: props.separator,
@@ -64,6 +70,6 @@ const displayText = computed(() => {
 
 <template>
   <span class="van-field__control">
-    {{ displayText || props.placeholder || placeholder || '请选择日期' }}
+    {{ displayText || placeholder }}
   </span>
 </template>

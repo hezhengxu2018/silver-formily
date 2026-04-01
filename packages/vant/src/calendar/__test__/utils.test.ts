@@ -1,5 +1,6 @@
+import { cloneDeep } from 'es-toolkit'
 import { describe, expect, it } from 'vitest'
-import { cloneCalendarValue, formatCalendarValue, normalizeCalendarValue, resolveCalendarPlaceholder } from '../utils'
+import { formatCalendarValue, normalizeCalendarValue, resolveCalendarPlaceholder } from '../utils'
 
 describe('calendar utils', () => {
   it('应该按日历类型归一化外部值，并返回新的 Date 实例', () => {
@@ -30,10 +31,10 @@ describe('calendar utils', () => {
     const singleDate = new Date(2026, 2, 23)
     const multipleDates = [new Date(2026, 2, 23), new Date(2026, 2, 25)]
 
-    const clonedSingle = cloneCalendarValue(singleDate)
-    const clonedMultiple = cloneCalendarValue(multipleDates)
+    const clonedSingle = cloneDeep(singleDate)
+    const clonedMultiple = cloneDeep(multipleDates)
 
-    expect(cloneCalendarValue(null)).toBeNull()
+    expect(cloneDeep(null)).toBeNull()
 
     expect(clonedSingle).toBeInstanceOf(Date)
     expect(clonedSingle).not.toBe(singleDate)

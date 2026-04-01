@@ -11,7 +11,6 @@ import {
   findPickerOptionByValue,
   getFirstEnabledPickerOption,
   normalizePickerColumns,
-  resolvePickerPlaceholder,
 } from '../picker/utils'
 
 type NormalizedPickerGroupOptions = Parameters<typeof findPickerOptionByValue>[0]
@@ -79,10 +78,6 @@ export function normalizePickerGroupValue(modelValue: PickerGroupModelValue): Pi
 
 export function clonePickerGroupValue(value: PickerGroupResolvedValue): PickerGroupResolvedValue {
   return cloneValue(value)
-}
-
-export function resolvePickerGroupPlaceholder(placeholder?: string) {
-  return resolvePickerPlaceholder(placeholder)
 }
 
 export function resolvePickerGroupTabs(

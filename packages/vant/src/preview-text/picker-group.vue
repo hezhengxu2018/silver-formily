@@ -7,7 +7,6 @@ import {
   clonePickerGroupValue,
   formatPickerGroupDisplay,
   resolvePickerGroupModelValue,
-  resolvePickerGroupPlaceholder,
   resolvePickerGroupSelectedOptions,
 } from '../picker-group/utils'
 import { usePreviewConfig } from './utils'
@@ -58,13 +57,10 @@ const displayText = computed(() => {
     props.separator,
   )
 })
-const resolvedPlaceholder = computed(() => {
-  return props.placeholder || placeholder.value || resolvePickerGroupPlaceholder()
-})
 </script>
 
 <template>
   <span class="van-field__control">
-    {{ displayText || resolvedPlaceholder }}
+    {{ displayText || placeholder }}
   </span>
 </template>

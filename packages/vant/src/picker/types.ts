@@ -39,7 +39,7 @@ export type PickerResolvedValue = PickerOptionValue | PickerOptionValue[] | null
 export type PickerModelValue = PickerResolvedValue | undefined
 
 export type PickerDisplayFormatter = (
-  value: PickerResolvedValue,
+  value: PickerModelValue,
   selectedOptions: Array<PickerOption | undefined>,
 ) => string
 

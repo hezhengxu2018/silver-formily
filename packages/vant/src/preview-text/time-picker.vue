@@ -76,6 +76,6 @@ const displayText = computed(() => {
 
 <template>
   <span class="van-field__control">
-    {{ displayText || props.placeholder || placeholder || '请选择时间' }}
+    {{ displayText || placeholder }}
   </span>
 </template>

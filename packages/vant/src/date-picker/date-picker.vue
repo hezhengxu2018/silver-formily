@@ -70,9 +70,15 @@ const resolvedDatePickerOptions = computed(() => {
 })
 
 const resolvedValue = computed(() => {
+  if (!props.displayFormatter)
+    return props.modelValue ?? null
+
   return resolveDatePickerModelValue(props.modelValue, resolvedDatePickerOptions.value)
 })
 const selectedOptions = computed(() => {
+  if (!props.displayFormatter)
+    return [] as Array<PickerOption | undefined>
+
   return resolveDatePickerSelectedOptions(props.modelValue, resolvedDatePickerOptions.value)
 })
 const displayText = computed(() => {
@@ -83,7 +89,7 @@ const displayText = computed(() => {
     )
   }
 
-  return formatDatePickerValue(resolvedValue.value, resolvedDatePickerOptions.value)
+  return formatDatePickerValue(props.modelValue ?? null, resolvedDatePickerOptions.value)
 })
 
 function resetInnerValue() {

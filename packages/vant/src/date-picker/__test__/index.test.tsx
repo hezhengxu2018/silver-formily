@@ -337,6 +337,76 @@ describe('date-picker', () => {
     expect(container.textContent?.trim()).toBe('2026-03-30')
   })
 
+  it('应该在默认展示时保留原始可解析值，不因为可选范围归一化', async () => {
+    const { container } = render(() => (
+      <FormProvider form={createForm({
+        values: {
+          appointmentDate: '2024-03-30',
+        },
+      })}
+      >
+        <Field
+          name="appointmentDate"
+          title="预约日期"
+          decorator={[FormItem]}
+          component={[DatePicker, { minDate, maxDate }]}
+        />
+      </FormProvider>
+    ))
+
+    const trigger = getTrigger(container)
+
+    expect(trigger.value).toBe('2024-03-30')
+
+    await userEvent.click(trigger)
+
+    await vi.waitFor(() => {
+      expect(getVisibleSelectedTexts()).toEqual(['2025', '03', '30'])
+    })
+  })
+
+  it('应该在 readPretty 默认展示时保留原始可解析值', async () => {
+    const { container } = render(() => (
+      <FormProvider form={createForm()}>
+        <Field
+          name="appointmentDate"
+          initialValue="2024-03-30"
+          readPretty={true}
+          component={[DatePicker, { minDate, maxDate }]}
+        />
+      </FormProvider>
+    ))
+
+    expect(container.textContent?.trim()).toBe('2024-03-30')
+  })
+
+  it('应该只在使用 displayFormatter 时传入归一化后的值与已选选项', async () => {
+    const displayFormatter = vi.fn((value, selectedOptions) => {
+      expect(value).toBe('2025-03-30')
+      expect(selectedOptions.map(option => option?.text)).toEqual(['2025', '03', '30'])
+
+      return '2025年03月30日'
+    })
+
+    const { container } = render(() => (
+      <FormProvider form={createForm()}>
+        <Field
+          name="appointmentDate"
+          initialValue="2024-03-30"
+          readPretty={true}
+          component={[DatePicker, {
+            displayFormatter,
+            maxDate,
+            minDate,
+          }]}
+        />
+      </FormProvider>
+    ))
+
+    expect(container.textContent?.trim()).toBe('2025年03月30日')
+    expect(displayFormatter).toHaveBeenCalledOnce()
+  })
+
   it('应该在未传 minDate 和 maxDate 时也能正常回显初始值', async () => {
     const currentYear = new Date().getFullYear()
     const defaultValue = `${currentYear}-03-30`

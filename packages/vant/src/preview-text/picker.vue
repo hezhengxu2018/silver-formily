@@ -2,12 +2,10 @@
 import type { Field } from '@formily/core'
 import type { PreviewTextPickerProps } from './types'
 import { useField } from '@silver-formily/vue'
+import { clone } from 'es-toolkit'
 import { computed } from 'vue'
 import {
-  clonePickerValue,
   formatPickerDisplay,
-  resolvePickerModelValue,
-  resolvePickerPlaceholder,
   resolvePickerSelectedOptions,
 } from '../picker/utils'
 import { usePreviewConfig } from './utils'
@@ -35,16 +33,13 @@ const columns = computed(() => {
     : props.columns
 })
 
-const displayValue = computed(() => {
-  return resolvePickerModelValue(props.modelValue, columns.value, props.columnsFieldNames)
-})
 const selectedOptions = computed(() => {
   return resolvePickerSelectedOptions(props.modelValue, columns.value, props.columnsFieldNames)
 })
 const displayText = computed(() => {
   if (props.displayFormatter) {
     return props.displayFormatter(
-      clonePickerValue(displayValue.value),
+      clone(props.modelValue),
       [...selectedOptions.value],
     )
   }
@@ -56,11 +51,10 @@ const displayText = computed(() => {
     props.separator,
   )
 })
-const resolvedPlaceholder = computed(() => props.placeholder || placeholder.value || resolvePickerPlaceholder())
 </script>
 
 <template>
   <span class="van-field__control">
-    {{ displayText || resolvedPlaceholder }}
+    {{ displayText || placeholder }}
   </span>
 </template>

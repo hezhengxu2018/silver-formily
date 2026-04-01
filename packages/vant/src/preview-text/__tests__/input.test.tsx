@@ -34,7 +34,7 @@ describe('previewText.Input', () => {
       </FormProvider>
     ))
 
-    expect(container.textContent).toContain('N/A')
+    expect(container.textContent).toContain('-')
   })
 
   it('应该支持通过 PreviewText 提供自定义占位符', async () => {
