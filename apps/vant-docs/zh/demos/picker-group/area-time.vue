@@ -5,6 +5,7 @@ import { Form, FormButtonGroup, FormItem, PickerGroup, Submit } from '@silver-fo
 import { Field } from '@silver-formily/vue'
 import { areaList } from '@vant/area-data'
 import { Area, TimePicker } from 'vant'
+import { showDemoResult } from '../shared'
 import { deliveryTabs } from './shared'
 
 const form = createForm({
@@ -41,7 +42,7 @@ function formatDelivery(value: PickerGroupResolvedValue) {
 }
 
 async function handleSubmit(values: typeof form.values) {
-  await Prompts.alert(`提交结果\n\n${JSON.stringify(values, null, 2)}`)
+  await showDemoResult(values)
 }
 </script>
 

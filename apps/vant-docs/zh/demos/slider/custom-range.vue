@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { createForm } from '@formily/core'
-import { Form, FormButtonGroup, FormItem, Rate, Submit } from '@silver-formily/vant'
+import { Form, FormButtonGroup, FormItem, Slider, Submit } from '@silver-formily/vant'
 import { Field } from '@silver-formily/vue'
 import { showDemoResult } from '../shared'
 
 const form = createForm({
   values: {
-    score: 3,
+    temperature: 0,
   },
 })
 </script>
@@ -14,11 +14,10 @@ const form = createForm({
 <template>
   <Form :form="form">
     <Field
-      name="score"
-      title="只读评分"
-      :read-only="true"
+      name="temperature"
+      title="指定选择范围"
       :decorator="[FormItem]"
-      :component="[Rate]"
+      :component="[Slider, { min: -50, max: 50 }]"
     />
 
     <FormButtonGroup>

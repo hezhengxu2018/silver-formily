@@ -1,4 +1,4 @@
-import type { RateProps as VanRateProps } from 'vant'
+import type { RateProps as VanRateProps, SliderProps as VanSliderProps } from 'vant'
 import type { CalendarDisplayFormatter, CalendarModelValue, CalendarType } from '../calendar/types'
 import type {
   CascaderDisplayFormatter,
@@ -40,6 +40,10 @@ export interface PreviewTextInputProps {
 
 export interface PreviewTextRateProps {
   modelValue?: VanRateProps['modelValue'] | null | undefined
+}
+
+export interface PreviewTextSliderProps {
+  modelValue?: VanSliderProps['modelValue'] | null | undefined
 }
 
 export interface PreviewTextSelectProps {
