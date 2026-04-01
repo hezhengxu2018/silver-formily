@@ -1,5 +1,12 @@
 # 更新日志
 
+## 2.3.3
+
+### Patch Changes
+
+- dd5373a: 修复field模型遗漏的loading状态映射
+- 1e74c77: 修复类型声明错误
+
 ## 2.3.2
 
 ### Patch Changes
