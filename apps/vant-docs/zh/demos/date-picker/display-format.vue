@@ -3,6 +3,7 @@ import { createForm } from '@formily/core'
 import { formilyComputed } from '@silver-formily/reactive-vue'
 import { DatePicker, Form, FormButtonGroup, FormItem, Submit } from '@silver-formily/vant'
 import { Field } from '@silver-formily/vue'
+import { showDemoResult } from '../shared'
 import { maxDate, minDate } from './shared'
 
 const form = createForm({
@@ -16,7 +17,7 @@ const currentValue = formilyComputed(() => {
 })
 
 async function handleSubmit(values: typeof form.values) {
-  await Prompts.alert(`提交结果\n\n${JSON.stringify(values, null, 2)}`)
+  await showDemoResult(values)
 }
 </script>
 

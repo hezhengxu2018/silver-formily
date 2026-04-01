@@ -2,6 +2,7 @@
 import { createForm } from '@formily/core'
 import { Form, FormButtonGroup, FormItem, Input, Submit } from '@silver-formily/vant'
 import { Field } from '@silver-formily/vue'
+import { showDemoResult } from '../shared'
 
 const form = createForm({
   values: {
@@ -11,7 +12,7 @@ const form = createForm({
 
 async function handleSubmit(values: typeof form.values) {
   await new Promise(resolve => setTimeout(resolve, 1000))
-  await Prompts.alert(`异步提交完成\n\n${JSON.stringify(values, null, 2)}`)
+  await showDemoResult(values, '异步提交完成')
 }
 </script>
 

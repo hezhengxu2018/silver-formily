@@ -3,6 +3,7 @@ import { createForm } from '@formily/core'
 import { Cascader, Form, FormButtonGroup, FormItem, Submit } from '@silver-formily/vant'
 import { Field } from '@silver-formily/vue'
 import { useCascaderAreaData } from '@vant/area-data'
+import { showDemoResult } from '../shared'
 
 const form = createForm({
   values: {
@@ -13,7 +14,7 @@ const form = createForm({
 const areaOptions = useCascaderAreaData()
 
 async function handleSubmit(values: typeof form.values) {
-  await Prompts.alert(`提交结果\n\n${JSON.stringify(values, null, 2)}`)
+  await showDemoResult(values)
 }
 </script>
 

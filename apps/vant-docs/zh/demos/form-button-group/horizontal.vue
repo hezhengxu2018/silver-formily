@@ -2,6 +2,7 @@
 import { createForm } from '@formily/core'
 import { Form, FormButtonGroup, FormItem, Input, Reset, Submit } from '@silver-formily/vant'
 import { Field } from '@silver-formily/vue'
+import { showDemoResult } from '../shared'
 
 const form = createForm({
   initialValues: {
@@ -11,7 +12,7 @@ const form = createForm({
 })
 
 async function handleSubmit(values: typeof form.values) {
-  await Prompts.alert(`水平布局提交结果\n\n${JSON.stringify(values, null, 2)}`)
+  await showDemoResult(values, '水平布局提交结果')
 }
 </script>
 

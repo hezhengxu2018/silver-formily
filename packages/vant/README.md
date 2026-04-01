@@ -13,13 +13,15 @@
 - 已提供 `Input` / `Input.TextArea` 基础输入组件
 - 已提供 `Checkbox` / `Checkbox.Group` 复选组件
 - 已提供 `Radio.Group` 单选框组组件
+- 已提供 `Rate` 评分组件
+- 已提供 `Slider` 滑块组件
 - 已提供 `Cascader` 级联选择组件
 - 已提供 `Picker` 选择器组件
 - 已提供 `DatePicker` 日期滚轮选择组件
 - 已提供 `TimePicker` 时间滚轮选择组件
 - 已提供 `PickerGroup` 分步选择器字段组件，支持 `dataSource` 默认模式和 `Picker / Area / DatePicker / TimePicker` 默认插槽模式
 - 已提供 `Calendar` 弹层日期选择组件
-- 已提供 `PreviewText.Input` / `PreviewText.Select` / `PreviewText.Picker` / `PreviewText.DatePicker` / `PreviewText.TimePicker` / `PreviewText.Calendar` 预览态组件
+- 已提供 `PreviewText.Input` / `PreviewText.Select` / `PreviewText.Picker` / `PreviewText.DatePicker` / `PreviewText.TimePicker` / `PreviewText.Calendar` / `PreviewText.Rate` / `PreviewText.Slider` 预览态组件
 - 已提供 VitePress 文档站骨架：`apps/vant-docs`
 
 ## 文档

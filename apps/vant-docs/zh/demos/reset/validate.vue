@@ -2,6 +2,7 @@
 import { createForm } from '@formily/core'
 import { Form, FormButtonGroup, FormItem, Input, Reset } from '@silver-formily/vant'
 import { Field } from '@silver-formily/vue'
+import { showDemoResult } from '../shared'
 
 const form = createForm({
   initialValues: {
@@ -10,11 +11,11 @@ const form = createForm({
 })
 
 async function handleValidateSuccess(payload: unknown) {
-  await Prompts.alert(`重置后校验通过\n\n${JSON.stringify(payload, null, 2)}`)
+  await showDemoResult(payload, '重置后校验通过')
 }
 
 async function handleValidateFailed(error: unknown) {
-  await Prompts.alert(`重置后校验失败\n\n${JSON.stringify(error, null, 2)}`)
+  await showDemoResult(error, '重置后校验失败')
 }
 </script>
 

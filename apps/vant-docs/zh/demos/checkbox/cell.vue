@@ -3,6 +3,7 @@ import { createForm } from '@formily/core'
 import { Checkbox, Form, FormButtonGroup, Submit } from '@silver-formily/vant'
 import { Field } from '@silver-formily/vue'
 import { Cell, CellGroup, Tag } from 'vant'
+import { showDemoResult } from '../shared'
 import { serviceOptions } from './shared'
 
 const form = createForm({
@@ -25,7 +26,7 @@ function toggleService(value: string) {
 }
 
 async function handleSubmit(values: typeof form.values) {
-  await Prompts.alert(`提交结果\n\n${JSON.stringify(values, null, 2)}`)
+  await showDemoResult(values)
 }
 </script>
 

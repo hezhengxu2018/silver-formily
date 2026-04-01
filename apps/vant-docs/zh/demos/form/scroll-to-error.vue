@@ -4,6 +4,7 @@ import { Form, FormButtonGroup, FormItem, Input, Submit } from '@silver-formily/
 import { Field } from '@silver-formily/vue'
 import { Radio, RadioGroup } from 'vant'
 import { ref } from 'vue'
+import { showDemoResult } from '../shared'
 
 type ScrollPosition = 'start' | 'center' | 'end' | 'nearest'
 
@@ -20,7 +21,7 @@ const form = createForm({
 })
 
 async function handleSubmit(values: typeof form.values) {
-  await Prompts.alert(`提交结果\n\n${JSON.stringify(values, null, 2)}`)
+  await showDemoResult(values)
 }
 </script>
 

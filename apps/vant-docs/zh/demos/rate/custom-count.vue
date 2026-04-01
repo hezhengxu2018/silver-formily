@@ -2,7 +2,7 @@
 import { createForm } from '@formily/core'
 import { Form, FormButtonGroup, FormItem, Rate, Submit } from '@silver-formily/vant'
 import { Field } from '@silver-formily/vue'
-import { showRateDemoResult } from './shared'
+import { showDemoResult } from '../shared'
 
 const form = createForm({
   values: {
@@ -21,7 +21,7 @@ const form = createForm({
     />
 
     <FormButtonGroup>
-      <Submit :on-submit="showRateDemoResult">
+      <Submit :on-submit="showDemoResult">
         查看结果
       </Submit>
     </FormButtonGroup>
