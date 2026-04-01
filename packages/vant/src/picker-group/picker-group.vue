@@ -30,7 +30,7 @@ import {
   useSlots,
   watch,
 } from 'vue'
-import { cloneValue, PopupTriggerInput, useCleanAttrs, usePopupState } from '../__builtins__'
+import { cloneValue, PopupTriggerInput, resolveSelectionPlaceholder, useCleanAttrs, usePopupState } from '../__builtins__'
 import { pickerGroupInlineContextKey } from './context'
 import {
   clonePickerGroupValue,
@@ -38,7 +38,6 @@ import {
   normalizePickerGroupDataSource,
   resolvePickerGroupInnerValue,
   resolvePickerGroupModelValue,
-  resolvePickerGroupPlaceholder,
   resolvePickerGroupSelectedIndexes,
   resolvePickerGroupSelectedOptions,
   resolvePickerGroupSlotInnerValue,
@@ -148,7 +147,6 @@ const displayText = computed(() => {
     props.separator,
   )
 })
-const resolvedPlaceholder = computed(() => resolvePickerGroupPlaceholder(props.placeholder))
 
 function clonePickerGroupValueItem(value: PickerGroupValueItem | undefined) {
   return Array.isArray(value)
@@ -539,7 +537,7 @@ function onClosed() {
     :input-props="triggerInputProps"
     :disabled="props.disabled"
     :value="displayText"
-    :placeholder="resolvedPlaceholder"
+    :placeholder="resolveSelectionPlaceholder(props.placeholder)"
     @click="open"
   />
 

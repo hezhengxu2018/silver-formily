@@ -5,7 +5,7 @@ export const previewTextConfigKey = Symbol('vantPreviewTextConfig')
 
 export function usePreviewConfig() {
   const previewConfig = inject(previewTextConfigKey, {} as PreviewTextProps)
-  const placeholder = computed(() => previewConfig.placeholder || 'N/A')
+  const placeholder = computed(() => previewConfig.placeholder || '-')
 
   return {
     placeholder,

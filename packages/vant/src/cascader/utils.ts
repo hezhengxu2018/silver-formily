@@ -7,7 +7,7 @@ import type {
   CascaderResolvedValue,
 } from './types'
 import { isValid } from '@formily/shared'
-import { cloneValue, resolveSelectionPlaceholder, resolveTreeFieldNames } from '../__builtins__'
+import { cloneValue, resolveTreeFieldNames } from '../__builtins__'
 
 function isCascaderOptionValue(value: unknown): value is CascaderOptionValue {
   return typeof value === 'string' || typeof value === 'number'
@@ -213,8 +213,4 @@ export function getCascaderLeafValue(
   fieldNames?: CascaderFieldNames,
 ): CascaderOptionValue | undefined {
   return normalizeCascaderValue(value, options, fieldNames)?.at(-1)
-}
-
-export function resolveCascaderPlaceholder(placeholder?: string) {
-  return resolveSelectionPlaceholder(placeholder)
 }

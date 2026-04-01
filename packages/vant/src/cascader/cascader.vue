@@ -9,14 +9,13 @@ import type {
 import { useField } from '@silver-formily/vue'
 import { Cascader as VanCascader, Popup as VanPopup } from 'vant'
 import { computed, ref, useSlots } from 'vue'
-import { PopupTriggerInput, useCleanAttrs, usePopupState } from '../__builtins__'
+import { PopupTriggerInput, resolveSelectionPlaceholder, useCleanAttrs, usePopupState } from '../__builtins__'
 import {
   cloneCascaderValue,
   formatCascaderValue,
   getCascaderLeafValue,
   mapSelectedOptionsToValues,
   normalizeCascaderValue,
-  resolveCascaderPlaceholder,
   resolveCascaderSelectedOptions,
 } from './utils'
 
@@ -88,8 +87,6 @@ const displayText = computed(() => {
   )
 })
 
-const resolvedPlaceholder = computed(() => resolveCascaderPlaceholder(props.placeholder))
-
 function resetInnerValue() {
   innerValue.value = getCascaderLeafValue(props.modelValue, props.options, props.fieldNames)
 }
@@ -139,7 +136,7 @@ const cascaderProps = computed(() => {
     fieldNames: props.fieldNames,
     modelValue: innerValue.value,
     options: props.options,
-    placeholder: resolvedPlaceholder.value,
+    placeholder: resolveSelectionPlaceholder(props.placeholder),
     showHeader: props.showHeader,
     swipeable: props.swipeable,
     title: props.title,
@@ -175,7 +172,7 @@ function onFinish(payload: CascaderChangeEvent) {
     :input-props="triggerInputProps"
     :disabled="props.disabled"
     :value="displayText"
-    :placeholder="resolvedPlaceholder"
+    :placeholder="resolveSelectionPlaceholder(props.placeholder)"
     @click="open"
   />
 

@@ -12,16 +12,15 @@ import type {
   PickerScrollIntoEventParams,
 } from './types'
 import { useField } from '@silver-formily/vue'
+import { clone } from 'es-toolkit'
 import { Picker as VanPicker, Popup as VanPopup } from 'vant'
 import { computed, ref, watch } from 'vue'
-import { PopupTriggerInput, useCleanAttrs, usePopupState } from '../__builtins__'
+import { PopupTriggerInput, resolveSelectionPlaceholder, useCleanAttrs, usePopupState } from '../__builtins__'
 import {
-  clonePickerValue,
   formatPickerDisplay,
   normalizePickerColumns,
   resolvePickerInnerValue,
   resolvePickerModelValue,
-  resolvePickerPlaceholder,
   resolvePickerSelectedOptions,
 } from './utils'
 
@@ -65,13 +64,10 @@ const innerValue = ref<PickerOptionValue[]>([])
 const selectedOptions = computed(() => {
   return resolvePickerSelectedOptions(props.modelValue, props.columns, props.columnsFieldNames)
 })
-const displayValue = computed(() => {
-  return resolvePickerModelValue(props.modelValue, props.columns, props.columnsFieldNames)
-})
 const displayText = computed(() => {
   if (props.displayFormatter) {
     return props.displayFormatter(
-      clonePickerValue(displayValue.value),
+      clone(props.modelValue),
       [...selectedOptions.value],
     )
   }
@@ -83,7 +79,6 @@ const displayText = computed(() => {
     props.separator,
   )
 })
-const resolvedPlaceholder = computed(() => resolvePickerPlaceholder(props.placeholder))
 
 function resetInnerValue() {
   innerValue.value = resolvePickerInnerValue(
@@ -189,7 +184,7 @@ function onConfirm(payload: Omit<PickerConfirmEventParams, 'field'>) {
     props.columnsFieldNames,
   )
 
-  emit('update:modelValue', clonePickerValue(nextValue))
+  emit('update:modelValue', clone(nextValue))
   emit('confirm', createBaseEventPayload(payload))
   close(false)
 }
@@ -216,7 +211,7 @@ function onScrollInto(payload: Omit<PickerScrollIntoEventParams, 'field'>) {
     :input-props="triggerInputProps"
     :disabled="props.disabled"
     :value="displayText"
-    :placeholder="resolvedPlaceholder"
+    :placeholder="resolveSelectionPlaceholder(props.placeholder)"
     @click="open"
   />
 

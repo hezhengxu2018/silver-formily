@@ -358,6 +358,31 @@ describe('picker', () => {
       expect(document.querySelector('.picker-slot-empty')).not.toBeNull()
     })
   })
+
+  it('应该给 displayFormatter 透传克隆后的原始 modelValue', async () => {
+    const modelValue = ['hz']
+    const displayFormatter = vi.fn((value, selectedOptions) => {
+      expect(value).toEqual(modelValue)
+      expect(value).not.toBe(modelValue)
+      expect(selectedOptions.map(option => option?.text)).toEqual(['杭州'])
+
+      ;(value as string[])[0] = 'changed'
+
+      return '杭州'
+    })
+
+    const { container } = render(() => (
+      <Picker
+        modelValue={modelValue}
+        columns={cityOptions}
+        displayFormatter={displayFormatter}
+      />
+    ))
+
+    expect(getTrigger(container).value).toBe('杭州')
+    expect(displayFormatter).toHaveBeenCalledOnce()
+    expect(modelValue[0]).toBe('hz')
+  })
 })
 
 describe('picker readPretty', () => {
