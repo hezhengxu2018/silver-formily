@@ -32,7 +32,14 @@ import { NavBar } from 'vant'
         <DocsDemoRenderer path="@/zh/demos/radio/slot.vue" />
       </MobileDemoSection>
 
-      <MobileDemoSection title="禁用与只读">
+      <MobileDemoSection
+        title="允许再次点击取消"
+        description="给 Radio.Group 开启 cancelable 后，当前已选项可以再次点击清空，适合“可选可不选”的单值场景。"
+      >
+        <DocsDemoRenderer path="@/zh/demos/radio/cancelable.vue" />
+      </MobileDemoSection>
+
+      <MobileDemoSection title="禁用状态">
         <DocsDemoRenderer path="@/zh/demos/radio/status.vue" />
       </MobileDemoSection>
     </div>
