@@ -41,12 +41,21 @@ const radioGroupProps = computed(() => {
     shape: props.shape,
   }
 })
+
+function onUpdateModelValue(value: unknown) {
+  if (props.cancelable && value === props.modelValue) {
+    emit('update:modelValue', undefined)
+    return
+  }
+
+  emit('update:modelValue', value)
+}
 </script>
 
 <template>
   <VanRadioGroup
     v-bind="radioGroupProps"
-    @update:model-value="(value) => emit('update:modelValue', value)"
+    @update:model-value="onUpdateModelValue"
   >
     <slot v-if="hasCustomDefaultSlot" />
     <template v-else>

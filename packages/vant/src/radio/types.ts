@@ -21,6 +21,7 @@ export type RadioOptionLike = BaseCheckerOptionLike<RadioOption>
 
 export interface RadioGroupProps extends Pick<VanRadioGroupProps, 'checkedColor' | 'direction' | 'disabled' | 'iconSize' | 'modelValue' | 'shape'>, CheckerGroupOptionSettings<RadioLabelPosition> {
   options?: RadioOptionLike[]
+  cancelable?: boolean
   readonly?: boolean
   readOnly?: boolean
 }

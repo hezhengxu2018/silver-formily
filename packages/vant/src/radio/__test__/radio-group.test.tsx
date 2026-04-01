@@ -132,6 +132,62 @@ describe('radio-group', () => {
     expect(form.values.radio).toBe('fallback-value')
   })
 
+  it('应该在 cancelable 开启时支持再次点击取消选中', async () => {
+    const form = createForm({
+      values: {
+        radio: '1',
+      },
+    })
+
+    const { container } = render(() => (
+      <FormProvider form={form}>
+        <Field
+          name="radio"
+          component={[Radio.Group, { cancelable: true }]}
+          dataSource={[
+            { label: '标签1', value: '1' },
+            { label: '标签2', value: '2' },
+          ]}
+        />
+      </FormProvider>
+    ))
+
+    expect(getCheckedLabel(container)).toBe('标签1')
+
+    await userEvent.click(getRadioRoots(container)[0])
+
+    await vi.waitFor(() => {
+      expect(form.values.radio).toBeUndefined()
+      expect(container.querySelector('.van-radio__icon--checked')).toBeNull()
+    })
+  })
+
+  it('应该在 cancelable 未开启时保持原有单选行为', async () => {
+    const form = createForm({
+      values: {
+        radio: '1',
+      },
+    })
+
+    const { container } = render(() => (
+      <FormProvider form={form}>
+        <Field
+          name="radio"
+          component={[Radio.Group]}
+          dataSource={[
+            { label: '标签1', value: '1' },
+            { label: '标签2', value: '2' },
+          ]}
+        />
+      </FormProvider>
+    ))
+
+    await userEvent.click(getRadioRoots(container)[0])
+
+    expect(form.values.radio).toBe('1')
+    expect(getCheckedLabel(container)).toBe('标签1')
+  })
+
   it('应该支持通过插槽渲染选项内容', async () => {
     const { container } = render(() => (
       <FormProvider form={createForm()}>
