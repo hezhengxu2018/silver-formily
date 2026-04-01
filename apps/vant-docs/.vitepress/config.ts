@@ -47,6 +47,7 @@ export default createDocsConfig({
                 { text: 'PasswordInput 密码框', link: '/component/password-input' },
                 { text: 'Checkbox 复选框', link: '/component/checkbox' },
                 { text: 'Radio 单选框', link: '/component/radio' },
+                { text: 'Rate 评分', link: '/component/rate' },
                 { text: 'Cascader 级联选择', link: '/component/cascader' },
                 { text: 'Picker 选择器', link: '/component/picker' },
                 { text: 'DatePicker 日期滚轮', link: '/component/date-picker' },

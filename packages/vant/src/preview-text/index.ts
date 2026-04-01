@@ -6,6 +6,7 @@ import Input from './input.vue'
 import PickerGroup from './picker-group.vue'
 import Picker from './picker.vue'
 import Preview from './preview.vue'
+import Rate from './rate.vue'
 import Select from './select.vue'
 import TimePicker from './time-picker.vue'
 
@@ -16,6 +17,7 @@ export const PreviewText = composeExport(Preview, {
   Input,
   Picker,
   PickerGroup,
+  Rate,
   Select,
   TimePicker,
 })
@@ -30,6 +32,7 @@ export type {
   PreviewTextPickerGroupProps,
   PreviewTextPickerProps,
   PreviewTextProps,
+  PreviewTextRateProps,
   PreviewTextSelectProps,
   PreviewTextTimePickerProps,
 } from './types'
