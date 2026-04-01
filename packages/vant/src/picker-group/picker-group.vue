@@ -13,6 +13,7 @@ import type {
   PickerGroupScrollIntoEventParams,
   PickerGroupSelectedIndexItem,
   PickerGroupSelectedOptionItem,
+  PickerGroupSlots,
   PickerGroupValueItem,
 } from './types'
 import { isValid } from '@formily/shared'
@@ -27,7 +28,6 @@ import {
   isVNode,
   provide,
   ref,
-  useSlots,
   watch,
 } from 'vue'
 import { cloneValue, PopupTriggerInput, resolveSelectionPlaceholder, useCleanAttrs, usePopupState } from '../__builtins__'
@@ -82,6 +82,8 @@ const emit = defineEmits<{
   'closed': []
 }>()
 
+const slots = defineSlots<PickerGroupSlots>()
+
 const PickerGroupSlotNode = defineComponent({
   name: 'PickerGroupSlotNode',
   props: {
@@ -117,7 +119,6 @@ const PickerGroupSlotNode = defineComponent({
 
 const INTERNAL_NEXT_STEP_TEXT = '下一步'
 
-const slots = useSlots()
 const fieldRef = useField<Field>()
 provide(pickerGroupInlineContextKey, true)
 const { props: triggerInputProps } = useCleanAttrs(['dataSource', 'modelValue', 'onUpdate:modelValue'])
