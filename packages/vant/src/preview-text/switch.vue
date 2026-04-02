@@ -12,7 +12,7 @@ defineOptions({
 
 const props = defineProps<PreviewTextSwitchProps>()
 
-const { props: attrs } = useCleanAttrs(['disabled', 'modelValue', 'onUpdate:modelValue'])
+const { props: attrs } = useCleanAttrs(['beforeChange', 'disabled', 'modelValue', 'onUpdate:modelValue', 'readonly'])
 const { placeholder } = usePreviewConfig()
 const hasExplicitVNodeProp = useHasExplicitVNodeProp()
 

@@ -10,18 +10,20 @@ const form = createForm({
   },
 })
 
-interface AsyncSwitchField {
-  value: boolean
-  setValue: (value: boolean) => void
+function sleep(duration: number) {
+  return new Promise(resolve => setTimeout(resolve, duration))
 }
 
-async function handleSwitchChange(field: AsyncSwitchField, nextValue: boolean) {
+async function handleBeforeChange(nextValue: boolean) {
   const actionText = nextValue ? '开启' : '关闭'
   const confirmed = await Prompts.confirm(`确认将“异步开关”切换为${actionText}吗？`)
 
-  if (confirmed) {
-    field.setValue(nextValue)
+  if (!confirmed) {
+    return false
   }
+
+  await sleep(600)
+  return true
 }
 </script>
 
@@ -31,14 +33,10 @@ async function handleSwitchChange(field: AsyncSwitchField, nextValue: boolean) {
       name="asyncEnabled"
       title="异步开关"
       :decorator="[FormItem]"
-    >
-      <template #default="{ field }">
-        <Switch
-          :model-value="Boolean(field.value)"
-          @update:model-value="(value) => handleSwitchChange(field, Boolean(value))"
-        />
-      </template>
-    </Field>
+      :component="[Switch, {
+        beforeChange: handleBeforeChange,
+      }]"
+    />
 
     <FormButtonGroup>
       <Submit :on-submit="showDemoResult">
