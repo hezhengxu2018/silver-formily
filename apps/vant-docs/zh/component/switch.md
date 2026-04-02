@@ -54,7 +54,7 @@ mobileDemo: switch/index.vue
 
 ## 异步控制
 
-如果需要先确认、再真正写回字段值，可以像官方示例一样改用手动控制模式。在 Formily 场景下，推荐通过 `Field` 插槽拿到 `field`，确认后再调用 `field.setValue(...)`。
+如果需要先确认、再真正写回字段值，可以直接使用 `beforeChange`。它会在切换前触发；当返回 `false`、返回值解析为 `false`，或 Promise 被 reject 时，都会阻止这次切换。异步 Promise 等待期间，组件会自动展示 loading，省掉手动维护一套临时状态。
 
 <<< @/zh/demos/switch/async-control.vue
 
@@ -70,7 +70,14 @@ mobileDemo: switch/index.vue
 
 - Formily 场景统一使用 `modelValue` 作为字段值，默认是 `boolean`
 - `readPretty` 模式下会自动切换到 `PreviewText.Switch`，只有字段值精确匹配 `activeValue` / `inactiveValue` 时才显示开关，否则显示占位符，避免把非法值误显示为“关闭”
+- `beforeChange` 会在真正触发 `update:modelValue` / `change` 之前执行，适合做确认弹窗、权限校验、异步请求前置判断
 - 未单独列出的 Vant `Switch` 官方属性和事件会继续透传
+
+### 扩展属性
+
+| 属性名         | 类型                                                                                                                             | 描述                                                                                    | 默认值 |
+| -------------- | -------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- | ------ |
+| `beforeChange` | ^[Function]`(value: unknown, context: { currentValue?: unknown; field?: Field }) => boolean \| Promise<boolean \| void> \| void` | 切换前钩子。显式返回 `false`、Promise resolve 为 `false` 或 Promise reject 时会阻止切换 | `-`    |
 
 ### 官方透传属性
 
@@ -88,10 +95,10 @@ mobileDemo: switch/index.vue
 
 ### Events
 
-| 事件名              | 描述              | 回调参数                              |
-| ------------------- | ----------------- | ------------------------------------- |
-| `update:modelValue` | 开关值变化时触发  | ^[Function]`(value: unknown) => void` |
-| `change`            | Vant 原生变更事件 | ^[Function]`(value: unknown) => void` |
+| 事件名              | 描述                 | 回调参数                              |
+| ------------------- | -------------------- | ------------------------------------- |
+| `update:modelValue` | 开关值变化时触发     | ^[Function]`(value: unknown) => void` |
+| `change`            | 开关值确认变更后触发 | ^[Function]`(value: unknown) => void` |
 
 ### Slots
 
@@ -102,4 +109,4 @@ mobileDemo: switch/index.vue
 
 ### 参考
 
-属性命名和交互能力主要参考 [Vant Switch 官方文档（正式站）](https://vant-ui.github.io/vant/#/zh-CN/switch)。
+基础属性主要参考 [Vant Switch 官方文档（正式站）](https://vant-ui.github.io/vant/#/zh-CN/switch)，`beforeChange` 的命名和“切换前拦截”语义参考了 [Element Plus Switch](https://element-plus.org/en-US/component/switch.html)。

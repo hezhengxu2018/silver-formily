@@ -57,7 +57,7 @@ import { NavBar } from 'vant'
 
       <MobileDemoSection
         title="异步控制"
-        description="在确认通过后再手动写回字段值，适合关键状态切换。"
+        description="通过 beforeChange 在切换前拦截，并自动展示异步 loading。"
       >
         <DocsDemoRenderer path="@/zh/demos/switch/async-control.vue" />
       </MobileDemoSection>
