@@ -51,6 +51,7 @@ export default createDocsConfig({
                 { text: 'Stepper 步进器', link: '/component/stepper' },
                 { text: 'Rate 评分', link: '/component/rate' },
                 { text: 'Slider 滑块', link: '/component/slider' },
+                { text: 'Signature 签名', link: '/component/signature' },
                 { text: 'Cascader 级联选择', link: '/component/cascader' },
                 { text: 'Picker 选择器', link: '/component/picker' },
                 { text: 'DatePicker 日期滚轮', link: '/component/date-picker' },
