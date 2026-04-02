@@ -1,0 +1,19 @@
+@use '../__builtins__/styles/common.scss' as *;
+
+$signature-prefix: '#{$style-prefix}-signature';
+
+.#{$signature-prefix} {
+  position: relative;
+
+  &--disabled,
+  &--readonly {
+    opacity: var(--van-disabled-opacity);
+  }
+
+  &__mask {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: transparent;
+  }
+}
