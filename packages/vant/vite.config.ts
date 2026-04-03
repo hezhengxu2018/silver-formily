@@ -59,7 +59,7 @@ export default defineConfig({
       output: {
         assetFileNames: (assetInfo) => {
           const originalFileName = assetInfo.originalFileNames?.[0]
-          const originalDirName = originalFileName?.match(/src\/(.*)\/index.ts/)?.[1]
+          const originalDirName = originalFileName?.match(/src\/(.*)\/index\.tsx?/)?.[1]
           return originalDirName
             ? `styles/${originalDirName}/[name][extname]`
             : 'styles/[name][extname]'

@@ -1,4 +1,4 @@
-import type { ComputedRef } from 'vue'
+import type { Component, ComputedRef } from 'vue'
 import { isPlainObj, paramCase } from '@formily/shared'
 import bem from 'easy-bem'
 import { cloneDeep, omit } from 'es-toolkit/compat'
@@ -64,6 +64,18 @@ export function composeExport<T0 extends object, T1 extends object>(
   s1: T1,
 ): T0 & T1 {
   return Object.assign(s0, s1)
+}
+
+export function isVueOptions(options: any): options is Component {
+  return (
+    options
+    && typeof options !== 'function'
+    && (typeof options.template === 'string'
+      || typeof options.render === 'function'
+      || typeof options.setup === 'function'
+      || typeof options.__asyncLoader === 'function'
+      || typeof options.__name === 'string')
+  )
 }
 
 export function cloneValue<T>(value: T): T {

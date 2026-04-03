@@ -2,6 +2,7 @@ import path, { dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { createDocsConfig } from '@silver-formily/docs-toolkit'
 import pkg from '@silver-formily/vant/package.json' with { type: 'json' }
+import vueJsx from '@vitejs/plugin-vue-jsx'
 
 const currentDir = dirname(fileURLToPath(import.meta.url))
 const vantSource = `${path.resolve(currentDir, '../../../packages/vant/src')}/`
@@ -60,6 +61,12 @@ export default createDocsConfig({
                 { text: 'Calendar 日期选择', link: '/component/calendar' },
               ],
             },
+            {
+              text: 'Scenario 场景组件',
+              items: [
+                { text: 'FormPopup 表单弹层', link: '/component/form-popup' },
+              ],
+            },
           ],
         },
       },
@@ -85,6 +92,7 @@ export default createDocsConfig({
     define: {
       __VUE_PROD_HYDRATION_MISMATCH_DETAILS__: true,
     },
+    plugins: [vueJsx()],
     ssr: {
       noExternal: ['@silver-formily/vue'],
     },
