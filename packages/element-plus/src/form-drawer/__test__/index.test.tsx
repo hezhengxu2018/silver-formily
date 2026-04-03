@@ -3,6 +3,7 @@ import { ElButton } from 'element-plus'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { render } from 'vitest-browser-vue'
 import { userEvent } from 'vitest/browser'
+import { defineComponent } from 'vue'
 import { FormDrawer, FormItem, Input } from '../../'
 import 'element-plus/theme-chalk/base.css'
 import 'element-plus/theme-chalk/el-input.css'
@@ -120,6 +121,50 @@ describe('formDrawer', () => {
       })
       await getByText('打开抽屉').click()
       await expect.element(getByText('输入框4')).toBeInTheDocument()
+      await getByText('取消').click()
+      await vi.waitFor(() => {
+        expect(document.querySelector('.el-drawer')).toBeNull()
+      }, { timeout: 2000 })
+    })
+
+    it('应该支持渲染 defineComponent 组件', async () => {
+      const DrawerForm = defineComponent({
+        name: 'FormDrawerSetupContent',
+        setup() {
+          return () => (
+            <SchemaField>
+              <SchemaStringField
+                name="name"
+                title="输入框-setup"
+                required
+                x-decorator="FormItem"
+                x-component="Input"
+              />
+            </SchemaField>
+          )
+        },
+      })
+
+      const TestComponent = () => {
+        const handleOpen = () => {
+          FormDrawer('测试标题', DrawerForm).open().catch(() => undefined)
+        }
+
+        return <ElButton onClick={handleOpen}>打开 setup 抽屉</ElButton>
+      }
+
+      const { getByText } = render(() => <TestComponent />, {
+        global: {
+          stubs: {
+            Transition: false,
+          },
+        },
+      })
+
+      await getByText('打开 setup 抽屉').click()
+      await vi.waitFor(() => {
+        expect(document.querySelector('.el-drawer')?.textContent).toContain('输入框-setup')
+      })
       await getByText('取消').click()
       await vi.waitFor(() => {
         expect(document.querySelector('.el-drawer')).toBeNull()

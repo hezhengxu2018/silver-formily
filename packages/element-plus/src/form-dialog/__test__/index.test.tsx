@@ -3,6 +3,7 @@ import { ElButton } from 'element-plus'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { render } from 'vitest-browser-vue'
 import { userEvent } from 'vitest/browser'
+import { defineComponent } from 'vue'
 import { FormDialog, FormItem, Input } from '../../'
 import 'element-plus/theme-chalk/index.css'
 
@@ -114,6 +115,46 @@ describe('formDialog', () => {
       await expect.element(getByText('输入框4')).toBeInTheDocument()
       await getByText('取消').click()
       expect(document.querySelector('.el-drawer__wrapper')).toBeNull()
+    })
+
+    it('应该支持渲染 defineComponent 组件', async () => {
+      const DialogForm = defineComponent({
+        name: 'FormDialogSetupContent',
+        setup() {
+          return () => (
+            <SchemaField>
+              <SchemaStringField
+                name="name"
+                title="输入框-setup"
+                required
+                x-decorator="FormItem"
+                x-component="Input"
+              />
+            </SchemaField>
+          )
+        },
+      })
+
+      const TestComponent = () => {
+        const handleOpen = () => {
+          FormDialog('测试标题', DialogForm).open().catch(() => undefined)
+        }
+
+        return <ElButton onClick={handleOpen}>打开 setup 对话框</ElButton>
+      }
+
+      const { getByText } = render(() => <TestComponent />, {
+        global: {
+          stubs: {
+            Transition: false,
+          },
+        },
+      })
+
+      await getByText('打开 setup 对话框').click()
+      await expect.element(getByText('输入框-setup')).toBeInTheDocument()
+      await getByText('取消').click()
+      expect(document.querySelector('.el-dialog__wrapper')).toBeNull()
     })
   })
 
