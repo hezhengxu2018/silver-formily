@@ -8,6 +8,7 @@
 - 已提供 `FormItem` 装饰器封装
 - 已提供 `Form` 轻量表单容器封装
 - 已提供 `FormButtonGroup` / `FormButtonGroup.Sticky` 表单按钮组布局封装
+- 已提供 `FormStep` / `FormStep.StepPane` 分步表单封装，支持 Schema 场景下的步骤切换与提交控制
 - 已提供 `Reset` 表单重置按钮封装
 - 已提供 `Submit` 表单提交按钮封装
 - 已提供 `Input` / `Input.TextArea` 基础输入组件
