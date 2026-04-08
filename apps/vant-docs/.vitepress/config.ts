@@ -64,6 +64,7 @@ export default createDocsConfig({
             {
               text: 'Scenario 场景组件',
               items: [
+                { text: 'FormStep 分步表单', link: '/component/form-step' },
                 { text: 'FormPopup 表单弹层', link: '/component/form-popup' },
               ],
             },
