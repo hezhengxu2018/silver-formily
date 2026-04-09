@@ -3,14 +3,11 @@ import { Field, FormProvider } from '@silver-formily/vue'
 import { describe, expect, it, vi } from 'vitest'
 import { render } from 'vitest-browser-vue'
 import { userEvent } from 'vitest/browser'
+import { getElement } from '../../__test__/dom'
 import { Form } from '../../form'
 import FormItem from '../../form-item'
 import { Input } from '../../input'
 import 'vant/lib/index.css'
-
-function getHtmlElement(container: Element, selector: string) {
-  return container.querySelector<HTMLElement>(selector)!
-}
 
 describe('form', () => {
   it('应该把 Form 布局属性透传给内部 FormItem', async () => {
@@ -25,7 +22,7 @@ describe('form', () => {
       </Form>
     ))
 
-    await expect.element(getHtmlElement(container, '.van-field__label')).toHaveStyle({
+    await expect.element(getElement(container, '.van-field__label')).toHaveStyle({
       width: '6em',
       textAlign: 'left',
     })

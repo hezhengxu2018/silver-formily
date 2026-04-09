@@ -4,21 +4,12 @@ import { Field, FormProvider } from '@silver-formily/vue'
 import { describe, expect, it, vi } from 'vitest'
 import { render } from 'vitest-browser-vue'
 import { defineComponent } from 'vue'
+import { getElement } from '../../__test__/dom'
 import { FormItem } from '../../form-item'
 import { Input } from '../../input'
 import { useGrid } from '../hooks'
 import Grid from '../index'
 import 'vant/lib/index.css'
-
-function queryElement(container: Element, selector: string) {
-  const element = container.querySelector<HTMLElement>(selector)
-
-  if (!element) {
-    throw new Error(`Element not found: ${selector}`)
-  }
-
-  return element
-}
 
 const GridProbe = defineComponent({
   props: {
@@ -50,8 +41,8 @@ describe('grid', () => {
       </Grid>
     ))
 
-    await expect.element(queryElement(container, '.silver-formily-vant-grid')).toBeInTheDocument()
-    await expect.element(queryElement(container, '[data-testid="content"]')).toBeInTheDocument()
+    await expect.element(getElement(container, '.silver-formily-vant-grid')).toBeInTheDocument()
+    await expect.element(getElement(container, '[data-testid="content"]')).toBeInTheDocument()
   })
 
   it('应该通过 useGrid 暴露网格实例配置', async () => {
@@ -76,7 +67,7 @@ describe('grid', () => {
       </Grid>
     ))
 
-    const gridColumn = queryElement(container, '[data-testid="grid-column"]')
+    const gridColumn = getElement(container, '[data-testid="grid-column"]')
 
     await expect.element(gridColumn).toHaveAttribute('data-grid-span', '2')
     await expect.element(gridColumn).toHaveStyle({ gridColumn: 'span 2 / auto' })
@@ -91,7 +82,7 @@ describe('grid', () => {
       </Grid>
     ))
 
-    const fillColumn = queryElement(container, '[data-testid="fill-column"]')
+    const fillColumn = getElement(container, '[data-testid="fill-column"]')
 
     await expect.element(fillColumn).toHaveAttribute('data-grid-span', '-1')
     await vi.waitFor(() => {
@@ -119,7 +110,7 @@ describe('grid', () => {
       </FormProvider>
     ))
 
-    await expect.element(queryElement(container, '.silver-formily-vant-grid')).toBeInTheDocument()
+    await expect.element(getElement(container, '.silver-formily-vant-grid')).toBeInTheDocument()
     expect(container.textContent).toContain('用户名')
     expect(container.querySelector('input')?.getAttribute('placeholder')).toBe('请输入用户名')
   })
