@@ -1,13 +1,15 @@
+import type { ISchema } from '@formily/json-schema'
 import { createForm } from '@formily/core'
 import { observer } from '@silver-formily/reactive-vue'
 import { createSchemaField, FormProvider } from '@silver-formily/vue'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { render } from 'vitest-browser-vue'
 import { defineComponent } from 'vue'
+import { getElement } from '../../__test__/dom'
 import { FormItem, FormStep, Input } from '../../index'
 import 'vant/lib/index.css'
 
-function createTestSchema() {
+function createTestSchema(): ISchema {
   return {
     type: 'object',
     properties: {
@@ -75,8 +77,8 @@ describe('form-step', () => {
         </FormProvider>
       ))
 
-      await expect.element(container.querySelector('.silver-formily-vant-form-step')).toBeInTheDocument()
-      await expect.element(container.querySelector('.van-steps')).toBeInTheDocument()
+      await expect.element(getElement(container, '.silver-formily-vant-form-step')).toBeInTheDocument()
+      await expect.element(getElement(container, '.van-steps')).toBeInTheDocument()
       expect(container.querySelectorAll('.van-step')).toHaveLength(2)
       expect(container.textContent).toContain('基础信息')
     })
@@ -115,9 +117,11 @@ describe('form-step', () => {
       const form = createForm()
       const formStep = FormStep.createFormStep()
       const schema = createTestSchema()
+      const properties = schema.properties as Record<string, ISchema> | undefined
+      const stepperSchema = properties?.stepper as ISchema
 
-      schema.properties.stepper['x-component-props'] = {
-        ...schema.properties.stepper['x-component-props'],
+      stepperSchema['x-component-props'] = {
+        ...(stepperSchema['x-component-props'] as Record<string, unknown> | undefined),
         hideSteps: true,
       }
 
@@ -238,7 +242,7 @@ describe('form-step', () => {
         },
       })
 
-      const schema = {
+      const schema: ISchema = {
         type: 'object',
         properties: {
           stepper: {
@@ -279,7 +283,7 @@ describe('form-step', () => {
       ))
 
       await expect.element(getByText('自定义标题')).toBeInTheDocument()
-      await expect.element(container.querySelector('.custom-step-icon')).toBeInTheDocument()
+      await expect.element(getElement(container, '.custom-step-icon')).toBeInTheDocument()
     })
 
     it('应该支持 formStep API', async () => {

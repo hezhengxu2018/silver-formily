@@ -2,13 +2,10 @@ import { createForm } from '@formily/core'
 import { Field, FormProvider } from '@silver-formily/vue'
 import { describe, expect, it, vi } from 'vitest'
 import { render } from 'vitest-browser-vue'
+import { getElement } from '../../__test__/dom'
 import { Input } from '../../input'
 import FormItem, { FormBaseItem } from '../index'
 import 'vant/lib/index.css'
-
-function getHtmlElement(container: Element, selector: string) {
-  return container.querySelector<HTMLElement>(selector)!
-}
 
 describe('formItem', () => {
   describe('基础功能', () => {
@@ -24,9 +21,9 @@ describe('formItem', () => {
         </FormProvider>
       ))
 
-      await expect.element(getHtmlElement(container, '.van-field')).toBeInTheDocument()
-      await expect.element(getHtmlElement(container, '.van-field__label')).toHaveTextContent('用户名')
-      await expect.element(getHtmlElement(container, '.van-field__control')).toBeInTheDocument()
+      await expect.element(getElement(container, '.van-field')).toBeInTheDocument()
+      await expect.element(getElement(container, '.van-field__label')).toHaveTextContent('用户名')
+      await expect.element(getElement(container, '.van-field__control')).toBeInTheDocument()
     })
 
     it('应该支持反馈信息展示', async () => {
@@ -36,8 +33,8 @@ describe('formItem', () => {
         </FormBaseItem>
       ))
 
-      await expect.element(getHtmlElement(container, '.van-field--error')).toBeInTheDocument()
-      await expect.element(getHtmlElement(container, '.van-field__error-message')).toHaveTextContent('校验失败')
+      await expect.element(getElement(container, '.van-field--error')).toBeInTheDocument()
+      await expect.element(getElement(container, '.van-field__error-message')).toHaveTextContent('校验失败')
     })
 
     it('应该支持自定义标签、补充信息和错误内容节点', async () => {
@@ -52,12 +49,12 @@ describe('formItem', () => {
         </FormBaseItem>
       ))
 
-      await expect.element(getHtmlElement(container, '.custom-label')).toBeInTheDocument()
-      await expect.element(getHtmlElement(container, '.custom-extra')).toBeInTheDocument()
+      await expect.element(getElement(container, '.custom-label')).toBeInTheDocument()
+      await expect.element(getElement(container, '.custom-extra')).toBeInTheDocument()
       expect(container.querySelector('.van-cell .custom-extra')).toBeNull()
-      await expect.element(getHtmlElement(container, '.silver-formily-vant-form-item__extra-wrapper')).toBeInTheDocument()
-      await expect.element(getHtmlElement(container, '.silver-formily-vant-form-item__extra')).toBeInTheDocument()
-      await expect.element(getHtmlElement(container, '.custom-error')).toBeInTheDocument()
+      await expect.element(getElement(container, '.silver-formily-vant-form-item__extra-wrapper')).toBeInTheDocument()
+      await expect.element(getElement(container, '.silver-formily-vant-form-item__extra')).toBeInTheDocument()
+      await expect.element(getElement(container, '.custom-error')).toBeInTheDocument()
     })
 
     it('应该支持通过插槽自定义结构', async () => {
@@ -75,15 +72,15 @@ describe('formItem', () => {
         </FormBaseItem>
       ))
 
-      await expect.element(getHtmlElement(container, '.slot-label')).toBeInTheDocument()
-      await expect.element(getHtmlElement(container, '.slot-left-icon')).toBeInTheDocument()
-      await expect.element(getHtmlElement(container, '.slot-input')).toBeInTheDocument()
-      await expect.element(getHtmlElement(container, '.slot-button')).toBeInTheDocument()
-      await expect.element(getHtmlElement(container, '.slot-right-icon')).toBeInTheDocument()
-      await expect.element(getHtmlElement(container, '.slot-extra')).toBeInTheDocument()
+      await expect.element(getElement(container, '.slot-label')).toBeInTheDocument()
+      await expect.element(getElement(container, '.slot-left-icon')).toBeInTheDocument()
+      await expect.element(getElement(container, '.slot-input')).toBeInTheDocument()
+      await expect.element(getElement(container, '.slot-button')).toBeInTheDocument()
+      await expect.element(getElement(container, '.slot-right-icon')).toBeInTheDocument()
+      await expect.element(getElement(container, '.slot-extra')).toBeInTheDocument()
       expect(container.querySelector('.van-cell .slot-extra')).not.toBeNull()
       expect(container.querySelector('.silver-formily-vant-form-item__extra .slot-extra')).toBeNull()
-      await expect.element(getHtmlElement(container, '.slot-error')).toHaveTextContent('错误:插槽错误')
+      await expect.element(getElement(container, '.slot-error')).toHaveTextContent('错误:插槽错误')
     })
 
     it('应该支持纯文本补充信息', async () => {
@@ -93,7 +90,7 @@ describe('formItem', () => {
         </FormBaseItem>
       ))
 
-      await expect.element(getHtmlElement(container, '.silver-formily-vant-form-item__extra')).toHaveTextContent('文本说明')
+      await expect.element(getElement(container, '.silver-formily-vant-form-item__extra')).toHaveTextContent('文本说明')
     })
 
     it('应该让 extra 属性和 extra 插槽互不影响', async () => {
@@ -106,8 +103,8 @@ describe('formItem', () => {
         </FormBaseItem>
       ))
 
-      await expect.element(getHtmlElement(container, '.silver-formily-vant-form-item__extra')).toHaveTextContent('属性说明')
-      await expect.element(getHtmlElement(container, '.slot-extra')).toBeInTheDocument()
+      await expect.element(getElement(container, '.silver-formily-vant-form-item__extra')).toHaveTextContent('属性说明')
+      await expect.element(getElement(container, '.slot-extra')).toBeInTheDocument()
       expect(container.querySelector('.van-cell .slot-extra')).not.toBeNull()
       expect(container.querySelector('.silver-formily-vant-form-item__extra .slot-extra')).toBeNull()
     })
@@ -119,7 +116,7 @@ describe('formItem', () => {
         </FormBaseItem>
       ))
 
-      await expect.element(getHtmlElement(container, '.van-field__label')).toHaveClass('van-field__label--required')
+      await expect.element(getElement(container, '.van-field__label')).toHaveClass('van-field__label--required')
     })
 
     it('应该在没有 extra 时仍然显示原生分割线', async () => {
@@ -129,7 +126,7 @@ describe('formItem', () => {
         </FormBaseItem>
       ))
 
-      const field = getHtmlElement(container, '.van-cell')
+      const field = getElement(container, '.van-cell')
       const style = window.getComputedStyle(field, '::after')
       expect(style.display).toBe('block')
       expect(style.borderBottomStyle).toBe('solid')
@@ -150,7 +147,7 @@ describe('formItem', () => {
         </FormProvider>
       ))
 
-      await expect.element(getHtmlElement(container, '.van-field__label')).toHaveClass('van-field__label--required')
+      await expect.element(getElement(container, '.van-field__label')).toHaveClass('van-field__label--required')
     })
 
     it('应该透传 clearable 并为自定义输入默认启用 always clearTrigger', async () => {
