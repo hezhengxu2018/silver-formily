@@ -8,23 +8,21 @@ import type {
   CheckboxProps as VanCheckboxProps,
 } from 'vant'
 import type {
-  CheckerOptionLike as BaseCheckerOptionLike,
-  CheckerOptionValue as BaseCheckerOptionValue,
   CheckerGroupOptionSettings,
   CheckerOptionBase,
   CheckerResolvedOption,
 } from '../__builtins__'
 
-export type CheckboxOptionValue = BaseCheckerOptionValue
+export type CheckboxOptionValue = VanCheckboxProps['name']
 
 export type CheckboxProps = VanCheckboxProps
 
 export interface CheckboxOption extends CheckerOptionBase<VanCheckboxProps, CheckboxOptionValue> {}
 
-export type CheckboxOptionLike = BaseCheckerOptionLike<CheckboxOption>
+export type CheckboxOptionLike = CheckboxOption
 
 export interface CheckboxGroupProps extends Pick<VanCheckboxGroupProps, 'checkedColor' | 'direction' | 'disabled' | 'iconSize' | 'max' | 'modelValue' | 'shape'>, CheckerGroupOptionSettings<CheckboxLabelPosition> {
-  options?: CheckboxOptionLike[]
+  options?: CheckboxOption[]
 }
 
 export interface ResolvedCheckboxOption extends CheckerResolvedOption<VanCheckboxProps, CheckboxOption, 'checkboxProps', CheckboxOptionValue> {}

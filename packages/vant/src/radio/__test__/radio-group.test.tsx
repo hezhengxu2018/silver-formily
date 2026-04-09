@@ -29,8 +29,8 @@ describe('radio-group', () => {
           name="radio"
           component={[Radio.Group]}
           dataSource={[
-            { label: '标签1', value: '1' },
-            { label: '标签2', value: '2' },
+            { label: '标签1', name: '1' },
+            { label: '标签2', name: '2' },
           ]}
         />
       </FormProvider>
@@ -55,8 +55,8 @@ describe('radio-group', () => {
           initialValue="1"
           component={[Radio.Group]}
           dataSource={[
-            { label: '标签1', value: '1' },
-            { label: '标签2', value: '2' },
+            { label: '标签1', name: '1' },
+            { label: '标签2', name: '2' },
           ]}
         />
       </FormProvider>
@@ -81,55 +81,14 @@ describe('radio-group', () => {
           disabled
           component={[Radio.Group]}
           dataSource={[
-            { label: '标签1', value: '1' },
-            { label: '标签2', value: '2' },
+            { label: '标签1', name: '1' },
+            { label: '标签2', name: '2' },
           ]}
         />
       </FormProvider>
     ))
 
     expect(container.querySelectorAll('.van-radio--disabled')).toHaveLength(2)
-  })
-
-  it('应该支持字符串数组作为选项', async () => {
-    const form = createForm()
-    const { container } = render(() => (
-      <FormProvider form={form}>
-        <Field
-          name="radio"
-          component={[Radio.Group]}
-          dataSource={['选项1', '选项2']}
-        />
-      </FormProvider>
-    ))
-
-    await userEvent.click(getRadioRoots(container)[0])
-    expect(form.values.radio).toBe('选项1')
-  })
-
-  it('应该支持通过 name 作为选项值，并在缺少 label 时回退显示值', async () => {
-    const form = createForm()
-    const { container } = render(() => (
-      <FormProvider form={form}>
-        <Field
-          name="radio"
-          component={[Radio.Group]}
-          dataSource={[
-            { name: 'name-value' },
-            { value: 'fallback-value', label: undefined },
-          ]}
-        />
-      </FormProvider>
-    ))
-
-    expect(container.textContent).toContain('name-value')
-    expect(container.textContent).toContain('fallback-value')
-
-    await userEvent.click(getRadioRoots(container)[0])
-    expect(form.values.radio).toBe('name-value')
-
-    await userEvent.click(getRadioRoots(container)[1])
-    expect(form.values.radio).toBe('fallback-value')
   })
 
   it('应该在 cancelable 开启时支持再次点击取消选中', async () => {
@@ -145,8 +104,8 @@ describe('radio-group', () => {
           name="radio"
           component={[Radio.Group, { cancelable: true }]}
           dataSource={[
-            { label: '标签1', value: '1' },
-            { label: '标签2', value: '2' },
+            { label: '标签1', name: '1' },
+            { label: '标签2', name: '2' },
           ]}
         />
       </FormProvider>
@@ -175,8 +134,8 @@ describe('radio-group', () => {
           name="radio"
           component={[Radio.Group]}
           dataSource={[
-            { label: '标签1', value: '1' },
-            { label: '标签2', value: '2' },
+            { label: '标签1', name: '1' },
+            { label: '标签2', name: '2' },
           ]}
         />
       </FormProvider>
@@ -195,8 +154,8 @@ describe('radio-group', () => {
           name="radio"
           component={[Radio.Group]}
           dataSource={[
-            { label: '标签1', value: '1' },
-            { label: '标签2', value: '2' },
+            { label: '标签1', name: '1' },
+            { label: '标签2', name: '2' },
           ]}
         >
           {{
@@ -249,8 +208,8 @@ describe('radio-group', () => {
           readPretty={true}
           component={[Radio.Group]}
           dataSource={[
-            { label: '标签1', value: '1' },
-            { label: '标签2', value: '2' },
+            { label: '标签1', name: '1' },
+            { label: '标签2', name: '2' },
           ]}
         />
       </FormProvider>
@@ -268,8 +227,8 @@ describe('radio-group', () => {
           readPretty={true}
           component={[Radio.Group]}
           dataSource={[
-            { label: '标签1', value: '1' },
-            { label: '标签2', value: '2' },
+            { label: '标签1', name: '1' },
+            { label: '标签2', name: '2' },
           ]}
         />
       </FormProvider>
@@ -288,8 +247,8 @@ describe('radio-group', () => {
             readPretty={true}
             component={[Radio.Group]}
             dataSource={[
-              { label: '标签1', value: '1' },
-              { label: '标签2', value: '2' },
+              { label: '标签1', name: '1' },
+              { label: '标签2', name: '2' },
             ]}
           />
         </FormProvider>
@@ -307,7 +266,9 @@ describe('radio-group', () => {
           initialValue="unknown"
           readPretty={true}
           component={[Radio.Group]}
-          dataSource={{ label: '标签1', value: '1' } as any}
+          dataSource={[
+            { label: '标签1', name: '1' },
+          ]}
         />
       </FormProvider>
     ))
