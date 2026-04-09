@@ -19,17 +19,11 @@ const { placeholder } = usePreviewConfig()
 
 function resolveOptionValue(option: any) {
   if (!isPlainObj(option))
-    return option
+    return undefined
 
   const optionRecord = option as Record<string, any>
 
-  if ('value' in optionRecord)
-    return optionRecord.value
-
-  if ('name' in optionRecord)
-    return optionRecord.name
-
-  return optionRecord.label
+  return optionRecord.name
 }
 
 function resolveOptionLabel(option: any) {
@@ -40,7 +34,7 @@ function resolveOptionLabel(option: any) {
 
   return isValid(optionRecord.label)
     ? optionRecord.label
-    : resolveOptionValue(option)
+    : undefined
 }
 
 function resolveDisplayText(value: unknown) {
@@ -49,7 +43,7 @@ function resolveDisplayText(value: unknown) {
     ? dataSource.find(option => resolveOptionValue(option) === value)
     : undefined
 
-  return resolveOptionLabel(matched ?? value)
+  return resolveOptionLabel(matched) ?? value
 }
 
 const normalizedValues = computed(() => {

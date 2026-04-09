@@ -6,21 +6,19 @@ import type {
   RadioProps as VanRadioProps,
 } from 'vant'
 import type {
-  CheckerOptionLike as BaseCheckerOptionLike,
-  CheckerOptionValue as BaseCheckerOptionValue,
   CheckerGroupOptionSettings,
   CheckerOptionBase,
   CheckerResolvedOption,
 } from '../__builtins__'
 
-export type RadioOptionValue = BaseCheckerOptionValue
+export type RadioOptionValue = VanRadioProps['name']
 
 export interface RadioOption extends CheckerOptionBase<VanRadioProps, RadioOptionValue> {}
 
-export type RadioOptionLike = BaseCheckerOptionLike<RadioOption>
+export type RadioOptionLike = RadioOption
 
 export interface RadioGroupProps extends Pick<VanRadioGroupProps, 'checkedColor' | 'direction' | 'disabled' | 'iconSize' | 'modelValue' | 'shape'>, CheckerGroupOptionSettings<RadioLabelPosition> {
-  options?: RadioOptionLike[]
+  options?: RadioOption[]
   cancelable?: boolean
   readonly?: boolean
   readOnly?: boolean

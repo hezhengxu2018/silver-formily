@@ -90,8 +90,8 @@ describe('checkbox-group', () => {
           name="features"
           component={[Checkbox.Group]}
           dataSource={[
-            { label: '拍照上传', value: 'photo' },
-            { label: '定位签到', value: 'location' },
+            { label: '拍照上传', name: 'photo' },
+            { label: '定位签到', name: 'location' },
           ]}
         />
       </FormProvider>
@@ -118,8 +118,8 @@ describe('checkbox-group', () => {
           initialValue={['photo']}
           component={[Checkbox.Group]}
           dataSource={[
-            { label: '拍照上传', value: 'photo' },
-            { label: '定位签到', value: 'location' },
+            { label: '拍照上传', name: 'photo' },
+            { label: '定位签到', name: 'location' },
           ]}
         />
       </FormProvider>
@@ -142,53 +142,15 @@ describe('checkbox-group', () => {
         <Field
           name="disabledFeatures"
           component={[Checkbox.Group, { disabled: true }]}
-          dataSource={['拍照上传', '定位签到']}
-        />
-      </FormProvider>
-    ))
-
-    expect(container.querySelectorAll('.van-checkbox--disabled')).toHaveLength(2)
-  })
-
-  it('应该支持字符串数组作为选项', async () => {
-    const form = createForm()
-    const { container } = render(() => (
-      <FormProvider form={form}>
-        <Field
-          name="features"
-          component={[Checkbox.Group]}
-          dataSource={['选项1', '选项2']}
-        />
-      </FormProvider>
-    ))
-
-    await userEvent.click(getCheckboxRoots(container)[0])
-    expect(form.values.features).toEqual(['选项1'])
-  })
-
-  it('应该支持通过 name 作为选项值，并在缺少 label 时回退显示值', async () => {
-    const form = createForm()
-    const { container } = render(() => (
-      <FormProvider form={form}>
-        <Field
-          name="features"
-          component={[Checkbox.Group]}
           dataSource={[
-            { name: 'name-value' },
-            { value: 'fallback-value', label: undefined },
+            { label: '拍照上传', name: 'photo' },
+            { label: '定位签到', name: 'location' },
           ]}
         />
       </FormProvider>
     ))
 
-    expect(container.textContent).toContain('name-value')
-    expect(container.textContent).toContain('fallback-value')
-
-    await userEvent.click(getCheckboxRoots(container)[0])
-    expect(form.values.features).toEqual(['name-value'])
-
-    await userEvent.click(getCheckboxRoots(container)[1])
-    expect(form.values.features).toEqual(['name-value', 'fallback-value'])
+    expect(container.querySelectorAll('.van-checkbox--disabled')).toHaveLength(2)
   })
 
   it('应该支持通过插槽渲染选项内容', async () => {
@@ -198,8 +160,8 @@ describe('checkbox-group', () => {
           name="features"
           component={[Checkbox.Group]}
           dataSource={[
-            { label: '拍照上传', value: 'photo' },
-            { label: '定位签到', value: 'location' },
+            { label: '拍照上传', name: 'photo' },
+            { label: '定位签到', name: 'location' },
           ]}
         >
           {{
@@ -251,8 +213,8 @@ describe('checkbox-group', () => {
           readPretty={true}
           component={[Checkbox.Group]}
           dataSource={[
-            { label: '拍照上传', value: 'photo' },
-            { label: '定位签到', value: 'location' },
+            { label: '拍照上传', name: 'photo' },
+            { label: '定位签到', name: 'location' },
           ]}
         />
       </FormProvider>
@@ -271,8 +233,8 @@ describe('checkbox-group', () => {
             readPretty={true}
             component={[Checkbox.Group]}
             dataSource={[
-              { label: '拍照上传', value: 'photo' },
-              { label: '定位签到', value: 'location' },
+              { label: '拍照上传', name: 'photo' },
+              { label: '定位签到', name: 'location' },
             ]}
           />
         </FormProvider>
