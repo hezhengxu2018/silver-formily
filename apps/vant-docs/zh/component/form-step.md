@@ -4,7 +4,7 @@ mobileDemo: form-step/index.vue
 
 # FormStep
 
-> `FormStep` 用来把一组 Schema 字段拆成移动端更常见的分步提交流程，外部通过 `FormStep.createFormStep()` 控制前进、后退和最终提交。
+> `FormStep` 用来把一组 Schema 字段拆成移动端更常见的分步提交流程，外部既可以通过 `FormStep.createFormStep()` 控制前进、后退和最终提交，也可以在 `FormStep` 子树中通过 `useFormStep()` 读取组件内部自动创建的实例。
 
 :::warning 使用限制
 当前封装和 `element-plus` 版本保持一致，只适用于 Schema 场景，推荐和 `SchemaField`、`SchemaVoidField` 一起使用。
@@ -21,6 +21,10 @@ mobileDemo: form-step/index.vue
 ## JSON Schema
 
 <<< @/zh/demos/form-step/json-schema.vue
+
+## 内部创建实例
+
+<<< @/zh/demos/form-step/internal-instance.vue
 
 ## 隐藏步骤条
 
@@ -70,6 +74,16 @@ interface IFormStep {
   back: () => void
 }
 ```
+
+### useFormStep
+
+```ts
+interface useFormStep {
+  (): ComputedRef<IFormStep>
+}
+```
+
+用于在 `FormStep` 的子孙组件中读取当前步骤实例。无论这个实例来自外部传入的 `formStep`，还是组件内部自动创建的默认实例，都可以通过这个 hook 访问到。
 
 ### 参考
 

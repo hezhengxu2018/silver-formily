@@ -21,6 +21,13 @@ import { NavBar } from 'vant'
       </MobileDemoSection>
 
       <MobileDemoSection
+        title="内部创建实例"
+        description="不传 formStep 时，也可以在 FormStep 子树里通过 useFormStep() 获取内部创建的实例来完成步骤切换。"
+      >
+        <DocsDemoRenderer path="@/zh/demos/form-step/internal-instance.vue" />
+      </MobileDemoSection>
+
+      <MobileDemoSection
         title="隐藏步骤条"
         description="通过 hideSteps 隐藏顶部 Steps，只保留步骤内容区和导航按钮。"
       >
