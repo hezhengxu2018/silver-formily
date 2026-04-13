@@ -53,6 +53,7 @@ export default createDocsConfig({
                 { text: 'Rate 评分', link: '/component/rate' },
                 { text: 'Slider 滑块', link: '/component/slider' },
                 { text: 'Signature 签名', link: '/component/signature' },
+                { text: 'Upload 上传', link: '/component/upload' },
                 { text: 'Cascader 级联选择', link: '/component/cascader' },
                 { text: 'Picker 选择器', link: '/component/picker' },
                 { text: 'DatePicker 日期滚轮', link: '/component/date-picker' },

@@ -61,6 +61,10 @@ export interface PreviewTextSignatureProps {
   modelValue?: SignatureModelValue
 }
 
+export interface PreviewTextUploadProps {
+  modelValue?: any
+}
+
 export interface PreviewTextCalendarProps {
   modelValue?: CalendarModelValue
   type?: CalendarType
