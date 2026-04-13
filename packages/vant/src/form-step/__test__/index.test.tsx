@@ -6,7 +6,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { render } from 'vitest-browser-vue'
 import { defineComponent } from 'vue'
 import { getElement } from '../../__test__/dom'
-import { FormItem, FormStep, Input } from '../../index'
+import { FormItem, FormStep, Input, useFormStep } from '../../index'
 import 'vant/lib/index.css'
 
 function createTestSchema(): ISchema {
@@ -134,6 +134,75 @@ describe('form-step', () => {
       expect(container.querySelector('.van-steps')).toBeNull()
       await expect.element(getByText('姓名')).toBeVisible()
     })
+
+    it('应该注入内部创建的 formStep 实例', async () => {
+      let injectedFormStep: ReturnType<typeof useFormStep> | null = null
+
+      const { SchemaField } = createSchemaField({
+        components: {
+          FormItem,
+          FormStep,
+          Input,
+          StepProbe: defineComponent({
+            setup() {
+              injectedFormStep = useFormStep()
+              return () => <span>step-probe</span>
+            },
+          }),
+        },
+      })
+
+      const form = createForm()
+      const schema: ISchema = {
+        type: 'object',
+        properties: {
+          stepper: {
+            'type': 'void',
+            'x-component': 'FormStep',
+            'properties': {
+              basic: {
+                'type': 'void',
+                'x-component': 'FormStep.StepPane',
+                'x-component-props': {
+                  title: '基础信息',
+                },
+                'properties': {
+                  probe: {
+                    'type': 'void',
+                    'x-component': 'StepProbe',
+                  },
+                },
+              },
+              confirm: {
+                'type': 'void',
+                'x-component': 'FormStep.StepPane',
+                'x-component-props': {
+                  title: '确认提交',
+                },
+                'properties': {
+                  mobile: {
+                    'type': 'string',
+                    'title': '手机号',
+                    'x-decorator': 'FormItem',
+                    'x-component': 'Input',
+                  },
+                },
+              },
+            },
+          },
+        },
+      }
+
+      render(() => (
+        <FormProvider form={form}>
+          <SchemaField schema={schema} />
+        </FormProvider>
+      ))
+
+      expect(injectedFormStep?.value).toBeTruthy()
+      expect(injectedFormStep?.value.current).toBe(0)
+      expect(injectedFormStep?.value.allowNext).toBe(true)
+    })
   })
 
   describe('步骤切换', () => {
@@ -215,6 +284,90 @@ describe('form-step', () => {
       await vi.waitFor(() => {
         expect(submit).toHaveBeenCalledTimes(1)
       })
+    })
+
+    it('应该支持通过内部创建的 formStep 切换步骤', async () => {
+      const StepActions = defineComponent({
+        setup() {
+          const formStep = useFormStep()
+
+          return () => (
+            <button
+              type="button"
+              onClick={() => formStep.value.next()}
+            >
+              内部下一步
+            </button>
+          )
+        },
+      })
+
+      const { SchemaField } = createSchemaField({
+        components: {
+          FormItem,
+          FormStep,
+          Input,
+          StepActions,
+        },
+      })
+
+      const form = createForm()
+      const schema: ISchema = {
+        type: 'object',
+        properties: {
+          stepper: {
+            'type': 'void',
+            'x-component': 'FormStep',
+            'properties': {
+              basic: {
+                'type': 'void',
+                'x-component': 'FormStep.StepPane',
+                'x-component-props': {
+                  title: '基础信息',
+                },
+                'properties': {
+                  name: {
+                    'type': 'string',
+                    'title': '姓名',
+                    'required': true,
+                    'x-decorator': 'FormItem',
+                    'x-component': 'Input',
+                  },
+                  actions: {
+                    'type': 'void',
+                    'x-component': 'StepActions',
+                  },
+                },
+              },
+              confirm: {
+                'type': 'void',
+                'x-component': 'FormStep.StepPane',
+                'x-component-props': {
+                  title: '确认提交',
+                },
+                'properties': {
+                  mobile: {
+                    'type': 'string',
+                    'title': '手机号',
+                    'x-decorator': 'FormItem',
+                    'x-component': 'Input',
+                  },
+                },
+              },
+            },
+          },
+        },
+      }
+
+      const page = render(() => (
+        <FormProvider form={form}>
+          <SchemaField schema={schema} />
+        </FormProvider>
+      ))
+
+      await page.getByRole('textbox').fill('银羽')
+      await page.getByRole('button', { name: '内部下一步' }).click()
+      await expect.element(page.getByText('手机号')).toBeVisible()
     })
   })
 

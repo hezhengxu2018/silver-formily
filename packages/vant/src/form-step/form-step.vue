@@ -2,10 +2,12 @@
 import type { VoidField } from '@formily/core'
 import type { FormStepSchemaSlots, IFormStepProps } from './types'
 import { isValid } from '@formily/shared'
+import { formilyComputed } from '@silver-formily/reactive-vue'
 import { RecursionField, useField, useFieldSchema } from '@silver-formily/vue'
 import { Step as VanStep, Steps as VanSteps } from 'vant'
-import { computed, watch } from 'vue'
+import { computed, provide, watch } from 'vue'
 import { createNamespace, isVueOptions } from '../__builtins__'
+import { FormStepSymbol } from './hooks'
 import { createFormStep, parseSteps } from './utils'
 
 defineOptions({
@@ -14,7 +16,6 @@ defineOptions({
 })
 
 const props = withDefaults(defineProps<IFormStepProps>(), {
-  formStep: () => createFormStep(),
   hideSteps: false,
 })
 
@@ -22,8 +23,12 @@ const field = useField<VoidField>().value
 const fieldSchemaRef = useFieldSchema()
 const { b, prefixCls } = createNamespace('form-step')
 const steps = parseSteps(fieldSchemaRef.value)
+const innerFormStep = createFormStep()
+const formStep = props.formStep ?? innerFormStep
+const internalCurrent = formilyComputed(() => innerFormStep.current)
 
-props.formStep.connect?.(steps, field)
+provide(FormStepSymbol, computed(() => formStep))
+formStep.connect?.(steps, field)
 
 function normalizeActive(value: number | string, stepCount: number) {
   if (!stepCount)
@@ -42,13 +47,13 @@ watch(() => props.active, (value) => {
     return
   }
 
-  props.formStep.setCurrent(normalizeActive(value, steps.length))
+  formStep.setCurrent(normalizeActive(value, steps.length))
 }, { immediate: true })
 
 const current = computed(() => {
   const nextActive = isValid(props.active)
     ? props.active
-    : props.formStep.current
+    : props.formStep?.current ?? internalCurrent.value
 
   return normalizeActive(nextActive, steps.length)
 })
