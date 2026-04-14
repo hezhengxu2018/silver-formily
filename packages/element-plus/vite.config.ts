@@ -66,8 +66,10 @@ export default defineConfig({
           }
           return `vendor${path.sep}${chunkInfo.name}.mjs`
         },
-        manualChunks: {
-          lodash: ['lodash-es'],
+        manualChunks(id) {
+          if (id.includes('lodash-es')) {
+            return 'lodash'
+          }
         },
       },
       treeshake: {

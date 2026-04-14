@@ -15,10 +15,14 @@
     "url": "https://github.com/hezhengxu2018/silver-formily/issues"
   },
   "exports": {
-    ".": "./dist/index.mjs",
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "default": "./dist/index.mjs"
+    },
     "./package.json": "./package.json"
   },
-  "types": "./dist/index.d.mts",
+  "types": "./dist/index.d.ts",
   "publishConfig": {
     "access": "public"
   },
@@ -26,8 +30,8 @@
     "dist"
   ],
   "scripts": {
-    "build": "tsdown",
-    "dev": "tsdown --watch",
+    "build": "vite build",
+    "dev": "vite build --watch",
     "lint": "eslint .",
     "format": "eslint . --fix",
     "check-types": "vue-tsc --noEmit",
@@ -46,8 +50,9 @@
     "eslint": "^9.36.0",
     "oxc-resolver": "^11.19.1",
     "playwright": "^1.58.2",
-    "tsdown": "^0.21.7",
     "typescript": "6.0.2",
+    "vite": "^8.0.8",
+    "vite-plugin-dts": "^4.5.4",
     "vitest": "^4.1.4"
   }
 }
