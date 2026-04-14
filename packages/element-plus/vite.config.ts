@@ -70,6 +70,7 @@ export default defineConfig({
           if (id.includes('lodash-es')) {
             return 'lodash'
           }
+          return undefined
         },
       },
       treeshake: {
