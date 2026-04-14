@@ -66,11 +66,13 @@ export default defineConfig({
           }
           return `vendor${path.sep}${chunkInfo.name}.mjs`
         },
-        manualChunks(id) {
-          if (id.includes('lodash-es')) {
-            return 'lodash'
-          }
-          return undefined
+        codeSplitting: {
+          groups: [
+            {
+              name: 'lodash',
+              test: /lodash-es/,
+            },
+          ],
         },
       },
       treeshake: {
