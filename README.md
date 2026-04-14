@@ -131,7 +131,7 @@ pnpm run build:changed
 - 代码风格由 `@antfu/eslint-config` 驱动，统一采用 2 空格、单引号、无分号。
 - 根目录 `pnpm format` 会委托给 `turbo run format`；Husky `pre-commit` 当前执行 `pnpm turbo run format`。
 - `build` 任务在 Turbo 中声明了 `dist/**`、`.vitepress/dist/**`、`esm/**` 作为缓存输出。
-- `reactive-vue` 与 `grid` 主要使用 `tsdown` 构建；`vue` 与 `element-plus` 当前使用 Vite 库模式构建。
+- 所有库（`vue`、`reactive-vue`、`grid`、`element-plus`、`vant`）统一使用 Vite 库模式构建。
 - 文档站点统一基于 VitePress `2.0.0-alpha.16`，共享 `@silver-formily/docs-toolkit` 中的主题与插件配置。
 - 提交规范采用 Conventional Commits，可通过 `pnpm commit` 调用 `czg`。
 

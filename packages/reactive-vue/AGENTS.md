@@ -12,8 +12,8 @@ This package re-exports Formily’s reactivity bindings for Vue 3. Follow the gl
 
 | Script                      | When to run                                                    | Notes                                                                            |
 | --------------------------- | -------------------------------------------------------------- | -------------------------------------------------------------------------------- |
-| `pnpm build`                | Before publishing or when other packages need fresh artifacts  | Runs Tsdown (Rolldown) to emit ESM + d.ts into `dist/`.                          |
-| `pnpm dev`                  | Local development                                              | `tsdown --watch`; re-builds on change, but still writes into `dist/`.            |
+| `pnpm build`                | Before publishing or when other packages need fresh artifacts  | Runs Vite library mode to emit ESM + d.ts into `dist/`.                          |
+| `pnpm dev`                  | Local development                                              | `vite build --watch`; re-builds on change while writing into `dist/`.            |
 | `pnpm test`                 | Before merging behavior changes                                | Executes Vitest. Add/maintain specs beside source files as `*.spec.ts`.          |
 | `pnpm check-types`          | Whenever TypeScript config changes or you see editor anomalies | Uses `tsc --noEmit`; no incremental cache is configured, so expect a full check. |
 | `pnpm format` / `pnpm lint` | Required before commits                                        | Delegated through root Turborepo tasks to ensure ESLint passes.                  |

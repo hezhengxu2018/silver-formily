@@ -42,7 +42,6 @@
     "oxc-resolver": "^11.19.1",
     "prettier": "^3.7.4",
     "prompts": "^2.4.2",
-    "tsdown": "^0.21.7",
     "turbo": "^2.8.5",
     "typescript": "6.0.2",
     "vitest": "^4.1.4",
