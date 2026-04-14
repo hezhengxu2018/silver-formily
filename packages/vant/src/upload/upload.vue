@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { Field as FormilyField } from '@formily/core'
+import type { DefineComponent } from 'vue'
 import type {
   UploadFileListItem,
   UploadProps,
@@ -11,7 +12,7 @@ import type {
 import { isFn, isPlainObj } from '@formily/shared'
 import { reactionWatch } from '@silver-formily/reactive-vue'
 import { useField } from '@silver-formily/vue'
-import { Uploader as VanUploader } from 'vant'
+import { Uploader as RawUploader } from 'vant'
 import { computed, ref, watch } from 'vue'
 import { useCleanAttrs, useHasCustomDefaultSlot } from '../__builtins__'
 
@@ -36,6 +37,8 @@ const emit = defineEmits<{
 }>()
 
 const slots = defineSlots<UploadSlots>()
+
+const VanUploader = RawUploader as unknown as DefineComponent<Record<string, unknown>>
 
 const uploaderRef = ref()
 const innerFileList = ref<UploadFileListItem[]>([])
