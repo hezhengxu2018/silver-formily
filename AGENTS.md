@@ -10,7 +10,7 @@ This document defines repository-wide expectations for anyone automating tasks (
 
 ## Required Tooling
 
-- Node ≥ 24 and `pnpm@9`.
+- Node ≥ 24 and `pnpm@10`.
 - Run `pnpm install` after pulling changes that touch `pnpm-lock.yaml` or `package.json`.
 - Husky runs `pnpm format` on commit; `pnpm format` itself delegates to `turbo run format`, so every package must expose a `format` script if it wants to participate.
 

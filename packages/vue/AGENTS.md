@@ -7,12 +7,12 @@ This document only lists requirements unique to `packages/vue`. Follow the root-
 - `src/components`: Vue 3 Formily field primitives (`SchemaField`, `RecursionField`, etc.); keep them stateless and export via `components/index.ts`.
 - `src/hooks`: composables such as `useForm`, `useField`, and `useAttach` that bridge Vue reactivity and Formily contexts; follow the `useX` naming pattern.
 - `src/shared`, `src/utils`, `src/types`, and `src/global.d.ts` host shared factories, render helpers, and the public type surface—ensure runtime and type signatures stay in sync.
-- Builds land in `esm/`; treat it as read-only output from Vite and declaration generation.
+- Builds land in `esm/`; treat it as read-only output from tsdown and declaration generation.
 
 ## Build, Test, and Development Commands
 
 - `pnpm install`: install deps after cloning or whenever `pnpm-lock.yaml` changes.
-- `pnpm build`: run `vite build` to emit the distributable bundle plus declarations.
+- `pnpm build`: run `tsdown --tsconfig tsconfig.build.json` to emit the distributable bundle plus declarations.
 - `pnpm lint`: execute the Antfu ESLint preset across TS, Vue, Markdown, and JSON files.
 - `pnpm format`: auto-fix lintable issues; always review the resulting diff.
 - `pnpm commit`: launch the `czg` prompt to craft Conventional Commits with the repository’s custom type list.

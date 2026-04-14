@@ -36,7 +36,7 @@
     "esm"
   ],
   "scripts": {
-    "build": "vite build",
+    "build": "tsdown --tsconfig tsconfig.build.json",
     "lint": "eslint .",
     "format": "eslint . --fix",
     "check-types": "vue-tsc --noEmit --project tsconfig.check.json",
@@ -58,29 +58,30 @@
     "vue": "^3.3.0"
   },
   "dependencies": {
-    "easy-bem": "^1.1.1",
-    "es-toolkit": "^1"
+    "easy-bem": "catalog:",
+    "es-toolkit": "catalog:"
   },
   "devDependencies": {
     "@silver-formily/reactive-vue": "workspace:*",
     "@silver-formily/typescript-config": "workspace:*",
     "@silver-formily/vue": "workspace:*",
-    "@types/node": "^24.3.0",
-    "@vitejs/plugin-vue": "^6.0.3",
-    "@vitejs/plugin-vue-jsx": "^5.1.3",
-    "@vitest/browser": "^4.1.4",
-    "@vitest/browser-playwright": "^4.1.4",
-    "@vitest/coverage-istanbul": "^4.1.4",
-    "fast-glob": "^3.3.3",
-    "playwright": "^1.58.2",
-    "sass-embedded": "^1.97.3",
-    "typescript": "6.0.2",
-    "vant": "^4.9.22",
-    "vite": "^7.3.1",
-    "vite-plugin-dts": "^4.5.4",
-    "vite-plugin-lib-inject-css": "^2.2.2",
-    "vitest": "^4.1.4",
-    "vitest-browser-vue": "^2.0.2",
-    "vue": "^3.5.27"
+    "@tsdown/css": "catalog:",
+    "@types/node": "catalog:",
+    "@vitejs/plugin-vue": "catalog:",
+    "@vitejs/plugin-vue-jsx": "catalog:",
+    "@vitest/browser": "catalog:",
+    "@vitest/browser-playwright": "catalog:",
+    "@vitest/coverage-istanbul": "catalog:",
+    "playwright": "catalog:",
+    "sass-embedded": "catalog:",
+    "tsdown": "catalog:",
+    "typescript": "catalog:",
+    "unplugin-vue": "catalog:",
+    "vant": "catalog:",
+    "vite": "catalog:",
+    "vitest": "catalog:",
+    "vitest-browser-vue": "catalog:",
+    "vue": "catalog:conflicts_vue_h3_3_0",
+    "vue-tsc": "catalog:"
   }
 }

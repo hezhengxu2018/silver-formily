@@ -24,17 +24,18 @@
     "check-types": "vue-tsc --noEmit"
   },
   "dependencies": {
-    "element-plus": "^2.13.2",
-    "markdown-it-container": "^4.0.0",
-    "sass-embedded": "^1.97.3",
-    "vitepress": "2.0.0-alpha.16",
-    "vitepress-better-demo-plugin": "^0.6.2",
-    "vitepress-plugin-group-icons": "^1.7.1",
-    "vitepress-plugin-nprogress": "^0.1.1",
-    "vitepress-theme-element-plus": "^1.4.1"
+    "element-plus": "catalog:",
+    "markdown-it-container": "catalog:",
+    "sass-embedded": "catalog:",
+    "vitepress": "catalog:",
+    "vitepress-better-demo-plugin": "catalog:",
+    "vitepress-plugin-group-icons": "catalog:",
+    "vitepress-plugin-nprogress": "catalog:",
+    "vitepress-theme-element-plus": "catalog:"
   },
   "devDependencies": {
-    "@types/markdown-it-container": "^4.0.0",
-    "typescript": "6.0.2"
+    "@types/markdown-it-container": "catalog:",
+    "typescript": "catalog:",
+    "vue-tsc": "catalog:"
   }
 }

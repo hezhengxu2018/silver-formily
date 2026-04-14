@@ -25,17 +25,19 @@
     }
   },
   "dependencies": {
-    "@formily/core": "^2.3.7",
-    "@formily/json-schema": "^2.3.7",
-    "@formily/reactive": "^2.3.7",
-    "@formily/shared": "^2.3.7",
+    "@formily/core": "catalog:",
+    "@formily/json-schema": "catalog:",
+    "@formily/reactive": "catalog:",
+    "@formily/shared": "catalog:",
     "@silver-formily/docs-toolkit": "workspace:*",
     "@silver-formily/reactive-vue": "workspace:*",
     "@silver-formily/vue": "workspace:*",
-    "vue": "^3.3.0"
+    "vue": "catalog:conflicts_vue_h3_3_0"
   },
   "devDependencies": {
     "@silver-formily/typescript-config": "workspace:*",
-    "vitepress": "2.0.0-alpha.16"
+    "typescript": "catalog:",
+    "vitepress": "catalog:",
+    "vue-tsc": "catalog:"
   }
 }

@@ -131,7 +131,7 @@ pnpm run build:changed
 - Code style is enforced through `@antfu/eslint-config`: 2 spaces, single quotes, no semicolons.
 - Root `pnpm format` delegates to `turbo run format`; the current Husky `pre-commit` hook runs `pnpm turbo run format`.
 - The Turbo `build` task caches `dist/**`, `.vitepress/dist/**`, and `esm/**`.
-- `reactive-vue` and `grid` are primarily built with `tsdown`; `vue` and `element-plus` currently use Vite library builds.
+- Publishable packages under `packages/*` now build with tsdown, while pure TypeScript packages and Vue component libraries can keep package-specific configs.
 - Documentation sites are standardized on VitePress `2.0.0-alpha.16` with shared theme and plugin wiring from `@silver-formily/docs-toolkit`.
 - Conventional Commits are used across the repo, and `pnpm commit` invokes `czg`.
 

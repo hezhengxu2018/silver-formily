@@ -18,12 +18,14 @@
     }
   },
   "dependencies": {
-    "@formily/reactive": "^2.3.7",
+    "@formily/reactive": "catalog:",
     "@silver-formily/docs-toolkit": "workspace:*",
-    "vue": "^3.3.0"
+    "vue": "catalog:conflicts_vue_h3_3_0"
   },
   "devDependencies": {
     "@silver-formily/typescript-config": "workspace:*",
-    "vitepress": "2.0.0-alpha.16"
+    "typescript": "catalog:",
+    "vitepress": "catalog:",
+    "vue-tsc": "catalog:"
   }
 }

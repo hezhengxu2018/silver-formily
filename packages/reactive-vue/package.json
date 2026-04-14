@@ -14,10 +14,14 @@
     "url": "https://github.com/hezhengxu2018/silver-formily/issues"
   },
   "exports": {
-    ".": "./dist/index.mjs",
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "default": "./dist/index.mjs"
+    },
     "./package.json": "./package.json"
   },
-  "types": "./dist/index.d.mts",
+  "types": "./dist/index.d.ts",
   "publishConfig": {
     "access": "public"
   },
@@ -25,8 +29,8 @@
     "dist"
   ],
   "scripts": {
-    "build": "tsdown",
-    "dev": "tsdown --watch",
+    "build": "tsdown --tsconfig tsconfig.build.json",
+    "dev": "tsdown --watch --tsconfig tsconfig.build.json",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage --coverage.provider=istanbul --coverage.reporter=clover --coverage.reporter=json --coverage.reporter=html",
@@ -40,14 +44,15 @@
     "vue": "^3.3.0"
   },
   "devDependencies": {
-    "@formily/reactive": "^2.3.7",
+    "@formily/reactive": "catalog:",
     "@silver-formily/typescript-config": "workspace:*",
-    "@vitest/coverage-istanbul": "^4.1.4",
-    "eslint": "^9.36.0",
-    "oxc-resolver": "^11.19.1",
-    "tsdown": "^0.21.7",
-    "typescript": "6.0.2",
-    "vitest": "^4.1.4",
-    "vue": "^3.5.27"
+    "@vitest/coverage-istanbul": "catalog:",
+    "eslint": "catalog:",
+    "oxc-resolver": "catalog:",
+    "tsdown": "catalog:",
+    "typescript": "catalog:",
+    "vitest": "catalog:",
+    "vue": "catalog:",
+    "vue-tsc": "catalog:"
   }
 }

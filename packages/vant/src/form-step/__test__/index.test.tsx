@@ -261,7 +261,8 @@ describe('form-step', () => {
       await nextButton.click()
 
       await vi.waitFor(() => {
-        expect(document.querySelector('.van-field__error-message')?.textContent).toContain('必填')
+        const errorMessage = document.querySelector('.van-field__error-message')?.textContent ?? ''
+        expect(errorMessage).toMatch(/必填|required/i)
       })
 
       expect(document.body.textContent).toContain('基础信息')

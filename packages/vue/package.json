@@ -35,7 +35,7 @@
     "esm"
   ],
   "scripts": {
-    "build": "vite build",
+    "build": "tsdown --tsconfig tsconfig.build.json",
     "lint": "eslint .",
     "format": "eslint . --fix",
     "check-types": "vue-tsc --noEmit",
@@ -56,23 +56,21 @@
     }
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^8.2.0",
-    "@commitlint/config-conventional": "^19.8.1",
-    "@formily/validator": "^2.3.7",
+    "@antfu/eslint-config": "catalog:",
+    "@commitlint/config-conventional": "catalog:",
+    "@formily/validator": "catalog:",
     "@silver-formily/reactive-vue": "workspace:*",
     "@silver-formily/typescript-config": "workspace:*",
-    "@types/node": "^24.3.0",
-    "@vitejs/plugin-vue": "^6.0.3",
-    "@vue/language-core": "~3.0.1",
-    "@vue/shared": "^3.5.27",
-    "commitlint": "^19.8.1",
-    "cz-git": "^1.12.0",
-    "czg": "^1.12.0",
-    "eslint": "^9.36.0",
-    "eslint-plugin-format": "^1.3.1",
-    "fast-glob": "^3.3.3",
-    "typescript": "6.0.2",
-    "vite": "^7.3.1",
-    "vite-plugin-dts": "^4.5.4"
+    "@types/node": "catalog:",
+    "@vue/language-core": "catalog:",
+    "@vue/shared": "catalog:",
+    "commitlint": "catalog:",
+    "cz-git": "catalog:",
+    "czg": "catalog:",
+    "eslint": "catalog:",
+    "eslint-plugin-format": "catalog:",
+    "tsdown": "catalog:",
+    "typescript": "catalog:",
+    "vue-tsc": "catalog:"
   }
 }
