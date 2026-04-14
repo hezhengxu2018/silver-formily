@@ -122,7 +122,7 @@ describe('submit', () => {
   it('应该跟随 Formily submitting 状态展示加载态', async () => {
     const onSubmit = vi.fn().mockImplementation(() => {
       return new Promise((resolve) => {
-        setTimeout(() => resolve('success'), 1000)
+        setTimeout(resolve, 1000, 'success')
       })
     })
 

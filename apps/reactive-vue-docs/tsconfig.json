@@ -1,7 +1,4 @@
 {
   "extends": "@silver-formily/typescript-config/docs.json",
-  "compilerOptions": {
-    "baseUrl": "."
-  },
   "exclude": ["node_modules", ".vitepress/cache", ".vitepress/dist"]
 }

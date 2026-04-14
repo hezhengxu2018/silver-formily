@@ -2,11 +2,11 @@
 
 ## isObservable
 
-#### Description
+### Description
 
 Determine whether an object is observable
 
-#### Signature
+### Signature
 
 ```ts
 interface isObservable {
@@ -16,13 +16,13 @@ interface isObservable {
 
 ## isAnnotation
 
-#### Description
+### Description
 
 Determine whether a value is an annotation, which means it can be used as a reactive marker function in `define`.
 
 See the [corresponding section in `define`](/en/api/define.html#annotations) for details.
 
-#### Signature
+### Signature
 
 ```ts
 interface isAnnotation {
@@ -30,7 +30,7 @@ interface isAnnotation {
 }
 ```
 
-#### Example
+### Example
 
 ```ts
 import { action, batch, isAnnotation, observable } from '@formily/reactive'
@@ -44,11 +44,11 @@ console.log(isAnnotation(() => {})) // false
 
 ## isSupportObservable
 
-#### Description
+### Description
 
 Determine whether an object can be observable
 
-#### Signature
+### Signature
 
 ```ts
 interface isSupportObservable {

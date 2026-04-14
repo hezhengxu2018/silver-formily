@@ -27,7 +27,7 @@ function remoteFetch(query: string, cb: (items: typeof languageOptions) => void)
     ? languageOptions.filter(item => item.value.toLowerCase().includes(keyword))
     : languageOptions
 
-  setTimeout(() => cb(results), 400)
+  setTimeout(cb, 400, results)
 }
 
 async function log(value: Record<string, any>) {

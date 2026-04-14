@@ -16,7 +16,7 @@ Define a batch action. The only difference with batch is that dependencies canno
 api/action-en/compare
 :::
 
-#### Example Code
+### Example Code
 
 When you want to package update logic into a reusable method, `action.bound` gives you batching behavior similar to `batch`:
 
@@ -54,7 +54,7 @@ interface action {
 api/action-en/basic
 :::
 
-#### Example Code
+### Example Code
 
 ```ts
 import { action, observable } from '@formily/reactive'

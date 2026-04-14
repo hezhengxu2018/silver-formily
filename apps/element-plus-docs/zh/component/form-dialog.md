@@ -146,14 +146,14 @@ interface FormDialog {
 
 ### 类型声明
 
-##### IFormDialogProps
+#### IFormDialogProps
 
 <<< @/../../packages/element-plus/src/form-dialog/types.ts#props
 
-##### FormDialogSlots
+#### FormDialogSlots
 
 <<< @/../../packages/element-plus/src/form-dialog/types.ts#slots
 
-##### IFormDialog
+#### IFormDialog
 
 <<< @/../../packages/element-plus/src/form-dialog/types.ts#iformdialog

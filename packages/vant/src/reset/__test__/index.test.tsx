@@ -169,7 +169,7 @@ describe('reset', () => {
   it('应该在表单提交中自动禁用重置按钮', async () => {
     const onSubmit = vi.fn().mockImplementation(() => {
       return new Promise((resolve) => {
-        setTimeout(() => resolve('success'), 1000)
+        setTimeout(resolve, 1000, 'success')
       })
     })
 

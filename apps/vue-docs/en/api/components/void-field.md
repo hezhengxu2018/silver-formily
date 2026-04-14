@@ -18,32 +18,32 @@ api/components/void-field
 Ported from the [official definition](https://core.formilyjs.org/zh-CN/api/models/form#ivoidfieldfactoryprops). Because VoidField never holds a value, it will not track the value changes of its descendants, so reactions defined here should never fire.
 :::
 
-| Prop             | Description                                                              | Type                                                                 | Default              |
-| ---------------- | ------------------------------------------------------------------------ | -------------------------------------------------------------------- | -------------------- |
-| name             | Unique path of the layout node inside the form                           | [FormPathPattern](#formpathpattern)                                  | —                    |
-| basePath         | Base path used when resolving `name`, useful in arrays/nested structures | [FormPathPattern](#formpathpattern)                                  | Current context path |
-| title            | Layout label, usually wired to the decorator’s `label`                   | `string` \| `VNode`                                                  | —                    |
-| description      | Extra helper text                                                        | `string` \| `VNode`                                                  | —                    |
-| display          | Display state: `visible`, `hidden`, or `none`                            | ^[enum]`visible \| hidden \| none`                                   | `visible`            |
-| pattern          | Interaction mode: `editable`, `disabled`, `readOnly`, or `readPretty`    | ^[enum]`editable \| readOnly \| disabled \| readPretty`              | `editable`           |
-| hidden           | Whether to hide the node (`display: none`)                               | `boolean`                                                            | `false`              |
-| visible          | Whether the node renders in the DOM                                      | `boolean`                                                            | `true`               |
-| editable         | Controls editability of descendants                                      | `boolean`                                                            | `true`               |
-| disabled         | Disables interaction                                                     | `boolean`                                                            | `false`              |
-| readOnly         | Enables read-only mode                                                   | `boolean`                                                            | `false`              |
-| readPretty       | Use a ReadPretty presenter                                               | `boolean`                                                            | `false`              |
-| decorator        | Decorator component tuple `[Component, props]`, or `false`               | `[Component, Props?]` \| `false`                                     | `false`              |
-| decoratorContent | Slot payload forwarded to the decorator                                  | `any`                                                                | —                    |
-| component        | Layout renderer tuple `[Component, props]`, or `false`                   | `[Component, Props?]` \| `false`                                     | `false`              |
-| reactions        | Side-effect handlers (single function or array)                          | [FieldReaction](#fieldreaction) \| [FieldReaction](#fieldreaction)[] | —                    |
+| Prop             | Description                                                              | Type                                                               | Default              |
+| ---------------- | ------------------------------------------------------------------------ | ------------------------------------------------------------------ | -------------------- |
+| name             | Unique path of the layout node inside the form                           | [FormPathPattern](#formpathpattern)                                | —                    |
+| basePath         | Base path used when resolving `name`, useful in arrays/nested structures | [FormPathPattern](#formpathpattern)                                | Current context path |
+| title            | Layout label, usually wired to the decorator’s `label`                   | `string` \| `VNode`                                                | —                    |
+| description      | Extra helper text                                                        | `string` \| `VNode`                                                | —                    |
+| display          | Display state: `visible`, `hidden`, or `none`                            | ^[enum]`visible \| hidden \| none`                                 | `visible`            |
+| pattern          | Interaction mode: `editable`, `disabled`, `readOnly`, or `readPretty`    | ^[enum]`editable \| readOnly \| disabled \| readPretty`            | `editable`           |
+| hidden           | Whether to hide the node (`display: none`)                               | `boolean`                                                          | `false`              |
+| visible          | Whether the node renders in the DOM                                      | `boolean`                                                          | `true`               |
+| editable         | Controls editability of descendants                                      | `boolean`                                                          | `true`               |
+| disabled         | Disables interaction                                                     | `boolean`                                                          | `false`              |
+| readOnly         | Enables read-only mode                                                   | `boolean`                                                          | `false`              |
+| readPretty       | Use a ReadPretty presenter                                               | `boolean`                                                          | `false`              |
+| decorator        | Decorator component tuple `[Component, props]`, or `false`               | `[Component, Props?]` \| `false`                                   | `false`              |
+| decoratorContent | Slot payload forwarded to the decorator                                  | `any`                                                              | —                    |
+| component        | Layout renderer tuple `[Component, props]`, or `false`                   | `[Component, Props?]` \| `false`                                   | `false`              |
+| reactions        | Side-effect handlers (single function or array)                          | [FieldReaction](#fieldreaction) \| [FieldReaction](#fieldreaction) | —                    |
 
-#### FormPathPattern
+### FormPathPattern
 
 ```ts
 type FormPathPattern = string | number | Array<string | number> | RegExp
 ```
 
-#### FieldReaction
+### FieldReaction
 
 ```ts
 type FieldReaction = (field: GeneralField) => void

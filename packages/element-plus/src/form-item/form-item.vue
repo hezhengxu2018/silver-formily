@@ -6,8 +6,8 @@ import type {
   FormValidationResult,
   TooltipInstance,
 } from 'element-plus'
-import type { ICalculatedFormLayoutProps } from 'src/form-layout/types'
 import type { CSSProperties } from 'vue'
+import type { ICalculatedFormLayoutProps } from '../form-layout/types'
 import type { IFormItemProps } from './types'
 import { CircleCheck, CircleClose, InfoFilled, Warning } from '@element-plus/icons-vue'
 import { isArr, isValid } from '@formily/shared'

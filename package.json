@@ -4,7 +4,7 @@
   "private": true,
   "packageManager": "pnpm@9.0.0",
   "engines": {
-    "node": ">=18"
+    "node": ">=24"
   },
   "scripts": {
     "build": "turbo run build",
@@ -24,7 +24,7 @@
     "prepare": "husky"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^4.19.0",
+    "@antfu/eslint-config": "^8.2.0",
     "@changesets/cli": "^2.29.8",
     "@commitlint/cli": "^19.8.1",
     "@commitlint/config-conventional": "^19.8.1",
@@ -42,10 +42,10 @@
     "oxc-resolver": "^11.19.1",
     "prettier": "^3.7.4",
     "prompts": "^2.4.2",
-    "tsdown": "^0.18.1",
+    "tsdown": "^0.21.7",
     "turbo": "^2.8.5",
-    "typescript": "5.9.2",
-    "vitest": "^4.0.18",
-    "vue-tsc": "^3.1.2"
+    "typescript": "6.0.2",
+    "vitest": "^4.1.4",
+    "vue-tsc": "^3.2.6"
   }
 }

@@ -2,8 +2,8 @@ import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import vue from '@vitejs/plugin-vue'
 import glob from 'fast-glob'
-import dts from 'unplugin-dts/vite'
 import { defineConfig } from 'vite'
+import dts from 'vite-plugin-dts'
 import pkg from './package.json' with { type: 'json' }
 
 const externalPackages = [
@@ -63,13 +63,13 @@ export default defineConfig({
   plugins: [
     vue(),
     dts({
-      root: resolve('.'),
-      outDirs: [resolve('esm')],
+      outDir: './esm',
       include: ['src'],
       entryRoot: 'src',
       insertTypesEntry: true,
-      tsconfigPath: resolve('tsconfig.json'),
-      processor: 'vue',
+      tsconfigPath: resolve('tsconfig.build.json'),
+      skipDiagnostics: true,
+      logDiagnostics: false,
     }),
   ],
 })

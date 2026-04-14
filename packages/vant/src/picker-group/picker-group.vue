@@ -158,7 +158,7 @@ function clonePickerGroupValueItem(value: PickerGroupValueItem | undefined) {
 function hasOwnProp(value: unknown, key: string) {
   return !!value
     && typeof value === 'object'
-    && Object.prototype.hasOwnProperty.call(value, key)
+    && Object.hasOwn(value, key)
 }
 
 function normalizeSlotNodes(nodes: unknown): VNode[] {

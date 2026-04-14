@@ -75,7 +75,7 @@ interface batch {
 api/batch-en/scope
 :::
 
-#### Example Code
+### Example Code
 
 ```ts
 import { autorun, batch, observable } from '@formily/reactive'

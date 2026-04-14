@@ -52,7 +52,7 @@ interface observe {
 api/observe-en/basic
 :::
 
-#### Example Code
+### Example Code
 
 ```ts
 import { observable, observe } from '@formily/reactive'

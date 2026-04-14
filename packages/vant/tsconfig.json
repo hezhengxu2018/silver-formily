@@ -6,7 +6,6 @@
     "jsxImportSource": "vue",
     "lib": ["DOM", "ES2022"],
     "experimentalDecorators": true,
-    "baseUrl": ".",
     "module": "ESNext",
     "moduleResolution": "bundler",
     "paths": {
@@ -22,12 +21,9 @@
     "allowJs": false,
     "strict": false,
     "noUnusedLocals": false,
-    "declaration": true,
-    "downlevelIteration": true,
-    "inlineSources": true,
-    "outDir": "esm",
-    "preserveConstEnums": true,
-    "sourceMap": true,
+    "declaration": false,
+    "emitDeclarationOnly": false,
+    "noEmit": true,
     "esModuleInterop": true,
     "skipLibCheck": true
   },

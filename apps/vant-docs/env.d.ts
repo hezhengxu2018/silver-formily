@@ -3,6 +3,9 @@ declare module '*.vue' {
   export default component
 }
 
+declare module '*.css'
+declare module '*.scss'
+
 declare const Prompts: {
   alert: (message: string) => Promise<void>
   confirm: (message: string) => Promise<boolean>

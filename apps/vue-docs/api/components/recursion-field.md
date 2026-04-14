@@ -41,7 +41,7 @@ api/components/recursion-field-with-component
 | mapProperties        | 属性映射函数，可在渲染前改写 schema              | ^[Function]`(schema: Schema, name: SchemaKey) => Schema`            | —             |
 | filterProperties     | 属性过滤函数，返回 `false` 的节点不会渲染        | ^[Function]`(schema: Schema, name: SchemaKey) => boolean`           | —             |
 
-#### FormPathPattern
+### FormPathPattern
 
 ```ts
 type FormPathPattern = string | number | Array<string | number> | RegExp

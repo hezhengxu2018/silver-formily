@@ -91,7 +91,7 @@ export default defineConfig({
       cleanVueFileName: true,
       skipDiagnostics: true,
       logDiagnostics: false,
-      tsconfigPath: resolve('tsconfig.json'),
+      tsconfigPath: resolve('tsconfig.build.json'),
     }),
     vue(),
     vueJsx(),

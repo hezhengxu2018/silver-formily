@@ -24,7 +24,7 @@ interface autorun {
 api/autorun/basic
 :::
 
-#### 示例代码
+### 示例代码
 
 ```ts
 import { autorun, observable } from '@formily/reactive'
@@ -64,7 +64,7 @@ interface memo<T> {
 api/autorun/memo
 :::
 
-#### 示例代码
+### 示例代码
 
 ```ts
 import { autorun, observable } from '@formily/reactive'
@@ -120,7 +120,7 @@ interface effect {
 api/autorun/effect
 :::
 
-#### 示例代码
+### 示例代码
 
 ```ts
 import { autorun, observable } from '@formily/reactive'

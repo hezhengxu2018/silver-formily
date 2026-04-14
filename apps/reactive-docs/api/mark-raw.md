@@ -20,7 +20,7 @@ interface markRaw<T> {
 api/mark-raw/basic
 :::
 
-#### 示例代码
+### 示例代码
 
 ```ts
 import { autorun, markRaw, observable } from '@formily/reactive'

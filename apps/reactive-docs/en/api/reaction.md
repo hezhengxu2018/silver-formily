@@ -6,7 +6,7 @@ reaction is the subscriber side of an observable. It accepts a tracker function.
 
 Unlike autorun, reaction also performs a dirty check on the tracker result. The subscriber is called only when the tracked value actually changes, which makes reaction more suitable for precise side effects.
 
-![](https://img.alicdn.com/imgextra/i4/O1CN01DQMGUL22mFICDsKfY_!!6000000007162-2-tps-1234-614.png)
+![reaction dependency flow](https://img.alicdn.com/imgextra/i4/O1CN01DQMGUL22mFICDsKfY_!!6000000007162-2-tps-1234-614.png)
 
 Like autorun, reaction recollects dependencies on every run, so it should be disposed manually when it is no longer needed.
 
@@ -38,7 +38,7 @@ interface reaction<T> {
 api/reaction-en/basic
 :::
 
-#### Example Code
+### Example Code
 
 ```ts
 import { batch, observable, reaction } from '@formily/reactive'
