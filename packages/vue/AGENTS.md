@@ -13,7 +13,7 @@ This document only lists requirements unique to `packages/vue`. Follow the root-
 
 - `pnpm install`: install deps after cloning or whenever `pnpm-lock.yaml` changes.
 - `pnpm build`: run `tsdown --tsconfig tsconfig.build.json` to emit the distributable bundle plus declarations.
-- `pnpm lint`: execute the Antfu ESLint preset across TS, Vue, Markdown, and JSON files.
+- `pnpm lint`: lint repository-level files first, then execute the Antfu ESLint preset across workspace TS, Vue, Markdown, and JSON files.
 - `pnpm format`: auto-fix lintable issues; always review the resulting diff.
 - `pnpm commit`: launch the `czg` prompt to craft Conventional Commits with the repository’s custom type list.
 - `pnpm release`: run the repo-level Changeset workflow (build + `changeset publish`) to tag and publish.
@@ -33,7 +33,7 @@ This document only lists requirements unique to `packages/vue`. Follow the root-
 
 ## Commit & Pull Request Guidelines
 
-- Conventional Commits are enforced via `commitlint`; allowed types mirror the `czg` prompt (`feat`, `fix`, `docs`, `refactor`, etc.).
+- Conventional Commits are enforced via the Husky `commit-msg` hook and `commitlint`; allowed types mirror the `czg` prompt (`feat`, `fix`, `docs`, `refactor`, etc.).
 - Keep scopes meaningful (e.g., `components`, `hooks`), detail breaking changes explicitly, and link issues with the configured `link` / `closed` prefixes in footers.
 - PRs must describe the problem, outline the solution, mention testing performed, and attach screenshots or GIFs for behavior changes.
-- Run `pnpm format` (the Husky pre-commit hook) locally before requesting review or running `pnpm release`.
+- Run `pnpm format` locally before requesting review or running `pnpm release`; the Husky pre-commit hook itself formats staged files through `lint-staged`.

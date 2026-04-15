@@ -12,19 +12,19 @@ This document defines repository-wide expectations for anyone automating tasks (
 
 - Node ≥ 24 and `pnpm@10`.
 - Run `pnpm install` after pulling changes that touch `pnpm-lock.yaml` or `package.json`.
-- Husky runs `pnpm format` on commit; `pnpm format` itself delegates to `turbo run format`, so every package must expose a `format` script if it wants to participate.
+- Husky runs `lint-staged` on commit so only staged files are formatted and re-staged automatically. The root `pnpm format` command first formats repository-level files, then delegates to `turbo run format`, so every package must expose a `format` script if it wants to participate in full-repo formatting.
 
 ## Standard Workflows
 
-| Task              | Command            | Notes                                                                               |
-| ----------------- | ------------------ | ----------------------------------------------------------------------------------- |
-| Format everything | `pnpm format`      | Uses ESLint (Antfu preset) everywhere. Required before pushing.                     |
-| Lint only         | `pnpm lint`        | Runs `turbo run lint`, so each workspace must provide a `lint` script.              |
-| Type-check        | `pnpm check-types` | Executes `turbo run check-types`. Add package scripts if missing.                   |
-| Build             | `pnpm build`       | Builds workspaces that expose `build`; declare outputs for file-generating steps.   |
-| Dev servers       | `pnpm dev`         | Opens a searchable picker for apps/docs by default; use `pnpm dev:all` for fan-out. |
-| Test              | `pnpm test`        | Opens a searchable workspace picker; use `pnpm test:all` for full run.              |
-| Releases          | `pnpm release`     | Runs `pnpm build:changed` first, then `changeset publish`. Repo must be clean.      |
+| Task              | Command            | Notes                                                                                                           |
+| ----------------- | ------------------ | --------------------------------------------------------------------------------------------------------------- |
+| Format everything | `pnpm format`      | Uses ESLint (Antfu preset) everywhere. Required before pushing.                                                 |
+| Lint only         | `pnpm lint`        | Lints repository-level files first, then runs `turbo run lint`, so each workspace must provide a `lint` script. |
+| Type-check        | `pnpm check-types` | Executes `turbo run check-types`. Add package scripts if missing.                                               |
+| Build             | `pnpm build`       | Builds workspaces that expose `build`; declare outputs for file-generating steps.                               |
+| Dev servers       | `pnpm dev`         | Opens a searchable picker for apps/docs by default; use `pnpm dev:all` for fan-out.                             |
+| Test              | `pnpm test`        | Opens a searchable workspace picker; use `pnpm test:all` for full run.                                          |
+| Releases          | `pnpm release`     | Runs `pnpm build:changed` first, then `changeset publish`. Repo must be clean.                                  |
 
 ## Docs Apps
 
@@ -40,7 +40,7 @@ This document defines repository-wide expectations for anyone automating tasks (
 
 - Antfu ESLint preset (flat config) controls TS/Vue/Markdown/JSON style. Prefer single quotes, no semicolons, 2 spaces.
 - Prettier is not run directly in hooks; any formatting should go through ESLint or `pnpm format`.
-- Conventional Commits enforced via `czg` + `commitlint`. Typical types: `feat`, `fix`, `docs`, `chore`, `refactor`, `test`.
+- Conventional Commits are enforced by Husky `commit-msg` via `commitlint`, and `pnpm commit` still uses `czg` as the guided prompt. Typical types: `feat`, `fix`, `docs`, `chore`, `refactor`, `test`.
 - Always document manual testing in PR descriptions until automated tests exist.
 
 ## AGENTS.md Best Practices

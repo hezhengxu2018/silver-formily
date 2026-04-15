@@ -65,8 +65,8 @@ pnpm install
 | `pnpm dev:all`          | Runs `turbo run dev` and starts every workspace that exposes `dev`   |
 | `pnpm build`            | Filters workspaces that expose `build`, then runs Turbo              |
 | `pnpm docs:build`       | Filters workspaces that expose `docs:build`, then runs Turbo         |
-| `pnpm lint`             | Runs `turbo run lint`                                                |
-| `pnpm format`           | Runs `turbo run format`                                              |
+| `pnpm lint`             | Lints repository-level files first, then runs `turbo run lint`       |
+| `pnpm format`           | Formats repository-level files first, then runs `turbo run format`   |
 | `pnpm check-types`      | Runs `turbo run check-types`                                         |
 | `pnpm test`             | Opens a searchable picker and runs `test` for the selected package   |
 | `pnpm test:all`         | Runs `turbo run test` for every available test task                  |
@@ -129,11 +129,11 @@ pnpm run build:changed
 ## Engineering Conventions
 
 - Code style is enforced through `@antfu/eslint-config`: 2 spaces, single quotes, no semicolons.
-- Root `pnpm format` delegates to `turbo run format`; the current Husky `pre-commit` hook runs `pnpm turbo run format`.
+- Root `pnpm format` formats repository-level files first, then delegates to `turbo run format`; Husky `pre-commit` uses `lint-staged` to format only staged files and automatically re-stage formatter changes into the same commit.
 - The Turbo `build` task caches `dist/**`, `.vitepress/dist/**`, and `esm/**`.
 - Publishable packages under `packages/*` now build with tsdown, while pure TypeScript packages and Vue component libraries can keep package-specific configs.
 - Documentation sites are standardized on VitePress `2.0.0-alpha.16` with shared theme and plugin wiring from `@silver-formily/docs-toolkit`.
-- Conventional Commits are used across the repo, and `pnpm commit` invokes `czg`.
+- Conventional Commits are enforced through the Husky `commit-msg` hook with `commitlint`, and `pnpm commit` invokes `czg` for guided commit messages.
 
 ## CI and Release
 

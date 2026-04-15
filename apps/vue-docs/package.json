@@ -33,7 +33,7 @@
     "@silver-formily/reactive-vue": "workspace:*",
     "@silver-formily/vue": "workspace:*",
     "element-plus": "catalog:",
-    "vue": "catalog:conflicts_vue_h3_3_0"
+    "vue": "catalog:"
   },
   "devDependencies": {
     "@shikijs/vitepress-twoslash": "catalog:",

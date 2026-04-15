@@ -37,10 +37,10 @@
     "@silver-formily/reactive-vue": "workspace:*",
     "@silver-formily/vue": "workspace:*",
     "@types/lodash-es": "catalog:",
-    "element-plus": "catalog:conflicts_element-plus_h2_13_0",
+    "element-plus": "catalog:",
     "lodash-es": "catalog:",
     "shiki": "catalog:",
-    "vue": "catalog:conflicts_vue_h3_3_0",
+    "vue": "catalog:",
     "vue-draggable-plus": "catalog:"
   },
   "devDependencies": {

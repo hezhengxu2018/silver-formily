@@ -12,8 +12,10 @@
     "build:changed": "node scripts/build-changed.mjs",
     "dev": "node scripts/dev-select.mjs",
     "dev:all": "turbo run dev",
-    "lint": "turbo run lint",
-    "format": "turbo run format",
+    "lint": "pnpm run lint:root && turbo run lint",
+    "lint:root": "eslint . --ignore-pattern 'apps/**' --ignore-pattern 'packages/**'",
+    "format": "pnpm run format:root && turbo run format",
+    "format:root": "eslint . --fix --ignore-pattern 'apps/**' --ignore-pattern 'packages/**'",
     "test": "node scripts/test-select.mjs",
     "test:all": "turbo run test",
     "commit": "czg",
@@ -39,10 +41,14 @@
     "eslint-plugin-unicorn": "catalog:",
     "eslint-plugin-vue": "catalog:",
     "husky": "catalog:",
+    "lint-staged": "catalog:",
     "oxc-resolver": "catalog:",
     "prettier": "catalog:",
     "prompts": "catalog:",
     "turbo": "catalog:",
     "typescript": "catalog:"
+  },
+  "lint-staged": {
+    "*.{js,cjs,mjs,ts,tsx,jsx,vue,md,json,jsonc,yml,yaml,html,css,scss}": "eslint --fix"
   }
 }

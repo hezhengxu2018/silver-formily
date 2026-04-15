@@ -20,7 +20,7 @@
   "dependencies": {
     "@formily/reactive": "catalog:",
     "@silver-formily/docs-toolkit": "workspace:*",
-    "vue": "catalog:conflicts_vue_h3_3_0"
+    "vue": "catalog:"
   },
   "devDependencies": {
     "@silver-formily/typescript-config": "workspace:*",
