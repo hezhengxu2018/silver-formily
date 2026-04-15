@@ -126,6 +126,8 @@ describe('upload', () => {
 
     expect(field.dataSource?.[0]?.status).toBe('done')
     expect(field.dataSource?.[0]?.url).toBe('https://cdn.example.com/contract.pdf')
+    expect(field.selfErrors).toEqual([])
+    expect(container.textContent).not.toContain('上传失败')
   })
 
   it('应该在上传失败时写入字段错误并展示失败状态', async () => {

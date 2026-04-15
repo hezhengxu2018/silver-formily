@@ -119,7 +119,9 @@ function setFeedBack(error?: Error) {
     return
   }
 
-  const message = props.errorAdaptor(error)
+  const message = error
+    ? props.errorAdaptor(error)
+    : ''
 
   fieldRef.value.setFeedback({
     type: 'error',
