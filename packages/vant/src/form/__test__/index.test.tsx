@@ -150,24 +150,32 @@ describe('form', () => {
     expect(container.querySelector('input')?.className).toContain('van-field__control--right')
   })
 
-  it('应该把 disabled 同步给真实输入框', async () => {
+  it('应该把 Field.disabled 同步给真实输入框', async () => {
     const { container } = render(() => (
-      <Form disabled={true}>
-        <FormItem label="用户名">
-          <Input modelValue="silver-formily" />
-        </FormItem>
+      <Form form={createForm({ values: { username: 'silver-formily' } })}>
+        <Field
+          name="username"
+          title="用户名"
+          disabled={true}
+          decorator={[FormItem]}
+          component={[Input]}
+        />
       </Form>
     ))
 
     expect(container.querySelector('input')).toBeDisabled()
   })
 
-  it('应该把 readonly 同步给真实输入框', async () => {
+  it('应该把 Field.readOnly 同步给真实输入框', async () => {
     const { container } = render(() => (
-      <Form readonly={true}>
-        <FormItem label="用户名">
-          <Input modelValue="silver-formily" />
-        </FormItem>
+      <Form form={createForm({ values: { username: 'silver-formily' } })}>
+        <Field
+          name="username"
+          title="用户名"
+          readOnly={true}
+          decorator={[FormItem]}
+          component={[Input]}
+        />
       </Form>
     ))
 
@@ -177,9 +185,12 @@ describe('form', () => {
   it('应该在未显式传入 disabled 时回退读取 Formily form 实例状态', async () => {
     const { container } = render(() => (
       <Form form={createForm({ disabled: true })}>
-        <FormItem label="用户名">
-          <Input modelValue="silver-formily" />
-        </FormItem>
+        <Field
+          name="username"
+          title="用户名"
+          decorator={[FormItem]}
+          component={[Input]}
+        />
       </Form>
     ))
 
@@ -189,9 +200,12 @@ describe('form', () => {
   it('应该在未显式传入 readonly 时回退读取 Formily form 实例状态', async () => {
     const { container } = render(() => (
       <Form form={createForm({ readOnly: true })}>
-        <FormItem label="用户名">
-          <Input modelValue="silver-formily" />
-        </FormItem>
+        <Field
+          name="username"
+          title="用户名"
+          decorator={[FormItem]}
+          component={[Input]}
+        />
       </Form>
     ))
 

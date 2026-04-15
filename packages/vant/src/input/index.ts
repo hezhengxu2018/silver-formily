@@ -7,6 +7,7 @@ const InnerInput = connect<typeof FInput>(
   FInput,
   mapProps({
     readOnly: 'readonly',
+    disabled: true,
   }),
   mapReadPretty(PreviewText.Input),
 )
@@ -17,6 +18,7 @@ const TextArea = connect<typeof FInput>(
     return {
       ...props,
       readonly: props.readOnly,
+      disabled: props.disabled,
       type: 'textarea',
     }
   }),

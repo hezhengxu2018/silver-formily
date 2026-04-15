@@ -18,7 +18,7 @@ const emit = defineEmits<{
   'update:modelValue': [value: string]
 }>()
 
-const { props: inputProps } = useCleanAttrs(['modelValue', 'onUpdate:modelValue', 'type'])
+const { props: inputProps } = useCleanAttrs()
 const formItemControlContext = useVantFormItemControlContext()
 const isTextArea = computed(() => props.type === 'textarea')
 const inputValue = computed(() => isValid(props.modelValue) ? String(props.modelValue) : '')
@@ -27,12 +27,6 @@ const controlClasses = computed(() => [
   formItemControlContext?.value.error && 'van-field__control--error',
   formItemControlContext?.value.inputAlign && `van-field__control--${formItemControlContext.value.inputAlign}`,
 ])
-const resolvedDisabled = computed(() => {
-  return inputProps.value.disabled ?? formItemControlContext?.value.disabled
-})
-const resolvedReadonly = computed(() => {
-  return inputProps.value.readonly ?? formItemControlContext?.value.readonly
-})
 
 function onInput(event: Event) {
   const target = event.target as HTMLInputElement | HTMLTextAreaElement
@@ -45,8 +39,6 @@ function onInput(event: Event) {
     :is="isTextArea ? 'textarea' : 'input'"
     v-bind="inputProps"
     :class="controlClasses"
-    :disabled="resolvedDisabled"
-    :readonly="resolvedReadonly"
     :type="props.type"
     :value="inputValue"
     @input="onInput"
