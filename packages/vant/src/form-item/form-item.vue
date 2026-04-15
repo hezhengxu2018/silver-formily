@@ -181,8 +181,11 @@ const labelClass = computed(() => {
 const resolvedErrorMessage = computed(() => {
   return resolvedFeedbackMessage.value ?? resolvedFieldProps.value.fieldProps.errorMessage
 })
+const resolvedErrorMessageText = computed(() => {
+  return resolveModelText(resolvedErrorMessage.value)
+})
 const hasErrorMessage = computed(() => {
-  return showErrorMessage.value && isValid(resolvedErrorMessage.value)
+  return showErrorMessage.value && resolvedErrorMessageText.value !== ''
 })
 const fieldBodyClass = computed(() => [
   'van-field__body',
@@ -318,12 +321,12 @@ function onClear(event: MouseEvent) {
           <slot
             v-if="hasErrorMessageSlot"
             name="error-message"
-            :message="String(resolvedErrorMessage ?? '')"
+            :message="resolvedErrorMessageText"
           >
             <component :is="props.feedbackText" />
           </slot>
           <template v-else>
-            {{ resolvedErrorMessage }}
+            {{ resolvedErrorMessageText }}
           </template>
         </div>
       </template>
