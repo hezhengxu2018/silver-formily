@@ -56,6 +56,14 @@ function resolveControlFlag(name: 'showError' | 'showErrorMessage', defaultValue
   return defaultValue
 }
 
+function resolveModelText(value: unknown) {
+  if (isNil(value)) {
+    return ''
+  }
+
+  return ['number', 'string'].includes(typeof value) ? String(value) : ''
+}
+
 const hasLabelSlot = computed(() => Boolean(slots.label) || isVNode(props.label))
 const hasExtraProp = computed(() => isValid(props.extra))
 const showError = computed(() => resolveControlFlag('showError', false))
@@ -121,8 +129,7 @@ const shouldShowClear = computed(() => {
     return false
   }
 
-  const modelValue = resolvedFieldProps.value.fieldProps.modelValue
-  const hasValue = isValid(modelValue) && String(modelValue) !== ''
+  const hasValue = resolveModelText(resolvedFieldProps.value.fieldProps.modelValue) !== ''
   if (!hasValue) {
     return false
   }
@@ -182,8 +189,7 @@ const fieldBodyClass = computed(() => [
   slots.input && 'van-field__body--custom',
 ])
 const modelValueLength = computed(() => {
-  const modelValue = resolvedFieldProps.value.fieldProps.modelValue
-  return isValid(modelValue) ? String(modelValue).length : 0
+  return resolveModelText(resolvedFieldProps.value.fieldProps.modelValue).length
 })
 const extraClass = b('extra')
 const extraWrapperClass = b('extra-wrapper')
