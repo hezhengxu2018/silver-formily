@@ -6,7 +6,7 @@ import { showDemoResult } from '../shared'
 
 const form = createForm()
 
-async function showUploadResult(values: Record<string, string[]>) {
+async function showUploadResult(values: Record<string, File[]>) {
   await showDemoResult(values)
 }
 </script>
@@ -22,7 +22,7 @@ async function showUploadResult(values: Record<string, string[]>) {
       }]"
       :component="[Upload, {
         accept: 'image/*,.pdf',
-        formatValue: (fileList: any[] = []) => fileList.map(item => item.file?.name),
+        formatValue: (fileList: any[] = []) => fileList.map(item => item.file).filter(Boolean),
         maxCount: 3,
         textContent: '上传附件',
       }]"
