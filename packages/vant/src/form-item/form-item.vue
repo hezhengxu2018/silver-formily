@@ -268,7 +268,6 @@ function onClear(event: MouseEvent) {
         </template>
         <label
           v-else-if="isValid(formItemProps.label)"
-          @click.prevent
         >
           {{ formItemProps.label }}<span v-if="formItemProps.colon">:</span>
         </label>

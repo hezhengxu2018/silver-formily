@@ -180,7 +180,7 @@ describe('formItem', () => {
             'onUpdate:modelValue': onUpdateModelValue,
           }}
         >
-          <Input modelValue="已有内容" />
+          <Input />
         </FormBaseItem>
       ))
 
