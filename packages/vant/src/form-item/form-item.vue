@@ -308,6 +308,7 @@ function onClear(event: MouseEvent) {
         <div
           v-if="formItemProps.showWordLimit && formItemProps.maxlength"
           class="van-field__word-limit"
+          :aria-label="`Character count: ${modelValueLength} of ${formItemProps.maxlength}`"
         >
           <span class="van-field__word-num">{{ modelValueLength }}</span>/{{ formItemProps.maxlength }}
         </div>
