@@ -2,6 +2,7 @@ import { createForm } from '@formily/core'
 import { Field, FormProvider } from '@silver-formily/vue'
 import { describe, expect, it, vi } from 'vitest'
 import { render } from 'vitest-browser-vue'
+import { userEvent } from 'vitest/browser'
 import { getElement } from '../../__test__/dom'
 import { Input } from '../../input'
 import FormItem, { FormBaseItem } from '../index'
@@ -166,6 +167,29 @@ describe('formItem', () => {
       await vi.waitFor(() => {
         expect(container.querySelector('.van-field__clear')).not.toBeNull()
       })
+    })
+
+    it('应该在点击清除图标时触发 modelValue 更新', async () => {
+      const onUpdateModelValue = vi.fn()
+      const { container } = render(() => (
+        <FormBaseItem
+          clearable={true}
+          clearTrigger="always"
+          modelValue="已有内容"
+          {...{
+            'onUpdate:modelValue': onUpdateModelValue,
+          }}
+        >
+          <Input modelValue="已有内容" />
+        </FormBaseItem>
+      ))
+
+      await vi.waitFor(() => {
+        expect(container.querySelector('.van-field__clear')).not.toBeNull()
+      })
+
+      await userEvent.click(container.querySelector('.van-field__clear')!)
+      expect(onUpdateModelValue).toHaveBeenCalledWith('')
     })
   })
 })
