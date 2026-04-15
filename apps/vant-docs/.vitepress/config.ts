@@ -1,9 +1,9 @@
+import type { UserConfig } from 'vitepress'
 import path, { dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { createDocsConfig } from '@silver-formily/docs-toolkit'
 import pkg from '@silver-formily/vant/package.json' with { type: 'json' }
 import vueJsx from '@vitejs/plugin-vue-jsx'
-import type { UserConfig } from 'vitepress'
 
 const currentDir = dirname(fileURLToPath(import.meta.url))
 const vantSource = `${path.resolve(currentDir, '../../../packages/vant/src')}/`
