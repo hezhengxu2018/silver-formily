@@ -1,3 +1,4 @@
+import type { UserConfig } from 'vitepress'
 import path, { dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { createDocsConfig } from '@silver-formily/docs-toolkit'
@@ -11,6 +12,7 @@ const SITE_URL = 'https://element-plus.silver-formily.org'
 const currentDir = dirname(fileURLToPath(import.meta.url))
 const demoDir = path.resolve(currentDir, '../zh/demos')
 const elementPlusSource = `${path.resolve(currentDir, '../../../packages/element-plus/src')}/`
+type DocsPluginOption = NonNullable<NonNullable<UserConfig['vite']>['plugins']>[number]
 export default createDocsConfig({
   pkg,
   demoDir,
@@ -92,7 +94,10 @@ export default createDocsConfig({
     define: {
       __VUE_PROD_HYDRATION_MISMATCH_DETAILS__: true,
     },
-    plugins: [vueJsx()],
+    plugins: [vueJsx() as unknown as DocsPluginOption],
+    resolve: {
+      dedupe: ['vue', 'element-plus'],
+    },
     ssr: {
       noExternal: ['@silver-formily/vue'],
     },

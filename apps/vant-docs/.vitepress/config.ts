@@ -3,9 +3,11 @@ import { fileURLToPath } from 'node:url'
 import { createDocsConfig } from '@silver-formily/docs-toolkit'
 import pkg from '@silver-formily/vant/package.json' with { type: 'json' }
 import vueJsx from '@vitejs/plugin-vue-jsx'
+import type { UserConfig } from 'vitepress'
 
 const currentDir = dirname(fileURLToPath(import.meta.url))
 const vantSource = `${path.resolve(currentDir, '../../../packages/vant/src')}/`
+type DocsPluginOption = NonNullable<NonNullable<UserConfig['vite']>['plugins']>[number]
 
 export default createDocsConfig({
   pkg,
@@ -94,7 +96,7 @@ export default createDocsConfig({
     define: {
       __VUE_PROD_HYDRATION_MISMATCH_DETAILS__: true,
     },
-    plugins: [vueJsx()],
+    plugins: [vueJsx() as unknown as DocsPluginOption],
     ssr: {
       noExternal: ['@silver-formily/vue'],
     },
