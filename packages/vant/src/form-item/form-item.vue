@@ -111,16 +111,13 @@ const resolvedFieldProps = computed(() => {
   }
 })
 
-const formItemProps = computed(() => {
-  return {
-    ...resolvedFieldProps.value.fieldProps,
-    label: hasLabelSlot.value ? undefined : props.label as string | number | undefined,
-    required: hasExplicitVNodeProp('asterisk')
-      ? props.asterisk
-      : resolvedFieldProps.value.fieldProps.required,
-    error: resolvedFieldProps.value.error,
-    errorMessage: resolvedFeedbackMessage.value ?? resolvedFieldProps.value.fieldProps.errorMessage,
-  }
+const resolvedLabel = computed(() => {
+  return hasLabelSlot.value ? undefined : props.label as string | number | undefined
+})
+const resolvedRequired = computed(() => {
+  return hasExplicitVNodeProp('asterisk')
+    ? props.asterisk
+    : resolvedFieldProps.value.fieldProps.required
 })
 
 const hasFieldBorder = computed(() => resolvedFieldProps.value.fieldProps.border !== false)
@@ -138,8 +135,8 @@ const shouldShowClear = computed(() => {
   return clearTrigger === 'always' || (clearTrigger === 'focus' && focused.value)
 })
 const labelStyle = computed(() => {
-  const labelWidth = formItemProps.value.labelWidth
-  const labelAlign = formItemProps.value.labelAlign
+  const labelWidth = resolvedFieldProps.value.fieldProps.labelWidth
+  const labelAlign = resolvedFieldProps.value.fieldProps.labelAlign
   const style: Record<string, string> = {}
 
   if (labelWidth && labelAlign !== 'top') {
@@ -153,8 +150,8 @@ const labelStyle = computed(() => {
   return style
 })
 const topLabelStyle = computed(() => {
-  const labelWidth = formItemProps.value.labelWidth
-  if (!labelWidth || formItemProps.value.labelAlign !== 'top') {
+  const labelWidth = resolvedFieldProps.value.fieldProps.labelWidth
+  if (!labelWidth || resolvedFieldProps.value.fieldProps.labelAlign !== 'top') {
     return undefined
   }
 
@@ -163,19 +160,19 @@ const topLabelStyle = computed(() => {
   }
 })
 const fieldClass = computed(() => {
-  const labelAlign = formItemProps.value.labelAlign
+  const labelAlign = resolvedFieldProps.value.fieldProps.labelAlign
   return [
     'van-field',
-    formItemProps.value.error && 'van-field--error',
-    formItemProps.value.disabled && 'van-field--disabled',
+    resolvedFieldProps.value.error && 'van-field--error',
+    resolvedFieldProps.value.fieldProps.disabled && 'van-field--disabled',
     labelAlign && `van-field--label-${labelAlign}`,
   ]
 })
 const labelClass = computed(() => {
   return [
     'van-field__label',
-    formItemProps.value.labelAlign && `van-field__label--${formItemProps.value.labelAlign}`,
-    formItemProps.value.required && 'van-field__label--required',
+    resolvedFieldProps.value.fieldProps.labelAlign && `van-field__label--${resolvedFieldProps.value.fieldProps.labelAlign}`,
+    resolvedRequired.value && 'van-field__label--required',
   ]
 })
 const resolvedErrorMessage = computed(() => {
@@ -232,44 +229,44 @@ function onClear(event: MouseEvent) {
     <VanCell
       ref="fieldRef"
       :class="fieldClass"
-      :border="formItemProps.border"
-      :center="formItemProps.center"
-      :is-link="formItemProps.isLink"
-      :clickable="formItemProps.clickable"
-      :size="formItemProps.size"
-      :arrow-direction="formItemProps.arrowDirection"
-      :title-style="formItemProps.labelAlign === 'top' ? topLabelStyle : labelStyle"
+      :border="resolvedFieldProps.fieldProps.border"
+      :center="resolvedFieldProps.fieldProps.center"
+      :is-link="resolvedFieldProps.fieldProps.isLink"
+      :clickable="resolvedFieldProps.fieldProps.clickable"
+      :size="resolvedFieldProps.fieldProps.size"
+      :arrow-direction="resolvedFieldProps.fieldProps.arrowDirection"
+      :title-style="resolvedFieldProps.fieldProps.labelAlign === 'top' ? topLabelStyle : labelStyle"
       value-class="van-field__value"
       :title-class="labelClass"
       @focusin="focused = true"
       @focusout="focused = false"
     >
       <template #icon>
-        <template v-if="formItemProps.labelAlign !== 'top'">
+        <template v-if="resolvedFieldProps.fieldProps.labelAlign !== 'top'">
           <slot v-if="slots['left-icon']" name="left-icon" />
-          <div v-else-if="formItemProps.leftIcon" class="van-field__left-icon" @click="emit('clickLeftIcon', $event)">
-            <VanIcon :name="formItemProps.leftIcon" :class-prefix="formItemProps.iconPrefix" />
+          <div v-else-if="resolvedFieldProps.fieldProps.leftIcon" class="van-field__left-icon" @click="emit('clickLeftIcon', $event)">
+            <VanIcon :name="resolvedFieldProps.fieldProps.leftIcon" :class-prefix="resolvedFieldProps.fieldProps.iconPrefix" />
           </div>
         </template>
       </template>
 
       <template #title>
-        <template v-if="formItemProps.labelAlign === 'top'">
+        <template v-if="resolvedFieldProps.fieldProps.labelAlign === 'top'">
           <slot v-if="slots['left-icon']" name="left-icon" />
-          <div v-else-if="formItemProps.leftIcon" class="van-field__left-icon" @click="emit('clickLeftIcon', $event)">
-            <VanIcon :name="formItemProps.leftIcon" :class-prefix="formItemProps.iconPrefix" />
+          <div v-else-if="resolvedFieldProps.fieldProps.leftIcon" class="van-field__left-icon" @click="emit('clickLeftIcon', $event)">
+            <VanIcon :name="resolvedFieldProps.fieldProps.leftIcon" :class-prefix="resolvedFieldProps.fieldProps.iconPrefix" />
           </div>
         </template>
 
         <template v-if="hasLabelSlot">
           <slot v-if="slots.label" name="label" />
           <component :is="props.label" v-else />
-          <span v-if="formItemProps.colon">:</span>
+          <span v-if="resolvedFieldProps.fieldProps.colon">:</span>
         </template>
         <label
-          v-else-if="isValid(formItemProps.label)"
+          v-else-if="isValid(resolvedLabel)"
         >
-          {{ formItemProps.label }}<span v-if="formItemProps.colon">:</span>
+          {{ resolvedLabel }}<span v-if="resolvedFieldProps.fieldProps.colon">:</span>
         </label>
       </template>
 
@@ -282,7 +279,7 @@ function onClear(event: MouseEvent) {
 
           <VanIcon
             v-if="shouldShowClear"
-            :name="formItemProps.clearIcon || 'clear'"
+            :name="resolvedFieldProps.fieldProps.clearIcon || 'clear'"
             class="van-field__clear"
             @click="onClear"
           />
@@ -293,11 +290,11 @@ function onClear(event: MouseEvent) {
             </div>
           </template>
           <div
-            v-else-if="formItemProps.rightIcon"
+            v-else-if="resolvedFieldProps.fieldProps.rightIcon"
             class="van-field__right-icon"
             @click="emit('clickRightIcon', $event)"
           >
-            <VanIcon :name="formItemProps.rightIcon" :class-prefix="formItemProps.iconPrefix" />
+            <VanIcon :name="resolvedFieldProps.fieldProps.rightIcon" :class-prefix="resolvedFieldProps.fieldProps.iconPrefix" />
           </div>
 
           <div v-if="slots.button" class="van-field__button">
@@ -306,17 +303,17 @@ function onClear(event: MouseEvent) {
         </div>
 
         <div
-          v-if="formItemProps.showWordLimit && formItemProps.maxlength"
+          v-if="resolvedFieldProps.fieldProps.showWordLimit && resolvedFieldProps.fieldProps.maxlength"
           class="van-field__word-limit"
-          :aria-label="`Character count: ${modelValueLength} of ${formItemProps.maxlength}`"
+          :aria-label="`Character count: ${modelValueLength} of ${resolvedFieldProps.fieldProps.maxlength}`"
         >
-          <span class="van-field__word-num">{{ modelValueLength }}</span>/{{ formItemProps.maxlength }}
+          <span class="van-field__word-num">{{ modelValueLength }}</span>/{{ resolvedFieldProps.fieldProps.maxlength }}
         </div>
 
         <div
           v-if="hasErrorMessage"
           class="van-field__error-message"
-          :class="formItemProps.errorMessageAlign ? `van-field__error-message--${formItemProps.errorMessageAlign}` : ''"
+          :class="resolvedFieldProps.fieldProps.errorMessageAlign ? `van-field__error-message--${resolvedFieldProps.fieldProps.errorMessageAlign}` : ''"
         >
           <slot
             v-if="hasErrorMessageSlot"
