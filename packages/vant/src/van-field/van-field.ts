@@ -1,6 +1,7 @@
 import type { PropType } from 'vue'
+import type { FieldRule } from './utils'
 import { Cell as VanCell, Icon as VanIcon } from 'vant'
-import { computed, createVNode, defineComponent, mergeProps, nextTick, onMounted, provide, reactive, ref, watch } from 'vue'
+import { computed, createVNode, defineComponent, mergeProps, nextTick, onMounted, provide, reactive, ref, useId, watch } from 'vue'
 import {
   addUnit,
   clamp,
@@ -30,14 +31,8 @@ import {
   useParent,
 } from './utils'
 
-const [name, bem] = createNamespace('field')
+const [, bem] = createNamespace('field')
 const FORM_KEY = Symbol('van-form')
-let uid = 0
-
-function useId() {
-  uid += 1
-  return `van-field-${uid}`
-}
 
 const cellSharedProps = {
   tag: makeStringProp('div'),
@@ -126,7 +121,7 @@ export const vanFieldProps = extend({}, cellSharedProps, vanFieldSharedProps, {
 })
 
 export default defineComponent({
-  name: `F${name.replace('van-', '').replace(/^./, c => c.toUpperCase())}`,
+  name: 'VanField',
   props: vanFieldProps,
   emits: ['blur', 'focus', 'clear', 'keypress', 'clickInput', 'endValidate', 'startValidate', 'clickLeftIcon', 'clickRightIcon', 'update:modelValue'],
   setup(props, { emit, slots, expose }) {
@@ -176,18 +171,18 @@ export default defineComponent({
     const showRequiredMark = computed(() => {
       const required = getProp('required')
       if (required === 'auto') {
-        return props.rules?.some((rule: any) => rule.required)
+        return props.rules?.some((rule: FieldRule) => rule.required)
       }
 
       return required
     })
 
-    const runRules = (rules: any[]) => rules.reduce((promise, rule) => promise.then(() => {
+    const runRules = (rules: FieldRule[]) => rules.reduce((promise, rule) => promise.then(() => {
       if (state.status === 'failed') {
         return
       }
 
-      let { value } = formValue
+      let value = formValue.value
       if (rule.formatter) {
         value = rule.formatter(value, rule)
       }
@@ -257,7 +252,7 @@ export default defineComponent({
       if (form && props.rules) {
         const { validateTrigger } = form.props
         const defaultTrigger = toArray(validateTrigger).includes(trigger)
-        const rules = props.rules.filter((rule: any) => {
+        const rules = props.rules.filter((rule: FieldRule) => {
           if (rule.trigger) {
             return toArray(rule.trigger).includes(trigger)
           }

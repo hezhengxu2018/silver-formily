@@ -113,10 +113,12 @@ export function setRootScrollTop(value: number) {
   setScrollTop(document.body, value)
 }
 
-const isIOS = typeof navigator !== 'undefined' && /ios|iphone|ipad|ipod/.test(navigator.userAgent.toLowerCase())
+function isIOS() {
+  return typeof navigator !== 'undefined' && /ios|iphone|ipad|ipod/.test(navigator.userAgent.toLowerCase())
+}
 
 export function resetScroll() {
-  if (isIOS) {
+  if (isIOS()) {
     setRootScrollTop(getRootScrollTop())
   }
 }
@@ -178,10 +180,12 @@ export function isEmptyValue(value: unknown) {
   return !value
 }
 
-interface FieldRule {
+export interface FieldRule {
   required?: boolean
   validateEmpty?: boolean
   pattern?: RegExp
+  trigger?: string | string[]
+  formatter?: (value: unknown, rule: FieldRule) => unknown
   validator?: (value: unknown, rule: FieldRule) => boolean | string | Promise<boolean | string>
   message?: string | ((value: unknown, rule: FieldRule) => string)
 }
@@ -226,7 +230,8 @@ export function getRuleMessage(value: unknown, rule: FieldRule) {
 }
 
 export function startComposing({ target }: Event) {
-  ;(target as HTMLInputElement & { composing?: boolean }).composing = true
+  const input = target as HTMLInputElement & { composing?: boolean }
+  input.composing = true
 }
 
 export function endComposing({ target }: Event) {
