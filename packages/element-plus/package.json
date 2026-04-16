@@ -84,6 +84,7 @@
     "vite": "catalog:",
     "vitest": "catalog:",
     "vitest-browser-vue": "catalog:",
+    "vue": "catalog:",
     "vue-tsc": "catalog:"
   }
 }

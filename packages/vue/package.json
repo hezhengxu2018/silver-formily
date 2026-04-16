@@ -71,6 +71,7 @@
     "eslint-plugin-format": "catalog:",
     "tsdown": "catalog:",
     "typescript": "catalog:",
+    "vue": "catalog:",
     "vue-tsc": "catalog:"
   }
 }
