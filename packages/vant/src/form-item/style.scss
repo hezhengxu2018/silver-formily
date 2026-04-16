@@ -3,7 +3,6 @@
 $form-item-prefix: '#{$style-prefix}-form-item';
 
 .#{$form-item-prefix} {
-  position: relative;
   background: var(--van-background-2);
 
   &:not(.#{$form-item-prefix}--with-extra) .van-cell::after {
@@ -18,15 +17,8 @@ $form-item-prefix: '#{$style-prefix}-form-item';
     display: none;
   }
 
-  &--with-extra:not(.#{$form-item-prefix}--borderless)::after {
-    position: absolute;
-    right: var(--van-padding-md);
-    bottom: 0;
-    left: var(--van-padding-md);
+  &--with-extra:not(.#{$form-item-prefix}--borderless) .#{$form-item-prefix}__extra-wrapper {
     border-bottom: 1px solid var(--van-cell-border-color);
-    transform: scaleY(0.5);
-    content: '';
-    pointer-events: none;
   }
 
   &__extra-wrapper {
