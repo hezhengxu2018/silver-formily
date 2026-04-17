@@ -139,6 +139,28 @@ function getVisibleGroupOption(text: string, columnIndex = 0) {
 }
 
 describe('time-picker', () => {
+  it('应该给 popup trigger 补齐和 Field 一致的标签关联属性', async () => {
+    const { container } = render(() => (
+      <FormProvider form={createForm()}>
+        <Field
+          name="appointmentTime"
+          title="预约时间"
+          decorator={[FormItem]}
+          component={[TimePicker, { maxTime, minTime }]}
+        />
+      </FormProvider>
+    ))
+
+    const label = container.querySelector('label')
+    const input = getTrigger(container)
+
+    expect(label).not.toBeNull()
+    expect(input).toHaveAttribute('id')
+    expect(label).toHaveAttribute('for', input.id)
+    expect(input).toHaveAttribute('aria-labelledby', label!.id)
+    expect(input).toHaveAttribute('data-allow-mismatch', 'attribute')
+  })
+
   it('应该在确认后写回时间字符串并更新字段展示', async () => {
     const form = createForm()
     const { container } = render(() => (

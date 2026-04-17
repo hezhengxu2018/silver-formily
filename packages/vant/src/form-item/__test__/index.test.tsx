@@ -2,6 +2,7 @@ import { createForm } from '@formily/core'
 import { Field, FormProvider } from '@silver-formily/vue'
 import { describe, expect, it, vi } from 'vitest'
 import { render } from 'vitest-browser-vue'
+import { userEvent } from 'vitest/browser'
 import { getElement } from '../../__test__/dom'
 import { Input } from '../../input'
 import FormItem, { FormBaseItem } from '../index'
@@ -24,6 +25,43 @@ describe('formItem', () => {
       await expect.element(getElement(container, '.van-field')).toBeInTheDocument()
       await expect.element(getElement(container, '.van-field__label')).toHaveTextContent('用户名')
       await expect.element(getElement(container, '.van-field__control')).toBeInTheDocument()
+    })
+
+    it('应该补齐与官方 VanField 一致的标签和输入框关联属性', async () => {
+      const { container } = render(() => (
+        <FormBaseItem label="用户名">
+          <Input modelValue="hello" />
+        </FormBaseItem>
+      ))
+
+      const label = container.querySelector('label')
+      const input = container.querySelector('input')
+
+      expect(label).not.toBeNull()
+      expect(input).not.toBeNull()
+      expect(label).toHaveAttribute('id')
+      expect(label).toHaveAttribute('for', input!.id)
+      expect(label).toHaveAttribute('data-allow-mismatch', 'attribute')
+      expect(input).toHaveAttribute('id')
+      expect(input).toHaveAttribute('aria-labelledby', label!.id)
+      expect(input).toHaveAttribute('data-allow-mismatch', 'attribute')
+    })
+
+    it('应该在点击标签时聚焦输入框', async () => {
+      const { container } = render(() => (
+        <FormBaseItem label="用户名">
+          <Input modelValue="hello" />
+        </FormBaseItem>
+      ))
+
+      const label = container.querySelector('label')
+      const input = container.querySelector('input')
+
+      expect(label).not.toBeNull()
+      expect(input).not.toBeNull()
+
+      await userEvent.click(label!)
+      expect(input).toHaveFocus()
     })
 
     it('应该支持反馈信息展示', async () => {
@@ -75,6 +113,7 @@ describe('formItem', () => {
       await expect.element(getElement(container, '.slot-label')).toBeInTheDocument()
       await expect.element(getElement(container, '.slot-left-icon')).toBeInTheDocument()
       await expect.element(getElement(container, '.slot-input')).toBeInTheDocument()
+      await expect.element(getElement(container, '.van-field__control')).toHaveClass('van-field__control--custom')
       await expect.element(getElement(container, '.slot-button')).toBeInTheDocument()
       await expect.element(getElement(container, '.slot-right-icon')).toBeInTheDocument()
       await expect.element(getElement(container, '.slot-extra')).toBeInTheDocument()
@@ -131,6 +170,26 @@ describe('formItem', () => {
       expect(style.display).toBe('block')
       expect(style.borderBottomStyle).toBe('solid')
     })
+
+    it('应该让 Input 的显式 id 回流到 FormItem 标签关联', async () => {
+      const { container } = render(() => (
+        <FormProvider form={createForm()}>
+          <Field
+            name="username"
+            title="用户名"
+            decorator={[FormItem]}
+            component={[Input, { id: 'custom-input-id' }]}
+          />
+        </FormProvider>
+      ))
+
+      const label = container.querySelector('label')
+      const input = container.querySelector('input')
+
+      expect(label).toHaveAttribute('for', 'custom-input-id')
+      expect(input).toHaveAttribute('id', 'custom-input-id')
+      expect(input).toHaveAttribute('aria-labelledby', label!.id)
+    })
   })
 
   describe('字段集成', () => {
@@ -166,6 +225,29 @@ describe('formItem', () => {
       await vi.waitFor(() => {
         expect(container.querySelector('.van-field__clear')).not.toBeNull()
       })
+    })
+
+    it('应该在点击清除图标时触发 modelValue 更新', async () => {
+      const onUpdateModelValue = vi.fn()
+      const { container } = render(() => (
+        <FormBaseItem
+          clearable={true}
+          clearTrigger="always"
+          modelValue="已有内容"
+          {...{
+            'onUpdate:modelValue': onUpdateModelValue,
+          }}
+        >
+          <Input />
+        </FormBaseItem>
+      ))
+
+      await vi.waitFor(() => {
+        expect(container.querySelector('.van-field__clear')).not.toBeNull()
+      })
+
+      await userEvent.click(container.querySelector('.van-field__clear')!)
+      expect(onUpdateModelValue).toHaveBeenCalledWith('')
     })
   })
 })

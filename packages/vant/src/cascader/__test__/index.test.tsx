@@ -104,6 +104,29 @@ function getVisibleOption(text: string) {
 }
 
 describe('cascader', () => {
+  it('应该给 popup trigger 补齐和 Field 一致的标签关联属性', async () => {
+    const { container } = render(() => (
+      <FormProvider form={createForm()}>
+        <Field
+          name="region"
+          title="地区"
+          decorator={[FormItem]}
+          component={[Cascader]}
+          dataSource={options}
+        />
+      </FormProvider>
+    ))
+
+    const label = container.querySelector('label')
+    const input = getTrigger(container)
+
+    expect(label).not.toBeNull()
+    expect(input).toHaveAttribute('id')
+    expect(label).toHaveAttribute('for', input.id)
+    expect(input).toHaveAttribute('aria-labelledby', label!.id)
+    expect(input).toHaveAttribute('data-allow-mismatch', 'attribute')
+  })
+
   it('应该在不手动维护 show 的情况下打开和关闭弹层', async () => {
     const { container } = render(() => (
       <FormProvider form={createForm()}>

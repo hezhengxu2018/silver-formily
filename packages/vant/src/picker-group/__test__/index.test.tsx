@@ -150,6 +150,29 @@ function getVisibleOverlay() {
 }
 
 describe('picker-group', () => {
+  it('应该给 popup trigger 补齐和 Field 一致的标签关联属性', async () => {
+    const { container } = render(() => (
+      <FormProvider form={createForm()}>
+        <Field
+          name="appointment"
+          title="预约信息"
+          decorator={[FormItem]}
+          component={[PickerGroup]}
+          dataSource={appointmentOptions}
+        />
+      </FormProvider>
+    ))
+
+    const label = container.querySelector('label')
+    const input = getTrigger(container)
+
+    expect(label).not.toBeNull()
+    expect(input).toHaveAttribute('id')
+    expect(label).toHaveAttribute('for', input.id)
+    expect(input).toHaveAttribute('aria-labelledby', label!.id)
+    expect(input).toHaveAttribute('data-allow-mismatch', 'attribute')
+  })
+
   it('应该通过 dataSource 生成 tabs，并在最后一步确认后写回扁平数组值', async () => {
     const form = createForm()
     const { container } = render(() => (

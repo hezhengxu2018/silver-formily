@@ -140,6 +140,77 @@ describe('picker', () => {
     })
   })
 
+  it('应该支持点击 FormItem 标签打开弹层', async () => {
+    const { container } = render(() => (
+      <FormProvider form={createForm()}>
+        <Field
+          name="city"
+          title="城市"
+          decorator={[FormItem]}
+          component={[Picker]}
+          dataSource={cityOptions}
+        />
+      </FormProvider>
+    ))
+
+    const label = container.querySelector('label')
+
+    expect(label).not.toBeNull()
+
+    await userEvent.click(label!)
+
+    await vi.waitFor(() => {
+      expect(getVisiblePicker()).not.toBeNull()
+    })
+  })
+
+  it('应该给 popup trigger 补齐和 Field 一致的标签关联属性', async () => {
+    const { container } = render(() => (
+      <FormProvider form={createForm()}>
+        <Field
+          name="city"
+          title="城市"
+          decorator={[FormItem]}
+          component={[Picker]}
+          dataSource={cityOptions}
+        />
+      </FormProvider>
+    ))
+
+    const label = container.querySelector('label')
+    const input = getTrigger(container)
+
+    expect(label).not.toBeNull()
+    expect(input).toHaveAttribute('id')
+    expect(label).toHaveAttribute('for', input.id)
+    expect(input).toHaveAttribute('aria-labelledby', label!.id)
+    expect(input).toHaveAttribute('data-allow-mismatch', 'attribute')
+  })
+
+  it('应该支持点击 FormItem 整行打开弹层', async () => {
+    const { container } = render(() => (
+      <FormProvider form={createForm()}>
+        <Field
+          name="city"
+          title="城市"
+          decorator={[FormItem]}
+          component={[Picker]}
+          dataSource={cityOptions}
+        />
+      </FormProvider>
+    ))
+
+    const cell = container.querySelector('.van-cell')
+
+    expect(cell).not.toBeNull()
+
+    await userEvent.click(cell!)
+
+    await vi.waitFor(() => {
+      expect(getVisiblePicker()).not.toBeNull()
+    })
+  })
+
   it('应该在多列场景下写回数组值并拼接展示文本', async () => {
     const form = createForm()
     const { container } = render(() => (
