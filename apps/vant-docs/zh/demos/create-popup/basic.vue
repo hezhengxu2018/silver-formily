@@ -53,20 +53,60 @@ const ConfirmValueCard = defineComponent({
   },
 })
 
-const popup = createPopup(
+const defaultPopup = createPopup(
   {
     closeOnClickOverlay: false,
   },
   ConfirmValueCard,
 )
 
-async function handleOpen() {
+const customHeightPopup = createPopup(
+  {
+    style: {
+      height: '60vh',
+    },
+  },
+  ConfirmValueCard,
+)
+
+const unlockScrollPopup = createPopup(
+  {
+    lockScroll: false,
+  },
+  ConfirmValueCard,
+)
+
+async function handleOpenDefault() {
   try {
-    const result = await popup.open({
+    const result = await defaultPopup.open({
       modelValue: 3,
     })
 
-    await showDemoResult(result, '自定义组件 confirm 返回值')
+    await showDemoResult(result, '默认示例：禁止点击遮罩关闭')
+  }
+  catch {
+  }
+}
+
+async function handleOpenCustomHeight() {
+  try {
+    const result = await customHeightPopup.open({
+      modelValue: 5,
+    })
+
+    await showDemoResult(result, '自定义高度：style.height = 60vh')
+  }
+  catch {
+  }
+}
+
+async function handleOpenUnlockScroll() {
+  try {
+    const result = await unlockScrollPopup.open({
+      modelValue: 8,
+    })
+
+    await showDemoResult(result, '允许背景滚动：lockScroll = false')
   }
   catch {
   }
@@ -75,8 +115,17 @@ async function handleOpen() {
 
 <template>
   <div class="demo-block">
-    <VanButton block type="primary" @click="handleOpen">
-      打开自定义组件
+    <div class="demo-block__desc">
+      同一个内容组件可以配不同的 `popupProps`，这里分别演示 `closeOnClickOverlay`、`style.height` 和 `lockScroll`。
+    </div>
+    <VanButton block type="primary" @click="handleOpenDefault">
+      禁止点击遮罩关闭
+    </VanButton>
+    <VanButton block type="success" @click="handleOpenCustomHeight">
+      自定义弹层高度
+    </VanButton>
+    <VanButton block plain type="warning" @click="handleOpenUnlockScroll">
+      允许背景滚动
     </VanButton>
   </div>
 </template>
@@ -84,12 +133,21 @@ async function handleOpen() {
 <style scoped>
 .demo-block {
   display: grid;
+  gap: 12px;
+}
+
+.demo-block__desc {
+  color: var(--van-text-color-2);
+  font-size: 13px;
+  line-height: 1.6;
 }
 
 :global(.functional-popup-demo-card) {
   display: grid;
   gap: 12px;
   padding: 16px;
+  min-height: 220px;
+  box-sizing: border-box;
 }
 
 :global(.functional-popup-demo-card__title) {
