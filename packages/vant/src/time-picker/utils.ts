@@ -10,7 +10,7 @@ import type {
 import { isValid } from '@formily/shared'
 import dayjs from 'dayjs'
 import customParseFormat from 'dayjs/plugin/customParseFormat'
-import { cloneValue } from '../__builtins__'
+import { cloneDeep } from 'es-toolkit/compat'
 
 dayjs.extend(customParseFormat)
 
@@ -358,7 +358,7 @@ export function resolveTimePickerSelectedOptions(
     const matched = column.find(option => option.value === values[index])
 
     return matched
-      ? cloneValue(matched)
+      ? cloneDeep(matched)
       : undefined
   })
 }

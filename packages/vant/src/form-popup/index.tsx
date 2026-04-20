@@ -10,7 +10,8 @@ import type {
 import { createForm } from '@formily/core'
 import { toJS } from '@formily/reactive'
 import { camelCase, isFn, isValid, pascalCase } from '@formily/shared'
-import { cloneValue, isVueOptions } from '../__builtins__'
+import { cloneDeep } from 'es-toolkit/compat'
+import { isVueOptions } from '../__builtins__'
 import {
   applyMiddlewareWithFallback,
   callListener,
@@ -329,7 +330,7 @@ export function FormPopup<
         env.rejectPromise = reject
       })
 
-      const initialPayload = cloneValue(payload ?? {}) as IFormProps<TValues>
+      const initialPayload = cloneDeep(payload ?? {}) as IFormProps<TValues>
 
       applyMiddlewareWithFallback<IFormProps<TValues>>(
         initialPayload,

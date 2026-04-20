@@ -18,6 +18,7 @@ import type {
 } from './types'
 import { isValid } from '@formily/shared'
 import { useField } from '@silver-formily/vue'
+import { cloneDeep } from 'es-toolkit/compat'
 import { Picker as VanPicker, PickerGroup as VanPickerGroup, Popup as VanPopup } from 'vant'
 import {
   cloneVNode,
@@ -30,7 +31,7 @@ import {
   ref,
   watch,
 } from 'vue'
-import { cloneValue, PopupTriggerInput, resolveSelectionPlaceholder, useCleanAttrs, usePopupState } from '../__builtins__'
+import { PopupTriggerInput, resolveSelectionPlaceholder, useCleanAttrs, usePopupState } from '../__builtins__'
 import { pickerGroupInlineContextKey } from './context'
 import {
   clonePickerGroupValue,
@@ -151,7 +152,7 @@ const displayText = computed(() => {
 
 function clonePickerGroupValueItem(value: PickerGroupValueItem | undefined) {
   return Array.isArray(value)
-    ? cloneValue(value)
+    ? cloneDeep(value)
     : value
 }
 
@@ -274,7 +275,7 @@ function resolveSlotEventStateFromPayload(payload: unknown): PickerGroupSlotEven
       nextState.selectedIndexes = [...eventPayload.selectedIndexes] as number[]
 
     if (Array.isArray(eventPayload.selectedOptions))
-      nextState.selectedOptions = cloneValue(eventPayload.selectedOptions) as Array<PickerOption | undefined>
+      nextState.selectedOptions = cloneDeep(eventPayload.selectedOptions) as Array<PickerOption | undefined>
   }
 
   return nextState
@@ -399,7 +400,7 @@ function createBaseEventPayload(
             : -1
       }),
       selectedOptions: Array.from({ length: tabCount }, (_, index) => {
-        return cloneValue(slotEventState.value[index]?.selectedOptions)
+        return cloneDeep(slotEventState.value[index]?.selectedOptions)
       }),
       selectedValues: resolvedValue,
     }
@@ -481,7 +482,7 @@ function onScrollInto(
 
 function resolveSlotModelValue(value: unknown) {
   return Array.isArray(value)
-    ? cloneValue(value) as PickerOptionValue[]
+    ? cloneDeep(value) as PickerOptionValue[]
     : isValid(value)
       ? value as PickerOptionValue
       : undefined

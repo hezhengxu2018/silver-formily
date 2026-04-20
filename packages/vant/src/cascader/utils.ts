@@ -7,7 +7,8 @@ import type {
   CascaderResolvedValue,
 } from './types'
 import { isValid } from '@formily/shared'
-import { cloneValue, resolveTreeFieldNames } from '../__builtins__'
+import { cloneDeep } from 'es-toolkit/compat'
+import { resolveTreeFieldNames } from '../__builtins__'
 
 function isCascaderOptionValue(value: unknown): value is CascaderOptionValue {
   return typeof value === 'string' || typeof value === 'number'
@@ -62,7 +63,7 @@ export function resolveCascaderFieldNames(
 }
 
 export function cloneCascaderValue(value: CascaderResolvedValue): CascaderResolvedValue {
-  return cloneValue(value)
+  return cloneDeep(value)
 }
 
 export function mapSelectedOptionsToValues(

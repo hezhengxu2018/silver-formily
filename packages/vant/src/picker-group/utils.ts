@@ -6,7 +6,7 @@ import type {
   PickerGroupValueItem,
 } from './types'
 import { isValid } from '@formily/shared'
-import { cloneValue } from '../__builtins__'
+import { cloneDeep } from 'es-toolkit/compat'
 import {
   findPickerOptionByValue,
   getFirstEnabledPickerOption,
@@ -72,12 +72,12 @@ export function normalizePickerGroupValue(modelValue: PickerGroupModelValue): Pi
   return Array.isArray(modelValue)
     ? modelValue
       .filter(isPickerGroupValueItem)
-      .map(item => cloneValue(item)) as PickerGroupValueItem[]
+      .map(item => cloneDeep(item)) as PickerGroupValueItem[]
     : []
 }
 
 export function clonePickerGroupValue(value: PickerGroupResolvedValue): PickerGroupResolvedValue {
-  return cloneValue(value)
+  return cloneDeep(value)
 }
 
 export function resolvePickerGroupTabs(
@@ -102,7 +102,7 @@ export function resolvePickerGroupSelectedOptions(
     )
 
     return matchedOption
-      ? cloneValue(matchedOption)
+      ? cloneDeep(matchedOption)
       : undefined
   })
 }
@@ -142,7 +142,7 @@ export function resolvePickerGroupSlotInnerValue(
     const currentValue = currentValues[index]
 
     return isPickerGroupValueItem(currentValue)
-      ? cloneValue(currentValue)
+      ? cloneDeep(currentValue)
       : undefined
   })
 }

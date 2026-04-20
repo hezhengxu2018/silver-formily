@@ -1,7 +1,7 @@
 import type { Component, ComputedRef } from 'vue'
 import { isPlainObj, paramCase } from '@formily/shared'
 import bem from 'easy-bem'
-import { cloneDeep, omit } from 'es-toolkit/compat'
+import { omit } from 'es-toolkit/compat'
 import { computed, getCurrentInstance, ref } from 'vue'
 
 interface UseAttrsParams {
@@ -76,10 +76,6 @@ export function isVueOptions(options: any): options is Component {
       || typeof options.__asyncLoader === 'function'
       || typeof options.__name === 'string')
   )
-}
-
-export function cloneValue<T>(value: T): T {
-  return cloneDeep(value)
 }
 
 export function resolveTreeFieldNames(fieldNames?: TreeFieldNames): Required<TreeFieldNames> {

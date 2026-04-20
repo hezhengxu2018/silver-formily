@@ -7,9 +7,9 @@ import type {
   FunctionalPopupSlots,
   IFunctionalPopup,
 } from './types'
+import { cloneDeep } from 'es-toolkit/compat'
 import { Popup as VanPopup } from 'vant'
 import { h, markRaw } from 'vue'
-import { cloneValue } from '../__builtins__'
 import {
   callListener,
   createDetachedRenderer,
@@ -48,7 +48,7 @@ interface FunctionalPopupRenderBindings<TComponentProps extends object> {
 }
 
 function cloneSessionModelValue<T>(value: T): T {
-  return cloneValue(value)
+  return cloneDeep(value)
 }
 
 function resolveInitialComponentProps<TComponentProps extends object>(
