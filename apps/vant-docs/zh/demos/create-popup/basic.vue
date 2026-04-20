@@ -1,6 +1,6 @@
 <script setup lang="tsx">
 import type { PropType } from 'vue'
-import { FunctionalPopup } from '@silver-formily/vant'
+import { createPopup } from '@silver-formily/vant'
 import { Button as VanButton } from 'vant'
 import { defineComponent } from 'vue'
 import { showDemoResult } from '../shared'
@@ -53,7 +53,7 @@ const ConfirmValueCard = defineComponent({
   },
 })
 
-const popup = FunctionalPopup(
+const popup = createPopup(
   {
     closeOnClickOverlay: false,
   },

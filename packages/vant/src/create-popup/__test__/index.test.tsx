@@ -3,7 +3,7 @@ import { Picker as VanPicker } from 'vant'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { userEvent } from 'vitest/browser'
 import { defineComponent } from 'vue'
-import { FunctionalPopup } from '../index'
+import { createPopup } from '../index'
 import 'vant/lib/index.css'
 
 function waitForAnimationFrame() {
@@ -121,6 +121,38 @@ const SessionValueComponent = defineComponent({
   },
 })
 
+const FinishValueComponent = defineComponent({
+  name: 'FunctionalPopupFinishValueComponent',
+  props: {
+    modelValue: {
+      type: Array as PropType<string[]>,
+      default: () => [],
+    },
+  },
+  emits: ['finish', 'cancel', 'update:modelValue'],
+  setup(props, { emit }) {
+    return () => (
+      <div class="functional-popup-finish-value">
+        <div class="current-finish-model-value">{JSON.stringify(props.modelValue ?? [])}</div>
+        <button
+          class="update-finish-model-value"
+          type="button"
+          onClick={() => emit('update:modelValue', ['sz'])}
+        >
+          update
+        </button>
+        <button
+          class="finish-model-value"
+          type="button"
+          onClick={() => emit('finish', { value: [...(props.modelValue ?? [])] })}
+        >
+          finish
+        </button>
+      </div>
+    )
+  },
+})
+
 afterEach(async () => {
   document.body.innerHTML = ''
   vi.clearAllMocks()
@@ -132,7 +164,7 @@ afterEach(async () => {
 describe('functional-popup', () => {
   it('resolves confirm payload after close and keeps modelValue updates in the current session only', async () => {
     const initialValue = ['hz']
-    const popup = FunctionalPopup<{ modelValue: string[] }, { value: string[] }>(
+    const popup = createPopup<typeof SessionValueComponent, { value: string[] }>(
       {
         duration: 0.01,
       },
@@ -166,22 +198,22 @@ describe('functional-popup', () => {
     expect(initialValue).toEqual(['hz'])
 
     await userEvent.click(getVisibleElement('.confirm-model-value'))
-    await Promise.resolve()
-
-    expect(settled).toBe(false)
 
     await vi.waitFor(() => {
       expect(settled).toBe(true)
-      expect(getVisiblePopup()).toBeNull()
     })
 
     expect(resolvedValue).toEqual({
       value: ['nb'],
     })
+
+    await vi.waitFor(() => {
+      expect(getVisiblePopup()).toBeNull()
+    })
   })
 
   it('rejects with cancel when the component emits cancel', async () => {
-    const popup = FunctionalPopup(
+    const popup = createPopup(
       {
         duration: 0.01,
       },
@@ -208,7 +240,7 @@ describe('functional-popup', () => {
   })
 
   it('rejects with cancel on overlay close and can open a new session afterwards', async () => {
-    const popup = FunctionalPopup(
+    const popup = createPopup(
       {
         duration: 0.01,
       },
@@ -249,7 +281,7 @@ describe('functional-popup', () => {
   })
 
   it('forwards slots through the third argument', async () => {
-    const popup = FunctionalPopup<{ modelValue: string[] }, { value: string[] }>(
+    const popup = createPopup<typeof SessionValueComponent, { value: string[] }>(
       {
         duration: 0.01,
       },
@@ -276,7 +308,7 @@ describe('functional-popup', () => {
   })
 
   it('returns the same promise while the current open session is still pending', async () => {
-    const popup = FunctionalPopup<{ modelValue: string[] }, { value: string[] }>(
+    const popup = createPopup<typeof SessionValueComponent, { value: string[] }>(
       {
         duration: 0.01,
       },
@@ -304,20 +336,42 @@ describe('functional-popup', () => {
     })
   })
 
-  it('blocks reserved props passed through open(componentProps)', () => {
-    const popup = FunctionalPopup({}, SessionValueComponent)
+  it('overrides reserved props passed through open(componentProps)', async () => {
+    const popup = createPopup({}, SessionValueComponent)
+    const externalConfirm = vi.fn()
+    const externalUpdateModelValue = vi.fn()
 
-    expect(() => popup.open({
-      onConfirm: vi.fn(),
-    } as any)).toThrowError('onConfirm is reserved in FunctionalPopup()')
+    let resolvedValue: { value: string[] } | undefined
 
-    expect(() => popup.open({
-      'onUpdate:modelValue': vi.fn(),
-    } as any)).toThrowError('onUpdate:modelValue is reserved in FunctionalPopup()')
+    popup.open({
+      'modelValue': ['hz'],
+      'onConfirm': externalConfirm,
+      'onUpdate:modelValue': externalUpdateModelValue,
+    } as any).then((value) => {
+      resolvedValue = value
+    })
+
+    await vi.waitFor(() => {
+      expect(getVisiblePopup()).not.toBeNull()
+    })
+
+    await userEvent.click(getVisibleElement('.update-model-value'))
+
+    expect(externalUpdateModelValue).not.toHaveBeenCalled()
+
+    await userEvent.click(getVisibleElement('.confirm-model-value'))
+
+    await vi.waitFor(() => {
+      expect(resolvedValue).toEqual({
+        value: ['nb'],
+      })
+    })
+
+    expect(externalConfirm).not.toHaveBeenCalled()
   })
 
   it('works with official VanPicker confirm payload and forwarded slots', async () => {
-    const popup = FunctionalPopup<any, {
+    const popup = createPopup<typeof VanPicker, {
       selectedIndexes: number[]
       selectedOptions: Array<{ text?: string, value?: string } | undefined>
       selectedValues: string[]
@@ -351,6 +405,36 @@ describe('functional-popup', () => {
     await expect(promise).resolves.toMatchObject({
       selectedValues: ['nb'],
       selectedIndexes: [1],
+    })
+  })
+
+  it('resolves finish payload for components like Cascader', async () => {
+    const popup = createPopup<typeof FinishValueComponent, { value: string[] }>(
+      {
+        duration: 0.01,
+      },
+      FinishValueComponent,
+    )
+
+    const promise = popup.open({
+      modelValue: ['hz'],
+    })
+
+    await vi.waitFor(() => {
+      expect(getVisiblePopup()).not.toBeNull()
+      expect(getVisibleElement('.current-finish-model-value').textContent).toContain('hz')
+    })
+
+    await userEvent.click(getVisibleElement('.update-finish-model-value'))
+
+    await vi.waitFor(() => {
+      expect(getVisibleElement('.current-finish-model-value').textContent).toContain('sz')
+    })
+
+    await userEvent.click(getVisibleElement('.finish-model-value'))
+
+    await expect(promise).resolves.toEqual({
+      value: ['sz'],
     })
   })
 })

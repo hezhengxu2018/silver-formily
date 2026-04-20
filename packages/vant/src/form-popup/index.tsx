@@ -17,7 +17,7 @@ import {
   callListener,
   createDetachedRenderer,
   normalizeDynamicMiddlewareNames,
-} from '../__builtins__/shared/functional-popup'
+} from '../__builtins__/shared/popup-runtime'
 import PopupContent from './popup-content.vue'
 import './style.scss'
 

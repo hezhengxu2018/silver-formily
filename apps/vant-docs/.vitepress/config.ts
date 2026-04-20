@@ -69,7 +69,12 @@ export default createDocsConfig({
               items: [
                 { text: 'FormStep 分步表单', link: '/component/form-step' },
                 { text: 'FormPopup 表单弹层', link: '/component/form-popup' },
-                { text: 'FunctionalPopup 轻量弹层封装', link: '/component/functional-popup' },
+              ],
+            },
+            {
+              text: 'Utilities 工具函数',
+              items: [
+                { text: 'createPopup 轻量弹层工厂', link: '/component/create-popup' },
               ],
             },
           ],

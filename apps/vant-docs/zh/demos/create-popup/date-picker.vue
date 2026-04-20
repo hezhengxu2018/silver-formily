@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { FunctionalPopup } from '@silver-formily/vant'
+import { createPopup } from '@silver-formily/vant'
 import { Button as VanButton, DatePicker as VanDatePicker } from 'vant'
 import { h } from 'vue'
 import { showDemoResult } from '../shared'
@@ -7,7 +7,7 @@ import { showDemoResult } from '../shared'
 const minDate = new Date(2025, 0, 1)
 const maxDate = new Date(2027, 11, 31)
 
-const datePickerPopup = FunctionalPopup(
+const datePickerPopup = createPopup(
   {},
   VanDatePicker,
   {

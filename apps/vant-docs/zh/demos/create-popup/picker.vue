@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { FunctionalPopup } from '@silver-formily/vant'
+import { createPopup } from '@silver-formily/vant'
 import { Button as VanButton, Picker as VanPicker } from 'vant'
 import { h } from 'vue'
 import { showDemoResult } from '../shared'
@@ -10,7 +10,7 @@ const cityColumns = [
   { text: '苏州', value: 'sz' },
 ]
 
-const pickerPopup = FunctionalPopup(
+const pickerPopup = createPopup(
   {},
   VanPicker,
   {
