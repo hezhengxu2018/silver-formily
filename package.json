@@ -2,7 +2,7 @@
   "name": "silver-formily",
   "type": "module",
   "private": true,
-  "packageManager": "pnpm@10.0.0",
+  "packageManager": "pnpm@10.33.0",
   "engines": {
     "node": ">=24"
   },
