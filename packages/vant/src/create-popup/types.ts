@@ -3,7 +3,6 @@ import type { Component, FunctionalComponent, VNodeChild } from 'vue'
 
 export type FunctionalPopupReservedPopupPropName
   = | 'show'
-    | 'onClosed'
     | 'onUpdate:show'
 
 export type FunctionalPopupReservedComponentPropName
@@ -43,6 +42,7 @@ export interface PopupController<
   TResult = any,
 > {
   open: (componentProps?: FunctionalPopupComponentProps<TComponent>) => Promise<TResult>
+  close: (reason?: unknown) => void
 }
 
 export type { VanPopupProps }

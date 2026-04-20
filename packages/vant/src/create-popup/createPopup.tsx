@@ -9,6 +9,7 @@ import type {
 import { cloneDeep } from 'es-toolkit/compat'
 import { Popup as VanPopup } from 'vant'
 import { createApp, defineComponent, ref, shallowRef } from 'vue'
+import { callListener } from '../__builtins__'
 
 const DEFAULT_FUNCTIONAL_POPUP_PROPS: FunctionalPopupProps = {
   position: 'bottom',
@@ -87,6 +88,7 @@ export function createPopup<TComponent extends FunctionalPopupComponent = Functi
         return () => {
           const {
             show: _show,
+            onClosed: popupOnClosed,
             'onUpdate:show': _onUpdateShow,
             ...popupBindings
           } = resolvedPopupProps
@@ -102,7 +104,10 @@ export function createPopup<TComponent extends FunctionalPopupComponent = Functi
 
                 handleReject(new Error('cancel'))
               }}
-              onClosed={handlePopupClosed}
+              onClosed={() => {
+                callListener(popupOnClosed)
+                handlePopupClosed()
+              }}
             >
               <PopupContentComponent {...rendererEnv.props!.value} v-slots={slots} />
             </VanPopup>
@@ -173,6 +178,16 @@ export function createPopup<TComponent extends FunctionalPopupComponent = Functi
   }
 
   return {
+    close(reason: unknown = new Error('cancel')) {
+      if (!env.promise) {
+        if (rendererEnv.app) {
+          renderPopup(false)
+        }
+        return
+      }
+
+      handleReject(reason)
+    },
     open(componentProps?: FunctionalPopupComponentProps<TComponent>) {
       if (env.promise) {
         return env.promise
