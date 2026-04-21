@@ -1,4 +1,3 @@
-import type { Field } from '@formily/core'
 import type {
   PickerThemeVars,
   PickerToolbarPosition,
@@ -43,32 +42,6 @@ export type PickerDisplayFormatter = (
   selectedOptions: Array<PickerOption | undefined>,
 ) => string
 
-export interface PickerBaseEventParams {
-  selectedValues: PickerOptionValue[]
-  selectedOptions: Array<PickerOption | undefined>
-  selectedIndexes: number[]
-  field?: Field
-}
-
-export interface PickerChangeEventParams extends PickerBaseEventParams {
-  columnIndex: number
-}
-
-export interface PickerConfirmEventParams extends PickerBaseEventParams {}
-
-export interface PickerCancelEventParams extends PickerBaseEventParams {}
-
-export interface PickerClickOptionEventParams extends PickerBaseEventParams {
-  columnIndex: number
-  currentOption?: PickerOption
-}
-
-export interface PickerScrollIntoEventParams {
-  columnIndex: number
-  currentOption?: PickerOption
-  field?: Field
-}
-
 export interface PickerSlots {
   'option'?: (option: PickerOption) => any
   'title'?: () => any
@@ -80,38 +53,48 @@ export interface PickerSlots {
   'columns-bottom'?: () => any
 }
 
+export type PickerPopupProps = Partial<Omit<VanPopupProps, 'show' | 'onUpdate:show'>>
+
 export interface PickerProps {
   allowHtml?: VanPickerProps['allowHtml']
   cancelButtonText?: VanPickerProps['cancelButtonText']
-  closeOnClickOverlay?: VanPopupProps['closeOnClickOverlay']
-  closeOnPopstate?: VanPopupProps['closeOnPopstate']
   confirmButtonText?: VanPickerProps['confirmButtonText']
   modelValue?: PickerModelValue
   columns?: PickerColumns
   columnsFieldNames?: PickerFieldNames
-  duration?: VanPopupProps['duration']
-  lazyRender?: VanPopupProps['lazyRender']
   loading?: VanPickerProps['loading']
-  lockScroll?: VanPopupProps['lockScroll']
   optionHeight?: VanPickerProps['optionHeight']
-  overlay?: VanPopupProps['overlay']
   placeholder?: string
-  position?: VanPopupProps['position']
-  round?: VanPopupProps['round']
-  safeAreaInsetBottom?: VanPopupProps['safeAreaInsetBottom']
-  safeAreaInsetTop?: VanPopupProps['safeAreaInsetTop']
+  popupProps?: PickerPopupProps
   separator?: string
   swipeDuration?: VanPickerProps['swipeDuration']
-  teleport?: VanPopupProps['teleport']
   title?: VanPickerProps['title']
   toolbarPosition?: VanPickerProps['toolbarPosition']
-  transition?: VanPopupProps['transition']
   readonly?: boolean
   readOnly?: boolean
   disabled?: boolean
   displayFormatter?: PickerDisplayFormatter
   visibleOptionNum?: VanPickerProps['visibleOptionNum']
-  zIndex?: VanPopupProps['zIndex']
+}
+
+export interface PickerPopupContentProps {
+  pickerProps: PickerPopupPickerProps
+  resolveValue: (selectedValues: PickerOptionValue[]) => PickerResolvedValue
+}
+
+export interface PickerPopupPickerProps {
+  allowHtml?: VanPickerProps['allowHtml']
+  cancelButtonText?: VanPickerProps['cancelButtonText']
+  columns?: VanPickerProps['columns']
+  confirmButtonText?: VanPickerProps['confirmButtonText']
+  loading?: VanPickerProps['loading']
+  modelValue?: PickerOptionValue[]
+  optionHeight?: VanPickerProps['optionHeight']
+  readonly?: boolean
+  swipeDuration?: VanPickerProps['swipeDuration']
+  title?: VanPickerProps['title']
+  toolbarPosition?: VanPickerProps['toolbarPosition']
+  visibleOptionNum?: VanPickerProps['visibleOptionNum']
 }
 
 export type {

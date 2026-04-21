@@ -51,6 +51,7 @@ function waitForAnimationFrame() {
 }
 
 afterEach(async () => {
+  document.body.innerHTML = ''
   await waitForAnimationFrame()
   await waitForAnimationFrame()
   await waitForAnimationFrame()
@@ -102,6 +103,15 @@ function getCancelButton() {
     throw new Error('Picker cancel button not found')
 
   return button
+}
+
+function getVisiblePopup() {
+  const popup = getVisiblePicker()?.closest<HTMLElement>('.van-popup')
+
+  if (!popup)
+    throw new Error('Visible popup not found')
+
+  return popup
 }
 
 describe('picker', () => {
@@ -334,55 +344,28 @@ describe('picker', () => {
     })
   })
 
-  it('应该在事件 payload 中暴露当前字段实例', async () => {
-    const form = createForm()
-    const handleChange = vi.fn()
-    const handleCancel = vi.fn()
-    const handleConfirm = vi.fn()
-
+  it('应该通过 popupProps 透传 Popup 配置', async () => {
     const { container } = render(() => (
-      <FormProvider form={form}>
-        <Field
-          name="city"
-          title="城市"
-          decorator={[FormItem]}
-          component={[Picker, {
-            onCancel: handleCancel,
-            onChange: handleChange,
-            onConfirm: handleConfirm,
-          }]}
-          dataSource={cityOptions}
-        />
-      </FormProvider>
+      <Picker
+        columns={cityOptions}
+        popupProps={{
+          overlay: false,
+          position: 'top',
+          round: false,
+        }}
+      />
     ))
 
     await userEvent.click(getTrigger(container))
 
     await vi.waitFor(() => {
+      const overlay = document.querySelector<HTMLElement>('.van-overlay')
+
       expect(getVisiblePicker()).not.toBeNull()
-    })
-
-    await userEvent.click(getVisibleOption('宁波'))
-    await userEvent.click(getCancelButton())
-
-    await vi.waitFor(() => {
-      const field = form.query('city').take()
-
-      expect(handleChange).toHaveBeenCalled()
-      expect(handleCancel).toHaveBeenCalledTimes(1)
-      expect(handleChange.mock.calls.at(-1)?.[0]?.field).toBe(field)
-      expect(handleCancel.mock.calls[0]?.[0]?.field).toBe(field)
-    })
-
-    await userEvent.click(getTrigger(container))
-    await userEvent.click(getVisibleOption('苏州'))
-    await userEvent.click(getConfirmButton())
-
-    await vi.waitFor(() => {
-      const field = form.query('city').take()
-
-      expect(handleConfirm).toHaveBeenCalledTimes(1)
-      expect(handleConfirm.mock.calls[0]?.[0]?.field).toBe(field)
+      expect(getVisiblePopup()).toHaveClass('van-popup--top')
+      expect(getVisiblePopup()).not.toHaveClass('van-popup--round-top')
+      expect(overlay).not.toBeNull()
+      expect(window.getComputedStyle(overlay!).display).toBe('none')
     })
   })
 

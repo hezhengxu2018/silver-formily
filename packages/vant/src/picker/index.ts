@@ -8,6 +8,7 @@ export const Picker = connect<typeof FPicker>(
     dataSource: 'columns',
     disabled: true,
     readOnly: 'readonly',
+    loading: true,
   }),
   mapReadPretty(PreviewText.Picker),
 )
@@ -15,10 +16,6 @@ export const Picker = connect<typeof FPicker>(
 export default Picker
 
 export type {
-  PickerBaseEventParams,
-  PickerCancelEventParams,
-  PickerChangeEventParams,
-  PickerClickOptionEventParams,
   PickerColumn,
   PickerColumns,
   PickerColumnsType,
@@ -28,9 +25,9 @@ export type {
   PickerOption,
   PickerOptionLike,
   PickerOptionValue,
+  PickerPopupProps,
   PickerProps,
   PickerResolvedValue,
-  PickerScrollIntoEventParams,
   PickerSlots,
   PickerThemeVars,
   PickerToolbarPosition,

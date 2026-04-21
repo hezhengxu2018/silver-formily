@@ -21,14 +21,19 @@ const DEFAULT_FUNCTIONAL_POPUP_PROPS: FunctionalPopupProps = {
   closeOnClickOverlay: true,
   safeAreaInsetBottom: true,
 }
+const RESERVED_COMPONENT_PROP_NAMES = [
+  'show',
+  'onUpdate:show',
+  'onConfirm',
+  'onFinish',
+  'onCancel',
+  'onUpdate:modelValue',
+] as const
 type PopupRenderableComponent<TProps extends object> = new (...args: any[]) => {
   $props: TProps & Record<string, unknown>
 }
 
-type PopupRuntimeComponentProps<
-  TComponent extends FunctionalPopupComponent,
-  TResult,
-> = FunctionalPopupComponentProps<TComponent> & {
+type PopupRuntimeComponentListeners<TResult> = {
   'onCancel': () => void
   'onConfirm': (payload: TResult) => void
   'onFinish': (payload: TResult) => void
@@ -58,11 +63,14 @@ export function createPopup<TComponent extends FunctionalPopupComponent = Functi
   }
   const rendererEnv: {
     app?: App<Element>
-    props?: ShallowRef<PopupRuntimeComponentProps<TComponent, TResult>>
+    props?: ShallowRef<FunctionalPopupComponentProps<TComponent>>
     root?: HTMLElement
     visible?: ShallowRef<boolean>
   } = {}
-  const PopupContentComponent = component as PopupRenderableComponent<PopupRuntimeComponentProps<TComponent, TResult>>
+  const PopupContentComponent = component as PopupRenderableComponent<
+    FunctionalPopupComponentProps<TComponent> & PopupRuntimeComponentListeners<TResult>
+  >
+  const PopupContentRenderer = PopupContentComponent as any
 
   function ensureRoot() {
     if (rendererEnv.root) {
@@ -74,7 +82,7 @@ export function createPopup<TComponent extends FunctionalPopupComponent = Functi
     return rendererEnv.root
   }
 
-  function ensureRenderer(initialProps: PopupRuntimeComponentProps<TComponent, TResult>) {
+  function ensureRenderer(initialProps: FunctionalPopupComponentProps<TComponent>) {
     if (rendererEnv.app && rendererEnv.props && rendererEnv.visible) {
       return
     }
@@ -109,7 +117,11 @@ export function createPopup<TComponent extends FunctionalPopupComponent = Functi
                 handlePopupClosed()
               }}
             >
-              <PopupContentComponent {...rendererEnv.props!.value} v-slots={slots} />
+              <PopupContentRenderer
+                {...rendererEnv.props!.value}
+                {...createRuntimeComponentListeners()}
+                v-slots={slots}
+              />
             </VanPopup>
           )
         }
@@ -141,20 +153,30 @@ export function createPopup<TComponent extends FunctionalPopupComponent = Functi
     resetRuntimeState()
   }
 
-  function createRuntimeComponentProps() {
+  function sanitizeComponentProps(componentProps?: FunctionalPopupComponentProps<TComponent>) {
+    const nextProps = {
+      ...((componentProps ?? {}) as Record<string, unknown>),
+    }
+
+    RESERVED_COMPONENT_PROP_NAMES.forEach((propName) => {
+      delete nextProps[propName]
+    })
+
+    return nextProps as FunctionalPopupComponentProps<TComponent>
+  }
+
+  function createRuntimeComponentListeners() {
     return {
-      ...(env.componentProps as Record<string, unknown>),
       'onConfirm': (payload: TResult) => handleResolve(payload),
       'onFinish': (payload: TResult) => handleResolve(payload),
       'onCancel': () => handleReject(new Error('cancel')),
       'onUpdate:modelValue': (value: unknown) => updateModelValue(value),
-    } as PopupRuntimeComponentProps<TComponent, TResult>
+    } satisfies PopupRuntimeComponentListeners<TResult>
   }
 
   function renderPopup(visible: boolean) {
-    const runtimeComponentProps = createRuntimeComponentProps()
-    ensureRenderer(runtimeComponentProps)
-    rendererEnv.props!.value = runtimeComponentProps
+    ensureRenderer(env.componentProps)
+    rendererEnv.props!.value = env.componentProps
     rendererEnv.visible!.value = visible
   }
 
@@ -193,7 +215,7 @@ export function createPopup<TComponent extends FunctionalPopupComponent = Functi
         return env.promise
       }
 
-      env.componentProps = (componentProps ?? {}) as FunctionalPopupComponentProps<TComponent>
+      env.componentProps = sanitizeComponentProps(componentProps)
 
       env.promise = new Promise<TResult>((resolve, reject) => {
         env.resolvePromise = resolve

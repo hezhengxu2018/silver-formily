@@ -22,7 +22,7 @@ async function handleSubmit(values: typeof form.values) {
       name="city"
       title="出发城市"
       :decorator="[FormItem, { isLink: true }]"
-      :component="[Picker]"
+      :component="[Picker, { popupProps: { closeOnClickOverlay: false } }]"
       :data-source="cityOptions"
     />
 

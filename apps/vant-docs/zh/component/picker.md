@@ -9,6 +9,7 @@ mobileDemo: picker/index.vue
 :::tip 与官方的差异
 
 - 当前封装固定通过 `Popup` 弹层承载，不需要手动维护 `show`
+- Popup 相关配置统一收口到 `popupProps`，避免和 Picker 自身参数混在一起
 - `Field` 上的 `dataSource` 会自动映射到 `columns`
 - 单列字段值保存为标量，多列 / 级联字段值保存为数组
 - 关闭弹层时会回滚未确认选择，只有点击确认按钮才会写回字段值
@@ -67,6 +68,7 @@ mobileDemo: picker/index.vue
 | `columns`           | `PickerColumn \| PickerColumn[]`                | 选项列，通常由 `dataSource` 提供 | `[]`           |
 | `columnsFieldNames` | ^[object]`{ text, value, children }`            | 自定义字段名映射                 | 官方默认值     |
 | `placeholder`       | `string`                                        | 未选择时的展示文案               | `'请选择选项'` |
+| `popupProps`        | `PickerPopupProps`                              | 传给内部 Popup 的配置            | `-`            |
 | `separator`         | `string`                                        | 字段展示区分隔符                 | `' / '`        |
 | `displayFormatter`  | ^[Function]`(value, selectedOptions) => string` | 自定义字段展示区文案             | `-`            |
 | `readonly`          | `boolean`                                       | 只读态，阻止打开弹层             | `false`        |
@@ -88,9 +90,20 @@ mobileDemo: picker/index.vue
 | `swipeDuration`     | `number \| string`         | 滚动惯性动画时长   | 官方默认值 |
 | `allowHtml`         | `boolean`                  | 是否渲染 HTML 文案 | 官方默认值 |
 
-### 官方 Popup Props
+### Popup Props
 
-当前封装内部固定包了一层 `Popup`，以下弹层属性可直接使用：
+当前封装内部固定包了一层 `Popup`，以下属性需要通过 `popupProps` 传入，例如：
+
+```vue
+<Picker
+  :popup-props="{
+    position: 'top',
+    round: false,
+  }"
+/>
+```
+
+可用字段如下：
 
 | 属性名                | 类型                                            | 描述                 | 默认值     |
 | --------------------- | ----------------------------------------------- | -------------------- | ---------- |
@@ -107,6 +120,8 @@ mobileDemo: picker/index.vue
 | `zIndex`              | `number \| string`                              | 弹层层级             | 官方默认值 |
 | `duration`            | `number \| string`                              | 动画时长             | 官方默认值 |
 | `transition`          | `string`                                        | 自定义过渡动画       | 官方默认值 |
+
+其中 `show` 和 `onUpdate:show` 由内部运行时接管，不对外暴露。
 
 ### Slots
 
@@ -125,20 +140,11 @@ mobileDemo: picker/index.vue
 
 ### Events
 
-| 事件名              | 描述                     | 回调参数                                                                                                                 |
-| ------------------- | ------------------------ | ------------------------------------------------------------------------------------------------------------------------ |
-| `update:modelValue` | 点击确认后同步字段值     | ^[Function]`(value: string \| number \| Array<string \| number> \| null) => void`                                        |
-| `change`            | 任意列发生切换时触发     | ^[Function]`(payload: { selectedValues, selectedOptions, selectedIndexes, columnIndex, field? }) => void`                |
-| `confirm`           | 点击确认按钮时触发       | ^[Function]`(payload: { selectedValues, selectedOptions, selectedIndexes, field? }) => void`                             |
-| `cancel`            | 点击取消按钮时触发       | ^[Function]`(payload: { selectedValues, selectedOptions, selectedIndexes, field? }) => void`                             |
-| `clickOption`       | 点击某个选项时触发       | ^[Function]`(payload: { selectedValues, selectedOptions, selectedIndexes, columnIndex, currentOption, field? }) => void` |
-| `scrollInto`        | 滚动到某个选项时触发     | ^[Function]`(payload: { columnIndex, currentOption, field? }) => void`                                                   |
-| `open`              | 弹层打开时触发           | `-`                                                                                                                      |
-| `close`             | 弹层关闭时触发           | `-`                                                                                                                      |
-| `opened`            | 弹层打开且动画结束后触发 | `-`                                                                                                                      |
-| `closed`            | 弹层关闭且动画结束后触发 | `-`                                                                                                                      |
-| `clickOverlay`      | 点击遮罩层时触发         | ^[Function]`(event: MouseEvent) => void`                                                                                 |
-| `update:show`       | 弹层开关变化时触发       | ^[Function]`(visible: boolean) => void`                                                                                  |
+| 事件名              | 描述                     | 回调参数                                                                          |
+| ------------------- | ------------------------ | --------------------------------------------------------------------------------- |
+| `update:modelValue` | 点击确认后同步字段值     | ^[Function]`(value: string \| number \| Array<string \| number> \| null) => void` |
+| `opened`            | 弹层打开且动画结束后触发 | `-`                                                                               |
+| `closed`            | 弹层关闭且动画结束后触发 | `-`                                                                               |
 
 ### 参考
 

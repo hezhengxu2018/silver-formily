@@ -21,7 +21,9 @@ const form = createForm({
         :component="[
           Picker,
           {
-            position: 'top',
+            popupProps: {
+              position: 'top',
+            },
           },
         ]"
         :data-source="cityOptions"
