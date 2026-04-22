@@ -2,7 +2,7 @@ import type { PropType } from 'vue'
 import { Picker as VanPicker } from 'vant'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { userEvent } from 'vitest/browser'
-import { defineComponent } from 'vue'
+import { computed, defineComponent, reactive, ref } from 'vue'
 import { createPopup } from '../index'
 import 'vant/lib/index.css'
 
@@ -333,6 +333,76 @@ describe('functional-popup', () => {
 
     await expect(firstPromise).resolves.toEqual({
       value: ['hz'],
+    })
+  })
+
+  it('syncs reactive component props source while keeping current session modelValue', async () => {
+    const sourceValue = ref(['hz'])
+    const popup = createPopup<typeof SessionValueComponent, { value: string[] }>(
+      {
+        duration: 0.01,
+      },
+      SessionValueComponent,
+    )
+
+    const promise = popup.open(computed(() => {
+      return {
+        modelValue: sourceValue.value,
+      }
+    }))
+
+    await vi.waitFor(() => {
+      expect(getVisiblePopup()).not.toBeNull()
+      expect(getVisibleElement('.current-model-value').textContent).toContain('hz')
+    })
+
+    await userEvent.click(getVisibleElement('.update-model-value'))
+
+    await vi.waitFor(() => {
+      expect(getVisibleElement('.current-model-value').textContent).toContain('nb')
+    })
+
+    sourceValue.value = ['sz']
+
+    await vi.waitFor(() => {
+      expect(getVisibleElement('.current-model-value').textContent).toContain('nb')
+    })
+
+    await userEvent.click(getVisibleElement('.confirm-model-value'))
+
+    await expect(promise).resolves.toEqual({
+      value: ['nb'],
+    })
+  })
+
+  it('syncs reactive object component props source while popup is open', async () => {
+    const componentProps = reactive({
+      modelValue: ['hz'],
+    })
+    const popup = createPopup<typeof SessionValueComponent, { value: string[] }>(
+      {
+        duration: 0.01,
+      },
+      SessionValueComponent,
+    )
+
+    const promise = popup.open(componentProps)
+
+    await vi.waitFor(() => {
+      expect(getVisiblePopup()).not.toBeNull()
+      expect(getVisibleElement('.current-model-value').textContent).toContain('hz')
+    })
+
+    componentProps.modelValue = ['nb']
+
+    await vi.waitFor(() => {
+      expect(getVisibleElement('.current-model-value').textContent).toContain('nb')
+    })
+
+    await userEvent.click(getVisibleElement('.confirm-model-value'))
+
+    await expect(promise).resolves.toEqual({
+      value: ['nb'],
     })
   })
 

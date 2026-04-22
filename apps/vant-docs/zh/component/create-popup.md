@@ -10,6 +10,8 @@ mobileDemo: create-popup/index.vue
 
 这里选择将这个函数暴露出来是因为自定义封装的业务组件也有很高的概率需要使用弹出层，在封装自定义组件时只要 `emit` 了 `confirm` 或者 `finish` 事件（因为 Vant 的组件有这两种）就能很方便的将弹出式组件接入表单。用户可以不用再关心显示隐藏的值绑定以及 `modelValue` 的值绑定，只需要关心这个函数返回的 `Promise` 的 `resolve` 的值即可。若用户取消、点击遮罩关闭或 popup 主动关闭，则统一 `reject(new Error('cancel'))`。
 
+从当前版本开始，`open` 不只支持传静态 props 对象，也支持传 `reactive`、`ref`、`computed` 或 getter。弹层打开期间，如果外部 props source 发生变化，`createPopup` 会自动把最新 props 同步给当前内容组件；同时，当前会话里通过 `update:modelValue` 产生的临时值会被保留，不会被后续的外部 source 更新直接冲掉。
+
 ::: warning 注意
 open方法的入参。有些props或者事件是内部保留的，无法修改或覆盖：`show`、`onUpdate:show`、`onConfirm`、`onFinish`、`onCancel`、`onUpdate:modelValue`
 :::
@@ -52,7 +54,17 @@ const result = await popup.open(componentProps)
 
 ### 返回值
 
-- `popup.open(componentProps?) => Promise<TResult>`：组件触发 `confirm(payload)` 或 `finish(payload)` 时返回 `payload`
+- `popup.open(componentProps?) => Promise<TResult>`：打开弹层，`componentProps` 支持静态对象、`reactive`、`ref`、`computed` 或 getter
+- `popup.close(reason?)`：主动关闭当前弹层，默认以 `Error('cancel')` 作为 reject 原因
+
+### Props Source
+
+`open` 的入参支持以下几种形式：
+
+- 静态对象：适合一次性打开、不需要会话内同步外部状态的场景
+- `reactive` / `ref` / `computed` / getter：适合弹层打开后，`options`、`loading`、`title` 等仍可能继续变化的场景
+
+如果内容组件会在会话中通过 `emit('update:modelValue', value)` 更新临时值，`createPopup` 会把这部分值视为“会话态”，优先保留当前用户操作结果，再叠加外部最新 props source。
 
 ### 默认 Popup 配置
 

@@ -109,6 +109,7 @@ const popupDatePickerProps = computed<DatePickerPopupDatePickerProps>(() => {
 })
 const popupContentProps = computed<DatePickerPopupContentProps>(() => {
   return {
+    modelValue: popupDatePickerProps.value.modelValue,
     datePickerProps: popupDatePickerProps.value,
     resolveValue(selectedValues) {
       return resolveDatePickerModelValue(selectedValues, resolvedDatePickerOptions.value)
@@ -128,9 +129,7 @@ async function open() {
   )
 
   try {
-    const popupPromise = popupController.open({
-      ...popupContentProps.value,
-    })
+    const popupPromise = popupController.open(popupContentProps)
     emit('opened')
 
     const result = await popupPromise

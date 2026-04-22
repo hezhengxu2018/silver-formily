@@ -35,6 +35,7 @@ function onConfirm(payload: { selectedValues: string[] }) {
 <template>
   <VanTimePicker
     v-bind="props.timePickerProps"
+    :model-value="props.modelValue ?? props.timePickerProps.modelValue"
     @update:model-value="onPickerValueChange"
     @cancel="onCancel"
     @confirm="onConfirm"

@@ -1,5 +1,5 @@
 import type { PopupProps as VanPopupProps } from 'vant'
-import type { Component, FunctionalComponent, VNodeChild } from 'vue'
+import type { Component, FunctionalComponent, MaybeRefOrGetter, VNodeChild } from 'vue'
 
 export type FunctionalPopupReservedPopupPropName
   = | 'show'
@@ -28,6 +28,9 @@ export type FunctionalPopupComponentProps<TComponent extends FunctionalPopupComp
   = Partial<Omit<ResolveFunctionalPopupComponentProps<TComponent>, FunctionalPopupReservedComponentPropName>>
     & Partial<Record<FunctionalPopupReservedComponentPropName, never>>
 
+export type FunctionalPopupComponentPropsSource<TComponent extends FunctionalPopupComponent = FunctionalPopupComponent>
+  = MaybeRefOrGetter<FunctionalPopupComponentProps<TComponent> | undefined>
+
 export type FunctionalPopupProps
   = Partial<Omit<VanPopupProps, FunctionalPopupReservedPopupPropName>>
     & Partial<Record<FunctionalPopupReservedPopupPropName, never>>
@@ -41,7 +44,7 @@ export interface PopupController<
   TComponent extends FunctionalPopupComponent = FunctionalPopupComponent,
   TResult = any,
 > {
-  open: (componentProps?: FunctionalPopupComponentProps<TComponent>) => Promise<TResult>
+  open: (componentProps?: FunctionalPopupComponentPropsSource<TComponent>) => Promise<TResult>
   close: (reason?: unknown) => void
 }
 

@@ -64,6 +64,7 @@ const innerCalendarExcludedProps = [
   'disabled',
   'readonly',
   'defaultDate',
+  'readOnly',
 ] as const
 const forwardedSlotNames = computed(() => {
   return Object.keys(slots).filter((slotName) => {
@@ -137,7 +138,7 @@ const {
   close,
   onPopupShowChange: onCalendarShowChange,
 } = usePopupState({
-  disabled: () => props.disabled || props.readonly,
+  disabled: () => props.disabled || props.readonly || props.readOnly,
   onBeforeOpen: resetCalendarSelection,
   onRestore: resetCalendarSelection,
   onVisibilityChange: emitVisibilityChange,
@@ -151,7 +152,7 @@ const innerCalendarProps = computed(() => {
     defaultDate: getResetValue(),
     show: popupVisible.value,
     poppable: true,
-    readonly: props.readonly || props.disabled,
+    readonly: props.readonly || props.readOnly || props.disabled,
   }
 })
 
@@ -175,7 +176,7 @@ function onUnselect(value: Date) {
 <template>
   <PopupTriggerInput
     :input-props="triggerInputProps"
-    :disabled="props.disabled"
+    :disabled="props.disabled || props.readOnly || props.readonly"
     :value="displayText"
     :placeholder="resolveCalendarPlaceholder(props.placeholder, props.type)"
     @click="open"

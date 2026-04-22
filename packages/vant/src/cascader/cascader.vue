@@ -1,15 +1,19 @@
 <script setup lang="ts">
 import type { Field } from '@formily/core'
+import type { FunctionalPopupSlots } from '../create-popup'
 import type {
   CascaderChangeEvent,
-  CascaderOptionValue,
+  CascaderPopupCascaderProps,
+  CascaderPopupContentProps,
+  CascaderPopupProps,
   CascaderProps,
   CascaderResolvedValue,
 } from './types'
 import { useField } from '@silver-formily/vue'
-import { Cascader as VanCascader, Popup as VanPopup } from 'vant'
-import { computed, ref, useSlots } from 'vue'
-import { PopupTriggerInput, resolveSelectionPlaceholder, useCleanAttrs, usePopupState } from '../__builtins__'
+import { computed, useSlots } from 'vue'
+import { callListener, PopupTriggerInput, resolveSelectionPlaceholder, useCleanAttrs } from '../__builtins__'
+import { createPopup } from '../create-popup'
+import CascaderPopupContent from './cascader-popup-content.vue'
 import {
   cloneCascaderValue,
   formatCascaderValue,
@@ -26,6 +30,7 @@ defineOptions({
 
 const props = withDefaults(defineProps<CascaderProps>(), {
   options: () => [],
+  popupProps: () => ({}),
   separator: ' / ',
   position: 'bottom',
   round: true,
@@ -55,12 +60,13 @@ const emit = defineEmits<{
 
 const slots = useSlots()
 const fieldRef = useField<Field>()
-const { props: triggerInputProps } = useCleanAttrs(['modelValue', 'onUpdate:modelValue', 'options'])
-const innerValue = ref<CascaderOptionValue>()
-const forwardedSlotNames = computed(() => {
-  return Object.keys(slots).filter((slotName) => {
-    return slotName !== 'default' && !slotName.startsWith('_')
-  })
+const { props: triggerInputProps } = useCleanAttrs()
+
+const isReadonly = computed(() => {
+  return Boolean(props.readonly || props.readOnly)
+})
+const isTriggerDisabled = computed(() => {
+  return Boolean(props.disabled || isReadonly.value)
 })
 
 const normalizedValue = computed(() => {
@@ -87,30 +93,9 @@ const displayText = computed(() => {
   )
 })
 
-function resetInnerValue() {
-  innerValue.value = getCascaderLeafValue(props.modelValue, props.options, props.fieldNames)
-}
-
-function emitVisibilityChange(value: boolean) {
-  emit('update:show', value)
-
-  if (value) {
-    emit('open')
-    return
-  }
-
-  emit('close')
-}
-
-const { popupVisible, open, close, onPopupShowChange } = usePopupState({
-  disabled: () => props.disabled || props.readonly || props.readOnly,
-  onBeforeOpen: resetInnerValue,
-  onRestore: resetInnerValue,
-  onVisibilityChange: emitVisibilityChange,
-})
-
-const popupProps = computed(() => {
-  return {
+const popupBindings = computed(() => {
+  const popupProps = props.popupProps as Record<string, unknown>
+  const legacyPopupProps = {
     closeOnClickOverlay: props.closeOnClickOverlay,
     closeOnPopstate: props.closeOnPopstate,
     duration: props.duration,
@@ -121,20 +106,36 @@ const popupProps = computed(() => {
     round: props.round,
     safeAreaInsetBottom: props.safeAreaInsetBottom,
     safeAreaInsetTop: props.safeAreaInsetTop,
-    show: popupVisible.value,
     teleport: props.teleport,
     transition: props.transition,
     zIndex: props.zIndex,
-  }
+  } satisfies CascaderPopupProps
+
+  return {
+    ...legacyPopupProps,
+    ...props.popupProps,
+    onClickOverlay: (event: MouseEvent) => {
+      emit('clickOverlay', event)
+      callListener(popupProps.onClickOverlay, event)
+    },
+    onOpened: () => {
+      emit('opened')
+      callListener(popupProps.onOpened)
+    },
+    onClosed: () => {
+      emit('closed')
+      callListener(popupProps.onClosed)
+    },
+  } satisfies CascaderPopupProps & Record<string, unknown>
 })
 
-const cascaderProps = computed(() => {
+const cascaderProps = computed<CascaderPopupCascaderProps>(() => {
   return {
     activeColor: props.activeColor,
     closeIcon: props.closeIcon,
     closeable: props.closeable,
     fieldNames: props.fieldNames,
-    modelValue: innerValue.value,
+    modelValue: getCascaderLeafValue(props.modelValue, props.options, props.fieldNames),
     options: props.options,
     placeholder: resolveSelectionPlaceholder(props.placeholder),
     showHeader: props.showHeader,
@@ -146,57 +147,61 @@ const cascaderProps = computed(() => {
 function createEventPayload(payload: CascaderChangeEvent): CascaderChangeEvent {
   return {
     ...payload,
+    currentValue: mapSelectedOptionsToValues(payload.selectedOptions, props.fieldNames),
     field: fieldRef.value,
     selectedOptions: [...payload.selectedOptions],
   }
 }
 
-function onChange(payload: CascaderChangeEvent) {
-  innerValue.value = payload.value
-  emit('change', createEventPayload(payload))
-}
+const popupContentProps = computed<CascaderPopupContentProps>(() => {
+  return {
+    cascaderProps: cascaderProps.value,
+    onChange(payload) {
+      emit('change', createEventPayload(payload))
+    },
+    onClickTab(tabIndex, title) {
+      emit('clickTab', tabIndex, title)
+    },
+  }
+})
 
-function onFinish(payload: CascaderChangeEvent) {
-  const nextValue = mapSelectedOptionsToValues(payload.selectedOptions, props.fieldNames)
-  const eventPayload = createEventPayload(payload)
+async function open() {
+  if (isTriggerDisabled.value) {
+    return
+  }
 
-  innerValue.value = payload.value
-  emit('update:modelValue', nextValue)
-  emit('finish', eventPayload)
-  close(false)
+  const popupController = createPopup<typeof CascaderPopupContent, CascaderChangeEvent>(
+    popupBindings.value,
+    CascaderPopupContent,
+    slots as FunctionalPopupSlots,
+  )
+
+  emit('update:show', true)
+  emit('open')
+
+  try {
+    const payload = await popupController.open(popupContentProps)
+    const eventPayload = createEventPayload(payload)
+    const nextValue = mapSelectedOptionsToValues(payload.selectedOptions, props.fieldNames)
+
+    emit('update:modelValue', nextValue)
+    emit('finish', eventPayload)
+  }
+  catch {
+  }
+  finally {
+    emit('update:show', false)
+    emit('close')
+  }
 }
 </script>
 
 <template>
   <PopupTriggerInput
     :input-props="triggerInputProps"
-    :disabled="props.disabled"
+    :disabled="isTriggerDisabled"
     :value="displayText"
     :placeholder="resolveSelectionPlaceholder(props.placeholder)"
     @click="open"
   />
-
-  <VanPopup
-    v-bind="popupProps"
-    @update:show="onPopupShowChange"
-    @click-overlay="(event) => emit('clickOverlay', event)"
-    @opened="emit('opened')"
-    @closed="emit('closed')"
-  >
-    <VanCascader
-      v-bind="cascaderProps"
-      @change="onChange"
-      @finish="onFinish"
-      @close="close"
-      @click-tab="(tabIndex, title) => emit('clickTab', tabIndex, title)"
-    >
-      <template
-        v-for="slotName in forwardedSlotNames"
-        :key="slotName"
-        #[slotName]="slotProps"
-      >
-        <slot :name="slotName" v-bind="slotProps ?? {}" />
-      </template>
-    </VanCascader>
-  </VanPopup>
 </template>

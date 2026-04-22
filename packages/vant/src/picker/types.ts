@@ -78,6 +78,7 @@ export interface PickerProps {
 }
 
 export interface PickerPopupContentProps {
+  modelValue?: PickerOptionValue[]
   pickerProps: PickerPopupPickerProps
   resolveValue: (selectedValues: PickerOptionValue[]) => PickerResolvedValue
 }

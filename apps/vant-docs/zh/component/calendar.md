@@ -68,6 +68,7 @@ mobileDemo: calendar/index.vue
 
 - 推荐和 `FormItem` 搭配使用，由 `FormItem` 负责 label、箭头、反馈等壳层展示
 - 未确认的临时选择会在关闭弹层时回滚
+- `readonly` / `readOnly` / `disabled` 都会阻止弹层打开
 - 当前不支持通过组件 `ref` 调用官方 `Calendar` 实例方法
 
 ### 封装补充 Props

@@ -15,10 +15,13 @@ export type CascaderResolvedValue = CascaderOptionValue[] | null
 
 export type CascaderModelValue = CascaderResolvedValue | CascaderOptionValue | undefined
 
+export type CascaderPopupProps = Partial<Omit<VanPopupProps, 'show' | 'onUpdate:show'>>
+
 export interface CascaderChangeEvent {
   value: CascaderOptionValue
   tabIndex: number
   selectedOptions: CascaderOption[]
+  currentValue: CascaderResolvedValue
   field?: Field
 }
 
@@ -29,6 +32,7 @@ export interface CascaderProps extends Pick<VanCascaderProps, 'activeColor' | 'c
   readOnly?: boolean
   disabled?: boolean
   displayFormatter?: CascaderDisplayFormatter
+  popupProps?: CascaderPopupProps
 }
 
 export interface CascaderOptionSlotProps {
@@ -51,6 +55,17 @@ export type CascaderDisplayFormatter = (
   value: CascaderResolvedValue,
   selectedOptions: CascaderOption[],
 ) => string
+
+export interface CascaderPopupCascaderProps extends Pick<VanCascaderProps, 'activeColor' | 'closeIcon' | 'closeable' | 'fieldNames' | 'options' | 'placeholder' | 'showHeader' | 'swipeable' | 'title'> {
+  modelValue?: CascaderOptionValue
+}
+
+export interface CascaderPopupContentProps {
+  modelValue?: CascaderOptionValue
+  cascaderProps: CascaderPopupCascaderProps
+  onChange?: (payload: CascaderChangeEvent) => void
+  onClickTab?: (tabIndex: string | number, title: string) => void
+}
 
 export type {
   CascaderFieldNames,

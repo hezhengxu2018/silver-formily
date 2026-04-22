@@ -2,13 +2,14 @@ import type { App, ShallowRef } from 'vue'
 import type {
   FunctionalPopupComponent,
   FunctionalPopupComponentProps,
+  FunctionalPopupComponentPropsSource,
   FunctionalPopupProps,
   FunctionalPopupSlots,
   PopupController,
 } from './types'
 import { cloneDeep } from 'es-toolkit/compat'
 import { Popup as VanPopup } from 'vant'
-import { createApp, defineComponent, ref, shallowRef } from 'vue'
+import { createApp, defineComponent, isReactive, isRef, ref, shallowRef, toValue, watch } from 'vue'
 import { callListener } from '../__builtins__'
 
 const DEFAULT_FUNCTIONAL_POPUP_PROPS: FunctionalPopupProps = {
@@ -51,15 +52,19 @@ export function createPopup<TComponent extends FunctionalPopupComponent = Functi
   }
 
   const env: {
-    componentProps: FunctionalPopupComponentProps<TComponent>
+    baseComponentProps: FunctionalPopupComponentProps<TComponent>
+    sessionComponentProps: FunctionalPopupComponentProps<TComponent>
     promise?: Promise<TResult>
     rejectPromise?: (reason?: unknown) => void
     resolvePromise?: (value: TResult) => void
+    stopSyncComponentProps?: () => void
   } = {
-    componentProps: {} as FunctionalPopupComponentProps<TComponent>,
+    baseComponentProps: {} as FunctionalPopupComponentProps<TComponent>,
+    sessionComponentProps: {} as FunctionalPopupComponentProps<TComponent>,
     promise: undefined,
     rejectPromise: undefined,
     resolvePromise: undefined,
+    stopSyncComponentProps: undefined,
   }
   const rendererEnv: {
     app?: App<Element>
@@ -146,10 +151,13 @@ export function createPopup<TComponent extends FunctionalPopupComponent = Functi
   }
 
   function resetRuntimeState() {
-    env.componentProps = {} as FunctionalPopupComponentProps<TComponent>
+    env.stopSyncComponentProps?.()
+    env.baseComponentProps = {} as FunctionalPopupComponentProps<TComponent>
+    env.sessionComponentProps = {} as FunctionalPopupComponentProps<TComponent>
     env.promise = undefined
     env.rejectPromise = undefined
     env.resolvePromise = undefined
+    env.stopSyncComponentProps = undefined
   }
 
   function handlePopupClosed() {
@@ -169,6 +177,13 @@ export function createPopup<TComponent extends FunctionalPopupComponent = Functi
     return nextProps as FunctionalPopupComponentProps<TComponent>
   }
 
+  function resolveMergedComponentProps() {
+    return {
+      ...(env.baseComponentProps as Record<string, unknown>),
+      ...(env.sessionComponentProps as Record<string, unknown>),
+    } as FunctionalPopupComponentProps<TComponent>
+  }
+
   function createRuntimeComponentListeners() {
     return {
       'onConfirm': (payload: TResult) => handleResolve(payload),
@@ -179,18 +194,40 @@ export function createPopup<TComponent extends FunctionalPopupComponent = Functi
   }
 
   function renderPopup(visible: boolean) {
-    ensureRenderer(env.componentProps)
-    rendererEnv.props!.value = env.componentProps
+    const mergedComponentProps = resolveMergedComponentProps()
+
+    ensureRenderer(mergedComponentProps)
+    rendererEnv.props!.value = mergedComponentProps
     rendererEnv.visible!.value = visible
   }
 
   function updateModelValue(value: unknown) {
-    env.componentProps = {
-      ...(env.componentProps as Record<string, unknown>),
+    env.sessionComponentProps = {
+      ...(env.sessionComponentProps as Record<string, unknown>),
       modelValue: cloneDeep(value),
     } as unknown as FunctionalPopupComponentProps<TComponent>
 
     renderPopup(true)
+  }
+
+  function bindComponentPropsSource(componentProps?: FunctionalPopupComponentPropsSource<TComponent>) {
+    env.stopSyncComponentProps?.()
+    env.stopSyncComponentProps = undefined
+
+    if (!isRef(componentProps) && !isReactive(componentProps) && typeof componentProps !== 'function') {
+      env.baseComponentProps = sanitizeComponentProps(componentProps)
+      return
+    }
+
+    env.stopSyncComponentProps = watch(() => {
+      return sanitizeComponentProps(toValue(componentProps))
+    }, (nextComponentProps) => {
+      env.baseComponentProps = nextComponentProps
+      renderPopup(rendererEnv.visible?.value ?? false)
+    }, {
+      immediate: true,
+      deep: true,
+    })
   }
 
   function handleResolve(payload: TResult) {
@@ -214,12 +251,12 @@ export function createPopup<TComponent extends FunctionalPopupComponent = Functi
 
       handleReject(reason)
     },
-    open(componentProps?: FunctionalPopupComponentProps<TComponent>) {
+    open(componentProps?: FunctionalPopupComponentPropsSource<TComponent>) {
       if (env.promise) {
         return env.promise
       }
 
-      env.componentProps = sanitizeComponentProps(componentProps)
+      bindComponentPropsSource(componentProps)
 
       env.promise = new Promise<TResult>((resolve, reject) => {
         env.resolvePromise = resolve

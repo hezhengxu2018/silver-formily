@@ -17,6 +17,8 @@ function waitForAnimationFrame() {
 }
 
 afterEach(async () => {
+  document.body.innerHTML = ''
+  vi.clearAllMocks()
   await waitForAnimationFrame()
   await waitForAnimationFrame()
   await waitForAnimationFrame()
@@ -128,7 +130,7 @@ describe('calendar', () => {
     })
   })
 
-  it('应该在只读状态下阻止打开弹层', async () => {
+  it('应该在只读状态下仍允许打开只读弹层', async () => {
     const { container } = render(() => (
       <FormProvider form={createForm()}>
         <Field
@@ -153,7 +155,7 @@ describe('calendar', () => {
     })
   })
 
-  it('应该兼容 readOnly 形式的只读属性', async () => {
+  it('应该兼容 readOnly 形式的只读属性并保持触发心智一致', async () => {
     const { container } = render(() => (
       <FormProvider form={createForm()}>
         <Field

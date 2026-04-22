@@ -114,6 +114,7 @@ const popupTimePickerProps = computed<TimePickerPopupTimePickerProps>(() => {
 })
 const popupContentProps = computed<TimePickerPopupContentProps>(() => {
   return {
+    modelValue: popupTimePickerProps.value.modelValue,
     timePickerProps: popupTimePickerProps.value,
     resolveValue(selectedValues) {
       return resolveTimePickerModelValue(selectedValues, resolvedTimePickerOptions.value)
@@ -133,9 +134,7 @@ async function open() {
   )
 
   try {
-    const popupPromise = popupController.open({
-      ...popupContentProps.value,
-    })
+    const popupPromise = popupController.open(popupContentProps)
     emit('opened')
 
     const result = await popupPromise

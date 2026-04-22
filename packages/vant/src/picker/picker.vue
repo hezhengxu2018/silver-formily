@@ -92,6 +92,7 @@ const pickerProps = computed<PickerPopupPickerProps>(() => {
 })
 const popupContentProps = computed<PickerPopupContentProps>(() => {
   return {
+    modelValue: pickerProps.value.modelValue,
     pickerProps: pickerProps.value,
     resolveValue(selectedValues) {
       return resolvePickerModelValue(
@@ -115,7 +116,7 @@ async function open() {
   )
 
   try {
-    const value = await popupController.open(popupContentProps.value)
+    const value = await popupController.open(popupContentProps)
     emit('update:modelValue', value)
   }
   catch {

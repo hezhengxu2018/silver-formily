@@ -79,6 +79,7 @@ export interface TimePickerPopupTimePickerProps {
 }
 
 export interface TimePickerPopupContentProps {
+  modelValue?: string[]
   timePickerProps: TimePickerPopupTimePickerProps
   resolveValue: (selectedValues: string[]) => TimePickerResolvedValue
 }

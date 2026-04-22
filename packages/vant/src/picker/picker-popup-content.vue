@@ -32,6 +32,7 @@ function onConfirm(payload: { selectedValues: PickerOptionValue[] }) {
 <template>
   <VanPicker
     v-bind="props.pickerProps"
+    :model-value="props.modelValue ?? props.pickerProps.modelValue"
     @update:model-value="onPickerValueChange"
     @cancel="emit('cancel')"
     @confirm="onConfirm"

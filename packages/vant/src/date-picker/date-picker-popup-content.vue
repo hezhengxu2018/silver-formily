@@ -35,6 +35,7 @@ function onConfirm(payload: { selectedValues: string[] }) {
 <template>
   <VanDatePicker
     v-bind="props.datePickerProps"
+    :model-value="props.modelValue ?? props.datePickerProps.modelValue"
     @update:model-value="onPickerValueChange"
     @cancel="onCancel"
     @confirm="onConfirm"

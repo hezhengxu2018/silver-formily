@@ -67,6 +67,7 @@ export interface DatePickerPopupDatePickerProps {
 }
 
 export interface DatePickerPopupContentProps {
+  modelValue?: string[]
   datePickerProps: DatePickerPopupDatePickerProps
   resolveValue: (selectedValues: string[]) => DatePickerResolvedValue
 }

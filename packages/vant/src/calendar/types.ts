@@ -51,6 +51,7 @@ export interface CalendarProps {
   firstDayOfWeek?: number | string
   modelValue?: CalendarModelValue
   placeholder?: string
+  readOnly?: boolean
   displayFormatter?: CalendarDisplayFormatter
   disabled?: boolean
 }
