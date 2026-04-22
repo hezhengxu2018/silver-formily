@@ -1,4 +1,3 @@
-import type { Field } from '@formily/core'
 import type {
   DatePickerColumnType,
   PickerThemeVars,
@@ -18,60 +17,59 @@ export type DatePickerDisplayFormatter = (
   selectedOptions: Array<PickerOption | undefined>,
 ) => string
 
-export interface DatePickerBaseEventParams {
-  selectedValues: string[]
-  selectedOptions: Array<PickerOption | undefined>
-  selectedIndexes: number[]
-  field?: Field
-}
-
-export interface DatePickerChangeEventParams extends DatePickerBaseEventParams {
-  columnIndex: number
-}
-
-export interface DatePickerConfirmEventParams extends DatePickerBaseEventParams {}
-
-export interface DatePickerCancelEventParams extends DatePickerBaseEventParams {}
+export type DatePickerPopupProps = Partial<Omit<VanPopupProps, 'show' | 'onUpdate:show'>>
 
 export interface DatePickerProps {
   allowHtml?: VanDatePickerProps['allowHtml']
   cancelButtonText?: VanDatePickerProps['cancelButtonText']
-  closeOnClickOverlay?: VanPopupProps['closeOnClickOverlay']
-  closeOnPopstate?: VanPopupProps['closeOnPopstate']
   columnsType?: VanDatePickerProps['columnsType']
   confirmButtonText?: VanDatePickerProps['confirmButtonText']
   modelValue?: DatePickerModelValue
-  duration?: VanPopupProps['duration']
   filter?: VanDatePickerProps['filter']
   format?: string
   formatter?: VanDatePickerProps['formatter']
-  lazyRender?: VanPopupProps['lazyRender']
   loading?: VanDatePickerProps['loading']
-  lockScroll?: VanPopupProps['lockScroll']
   maxDate?: VanDatePickerProps['maxDate']
   minDate?: VanDatePickerProps['minDate']
   optionHeight?: VanDatePickerProps['optionHeight']
-  overlay?: VanPopupProps['overlay']
   placeholder?: string
-  position?: VanPopupProps['position']
-  round?: VanPopupProps['round']
-  safeAreaInsetBottom?: VanPopupProps['safeAreaInsetBottom']
-  safeAreaInsetTop?: VanPopupProps['safeAreaInsetTop']
+  popupProps?: DatePickerPopupProps
+  disableTriggerWhenInactive?: boolean
   separator?: string
   swipeDuration?: VanDatePickerProps['swipeDuration']
-  teleport?: VanPopupProps['teleport']
   title?: VanDatePickerProps['title']
-  transition?: VanPopupProps['transition']
   readonly?: boolean
-  readOnly?: boolean
   disabled?: boolean
   displayFormatter?: DatePickerDisplayFormatter
   valueFormat?: string
   visibleOptionNum?: VanDatePickerProps['visibleOptionNum']
-  zIndex?: VanPopupProps['zIndex']
 }
 
 export interface DatePickerSlots extends PickerSlots {}
+
+export interface DatePickerPopupDatePickerProps {
+  allowHtml?: VanDatePickerProps['allowHtml']
+  cancelButtonText?: VanDatePickerProps['cancelButtonText']
+  columnsType?: VanDatePickerProps['columnsType']
+  confirmButtonText?: VanDatePickerProps['confirmButtonText']
+  filter?: VanDatePickerProps['filter']
+  formatter?: VanDatePickerProps['formatter']
+  loading?: VanDatePickerProps['loading']
+  maxDate?: VanDatePickerProps['maxDate']
+  minDate?: VanDatePickerProps['minDate']
+  modelValue?: string[]
+  optionHeight?: VanDatePickerProps['optionHeight']
+  readonly?: boolean
+  showToolbar?: boolean
+  swipeDuration?: VanDatePickerProps['swipeDuration']
+  title?: VanDatePickerProps['title']
+  visibleOptionNum?: VanDatePickerProps['visibleOptionNum']
+}
+
+export interface DatePickerPopupContentProps {
+  datePickerProps: DatePickerPopupDatePickerProps
+  resolveValue: (selectedValues: string[]) => DatePickerResolvedValue
+}
 
 export type {
   DatePickerColumnType,

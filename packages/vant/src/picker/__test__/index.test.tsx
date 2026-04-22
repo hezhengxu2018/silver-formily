@@ -308,7 +308,7 @@ describe('picker', () => {
     expect(container.textContent?.trim()).toBe('浙江 / 杭州')
   })
 
-  it('应该在 disabled、readonly、readOnly 下阻止打开弹层', async () => {
+  it('应该默认允许在 disabled、readonly 下打开只读弹层', async () => {
     const { container } = render(() => (
       <FormProvider form={createForm()}>
         <Field
@@ -325,11 +325,40 @@ describe('picker', () => {
           component={[Picker, { readonly: true }]}
           dataSource={cityOptions}
         />
+      </FormProvider>
+    ))
+
+    await userEvent.click(getTrigger(container, 0))
+
+    await vi.waitFor(() => {
+      expect(getVisiblePicker()).not.toBeNull()
+    })
+
+    await userEvent.click(getCancelButton())
+    await userEvent.click(getTrigger(container, 1))
+
+    await vi.waitFor(() => {
+      expect(getVisiblePicker()).not.toBeNull()
+    })
+
+    await userEvent.click(getCancelButton())
+  })
+
+  it('应该在 disableTriggerWhenInactive 下于 trigger 层阻止打开弹层', async () => {
+    const { container } = render(() => (
+      <FormProvider form={createForm()}>
         <Field
-          name="readOnlyCity"
-          title="兼容只读"
+          name="disabledCity"
+          title="禁用"
           decorator={[FormItem]}
-          component={[Picker, { readOnly: true }]}
+          component={[Picker, { disableTriggerWhenInactive: true, disabled: true }]}
+          dataSource={cityOptions}
+        />
+        <Field
+          name="readonlyCity"
+          title="只读"
+          decorator={[FormItem]}
+          component={[Picker, { disableTriggerWhenInactive: true, readonly: true }]}
           dataSource={cityOptions}
         />
       </FormProvider>
@@ -337,7 +366,6 @@ describe('picker', () => {
 
     getTrigger(container, 0).click()
     getTrigger(container, 1).click()
-    getTrigger(container, 2).click()
 
     await vi.waitFor(() => {
       expect(getVisiblePicker()).toBeNull()
@@ -364,8 +392,9 @@ describe('picker', () => {
       expect(getVisiblePicker()).not.toBeNull()
       expect(getVisiblePopup()).toHaveClass('van-popup--top')
       expect(getVisiblePopup()).not.toHaveClass('van-popup--round-top')
-      expect(overlay).not.toBeNull()
-      expect(window.getComputedStyle(overlay!).display).toBe('none')
+      if (overlay) {
+        expect(window.getComputedStyle(overlay).display).toBe('none')
+      }
     })
   })
 

@@ -1,9 +1,10 @@
 import { createForm } from '@formily/core'
 import { Field, FormProvider } from '@silver-formily/vue'
-import { TimePicker as VanTimePicker } from 'vant'
+import { DatePicker as VanDatePicker, TimePicker as VanTimePicker } from 'vant'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { render } from 'vitest-browser-vue'
 import { userEvent } from 'vitest/browser'
+import { h } from 'vue'
 import Form from '../../form'
 import FormButtonGroup from '../../form-button-group'
 import FormItem from '../../form-item'
@@ -22,6 +23,8 @@ function waitForAnimationFrame() {
 }
 
 afterEach(async () => {
+  document.body.innerHTML = ''
+  vi.clearAllMocks()
   await waitForAnimationFrame()
   await waitForAnimationFrame()
   await waitForAnimationFrame()
@@ -39,6 +42,21 @@ function getVisiblePicker() {
       return true
 
     return window.getComputedStyle(popup).display !== 'none'
+  }) ?? null
+}
+
+function getVisiblePopup() {
+  const popup = getVisiblePicker()?.closest<HTMLElement>('.van-popup')
+
+  if (!popup)
+    throw new Error('Visible popup not found')
+
+  return popup
+}
+
+function getVisibleOverlay() {
+  return Array.from(document.querySelectorAll<HTMLElement>('.van-overlay')).find((overlay) => {
+    return window.getComputedStyle(overlay).display !== 'none'
   }) ?? null
 }
 
@@ -236,6 +254,147 @@ describe('date-picker', () => {
       expect(form.values.appointmentDate).toBe('2026-03-30')
       expect(trigger.value).toBe('2026-03-30')
       expect(getVisiblePicker()).toBeNull()
+    })
+  })
+
+  it('应该在点击遮罩关闭时回滚临时选择', async () => {
+    const form = createForm({
+      values: {
+        appointmentDate: '2026-03-30',
+      },
+    })
+
+    const { container } = render(() => (
+      <FormProvider form={form}>
+        <Field
+          name="appointmentDate"
+          title="预约日期"
+          decorator={[FormItem]}
+          component={[DatePicker, {
+            maxDate,
+            minDate,
+            popupProps: {
+              duration: 0.01,
+            },
+          }]}
+        />
+      </FormProvider>
+    ))
+
+    const trigger = getTrigger(container)
+
+    await userEvent.click(trigger)
+
+    await vi.waitFor(() => {
+      expect(getVisibleOverlay()).not.toBeNull()
+    })
+
+    await userEvent.click(getVisibleOption('12', 1))
+    await userEvent.click(getVisibleOverlay() as HTMLElement)
+
+    await vi.waitFor(() => {
+      expect(form.values.appointmentDate).toBe('2026-03-30')
+      expect(trigger.value).toBe('2026-03-30')
+      expect(getVisiblePicker()).toBeNull()
+    })
+  })
+
+  it('应该默认允许在 disabled、readonly 下打开只读弹层', async () => {
+    const { container } = render(() => (
+      <FormProvider form={createForm()}>
+        <Field
+          name="disabledDate"
+          title="禁用"
+          decorator={[FormItem]}
+          component={[DatePicker, { disabled: true, maxDate, minDate }]}
+        />
+        <Field
+          name="readonlyDate"
+          title="只读"
+          decorator={[FormItem]}
+          component={[DatePicker, { maxDate, minDate, readonly: true }]}
+        />
+      </FormProvider>
+    ))
+
+    await userEvent.click(getTrigger(container, 0))
+
+    await vi.waitFor(() => {
+      expect(getVisiblePickerColumns()).toHaveLength(3)
+    })
+
+    await userEvent.click(getCancelButton())
+    await userEvent.click(getTrigger(container, 1))
+
+    await vi.waitFor(() => {
+      expect(getVisiblePickerColumns()).toHaveLength(3)
+    })
+
+    await userEvent.click(getCancelButton())
+  })
+
+  it('应该在 disableTriggerWhenInactive 下于 trigger 层阻止打开弹层', async () => {
+    const { container } = render(() => (
+      <FormProvider form={createForm()}>
+        <Field
+          name="disabledDate"
+          title="禁用"
+          decorator={[FormItem]}
+          component={[DatePicker, { disableTriggerWhenInactive: true, disabled: true, maxDate, minDate }]}
+        />
+        <Field
+          name="readonlyDate"
+          title="只读"
+          decorator={[FormItem]}
+          component={[DatePicker, { disableTriggerWhenInactive: true, maxDate, minDate, readonly: true }]}
+        />
+      </FormProvider>
+    ))
+
+    getTrigger(container, 0).click()
+    getTrigger(container, 1).click()
+
+    await vi.waitFor(() => {
+      expect(getVisiblePicker()).toBeNull()
+    })
+  })
+
+  it('应该通过 popupProps 透传 Popup 配置，并继续触发 opened / closed 事件', async () => {
+    const onOpened = vi.fn()
+    const onClosed = vi.fn()
+    const popupProps = {
+      duration: 0.01,
+      overlay: false,
+      position: 'top',
+      round: false,
+    } as const
+    const { container } = render(() => h(DatePicker, {
+      maxDate,
+      minDate,
+      popupProps,
+      onClosed,
+      onOpened,
+    }))
+
+    await userEvent.click(getTrigger(container))
+
+    await vi.waitFor(() => {
+      const overlay = document.querySelector<HTMLElement>('.van-overlay')
+
+      expect(getVisiblePicker()).not.toBeNull()
+      expect(getVisiblePopup()).toHaveClass('van-popup--top')
+      expect(getVisiblePopup()).not.toHaveClass('van-popup--round-top')
+      if (overlay) {
+        expect(window.getComputedStyle(overlay).display).toBe('none')
+      }
+      expect(onOpened).toHaveBeenCalledOnce()
+    })
+
+    await userEvent.click(getPickerConfirmButton())
+
+    await vi.waitFor(() => {
+      expect(getVisiblePicker()).toBeNull()
+      expect(onClosed).toHaveBeenCalledOnce()
     })
   })
 
@@ -452,7 +611,7 @@ describe('date-picker', () => {
     expect(getTrigger(container).value).toBe(defaultValue)
   })
 
-  it('应该能作为 PickerGroup 默认插槽子组件以内联模式工作', async () => {
+  it('应该能和官方 DatePicker 一起作为 PickerGroup 默认插槽子组件工作', async () => {
     const form = createForm({
       values: {
         schedule: ['2026-03-30', ['09', '30']],
@@ -482,7 +641,7 @@ describe('date-picker', () => {
         >
           {{
             default: () => [
-              <DatePicker minDate={minDate} maxDate={maxDate} />,
+              <VanDatePicker minDate={minDate} maxDate={maxDate} />,
               <VanTimePicker />,
             ],
           }}

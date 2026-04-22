@@ -1,18 +1,17 @@
 <script setup lang="ts">
-import type { Field } from '@formily/core'
+import type { FunctionalPopupSlots } from '../create-popup'
 import type {
-  PickerOption,
-  TimePickerCancelEventParams,
-  TimePickerChangeEventParams,
-  TimePickerConfirmEventParams,
+  TimePickerPopupContentProps,
+  TimePickerPopupProps,
+  TimePickerPopupTimePickerProps,
   TimePickerProps,
   TimePickerResolvedValue,
 } from './types'
-import { useField } from '@silver-formily/vue'
-import { Popup as VanPopup, TimePicker as VanTimePicker } from 'vant'
-import { computed, inject, ref } from 'vue'
-import { PopupTriggerInput, useCleanAttrs, usePopupState } from '../__builtins__'
-import { pickerGroupInlineContextKey } from '../picker-group/context'
+import { computed, useSlots } from 'vue'
+import { PopupTriggerInput, useCleanAttrs } from '../__builtins__'
+import { createPopup } from '../create-popup'
+import { usePickerInactiveState } from '../picker/use-picker-inactive-state'
+import TimePickerPopupContent from './time-picker-popup-content.vue'
 import {
   formatTimePickerValue,
   resolveTimePickerInnerValue,
@@ -27,34 +26,18 @@ defineOptions({
 
 const props = withDefaults(defineProps<TimePickerProps>(), {
   columnsType: () => ['hour', 'minute'],
+  popupProps: () => ({}),
   separator: ':',
-  position: 'bottom',
-  round: true,
-  overlay: true,
-  lockScroll: true,
-  lazyRender: true,
-  closeOnPopstate: true,
-  closeOnClickOverlay: true,
-  safeAreaInsetBottom: true,
 })
 
 const emit = defineEmits<{
   'update:modelValue': [value: TimePickerResolvedValue]
-  'update:show': [value: boolean]
-  'change': [payload: TimePickerChangeEventParams]
-  'confirm': [payload: TimePickerConfirmEventParams]
-  'cancel': [payload: TimePickerCancelEventParams]
-  'clickOverlay': [event: MouseEvent]
-  'open': []
-  'close': []
   'opened': []
   'closed': []
 }>()
 
-const fieldRef = useField<Field>()
-const inPickerGroup = inject(pickerGroupInlineContextKey, false)
-const { props: triggerInputProps } = useCleanAttrs(['modelValue', 'onUpdate:modelValue'])
-const innerValue = ref<string[]>([])
+const slots = useSlots()
+const { props: triggerInputProps } = useCleanAttrs()
 
 const resolvedTimePickerOptions = computed(() => {
   return {
@@ -91,42 +74,13 @@ const displayText = computed(() => {
 
   return formatTimePickerValue(resolvedValue.value, resolvedTimePickerOptions.value)
 })
+const { isPopupReadonly, isTriggerDisabled } = usePickerInactiveState(props)
 
-function resetInnerValue() {
-  innerValue.value = resolveTimePickerInnerValue(props.modelValue, resolvedTimePickerOptions.value)
-}
-
-function createBaseEventPayload(params: {
-  selectedIndexes: number[]
-  selectedOptions: Array<PickerOption | undefined>
-  selectedValues: string[]
-}) {
+const popupBindings = computed(() => {
   return {
-    field: fieldRef.value,
-    selectedIndexes: [...params.selectedIndexes],
-    selectedOptions: [...params.selectedOptions],
-    selectedValues: [...params.selectedValues],
-  }
-}
-
-function emitVisibilityChange(value: boolean) {
-  emit('update:show', value)
-
-  if (value) {
-    emit('open')
-    return
-  }
-
-  emit('close')
-}
-
-const { popupVisible, open, close, onPopupShowChange } = usePopupState({
-  disabled: () => props.disabled || props.readonly || props.readOnly,
-  onBeforeOpen: resetInnerValue,
-  onRestore: resetInnerValue,
-  onVisibilityChange: emitVisibilityChange,
+    ...props.popupProps,
+  } satisfies TimePickerPopupProps & Record<string, unknown>
 })
-
 const sharedTimePickerProps = computed(() => {
   return {
     allowHtml: props.allowHtml,
@@ -145,165 +99,63 @@ const sharedTimePickerProps = computed(() => {
     minSecond: props.minSecond,
     minTime: props.minTime,
     optionHeight: props.optionHeight,
-    readonly: props.readonly || props.readOnly || props.disabled,
+    readonly: isPopupReadonly.value,
     showToolbar: true,
     swipeDuration: props.swipeDuration,
     title: props.title,
     visibleOptionNum: props.visibleOptionNum,
   }
 })
-
-const popupProps = computed(() => {
-  return {
-    closeOnClickOverlay: props.closeOnClickOverlay,
-    closeOnPopstate: props.closeOnPopstate,
-    duration: props.duration,
-    lazyRender: props.lazyRender,
-    lockScroll: props.lockScroll,
-    overlay: props.overlay,
-    position: props.position,
-    round: props.round,
-    safeAreaInsetBottom: props.safeAreaInsetBottom,
-    safeAreaInsetTop: props.safeAreaInsetTop,
-    show: popupVisible.value,
-    teleport: props.teleport,
-    transition: props.transition,
-    zIndex: props.zIndex,
-  }
-})
-
-const popupTimePickerProps = computed(() => {
-  return {
-    ...sharedTimePickerProps.value,
-    modelValue: innerValue.value,
-  }
-})
-
-const inlineTimePickerProps = computed(() => {
+const popupTimePickerProps = computed<TimePickerPopupTimePickerProps>(() => {
   return {
     ...sharedTimePickerProps.value,
     modelValue: resolveTimePickerInnerValue(props.modelValue, resolvedTimePickerOptions.value),
   }
 })
+const popupContentProps = computed<TimePickerPopupContentProps>(() => {
+  return {
+    timePickerProps: popupTimePickerProps.value,
+    resolveValue(selectedValues) {
+      return resolveTimePickerModelValue(selectedValues, resolvedTimePickerOptions.value)
+    },
+  }
+})
 
-function onInlineModelValueChange(value: string[]) {
-  emit('update:modelValue', resolveTimePickerModelValue(value, resolvedTimePickerOptions.value))
-}
+async function open() {
+  if (isTriggerDisabled.value) {
+    return
+  }
 
-function onPopupModelValueChange(value: string[]) {
-  innerValue.value = [...value]
-}
+  const popupController = createPopup<typeof TimePickerPopupContent, TimePickerResolvedValue>(
+    popupBindings.value,
+    TimePickerPopupContent,
+    slots as FunctionalPopupSlots,
+  )
 
-function onChange(payload: Omit<TimePickerChangeEventParams, 'field'>) {
-  emit('change', {
-    ...createBaseEventPayload(payload),
-    columnIndex: payload.columnIndex,
-  })
-}
+  try {
+    const popupPromise = popupController.open({
+      ...popupContentProps.value,
+    })
+    emit('opened')
 
-function onCancel(payload: Omit<TimePickerCancelEventParams, 'field'>) {
-  emit('cancel', createBaseEventPayload(payload))
-  close()
-}
+    const result = await popupPromise
 
-function onConfirm(payload: Omit<TimePickerConfirmEventParams, 'field'>) {
-  const nextValue = resolveTimePickerModelValue(payload.selectedValues, resolvedTimePickerOptions.value)
-
-  emit('update:modelValue', nextValue)
-  emit('confirm', createBaseEventPayload(payload))
-  close(false)
+    emit('update:modelValue', result)
+  }
+  catch {
+  }
+  finally {
+    emit('closed')
+  }
 }
 </script>
 
 <template>
-  <VanTimePicker
-    v-if="inPickerGroup"
-    v-bind="inlineTimePickerProps"
-    @update:model-value="onInlineModelValueChange"
-    @change="onChange"
-    @cancel="(payload) => emit('cancel', createBaseEventPayload(payload))"
-    @confirm="(payload) => emit('confirm', createBaseEventPayload(payload))"
-  >
-    <template v-if="$slots.option" #option="option">
-      <slot name="option" v-bind="option ?? {}" />
-    </template>
-
-    <template v-if="$slots.title" #title>
-      <slot name="title" />
-    </template>
-
-    <template v-if="$slots.cancel" #cancel>
-      <slot name="cancel" />
-    </template>
-
-    <template v-if="$slots.confirm" #confirm>
-      <slot name="confirm" />
-    </template>
-
-    <template v-if="$slots.toolbar" #toolbar>
-      <slot name="toolbar" />
-    </template>
-
-    <template v-if="$slots['columns-top']" #columns-top>
-      <slot name="columns-top" />
-    </template>
-
-    <template v-if="$slots['columns-bottom']" #columns-bottom>
-      <slot name="columns-bottom" />
-    </template>
-  </VanTimePicker>
-
-  <template v-else>
-    <PopupTriggerInput
-      :input-props="triggerInputProps"
-      :disabled="props.disabled"
-      :value="displayText"
-      :placeholder="props.placeholder || '请选择时间'"
-      @click="open"
-    />
-
-    <VanPopup
-      v-bind="popupProps"
-      @update:show="onPopupShowChange"
-      @click-overlay="(event) => emit('clickOverlay', event)"
-      @opened="emit('opened')"
-      @closed="emit('closed')"
-    >
-      <VanTimePicker
-        v-bind="popupTimePickerProps"
-        @update:model-value="onPopupModelValueChange"
-        @change="onChange"
-        @cancel="onCancel"
-        @confirm="onConfirm"
-      >
-        <template v-if="$slots.option" #option="option">
-          <slot name="option" v-bind="option ?? {}" />
-        </template>
-
-        <template v-if="$slots.title" #title>
-          <slot name="title" />
-        </template>
-
-        <template v-if="$slots.cancel" #cancel>
-          <slot name="cancel" />
-        </template>
-
-        <template v-if="$slots.confirm" #confirm>
-          <slot name="confirm" />
-        </template>
-
-        <template v-if="$slots.toolbar" #toolbar>
-          <slot name="toolbar" />
-        </template>
-
-        <template v-if="$slots['columns-top']" #columns-top>
-          <slot name="columns-top" />
-        </template>
-
-        <template v-if="$slots['columns-bottom']" #columns-bottom>
-          <slot name="columns-bottom" />
-        </template>
-      </VanTimePicker>
-    </VanPopup>
-  </template>
+  <PopupTriggerInput
+    :input-props="triggerInputProps"
+    :disabled="isTriggerDisabled"
+    :value="displayText"
+    :placeholder="props.placeholder || '请选择时间'"
+    @click="open"
+  />
 </template>

@@ -19,7 +19,13 @@ import type {
 import { isValid } from '@formily/shared'
 import { useField } from '@silver-formily/vue'
 import { cloneDeep } from 'es-toolkit/compat'
-import { Picker as VanPicker, PickerGroup as VanPickerGroup, Popup as VanPopup } from 'vant'
+import {
+  DatePicker as VanDatePicker,
+  Picker as VanPicker,
+  PickerGroup as VanPickerGroup,
+  Popup as VanPopup,
+  TimePicker as VanTimePicker,
+} from 'vant'
 import {
   cloneVNode,
   Comment,
@@ -27,12 +33,12 @@ import {
   defineComponent,
   Fragment,
   isVNode,
-  provide,
   ref,
   watch,
 } from 'vue'
 import { PopupTriggerInput, resolveSelectionPlaceholder, useCleanAttrs, usePopupState } from '../__builtins__'
-import { pickerGroupInlineContextKey } from './context'
+import { resolveDatePickerInnerValue, resolveDatePickerModelValue } from '../date-picker/utils'
+import { resolveTimePickerInnerValue, resolveTimePickerModelValue } from '../time-picker/utils'
 import {
   clonePickerGroupValue,
   formatPickerGroupDisplay,
@@ -121,7 +127,6 @@ const PickerGroupSlotNode = defineComponent({
 const INTERNAL_NEXT_STEP_TEXT = '下一步'
 
 const fieldRef = useField<Field>()
-provide(pickerGroupInlineContextKey, true)
 const { props: triggerInputProps } = useCleanAttrs(['dataSource', 'modelValue', 'onUpdate:modelValue'])
 const activeTab = ref(0)
 const innerValue = ref<Array<PickerGroupValueItem | undefined>>([])
@@ -160,6 +165,52 @@ function hasOwnProp(value: unknown, key: string) {
   return !!value
     && typeof value === 'object'
     && Object.hasOwn(value, key)
+}
+
+function isOfficialDatePickerNode(node: VNode) {
+  return node.type === VanDatePicker
+}
+
+function isOfficialTimePickerNode(node: VNode) {
+  return node.type === VanTimePicker
+}
+
+function resolveOfficialDatePickerOptions(nodeProps?: Record<string, unknown>) {
+  return {
+    columnsType: nodeProps?.columnsType as any,
+    maxDate: nodeProps?.maxDate as any,
+    minDate: nodeProps?.minDate as any,
+  }
+}
+
+function resolveOfficialTimePickerOptions(nodeProps?: Record<string, unknown>) {
+  return {
+    columnsType: nodeProps?.columnsType as any,
+    maxHour: nodeProps?.maxHour as any,
+    maxMinute: nodeProps?.maxMinute as any,
+    maxSecond: nodeProps?.maxSecond as any,
+    maxTime: nodeProps?.maxTime as any,
+    minHour: nodeProps?.minHour as any,
+    minMinute: nodeProps?.minMinute as any,
+    minSecond: nodeProps?.minSecond as any,
+    minTime: nodeProps?.minTime as any,
+  }
+}
+
+function resolveInjectedSlotModelValue(
+  node: VNode,
+  value: PickerGroupValueItem | undefined,
+  nodeProps?: Record<string, unknown>,
+) {
+  if (isOfficialDatePickerNode(node)) {
+    return resolveDatePickerInnerValue(value as any, resolveOfficialDatePickerOptions(nodeProps))
+  }
+
+  if (isOfficialTimePickerNode(node)) {
+    return resolveTimePickerInnerValue(value as any, resolveOfficialTimePickerOptions(nodeProps))
+  }
+
+  return clonePickerGroupValueItem(value)
 }
 
 function normalizeSlotNodes(nodes: unknown): VNode[] {
@@ -216,9 +267,9 @@ function onActiveTabChange(value: number | string) {
 function createInjectedSlotNodeProps(node: VNode, index: number) {
   const nodeProps = node.props as Record<string, unknown> | null | undefined
   const injectedProps: Record<string, unknown> = {
-    'modelValue': clonePickerGroupValueItem(innerValue.value[index]),
+    'modelValue': resolveInjectedSlotModelValue(node, innerValue.value[index], nodeProps),
     'readonly': Boolean(props.readonly || props.readOnly || props.disabled || nodeProps?.readonly || nodeProps?.readOnly),
-    'onUpdate:modelValue': (value: unknown) => onSlotModelValueChange(index, value),
+    'onUpdate:modelValue': (value: unknown) => onSlotModelValueChange(index, node, value, nodeProps),
     'onChange': (payload: unknown) => onSlotChange(index, payload),
     'onClickOption': (payload: unknown) => onSlotClickOption(index, payload),
     'onScrollInto': (payload: unknown) => onSlotScrollInto(index, payload),
@@ -488,7 +539,28 @@ function resolveSlotModelValue(value: unknown) {
       : undefined
 }
 
-function onSlotModelValueChange(tabIndex: number, value: unknown) {
+function onSlotModelValueChange(
+  tabIndex: number,
+  node: VNode,
+  value: unknown,
+  nodeProps?: Record<string, unknown>,
+) {
+  if (isOfficialDatePickerNode(node)) {
+    setValue(
+      tabIndex,
+      resolveDatePickerModelValue(value as any, resolveOfficialDatePickerOptions(nodeProps)) ?? undefined,
+    )
+    return
+  }
+
+  if (isOfficialTimePickerNode(node)) {
+    setValue(
+      tabIndex,
+      resolveTimePickerModelValue(value as any, resolveOfficialTimePickerOptions(nodeProps)) ?? undefined,
+    )
+    return
+  }
+
   setValue(tabIndex, resolveSlotModelValue(value))
 }
 

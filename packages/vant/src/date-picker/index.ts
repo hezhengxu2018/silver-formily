@@ -5,8 +5,8 @@ import FDatePicker from './date-picker.vue'
 export const DatePicker = connect<typeof FDatePicker>(
   FDatePicker,
   mapProps({
-    readOnly: 'readonly',
     disabled: true,
+    loading: true,
   }),
   mapReadPretty(PreviewText.DatePicker),
 )
@@ -14,13 +14,10 @@ export const DatePicker = connect<typeof FDatePicker>(
 export default DatePicker
 
 export type {
-  DatePickerBaseEventParams,
-  DatePickerCancelEventParams,
-  DatePickerChangeEventParams,
   DatePickerColumnType,
-  DatePickerConfirmEventParams,
   DatePickerDisplayFormatter,
   DatePickerModelValue,
+  DatePickerPopupProps,
   DatePickerProps,
   DatePickerResolvedValue,
   DatePickerSlots,

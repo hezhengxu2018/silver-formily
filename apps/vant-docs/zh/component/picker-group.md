@@ -11,7 +11,7 @@ mobileDemo: picker-group/index.vue
 - 当前封装固定通过 `Popup` 弹层承载，不需要手动维护 `show`
 - `Field` 上的 `dataSource` 仍然使用对象数组，每一项对应一个 tab
 - 不提供默认插槽时，会回退到内部 `VanPicker`，此时每个 tab 只支持单列选项，最终字段值会写回成扁平数组
-- 提供默认插槽时，会优先渲染插槽里的 `Picker`、`Area`、`DatePicker`、`TimePicker` 或基于 `Picker` 封装的自定义组件
+- 提供默认插槽时，会优先渲染插槽里的官方 `Picker`、`Area`、`DatePicker`、`TimePicker`，或任何兼容 `modelValue` / `update:modelValue` 的自定义组件
 - `tabs`、`activeTab` 和弹层 `show` 依然是内部状态，但默认插槽会额外暴露 `activeTab` / `setActiveTab` / `values` / `setValue` 供高级场景使用
 - 中间步骤的确认按钮会自动切到下一步，最后一步才真正写回字段值
 
@@ -108,15 +108,15 @@ type PickerGroupDataSource = PickerGroupDataSourceItem[]
 
 以下插槽已转发：
 
-| 插槽名    | 描述                                                                           | 插槽参数                                                    |
-| --------- | ------------------------------------------------------------------------------ | ----------------------------------------------------------- |
-| `default` | 自定义步骤内容，可直接放 `Picker`、`Area`、`DatePicker`、`TimePicker` 等子组件 | `{ activeTab, modelValue, values, setValue, setActiveTab }` |
-| `title`   | 自定义顶部标题                                                                 | `-`                                                         |
-| `cancel`  | 自定义取消按钮                                                                 | `-`                                                         |
-| `confirm` | 自定义确认按钮                                                                 | `-`                                                         |
-| `toolbar` | 自定义整个工具栏                                                               | `-`                                                         |
-| `option`  | 自定义默认模式下每个步骤里 Picker 的选项内容                                   | `option`                                                    |
-| `empty`   | 自定义默认模式下的空状态内容                                                   | `-`                                                         |
+| 插槽名    | 描述                                                                               | 插槽参数                                                    |
+| --------- | ---------------------------------------------------------------------------------- | ----------------------------------------------------------- |
+| `default` | 自定义步骤内容，可直接放官方 `Picker`、`Area`、`DatePicker`、`TimePicker` 等子组件 | `{ activeTab, modelValue, values, setValue, setActiveTab }` |
+| `title`   | 自定义顶部标题                                                                     | `-`                                                         |
+| `cancel`  | 自定义取消按钮                                                                     | `-`                                                         |
+| `confirm` | 自定义确认按钮                                                                     | `-`                                                         |
+| `toolbar` | 自定义整个工具栏                                                                   | `-`                                                         |
+| `option`  | 自定义默认模式下每个步骤里 Picker 的选项内容                                       | `option`                                                    |
+| `empty`   | 自定义默认模式下的空状态内容                                                       | `-`                                                         |
 
 ### Events
 

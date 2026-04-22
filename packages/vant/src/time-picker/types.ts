@@ -1,4 +1,3 @@
-import type { Field } from '@formily/core'
 import type {
   PickerThemeVars,
   PopupPosition,
@@ -18,36 +17,18 @@ export type TimePickerDisplayFormatter = (
   selectedOptions: Array<PickerOption | undefined>,
 ) => string
 
-export interface TimePickerBaseEventParams {
-  selectedValues: string[]
-  selectedOptions: Array<PickerOption | undefined>
-  selectedIndexes: number[]
-  field?: Field
-}
-
-export interface TimePickerChangeEventParams extends TimePickerBaseEventParams {
-  columnIndex: number
-}
-
-export interface TimePickerConfirmEventParams extends TimePickerBaseEventParams {}
-
-export interface TimePickerCancelEventParams extends TimePickerBaseEventParams {}
+export type TimePickerPopupProps = Partial<Omit<VanPopupProps, 'show' | 'onUpdate:show'>>
 
 export interface TimePickerProps {
   allowHtml?: VanTimePickerProps['allowHtml']
   cancelButtonText?: VanTimePickerProps['cancelButtonText']
-  closeOnClickOverlay?: VanPopupProps['closeOnClickOverlay']
-  closeOnPopstate?: VanPopupProps['closeOnPopstate']
   columnsType?: VanTimePickerProps['columnsType']
   confirmButtonText?: VanTimePickerProps['confirmButtonText']
   modelValue?: TimePickerModelValue
-  duration?: VanPopupProps['duration']
   filter?: VanTimePickerProps['filter']
   format?: string
   formatter?: VanTimePickerProps['formatter']
-  lazyRender?: VanPopupProps['lazyRender']
   loading?: VanTimePickerProps['loading']
-  lockScroll?: VanPopupProps['lockScroll']
   maxHour?: VanTimePickerProps['maxHour']
   maxMinute?: VanTimePickerProps['maxMinute']
   maxSecond?: VanTimePickerProps['maxSecond']
@@ -57,27 +38,50 @@ export interface TimePickerProps {
   minSecond?: VanTimePickerProps['minSecond']
   minTime?: VanTimePickerProps['minTime']
   optionHeight?: VanTimePickerProps['optionHeight']
-  overlay?: VanPopupProps['overlay']
   placeholder?: string
-  position?: VanPopupProps['position']
-  round?: VanPopupProps['round']
-  safeAreaInsetBottom?: VanPopupProps['safeAreaInsetBottom']
-  safeAreaInsetTop?: VanPopupProps['safeAreaInsetTop']
+  popupProps?: TimePickerPopupProps
+  disableTriggerWhenInactive?: boolean
   separator?: string
   swipeDuration?: VanTimePickerProps['swipeDuration']
-  teleport?: VanPopupProps['teleport']
   title?: VanTimePickerProps['title']
-  transition?: VanPopupProps['transition']
   readonly?: boolean
-  readOnly?: boolean
   disabled?: boolean
   displayFormatter?: TimePickerDisplayFormatter
   valueFormat?: string
   visibleOptionNum?: VanTimePickerProps['visibleOptionNum']
-  zIndex?: VanPopupProps['zIndex']
 }
 
 export interface TimePickerSlots extends PickerSlots {}
+
+export interface TimePickerPopupTimePickerProps {
+  allowHtml?: VanTimePickerProps['allowHtml']
+  cancelButtonText?: VanTimePickerProps['cancelButtonText']
+  columnsType?: VanTimePickerProps['columnsType']
+  confirmButtonText?: VanTimePickerProps['confirmButtonText']
+  filter?: VanTimePickerProps['filter']
+  formatter?: VanTimePickerProps['formatter']
+  loading?: VanTimePickerProps['loading']
+  maxHour?: VanTimePickerProps['maxHour']
+  maxMinute?: VanTimePickerProps['maxMinute']
+  maxSecond?: VanTimePickerProps['maxSecond']
+  maxTime?: VanTimePickerProps['maxTime']
+  minHour?: VanTimePickerProps['minHour']
+  minMinute?: VanTimePickerProps['minMinute']
+  minSecond?: VanTimePickerProps['minSecond']
+  minTime?: VanTimePickerProps['minTime']
+  modelValue?: string[]
+  optionHeight?: VanTimePickerProps['optionHeight']
+  readonly?: boolean
+  showToolbar?: boolean
+  swipeDuration?: VanTimePickerProps['swipeDuration']
+  title?: VanTimePickerProps['title']
+  visibleOptionNum?: VanTimePickerProps['visibleOptionNum']
+}
+
+export interface TimePickerPopupContentProps {
+  timePickerProps: TimePickerPopupTimePickerProps
+  resolveValue: (selectedValues: string[]) => TimePickerResolvedValue
+}
 
 export type {
   PickerOption,

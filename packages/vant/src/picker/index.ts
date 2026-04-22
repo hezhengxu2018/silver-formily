@@ -7,7 +7,6 @@ export const Picker = connect<typeof FPicker>(
   mapProps({
     dataSource: 'columns',
     disabled: true,
-    readOnly: 'readonly',
     loading: true,
   }),
   mapReadPretty(PreviewText.Picker),

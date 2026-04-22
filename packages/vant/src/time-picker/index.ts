@@ -5,8 +5,8 @@ import FTimePicker from './time-picker.vue'
 export const TimePicker = connect<typeof FTimePicker>(
   FTimePicker,
   mapProps({
-    readOnly: 'readonly',
     disabled: true,
+    loading: true,
   }),
   mapReadPretty(PreviewText.TimePicker),
 )
@@ -17,13 +17,10 @@ export type {
   PickerOption,
   PickerThemeVars,
   PopupPosition,
-  TimePickerBaseEventParams,
-  TimePickerCancelEventParams,
-  TimePickerChangeEventParams,
   TimePickerColumnType,
-  TimePickerConfirmEventParams,
   TimePickerDisplayFormatter,
   TimePickerModelValue,
+  TimePickerPopupProps,
   TimePickerProps,
   TimePickerResolvedValue,
   TimePickerSlots,

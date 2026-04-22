@@ -57,22 +57,24 @@ mobileDemo: picker/index.vue
 - 单列字段值是 `string | number | null`，多列 / 级联字段值是 `Array<string | number> | null`
 - 对象选项优先推荐写成 `{ label, value }`，同时兼容 `{ text, value }`、`{ label, name }`
 - `readPretty` 模式下会自动回显当前选项文案，找不到匹配项时回退为空占位
-- `readonly` / `readOnly` / `disabled` 都会阻止弹层打开
+- 默认情况下，`readonly` / `disabled` 仍允许打开弹层，但内部 Picker 会进入只读态
+- 传入 `disableTriggerWhenInactive` 后，会改成在触发区层面阻止打开
 - 当前不支持通过组件 `ref` 调用官方实例方法
 
 ### 封装补充 Props
 
-| 属性名              | 类型                                            | 描述                             | 默认值         |
-| ------------------- | ----------------------------------------------- | -------------------------------- | -------------- |
-| `modelValue`        | `string \| number \| Array<string \| number>`   | 当前字段值                       | `-`            |
-| `columns`           | `PickerColumn \| PickerColumn[]`                | 选项列，通常由 `dataSource` 提供 | `[]`           |
-| `columnsFieldNames` | ^[object]`{ text, value, children }`            | 自定义字段名映射                 | 官方默认值     |
-| `placeholder`       | `string`                                        | 未选择时的展示文案               | `'请选择选项'` |
-| `popupProps`        | `PickerPopupProps`                              | 传给内部 Popup 的配置            | `-`            |
-| `separator`         | `string`                                        | 字段展示区分隔符                 | `' / '`        |
-| `displayFormatter`  | ^[Function]`(value, selectedOptions) => string` | 自定义字段展示区文案             | `-`            |
-| `readonly`          | `boolean`                                       | 只读态，阻止打开弹层             | `false`        |
-| `disabled`          | `boolean`                                       | 禁用态，阻止打开弹层             | `false`        |
+| 属性名                       | 类型                                            | 描述                             | 默认值         |
+| ---------------------------- | ----------------------------------------------- | -------------------------------- | -------------- |
+| `modelValue`                 | `string \| number \| Array<string \| number>`   | 当前字段值                       | `-`            |
+| `columns`                    | `PickerColumn \| PickerColumn[]`                | 选项列，通常由 `dataSource` 提供 | `[]`           |
+| `columnsFieldNames`          | ^[object]`{ text, value, children }`            | 自定义字段名映射                 | 官方默认值     |
+| `placeholder`                | `string`                                        | 未选择时的展示文案               | `'请选择选项'` |
+| `popupProps`                 | `PickerPopupProps`                              | 传给内部 Popup 的配置            | `-`            |
+| `disableTriggerWhenInactive` | `boolean`                                       | 非可编辑态时是否直接禁用触发区   | `false`        |
+| `separator`                  | `string`                                        | 字段展示区分隔符                 | `' / '`        |
+| `displayFormatter`           | ^[Function]`(value, selectedOptions) => string` | 自定义字段展示区文案             | `-`            |
+| `readonly`                   | `boolean`                                       | 只读态，默认允许打开只读弹层     | `false`        |
+| `disabled`                   | `boolean`                                       | 禁用态，默认允许打开只读弹层     | `false`        |
 
 ### 官方 Picker Props
 

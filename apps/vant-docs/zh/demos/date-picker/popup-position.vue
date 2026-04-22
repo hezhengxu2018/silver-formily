@@ -21,9 +21,11 @@ const form = createForm({
         :component="[
           DatePicker,
           {
-            position: 'top',
             minDate,
             maxDate,
+            popupProps: {
+              position: 'top',
+            },
           },
         ]"
       />

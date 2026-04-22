@@ -12,6 +12,7 @@ import { computed, useSlots } from 'vue'
 import { PopupTriggerInput, resolveSelectionPlaceholder, useCleanAttrs } from '../__builtins__'
 import { createPopup } from '../create-popup'
 import PickerPopupContent from './picker-popup-content.vue'
+import { usePickerInactiveState } from './use-picker-inactive-state'
 import {
   formatPickerDisplay,
   normalizePickerColumns,
@@ -39,6 +40,7 @@ const emit = defineEmits<{
 
 const slots = useSlots()
 const { props: triggerInputProps } = useCleanAttrs()
+const { isPopupReadonly, isTriggerDisabled } = usePickerInactiveState(props)
 
 const selectedOptions = computed(() => {
   return resolvePickerSelectedOptions(props.modelValue, props.columns, props.columnsFieldNames)
@@ -80,7 +82,7 @@ const pickerProps = computed<PickerPopupPickerProps>(() => {
       props.columnsFieldNames,
     ),
     optionHeight: props.optionHeight,
-    readonly: props.readonly,
+    readonly: isPopupReadonly.value,
     showToolbar: true,
     swipeDuration: props.swipeDuration,
     title: props.title,
@@ -102,6 +104,10 @@ const popupContentProps = computed<PickerPopupContentProps>(() => {
 })
 
 async function open() {
+  if (isTriggerDisabled.value) {
+    return
+  }
+
   const popupController = createPopup<typeof PickerPopupContent, PickerResolvedValue>(
     popupBindings.value,
     PickerPopupContent,
@@ -120,6 +126,7 @@ async function open() {
 <template>
   <PopupTriggerInput
     :input-props="triggerInputProps"
+    :disabled="isTriggerDisabled"
     :value="displayText"
     :placeholder="resolveSelectionPlaceholder(props.placeholder)"
     @click="open"

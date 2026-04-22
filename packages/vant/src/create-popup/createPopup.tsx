@@ -96,6 +96,7 @@ export function createPopup<TComponent extends FunctionalPopupComponent = Functi
         return () => {
           const {
             show: _show,
+            onOpened: popupOnOpened,
             onClosed: popupOnClosed,
             'onUpdate:show': _onUpdateShow,
             ...popupBindings
@@ -111,6 +112,9 @@ export function createPopup<TComponent extends FunctionalPopupComponent = Functi
                 }
 
                 handleReject(new Error('cancel'))
+              }}
+              onOpened={() => {
+                callListener(popupOnOpened)
               }}
               onClosed={() => {
                 callListener(popupOnClosed)
