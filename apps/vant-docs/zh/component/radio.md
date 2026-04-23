@@ -51,18 +51,18 @@ mobileDemo: radio/index.vue
 - `Field` 上的 `dataSource` 会自动映射到 `Radio.Group` 的 `options`
 - `readPretty` 模式下会自动显示当前选项的 `label`，找不到匹配项时回退显示原始值
 - `cancelable` 开启后，点击当前已选中的选项会清空字段值，适合“可取消”的单选场景
-- 对象选项推荐写成 `{ label, value }`，同时也兼容直接传字符串 / 数字 / 布尔值数组
+- `dataSource` / `options` 统一使用 `{ label, value }` 对象数组
 - 如果要复刻 Vant 官方“搭配单元格组件使用”的布局，可以给 `Radio.Group` 传默认插槽，内部直接放原始 `Radio` 子节点
 - 如果要做宫格/卡片式选择器，也可以给 `Radio.Group` 传默认插槽，在内部配合 `Grid` 组织布局
 
 ### Radio.Group 扩展属性
 
-| 属性名          | 类型                                                | 描述                                   | 默认值  |
-| --------------- | --------------------------------------------------- | -------------------------------------- | ------- |
-| `options`       | `Array<RadioOption \| string \| number \| boolean>` | 选项列表，通常由 `dataSource` 自动映射 | `[]`    |
-| `cancelable`    | `boolean`                                           | 是否允许再次点击已选项时取消选中       | `false` |
-| `labelPosition` | ^[enum]`'left' \| 'right'`                          | 统一控制选项文字相对图标的位置         | `-`     |
-| `labelDisabled` | `boolean`                                           | 是否禁用点击文字切换                   | `-`     |
+| 属性名          | 类型                       | 描述                                   | 默认值  |
+| --------------- | -------------------------- | -------------------------------------- | ------- |
+| `options`       | `RadioOption[]`            | 选项列表，通常由 `dataSource` 自动映射 | `[]`    |
+| `cancelable`    | `boolean`                  | 是否允许再次点击已选项时取消选中       | `false` |
+| `labelPosition` | ^[enum]`'left' \| 'right'` | 统一控制选项文字相对图标的位置         | `-`     |
+| `labelDisabled` | `boolean`                  | 是否禁用点击文字切换                   | `-`     |
 
 ### Radio.Group 官方透传属性
 

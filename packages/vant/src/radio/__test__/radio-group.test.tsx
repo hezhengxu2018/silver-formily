@@ -29,8 +29,8 @@ describe('radio-group', () => {
           name="radio"
           component={[Radio.Group]}
           dataSource={[
-            { label: '标签1', name: '1' },
-            { label: '标签2', name: '2' },
+            { label: '标签1', value: '1' },
+            { label: '标签2', value: '2' },
           ]}
         />
       </FormProvider>
@@ -55,8 +55,8 @@ describe('radio-group', () => {
           initialValue="1"
           component={[Radio.Group]}
           dataSource={[
-            { label: '标签1', name: '1' },
-            { label: '标签2', name: '2' },
+            { label: '标签1', value: '1' },
+            { label: '标签2', value: '2' },
           ]}
         />
       </FormProvider>
@@ -81,8 +81,8 @@ describe('radio-group', () => {
           disabled
           component={[Radio.Group]}
           dataSource={[
-            { label: '标签1', name: '1' },
-            { label: '标签2', name: '2' },
+            { label: '标签1', value: '1' },
+            { label: '标签2', value: '2' },
           ]}
         />
       </FormProvider>
@@ -104,8 +104,8 @@ describe('radio-group', () => {
           name="radio"
           component={[Radio.Group, { cancelable: true }]}
           dataSource={[
-            { label: '标签1', name: '1' },
-            { label: '标签2', name: '2' },
+            { label: '标签1', value: '1' },
+            { label: '标签2', value: '2' },
           ]}
         />
       </FormProvider>
@@ -134,8 +134,8 @@ describe('radio-group', () => {
           name="radio"
           component={[Radio.Group]}
           dataSource={[
-            { label: '标签1', name: '1' },
-            { label: '标签2', name: '2' },
+            { label: '标签1', value: '1' },
+            { label: '标签2', value: '2' },
           ]}
         />
       </FormProvider>
@@ -154,8 +154,8 @@ describe('radio-group', () => {
           name="radio"
           component={[Radio.Group]}
           dataSource={[
-            { label: '标签1', name: '1' },
-            { label: '标签2', name: '2' },
+            { label: '标签1', value: '1' },
+            { label: '标签2', value: '2' },
           ]}
         >
           {{
@@ -208,8 +208,8 @@ describe('radio-group', () => {
           readPretty={true}
           component={[Radio.Group]}
           dataSource={[
-            { label: '标签1', name: '1' },
-            { label: '标签2', name: '2' },
+            { label: '标签1', value: '1' },
+            { label: '标签2', value: '2' },
           ]}
         />
       </FormProvider>
@@ -227,8 +227,8 @@ describe('radio-group', () => {
           readPretty={true}
           component={[Radio.Group]}
           dataSource={[
-            { label: '标签1', name: '1' },
-            { label: '标签2', name: '2' },
+            { label: '标签1', value: '1' },
+            { label: '标签2', value: '2' },
           ]}
         />
       </FormProvider>
@@ -247,8 +247,8 @@ describe('radio-group', () => {
             readPretty={true}
             component={[Radio.Group]}
             dataSource={[
-              { label: '标签1', name: '1' },
-              { label: '标签2', name: '2' },
+              { label: '标签1', value: '1' },
+              { label: '标签2', value: '2' },
             ]}
           />
         </FormProvider>
@@ -267,7 +267,7 @@ describe('radio-group', () => {
           readPretty={true}
           component={[Radio.Group]}
           dataSource={[
-            { label: '标签1', name: '1' },
+            { label: '标签1', value: '1' },
           ]}
         />
       </FormProvider>

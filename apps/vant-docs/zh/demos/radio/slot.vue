@@ -59,6 +59,7 @@ const planOptions = [
   font-size: 14px;
   font-weight: 600;
   line-height: 1.4;
+  text-align: left;
 }
 
 .plan-option__description {

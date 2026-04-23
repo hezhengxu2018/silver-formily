@@ -13,7 +13,7 @@ export type CheckerOptionBase<
   TValue = CheckerOptionValue,
 > = Partial<Omit<TComponentProps, 'modelValue' | 'name'>> & CheckerGroupOptionSettings & {
   label?: any
-  name: TValue
+  value: TValue
 }
 
 export type CheckerOptionLike<TOption extends CheckerOptionBase<any, any>> = TOption
@@ -46,10 +46,10 @@ export function resolveCheckerGroupOptions<
   const { labelDisabled, labelPosition, optionPropsKey, options } = params
 
   return options.map((option) => {
-    const value = option.name
-    const { label: _label, ...restOptionProps } = option
+    const { label: _label, value, ...restOptionProps } = option
     const optionProps = {
       ...restOptionProps,
+      name: value,
       labelPosition: option.labelPosition ?? labelPosition,
       labelDisabled: option.labelDisabled ?? labelDisabled,
     }

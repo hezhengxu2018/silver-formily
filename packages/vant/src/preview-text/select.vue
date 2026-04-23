@@ -23,7 +23,7 @@ function resolveOptionValue(option: any) {
 
   const optionRecord = option as Record<string, any>
 
-  return optionRecord.name
+  return optionRecord.value
 }
 
 function resolveOptionLabel(option: any) {

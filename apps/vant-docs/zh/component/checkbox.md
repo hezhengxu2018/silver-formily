@@ -40,7 +40,7 @@ mobileDemo: checkbox/index.vue
 
 - `Field` 上的 `dataSource` 会自动映射到 `Checkbox.Group` 的 `options`
 - `Checkbox.Group` 在 `readPretty` 模式下会自动显示已选选项的 `label`，找不到匹配项时回退显示原始值
-- 对象选项推荐写成 `{ label, value }`，同时也兼容直接传字符串 / 数字 / 布尔值数组
+- `dataSource` / `options` 统一使用 `{ label, value }` 对象数组
 - 如果要复刻 Vant 官方“搭配单元格组件使用”的布局，可以给 `Checkbox.Group` 传默认插槽，内部直接放原始 `Checkbox` 子节点
 
 ### Checkbox 官方透传属性
@@ -62,11 +62,11 @@ mobileDemo: checkbox/index.vue
 
 ### Checkbox.Group 扩展属性
 
-| 属性名          | 类型                                                   | 描述                                   | 默认值 |
-| --------------- | ------------------------------------------------------ | -------------------------------------- | ------ |
-| `options`       | `Array<CheckboxOption \| string \| number \| boolean>` | 选项列表，通常由 `dataSource` 自动映射 | `[]`   |
-| `labelPosition` | ^[enum]`'left' \| 'right'`                             | 统一控制选项文字相对图标的位置         | `-`    |
-| `labelDisabled` | `boolean`                                              | 是否禁用点击文字切换                   | `-`    |
+| 属性名          | 类型                       | 描述                                   | 默认值 |
+| --------------- | -------------------------- | -------------------------------------- | ------ |
+| `options`       | `CheckboxOption[]`         | 选项列表，通常由 `dataSource` 自动映射 | `[]`   |
+| `labelPosition` | ^[enum]`'left' \| 'right'` | 统一控制选项文字相对图标的位置         | `-`    |
+| `labelDisabled` | `boolean`                  | 是否禁用点击文字切换                   | `-`    |
 
 ### Checkbox.Group 官方透传属性
 

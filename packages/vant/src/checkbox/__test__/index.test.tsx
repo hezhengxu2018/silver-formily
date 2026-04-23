@@ -90,8 +90,8 @@ describe('checkbox-group', () => {
           name="features"
           component={[Checkbox.Group]}
           dataSource={[
-            { label: '拍照上传', name: 'photo' },
-            { label: '定位签到', name: 'location' },
+            { label: '拍照上传', value: 'photo' },
+            { label: '定位签到', value: 'location' },
           ]}
         />
       </FormProvider>
@@ -118,8 +118,8 @@ describe('checkbox-group', () => {
           initialValue={['photo']}
           component={[Checkbox.Group]}
           dataSource={[
-            { label: '拍照上传', name: 'photo' },
-            { label: '定位签到', name: 'location' },
+            { label: '拍照上传', value: 'photo' },
+            { label: '定位签到', value: 'location' },
           ]}
         />
       </FormProvider>
@@ -143,8 +143,8 @@ describe('checkbox-group', () => {
           name="disabledFeatures"
           component={[Checkbox.Group, { disabled: true }]}
           dataSource={[
-            { label: '拍照上传', name: 'photo' },
-            { label: '定位签到', name: 'location' },
+            { label: '拍照上传', value: 'photo' },
+            { label: '定位签到', value: 'location' },
           ]}
         />
       </FormProvider>
@@ -160,8 +160,8 @@ describe('checkbox-group', () => {
           name="features"
           component={[Checkbox.Group]}
           dataSource={[
-            { label: '拍照上传', name: 'photo' },
-            { label: '定位签到', name: 'location' },
+            { label: '拍照上传', value: 'photo' },
+            { label: '定位签到', value: 'location' },
           ]}
         >
           {{
@@ -213,8 +213,8 @@ describe('checkbox-group', () => {
           readPretty={true}
           component={[Checkbox.Group]}
           dataSource={[
-            { label: '拍照上传', name: 'photo' },
-            { label: '定位签到', name: 'location' },
+            { label: '拍照上传', value: 'photo' },
+            { label: '定位签到', value: 'location' },
           ]}
         />
       </FormProvider>
@@ -233,8 +233,8 @@ describe('checkbox-group', () => {
             readPretty={true}
             component={[Checkbox.Group]}
             dataSource={[
-              { label: '拍照上传', name: 'photo' },
-              { label: '定位签到', name: 'location' },
+              { label: '拍照上传', value: 'photo' },
+              { label: '定位签到', value: 'location' },
             ]}
           />
         </FormProvider>
