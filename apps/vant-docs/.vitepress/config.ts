@@ -4,6 +4,8 @@ import { fileURLToPath } from 'node:url'
 import { createDocsConfig } from '@silver-formily/docs-toolkit'
 import pkg from '@silver-formily/vant/package.json' with { type: 'json' }
 import vueJsx from '@vitejs/plugin-vue-jsx'
+import zhComponent from './i18n/zh/pages/component.json'
+import zhNav from './i18n/zh/pages/nav.json'
 
 const currentDir = dirname(fileURLToPath(import.meta.url))
 const vantSource = `${path.resolve(currentDir, '../../../packages/vant/src')}/`
@@ -21,63 +23,9 @@ export default createDocsConfig({
       title: 'Silver Formily Vant',
       description: 'Vant 的 Formily 封装骨架',
       themeConfig: {
-        nav: [
-          { text: '组件', link: '/component/quick-start', activeMatch: '/component/' },
-        ],
+        nav: zhNav,
         sidebar: {
-          '/component/': [
-            {
-              text: 'Overview 总览',
-              items: [
-                { text: 'Quick Start 快速开始', link: '/component/quick-start' },
-              ],
-            },
-            {
-              text: 'Layout 布局组件',
-              items: [
-                { text: 'Form 表单', link: '/component/form' },
-                { text: 'FormItem 表单项', link: '/component/form-item' },
-                { text: 'Grid 宫格', link: '/component/grid' },
-                { text: 'FormButtonGroup 按钮布局', link: '/component/form-button-group' },
-                { text: 'Submit 提交按钮', link: '/component/submit' },
-                { text: 'Reset 重置按钮', link: '/component/reset' },
-              ],
-            },
-            {
-              text: 'Input 输入组件',
-              items: [
-                { text: 'Input 输入框', link: '/component/input' },
-                { text: 'PasswordInput 密码框', link: '/component/password-input' },
-                { text: 'Checkbox 复选框', link: '/component/checkbox' },
-                { text: 'Radio 单选框', link: '/component/radio' },
-                { text: 'Switch 开关', link: '/component/switch' },
-                { text: 'Stepper 步进器(A1)', link: '/component/stepper' },
-                { text: 'Rate 评分(A1)', link: '/component/rate' },
-                { text: 'Slider 滑块', link: '/component/slider' },
-                { text: 'Signature 签名', link: '/component/signature' },
-                { text: 'Upload 上传', link: '/component/upload' },
-                { text: 'Cascader 级联选择', link: '/component/cascader' },
-                { text: 'Picker 选择器', link: '/component/picker' },
-                { text: 'DatePicker 日期滚轮', link: '/component/date-picker' },
-                { text: 'TimePicker 时间滚轮', link: '/component/time-picker' },
-                { text: 'PickerGroup 分步选择器', link: '/component/picker-group' },
-                { text: 'Calendar 日期选择', link: '/component/calendar' },
-              ],
-            },
-            {
-              text: 'Scenario 场景组件',
-              items: [
-                { text: 'FormStep 分步表单', link: '/component/form-step' },
-                { text: 'FormPopup 表单弹层', link: '/component/form-popup' },
-              ],
-            },
-            {
-              text: 'Utilities 工具函数',
-              items: [
-                { text: 'createPopup 轻量弹层工厂', link: '/component/create-popup' },
-              ],
-            },
-          ],
+          '/component/': zhComponent,
         },
       },
     },
