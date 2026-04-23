@@ -2,7 +2,7 @@
 import type { Field as FormilyField } from '@formily/core'
 import type { SwitchProps, SwitchValue } from './types'
 import { useField } from '@silver-formily/vue'
-import { isPromise } from 'es-toolkit'
+import { isPromise, omit } from 'es-toolkit'
 import { Switch as VanSwitch } from 'vant'
 import { computed, ref } from 'vue'
 
@@ -14,14 +14,24 @@ const props = defineProps<SwitchProps>()
 
 const emit = defineEmits<{
   'update:modelValue': [value: SwitchValue]
+  'change': [value: SwitchValue]
 }>()
 
 const fieldRef = useField<FormilyField | undefined>()
 const pending = ref(false)
 
+const switchBindings = computed(() => {
+  return omit(props, ['beforeChange'])
+})
+
 const isLoading = computed(() => {
   return Boolean(props.loading || pending.value)
 })
+
+function emitValueChange(value: SwitchValue) {
+  emit('update:modelValue', value)
+  emit('change', value)
+}
 
 async function resolveBeforeChange(value: SwitchValue) {
   if (!props.beforeChange) {
@@ -60,13 +70,13 @@ async function handleUpdateModelValue(value: SwitchValue) {
     return
   }
 
-  emit('update:modelValue', value)
+  emitValueChange(value)
 }
 </script>
 
 <template>
   <VanSwitch
-    v-bind="props"
+    v-bind="switchBindings"
     :loading="isLoading"
     @update:model-value="handleUpdateModelValue"
   >

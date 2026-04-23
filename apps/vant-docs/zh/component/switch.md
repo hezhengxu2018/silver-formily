@@ -69,11 +69,3 @@ mobileDemo: switch/index.vue
 ### 属性
 
 继承官方组件的所有配置项，请参考 [Vant Switch 官方文档](https://vant-ui.github.io/vant/#/zh-CN/switch)
-
-### Events
-
-移除了语义重复的 `change` 事件
-
-### Slots
-
-支持所有官方组件的插槽
