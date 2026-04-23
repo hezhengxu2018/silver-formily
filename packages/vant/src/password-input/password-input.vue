@@ -1,10 +1,9 @@
 <script setup lang="ts">
 import type { PasswordInputKeyboardProps, PasswordInputProps } from './types'
-import { isValid } from '@formily/shared'
+import { isObj, isValid } from '@formily/shared'
 import { NumberKeyboard as VanNumberKeyboard, PasswordInput as VanPasswordInput } from 'vant'
 import { computed, ref, watch } from 'vue'
-import { useCleanAttrs } from '../__builtins__'
-import { useVantFormItemControlContext } from '../form-item/context'
+import { useCleanAttrs, useHasExplicitVNodeProp } from '../__builtins__'
 
 defineOptions({
   name: 'FPasswordInput',
@@ -28,37 +27,13 @@ const emit = defineEmits<{
   'show': []
 }>()
 
-const { props: attrs } = useCleanAttrs([
-  'disabled',
-  'errorInfo',
-  'focused',
-  'gutter',
-  'keyboard',
-  'info',
-  'length',
-  'mask',
-  'modelValue',
-  'onBlur',
-  'onClose',
-  'onDelete',
-  'onFocus',
-  'onHide',
-  'onInput',
-  'onShow',
-  'onUpdate:modelValue',
-  'readOnly',
-  'readonly',
-])
-
-const formItemControlContext = useVantFormItemControlContext()
+const { props: attrs } = useCleanAttrs()
+const hasExplicitVNodeProp = useHasExplicitVNodeProp()
+const isFocusedControlled = hasExplicitVNodeProp('focused')
 const keyboardVisible = ref(false)
 
-const resolvedDisabled = computed(() => {
-  return props.disabled ?? formItemControlContext?.value.disabled ?? false
-})
-
-const resolvedReadonly = computed(() => {
-  return props.readonly ?? props.readOnly ?? formItemControlContext?.value.readonly ?? false
+const canInteract = computed(() => {
+  return !props.disabled && !props.readonly
 })
 
 const inputValue = computed(() => {
@@ -76,7 +51,7 @@ const resolvedLength = computed(() => {
 })
 
 const keyboardConfig = computed<PasswordInputKeyboardProps>(() => {
-  if (props.keyboard && typeof props.keyboard === 'object') {
+  if (isObj(props.keyboard)) {
     return props.keyboard
   }
 
@@ -84,13 +59,17 @@ const keyboardConfig = computed<PasswordInputKeyboardProps>(() => {
 })
 
 const resolvedFocused = computed(() => {
-  if (resolvedDisabled.value || resolvedReadonly.value) {
+  if (!canInteract.value) {
     return false
+  }
+
+  if (isFocusedControlled) {
+    return Boolean(props.focused)
   }
 
   return keyboardEnabled.value
     ? keyboardVisible.value
-    : Boolean(props.focused)
+    : false
 })
 
 const passwordInputProps = computed(() => {
@@ -111,37 +90,48 @@ const numberKeyboardProps = computed(() => {
     ...keyboardConfig.value,
     maxlength: resolvedLength.value,
     modelValue: inputValue.value,
-    show: keyboardEnabled.value && keyboardVisible.value,
+    show: keyboardEnabled.value && resolvedFocused.value,
   }
 })
 
-watch(keyboardEnabled, (value) => {
-  if (!value) {
-    keyboardVisible.value = false
+function setKeyboardVisible(value: boolean) {
+  if (isFocusedControlled) {
+    return
   }
-})
 
-watch([resolvedDisabled, resolvedReadonly], ([disabled, readonly]) => {
-  if (disabled || readonly) {
-    keyboardVisible.value = false
+  keyboardVisible.value = value
+}
+
+function openKeyboard() {
+  if (!keyboardEnabled.value || !canInteract.value) {
+    return
+  }
+
+  setKeyboardVisible(true)
+}
+
+function closeKeyboard() {
+  setKeyboardVisible(false)
+}
+
+watch([keyboardEnabled, canInteract], ([enabled, interactive]) => {
+  if (!enabled || !interactive) {
+    closeKeyboard()
   }
 })
 
 watch([inputValue, resolvedLength], ([value, length]) => {
   if (keyboardVisible.value && Number.isFinite(length) && value.length >= length) {
-    keyboardVisible.value = false
+    closeKeyboard()
   }
 })
 
 function onFocus(event: TouchEvent) {
-  if (resolvedDisabled.value || resolvedReadonly.value) {
+  if (!canInteract.value) {
     return
   }
 
-  if (keyboardEnabled.value) {
-    keyboardVisible.value = true
-  }
-
+  openKeyboard()
   emit('focus', event)
 }
 
@@ -150,12 +140,12 @@ function onKeyboardModelValueChange(value: string) {
 }
 
 function onKeyboardBlur() {
-  keyboardVisible.value = false
+  closeKeyboard()
   emit('blur')
 }
 
 function onKeyboardClose() {
-  keyboardVisible.value = false
+  closeKeyboard()
   emit('close')
 }
 

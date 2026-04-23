@@ -16,7 +16,6 @@ export interface PasswordInputProps extends Pick<VanPasswordInputProps, 'errorIn
   modelValue?: PasswordInputModelValue
   disabled?: boolean
   readonly?: boolean
-  readOnly?: boolean
   keyboard?: PasswordInputKeyboardConfig
 }
 

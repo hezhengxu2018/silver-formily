@@ -213,6 +213,21 @@ describe('password-input', () => {
     })
   })
 
+  it('应该在显式传入 focused 时使用受控焦点状态驱动内置键盘显隐', async () => {
+    render(() => (
+      <PasswordInput
+        focused
+        keyboard={{
+          transition: false,
+        }}
+      />
+    ))
+
+    await vi.waitFor(() => {
+      expect(isKeyboardVisible()).toBe(true)
+    })
+  })
+
   it('应该在 keyboard 开启时由组件内部管理数字键盘的展开、输入和收起', async () => {
     const form = createForm()
     const onShow = vi.fn()
