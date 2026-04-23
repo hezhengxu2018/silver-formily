@@ -52,7 +52,7 @@ export default createDocsConfig({
                 { text: 'Radio 单选框', link: '/component/radio' },
                 { text: 'Switch 开关', link: '/component/switch' },
                 { text: 'Stepper 步进器(A1)', link: '/component/stepper' },
-                { text: 'Rate 评分', link: '/component/rate' },
+                { text: 'Rate 评分(A1)', link: '/component/rate' },
                 { text: 'Slider 滑块', link: '/component/slider' },
                 { text: 'Signature 签名', link: '/component/signature' },
                 { text: 'Upload 上传', link: '/component/upload' },
