@@ -4,7 +4,7 @@ mobileDemo: form-item/index.vue
 
 # FormItem
 
-> `FormItem` 是当前 Vant 封装里的装饰器组件，负责承接 `VanField` 的展示、布局和反馈层能力。
+> `FormItem` 是当前 Vant 封装里的装饰器组件，负责承接参考 `VanField` 设计的展示、布局和反馈层能力。
 
 :::tip 提示
 Vant 并没有单独的 `FormItem` 组件，官方是把“表单项壳层”和“文本输入”统一放进 `Field` 里。这里拆成 `FormItem + Input`，是为了继续保持 Formily 的 `decorator + component` 心智。
@@ -29,10 +29,10 @@ Vant 并没有单独的 `FormItem` 组件，官方是把“表单项壳层”和
 - `title` 会自动映射到 `label`
 - `description` 会自动映射到 `extra`
 - `extra` 属性会作为表单项下方的独立说明区域渲染
-- `extra` 插槽仍然保持 Vant 原生 `VanField #extra` 的布局语义
+- `extra` 插槽仍然保持与 Vant `Field` 接近的布局语义
 - `extra` 属性和 `extra` 插槽互不影响，可以同时存在
-- `field.required`、`field.validateStatus`、`field.selfErrors` 等字段状态会自动映射到外层 `VanField`
-- `clearable`、`showWordLimit`、`leftIcon` 这类输入增强属性请写在 `Input` 上，由 `FormItem` 内部负责桥接
+- `field.required`、`field.validateStatus`、`field.selfErrors` 等字段状态会自动映射到当前 `FormItem` 壳层
+- `clearable`、`showWordLimit`、`leftIcon` 这类输入增强属性请写在 `Input` 上，由 `FormItem` 内部读取并消费
 - `tag`、`titleStyle`、`valueClass`、`clickable` 这类更偏布局和展示层的属性，建议写在 `FormItem` 上
 
 ### FormItem 封装属性
@@ -70,20 +70,20 @@ Vant 并没有单独的 `FormItem` 组件，官方是把“表单项壳层”和
 
 ### FormItem Slots
 
-| 插槽名          | 描述                                           | 插槽参数                       |
-| --------------- | ---------------------------------------------- | ------------------------------ |
-| `default`       | 默认内容，会被放进 `VanField` 的 `#input` 区域 | `-`                            |
-| `input`         | 自定义输入区域，优先级高于默认插槽             | `-`                            |
-| `label`         | 自定义标签区域                                 | `-`                            |
-| `extra`         | 自定义额外说明区域                             | `-`                            |
-| `button`        | 自定义右侧按钮区域                             | `-`                            |
-| `left-icon`     | 自定义左侧图标区域                             | `-`                            |
-| `right-icon`    | 自定义右侧图标区域                             | `-`                            |
-| `error-message` | 自定义底部反馈区域                             | ^[object]`{ message: string }` |
+| 插槽名          | 描述                               | 插槽参数                       |
+| --------------- | ---------------------------------- | ------------------------------ |
+| `default`       | 默认内容，会被放进表单项内容区域   | `-`                            |
+| `input`         | 自定义输入区域，优先级高于默认插槽 | `-`                            |
+| `label`         | 自定义标签区域                     | `-`                            |
+| `extra`         | 自定义额外说明区域                 | `-`                            |
+| `button`        | 自定义右侧按钮区域                 | `-`                            |
+| `left-icon`     | 自定义左侧图标区域                 | `-`                            |
+| `right-icon`    | 自定义右侧图标区域                 | `-`                            |
+| `error-message` | 自定义底部反馈区域                 | ^[object]`{ message: string }` |
 
 ### FormItem.BaseItem
 
-纯展示组件，保留和 `FormItem` 相同的视觉结构与插槽能力，但不会和 Formily `Field` 状态做自动桥接。适合只想复用 `VanField` 布局壳层、不需要接入字段状态的场景。
+纯展示组件，保留和 `FormItem` 相同的视觉结构与插槽能力，但不会和 Formily `Field` 状态做自动桥接。适合只想复用这套表单项布局壳层、不需要接入字段状态的场景。
 
 ### 参考
 

@@ -23,6 +23,16 @@ const formItemControlContext = useVantFormItemControlContext()
 const inputElement = ref<HTMLInputElement | HTMLTextAreaElement>()
 const isTextArea = computed(() => props.type === 'textarea')
 const inputValue = computed(() => isValid(props.modelValue) ? String(props.modelValue) : '')
+const nativeInputProps = computed(() => {
+  const {
+    formatter: _formatter,
+    formatTrigger: _formatTrigger,
+    ...attrs
+  } = inputProps.value
+
+  return attrs
+})
+const resolvedFormatTrigger = computed(() => props.formatTrigger === 'onBlur' ? 'onBlur' : 'onChange')
 const inputId = computed(() => {
   const explicitId = inputProps.value.id
   if (typeof explicitId === 'string' && explicitId) {
@@ -59,14 +69,41 @@ onBeforeUnmount(() => {
 
 function onInput(event: Event) {
   const target = event.target as HTMLInputElement | HTMLTextAreaElement
-  emit('update:modelValue', target.value)
+  const nextValue = resolvedFormatTrigger.value === 'onChange'
+    ? props.formatter?.(target.value) ?? target.value
+    : target.value
+
+  if (target.value !== nextValue) {
+    target.value = nextValue
+  }
+
+  emit('update:modelValue', nextValue)
+}
+
+function onBlur(event: FocusEvent) {
+  if (resolvedFormatTrigger.value !== 'onBlur') {
+    return
+  }
+
+  const target = event.target as HTMLInputElement | HTMLTextAreaElement | null
+  if (!target) {
+    return
+  }
+
+  const nextValue = props.formatter?.(target.value) ?? target.value
+
+  if (target.value !== nextValue) {
+    target.value = nextValue
+  }
+
+  emit('update:modelValue', nextValue)
 }
 </script>
 
 <template>
   <component
     :is="isTextArea ? 'textarea' : 'input'"
-    v-bind="inputProps"
+    v-bind="nativeInputProps"
     :id="inputId"
     ref="inputElement"
     :aria-labelledby="labelledBy"
@@ -74,6 +111,7 @@ function onInput(event: Event) {
     data-allow-mismatch="attribute"
     :type="isTextArea ? undefined : props.type"
     :value="inputValue"
+    @blur="onBlur"
     @input="onInput"
   />
 </template>

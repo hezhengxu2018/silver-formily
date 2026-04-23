@@ -118,6 +118,63 @@ describe('input', () => {
       expect(container.querySelector('.van-field__clear')).not.toBeNull()
       expect(container.querySelector('.van-field__word-limit')?.textContent).toContain('5/10')
     })
+
+    it('应该在 formatTrigger 默认为 onChange 时格式化输入值', async () => {
+      const form = createForm()
+
+      const { getByRole } = render(() => (
+        <FormProvider form={form}>
+          <Field
+            name="input"
+            component={[Input, {
+              formatter: (value: string) => value.replace(/\d/g, ''),
+            }]}
+          />
+        </FormProvider>
+      ))
+
+      const input = getByRole('textbox')
+
+      await userEvent.type(input, 'a1b2')
+
+      await vi.waitFor(() => {
+        expect(form.values.input).toBe('ab')
+        expect(document.querySelector('input')).toHaveValue('ab')
+      })
+    })
+
+    it('应该在 formatTrigger 为 onBlur 时延迟到失焦再格式化', async () => {
+      const form = createForm()
+
+      const { getByRole } = render(() => (
+        <FormProvider form={form}>
+          <div>
+            <Field
+              name="input"
+              component={[Input, {
+                formatter: (value: string) => value.replace(/\d/g, ''),
+                formatTrigger: 'onBlur',
+              }]}
+            />
+            <button type="button">blur target</button>
+          </div>
+        </FormProvider>
+      ))
+
+      const input = getByRole('textbox')
+
+      await userEvent.type(input, 'a1b2')
+
+      expect(form.values.input).toBe('a1b2')
+      expect(document.querySelector('input')).toHaveValue('a1b2')
+
+      await userEvent.click(document.querySelector('button')!)
+
+      await vi.waitFor(() => {
+        expect(form.values.input).toBe('ab')
+        expect(document.querySelector('input')).toHaveValue('ab')
+      })
+    })
   })
 
   describe('事件处理', () => {

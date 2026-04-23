@@ -14,8 +14,6 @@ const vantFieldBridgePropKeys = [
   'clearIcon',
   'clearTrigger',
   'disabled',
-  'formatter',
-  'formatTrigger',
   'id',
   'iconPrefix',
   'inputAlign',

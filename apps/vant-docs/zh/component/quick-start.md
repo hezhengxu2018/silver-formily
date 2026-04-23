@@ -2,7 +2,7 @@
 
 ## 介绍
 
-`@silver-formily/vant` 是基于 Vue3 的 Vant 4.x 封装的formily组件库。Vant的设计上其实没有明确的decorator和component的区分，其核心的布局组件VanField组件既是布局的组件也提供了输入的功能，两者是一体的。`@silver-formily/vant`还是将其做了区分，将其拆分为decorator和component，与官方的 `vant@2.x` 的封装有较大的差别。在其他的部分接口设计上也保留了部分`@silver-formily/element-plus`的影子。
+`@silver-formily/vant` 是基于 Vue 3 的 Vant 4.x Formily 组件库。Vant 本身并没有明确区分 decorator 和 component，像 `Field` 这样组件同时承担了表单项布局和输入能力。`@silver-formily/vant` 将这两层职责拆成了 `FormItem + Input` 这样的组合，以保持 Formily 更常见的 `decorator + component` 心智；视觉和属性命名会尽量参考 Vant，但并不等同于直接渲染官方 `Field` 组件。
 
 ::: warning 注意
 `@silver-formily/vant` 的vue绑定库使用的是 `@silver-formily/vue`。除了需要注意使用时 Field、SchemaField等组件也需要从 `@silver-formily/vue` 中引入之外。使用自定义封装组件时也需要注意，默认的绑定行为已经改变，请不要再使用 `value` / `onChange` 的方式绑定自定义组件。详情请参考[官方文档](https://vue.silver-formily.org/)

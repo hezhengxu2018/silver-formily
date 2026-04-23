@@ -36,6 +36,7 @@ export interface PreviewTextProps {
 }
 
 export interface PreviewTextInputProps {
+  formatter?: (value: any) => string
   modelValue?: any
 }
 

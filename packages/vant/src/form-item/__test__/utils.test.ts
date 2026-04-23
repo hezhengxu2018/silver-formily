@@ -5,6 +5,8 @@ import { Input } from '../../input'
 import { fieldFeedbackMapper } from '../index'
 import { determineFeedbackStatus, getFeedbackMessage, getVanFieldBridgedProps } from '../utils'
 
+type MappedFieldFeedbackResult = Record<string, any>
+
 describe('form-item utils', () => {
   it('应该按 errors > warnings > successes 的优先级返回反馈文案', () => {
     expect(getFeedbackMessage({
@@ -62,6 +64,24 @@ describe('form-item utils', () => {
       'onUpdate:modelValue': onUpdateModelValue,
     })
     expect(bridgedProps).not.toHaveProperty('unrelated')
+  })
+
+  it('不应该把 Input 自己消费的格式化属性误桥接给 FormItem', () => {
+    const formatter = (value: string) => value.trim()
+
+    const bridgedProps = getVanFieldBridgedProps({
+      component: [Input, {
+        formatter,
+        formatTrigger: 'onBlur',
+        maxlength: 20,
+      }],
+    } as any)
+
+    expect(bridgedProps).toMatchObject({
+      maxlength: 20,
+    })
+    expect(bridgedProps).not.toHaveProperty('formatter')
+    expect(bridgedProps).not.toHaveProperty('formatTrigger')
   })
 
   it('应该从 Input.TextArea 推导类型，并允许显式 type 覆盖', () => {
@@ -139,7 +159,7 @@ describe('fieldFeedbackMapper', () => {
       required: true,
       pattern: 'editable',
       onInput: fieldOnInput,
-    } as any)
+    } as any) as MappedFieldFeedbackResult
 
     expect(mapped).toMatchObject({
       modelValue: 'initial-value',
@@ -172,7 +192,7 @@ describe('fieldFeedbackMapper', () => {
       required: true,
       pattern: 'disabled',
       onInput: vi.fn(),
-    } as any)
+    } as any) as MappedFieldFeedbackResult
 
     expect(disabledMapped.asterisk).toBe(true)
     expect(disabledMapped.disabled).toBe(true)
@@ -190,7 +210,7 @@ describe('fieldFeedbackMapper', () => {
       required: true,
       pattern: 'readOnly',
       onInput: vi.fn(),
-    } as any)
+    } as any) as MappedFieldFeedbackResult
 
     expect(readOnlyMapped.asterisk).toBe(true)
     expect(readOnlyMapped.readonly).toBe(true)
@@ -206,7 +226,7 @@ describe('fieldFeedbackMapper', () => {
       required: true,
       pattern: 'readPretty',
       onInput: vi.fn(),
-    } as any)
+    } as any) as MappedFieldFeedbackResult
 
     expect(readPrettyMapped.asterisk).toBe(false)
   })
@@ -230,7 +250,7 @@ describe('fieldFeedbackMapper', () => {
       required: false,
       pattern: 'editable',
       onInput: fieldOnInput,
-    } as any)
+    } as any) as MappedFieldFeedbackResult
 
     mapped['onUpdate:modelValue']('next-value')
 
@@ -262,11 +282,34 @@ describe('fieldFeedbackMapper', () => {
       required: false,
       pattern: 'editable',
       onInput: vi.fn(),
-    } as any)
+    } as any) as MappedFieldFeedbackResult
 
     expect(mapped.clearable).toBeUndefined()
     expect(mapped.maxlength).toBeUndefined()
     expect(mapped.disabled).toBe(false)
     expect(mapped.readonly).toBe(false)
+  })
+
+  it('fieldFeedbackMapper 不应该把格式化属性注入 FormItem props', () => {
+    const mapped = fieldFeedbackMapper({}, {
+      component: [Input, {
+        formatter: (value: string) => value.trim(),
+        formatTrigger: 'onBlur',
+        clearable: true,
+      }],
+      decorator: ['FormItem'],
+      validateStatus: 'success',
+      selfErrors: [],
+      selfWarnings: [],
+      selfSuccesses: [],
+      value: ' value ',
+      required: false,
+      pattern: 'editable',
+      onInput: vi.fn(),
+    } as any) as MappedFieldFeedbackResult
+
+    expect(mapped.clearable).toBe(true)
+    expect(mapped).not.toHaveProperty('formatter')
+    expect(mapped).not.toHaveProperty('formatTrigger')
   })
 })
