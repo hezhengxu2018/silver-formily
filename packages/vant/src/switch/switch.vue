@@ -14,7 +14,6 @@ const props = defineProps<SwitchProps>()
 
 const emit = defineEmits<{
   'update:modelValue': [value: SwitchValue]
-  'change': [value: SwitchValue]
 }>()
 
 const fieldRef = useField<FormilyField | undefined>()
@@ -23,23 +22,6 @@ const pending = ref(false)
 const isLoading = computed(() => {
   return Boolean(props.loading || pending.value)
 })
-
-const switchProps = computed(() => {
-  return {
-    size: props.size,
-    disabled: props.disabled,
-    modelValue: props.modelValue,
-    activeColor: props.activeColor,
-    inactiveColor: props.inactiveColor,
-    activeValue: props.activeValue,
-    inactiveValue: props.inactiveValue,
-  }
-})
-
-function emitValueChange(value: SwitchValue) {
-  emit('update:modelValue', value)
-  emit('change', value)
-}
 
 async function resolveBeforeChange(value: SwitchValue) {
   if (!props.beforeChange) {
@@ -78,13 +60,13 @@ async function handleUpdateModelValue(value: SwitchValue) {
     return
   }
 
-  emitValueChange(value)
+  emit('update:modelValue', value)
 }
 </script>
 
 <template>
   <VanSwitch
-    v-bind="switchProps"
+    v-bind="props"
     :loading="isLoading"
     @update:model-value="handleUpdateModelValue"
   >
