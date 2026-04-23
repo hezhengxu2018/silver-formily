@@ -8,11 +8,6 @@ export type SignatureModelValue = string | null | undefined
 
 export type SignatureType = VanSignatureProps['type']
 
-export interface SignatureSubmitPayload {
-  image: string
-  canvas: HTMLCanvasElement
-}
-
 export interface SignatureProps extends Pick<VanSignatureProps, 'backgroundColor' | 'clearButtonText' | 'confirmButtonText' | 'lineWidth' | 'penColor' | 'tips' | 'type'> {
   modelValue?: SignatureModelValue
   disabled?: boolean

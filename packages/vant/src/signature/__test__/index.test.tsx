@@ -15,16 +15,24 @@ function getSignature(container: Element) {
   return container.querySelector<HTMLElement>('.van-signature')
 }
 
+function getPreview(container: Element) {
+  return container.querySelector<HTMLElement>('.silver-formily-vant-signature__preview')
+}
+
+function getPreviewImage(container: Element) {
+  return container.querySelector<HTMLImageElement>('.silver-formily-vant-signature__image img')
+}
+
 function getCanvas(container: Element) {
   return container.querySelector<HTMLCanvasElement>('.van-signature canvas')
 }
 
 function getClearButton(container: Element) {
-  return container.querySelectorAll<HTMLButtonElement>('.van-signature__footer .van-button')[0] ?? null
+  return container.querySelectorAll<HTMLButtonElement>('.silver-formily-vant-signature__footer .van-button')[0] ?? null
 }
 
 function getConfirmButton(container: Element) {
-  return container.querySelectorAll<HTMLButtonElement>('.van-signature__footer .van-button')[1] ?? null
+  return container.querySelectorAll<HTMLButtonElement>('.silver-formily-vant-signature__footer .van-button')[1] ?? null
 }
 
 function createTouchEvent(type: string, clientX: number, clientY: number) {
@@ -55,21 +63,8 @@ function drawLine(canvas: HTMLCanvasElement) {
   canvas.dispatchEvent(createTouchEvent('touchend', endX, endY))
 }
 
-function getCanvasCenterPixelAlpha(canvas: HTMLCanvasElement) {
-  const context = canvas.getContext('2d')
-
-  if (!context) {
-    throw new Error('Canvas context not found')
-  }
-
-  const centerX = Math.max(Math.floor((canvas.clientWidth || canvas.width) / 2), 1)
-  const centerY = Math.max(Math.floor((canvas.clientHeight || canvas.height) / 2), 1)
-
-  return context.getImageData(centerX, centerY, 1, 1).data[3]
-}
-
 describe('signature', () => {
-  it('应该在确认签名后写回字段值', async () => {
+  it('应该在确认签名后切换到图片预览并写回字段值', async () => {
     const form = createForm()
     const { container } = render(() => (
       <FormProvider form={form}>
@@ -86,7 +81,10 @@ describe('signature', () => {
 
     await vi.waitFor(() => {
       expect(form.values.signature).toMatch(/^data:image\/png;base64,/)
+      expect(getPreviewImage(container)?.src).toContain('data:image/png;base64,')
     })
+
+    expect(getConfirmButton(container)).toBeNull()
   })
 
   it('应该支持通过 field.invoke 获取实例并调用 submit', async () => {
@@ -112,10 +110,11 @@ describe('signature', () => {
 
     await vi.waitFor(() => {
       expect(form.values.signature).toMatch(/^data:image\/png;base64,/)
+      expect(getPreviewImage(container)?.src).toContain('data:image/png;base64,')
     })
   })
 
-  it('应该在外部写入 modelValue 后同步回显到画布', async () => {
+  it('应该在外部写入 modelValue 后显示图片预览', async () => {
     const form = createForm()
     const { container } = render(() => (
       <FormProvider form={form}>
@@ -123,84 +122,41 @@ describe('signature', () => {
       </FormProvider>
     ))
 
-    await vi.waitFor(() => {
-      expect(getCanvas(container)?.width).toBeGreaterThan(0)
-    })
-
     form.setValues({
       signature: blackSquareDataUrl,
     })
 
     await vi.waitFor(() => {
-      expect(getCanvasCenterPixelAlpha(getCanvas(container)!)).toBeGreaterThan(0)
+      expect(getPreviewImage(container)?.src).toContain('data:image/svg+xml')
     })
+
+    expect(getConfirmButton(container)).toBeNull()
   })
 
-  it('应该在清空字段后忽略旧的异步签名回填', async () => {
-    const drawImageSpy = vi.spyOn(CanvasRenderingContext2D.prototype, 'drawImage').mockImplementation(() => {})
-    const OriginalImage = window.Image
-    const createdImages: MockImage[] = []
+  it('应该在清空后退出图片预览并重新显示签名面板', async () => {
+    const form = createForm({
+      values: {
+        signature: blackSquareDataUrl,
+      },
+    })
+    const { container } = render(() => (
+      <FormProvider form={form}>
+        <Field name="signature" component={[Signature]} />
+      </FormProvider>
+    ))
 
-    class MockImage {
-      onload: (() => void) | null = null
-      onerror: (() => void) | null = null
-      naturalWidth = 120
-      naturalHeight = 60
-      width = 120
-      height = 60
-      private _src = ''
+    await vi.waitFor(() => {
+      expect(getPreviewImage(container)?.src).toContain('data:image/svg+xml')
+    })
 
-      set src(value: string) {
-        this._src = value
-        createdImages.push(this)
-      }
+    getClearButton(container)?.click()
 
-      get src() {
-        return this._src
-      }
-
-      triggerLoad() {
-        this.onload?.()
-      }
-    }
-
-    window.Image = MockImage as unknown as typeof Image
-
-    try {
-      const form = createForm({
-        values: {
-          signature: blackSquareDataUrl,
-        },
-      })
-      const { container } = render(() => (
-        <FormProvider form={form}>
-          <Field name="signature" component={[Signature]} />
-        </FormProvider>
-      ))
-
-      await vi.waitFor(() => {
-        expect(getCanvas(container)?.width).toBeGreaterThan(0)
-        expect(createdImages.length).toBeGreaterThan(0)
-      })
-
-      form.setValues({
-        signature: '',
-      })
-
-      await vi.waitFor(() => {
-        expect(form.values.signature).toBe('')
-      })
-
-      createdImages.forEach(image => image.triggerLoad())
-
-      await vi.waitFor(() => {
-        expect(drawImageSpy).not.toHaveBeenCalled()
-      })
-    }
-    finally {
-      window.Image = OriginalImage
-      drawImageSpy.mockRestore()
-    }
+    await vi.waitFor(() => {
+      expect(form.values.signature).toBe('')
+      expect(getPreview(container)).toBeNull()
+      expect(getConfirmButton(container)).not.toBeNull()
+      expect(getCanvas(container)).not.toBeNull()
+    })
   })
 
   it('应该在点击清空后同步清空字段值', async () => {
@@ -216,7 +172,7 @@ describe('signature', () => {
     ))
 
     await vi.waitFor(() => {
-      expect(getCanvasCenterPixelAlpha(getCanvas(container)!)).toBeGreaterThan(0)
+      expect(getPreviewImage(container)?.src).toContain('data:image/svg+xml')
     })
 
     getClearButton(container)?.click()
@@ -243,15 +199,12 @@ describe('signature', () => {
     ))
 
     await vi.waitFor(() => {
+      expect(getPreviewImage(container)?.src).toContain('data:image/svg+xml')
       expect(getSignature(container)).not.toBeNull()
-      expect(container.querySelector('.silver-formily-vant-signature__mask')).not.toBeNull()
     })
 
-    getClearButton(container)?.click()
-
-    await vi.waitFor(() => {
-      expect(form.values.signature).toBe(blackSquareDataUrl)
-    })
+    expect(getClearButton(container)).toBeNull()
+    expect(getConfirmButton(container)).toBeNull()
   })
 
   it('应该在未传入自定义 tips 插槽时保留降级文案', async () => {
@@ -295,5 +248,26 @@ describe('signature', () => {
     expect(image).not.toBeNull()
     expect(image?.src).toContain('data:image/svg+xml')
     expect(getSignature(container)).toBeNull()
+  })
+
+  it('应该在 readonly 模式下只显示图片预览', async () => {
+    const { container } = render(() => (
+      <FormProvider form={createForm()}>
+        <Field
+          name="signature"
+          initialValue={blackSquareDataUrl}
+          component={[Signature, {
+            readonly: true,
+          }]}
+        />
+      </FormProvider>
+    ))
+
+    await vi.waitFor(() => {
+      expect(getPreviewImage(container)?.src).toContain('data:image/svg+xml')
+    })
+
+    expect(getClearButton(container)).toBeNull()
+    expect(getConfirmButton(container)).toBeNull()
   })
 })

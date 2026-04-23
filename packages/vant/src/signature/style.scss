@@ -10,10 +10,47 @@ $signature-prefix: '#{$style-prefix}-signature';
     opacity: var(--van-disabled-opacity);
   }
 
+  .van-signature__footer {
+    display: none;
+  }
+
   &__mask {
     position: absolute;
     inset: 0;
     z-index: 1;
     background: transparent;
+  }
+
+  &__preview {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 208px;
+    padding: 12px;
+    border: 1px solid var(--van-gray-3);
+    border-radius: var(--van-radius-lg);
+    background: var(--van-background-2);
+  }
+
+  &__image {
+    width: 100%;
+
+    :deep(img) {
+      display: block;
+      width: 100%;
+      max-height: 240px;
+      object-fit: contain;
+    }
+  }
+
+  &__footer {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  &__footer .van-button {
+    padding: 0 var(--van-padding-md);
+    margin-top: var(--van-padding-xs);
+    margin-left: var(--van-padding-xs);
   }
 }

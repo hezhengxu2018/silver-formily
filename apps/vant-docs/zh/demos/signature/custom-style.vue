@@ -16,7 +16,7 @@ const form = createForm()
         labelAlign: 'top',
       }]"
       :component="[Signature, {
-        penColor: '#0f172a',
+        penColor: '#e11d48',
         lineWidth: 4,
         backgroundColor: '#fff7ed',
         confirmButtonText: '保存签名',

@@ -19,7 +19,6 @@ export type {
   SignatureModelValue,
   SignatureProps,
   SignatureSlots,
-  SignatureSubmitPayload,
   SignatureThemeVars,
   SignatureType,
   VanSignatureInstance,
