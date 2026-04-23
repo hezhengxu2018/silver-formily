@@ -51,7 +51,7 @@ export default createDocsConfig({
                 { text: 'Checkbox 复选框', link: '/component/checkbox' },
                 { text: 'Radio 单选框', link: '/component/radio' },
                 { text: 'Switch 开关', link: '/component/switch' },
-                { text: 'Stepper 步进器', link: '/component/stepper' },
+                { text: 'Stepper 步进器(A1)', link: '/component/stepper' },
                 { text: 'Rate 评分', link: '/component/rate' },
                 { text: 'Slider 滑块', link: '/component/slider' },
                 { text: 'Signature 签名', link: '/component/signature' },
