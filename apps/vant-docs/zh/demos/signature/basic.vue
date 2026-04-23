@@ -30,7 +30,7 @@ async function showSignatureResult(values: Record<string, string>) {
     />
 
     <FormButtonGroup>
-      <Submit :on-submit="showSignatureResult">
+      <Submit @submit="showSignatureResult">
         查看结果
       </Submit>
     </FormButtonGroup>

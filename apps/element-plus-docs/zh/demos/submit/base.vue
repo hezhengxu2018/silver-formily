@@ -38,7 +38,7 @@ async function log(v: Record<string, any>) {
       />
     </SchemaField>
     <FormButtonGroup align-form-item>
-      <Submit :on-submit="log">
+      <Submit @submit="log">
         提交
       </Submit>
     </FormButtonGroup>

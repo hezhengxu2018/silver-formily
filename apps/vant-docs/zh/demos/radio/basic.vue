@@ -30,7 +30,7 @@ async function handleSubmit(values: typeof form.values) {
     />
 
     <FormButtonGroup>
-      <Submit :on-submit="handleSubmit">
+      <Submit @submit="handleSubmit">
         查看结果
       </Submit>
     </FormButtonGroup>

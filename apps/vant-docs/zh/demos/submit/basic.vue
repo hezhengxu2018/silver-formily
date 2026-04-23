@@ -33,7 +33,7 @@ async function handleSubmit(values: typeof form.values) {
       :component="[Input, { type: 'tel', placeholder: '请输入手机号' }]"
     />
     <FormButtonGroup>
-      <Submit :on-submit="handleSubmit" />
+      <Submit @submit="handleSubmit" />
     </FormButtonGroup>
   </Form>
 </template>

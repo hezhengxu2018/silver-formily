@@ -21,7 +21,7 @@ const form = createForm({
     />
 
     <FormButtonGroup>
-      <Submit :on-submit="showDemoResult">
+      <Submit @submit="showDemoResult">
         查看结果
       </Submit>
     </FormButtonGroup>

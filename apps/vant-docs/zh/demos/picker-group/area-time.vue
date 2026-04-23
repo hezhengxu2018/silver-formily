@@ -60,7 +60,7 @@ async function handleSubmit(values: typeof form.values) {
     </Field>
 
     <FormButtonGroup>
-      <Submit :on-submit="handleSubmit">
+      <Submit @submit="handleSubmit">
         查看结果
       </Submit>
     </FormButtonGroup>

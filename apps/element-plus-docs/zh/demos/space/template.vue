@@ -106,7 +106,7 @@ function log(value: Record<string, any>) {
         required
       />
       <FormButtonGroup align-form-item>
-        <Submit :on-submit="log">
+        <Submit @submit="log">
           提交
         </Submit>
       </FormButtonGroup>

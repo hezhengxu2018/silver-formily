@@ -104,7 +104,7 @@ async function handleSubmit(values: typeof form.values) {
           >
             下一步
           </VanButton>
-          <Submit v-else :on-submit="handleSubmit">
+          <Submit v-else @submit="handleSubmit">
             提交
           </Submit>
         </FormButtonGroup>

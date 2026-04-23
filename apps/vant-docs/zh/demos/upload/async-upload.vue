@@ -35,7 +35,7 @@ async function showUploadResult(values: Record<string, string[]>) {
     />
 
     <FormButtonGroup>
-      <Submit :on-submit="showUploadResult">
+      <Submit @submit="showUploadResult">
         查看结果
       </Submit>
     </FormButtonGroup>

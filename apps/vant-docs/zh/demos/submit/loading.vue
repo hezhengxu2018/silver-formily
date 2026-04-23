@@ -28,7 +28,7 @@ async function handleSubmit(values: typeof form.values) {
     <FormButtonGroup>
       <Submit
         loading-text="提交中..."
-        :on-submit="handleSubmit"
+        @submit="handleSubmit"
       >
         异步提交
       </Submit>
