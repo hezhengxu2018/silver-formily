@@ -96,7 +96,7 @@ function handleClick(event: MouseEvent) {
   }
 
   if (!props.onSubmit) {
-    if (isCompactGroup.value) {
+    if (isCompactGroup.value && !props.submit) {
       event.preventDefault()
       requestNativeSubmit(event)
     }

@@ -65,7 +65,7 @@ mobileDemo: date-picker/index.vue
 | 属性名              | 类型                                                    | 描述               | 默认值     |
 | ------------------- | ------------------------------------------------------- | ------------------ | ---------- |
 | `title`             | `string`                                                | 顶部标题           | 官方默认值 |
-| `columnsType`       | `Array<'year' \| 'month' \| 'day'>`                     | 日期列类型         | 官方默认值 |
+| `columnsType`       | ^[enum]`Array<'year' \| 'month' \| 'day'>`              | 日期列类型         | 官方默认值 |
 | `minDate`           | `Date`                                                  | 可选最小日期       | 官方默认值 |
 | `maxDate`           | `Date`                                                  | 可选最大日期       | 官方默认值 |
 | `cancelButtonText`  | `string`                                                | 取消按钮文案       | 官方默认值 |

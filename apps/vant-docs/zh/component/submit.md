@@ -22,15 +22,17 @@ mobileDemo: submit/index.vue
 
 ### Submit 专属属性
 
-其余按钮属性主要继承自 [Vant Button 官方文档（正式站）](https://vant-ui.github.io/vant/#/zh-CN/button)。
+其余按钮属性主要继承自 [Vant Button 官方文档](https://vant-ui.github.io/vant/#/zh-CN/button)。
 
-| 属性名            | 类型                                                                                               | 描述                                                 | 默认值  |
-| ----------------- | -------------------------------------------------------------------------------------------------- | ---------------------------------------------------- | ------- |
-| `onClick`         | `(event: MouseEvent) => void \| boolean`                                                           | 点击事件，返回 `false` 时会阻止手动提交或原生提交    | `-`     |
-| `onSubmit`        | `(values: any) => Promise<any> \| any`                                                             | 主动调用 `form.submit` 的提交回调                    | `-`     |
-| `onSubmitSuccess` | `(payload: any) => void`                                                                           | `onSubmit` 成功后的回调                              | `-`     |
-| `onSubmitFailed`  | `(feedbacks: [IFormFeedback](https://core.formilyjs.org/api/models/form#iformfeedback)[]) => void` | `onSubmit` 校验或提交流程失败后的回调                | `-`     |
-| `submit`          | `boolean`                                                                                          | 是否强制切换为手动提交模式；开启后会渲染成普通按钮态 | `false` |
+| 属性名            | 类型                                                | 描述                                                 | 默认值  |
+| ----------------- | --------------------------------------------------- | ---------------------------------------------------- | ------- |
+| `onClick`         | ^[Function]`(event: MouseEvent) => void \| boolean` | 点击事件，返回 `false` 时会阻止手动提交或原生提交    | `-`     |
+| `onSubmit`        | ^[Function]`(values: any) => Promise<any> \| any`   | 主动调用 `form.submit` 的提交回调                    | `-`     |
+| `onSubmitSuccess` | ^[Function]`(payload: any) => void`                 | `onSubmit` 成功后的回调                              | `-`     |
+| `onSubmitFailed`  | ^[Function]`(feedbacks: IFormFeedback[]) => void`   | `onSubmit` 校验或提交流程失败后的回调                | `-`     |
+| `submit`          | `boolean`                                           | 是否强制切换为手动提交模式；开启后会渲染成普通按钮态 | `false` |
+
+> feedbacks类型参考[IFormFeedback](https://core.formilyjs.org/api/models/form#iformfeedback)
 
 ### 与 Form 的配合方式
 

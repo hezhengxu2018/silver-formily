@@ -54,13 +54,15 @@ mobileDemo: form/index.vue
 
 ### Form 专属属性
 
-| 属性名                  | 类型                                        | 描述                                            | 默认值  |
-| ----------------------- | ------------------------------------------- | ----------------------------------------------- | ------- |
-| `form`                  | `Form`                                      | 显式传入 Formily form 实例                      | `-`     |
-| `onAutoSubmit`          | `(values: Record<string, any>) => any`      | 原生 `submit` 时触发 Formily `submit` 成功      | `-`     |
-| `onAutoSubmitFailed`    | `(error: IFormFeedback[]) => void`          | 原生 `submit` 时触发 Formily `submit` 失败      | `-`     |
-| `scrollToError`         | `boolean`                                   | 提交失败时是否自动滚动到第一个错误项            | `false` |
-| `scrollToErrorPosition` | `'start' \| 'center' \| 'end' \| 'nearest'` | 自动滚动时传给 `scrollIntoView` 的 `block` 位置 | `-`     |
+| 属性名                  | 类型                                               | 描述                                            | 默认值  |
+| ----------------------- | -------------------------------------------------- | ----------------------------------------------- | ------- |
+| `form`                  | `Form`                                             | 显式传入 Formily form 实例                      | `-`     |
+| `onAutoSubmit`          | ^[Function]`(values: Record<string, any>) => any`  | 原生 `submit` 时触发 Formily `submit` 成功      | `-`     |
+| `onAutoSubmitFailed`    | ^[Function]`(error: IFormFeedback[]) => void`      | 原生 `submit` 时触发 Formily `submit` 失败      | `-`     |
+| `scrollToError`         | `boolean`                                          | 提交失败时是否自动滚动到第一个错误项            | `false` |
+| `scrollToErrorPosition` | ^[enum]`'start' \| 'center' \| 'end' \| 'nearest'` | 自动滚动时传给 `scrollIntoView` 的 `block` 位置 | `-`     |
+
+> feedbacks类型参考[IFormFeedback](https://core.formilyjs.org/api/models/form#iformfeedback)
 
 ### 继承给 FormItem 的布局属性
 

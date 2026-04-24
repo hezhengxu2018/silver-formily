@@ -122,6 +122,35 @@ describe('form-button-group', () => {
     })
   })
 
+  it('应该在紧凑布局下支持 Submit 关闭原生提交流程', async () => {
+    const onAutoSubmit = vi.fn()
+    const onClick = vi.fn()
+    const form = createForm({
+      values: {
+        keyword: 'silver-formily',
+      },
+    })
+
+    const { getByRole } = render(() => (
+      <Form form={form} onAutoSubmit={onAutoSubmit}>
+        <Field
+          name="keyword"
+          title="关键词"
+          decorator={[FormItem]}
+          component={[Input]}
+        />
+        <FormButtonGroup layout="compact">
+          <Submit submit onClick={onClick} />
+        </FormButtonGroup>
+      </Form>
+    ))
+
+    await getByRole('button', { name: '提交' }).click()
+
+    expect(onClick).toHaveBeenCalledOnce()
+    expect(onAutoSubmit).not.toHaveBeenCalled()
+  })
+
   it('应该在紧凑布局下支持 Reset 重置值', async () => {
     const form = createForm({
       initialValues: {

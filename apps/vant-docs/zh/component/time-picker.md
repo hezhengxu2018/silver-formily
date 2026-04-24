@@ -79,7 +79,7 @@ mobileDemo: time-picker/index.vue
 | 属性名              | 类型                                                    | 描述               | 默认值     |
 | ------------------- | ------------------------------------------------------- | ------------------ | ---------- |
 | `title`             | `string`                                                | 顶部标题           | 官方默认值 |
-| `columnsType`       | `Array<'hour' \| 'minute' \| 'second'>`                 | 时间列类型         | 官方默认值 |
+| `columnsType`       | ^[enum]`Array<'hour' \| 'minute' \| 'second'>`          | 时间列类型         | 官方默认值 |
 | `minHour`           | `number \| string`                                      | 可选最小小时       | 官方默认值 |
 | `maxHour`           | `number \| string`                                      | 可选最大小时       | 官方默认值 |
 | `minMinute`         | `number \| string`                                      | 可选最小分钟       | 官方默认值 |

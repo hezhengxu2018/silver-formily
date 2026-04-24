@@ -24,7 +24,7 @@
         "link": "/component/grid"
       },
       {
-        "text": "FormButtonGroup 按钮布局",
+        "text": "FormButtonGroup 按钮布局(A1)",
         "link": "/component/form-button-group"
       },
       {
@@ -32,7 +32,7 @@
         "link": "/component/submit"
       },
       {
-        "text": "Reset 重置按钮",
+        "text": "Reset 重置按钮(A1)",
         "link": "/component/reset"
       }
     ]

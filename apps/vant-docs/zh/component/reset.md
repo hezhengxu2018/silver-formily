@@ -24,10 +24,10 @@ mobileDemo: reset/index.vue
 
 其余按钮属性主要继承自 [Vant Button 官方文档](https://vant-ui.github.io/vant/#/zh-CN/button)。
 
-| 属性名                   | 类型                                     | 描述                                | 默认值  |
-| ------------------------ | ---------------------------------------- | ----------------------------------- | ------- |
-| `onClick`                | `(event: MouseEvent) => void \| boolean` | 点击事件，返回 `false` 时会阻止重置 | `-`     |
-| `forceClear`             | `boolean`                                | 是否强制清空字段值而不是恢复初始值  | `false` |
-| `validate`               | `boolean`                                | 重置后是否继续执行表单校验          | `false` |
-| `onResetValidateSuccess` | `(payload: any) => void`                 | 重置后校验成功回调                  | `-`     |
-| `onResetValidateFailed`  | `(error: any) => void`                   | 重置后校验失败回调                  | `-`     |
+| 属性名                   | 类型                                                | 描述                                | 默认值  |
+| ------------------------ | --------------------------------------------------- | ----------------------------------- | ------- |
+| `onClick`                | ^[Function]`(event: MouseEvent) => void \| boolean` | 点击事件，返回 `false` 时会阻止重置 | `-`     |
+| `forceClear`             | `boolean`                                           | 是否强制清空字段值而不是恢复初始值  | `false` |
+| `validate`               | `boolean`                                           | 重置后是否继续执行表单校验          | `false` |
+| `onResetValidateSuccess` | ^[Function]`(payload: any) => void`                 | 重置后校验成功回调                  | `-`     |
+| `onResetValidateFailed`  | ^[Function]`(error: any) => void`                   | 重置后校验失败回调                  | `-`     |

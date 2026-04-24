@@ -54,8 +54,8 @@ mobileDemo: upload/index.vue
 | `errorAdaptor`    | ^[Function]`(error?: Error) => string`                                         | 上传失败时的错误文案适配器                   | `error => error?.message ?? '上传失败'` |
 | `action`          | `string`                                                                       | 自动上传地址；为空或 `'#'` 时不会自动请求    | `''`                                    |
 | `method`          | `string`                                                                       | 自动上传请求方法                             | `'POST'`                                |
-| `data`            | `Record<string, any> \| FormData \| (file, item) => data`                      | 自动上传时附带的额外表单数据                 | `-`                                     |
-| `headers`         | `HeadersInit \| (file, item) => headers`                                       | 自动上传请求头                               | `-`                                     |
+| `data`            | `Record<string, any> \| FormData \| ^[Function]`(file, item) => data`          | 自动上传时附带的额外表单数据                 | `-`                                     |
+| `headers`         | `HeadersInit \| ^[Function]`(file, item) => headers`                           | 自动上传请求头                               | `-`                                     |
 | `withCredentials` | `boolean`                                                                      | 是否携带凭证                                 | `false`                                 |
 | `httpRequest`     | ^[Function]`(options: UploadRequestOptions) => Promise<any> \| any`            | 自定义上传实现；返回值会写到 `file.response` | `-`                                     |
 | `responseAdaptor` | ^[Function]`(response, item) => string \| Partial<UploadFileListItem> \| void` | 自定义把上传响应映射回文件项                 | `-`                                     |
