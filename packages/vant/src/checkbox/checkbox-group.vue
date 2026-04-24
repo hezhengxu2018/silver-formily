@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { CheckerOptionPropKey } from '../__builtins__'
 import type {
   CheckboxGroupProps,
   CheckboxOption,
@@ -26,11 +27,22 @@ const emit = defineEmits<{
 const slots = useSlots()
 const { props: attrs } = useCleanAttrs(['options'])
 const hasCustomDefaultSlot = useHasCustomDefaultSlot(slots.default)
+const CHECKBOX_OPTION_PROP_KEYS = [
+  'bindGroup',
+  'checkedColor',
+  'disabled',
+  'iconSize',
+  'indeterminate',
+  'labelDisabled',
+  'labelPosition',
+  'shape',
+] satisfies Array<CheckerOptionPropKey<VanCheckboxProps>>
 
 const resolvedOptions = computed<ResolvedCheckboxOption[]>(() => {
   return resolveCheckerGroupOptions<VanCheckboxProps, CheckboxOption, 'checkboxProps'>({
     options: props.options,
     optionPropsKey: 'checkboxProps',
+    optionPropKeys: CHECKBOX_OPTION_PROP_KEYS,
     labelPosition: props.labelPosition,
     labelDisabled: props.labelDisabled,
   })

@@ -169,6 +169,37 @@ describe('radio-group', () => {
     expect(container.textContent).toContain('插槽渲染的标签2')
   })
 
+  it('应该只透传 Vant Radio 选项属性', async () => {
+    const { container } = render(() => (
+      <FormProvider form={createForm()}>
+        <Field
+          name="plan"
+          component={[Radio.Group]}
+          dataSource={[
+            {
+              label: '专业版',
+              value: 'pro',
+              description: '适合复杂流程',
+              tag: '最常用',
+              disabled: true,
+            },
+          ]}
+        >
+          {{
+            option: ({ option }) => `${option.label}-${option.description}-${option.tag}`,
+          }}
+        </Field>
+      </FormProvider>
+    ))
+
+    const [radio] = getRadioRoots(container)
+
+    expect(container.textContent).toContain('专业版-适合复杂流程-最常用')
+    expect(radio.className).toContain('van-radio--disabled')
+    expect(radio.hasAttribute('description')).toBe(false)
+    expect(radio.hasAttribute('tag')).toBe(false)
+  })
+
   it('应该支持通过默认插槽自定义渲染结构', async () => {
     const form = createForm({
       values: {

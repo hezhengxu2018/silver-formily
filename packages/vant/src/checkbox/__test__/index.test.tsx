@@ -79,6 +79,31 @@ describe('checkbox', () => {
     expect(form.values.agreement).toBe(true)
     expect(isChecked(checkbox)).toBe(true)
   })
+
+  it('应该支持字段级禁用态并阻止切换', async () => {
+    const form = createForm({
+      values: {
+        agreement: true,
+      },
+    })
+    const { container } = render(() => (
+      <FormProvider form={form}>
+        <Field name="agreement" disabled component={[Checkbox]}>
+          {{
+            default: () => '已阅读并同意协议',
+          }}
+        </Field>
+      </FormProvider>
+    ))
+
+    const [checkbox] = getCheckboxRoots(container)
+
+    expect(checkbox.className).toContain('van-checkbox--disabled')
+
+    await userEvent.click(checkbox)
+    expect(form.values.agreement).toBe(true)
+    expect(isChecked(checkbox)).toBe(true)
+  })
 })
 
 describe('checkbox-group', () => {
@@ -173,6 +198,37 @@ describe('checkbox-group', () => {
 
     expect(container.textContent).toContain('插槽渲染的拍照上传')
     expect(container.textContent).toContain('插槽渲染的定位签到')
+  })
+
+  it('应该只透传 Vant Checkbox 选项属性', async () => {
+    const { container } = render(() => (
+      <FormProvider form={createForm()}>
+        <Field
+          name="services"
+          component={[Checkbox.Group]}
+          dataSource={[
+            {
+              label: '上门安装',
+              value: 'install',
+              description: '需要预约工程师',
+              tag: '常用',
+              disabled: true,
+            },
+          ]}
+        >
+          {{
+            option: ({ option }) => `${option.label}-${option.description}-${option.tag}`,
+          }}
+        </Field>
+      </FormProvider>
+    ))
+
+    const [checkbox] = getCheckboxRoots(container)
+
+    expect(container.textContent).toContain('上门安装-需要预约工程师-常用')
+    expect(checkbox.className).toContain('van-checkbox--disabled')
+    expect(checkbox.hasAttribute('description')).toBe(false)
+    expect(checkbox.hasAttribute('tag')).toBe(false)
   })
 
   it('应该支持通过默认插槽自定义渲染结构', async () => {

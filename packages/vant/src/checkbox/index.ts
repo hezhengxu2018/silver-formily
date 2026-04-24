@@ -4,7 +4,12 @@ import { composeExport } from '../__builtins__'
 import { PreviewText } from '../preview-text'
 import FCheckboxGroup from './checkbox-group.vue'
 
-const InnerCheckbox = VanCheckbox
+const InnerCheckbox = connect<typeof VanCheckbox>(
+  VanCheckbox,
+  mapProps({
+    disabled: true,
+  }),
+)
 
 const CheckboxGroup = connect<typeof FCheckboxGroup>(
   FCheckboxGroup,

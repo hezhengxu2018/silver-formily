@@ -18,6 +18,8 @@ export type CheckerOptionBase<
 
 export type CheckerOptionLike<TOption extends CheckerOptionBase<any, any>> = TOption
 
+export type CheckerOptionPropKey<TComponentProps extends object> = keyof Omit<TComponentProps, 'modelValue' | 'name'>
+
 export type CheckerResolvedOption<
   TComponentProps extends object,
   TOption extends CheckerOptionBase<TComponentProps, TValue>,
@@ -42,13 +44,22 @@ export function resolveCheckerGroupOptions<
 >(params: {
   options: TOption[]
   optionPropsKey: TPropsKey
+  optionPropKeys?: ReadonlyArray<CheckerOptionPropKey<TComponentProps>>
 } & CheckerGroupOptionSettings<TLabelPosition>): Array<CheckerResolvedOption<TComponentProps, TOption, TPropsKey, TValue>> {
-  const { labelDisabled, labelPosition, optionPropsKey, options } = params
+  const { labelDisabled, labelPosition, optionPropKeys, optionPropsKey, options } = params
+  const optionPropKeySet = optionPropKeys
+    ? new Set<PropertyKey>(optionPropKeys)
+    : undefined
 
   return options.map((option) => {
     const { label: _label, value, ...restOptionProps } = option
+    const filteredOptionProps = optionPropKeySet
+      ? Object.fromEntries(
+          Object.entries(restOptionProps).filter(([key]) => optionPropKeySet.has(key)),
+        )
+      : restOptionProps
     const optionProps = {
-      ...restOptionProps,
+      ...filteredOptionProps,
       name: value,
       labelPosition: option.labelPosition ?? labelPosition,
       labelDisabled: option.labelDisabled ?? labelDisabled,

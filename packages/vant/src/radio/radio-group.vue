@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { CheckerOptionPropKey } from '../__builtins__'
 import type { RadioGroupProps, RadioOption, ResolvedRadioOption, VanRadioProps } from './types'
 import { Radio as VanRadio, RadioGroup as VanRadioGroup } from 'vant'
 import { computed, useSlots } from 'vue'
@@ -18,13 +19,22 @@ const emit = defineEmits<{
 }>()
 
 const slots = useSlots()
-const { props: attrs } = useCleanAttrs(['options', 'onChange', 'onUpdate:modelValue'])
+const { props: attrs } = useCleanAttrs()
 const hasCustomDefaultSlot = useHasCustomDefaultSlot(slots.default)
+const RADIO_OPTION_PROP_KEYS = [
+  'checkedColor',
+  'disabled',
+  'iconSize',
+  'labelDisabled',
+  'labelPosition',
+  'shape',
+] satisfies Array<CheckerOptionPropKey<VanRadioProps>>
 
 const resolvedOptions = computed<ResolvedRadioOption[]>(() => {
   return resolveCheckerGroupOptions<VanRadioProps, RadioOption, 'radioProps'>({
     options: props.options,
     optionPropsKey: 'radioProps',
+    optionPropKeys: RADIO_OPTION_PROP_KEYS,
     labelPosition: props.labelPosition,
     labelDisabled: props.labelDisabled,
   })
