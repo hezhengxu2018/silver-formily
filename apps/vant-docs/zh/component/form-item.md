@@ -50,7 +50,7 @@ Vant 并没有单独的 `FormItem` 组件，官方是把“表单项壳层”和
 | 属性名              | 类型                                                         | 描述                                                   | 默认值                     |
 | ------------------- | ------------------------------------------------------------ | ------------------------------------------------------ | -------------------------- |
 | `tag`               | `keyof HTMLElementTagNameMap`                                | 根节点标签名                                           | `'div'`                    |
-| `required`          | `boolean` \| ^[enum]`'auto'`                                 | 是否显示必填态                                         | `field.required`           |
+| `required`          | `boolean`                                                    | 是否显示必填态                                         | `field.required`           |
 | `colon`             | `boolean`                                                    | 是否在标签后显示冒号                                   | `-`                        |
 | `size`              | ^[enum]`'normal' \| 'large'`                                 | 表单项尺寸                                             | `-`                        |
 | `border`            | `boolean`                                                    | 是否显示内边框                                         | `true`                     |

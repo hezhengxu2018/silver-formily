@@ -84,8 +84,12 @@ export function useVantFormScroll(options: UseVantFormScrollOptions) {
     return undefined
   }
 
-  function scrollToFirstError(errors: IFormFeedback[]) {
+  function scrollToFirstError(errors: unknown) {
     if (!toValue(options.scrollToError)) {
+      return
+    }
+
+    if (!Array.isArray(errors)) {
       return
     }
 

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { ComponentPublicInstance } from 'vue'
+import type { ComponentPublicInstance, CSSProperties } from 'vue'
 import type { VantFormItemControlActivator, VantFormItemInputController } from './context'
 import type { FormItemProps } from './types'
 import { isValid } from '@formily/shared'
@@ -171,6 +171,17 @@ const labelStyle = computed(() => {
 
   return style
 })
+const titleStyle = computed(() => {
+  const customStyle = fieldProps.value.titleStyle
+  if (typeof customStyle === 'string') {
+    return customStyle
+  }
+
+  return {
+    ...labelStyle.value,
+    ...(customStyle as CSSProperties | undefined),
+  }
+})
 const topLabelStyle = computed(() => {
   const labelWidth = fieldProps.value.labelWidth
   if (!labelWidth || fieldProps.value.labelAlign !== 'top') {
@@ -197,8 +208,13 @@ const labelClass = computed(() => {
     labelAlign && `van-field__label--${labelAlign}`,
     isRequired.value && 'van-field__label--required',
     fieldProps.value.labelClass,
+    fieldProps.value.titleClass,
   ]
 })
+const valueClass = computed(() => [
+  'van-field__value',
+  fieldProps.value.valueClass,
+])
 const resolvedErrorMessage = computed(() => {
   return resolvedFeedbackMessage.value ?? fieldProps.value.errorMessage
 })
@@ -357,18 +373,19 @@ function onClear(event: MouseEvent) {
 </script>
 
 <template>
-  <div :class="rootClass">
+  <component :is="fieldProps.tag || 'div'" :class="rootClass">
     <VanCell
       ref="fieldRef"
       :class="fieldClass"
+      tag="div"
       :border="fieldProps.border"
       :center="fieldProps.center"
       :is-link="fieldProps.isLink"
       :clickable="fieldProps.clickable"
       :size="fieldProps.size"
       :arrow-direction="fieldProps.arrowDirection"
-      :title-style="labelStyle"
-      value-class="van-field__value"
+      :title-style="titleStyle"
+      :value-class="valueClass"
       :title-class="labelClass"
       @click="onCellClick"
       @focusin="focused = true"
@@ -478,5 +495,5 @@ function onClear(event: MouseEvent) {
         </template>
       </div>
     </div>
-  </div>
+  </component>
 </template>

@@ -114,6 +114,31 @@ describe('formItem', () => {
       await expect.element(getElement(container, '.van-field__label')).toHaveClass('van-field__label--required')
     })
 
+    it('应该通过 Formily decorator 参数透传展示层属性到表单项结构', async () => {
+      const { container } = render(() => (
+        <FormProvider form={createForm()}>
+          <Field
+            name="username"
+            title="用户名"
+            decorator={[FormItem, {
+              tag: 'section',
+              titleClass: 'custom-title',
+              titleStyle: { color: 'rgb(255, 0, 0)' },
+              valueClass: 'custom-value',
+            }]}
+            component={[Input]}
+          />
+        </FormProvider>
+      ))
+
+      expect(getElement(container, '.silver-formily-vant-form-item').tagName).toBe('SECTION')
+      await expect.element(getElement(container, '.van-cell__title')).toHaveClass('custom-title')
+      await expect.element(getElement(container, '.van-cell__title')).toHaveStyle({
+        color: 'rgb(255, 0, 0)',
+      })
+      await expect.element(getElement(container, '.van-cell__value')).toHaveClass('custom-value')
+    })
+
     it('应该透传 clearable 并为自定义输入默认启用 always clearTrigger', async () => {
       const { container } = render(() => (
         <FormProvider form={createForm()}>

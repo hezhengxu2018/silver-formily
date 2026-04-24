@@ -40,6 +40,27 @@ describe('form', () => {
     expect(container.textContent).toContain('用户名:')
   })
 
+  it('应该为移动端键盘提交提供默认 action，并允许显式覆盖', async () => {
+    const { container } = render(() => (
+      <>
+        <Form>
+          <FormItem label="默认">
+            <Input modelValue="hello" />
+          </FormItem>
+        </Form>
+        <Form action="/custom-submit">
+          <FormItem label="自定义">
+            <Input modelValue="world" />
+          </FormItem>
+        </Form>
+      </>
+    ))
+
+    const forms = container.querySelectorAll('form')
+    expect(forms[0]).toHaveAttribute('action', 'javascript:void(0)')
+    expect(forms[1]).toHaveAttribute('action', '/custom-submit')
+  })
+
   it('应该在显式传入 form 时走 Formily submit', async () => {
     const onAutoSubmit = vi.fn()
     const form = createForm({
@@ -266,5 +287,89 @@ describe('form', () => {
     })
 
     expect(firstScrollIntoView).not.toHaveBeenCalled()
+  })
+
+  it('应该只在校验反馈数组失败时尝试滚动', async () => {
+    const submitError = new Error('业务提交失败')
+    const onAutoSubmit = vi.fn(() => {
+      throw submitError
+    })
+    const onAutoSubmitFailed = vi.fn()
+    const scrollIntoView = vi.fn()
+
+    const { container } = render(() => (
+      <Form
+        form={createForm({ values: { username: 'silver-formily' } })}
+        scrollToError={true}
+        onAutoSubmit={onAutoSubmit}
+        onAutoSubmitFailed={onAutoSubmitFailed}
+      >
+        <Field
+          name="username"
+          title="用户名"
+          decorator={[FormItem]}
+          component={[Input]}
+        />
+        <button type="submit">提交</button>
+      </Form>
+    ))
+
+    Object.defineProperty(getElement(container, '.van-field'), 'scrollIntoView', {
+      configurable: true,
+      value: scrollIntoView,
+    })
+
+    await userEvent.click(document.querySelector('button')!)
+
+    await vi.waitFor(() => {
+      expect(onAutoSubmitFailed).toHaveBeenCalledWith(submitError)
+    })
+    expect(scrollIntoView).not.toHaveBeenCalled()
+  })
+
+  it('应该支持关闭输入框回车提交', async () => {
+    const onAutoSubmit = vi.fn()
+
+    const { container } = render(() => (
+      <Form
+        form={createForm({ values: { username: 'silver-formily' } })}
+        submitOnEnter={false}
+        onAutoSubmit={onAutoSubmit}
+      >
+        <Field
+          name="username"
+          title="用户名"
+          decorator={[FormItem]}
+          component={[Input]}
+        />
+        <button type="submit">提交</button>
+      </Form>
+    ))
+
+    const input = container.querySelector('input')!
+    const event = new KeyboardEvent('keydown', {
+      bubbles: true,
+      cancelable: true,
+      key: 'Enter',
+    })
+
+    expect(input.dispatchEvent(event)).toBe(false)
+    expect(event.defaultPrevented).toBe(true)
+
+    const buttonEvent = new KeyboardEvent('keydown', {
+      bubbles: true,
+      cancelable: true,
+      key: 'Enter',
+    })
+    expect(document.querySelector('button')!.dispatchEvent(buttonEvent)).toBe(true)
+    expect(buttonEvent.defaultPrevented).toBe(false)
+
+    await userEvent.click(document.querySelector('button')!)
+
+    await vi.waitFor(() => {
+      expect(onAutoSubmit).toHaveBeenCalledWith({
+        username: 'silver-formily',
+      })
+    })
   })
 })

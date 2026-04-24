@@ -1,11 +1,11 @@
-import type { Form as FormType, IFormFeedback } from '@formily/core'
+import type { Form as FormType } from '@formily/core'
 import type { FieldTextAlign, FieldValidateTrigger } from 'vant'
 
 export interface VantFormProps {
   colon?: boolean
   disabled?: boolean
   readonly?: boolean
-  required?: boolean | 'auto'
+  required?: boolean
   showError?: boolean
   labelWidth?: number | string
   labelAlign?: FieldTextAlign
@@ -19,5 +19,5 @@ export interface VantFormProps {
   validateTrigger?: FieldValidateTrigger | FieldValidateTrigger[]
   form?: FormType
   onAutoSubmit?: (values: FormType['values']) => Promise<any> | any
-  onAutoSubmitFailed?: (error: IFormFeedback[]) => void
+  onAutoSubmitFailed?: (error: unknown) => void
 }

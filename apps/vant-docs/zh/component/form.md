@@ -58,11 +58,11 @@ mobileDemo: form/index.vue
 | ----------------------- | -------------------------------------------------- | ----------------------------------------------- | ------- |
 | `form`                  | `Form`                                             | 显式传入 Formily form 实例                      | `-`     |
 | `onAutoSubmit`          | ^[Function]`(values: Record<string, any>) => any`  | 原生 `submit` 时触发 Formily `submit` 成功      | `-`     |
-| `onAutoSubmitFailed`    | ^[Function]`(error: IFormFeedback[]) => void`      | 原生 `submit` 时触发 Formily `submit` 失败      | `-`     |
+| `onAutoSubmitFailed`    | ^[Function]`(error: unknown) => void`              | 原生 `submit` 时触发 Formily `submit` 失败      | `-`     |
 | `scrollToError`         | `boolean`                                          | 提交失败时是否自动滚动到第一个错误项            | `false` |
 | `scrollToErrorPosition` | ^[enum]`'start' \| 'center' \| 'end' \| 'nearest'` | 自动滚动时传给 `scrollIntoView` 的 `block` 位置 | `-`     |
 
-> feedbacks类型参考[IFormFeedback](https://core.formilyjs.org/api/models/form#iformfeedback)
+> Formily 校验失败时的 feedbacks 类型参考 [IFormFeedback](https://core.formilyjs.org/api/models/form#iformfeedback)；如果 `onAutoSubmit` 自身抛错，则会原样传给 `onAutoSubmitFailed`。
 
 ### 继承给 FormItem 的布局属性
 
@@ -73,7 +73,7 @@ mobileDemo: form/index.vue
 | `colon`             | `boolean`                                       | 标签后是否展示冒号 | `-`     |
 | `disabled`          | `boolean`                                       | 是否整体禁用       | `-`     |
 | `readonly`          | `boolean`                                       | 是否整体只读       | `-`     |
-| `required`          | `boolean` \| ^[enum]`'auto'`                    | 是否整体展示必填态 | `-`     |
+| `required`          | `boolean`                                       | 是否整体展示必填态 | `-`     |
 | `labelWidth`        | `number` \| `string`                            | 统一标签宽度       | `-`     |
 | `labelAlign`        | ^[enum]`'left' \| 'center' \| 'right' \| 'top'` | 统一标签对齐       | `-`     |
 | `inputAlign`        | ^[enum]`'left' \| 'center' \| 'right'`          | 统一输入区域对齐   | `-`     |

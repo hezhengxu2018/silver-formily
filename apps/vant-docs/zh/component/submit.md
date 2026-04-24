@@ -33,8 +33,3 @@ mobileDemo: submit/index.vue
 | `submit`          | `boolean`                                           | 是否强制切换为手动提交模式；开启后会渲染成普通按钮态 | `false` |
 
 > feedbacks类型参考[IFormFeedback](https://core.formilyjs.org/api/models/form#iformfeedback)
-
-### 与 Form 的配合方式
-
-- `Form + Submit`：走原生 submit，适合统一把提交逻辑放在 `Form onAutoSubmit`
-- `Form + Submit onSubmit`：由 `Submit` 自己触发 `form.submit`，适合按钮级定制成功/失败行为

@@ -49,6 +49,20 @@ const inheritedProps = computed(() => {
 
 provide(vantFormContextKey, inheritedProps)
 
+function handleEnterKeydown(event: KeyboardEvent) {
+  if (props.submitOnEnter || event.isComposing) {
+    return
+  }
+
+  if (!(event.target instanceof HTMLInputElement)) {
+    return
+  }
+
+  if (!['button', 'submit', 'reset'].includes(event.target.type)) {
+    event.preventDefault()
+  }
+}
+
 async function handleSubmit(event: Event) {
   event.preventDefault()
 
@@ -70,11 +84,11 @@ async function handleSubmit(event: Event) {
 
 <template>
   <FormProvider v-if="props.form" :form="props.form">
-    <form ref="formElementRef" class="van-form" v-bind="$attrs" @submit="handleSubmit">
+    <form ref="formElementRef" action="javascript:void(0)" class="van-form" v-bind="$attrs" @keydown.enter="handleEnterKeydown" @submit="handleSubmit">
       <slot />
     </form>
   </FormProvider>
-  <form v-else ref="formElementRef" class="van-form" v-bind="$attrs" @submit="handleSubmit">
+  <form v-else ref="formElementRef" action="javascript:void(0)" class="van-form" v-bind="$attrs" @keydown.enter="handleEnterKeydown" @submit="handleSubmit">
     <slot />
   </form>
 </template>
