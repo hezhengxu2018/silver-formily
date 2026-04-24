@@ -5,6 +5,7 @@ import { useParentForm } from '@silver-formily/vue'
 import { omit } from 'es-toolkit'
 import { ActionBarButton as VanActionBarButton, Button as VanButton } from 'vant'
 import { computed, useSlots } from 'vue'
+import { useCleanAttrs } from '../__builtins__'
 import { useVantFormButtonGroupContext } from '../form-button-group/context'
 
 defineOptions({
@@ -24,27 +25,35 @@ const props = withDefaults(defineProps<ResetProps>(), {
 const formRef = useParentForm()
 const buttonGroupContext = useVantFormButtonGroupContext()
 const slots = useSlots()
+const { props: resetAttrs } = useCleanAttrs([
+  'native-type',
+  'nativeType',
+])
 const isCompactGroup = computed(() => buttonGroupContext?.value.layout === 'compact')
 const isDisabled = formilyComputed(() => Boolean(formRef.value?.submitting || props.disabled))
 const isLoading = computed(() => Boolean(props.loading))
 
 const buttonBindings = computed(() => {
-  return omit(props, [
-    'block',
-    'disabled',
-    'nativeType',
-    'onClick',
-    'onResetValidateFailed',
-    'onResetValidateSuccess',
-    'forceClear',
-    'round',
-    'type',
-    'validate',
-  ])
+  return {
+    ...resetAttrs.value,
+    ...omit(props, [
+      'block',
+      'disabled',
+      'loading',
+      'onClick',
+      'onResetValidateFailed',
+      'onResetValidateSuccess',
+      'forceClear',
+      'round',
+      'type',
+      'validate',
+    ]),
+  }
 })
 
 const compactButtonBindings = computed(() => {
   return {
+    ...resetAttrs.value,
     color: props.color,
     disabled: isDisabled.value,
     icon: props.icon,
@@ -93,6 +102,7 @@ function handleClick(event: MouseEvent) {
     v-bind="buttonBindings"
     :block="props.block"
     :disabled="isDisabled"
+    :loading="isLoading"
     native-type="button"
     :round="props.round"
     :type="props.type"

@@ -35,7 +35,7 @@ async function handleValidateFailed(error: unknown) {
     <FormButtonGroup>
       <Reset
         validate
-        :on-reset-validate-success="handleValidateSuccess"
+        @reset-validate-success="handleValidateSuccess"
       >
         恢复并校验
       </Reset>
@@ -43,7 +43,7 @@ async function handleValidateFailed(error: unknown) {
         type="danger"
         force-clear
         validate
-        :on-reset-validate-failed="handleValidateFailed"
+        @reset-validate-failed="handleValidateFailed"
       >
         强制清空并校验
       </Reset>

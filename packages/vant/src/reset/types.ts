@@ -1,6 +1,6 @@
 import type { VantButtonBaseProps } from '../__builtins__'
 
-export interface ResetProps extends VantButtonBaseProps {
+export interface ResetProps extends Omit<VantButtonBaseProps, 'nativeType'> {
   onClick?: (event: MouseEvent) => void | boolean
   forceClear?: boolean
   validate?: boolean

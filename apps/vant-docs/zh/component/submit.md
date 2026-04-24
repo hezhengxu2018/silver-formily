@@ -6,11 +6,9 @@ mobileDemo: submit/index.vue
 
 > `Submit` 是和 Formily 表单状态打通的 Vant 提交按钮，支持原生 `submit`、手动 `form.submit`、提交中 loading、成功/失败回调。
 
-**使用约定**
-
-- 不传 `onSubmit` 时，`Submit` 会渲染成原生 `type="submit"` 按钮，直接走上层 `Form` 的 `onAutoSubmit`
-- 传入 `onSubmit` 后，`Submit` 会改为主动调用 `form.submit(onSubmit)`，同时自动跟随 `form.submitting` 展示 loading 和 disabled
-- 默认会渲染为 `primary`、`round`、`block` 按钮，默认文案为 `提交`
+::: tip 提示
+从使用习惯上可以把props里的`onSubmitSuccess`的这种回调函数写成事件的形式： `@submit-success`
+:::
 
 ## 基础提交
 
@@ -38,5 +36,3 @@ mobileDemo: submit/index.vue
 
 - `Form + Submit`：走原生 submit，适合统一把提交逻辑放在 `Form onAutoSubmit`
 - `Form + Submit onSubmit`：由 `Submit` 自己触发 `form.submit`，适合按钮级定制成功/失败行为
-- `loading`：可手动传入，也会自动叠加 `form.submitting`
-- `type` / `round` / `block`：都可以显式覆盖默认值

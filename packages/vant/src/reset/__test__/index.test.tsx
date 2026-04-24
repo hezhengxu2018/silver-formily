@@ -2,6 +2,7 @@ import { createForm } from '@formily/core'
 import { Field, FormProvider } from '@silver-formily/vue'
 import { describe, expect, it, vi } from 'vitest'
 import { render } from 'vitest-browser-vue'
+import { h } from 'vue'
 import { Input } from '../../input'
 import { Reset } from '../../reset'
 import { Submit } from '../../submit'
@@ -164,6 +165,34 @@ describe('reset', () => {
     expect(button.element().className).toContain('van-button--warning')
     expect(button.element().className).not.toContain('van-button--round')
     expect(button.element().className).not.toContain('van-button--block')
+  })
+
+  it('应该支持透传 attrs 并展示加载态', async () => {
+    const { getByRole } = render(() => (
+      <Reset
+        aria-label="自定义重置"
+        class="custom-reset"
+        data-testid="reset-button"
+        loading
+        loadingText="重置中..."
+      >
+        重置
+      </Reset>
+    ))
+
+    const button = getByRole('button', { name: '自定义重置' }).element()
+    expect(button.className).toContain('custom-reset')
+    expect(button.className).toContain('van-button--loading')
+    expect(button.getAttribute('data-testid')).toBe('reset-button')
+    expect(button.textContent).toContain('重置中...')
+  })
+
+  it('应该固定为 button 类型并忽略 nativeType 透传', async () => {
+    const { getByRole } = render(() => h(Reset as any, {
+      nativeType: 'submit',
+    }, () => '重置'))
+
+    expect(getByRole('button', { name: '重置' }).element().getAttribute('type')).toBe('button')
   })
 
   it('应该在表单提交中自动禁用重置按钮', async () => {

@@ -146,6 +146,40 @@ describe('submit', () => {
     await expect.element(button).toBeDisabled()
   })
 
+  it('应该支持透传 attrs', async () => {
+    const { getByRole } = render(() => (
+      <Submit
+        aria-label="自定义提交"
+        class="custom-submit"
+        data-testid="submit-button"
+      >
+        提交
+      </Submit>
+    ))
+
+    const button = getByRole('button', { name: '自定义提交' }).element()
+    expect(button.className).toContain('custom-submit')
+    expect(button.getAttribute('data-testid')).toBe('submit-button')
+  })
+
+  it('应该由组件内部推导 native type 并忽略 nativeType 透传', () => {
+    const nativeSubmit = render(() => (
+      <Submit {...({ nativeType: 'button' } as any)}>
+        原生提交
+      </Submit>
+    ))
+
+    expect(nativeSubmit.getByRole('button', { name: '原生提交' }).element().getAttribute('type')).toBe('submit')
+
+    const manualSubmit = render(() => (
+      <Submit {...({ nativeType: 'submit', onSubmit: vi.fn() } as any)}>
+        手动提交
+      </Submit>
+    ))
+
+    expect(manualSubmit.getByRole('button', { name: '手动提交' }).element().getAttribute('type')).toBe('button')
+  })
+
   it('应该支持透传按钮类型和禁用态', async () => {
     const { getByRole } = render(() => (
       <Submit type="danger" disabled>

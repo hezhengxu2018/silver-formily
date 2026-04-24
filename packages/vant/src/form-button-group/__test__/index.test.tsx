@@ -64,6 +64,32 @@ describe('form-button-group', () => {
     expect(document.querySelector('.van-action-bar-button--danger')?.textContent).toContain('提交')
   })
 
+  it('应该在紧凑布局下支持 Reset 透传 attrs 和加载态', async () => {
+    render(() => (
+      <FormButtonGroup layout="compact">
+        <Reset class="compact-reset" data-testid="compact-reset" loading />
+      </FormButtonGroup>
+    ))
+
+    const resetButton = document.querySelector('[data-testid="compact-reset"]')
+    expect(resetButton).not.toBeNull()
+    expect(resetButton?.className).toContain('compact-reset')
+    expect(resetButton?.className).toContain('van-button--loading')
+  })
+
+  it('应该在紧凑布局下支持 Submit 透传 attrs 和加载态', async () => {
+    render(() => (
+      <FormButtonGroup layout="compact">
+        <Submit class="compact-submit" data-testid="compact-submit" loading />
+      </FormButtonGroup>
+    ))
+
+    const submitButton = document.querySelector('[data-testid="compact-submit"]')
+    expect(submitButton).not.toBeNull()
+    expect(submitButton?.className).toContain('compact-submit')
+    expect(submitButton?.className).toContain('van-button--loading')
+  })
+
   it('应该在紧凑布局下支持 Submit 原生提交流程', async () => {
     const onAutoSubmit = vi.fn()
     const form = createForm({

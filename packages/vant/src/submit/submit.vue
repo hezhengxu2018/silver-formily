@@ -5,6 +5,7 @@ import { useParentForm } from '@silver-formily/vue'
 import { omit } from 'es-toolkit'
 import { ActionBarButton as VanActionBarButton, Button as VanButton } from 'vant'
 import { computed, useSlots } from 'vue'
+import { useCleanAttrs } from '../__builtins__'
 import { useVantFormButtonGroupContext } from '../form-button-group/context'
 
 defineOptions({
@@ -23,29 +24,36 @@ const props = withDefaults(defineProps<SubmitProps>(), {
 const formRef = useParentForm()
 const buttonGroupContext = useVantFormButtonGroupContext()
 const slots = useSlots()
+const { props: submitAttrs } = useCleanAttrs([
+  'native-type',
+  'nativeType',
+])
 const nativeType = computed(() => (props.submit || props.onSubmit ? 'button' : 'submit'))
 const isLoading = formilyComputed(() => Boolean(formRef.value?.submitting || props.loading))
 const isDisabled = computed(() => Boolean(isLoading.value || props.disabled))
 const isCompactGroup = computed(() => buttonGroupContext?.value.layout === 'compact')
 
 const buttonBindings = computed(() => {
-  return omit(props, [
-    'block',
-    'disabled',
-    'loading',
-    'nativeType',
-    'onClick',
-    'onSubmit',
-    'onSubmitFailed',
-    'onSubmitSuccess',
-    'round',
-    'submit',
-    'type',
-  ])
+  return {
+    ...submitAttrs.value,
+    ...omit(props, [
+      'block',
+      'disabled',
+      'loading',
+      'onClick',
+      'onSubmit',
+      'onSubmitFailed',
+      'onSubmitSuccess',
+      'round',
+      'submit',
+      'type',
+    ]),
+  }
 })
 
 const compactButtonBindings = computed(() => {
   return {
+    ...submitAttrs.value,
     color: props.color,
     disabled: isDisabled.value,
     icon: props.icon,
