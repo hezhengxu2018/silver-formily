@@ -50,6 +50,12 @@ mobileDemo: form/index.vue
 
 <<< @/zh/demos/form/scroll-to-error.vue
 
+## 移动端键盘提交
+
+`Form` 会渲染真实的 `<form>`，并默认设置 `action="javascript:void(0)"`，用于保留移动端键盘提交语义，同时避免浏览器执行页面跳转。
+
+`submitOnEnter` 默认为 `true`，单行 `Input` 聚焦时按下键盘确认键会触发表单提交；设置为 `false` 时会阻止输入框 Enter 触发提交。键盘按钮文案由输入组件的原生 `enterkeyhint` 属性决定，例如可在 `Input` 上配置 `enterkeyhint="done"`、`enterkeyhint="send"` 或 `enterkeyhint="search"`。
+
 ## API
 
 ### Form 专属属性
@@ -61,6 +67,7 @@ mobileDemo: form/index.vue
 | `onAutoSubmitFailed`    | ^[Function]`(error: unknown) => void`              | 原生 `submit` 时触发 Formily `submit` 失败      | `-`     |
 | `scrollToError`         | `boolean`                                          | 提交失败时是否自动滚动到第一个错误项            | `false` |
 | `scrollToErrorPosition` | ^[enum]`'start' \| 'center' \| 'end' \| 'nearest'` | 自动滚动时传给 `scrollIntoView` 的 `block` 位置 | `-`     |
+| `submitOnEnter`         | `boolean`                                          | 是否允许输入框 Enter 触发表单提交               | `true`  |
 
 > Formily 校验失败时的 feedbacks 类型参考 [IFormFeedback](https://core.formilyjs.org/api/models/form#iformfeedback)；如果 `onAutoSubmit` 自身抛错，则会原样传给 `onAutoSubmitFailed`。
 

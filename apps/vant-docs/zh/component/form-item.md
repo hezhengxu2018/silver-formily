@@ -84,7 +84,3 @@ Vant 并没有单独的 `FormItem` 组件，官方是把“表单项壳层”和
 ### FormItem.BaseItem
 
 纯展示组件，保留和 `FormItem` 相同的视觉结构与插槽能力，但不会和 Formily `Field` 状态做自动桥接。适合只想复用这套表单项布局壳层、不需要接入字段状态的场景。
-
-### 参考
-
-属性命名、布局能力和默认值主要参考 [Vant Field 官方文档（正式站）](https://vant-ui.github.io/vant/#/zh-CN/field)。

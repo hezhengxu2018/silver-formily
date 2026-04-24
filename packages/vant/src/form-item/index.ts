@@ -1,7 +1,7 @@
 import type { GeneralField } from '@formily/core'
 import { isVoidField } from '@formily/core'
 import { connect, mapProps } from '@silver-formily/vue'
-import { composeExport } from '../__builtins__'
+import { callListener, composeExport } from '../__builtins__'
 import FormBaseItem from './form-item.vue'
 import { determineFeedbackStatus, getFeedbackMessage, getVanFieldBridgedProps } from './utils'
 import './style.scss'
@@ -11,17 +11,6 @@ type FormItemMappedProps = Record<string, unknown> & {
   'disabled'?: boolean | null
   'readonly'?: boolean | null
   'onUpdate:modelValue'?: unknown
-}
-
-function callListener(listener: unknown, ...args: unknown[]) {
-  if (Array.isArray(listener)) {
-    listener.forEach(fn => typeof fn === 'function' && fn(...args))
-    return
-  }
-
-  if (typeof listener === 'function') {
-    listener(...args)
-  }
 }
 
 export function fieldFeedbackMapper(props: Record<string, unknown>, field: GeneralField | null | undefined) {
