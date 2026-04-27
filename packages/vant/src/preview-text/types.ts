@@ -7,6 +7,7 @@ import type {
   CascaderOption,
 } from '../cascader/types'
 import type {
+  DatePickerBoundaryValue,
   DatePickerColumnType,
   DatePickerDisplayFormatter,
   DatePickerModelValue,
@@ -79,8 +80,8 @@ export interface PreviewTextDatePickerProps {
   filter?: VanDatePickerProps['filter']
   format?: string
   formatter?: VanDatePickerProps['formatter']
-  maxDate?: Date
-  minDate?: Date
+  maxDate?: DatePickerBoundaryValue
+  minDate?: DatePickerBoundaryValue
   placeholder?: string
   separator?: string
   displayFormatter?: DatePickerDisplayFormatter

@@ -1,2 +1,2 @@
-export const minDate = new Date(2025, 0, 1)
-export const maxDate = new Date(2027, 11, 31)
+export const minDate = '2025-01-01'
+export const maxDate = '2027-12-31'

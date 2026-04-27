@@ -14,6 +14,7 @@ export const DatePicker = connect<typeof FDatePicker>(
 export default DatePicker
 
 export type {
+  DatePickerBoundaryValue,
   DatePickerColumnType,
   DatePickerDisplayFormatter,
   DatePickerModelValue,

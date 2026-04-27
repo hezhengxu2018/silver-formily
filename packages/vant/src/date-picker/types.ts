@@ -12,6 +12,8 @@ export type DatePickerResolvedValue = string | null
 
 export type DatePickerModelValue = DatePickerResolvedValue | undefined
 
+export type DatePickerBoundaryValue = string
+
 export type DatePickerDisplayFormatter = (
   value: DatePickerResolvedValue,
   selectedOptions: Array<PickerOption | undefined>,
@@ -29,8 +31,8 @@ export interface DatePickerProps {
   format?: string
   formatter?: VanDatePickerProps['formatter']
   loading?: VanDatePickerProps['loading']
-  maxDate?: VanDatePickerProps['maxDate']
-  minDate?: VanDatePickerProps['minDate']
+  maxDate?: DatePickerBoundaryValue
+  minDate?: DatePickerBoundaryValue
   optionHeight?: VanDatePickerProps['optionHeight']
   placeholder?: string
   popupProps?: DatePickerPopupProps

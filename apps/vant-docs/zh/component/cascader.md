@@ -40,7 +40,9 @@ mobileDemo: cascader/index.vue
 
 ## API
 
-### 封装补充 Props
+由于官方组件没有添加组件本身的`readonly`和`disable`属性，所以本组件也不提供`disableTriggerWhenInactive`配置项，直接禁止了弹出框的展示。
+
+### 补充 Props
 
 | 属性名             | 类型                                            | 描述                   | 默认值  |
 | ------------------ | ----------------------------------------------- | ---------------------- | ------- |
@@ -55,4 +57,4 @@ mobileDemo: cascader/index.vue
 
 ### Popup Props
 
-即[createPopup](/component/create-popup)的第一个入参，详情可参考相应的文档。
+参考[createPopup](/component/create-popup)

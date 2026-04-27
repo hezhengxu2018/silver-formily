@@ -2,13 +2,14 @@
 import { createForm } from '@formily/core'
 import { DatePicker, FormItem } from '@silver-formily/vant'
 import { Field, FormProvider } from '@silver-formily/vue'
-import { maxDate, minDate } from './shared'
 
 const form = createForm({
   values: {
     billingMonth: '2026-06',
   },
 })
+const minDate = '2025-01'
+const maxDate = '2027-12'
 </script>
 
 <template>

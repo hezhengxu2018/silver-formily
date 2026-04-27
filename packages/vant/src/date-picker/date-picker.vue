@@ -15,6 +15,7 @@ import { usePickerInactiveState } from '../picker/use-picker-inactive-state'
 import DatePickerPopupContent from './date-picker-popup-content.vue'
 import {
   formatDatePickerValue,
+  resolveDatePickerBoundaryDates,
   resolveDatePickerInnerValue,
   resolveDatePickerModelValue,
   resolveDatePickerSelectedOptions,
@@ -76,6 +77,7 @@ const displayText = computed(() => {
   return formatDatePickerValue(props.modelValue ?? null, resolvedDatePickerOptions.value)
 })
 const { isPopupReadonly, isTriggerDisabled } = usePickerInactiveState(props)
+const boundaryDates = computed(() => resolveDatePickerBoundaryDates(resolvedDatePickerOptions.value))
 
 const popupBindings = computed(() => {
   return {
@@ -91,8 +93,8 @@ const sharedDatePickerProps = computed(() => {
     filter: props.filter,
     formatter: props.formatter,
     loading: props.loading,
-    maxDate: props.maxDate,
-    minDate: props.minDate,
+    maxDate: boundaryDates.value.maxDate,
+    minDate: boundaryDates.value.minDate,
     optionHeight: props.optionHeight,
     readonly: isPopupReadonly.value,
     showToolbar: true,

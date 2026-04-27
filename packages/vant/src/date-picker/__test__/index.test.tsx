@@ -13,8 +13,12 @@ import Submit from '../../submit'
 import DatePicker from '../index'
 import 'vant/lib/index.css'
 
-const minDate = new Date(2025, 0, 1)
-const maxDate = new Date(2027, 11, 31)
+const minDate = '2025-01-01'
+const maxDate = '2027-12-31'
+const slashMinDate = '01/01/2025'
+const slashMaxDate = '31/12/2027'
+const vanMinDate = new Date(2025, 0, 1)
+const vanMaxDate = new Date(2027, 11, 31)
 
 function waitForAnimationFrame() {
   return new Promise<void>((resolve) => {
@@ -413,8 +417,8 @@ describe('date-picker', () => {
           decorator={[FormItem]}
           component={[DatePicker, {
             format: 'YYYY年MM月DD日',
-            maxDate,
-            minDate,
+            maxDate: slashMaxDate,
+            minDate: slashMinDate,
             valueFormat: 'DD/MM/YYYY',
           }]}
         />
@@ -458,8 +462,8 @@ describe('date-picker', () => {
           decorator={[FormItem]}
           component={[DatePicker, {
             format: 'YYYY年MM月DD日',
-            maxDate,
-            minDate,
+            maxDate: slashMaxDate,
+            minDate: slashMinDate,
             valueFormat: 'DD/MM/YYYY',
           }]}
         />
@@ -641,7 +645,7 @@ describe('date-picker', () => {
         >
           {{
             default: () => [
-              <VanDatePicker minDate={minDate} maxDate={maxDate} />,
+              <VanDatePicker minDate={vanMinDate} maxDate={vanMaxDate} />,
               <VanTimePicker />,
             ],
           }}

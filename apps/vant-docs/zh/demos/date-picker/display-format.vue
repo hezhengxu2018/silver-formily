@@ -4,13 +4,14 @@ import { formilyComputed } from '@silver-formily/reactive-vue'
 import { DatePicker, Form, FormButtonGroup, FormItem, Submit } from '@silver-formily/vant'
 import { Field } from '@silver-formily/vue'
 import { showDemoResult } from '../shared'
-import { maxDate, minDate } from './shared'
 
 const form = createForm({
   values: {
     appointmentDate: '30/03/2026',
   },
 })
+const minDate = '01/01/2025'
+const maxDate = '31/12/2027'
 
 const currentValue = formilyComputed(() => {
   return form.values.appointmentDate as string | undefined
