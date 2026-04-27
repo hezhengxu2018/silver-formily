@@ -4,7 +4,7 @@ mobileDemo: date-picker/index.vue
 
 # DatePicker
 
-> `DatePicker` 是基于 Vant 官方 `DatePicker` 做的 Formily 字段封装，保留滚轮日期选择体验，同时补上字段触发区、内置弹层和 `readPretty` 展示。
+> `DatePicker` 是基于 Vant 官方 `DatePicker` 做的 Formily 字段封装。
 
 :::tip 提示
 为方便业务开发，组件内部使用了 `dayjs` 对日期进行了格式化，不再传入 `Date` 对象。具体说明参考API章节。
@@ -34,8 +34,7 @@ mobileDemo: date-picker/index.vue
 - 内部会先按 `value-format` 解析字段值，再转换成 Vant `DatePicker` 需要的滚轮数组
 - 如果未显式传 `value-format`，会按 `columnsType` 推导默认格式，例如 `['year', 'month'] -> 'YYYY-MM'`
 - 如果未显式传 `format`，字段展示会默认复用 `value-format`
-- 默认情况下，`readonly` / `disabled` 仍允许打开弹层，但内部 DatePicker 会进入只读态
-- 传入 `disableTriggerWhenInactive` 后，会改成在触发区层面阻止打开
+- 默认情况下，readonly / disabled 仍允许打开弹层，内部 Picker 会进入只读态；传入 disableTriggerWhenInactive 后，会在触发区层面阻止打开弹层。
 
 ### 封装补充 Props
 
