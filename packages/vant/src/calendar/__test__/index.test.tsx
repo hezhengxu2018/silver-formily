@@ -6,8 +6,10 @@ import FormItem from '../../form-item'
 import Calendar from '../index'
 import 'vant/lib/index.css'
 
-const marchStart = new Date(2026, 2, 1)
-const marchEnd = new Date(2026, 2, 31)
+const marchStart = '2026-03-01'
+const marchEnd = '2026-03-31'
+const slashMarchStart = '01/03/2026'
+const slashMarchEnd = '31/03/2026'
 const defaultDate = '2026-03-23'
 
 function waitForAnimationFrame() {
@@ -140,8 +142,8 @@ describe('calendar', () => {
           decorator={[FormItem]}
           component={[Calendar, {
             format: 'YYYY年MM月DD日',
-            minDate: marchStart,
-            maxDate: marchEnd,
+            minDate: slashMarchStart,
+            maxDate: slashMarchEnd,
             valueFormat: 'DD/MM/YYYY',
           }]}
         />

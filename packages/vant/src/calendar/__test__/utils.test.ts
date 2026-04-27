@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest'
 import {
   formatCalendarValue,
   normalizeCalendarValue,
+  resolveCalendarBoundaryDates,
   resolveCalendarInnerValue,
   resolveCalendarPlaceholder,
   resolveCalendarSelectedValue,
@@ -40,6 +41,21 @@ describe('calendar utils', () => {
 
     expect(resolveCalendarSelectedValue([selectedDate], 'range')).toEqual(['2026-03-23'])
     expect(resolveCalendarSelectedValue([selectedDate], 'range', { valueFormat: 'DD/MM/YYYY' })).toEqual(['23/03/2026'])
+  })
+
+  it('应该按 valueFormat 解析字符串边界日期', () => {
+    const { maxDate, minDate } = resolveCalendarBoundaryDates({
+      maxDate: '31/03/2026',
+      minDate: '01/03/2026',
+      valueFormat: 'DD/MM/YYYY',
+    })
+
+    expect(minDate).toBeInstanceOf(Date)
+    expect(maxDate).toBeInstanceOf(Date)
+    expect(minDate?.getFullYear()).toBe(2026)
+    expect(minDate?.getMonth()).toBe(2)
+    expect(minDate?.getDate()).toBe(1)
+    expect(maxDate?.getDate()).toBe(31)
   })
 
   it('应该格式化规范后的日期值', () => {

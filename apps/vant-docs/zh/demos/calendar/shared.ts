@@ -1,25 +1,13 @@
 import type { CalendarModelValue } from '@silver-formily/vant'
 
-export const marchStart = new Date(2026, 2, 1)
-export const marchEnd = new Date(2026, 2, 31)
-export const marchCustomMin = new Date(2026, 2, 10)
-export const marchCustomMax = new Date(2026, 2, 20)
-export const aprilEnd = new Date(2026, 3, 30)
-export const mayStart = new Date(2026, 4, 1)
-export const mayEnd = new Date(2026, 4, 31)
-export const juneEnd = new Date(2026, 5, 30)
-
-function pad(value: number) {
-  return `${value}`.padStart(2, '0')
-}
-
-export function formatDate(value: Date) {
-  return `${value.getFullYear()}-${pad(value.getMonth() + 1)}-${pad(value.getDate())}`
-}
-
-export function formatMonthDay(value: Date) {
-  return `${pad(value.getMonth() + 1)}-${pad(value.getDate())}`
-}
+export const marchStart = '2026-03-01'
+export const marchEnd = '2026-03-31'
+export const marchCustomMin = '2026-03-10'
+export const marchCustomMax = '2026-03-20'
+export const aprilEnd = '2026-04-30'
+export const mayStart = '2026-05-01'
+export const mayEnd = '2026-05-31'
+export const juneEnd = '2026-06-30'
 
 export function formatModelValue(value: CalendarModelValue) {
   if (!value) {

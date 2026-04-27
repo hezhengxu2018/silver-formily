@@ -16,6 +16,8 @@ export type CalendarInnerValue = Date | Date[] | null
 
 export type CalendarModelValue = CalendarResolvedValue | undefined
 
+export type CalendarBoundaryValue = string
+
 export type CalendarDisplayFormatter = (
   value: CalendarResolvedValue,
   type: CalendarType,
@@ -48,8 +50,8 @@ export interface CalendarProps {
   closeOnClickOverlay?: boolean
   safeAreaInsetTop?: boolean
   safeAreaInsetBottom?: boolean
-  minDate?: Date
-  maxDate?: Date
+  minDate?: CalendarBoundaryValue
+  maxDate?: CalendarBoundaryValue
   firstDayOfWeek?: number | string
   modelValue?: CalendarModelValue
   format?: string

@@ -1,10 +1,20 @@
 import type { CalendarType } from 'vant'
-import type { CalendarInnerValue, CalendarModelValue, CalendarResolvedValue } from './types'
+import type {
+  CalendarBoundaryValue,
+  CalendarInnerValue,
+  CalendarModelValue,
+  CalendarResolvedValue,
+} from './types'
 import { DEFAULT_DATE_FORMAT, formatDateValue, isValidDate, parseDateValue } from '../__builtins__/shared/date'
 
 interface CalendarFormatOptions {
   format?: string
   valueFormat?: string
+}
+
+interface CalendarBoundaryOptions extends Pick<CalendarFormatOptions, 'valueFormat'> {
+  maxDate?: CalendarBoundaryValue | Date
+  minDate?: CalendarBoundaryValue | Date
 }
 
 export function resolveCalendarFormat(format?: string) {
@@ -13,6 +23,23 @@ export function resolveCalendarFormat(format?: string) {
 
 export function resolveCalendarValueFormat(valueFormat?: string) {
   return valueFormat || DEFAULT_DATE_FORMAT
+}
+
+function parseCalendarBoundaryDate(value: CalendarBoundaryValue | Date | undefined, valueFormat: string) {
+  if (value === undefined) {
+    return undefined
+  }
+
+  return parseDateValue(value, valueFormat) ?? undefined
+}
+
+export function resolveCalendarBoundaryDates(options: CalendarBoundaryOptions = {}) {
+  const valueFormat = resolveCalendarValueFormat(options.valueFormat)
+
+  return {
+    maxDate: parseCalendarBoundaryDate(options.maxDate, valueFormat),
+    minDate: parseCalendarBoundaryDate(options.minDate, valueFormat),
+  }
 }
 
 function normalizeCalendarDates(

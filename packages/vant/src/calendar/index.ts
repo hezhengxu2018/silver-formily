@@ -14,6 +14,7 @@ export const Calendar = connect<typeof FCalendar>(
 export default Calendar
 
 export type {
+  CalendarBoundaryValue,
   CalendarConfirmTextSlotProps,
   CalendarDayItem,
   CalendarDayType,

@@ -34,7 +34,7 @@ mobileDemo: date-picker/index.vue
 - 内部会先按 `value-format` 解析字段值，再转换成 Vant `DatePicker` 需要的滚轮数组
 - 如果未显式传 `value-format`，会按 `columnsType` 推导默认格式，例如 `['year', 'month'] -> 'YYYY-MM'`
 - 如果未显式传 `format`，字段展示会默认复用 `value-format`
-- 默认情况下，readonly / disabled 仍允许打开弹层，内部 Picker 会进入只读态；传入 disableTriggerWhenInactive 后，会在触发区层面阻止打开弹层。
+- 默认情况下，readonly / disabled 仍允许打开弹层，内部 Picker 会进入只读态；传入 `disableTriggerWhenInactive` 后，会在触发区层面阻止打开弹层。
 
 ### 封装补充 Props
 

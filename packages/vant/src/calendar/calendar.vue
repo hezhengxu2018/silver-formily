@@ -13,6 +13,7 @@ import { computed, ref, useSlots } from 'vue'
 import { PopupTriggerInput, useCleanAttrs, usePopupState } from '../__builtins__'
 import {
   formatCalendarValue,
+  resolveCalendarBoundaryDates,
   resolveCalendarInnerValue,
   resolveCalendarModelValue,
   resolveCalendarPlaceholder,
@@ -66,6 +67,8 @@ const innerCalendarExcludedProps = [
   'displayFormatter',
   'format',
   'valueFormat',
+  'minDate',
+  'maxDate',
   'disabled',
   'readonly',
   'defaultDate',
@@ -96,6 +99,11 @@ const normalizedDefaultValue = computed<CalendarInnerValue | undefined>(() => {
 
   return resolveCalendarInnerValue(props.defaultDate, props.type, resolvedCalendarOptions.value)
 })
+const boundaryDates = computed(() => resolveCalendarBoundaryDates({
+  maxDate: props.maxDate,
+  minDate: props.minDate,
+  valueFormat: props.valueFormat,
+}))
 
 const displayText = computed(() => {
   const value = resolvedValue.value
@@ -166,6 +174,8 @@ const innerCalendarProps = computed(() => {
   return {
     ...passthroughProps,
     defaultDate: getResetValue(),
+    maxDate: boundaryDates.value.maxDate,
+    minDate: boundaryDates.value.minDate,
     show: popupVisible.value,
     poppable: true,
     readonly: props.readonly || props.readOnly || props.disabled,
