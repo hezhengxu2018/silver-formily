@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onBeforeUnmount, ref, watchEffect } from 'vue'
+import { computed } from 'vue'
 import { useVantFormItemControlContext } from '../../form-item/context'
 
 defineOptions({
@@ -19,7 +19,6 @@ const emit = defineEmits<{
 }>()
 
 const formItemControlContext = useVantFormItemControlContext()
-const inputElement = ref<HTMLInputElement>()
 const inputId = computed(() => {
   const explicitId = props.inputProps?.id
   if (typeof explicitId === 'string' && explicitId) {
@@ -34,27 +33,12 @@ const controlClasses = computed(() => [
   formItemControlContext?.value.error && 'van-field__control--error',
   formItemControlContext?.value.inputAlign && `van-field__control--${formItemControlContext.value.inputAlign}`,
 ])
-
-function activate() {
-  inputElement.value?.click()
-}
-
-watchEffect(() => {
-  formItemControlContext?.value.registerControlActivator?.({
-    activate,
-  })
-})
-
-onBeforeUnmount(() => {
-  formItemControlContext?.value.registerControlActivator?.(null)
-})
 </script>
 
 <template>
   <input
     v-bind="props.inputProps"
     :id="inputId"
-    ref="inputElement"
     type="text"
     :aria-labelledby="labelledBy"
     :class="controlClasses"

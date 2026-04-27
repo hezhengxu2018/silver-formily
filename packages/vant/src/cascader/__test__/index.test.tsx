@@ -1,4 +1,5 @@
-import type { CascaderOption } from '../types'
+import type { Field as FormilyField } from '@formily/core'
+import type { CascaderChangeEvent, CascaderOption } from '../types'
 import { createForm } from '@formily/core'
 import { Field, FormProvider } from '@silver-formily/vue'
 import { afterEach, describe, expect, it, vi } from 'vitest'
@@ -7,6 +8,8 @@ import { userEvent } from 'vitest/browser'
 import FormItem from '../../form-item'
 import Cascader from '../index'
 import 'vant/lib/index.css'
+
+const TestCascader = Cascader as any
 
 const options: CascaderOption[] = [
   {
@@ -308,7 +311,7 @@ describe('cascader', () => {
       expect(getVisibleOption('浙江')).not.toBeNull()
     })
 
-    form.query('region').take()?.setDataSource([
+    ;(form.query('region').take() as FormilyField | undefined)?.setDataSource([
       {
         text: '浙江',
         value: 'zj',
@@ -415,12 +418,12 @@ describe('cascader', () => {
 
   it('应该透传官方插槽', async () => {
     const { container } = render(() => (
-      <Cascader options={options}>
+      <TestCascader options={options}>
         {{
           title: () => <div class="cascader-slot-title">自定义标题</div>,
           option: ({ option }) => <div class="cascader-slot-option">{option.text}</div>,
         }}
-      </Cascader>
+      </TestCascader>
     ))
 
     await userEvent.click(getTrigger(container))

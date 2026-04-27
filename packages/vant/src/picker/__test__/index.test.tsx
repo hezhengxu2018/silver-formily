@@ -1,4 +1,5 @@
-import type { PickerColumn, PickerColumns } from '../types'
+import type { FieldDataSource } from '@formily/core'
+import type { PickerColumns, PickerOption } from '../types'
 import { createForm } from '@formily/core'
 import { Field, FormProvider } from '@silver-formily/vue'
 import { afterEach, describe, expect, it, vi } from 'vitest'
@@ -9,11 +10,11 @@ import PreviewText from '../../preview-text'
 import Picker from '../index'
 import 'vant/lib/index.css'
 
-const cityOptions: PickerColumn = [
+const cityOptions = [
   { label: '杭州', value: 'hz' },
   { text: '宁波', value: 'nb' },
   { label: '苏州', name: 'sz' },
-]
+] satisfies FieldDataSource
 
 const scheduleColumns: PickerColumns = [
   [
@@ -25,8 +26,9 @@ const scheduleColumns: PickerColumns = [
     { text: '晚上', value: 'pm' },
   ],
 ]
+const scheduleDataSource = scheduleColumns as unknown as FieldDataSource
 
-const cascaderLikeColumns: PickerColumn = [
+const cascaderLikeColumns = [
   {
     label: '浙江',
     value: 'zj',
@@ -42,7 +44,7 @@ const cascaderLikeColumns: PickerColumn = [
       { text: '南京', value: 'nj' },
     ],
   },
-]
+] satisfies FieldDataSource
 
 function waitForAnimationFrame() {
   return new Promise<void>((resolve) => {
@@ -203,6 +205,30 @@ describe('picker', () => {
         <Field
           name="city"
           title="城市"
+          decorator={[FormItem, { isLink: true }]}
+          component={[Picker]}
+          dataSource={cityOptions}
+        />
+      </FormProvider>
+    ))
+
+    const cell = container.querySelector<HTMLElement>('.van-cell')
+
+    expect(cell).not.toBeNull()
+
+    cell!.click()
+
+    await vi.waitFor(() => {
+      expect(getVisiblePicker()).not.toBeNull()
+    })
+  })
+
+  it('不应该在非链接态点击 FormItem 整行时打开弹层', async () => {
+    const { container } = render(() => (
+      <FormProvider form={createForm()}>
+        <Field
+          name="city"
+          title="城市"
           decorator={[FormItem]}
           component={[Picker]}
           dataSource={cityOptions}
@@ -210,15 +236,14 @@ describe('picker', () => {
       </FormProvider>
     ))
 
-    const cell = container.querySelector('.van-cell')
+    const cell = container.querySelector<HTMLElement>('.van-cell')
 
     expect(cell).not.toBeNull()
 
-    await userEvent.click(cell!)
+    cell!.click()
+    await waitForAnimationFrame()
 
-    await vi.waitFor(() => {
-      expect(getVisiblePicker()).not.toBeNull()
-    })
+    expect(getVisiblePicker()).toBeNull()
   })
 
   it('应该在多列场景下写回数组值并拼接展示文本', async () => {
@@ -230,7 +255,7 @@ describe('picker', () => {
           title="行程安排"
           decorator={[FormItem]}
           component={[Picker]}
-          dataSource={scheduleColumns}
+          dataSource={scheduleDataSource}
         />
       </FormProvider>
     ))
@@ -405,7 +430,7 @@ describe('picker', () => {
           'title': () => <div class="picker-slot-title">自定义标题</div>,
           'cancel': () => <span class="picker-slot-cancel">返回</span>,
           'confirm': () => <span class="picker-slot-confirm">确定提交</span>,
-          'option': (option: PickerColumn[number]) => <div class="picker-slot-option">{(option as any).text}</div>,
+          'option': (option: PickerOption) => <div class="picker-slot-option">{option.text}</div>,
           'columns-top': () => <div class="picker-slot-top">顶部说明</div>,
           'columns-bottom': () => <div class="picker-slot-bottom">底部说明</div>,
         }}
@@ -490,7 +515,7 @@ describe('picker readPretty', () => {
             component={[Picker, {
               displayFormatter,
             }]}
-            dataSource={scheduleColumns}
+            dataSource={scheduleDataSource}
           />
         </FormProvider>
       </PreviewText>

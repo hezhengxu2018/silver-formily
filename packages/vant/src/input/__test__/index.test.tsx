@@ -8,6 +8,8 @@ import FormItem from '../../form-item'
 import Input from '../index'
 import 'vant/lib/index.css'
 
+const TestInput = Input as any
+
 function getNativeInputs(container: Element) {
   return Array.from(container.querySelectorAll<HTMLInputElement>('input.van-field__control'))
 }
@@ -76,7 +78,7 @@ describe('input', () => {
       const placeholder = ref('初始占位')
 
       const { getByRole } = render(() => (
-        <Input disabled={disabled.value} placeholder={placeholder.value} />
+        <TestInput disabled={disabled.value} placeholder={placeholder.value} />
       ))
 
       const input = getByRole('textbox')

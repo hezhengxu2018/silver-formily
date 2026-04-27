@@ -1,3 +1,4 @@
+import type { Field as FormilyField } from '@formily/core'
 import { createForm } from '@formily/core'
 import { Field, FormProvider } from '@silver-formily/vue'
 import { describe, expect, it, vi } from 'vitest'
@@ -80,7 +81,7 @@ describe('upload', () => {
       expect(form.values.attachments).toEqual(['avatar.png'])
     })
 
-    const field = form.query('attachments').take()
+    const field = form.query('attachments').take() as FormilyField
 
     expect(field.dataSource).toHaveLength(1)
     expect(field.dataSource?.[0]?.file?.name).toBe('avatar.png')
@@ -122,7 +123,7 @@ describe('upload', () => {
       expect(form.values.attachments).toEqual(['https://cdn.example.com/contract.pdf'])
     })
 
-    const field = form.query('attachments').take()
+    const field = form.query('attachments').take() as FormilyField
 
     expect(field.dataSource?.[0]?.status).toBe('done')
     expect(field.dataSource?.[0]?.url).toBe('https://cdn.example.com/contract.pdf')
@@ -153,7 +154,7 @@ describe('upload', () => {
     await uploadFile(container, file)
 
     await vi.waitFor(() => {
-      expect(form.query('attachments').take().selfErrors).toContain('上传失败')
+      expect((form.query('attachments').take() as FormilyField).selfErrors).toContain('上传失败')
     })
 
     await vi.waitFor(() => {

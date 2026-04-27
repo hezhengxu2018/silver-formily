@@ -155,7 +155,7 @@ describe('form-popup', () => {
 
     const TestComponent = () => {
       const openConfirmPopup = () => {
-        FormPopup<{ name: string }>('确认改值', renderContent, ['save-draft'])
+        FormPopup<{ name: string }, ['save-draft']>('确认改值', renderContent, ['save-draft'])
           .forConfirm(form => `confirm:${form.values.name}`)
           .forSaveDraft(form => `draft:${form.values.name}`)
           .open({
@@ -167,7 +167,7 @@ describe('form-popup', () => {
       }
 
       const openDraftPopup = () => {
-        FormPopup<{ name: string }>('草稿改值', renderContent, ['save-draft'])
+        FormPopup<{ name: string }, ['save-draft']>('草稿改值', renderContent, ['save-draft'])
           .forConfirm(form => `confirm:${form.values.name}`)
           .forSaveDraft(form => `draft:${form.values.name}`)
           .open({

@@ -9,6 +9,8 @@ import FormItem from '../../form-item'
 import { Input } from '../../input'
 import 'vant/lib/index.css'
 
+const TestForm = Form as any
+
 describe('form', () => {
   it('应该把 Form 布局属性透传给内部 FormItem', async () => {
     const { container } = render(() => (
@@ -48,11 +50,11 @@ describe('form', () => {
             <Input modelValue="hello" />
           </FormItem>
         </Form>
-        <Form action="/custom-submit">
+        <TestForm action="/custom-submit">
           <FormItem label="自定义">
             <Input modelValue="world" />
           </FormItem>
-        </Form>
+        </TestForm>
       </>
     ))
 

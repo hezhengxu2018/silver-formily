@@ -22,7 +22,7 @@ const GridProbe = defineComponent({
     const grid = useGrid()
 
     return () => props.displayKeys.map((keyName) => {
-      const currentValue = (grid.value as Record<string, unknown>)[keyName]
+      const currentValue = (grid.value as unknown as Record<string, unknown>)[keyName]
 
       return (
         <div key={keyName} data-testid={keyName}>

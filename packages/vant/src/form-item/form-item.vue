@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { ComponentPublicInstance, CSSProperties } from 'vue'
-import type { VantFormItemControlActivator, VantFormItemInputController } from './context'
+import type { VantFormItemInputController } from './context'
 import type { FormItemProps } from './types'
 import { isValid } from '@formily/shared'
 import { isNil } from 'es-toolkit'
@@ -43,7 +43,6 @@ const formContext = useVantFormContext()
 const fieldRef = ref<ComponentPublicInstance | null>(null)
 const focused = ref(false)
 const baseId = useId()
-const controlActivator = ref<VantFormItemControlActivator | null>(null)
 const inputController = ref<VantFormItemInputController | null>(null)
 
 function resolveControlFlag(name: 'showError' | 'showErrorMessage', defaultValue: boolean) {
@@ -143,6 +142,7 @@ const isRequired = computed(() => {
 const hasFieldError = computed(() => resolvedFieldProps.value.error)
 
 const hasFieldBorder = computed(() => fieldProps.value.border !== false)
+const isLink = computed(() => Boolean(fieldProps.value.isLink))
 const shouldShowClear = computed(() => {
   if (!fieldProps.value.clearable || fieldProps.value.readonly) {
     return false
@@ -256,13 +256,11 @@ useVantFormItemRegistration({
 })
 
 provide(vantFormItemControlContextKey, computed(() => ({
-  activateControl,
   disabled: fieldProps.value.disabled,
   error: hasFieldError.value,
   inputAlign: fieldProps.value.inputAlign,
   inputId: fallbackInputId.value,
   labelId: labelId.value,
-  registerControlActivator,
   readonly: fieldProps.value.readonly,
   registerInputController,
 })))
@@ -308,12 +306,22 @@ function focusInput() {
   control.click()
 }
 
-function isInteractiveClickTarget(target: EventTarget | null) {
+function clickFieldControl() {
+  if (fieldProps.value.disabled) {
+    return
+  }
+
+  resolveFieldRootElement()
+    ?.querySelector<HTMLElement>('.van-field__control')
+    ?.click()
+}
+
+function isInteractiveClickTarget(target: EventTarget | null, root: HTMLElement | null) {
   if (!(target instanceof HTMLElement)) {
     return false
   }
 
-  return Boolean(target.closest([
+  const interactiveElement = target.closest([
     'label',
     '.van-field__control',
     '.van-field__clear',
@@ -328,7 +336,9 @@ function isInteractiveClickTarget(target: EventTarget | null) {
     'textarea',
     'select',
     '[role="button"]',
-  ].join(', ')))
+  ].join(', '))
+
+  return Boolean(interactiveElement && interactiveElement !== root)
 }
 
 function onLabelClick(event: MouseEvent) {
@@ -337,28 +347,20 @@ function onLabelClick(event: MouseEvent) {
 }
 
 function onCellClick(event: MouseEvent) {
+  if (!isLink.value) {
+    return
+  }
+
   const cellElement = resolveFieldRootElement()
   if (!(event.target instanceof Node) || !cellElement?.contains(event.target)) {
     return
   }
 
-  if (isInteractiveClickTarget(event.target)) {
+  if (isInteractiveClickTarget(event.target, cellElement)) {
     return
   }
 
-  activateControl()
-}
-
-function activateControl() {
-  if (fieldProps.value.disabled) {
-    return
-  }
-
-  controlActivator.value?.activate()
-}
-
-function registerControlActivator(activator: VantFormItemControlActivator | null) {
-  controlActivator.value = activator
+  clickFieldControl()
 }
 
 function registerInputController(controller: VantFormItemInputController | null) {
@@ -380,7 +382,7 @@ function onClear(event: MouseEvent) {
       tag="div"
       :border="fieldProps.border"
       :center="fieldProps.center"
-      :is-link="fieldProps.isLink"
+      :is-link="isLink"
       :clickable="fieldProps.clickable"
       :size="fieldProps.size"
       :arrow-direction="fieldProps.arrowDirection"

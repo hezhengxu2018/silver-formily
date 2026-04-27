@@ -217,6 +217,8 @@ describe('password-input', () => {
     render(() => (
       <PasswordInput
         focused
+        length={6}
+        mask
         keyboard={{
           transition: false,
         }}
