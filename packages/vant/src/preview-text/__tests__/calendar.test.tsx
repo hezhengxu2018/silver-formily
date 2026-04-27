@@ -25,17 +25,13 @@ describe('previewText.Calendar', () => {
   })
 
   it('应该支持自定义 displayFormatter，并传入克隆后的值', async () => {
-    const startDate = new Date(2026, 2, 23)
-    const endDate = new Date(2026, 2, 25)
-    const modelValue = [startDate, endDate]
+    const modelValue = ['2026-03-23', '2026-03-25']
     const displayFormatter = vi.fn((value, type) => {
       expect(type).toBe('range')
       expect(Array.isArray(value)).toBe(true)
       expect(value).not.toBe(modelValue)
-      expect((value as Date[])[0]).not.toBe(startDate)
-      expect((value as Date[])[1]).not.toBe(endDate)
 
-      ;(value as Date[])[0].setDate(1)
+      ;(value as string[]).push('2026-03-27')
 
       return '2026-03-23 ~ 2026-03-25'
     })
@@ -50,7 +46,6 @@ describe('previewText.Calendar', () => {
 
     expect(container.textContent?.trim()).toBe('2026-03-23 ~ 2026-03-25')
     expect(displayFormatter).toHaveBeenCalledOnce()
-    expect(startDate.getDate()).toBe(23)
-    expect(endDate.getDate()).toBe(25)
+    expect(modelValue).toEqual(['2026-03-23', '2026-03-25'])
   })
 })

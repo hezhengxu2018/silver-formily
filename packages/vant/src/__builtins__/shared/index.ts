@@ -1,4 +1,5 @@
 export * from './checker-group'
+export * from './date'
 export * from './popup-runtime'
 export { default as PopupTriggerInput } from './popup-trigger-input.vue'
 export * from './types'

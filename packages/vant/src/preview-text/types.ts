@@ -70,6 +70,8 @@ export interface PreviewTextUploadProps {
 export interface PreviewTextCalendarProps {
   modelValue?: CalendarModelValue
   type?: CalendarType
+  format?: string
+  valueFormat?: string
   placeholder?: string
   displayFormatter?: CalendarDisplayFormatter
 }

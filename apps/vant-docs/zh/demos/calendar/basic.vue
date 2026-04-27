@@ -6,13 +6,13 @@ import { aprilEnd, marchStart } from './shared'
 
 const form = createForm({
   values: {
-    singleDate: new Date(2026, 2, 23),
+    singleDate: '2026-03-23',
     multipleDates: [
-      new Date(2026, 2, 5),
-      new Date(2026, 2, 12),
-      new Date(2026, 2, 19),
+      '2026-03-05',
+      '2026-03-12',
+      '2026-03-19',
     ],
-    tripRange: [new Date(2026, 2, 24), new Date(2026, 2, 28)],
+    tripRange: ['2026-03-24', '2026-03-28'],
   },
 })
 </script>

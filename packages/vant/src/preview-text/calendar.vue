@@ -12,12 +12,24 @@ defineOptions({
 
 const props = withDefaults(defineProps<PreviewTextCalendarProps>(), {
   type: 'single',
+  format: undefined,
+  valueFormat: undefined,
   placeholder: undefined,
   displayFormatter: undefined,
 })
 
 const { placeholder } = usePreviewConfig()
-const normalizedValue = computed(() => normalizeCalendarValue(props.modelValue, props.type))
+const resolvedCalendarOptions = computed(() => {
+  return {
+    format: props.format,
+    valueFormat: props.valueFormat,
+  }
+})
+const normalizedValue = computed(() => normalizeCalendarValue(
+  props.modelValue,
+  props.type,
+  resolvedCalendarOptions.value,
+))
 
 const displayText = computed(() => {
   const value = normalizedValue.value
@@ -26,7 +38,7 @@ const displayText = computed(() => {
     return props.displayFormatter(cloneDeep(value), props.type)
   }
 
-  return formatCalendarValue(value, props.type)
+  return formatCalendarValue(value, props.type, resolvedCalendarOptions.value)
 })
 </script>
 

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { CalendarDayItem } from 'vant'
 import type {
+  CalendarInnerValue,
   CalendarModelValue,
   CalendarProps,
   CalendarResolvedValue,
@@ -12,8 +13,10 @@ import { computed, ref, useSlots } from 'vue'
 import { PopupTriggerInput, useCleanAttrs, usePopupState } from '../__builtins__'
 import {
   formatCalendarValue,
-  normalizeCalendarValue,
+  resolveCalendarInnerValue,
+  resolveCalendarModelValue,
   resolveCalendarPlaceholder,
+  resolveCalendarSelectedValue,
 } from './utils'
 
 defineOptions({
@@ -36,11 +39,11 @@ const props = withDefaults(defineProps<CalendarProps>(), {
 })
 
 const emit = defineEmits<{
-  'update:modelValue': [value: Date | Date[] | null]
+  'update:modelValue': [value: CalendarResolvedValue]
   'update:show': [value: boolean]
-  'select': [value: Date | Date[] | null]
-  'confirm': [value: Date | Date[] | null]
-  'unselect': [value: Date]
+  'select': [value: CalendarResolvedValue]
+  'confirm': [value: CalendarResolvedValue]
+  'unselect': [value: string]
   'clickOverlay': [event: MouseEvent]
   'clickDisabledDate': [item: CalendarDayItem]
   'clickSubtitle': [event: MouseEvent]
@@ -61,6 +64,8 @@ const innerCalendarExcludedProps = [
   'modelValue',
   'placeholder',
   'displayFormatter',
+  'format',
+  'valueFormat',
   'disabled',
   'readonly',
   'defaultDate',
@@ -72,32 +77,43 @@ const forwardedSlotNames = computed(() => {
   })
 })
 
-const normalizedValue = computed(() => normalizeCalendarValue(props.modelValue, props.type))
-const normalizedDefaultValue = computed<CalendarResolvedValue | undefined>(() => {
+const resolvedCalendarOptions = computed(() => {
+  return {
+    format: props.format,
+    valueFormat: props.valueFormat,
+  }
+})
+const resolvedValue = computed(() => {
+  return resolveCalendarModelValue(props.modelValue, props.type, resolvedCalendarOptions.value)
+})
+const resolvedInnerValue = computed(() => {
+  return resolveCalendarInnerValue(props.modelValue, props.type, resolvedCalendarOptions.value)
+})
+const normalizedDefaultValue = computed<CalendarInnerValue | undefined>(() => {
   if (props.defaultDate === undefined) {
     return undefined
   }
 
-  return normalizeCalendarValue(props.defaultDate, props.type)
+  return resolveCalendarInnerValue(props.defaultDate, props.type, resolvedCalendarOptions.value)
 })
 
 const displayText = computed(() => {
-  const value = normalizedValue.value
+  const value = resolvedValue.value
 
   if (props.displayFormatter) {
     return props.displayFormatter(cloneDeep(value), props.type)
   }
 
-  return formatCalendarValue(value, props.type)
+  return formatCalendarValue(value, props.type, resolvedCalendarOptions.value)
 })
 
-function resolveResetValue(value?: CalendarModelValue): CalendarResolvedValue | undefined {
+function resolveResetValue(value?: CalendarModelValue): CalendarInnerValue | undefined {
   if (value !== undefined) {
-    return normalizeCalendarValue(value, props.type)
+    return resolveCalendarInnerValue(value, props.type, resolvedCalendarOptions.value)
   }
 
-  if (normalizedValue.value !== null) {
-    return normalizedValue.value
+  if (resolvedInnerValue.value !== null) {
+    return resolvedInnerValue.value
   }
 
   return normalizedDefaultValue.value
@@ -156,12 +172,20 @@ const innerCalendarProps = computed(() => {
   }
 })
 
+function resolveEmittedValue(value: Date | Date[] | null) {
+  return cloneDeep(resolveCalendarModelValue(value, props.type, resolvedCalendarOptions.value))
+}
+
+function resolveSelectedValue(value: Date | Date[] | null) {
+  return cloneDeep(resolveCalendarSelectedValue(value, props.type, resolvedCalendarOptions.value))
+}
+
 function onSelect(value: Date | Date[] | null) {
-  emit('select', cloneDeep(value))
+  emit('select', resolveSelectedValue(value))
 }
 
 function onConfirm(value: Date | Date[] | null) {
-  const nextValue = cloneDeep(value)
+  const nextValue = resolveEmittedValue(value)
 
   emit('update:modelValue', nextValue)
   emit('confirm', nextValue)
@@ -169,7 +193,11 @@ function onConfirm(value: Date | Date[] | null) {
 }
 
 function onUnselect(value: Date) {
-  emit('unselect', new Date(value))
+  const nextValue = resolveCalendarModelValue(value, 'single', resolvedCalendarOptions.value)
+
+  if (typeof nextValue === 'string') {
+    emit('unselect', nextValue)
+  }
 }
 </script>
 

@@ -1,30 +1,36 @@
 import type { CalendarType } from 'vant'
-import type { CalendarModelValue, CalendarResolvedValue } from './types'
-import dayjs from 'dayjs'
-import { isDate } from 'es-toolkit'
+import type { CalendarInnerValue, CalendarModelValue, CalendarResolvedValue } from './types'
+import { DEFAULT_DATE_FORMAT, formatDateValue, isValidDate, parseDateValue } from '../__builtins__/shared/date'
 
-function isValidDate(value: unknown): value is Date {
-  if (!isDate(value)) {
-    return false
-  }
-
-  return dayjs(value as Date).isValid()
+interface CalendarFormatOptions {
+  format?: string
+  valueFormat?: string
 }
 
-function formatDate(value: Date) {
-  return dayjs(value).format('YYYY-MM-DD')
+export function resolveCalendarFormat(format?: string) {
+  return format || DEFAULT_DATE_FORMAT
 }
 
-function normalizeCalendarDates(value: CalendarModelValue) {
+export function resolveCalendarValueFormat(valueFormat?: string) {
+  return valueFormat || DEFAULT_DATE_FORMAT
+}
+
+function normalizeCalendarDates(
+  value: CalendarModelValue | CalendarInnerValue,
+  valueFormat = DEFAULT_DATE_FORMAT,
+) {
   const values = Array.isArray(value) ? value : [value]
-  return values.filter(isValidDate).map(value => new Date(value))
+  return values
+    .map(value => parseDateValue(value, valueFormat))
+    .filter(isValidDate)
 }
 
-export function normalizeCalendarValue(
-  value: CalendarModelValue,
+export function resolveCalendarInnerValue(
+  value: CalendarModelValue | CalendarInnerValue,
   type: CalendarType = 'single',
-): CalendarResolvedValue {
-  const dates = normalizeCalendarDates(value)
+  options: Pick<CalendarFormatOptions, 'valueFormat'> = {},
+): CalendarInnerValue {
+  const dates = normalizeCalendarDates(value, resolveCalendarValueFormat(options.valueFormat))
 
   if (type === 'single') {
     return dates[0] ?? null
@@ -37,24 +43,77 @@ export function normalizeCalendarValue(
   return dates.length ? dates : null
 }
 
+export function resolveCalendarModelValue(
+  value: CalendarModelValue | CalendarInnerValue,
+  type: CalendarType = 'single',
+  options: Pick<CalendarFormatOptions, 'valueFormat'> = {},
+): CalendarResolvedValue {
+  const resolvedValue = resolveCalendarInnerValue(
+    value,
+    type,
+    options,
+  )
+  const valueFormat = resolveCalendarValueFormat(options.valueFormat)
+
+  if (!resolvedValue) {
+    return null
+  }
+
+  if (Array.isArray(resolvedValue)) {
+    return resolvedValue.map(value => formatDateValue(value, valueFormat))
+  }
+
+  return formatDateValue(resolvedValue, valueFormat)
+}
+
+export function resolveCalendarSelectedValue(
+  value: CalendarModelValue | CalendarInnerValue,
+  type: CalendarType = 'single',
+  options: Pick<CalendarFormatOptions, 'valueFormat'> = {},
+): CalendarResolvedValue {
+  const dates = normalizeCalendarDates(value, resolveCalendarValueFormat(options.valueFormat))
+  const valueFormat = resolveCalendarValueFormat(options.valueFormat)
+
+  if (type === 'single') {
+    return dates[0] ? formatDateValue(dates[0], valueFormat) : null
+  }
+
+  return dates.length
+    ? dates.map(value => formatDateValue(value, valueFormat))
+    : null
+}
+
+export function normalizeCalendarValue(
+  value: CalendarModelValue,
+  type: CalendarType = 'single',
+  options: Pick<CalendarFormatOptions, 'valueFormat'> = {},
+): CalendarResolvedValue {
+  return resolveCalendarModelValue(value, type, options)
+}
+
 export function formatCalendarValue(
   value: CalendarResolvedValue,
   type: CalendarType = 'single',
+  options: CalendarFormatOptions = {},
 ): string {
   if (!value) {
     return ''
   }
 
-  if (Array.isArray(value)) {
-    if (!value.length) {
-      return ''
-    }
+  const format = resolveCalendarFormat(options.format)
+  const valueFormat = resolveCalendarValueFormat(options.valueFormat)
+  const dates = normalizeCalendarDates(value, valueFormat)
 
-    const separator = type === 'range' ? ' ~ ' : ', '
-    return value.map(formatDate).join(separator)
+  if (!dates.length) {
+    return ''
   }
 
-  return formatDate(value)
+  if (Array.isArray(value)) {
+    const separator = type === 'range' ? ' ~ ' : ', '
+    return dates.map(value => formatDateValue(value, format)).join(separator)
+  }
+
+  return formatDateValue(dates[0], format)
 }
 
 export function resolveCalendarPlaceholder(

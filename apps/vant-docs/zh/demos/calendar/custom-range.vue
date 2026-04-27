@@ -6,7 +6,7 @@ import { marchCustomMax, marchCustomMin } from './shared'
 
 const form = createForm({
   values: {
-    limitedDate: new Date(2026, 2, 15),
+    limitedDate: '2026-03-15',
   },
 })
 </script>

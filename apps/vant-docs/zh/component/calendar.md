@@ -11,6 +11,7 @@ mobileDemo: calendar/index.vue
 - 当前封装不需要也不建议手动传 `show`
 - 当前固定使用弹层模式，不暴露 `poppable`
 - 当前不对外暴露实例方法
+- `modelValue` / `defaultDate` 使用字符串日期，默认格式为 `YYYY-MM-DD`
 - 字段展示区默认格式为 `YYYY-MM-DD`，仅在点击确认后同步 `modelValue`
   :::
 
@@ -75,7 +76,9 @@ mobileDemo: calendar/index.vue
 
 | 属性名             | 类型                                 | 描述                 | 默认值                                     |
 | ------------------ | ------------------------------------ | -------------------- | ------------------------------------------ |
-| `modelValue`       | `Date \| Date[] \| null`             | 当前选中值           | `-`                                        |
+| `modelValue`       | `string \| string[] \| null`         | 当前选中值           | `-`                                        |
+| `format`           | `string`                             | 字段展示区日期格式   | `YYYY-MM-DD`                               |
+| `valueFormat`      | `string`                             | 绑定值日期格式       | `YYYY-MM-DD`                               |
 | `placeholder`      | `string`                             | 未选择时的展示文案   | 单选为“请选择日期”，区间为“请选择日期范围” |
 | `displayFormatter` | ^[Function]`(value, type) => string` | 自定义字段展示区文案 | `-`                                        |
 | `disabled`         | `boolean`                            | 禁用状态             | `false`                                    |
@@ -92,7 +95,7 @@ mobileDemo: calendar/index.vue
 | `color`               | `string`                                   | 主题色               | 官方默认值 |
 | `minDate`             | `Date`                                     | 可选择的最小日期     | 官方默认值 |
 | `maxDate`             | `Date`                                     | 可选择的最大日期     | 官方默认值 |
-| `defaultDate`         | `Date \| Date[] \| null`                   | 默认选中的日期       | 官方默认值 |
+| `defaultDate`         | `string \| string[] \| null`               | 默认选中的日期       | 官方默认值 |
 | `rowHeight`           | `number \| string`                         | 日期行高             | 官方默认值 |
 | `formatter`           | ^[Function]`(day) => day`                  | 日期格式化函数       | `-`        |
 | `lazyRender`          | `boolean`                                  | 是否只渲染可视区域   | 官方默认值 |
@@ -151,14 +154,14 @@ mobileDemo: calendar/index.vue
 
 | 事件名              | 描述                     | 回调参数                                                      |
 | ------------------- | ------------------------ | ------------------------------------------------------------- |
-| `update:modelValue` | 点击确认后同步字段值     | ^[Function]`(value: Date \| Date[] \| null) => void`          |
-| `select`            | 选中任意日期时触发       | ^[Function]`(value: Date \| Date[] \| null) => void`          |
-| `confirm`           | 日期选择完成后触发       | ^[Function]`(value: Date \| Date[] \| null) => void`          |
+| `update:modelValue` | 点击确认后同步字段值     | ^[Function]`(value: string \| string[] \| null) => void`      |
+| `select`            | 选中任意日期时触发       | ^[Function]`(value: string \| string[] \| null) => void`      |
+| `confirm`           | 日期选择完成后触发       | ^[Function]`(value: string \| string[] \| null) => void`      |
 | `open`              | 弹层打开时触发           | `-`                                                           |
 | `close`             | 弹层关闭时触发           | `-`                                                           |
 | `opened`            | 弹层打开且动画结束后触发 | `-`                                                           |
 | `closed`            | 弹层关闭且动画结束后触发 | `-`                                                           |
-| `unselect`          | 多选模式取消选中时触发   | ^[Function]`(value: Date) => void`                            |
+| `unselect`          | 多选模式取消选中时触发   | ^[Function]`(value: string) => void`                          |
 | `monthShow`         | 月份进入可视区域时触发   | ^[Function]`(payload: { date: Date; title: string }) => void` |
 | `overRange`         | 超出最大范围时触发       | `-`                                                           |
 | `clickSubtitle`     | 点击副标题时触发         | ^[Function]`(event: MouseEvent) => void`                      |

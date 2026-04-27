@@ -7,7 +7,7 @@ import { mayEnd, mayStart } from './shared'
 
 const form = createForm({
   values: {
-    holidayRange: [new Date(2026, 4, 1), new Date(2026, 4, 4)],
+    holidayRange: ['2026-05-01', '2026-05-04'],
   },
 })
 

@@ -6,7 +6,7 @@ import { juneEnd, marchStart } from './shared'
 
 const form = createForm({
   values: {
-    scheduleDate: new Date(2026, 5, 18),
+    scheduleDate: '2026-06-18',
   },
 })
 </script>

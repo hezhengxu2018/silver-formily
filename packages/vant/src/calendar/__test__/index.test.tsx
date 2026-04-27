@@ -8,7 +8,7 @@ import 'vant/lib/index.css'
 
 const marchStart = new Date(2026, 2, 1)
 const marchEnd = new Date(2026, 2, 31)
-const defaultDate = new Date(2026, 2, 23)
+const defaultDate = '2026-03-23'
 
 function waitForAnimationFrame() {
   return new Promise<void>((resolve) => {
@@ -119,14 +119,51 @@ describe('calendar', () => {
     document.querySelector<HTMLElement>('.van-calendar__confirm')!.click()
 
     await vi.waitFor(() => {
-      const value = form.values.travelDate as Date
-
-      expect(value).toBeInstanceOf(Date)
-      expect(value.getFullYear()).toBe(2026)
-      expect(value.getMonth()).toBe(2)
-      expect(value.getDate()).toBe(25)
+      expect(form.values.travelDate).toBe('2026-03-25')
       expect(getVisibleCalendar()).toBeNull()
       expect(trigger.value).toBe('2026-03-25')
+    })
+  })
+
+  it('应该支持通过 valueFormat 自定义提交值格式，并用 format 控制展示格式', async () => {
+    const form = createForm({
+      values: {
+        travelDate: '23/03/2026',
+      },
+    })
+
+    const { container } = render(() => (
+      <FormProvider form={form}>
+        <Field
+          name="travelDate"
+          title="出发日期"
+          decorator={[FormItem]}
+          component={[Calendar, {
+            format: 'YYYY年MM月DD日',
+            minDate: marchStart,
+            maxDate: marchEnd,
+            valueFormat: 'DD/MM/YYYY',
+          }]}
+        />
+      </FormProvider>
+    ))
+
+    const trigger = getTrigger(container)
+
+    expect(trigger.value).toBe('2026年03月23日')
+
+    trigger.click()
+
+    await vi.waitFor(() => {
+      expect(getVisibleCalendar()).not.toBeNull()
+    })
+
+    getCalendarDay('25').click()
+    document.querySelector<HTMLElement>('.van-calendar__confirm')!.click()
+
+    await vi.waitFor(() => {
+      expect(form.values.travelDate).toBe('25/03/2026')
+      expect(trigger.value).toBe('2026年03月25日')
     })
   })
 

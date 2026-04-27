@@ -21,6 +21,7 @@ export type {
   CalendarModelValue,
   CalendarMonthTitleSlotProps,
   CalendarProps,
+  CalendarResolvedValue,
   CalendarSlots,
   CalendarSubtitleSlotProps,
   CalendarSwitchMode,

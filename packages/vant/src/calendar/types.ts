@@ -10,7 +10,9 @@ import type {
 import type { CalendarSwitchMode } from 'vant/es/calendar/types'
 import type { TeleportProps } from 'vue'
 
-export type CalendarResolvedValue = Date | Date[] | null
+export type CalendarResolvedValue = string | string[] | null
+
+export type CalendarInnerValue = Date | Date[] | null
 
 export type CalendarModelValue = CalendarResolvedValue | undefined
 
@@ -50,6 +52,8 @@ export interface CalendarProps {
   maxDate?: Date
   firstDayOfWeek?: number | string
   modelValue?: CalendarModelValue
+  format?: string
+  valueFormat?: string
   placeholder?: string
   readOnly?: boolean
   displayFormatter?: CalendarDisplayFormatter

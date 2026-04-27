@@ -1,54 +1,50 @@
-import { cloneDeep } from 'es-toolkit'
 import { describe, expect, it } from 'vitest'
-import { formatCalendarValue, normalizeCalendarValue, resolveCalendarPlaceholder } from '../utils'
+import {
+  formatCalendarValue,
+  normalizeCalendarValue,
+  resolveCalendarInnerValue,
+  resolveCalendarPlaceholder,
+  resolveCalendarSelectedValue,
+} from '../utils'
 
 describe('calendar utils', () => {
-  it('应该按日历类型归一化外部值，并返回新的 Date 实例', () => {
-    const firstDate = new Date(2026, 2, 23)
-    const secondDate = new Date(2026, 2, 25)
-    const thirdDate = new Date(2026, 2, 27)
-
-    const singleValue = normalizeCalendarValue([firstDate, secondDate], 'single')
-    const rangeValue = normalizeCalendarValue([firstDate, secondDate, thirdDate], 'range')
-    const multipleValue = normalizeCalendarValue(firstDate, 'multiple')
+  it('应该按日历类型把外部字符串值解析为 Vant 需要的 Date 实例', () => {
+    const singleValue = resolveCalendarInnerValue(['2026-03-23', '2026-03-25'], 'single')
+    const rangeValue = resolveCalendarInnerValue(['2026-03-23', '2026-03-25', '2026-03-27'], 'range')
+    const multipleValue = resolveCalendarInnerValue('2026-03-23', 'multiple')
 
     expect(singleValue).toBeInstanceOf(Date)
-    expect(singleValue).not.toBe(firstDate)
-    expect((singleValue as Date).getTime()).toBe(firstDate.getTime())
+    expect((singleValue as Date).getFullYear()).toBe(2026)
+    expect((singleValue as Date).getMonth()).toBe(2)
+    expect((singleValue as Date).getDate()).toBe(23)
 
     expect(rangeValue).toHaveLength(2)
-    expect((rangeValue as Date[])[0]).not.toBe(firstDate)
-    expect((rangeValue as Date[])[1]).not.toBe(secondDate)
-    expect((rangeValue as Date[])[0].getTime()).toBe(firstDate.getTime())
-    expect((rangeValue as Date[])[1].getTime()).toBe(secondDate.getTime())
+    expect((rangeValue as Date[])[0].getDate()).toBe(23)
+    expect((rangeValue as Date[])[1].getDate()).toBe(25)
 
     expect(multipleValue).toHaveLength(1)
-    expect((multipleValue as Date[])[0]).not.toBe(firstDate)
-    expect((multipleValue as Date[])[0].getTime()).toBe(firstDate.getTime())
+    expect((multipleValue as Date[])[0].getDate()).toBe(23)
   })
 
-  it('应该在克隆规范值时保留 null，并隔离数组/单值引用', () => {
+  it('应该把 Date 内部值格式化为字符串模型值', () => {
     const singleDate = new Date(2026, 2, 23)
-    const multipleDates = [new Date(2026, 2, 23), new Date(2026, 2, 25)]
+    const rangeDates = [new Date(2026, 2, 23), new Date(2026, 2, 25)]
 
-    const clonedSingle = cloneDeep(singleDate)
-    const clonedMultiple = cloneDeep(multipleDates)
+    expect(normalizeCalendarValue(singleDate as any)).toBe('2026-03-23')
+    expect(normalizeCalendarValue(rangeDates as any, 'range')).toEqual(['2026-03-23', '2026-03-25'])
+    expect(normalizeCalendarValue(singleDate as any, 'single', { valueFormat: 'DD/MM/YYYY' })).toBe('23/03/2026')
+  })
 
-    expect(cloneDeep(null)).toBeNull()
+  it('应该在选中事件中保留区间模式的临时选择值', () => {
+    const selectedDate = new Date(2026, 2, 23)
 
-    expect(clonedSingle).toBeInstanceOf(Date)
-    expect(clonedSingle).not.toBe(singleDate)
-    expect((clonedSingle as Date).getTime()).toBe(singleDate.getTime())
-
-    expect(clonedMultiple).toHaveLength(2)
-    expect(clonedMultiple).not.toBe(multipleDates)
-    expect((clonedMultiple as Date[])[0]).not.toBe(multipleDates[0])
-    expect((clonedMultiple as Date[])[1]).not.toBe(multipleDates[1])
+    expect(resolveCalendarSelectedValue([selectedDate], 'range')).toEqual(['2026-03-23'])
+    expect(resolveCalendarSelectedValue([selectedDate], 'range', { valueFormat: 'DD/MM/YYYY' })).toEqual(['23/03/2026'])
   })
 
   it('应该格式化规范后的日期值', () => {
-    const singleValue = new Date(2026, 2, 23)
-    const rangeValue = [new Date(2026, 2, 23), new Date(2026, 2, 25)]
+    const singleValue = '2026-03-23'
+    const rangeValue = ['2026-03-23', '2026-03-25']
 
     expect(formatCalendarValue(null)).toBe('')
     expect(formatCalendarValue(singleValue)).toBe('2026-03-23')
@@ -56,14 +52,16 @@ describe('calendar utils', () => {
     expect(formatCalendarValue(rangeValue)).toBe('2026-03-23, 2026-03-25')
     expect(formatCalendarValue(rangeValue, 'range')).toBe('2026-03-23 ~ 2026-03-25')
     expect(formatCalendarValue(rangeValue, 'multiple')).toBe('2026-03-23, 2026-03-25')
+    expect(formatCalendarValue('23/03/2026', 'single', {
+      format: 'YYYY年MM月DD日',
+      valueFormat: 'DD/MM/YYYY',
+    })).toBe('2026年03月23日')
   })
 
   it('应该在非法或不足量的日期值下返回空结果', () => {
-    const firstDate = new Date(2026, 2, 23)
-
     expect(normalizeCalendarValue('invalid' as any)).toBeNull()
-    expect(normalizeCalendarValue([firstDate], 'range')).toBeNull()
-    expect(normalizeCalendarValue([firstDate, 'invalid'] as any, 'range')).toBeNull()
+    expect(normalizeCalendarValue(['2026-03-23'], 'range')).toBeNull()
+    expect(normalizeCalendarValue(['2026-03-23', 'invalid'] as any, 'range')).toBeNull()
   })
 
   it('应该按类型返回对应的默认占位符', () => {

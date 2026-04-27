@@ -27,8 +27,8 @@ export function formatModelValue(value: CalendarModelValue) {
   }
 
   if (Array.isArray(value)) {
-    return value.map(item => formatDate(item)).join(' ~ ')
+    return value.join(' ~ ')
   }
 
-  return formatDate(value)
+  return value
 }

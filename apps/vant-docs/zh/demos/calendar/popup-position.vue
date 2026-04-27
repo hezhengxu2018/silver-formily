@@ -6,7 +6,7 @@ import { aprilEnd, marchStart } from './shared'
 
 const form = createForm({
   values: {
-    asideDate: new Date(2026, 2, 27),
+    asideDate: '2026-03-27',
   },
 })
 </script>

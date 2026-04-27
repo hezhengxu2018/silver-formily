@@ -6,7 +6,7 @@ import { mayEnd, mayStart } from './shared'
 
 const form = createForm({
   values: {
-    tripRange: [new Date(2026, 4, 18), new Date(2026, 4, 21)],
+    tripRange: ['2026-05-18', '2026-05-21'],
   },
 })
 </script>
