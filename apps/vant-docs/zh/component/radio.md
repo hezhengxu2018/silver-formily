@@ -6,12 +6,9 @@ mobileDemo: radio/index.vue
 
 > `Radio.Group` 是面向 Formily 单值字段的 Vant 单选框组封装，延续 `dataSource + option slot + readPretty` 这套现有组件习惯。
 
-:::warning 使用建议
+:::tip 提示
 表单场景优先使用 `Radio.Group`，`dataSource` / `options` 统一使用 `{ label, value }` 对象数组。
 :::
-
-- 如果要复刻 Vant 官方“搭配单元格组件使用”的布局，可以给 `Radio.Group` 传默认插槽，内部直接放原始 `Radio` 子节点
-- 如果要做宫格/卡片式选择器，也可以给 `Radio.Group` 传默认插槽，在内部配合 `Grid` 组织布局
 
 ## 基础使用
 
@@ -58,19 +55,15 @@ mobileDemo: radio/index.vue
 | `labelPosition` | ^[enum]`'left' \| 'right'` | 统一控制选项文字相对图标的位置         | `-`     |
 | `labelDisabled` | `boolean`                  | 是否禁用点击文字切换                   | `-`     |
 
-API、插槽、事件参考 [Vant Radio 官方文档（正式站）](https://vant-ui.github.io/vant/#/zh-CN/radio)
+单个 `Radio` 以及 `Radio.Group` 透传的官方属性、插槽、事件直接参考 [Vant Radio 官方文档](https://vant-ui.github.io/vant/#/zh-CN/radio)。
 
 ### RadioOption
 
-对象选项除了 `label` / `value` 之外，也支持透传 Vant 单个 `Radio` 的常见属性：
+统一使用 `{ label, value }` 格式来描述选项。
 
-| 属性名          | 类型                       | 描述                     | 默认值 |
-| --------------- | -------------------------- | ------------------------ | ------ |
-| `label`         | `any`                      | 选项文案                 | `-`    |
-| `value`         | `unknown`                  | 选项值                   | `-`    |
-| `disabled`      | `boolean`                  | 单个选项禁用             | `-`    |
-| `shape`         | ^[enum]`'round' \| 'dot'`  | 单个选项图标形状         | `-`    |
-| `iconSize`      | `number \| string`         | 单个选项图标大小         | `-`    |
-| `checkedColor`  | `string`                   | 单个选项选中颜色         | `-`    |
-| `labelPosition` | ^[enum]`'left' \| 'right'` | 单个选项文案位置         | `-`    |
-| `labelDisabled` | `boolean`                  | 单个选项是否禁用点击文案 | `-`    |
+除 `label` / `value` 之外，`RadioOption` 支持直接透传 Vant 单个 `Radio` 可用属性，具体请直接参考 [Vant Radio 官方文档](https://vant-ui.github.io/vant/#/zh-CN/radio)。
+
+额外说明：
+
+- 通过 `option` 作用域插槽自定义渲染时，可以继续在选项对象上挂 `description`、`tag` 这类业务字段。
+- 这类额外业务字段会保留在插槽参数 `option` 上，但不会透传到内部 `VanRadio` DOM。

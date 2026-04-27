@@ -38,7 +38,9 @@ mobileDemo: checkbox/index.vue
 
 ### Checkbox 官方透传属性
 
-属性、插槽、事件主要参考 [Vant Checkbox 官方文档](https://vant-ui.github.io/vant/#/zh-CN/checkbox)。
+单个 `Checkbox` 的属性、插槽、事件直接参考 [Vant Checkbox 官方文档](https://vant-ui.github.io/vant/#/zh-CN/checkbox)。
+
+`Checkbox.Group` 透传的官方分组属性也直接参考同一页里的 Group API。
 
 ### Checkbox.Group 扩展属性
 
@@ -50,4 +52,11 @@ mobileDemo: checkbox/index.vue
 
 ### CheckboxOption
 
-属性、插槽、事件主要参考 [Vant Checkbox 官方文档](https://vant-ui.github.io/vant/#/zh-CN/checkbox)。
+统一使用 `{ label, value }` 格式来描述选项。
+
+除 `label` / `value` 之外，`CheckboxOption` 支持直接透传 Vant 单个 `Checkbox` 可用属性，具体请直接参考 [Vant Checkbox 官方文档](https://vant-ui.github.io/vant/#/zh-CN/checkbox)。
+
+额外说明：
+
+- 通过 `option` 作用域插槽自定义渲染时，可以继续在选项对象上挂 `description`、`tag` 这类业务字段。
+- 这类额外业务字段会保留在插槽参数 `option` 上，但不会透传到内部 `VanCheckbox` DOM。

@@ -54,6 +54,7 @@ const form = createForm({
 .service-option__main {
   display: grid;
   gap: 4px;
+  flex: 1;
 }
 
 .service-option__label {
@@ -61,11 +62,13 @@ const form = createForm({
   font-size: 14px;
   font-weight: 600;
   line-height: 1.4;
+  text-align: left;
 }
 
 .service-option__description {
   color: var(--van-text-color-2);
   font-size: 12px;
   line-height: 1.5;
+  text-align: left;
 }
 </style>
