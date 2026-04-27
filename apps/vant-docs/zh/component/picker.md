@@ -6,14 +6,9 @@ mobileDemo: picker/index.vue
 
 > `Picker` 是基于 Vant 官方 `Picker` 做的 Formily 封装，补上了字段触发区、内置弹层、阅读态展示，以及更贴近表单字段心智的值形态适配。
 
-:::tip 与官方的差异
+:::tip 提示
 
-- 当前封装固定通过 `Popup` 弹层承载，不需要手动维护 `show`
-- Popup 相关配置统一收口到 `popupProps`，避免和 Picker 自身参数混在一起
-- `Field` 上的 `dataSource` 会自动映射到 `columns`
-- 单列字段值保存为标量，多列 / 级联字段值保存为数组
-- 关闭弹层时会回滚未确认选择，只有点击确认按钮才会写回字段值
-- 内部固定显示工具栏，不支持隐藏 `showToolbar`
+`Field` 上的 `dataSource` 会自动映射到 `columns`
 
 :::
 
@@ -51,103 +46,27 @@ mobileDemo: picker/index.vue
 
 ## API
 
-### 使用约定
+- `Field` 上的 `dataSource` 会自动映射到 `columns`，额外支持 `{ label, value }`、`{ label, name }` 的选项形态，同时兼容[官方文档中的字段](https://vant-ui.github.io/vant/#/zh-CN/picker#pickeroption-shu-ju-jie-gou)。
+- 单列字段值是 `string | number | null`，多列 / 级联字段值是 `Array<string | number> | null`。
+- 默认情况下，`readonly` / `disabled` 仍允许打开弹层，内部 Picker 会进入只读态；传入 `disableTriggerWhenInactive` 后，会在触发区层面阻止打开弹层。
 
-- `Field` 上的 `dataSource` 会自动映射到 `columns`
-- 单列字段值是 `string | number | null`，多列 / 级联字段值是 `Array<string | number> | null`
-- 对象选项优先推荐写成 `{ label, value }`，同时兼容 `{ text, value }`、`{ label, name }`
-- `readPretty` 模式下会自动回显当前选项文案，找不到匹配项时回退为空占位
-- 默认情况下，`readonly` / `disabled` 仍允许打开弹层，但内部 Picker 会进入只读态
-- 传入 `disableTriggerWhenInactive` 后，会改成在触发区层面阻止打开
-- 当前不支持通过组件 `ref` 调用官方实例方法
+### 补充 Props
 
-### 封装补充 Props
+| 属性名                       | 类型                                                  | 描述                             | 默认值         |
+| ---------------------------- | ----------------------------------------------------- | -------------------------------- | -------------- |
+| `modelValue`                 | `string \| number \| Array<string \| number> \| null` | 当前字段值                       | `-`            |
+| `columns`                    | `PickerColumn \| PickerColumn[]`                      | 选项列，通常由 `dataSource` 提供 | `[]`           |
+| `columnsFieldNames`          | ^[object]`{ text, value, children }`                  | 自定义字段名映射                 | 官方默认值     |
+| `placeholder`                | `string`                                              | 未选择时的展示文案               | `'请选择选项'` |
+| `popupProps`                 | `PickerPopupProps`                                    | 传给内部 Popup 的配置            | `-`            |
+| `disableTriggerWhenInactive` | `boolean`                                             | 非可编辑态时是否直接禁用触发区   | `false`        |
+| `separator`                  | `string`                                              | 字段展示区分隔符                 | `' / '`        |
+| `displayFormatter`           | ^[Function]`(value, selectedOptions) => string`       | 自定义字段展示区文案             | `-`            |
+| `readonly`                   | `boolean`                                             | 只读态，默认允许打开只读弹层     | `false`        |
+| `disabled`                   | `boolean`                                             | 禁用态，默认允许打开只读弹层     | `false`        |
 
-| 属性名                       | 类型                                            | 描述                             | 默认值         |
-| ---------------------------- | ----------------------------------------------- | -------------------------------- | -------------- |
-| `modelValue`                 | `string \| number \| Array<string \| number>`   | 当前字段值                       | `-`            |
-| `columns`                    | `PickerColumn \| PickerColumn[]`                | 选项列，通常由 `dataSource` 提供 | `[]`           |
-| `columnsFieldNames`          | ^[object]`{ text, value, children }`            | 自定义字段名映射                 | 官方默认值     |
-| `placeholder`                | `string`                                        | 未选择时的展示文案               | `'请选择选项'` |
-| `popupProps`                 | `PickerPopupProps`                              | 传给内部 Popup 的配置            | `-`            |
-| `disableTriggerWhenInactive` | `boolean`                                       | 非可编辑态时是否直接禁用触发区   | `false`        |
-| `separator`                  | `string`                                        | 字段展示区分隔符                 | `' / '`        |
-| `displayFormatter`           | ^[Function]`(value, selectedOptions) => string` | 自定义字段展示区文案             | `-`            |
-| `readonly`                   | `boolean`                                       | 只读态，默认允许打开只读弹层     | `false`        |
-| `disabled`                   | `boolean`                                       | 禁用态，默认允许打开只读弹层     | `false`        |
-
-### 官方 Picker Props
-
-以下属性会直接透传给 Vant `Picker`：
-
-| 属性名              | 类型                       | 描述               | 默认值     |
-| ------------------- | -------------------------- | ------------------ | ---------- |
-| `title`             | `string`                   | 顶部标题           | 官方默认值 |
-| `loading`           | `boolean`                  | 是否显示加载状态   | 官方默认值 |
-| `toolbarPosition`   | ^[enum]`'top' \| 'bottom'` | 工具栏位置         | 官方默认值 |
-| `cancelButtonText`  | `string`                   | 取消按钮文案       | 官方默认值 |
-| `confirmButtonText` | `string`                   | 确认按钮文案       | 官方默认值 |
-| `optionHeight`      | `number \| string`         | 选项高度           | 官方默认值 |
-| `visibleOptionNum`  | `number \| string`         | 可见选项个数       | 官方默认值 |
-| `swipeDuration`     | `number \| string`         | 滚动惯性动画时长   | 官方默认值 |
-| `allowHtml`         | `boolean`                  | 是否渲染 HTML 文案 | 官方默认值 |
+除上述补充能力外，Picker 选项结构、滚轮交互和已透传的官方属性 / 插槽可参考 [Vant Picker 官方文档](https://vant-ui.github.io/vant/#/zh-CN/picker)。当前封装固定通过 `Popup` 弹层承载，不需要手动维护 `show`；内部固定显示工具栏，不支持隐藏 `showToolbar`。
 
 ### Popup Props
 
-当前封装内部固定包了一层 `Popup`，以下属性需要通过 `popupProps` 传入，例如：
-
-```vue
-<Picker
-  :popup-props="{
-    position: 'top',
-    round: false,
-  }"
-/>
-```
-
-可用字段如下：
-
-| 属性名                | 类型                                            | 描述                 | 默认值     |
-| --------------------- | ----------------------------------------------- | -------------------- | ---------- |
-| `position`            | ^[enum]`'bottom' \| 'top' \| 'left' \| 'right'` | 弹出位置             | `'bottom'` |
-| `round`               | `boolean`                                       | 是否显示圆角         | `true`     |
-| `overlay`             | `boolean`                                       | 是否显示遮罩层       | `true`     |
-| `teleport`            | `string \| Element`                             | 指定挂载节点         | 官方默认值 |
-| `closeOnPopstate`     | `boolean`                                       | 回退时是否自动关闭   | `true`     |
-| `closeOnClickOverlay` | `boolean`                                       | 点击遮罩是否自动关闭 | `true`     |
-| `safeAreaInsetTop`    | `boolean`                                       | 是否开启顶部安全区   | 官方默认值 |
-| `safeAreaInsetBottom` | `boolean`                                       | 是否开启底部安全区   | `true`     |
-| `lockScroll`          | `boolean`                                       | 是否锁定背景滚动     | `true`     |
-| `lazyRender`          | `boolean`                                       | 是否延迟渲染内容     | `true`     |
-| `zIndex`              | `number \| string`                              | 弹层层级             | 官方默认值 |
-| `duration`            | `number \| string`                              | 动画时长             | 官方默认值 |
-| `transition`          | `string`                                        | 自定义过渡动画       | 官方默认值 |
-
-其中 `show` 和 `onUpdate:show` 由内部运行时接管，不对外暴露。
-
-### Slots
-
-以下官方插槽已转发：
-
-| 插槽名           | 描述             | 插槽参数 |
-| ---------------- | ---------------- | -------- |
-| `title`          | 自定义标题       | `-`      |
-| `cancel`         | 自定义取消按钮   | `-`      |
-| `confirm`        | 自定义确认按钮   | `-`      |
-| `toolbar`        | 自定义整个工具栏 | `-`      |
-| `option`         | 自定义选项内容   | `option` |
-| `empty`          | 空状态内容       | `-`      |
-| `columns-top`    | 选项区顶部内容   | `-`      |
-| `columns-bottom` | 选项区底部内容   | `-`      |
-
-### Events
-
-| 事件名              | 描述                     | 回调参数                                                                          |
-| ------------------- | ------------------------ | --------------------------------------------------------------------------------- |
-| `update:modelValue` | 点击确认后同步字段值     | ^[Function]`(value: string \| number \| Array<string \| number> \| null) => void` |
-| `opened`            | 弹层打开且动画结束后触发 | `-`                                                                               |
-| `closed`            | 弹层关闭且动画结束后触发 | `-`                                                                               |
-
-### 参考
-
-- [Vant Picker 官方文档（正式站）](https://vant-ui.github.io/vant/#/zh-CN/picker)
+参考[createPopup](/component/create-popup)

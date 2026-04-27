@@ -138,7 +138,7 @@ const {
   close,
   onPopupShowChange: onCalendarShowChange,
 } = usePopupState({
-  disabled: () => props.disabled || props.readonly || props.readOnly,
+  disabled: () => props.disabled || props.readonly,
   onBeforeOpen: resetCalendarSelection,
   onRestore: resetCalendarSelection,
   onVisibilityChange: emitVisibilityChange,
@@ -176,7 +176,7 @@ function onUnselect(value: Date) {
 <template>
   <PopupTriggerInput
     :input-props="triggerInputProps"
-    :disabled="props.disabled || props.readOnly || props.readonly"
+    :disabled="props.disabled || props.readonly"
     :value="displayText"
     :placeholder="resolveCalendarPlaceholder(props.placeholder, props.type)"
     @click="open"
