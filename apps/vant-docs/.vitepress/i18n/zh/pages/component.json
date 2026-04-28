@@ -85,6 +85,14 @@
         "link": "/component/cascader"
       },
       {
+        "text": "Area 省市区选择",
+        "link": "/component/area"
+      },
+      {
+        "text": "AreaPanel 省市区面板",
+        "link": "/component/area-panel"
+      },
+      {
         "text": "Picker 选择器",
         "link": "/component/picker"
       },

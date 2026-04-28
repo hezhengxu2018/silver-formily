@@ -1,4 +1,5 @@
 import type { RateProps as VanRateProps, SliderProps as VanSliderProps, SwitchProps as VanSwitchProps } from 'vant'
+import type { AreaDisplayFormatter, AreaList, AreaModelValue, VanAreaProps } from '../area/types'
 import type { CalendarDisplayFormatter, CalendarModelValue, CalendarType } from '../calendar/types'
 import type {
   CascaderDisplayFormatter,
@@ -65,6 +66,16 @@ export interface PreviewTextSignatureProps {
 
 export interface PreviewTextUploadProps {
   modelValue?: any
+}
+
+export interface PreviewTextAreaProps {
+  modelValue?: AreaModelValue
+  areaList?: AreaList
+  columnsNum?: VanAreaProps['columnsNum']
+  columnsPlaceholder?: VanAreaProps['columnsPlaceholder']
+  placeholder?: string
+  separator?: string
+  displayFormatter?: AreaDisplayFormatter
 }
 
 export interface PreviewTextCalendarProps {

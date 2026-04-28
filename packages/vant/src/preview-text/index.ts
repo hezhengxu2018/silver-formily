@@ -1,4 +1,5 @@
 import { composeExport } from '../__builtins__'
+import Area from './area.vue'
 import Calendar from './calendar.vue'
 import Cascader from './cascader.vue'
 import DatePicker from './date-picker.vue'
@@ -15,6 +16,7 @@ import TimePicker from './time-picker.vue'
 import Upload from './upload.vue'
 
 export const PreviewText = composeExport(Preview, {
+  Area,
   Calendar,
   Cascader,
   DatePicker,
@@ -33,6 +35,7 @@ export const PreviewText = composeExport(Preview, {
 export default PreviewText
 
 export type {
+  PreviewTextAreaProps,
   PreviewTextCalendarProps,
   PreviewTextCascaderProps,
   PreviewTextDatePickerProps,

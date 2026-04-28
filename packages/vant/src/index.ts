@@ -1,3 +1,5 @@
+export * from './area'
+export * from './area-panel'
 export * from './calendar'
 export * from './cascader'
 export * from './checkbox'
