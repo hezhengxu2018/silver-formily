@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import type { FunctionalPopupSlots } from '../create-popup'
+import type { DatePickerPanelProps } from '../date-picker-panel'
 import type {
-  DatePickerPopupContentProps,
-  DatePickerPopupDatePickerProps,
   DatePickerPopupProps,
   DatePickerProps,
   DatePickerResolvedValue,
@@ -11,12 +10,10 @@ import type {
 import { computed, useSlots } from 'vue'
 import { PopupTriggerInput, useCleanAttrs } from '../__builtins__'
 import { createPopup } from '../create-popup'
+import DatePickerPanel from '../date-picker-panel/date-picker-panel.vue'
 import { usePickerInactiveState } from '../picker/use-picker-inactive-state'
-import DatePickerPopupContent from './date-picker-popup-content.vue'
 import {
   formatDatePickerValue,
-  resolveDatePickerBoundaryDates,
-  resolveDatePickerInnerValue,
   resolveDatePickerModelValue,
   resolveDatePickerSelectedOptions,
 } from './utils'
@@ -77,45 +74,32 @@ const displayText = computed(() => {
   return formatDatePickerValue(props.modelValue ?? null, resolvedDatePickerOptions.value)
 })
 const { isPopupReadonly, isTriggerDisabled } = usePickerInactiveState(props)
-const boundaryDates = computed(() => resolveDatePickerBoundaryDates(resolvedDatePickerOptions.value))
 
 const popupBindings = computed(() => {
   return {
     ...props.popupProps,
   } satisfies DatePickerPopupProps & Record<string, unknown>
 })
-const sharedDatePickerProps = computed(() => {
+const panelProps = computed<DatePickerPanelProps>(() => {
   return {
     allowHtml: props.allowHtml,
     cancelButtonText: props.cancelButtonText,
     columnsType: props.columnsType,
     confirmButtonText: props.confirmButtonText,
     filter: props.filter,
+    format: props.format,
     formatter: props.formatter,
     loading: props.loading,
-    maxDate: boundaryDates.value.maxDate,
-    minDate: boundaryDates.value.minDate,
+    maxDate: props.maxDate,
+    minDate: props.minDate,
+    modelValue: props.modelValue,
     optionHeight: props.optionHeight,
     readonly: isPopupReadonly.value,
-    showToolbar: true,
+    separator: props.separator,
     swipeDuration: props.swipeDuration,
     title: props.title,
+    valueFormat: props.valueFormat,
     visibleOptionNum: props.visibleOptionNum,
-  }
-})
-const popupDatePickerProps = computed<DatePickerPopupDatePickerProps>(() => {
-  return {
-    ...sharedDatePickerProps.value,
-    modelValue: resolveDatePickerInnerValue(props.modelValue, resolvedDatePickerOptions.value),
-  }
-})
-const popupContentProps = computed<DatePickerPopupContentProps>(() => {
-  return {
-    modelValue: popupDatePickerProps.value.modelValue,
-    datePickerProps: popupDatePickerProps.value,
-    resolveValue(selectedValues) {
-      return resolveDatePickerModelValue(selectedValues, resolvedDatePickerOptions.value)
-    },
   }
 })
 
@@ -124,14 +108,14 @@ async function open() {
     return
   }
 
-  const popupController = createPopup<typeof DatePickerPopupContent, DatePickerResolvedValue>(
+  const popupController = createPopup<typeof DatePickerPanel, DatePickerResolvedValue>(
     popupBindings.value,
-    DatePickerPopupContent,
+    DatePickerPanel,
     slots as FunctionalPopupSlots,
   )
 
   try {
-    const popupPromise = popupController.open(popupContentProps)
+    const popupPromise = popupController.open(panelProps)
     emit('opened')
 
     const result = await popupPromise

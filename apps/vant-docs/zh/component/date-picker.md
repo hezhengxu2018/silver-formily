@@ -7,7 +7,7 @@ mobileDemo: date-picker/index.vue
 > `DatePicker` 是基于 Vant 官方 `DatePicker` 做的 Formily 字段封装。
 
 :::tip 提示
-为方便业务开发，组件内部使用了 `dayjs` 对日期进行了格式化，不再传入 `Date` 对象。具体说明参考API章节。
+`DatePicker`内部复用了`DatePickerPanel`的能力，因此有两者有大量的Props是重复的。
 :::
 
 ## 基础使用

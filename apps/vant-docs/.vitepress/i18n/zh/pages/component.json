@@ -93,6 +93,10 @@
         "link": "/component/date-picker"
       },
       {
+        "text": "DatePickerPanel 日期面板",
+        "link": "/component/date-picker-panel"
+      },
+      {
         "text": "TimePicker 时间滚轮",
         "link": "/component/time-picker"
       },

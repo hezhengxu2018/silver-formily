@@ -49,31 +49,6 @@ export interface DatePickerProps {
 
 export interface DatePickerSlots extends PickerSlots {}
 
-export interface DatePickerPopupDatePickerProps {
-  allowHtml?: VanDatePickerProps['allowHtml']
-  cancelButtonText?: VanDatePickerProps['cancelButtonText']
-  columnsType?: VanDatePickerProps['columnsType']
-  confirmButtonText?: VanDatePickerProps['confirmButtonText']
-  filter?: VanDatePickerProps['filter']
-  formatter?: VanDatePickerProps['formatter']
-  loading?: VanDatePickerProps['loading']
-  maxDate?: VanDatePickerProps['maxDate']
-  minDate?: VanDatePickerProps['minDate']
-  modelValue?: string[]
-  optionHeight?: VanDatePickerProps['optionHeight']
-  readonly?: boolean
-  showToolbar?: boolean
-  swipeDuration?: VanDatePickerProps['swipeDuration']
-  title?: VanDatePickerProps['title']
-  visibleOptionNum?: VanDatePickerProps['visibleOptionNum']
-}
-
-export interface DatePickerPopupContentProps {
-  modelValue?: string[]
-  datePickerProps: DatePickerPopupDatePickerProps
-  resolveValue: (selectedValues: string[]) => DatePickerResolvedValue
-}
-
 export type {
   DatePickerColumnType,
   PickerOption,
