@@ -77,27 +77,6 @@ export interface PickerProps {
   visibleOptionNum?: VanPickerProps['visibleOptionNum']
 }
 
-export interface PickerPopupContentProps {
-  modelValue?: PickerOptionValue[]
-  pickerProps: PickerPopupPickerProps
-  resolveValue: (selectedValues: PickerOptionValue[]) => PickerResolvedValue
-}
-
-export interface PickerPopupPickerProps {
-  allowHtml?: VanPickerProps['allowHtml']
-  cancelButtonText?: VanPickerProps['cancelButtonText']
-  columns?: VanPickerProps['columns']
-  confirmButtonText?: VanPickerProps['confirmButtonText']
-  loading?: VanPickerProps['loading']
-  modelValue?: PickerOptionValue[]
-  optionHeight?: VanPickerProps['optionHeight']
-  readonly?: boolean
-  swipeDuration?: VanPickerProps['swipeDuration']
-  title?: VanPickerProps['title']
-  toolbarPosition?: VanPickerProps['toolbarPosition']
-  visibleOptionNum?: VanPickerProps['visibleOptionNum']
-}
-
 export type {
   PickerThemeVars,
   PickerToolbarPosition,

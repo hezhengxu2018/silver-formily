@@ -10,6 +10,8 @@ mobileDemo: picker/index.vue
 
 `Field` 上的 `dataSource` 会自动映射到 `columns`
 
+`Picker` 内部复用了 `PickerPanel` 的能力，因此两者有大量 Props 是重复的。
+
 :::
 
 ## 基础使用

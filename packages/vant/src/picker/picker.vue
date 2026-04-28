@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import type { FunctionalPopupSlots } from '../create-popup'
+import type { PickerPanelProps } from '../picker-panel'
 import type {
-  PickerPopupContentProps,
-  PickerPopupPickerProps,
   PickerPopupProps,
   PickerProps,
   PickerResolvedValue,
@@ -11,13 +10,10 @@ import { clone } from 'es-toolkit'
 import { computed, useSlots } from 'vue'
 import { PopupTriggerInput, resolveSelectionPlaceholder, useCleanAttrs } from '../__builtins__'
 import { createPopup } from '../create-popup'
-import PickerPopupContent from './picker-popup-content.vue'
+import PickerPanel from '../picker-panel/picker-panel.vue'
 import { usePickerInactiveState } from './use-picker-inactive-state'
 import {
   formatPickerDisplay,
-  normalizePickerColumns,
-  resolvePickerInnerValue,
-  resolvePickerModelValue,
   resolvePickerSelectedOptions,
 } from './utils'
 
@@ -65,22 +61,17 @@ const displayText = computed(() => {
 const popupBindings = computed(() => {
   return {
     ...props.popupProps,
-    onOpened: () => emit('opened'),
-    onClosed: () => emit('closed'),
   } satisfies PickerPopupProps & Record<string, unknown>
 })
-const pickerProps = computed<PickerPopupPickerProps>(() => {
+const panelProps = computed<PickerPanelProps>(() => {
   return {
     allowHtml: props.allowHtml,
     cancelButtonText: props.cancelButtonText,
-    columns: normalizePickerColumns(props.columns, props.columnsFieldNames) as any,
+    columns: props.columns,
+    columnsFieldNames: props.columnsFieldNames,
     confirmButtonText: props.confirmButtonText,
     loading: props.loading,
-    modelValue: resolvePickerInnerValue(
-      props.modelValue,
-      props.columns,
-      props.columnsFieldNames,
-    ),
+    modelValue: props.modelValue,
     optionHeight: props.optionHeight,
     readonly: isPopupReadonly.value,
     showToolbar: true,
@@ -90,36 +81,30 @@ const pickerProps = computed<PickerPopupPickerProps>(() => {
     visibleOptionNum: props.visibleOptionNum,
   }
 })
-const popupContentProps = computed<PickerPopupContentProps>(() => {
-  return {
-    modelValue: pickerProps.value.modelValue,
-    pickerProps: pickerProps.value,
-    resolveValue(selectedValues) {
-      return resolvePickerModelValue(
-        selectedValues,
-        props.columns,
-        props.columnsFieldNames,
-      )
-    },
-  }
-})
 
 async function open() {
   if (isTriggerDisabled.value) {
     return
   }
 
-  const popupController = createPopup<typeof PickerPopupContent, PickerResolvedValue>(
+  const popupController = createPopup<typeof PickerPanel, PickerResolvedValue>(
     popupBindings.value,
-    PickerPopupContent,
+    PickerPanel,
     slots as FunctionalPopupSlots,
   )
 
   try {
-    const value = await popupController.open(popupContentProps)
+    const popupPromise = popupController.open(panelProps)
+    emit('opened')
+
+    const value = await popupPromise
+
     emit('update:modelValue', value)
   }
   catch {
+  }
+  finally {
+    emit('closed')
   }
 }
 </script>

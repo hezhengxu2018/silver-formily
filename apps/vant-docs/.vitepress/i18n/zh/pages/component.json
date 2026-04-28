@@ -89,6 +89,10 @@
         "link": "/component/picker"
       },
       {
+        "text": "PickerPanel 选择器面板",
+        "link": "/component/picker-panel"
+      },
+      {
         "text": "DatePicker 日期滚轮",
         "link": "/component/date-picker"
       },
