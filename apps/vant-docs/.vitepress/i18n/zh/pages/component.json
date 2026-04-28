@@ -105,6 +105,10 @@
         "link": "/component/time-picker"
       },
       {
+        "text": "TimePickerPanel 时间面板",
+        "link": "/component/time-picker-panel"
+      },
+      {
         "text": "PickerGroup 分步选择器",
         "link": "/component/picker-group"
       },

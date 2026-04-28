@@ -10,6 +10,7 @@ mobileDemo: time-picker/index.vue
 
 - 字段值统一保存为字符串，例如 `'09:30'`、`'09:30:15'`
 - `format` 控制字段展示格式，`value-format` 控制实际写回字段的字符串格式
+- `TimePicker` 内部复用 `TimePickerPanel` 作为弹层内容；如需直接展示滚轮面板，可使用 `TimePickerPanel`
 - 关闭弹层时会回滚未确认的临时选择，只有点击确认按钮才会写回字段值
 
 :::

@@ -1,9 +1,8 @@
 <script setup lang="ts">
 import type { FunctionalPopupSlots } from '../create-popup'
+import type { TimePickerPanelProps } from '../time-picker-panel'
 import type {
-  TimePickerPopupContentProps,
   TimePickerPopupProps,
-  TimePickerPopupTimePickerProps,
   TimePickerProps,
   TimePickerResolvedValue,
 } from './types'
@@ -11,10 +10,9 @@ import { computed, useSlots } from 'vue'
 import { PopupTriggerInput, useCleanAttrs } from '../__builtins__'
 import { createPopup } from '../create-popup'
 import { usePickerInactiveState } from '../picker/use-picker-inactive-state'
-import TimePickerPopupContent from './time-picker-popup-content.vue'
+import TimePickerPanel from '../time-picker-panel/time-picker-panel.vue'
 import {
   formatTimePickerValue,
-  resolveTimePickerInnerValue,
   resolveTimePickerModelValue,
   resolveTimePickerSelectedOptions,
 } from './utils'
@@ -81,13 +79,14 @@ const popupBindings = computed(() => {
     ...props.popupProps,
   } satisfies TimePickerPopupProps & Record<string, unknown>
 })
-const sharedTimePickerProps = computed(() => {
+const panelProps = computed<TimePickerPanelProps>(() => {
   return {
     allowHtml: props.allowHtml,
     cancelButtonText: props.cancelButtonText,
     columnsType: props.columnsType,
     confirmButtonText: props.confirmButtonText,
     filter: props.filter,
+    format: props.format,
     formatter: props.formatter,
     loading: props.loading,
     maxHour: props.maxHour,
@@ -98,27 +97,15 @@ const sharedTimePickerProps = computed(() => {
     minMinute: props.minMinute,
     minSecond: props.minSecond,
     minTime: props.minTime,
+    modelValue: props.modelValue,
     optionHeight: props.optionHeight,
     readonly: isPopupReadonly.value,
+    separator: props.separator,
     showToolbar: true,
     swipeDuration: props.swipeDuration,
     title: props.title,
+    valueFormat: props.valueFormat,
     visibleOptionNum: props.visibleOptionNum,
-  }
-})
-const popupTimePickerProps = computed<TimePickerPopupTimePickerProps>(() => {
-  return {
-    ...sharedTimePickerProps.value,
-    modelValue: resolveTimePickerInnerValue(props.modelValue, resolvedTimePickerOptions.value),
-  }
-})
-const popupContentProps = computed<TimePickerPopupContentProps>(() => {
-  return {
-    modelValue: popupTimePickerProps.value.modelValue,
-    timePickerProps: popupTimePickerProps.value,
-    resolveValue(selectedValues) {
-      return resolveTimePickerModelValue(selectedValues, resolvedTimePickerOptions.value)
-    },
   }
 })
 
@@ -127,14 +114,14 @@ async function open() {
     return
   }
 
-  const popupController = createPopup<typeof TimePickerPopupContent, TimePickerResolvedValue>(
+  const popupController = createPopup<typeof TimePickerPanel, TimePickerResolvedValue>(
     popupBindings.value,
-    TimePickerPopupContent,
+    TimePickerPanel,
     slots as FunctionalPopupSlots,
   )
 
   try {
-    const popupPromise = popupController.open(popupContentProps)
+    const popupPromise = popupController.open(panelProps)
     emit('opened')
 
     const result = await popupPromise

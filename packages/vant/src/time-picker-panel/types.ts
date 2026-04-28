@@ -1,30 +1,29 @@
 import type {
   PickerThemeVars,
-  PopupPosition,
   TimePickerColumnType,
-  PopupProps as VanPopupProps,
   TimePickerInstance as VanTimePickerInstance,
   TimePickerProps as VanTimePickerProps,
 } from 'vant'
-import type { PickerOption, PickerSlots } from '../picker/types'
+import type {
+  TimePickerModelValue,
+  TimePickerResolvedValue,
+  TimePickerSlots,
+} from '../time-picker/types'
 
-export type TimePickerResolvedValue = string | null
+export type TimePickerPanelResolvedValue = TimePickerResolvedValue
 
-export type TimePickerModelValue = TimePickerResolvedValue | undefined
+export type TimePickerPanelModelValue = TimePickerModelValue
 
-export type TimePickerDisplayFormatter = (
-  value: TimePickerResolvedValue,
-  selectedOptions: Array<PickerOption | undefined>,
-) => string
+export type TimePickerPanelColumnType = TimePickerColumnType
 
-export type TimePickerPopupProps = Partial<Omit<VanPopupProps, 'show' | 'onUpdate:show'>>
+export interface TimePickerPanelSlots extends TimePickerSlots {}
 
-export interface TimePickerProps {
+export interface TimePickerPanelProps {
   allowHtml?: VanTimePickerProps['allowHtml']
   cancelButtonText?: VanTimePickerProps['cancelButtonText']
   columnsType?: VanTimePickerProps['columnsType']
   confirmButtonText?: VanTimePickerProps['confirmButtonText']
-  modelValue?: TimePickerModelValue
+  modelValue?: TimePickerPanelModelValue
   filter?: VanTimePickerProps['filter']
   format?: string
   formatter?: VanTimePickerProps['formatter']
@@ -38,27 +37,18 @@ export interface TimePickerProps {
   minSecond?: VanTimePickerProps['minSecond']
   minTime?: VanTimePickerProps['minTime']
   optionHeight?: VanTimePickerProps['optionHeight']
-  placeholder?: string
-  popupProps?: TimePickerPopupProps
-  disableTriggerWhenInactive?: boolean
-  separator?: string
-  swipeDuration?: VanTimePickerProps['swipeDuration']
-  title?: VanTimePickerProps['title']
   readonly?: boolean
   disabled?: boolean
-  displayFormatter?: TimePickerDisplayFormatter
+  separator?: string
+  showToolbar?: boolean
+  swipeDuration?: VanTimePickerProps['swipeDuration']
+  title?: VanTimePickerProps['title']
   valueFormat?: string
   visibleOptionNum?: VanTimePickerProps['visibleOptionNum']
 }
 
-export interface TimePickerSlots extends PickerSlots {}
-
 export type {
-  PickerOption,
-  PickerThemeVars,
-  PopupPosition,
-  TimePickerColumnType,
-  VanPopupProps,
-  VanTimePickerInstance,
-  VanTimePickerProps,
+  PickerThemeVars as TimePickerPanelThemeVars,
+  VanTimePickerInstance as VanTimePickerPanelInstance,
+  VanTimePickerProps as VanTimePickerPanelProps,
 }
