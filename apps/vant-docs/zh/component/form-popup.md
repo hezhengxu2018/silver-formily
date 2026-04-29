@@ -71,23 +71,7 @@ const result = await popup
 | `cancelButtonProps` | `Partial<ButtonProps>` | 默认取消按钮属性透传 | `-`      |
 | `okButtonProps`     | `Partial<ButtonProps>` | 默认确认按钮属性透传 | `-`      |
 
-### 作用域插槽参数
-
-- `form`: `Form<TValues>`，当前表单实例
-- `resolve`: `(type?: string) => void`，提交当前表单并进入确认链路
-- `reject`: `() => void`，取消并进入 cancel 链路
-- `saveDraft` 等：`() => void`，传入 `dynamicMiddlewareNames` 后自动注入的动态动作
-
-### 实例方法
-
-- `open`: `(props?: IFormProps<TValues>) => Promise<any>`，打开弹层并创建表单
-- `close`: `() => void`，从外部关闭弹层，行为等同于取消
-- `forOpen`: `(middleware) => popup`，打开前调整 `createForm` 参数
-- `forConfirm`: `(middleware) => popup`，改写默认确认返回值
-- `forCancel`: `(middleware) => popup`，处理取消链路副作用
-- `forXxx`: `(middleware) => popup`，处理 `saveDraft()` 等动态动作命中的链路
-
-### 默认 Popup 配置
+#### FormPopupProps 默认值
 
 | 属性名                | 默认值     |
 | --------------------- | ---------- |
@@ -100,6 +84,24 @@ const result = await popup
 | `closeOnClickOverlay` | `false`    |
 | `safeAreaInsetBottom` | `true`     |
 
-### 参考
+其余配置项可参考 [Vant Popup 官方文档](https://vant-ui.github.io/vant/#/zh-CN/popup)
 
-- [Vant Popup 官方文档（正式站）](https://vant-ui.github.io/vant/#/zh-CN/popup)
+### 作用域插槽参数
+
+| 参数名         | 类型                      | 说明                                               |
+| -------------- | ------------------------- | -------------------------------------------------- |
+| `form`         | `Form<TValues>`           | 当前表单实例                                       |
+| `resolve`      | `(type?: string) => void` | 提交当前表单并进入确认链路                         |
+| `reject`       | `() => void`              | 取消并进入 cancel 链路                             |
+| `saveDraft` 等 | `() => void`              | 传入 `dynamicMiddlewareNames` 后自动注入的动态动作 |
+
+### 实例方法
+
+| 方法名       | 类型                                            | 说明                                    |
+| ------------ | ----------------------------------------------- | --------------------------------------- |
+| `open`       | `(props?: IFormProps<TValues>) => Promise<any>` | 打开弹层并创建表单                      |
+| `close`      | `() => void`                                    | 从外部关闭弹层，行为等同于取消          |
+| `forOpen`    | `(middleware) => popup`                         | 打开前调整 `createForm` 参数            |
+| `forConfirm` | `(middleware) => popup`                         | 改写默认确认返回值                      |
+| `forCancel`  | `(middleware) => popup`                         | 处理取消链路副作用                      |
+| `forXxx`     | `(middleware) => popup`                         | 处理 `saveDraft()` 等动态动作命中的链路 |

@@ -25,7 +25,6 @@ defineOptions({
 const props = withDefaults(defineProps<TimePickerProps>(), {
   columnsType: () => ['hour', 'minute'],
   popupProps: () => ({}),
-  separator: ':',
 })
 
 const emit = defineEmits<{
@@ -51,7 +50,6 @@ const resolvedTimePickerOptions = computed(() => {
     minMinute: props.minMinute,
     minSecond: props.minSecond,
     minTime: props.minTime,
-    separator: props.separator,
     valueFormat: props.valueFormat,
   }
 })
@@ -100,7 +98,6 @@ const panelProps = computed<TimePickerPanelProps>(() => {
     modelValue: props.modelValue,
     optionHeight: props.optionHeight,
     readonly: isPopupReadonly.value,
-    separator: props.separator,
     showToolbar: true,
     swipeDuration: props.swipeDuration,
     title: props.title,

@@ -4,7 +4,7 @@ mobileDemo: picker-group-panel/index.vue
 
 # PickerGroupPanel
 
-> `PickerGroupPanel` 是非弹出框模式的分步选择面板组件，复用 Vant 官方 `PickerGroup` 的 tab 与工具栏交互，并通过默认插槽组合不同类型的 Panel。
+> `PickerGroupPanel` 为了统一封装风格而独立的组件，大部分情况下应该使用 `PickerGroup`
 
 :::tip 提示
 
@@ -69,4 +69,4 @@ mobileDemo: picker-group-panel/index.vue
 ### 参考
 
 - [PickerGroup](/component/picker-group)
-- [Vant PickerGroup 官方文档（正式站）](https://vant-ui.github.io/vant/#/zh-CN/picker-group)
+- [Vant PickerGroup](https://vant-ui.github.io/vant/#/zh-CN/picker-group)

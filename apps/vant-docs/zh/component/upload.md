@@ -60,6 +60,8 @@ mobileDemo: upload/index.vue
 | `httpRequest`     | ^[Function]`(options: UploadRequestOptions) => Promise<any> \| any`            | 自定义上传实现；返回值会写到 `file.response` | `-`                                     |
 | `responseAdaptor` | ^[Function]`(response, item) => string \| Partial<UploadFileListItem> \| void` | 自定义把上传响应映射回文件项                 | `-`                                     |
 
+其余属性可以参考[Vant Uploader 官方文档](https://vant-ui.github.io/vant/#/zh-CN/uploader)
+
 ### 字段注入
 
 可以通过字段实例拿到内部 `Uploader` 引用：
@@ -75,7 +77,3 @@ uploaderRef?.value?.closeImagePreview()
 ### 官方透传属性与事件
 
 除上面的扩展属性外，其余属性、插槽和事件都继续遵循 Vant `Uploader` 语义，例如 `accept`、`maxCount`、`previewImage`、`oversize`、`delete`、`clickPreview` 等。
-
-### 参考
-
-- [Vant Uploader 官方文档（正式站）](https://vant-ui.github.io/vant/#/zh-CN/uploader)

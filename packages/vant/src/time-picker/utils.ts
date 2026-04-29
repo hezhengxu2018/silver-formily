@@ -35,7 +35,6 @@ interface TimePickerResolvedContext {
   minMinute: number
   minSecond: number
   minTime?: string
-  separator: string
   valueFormat?: string
 }
 
@@ -53,7 +52,6 @@ type TimePickerResolvedOptions = Pick<
   | 'minMinute'
   | 'minSecond'
   | 'minTime'
-  | 'separator'
   | 'valueFormat'
 >
 
@@ -70,7 +68,6 @@ interface TimePickerPropsForResolve {
   minMinute?: VanTimePickerProps['minMinute']
   minSecond?: VanTimePickerProps['minSecond']
   minTime?: VanTimePickerProps['minTime']
-  separator?: string
   valueFormat?: string
 }
 
@@ -132,10 +129,10 @@ function resolveTimePickerColumnsType(columnsType?: TimePickerColumnType[]) {
     : [...DEFAULT_COLUMNS_TYPE]
 }
 
-function getDefaultTimePickerFormat(columnsType?: TimePickerColumnType[], separator = ':') {
+function getDefaultTimePickerFormat(columnsType?: TimePickerColumnType[]) {
   return resolveTimePickerColumnsType(columnsType)
     .map(type => getColumnTypeToken(type))
-    .join(separator)
+    .join(':')
 }
 
 function parseFullTimeValue(value: unknown) {
@@ -166,17 +163,15 @@ function getValidTimeLimit(
 export function resolveTimePickerFormat(
   format?: string,
   columnsType?: TimePickerColumnType[],
-  separator = ':',
 ) {
-  return format || getDefaultTimePickerFormat(columnsType, separator)
+  return format || getDefaultTimePickerFormat(columnsType)
 }
 
 export function resolveTimePickerValueFormat(
   valueFormat?: string,
   columnsType?: TimePickerColumnType[],
-  separator = ':',
 ) {
-  return valueFormat || getDefaultTimePickerFormat(columnsType, separator)
+  return valueFormat || getDefaultTimePickerFormat(columnsType)
 }
 
 function resolveTimePickerContext(options: TimePickerResolvedOptions = {}): TimePickerResolvedContext {
@@ -193,7 +188,6 @@ function resolveTimePickerContext(options: TimePickerResolvedOptions = {}): Time
     minMinute: resolveNumericValue(options.minMinute, 0),
     minSecond: resolveNumericValue(options.minSecond, 0),
     minTime: isValidTime(options.minTime) ? options.minTime : undefined,
-    separator: options.separator ?? ':',
     valueFormat: options.valueFormat,
   }
 }
@@ -219,7 +213,7 @@ function parseTimePickerValue(
 
   return parseDayjsValue(
     modelValue,
-    resolveTimePickerValueFormat(context.valueFormat, context.columnsType, context.separator),
+    resolveTimePickerValueFormat(context.valueFormat, context.columnsType),
   )
 }
 
@@ -344,7 +338,7 @@ export function resolveTimePickerModelValue(
   const parsedValue = parseTimePickerValue(values, context)
 
   return parsedValue
-    ? parsedValue.format(resolveTimePickerValueFormat(context.valueFormat, context.columnsType, context.separator))
+    ? parsedValue.format(resolveTimePickerValueFormat(context.valueFormat, context.columnsType))
     : null
 }
 
@@ -365,7 +359,7 @@ export function resolveTimePickerSelectedOptions(
 
 export function formatTimePickerValue(
   value: TimePickerResolvedValue,
-  options: Pick<TimePickerResolvedOptions, 'columnsType' | 'format' | 'separator' | 'valueFormat'> = {},
+  options: Pick<TimePickerResolvedOptions, 'columnsType' | 'format' | 'valueFormat'> = {},
 ) {
   if (!value)
     return ''
@@ -377,7 +371,7 @@ export function formatTimePickerValue(
     return value
 
   return parsedValue.format(
-    resolveTimePickerFormat(context.format, context.columnsType, context.separator),
+    resolveTimePickerFormat(context.format, context.columnsType),
   )
 }
 

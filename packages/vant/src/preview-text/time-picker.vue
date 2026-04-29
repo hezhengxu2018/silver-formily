@@ -16,7 +16,6 @@ defineOptions({
 const props = withDefaults(defineProps<PreviewTextTimePickerProps>(), {
   columnsType: () => ['hour', 'minute'],
   placeholder: undefined,
-  separator: ':',
   displayFormatter: undefined,
 })
 
@@ -35,7 +34,6 @@ const resolvedValue = computed(() => {
     minMinute: props.minMinute,
     minSecond: props.minSecond,
     minTime: props.minTime,
-    separator: props.separator,
     valueFormat: props.valueFormat,
   })
 })
@@ -53,7 +51,6 @@ const selectedOptions = computed(() => {
     minMinute: props.minMinute,
     minSecond: props.minSecond,
     minTime: props.minTime,
-    separator: props.separator,
     valueFormat: props.valueFormat,
   })
 })
@@ -68,7 +65,6 @@ const displayText = computed(() => {
   return formatTimePickerValue(resolvedValue.value, {
     columnsType: props.columnsType,
     format: props.format,
-    separator: props.separator,
     valueFormat: props.valueFormat,
   })
 })

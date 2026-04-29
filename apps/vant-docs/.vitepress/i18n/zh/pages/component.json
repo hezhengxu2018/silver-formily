@@ -24,15 +24,15 @@
         "link": "/component/grid"
       },
       {
-        "text": "FormButtonGroup 按钮布局(A1)",
+        "text": "FormButtonGroup 按钮布局",
         "link": "/component/form-button-group"
       },
       {
-        "text": "Submit 提交按钮(A1)",
+        "text": "Submit 提交按钮",
         "link": "/component/submit"
       },
       {
-        "text": "Reset 重置按钮(A1)",
+        "text": "Reset 重置按钮",
         "link": "/component/reset"
       }
     ]
@@ -41,11 +41,11 @@
     "text": "Input 输入组件",
     "items": [
       {
-        "text": "Input 输入框(A1)",
+        "text": "Input 输入框",
         "link": "/component/input"
       },
       {
-        "text": "PasswordInput 密码框(A1)",
+        "text": "PasswordInput 密码框",
         "link": "/component/password-input"
       },
       {
@@ -57,23 +57,23 @@
         "link": "/component/radio"
       },
       {
-        "text": "Switch 开关(A1)",
+        "text": "Switch 开关",
         "link": "/component/switch"
       },
       {
-        "text": "Stepper 步进器(A1)",
+        "text": "Stepper 步进器",
         "link": "/component/stepper"
       },
       {
-        "text": "Rate 评分(A1)",
+        "text": "Rate 评分",
         "link": "/component/rate"
       },
       {
-        "text": "Slider 滑块(A1)",
+        "text": "Slider 滑块",
         "link": "/component/slider"
       },
       {
-        "text": "Signature 签名(A1)",
+        "text": "Signature 签名",
         "link": "/component/signature"
       },
       {
@@ -101,7 +101,7 @@
         "link": "/component/picker-panel"
       },
       {
-        "text": "DatePicker 日期滚轮",
+        "text": "DatePicker 日期选择器",
         "link": "/component/date-picker"
       },
       {
@@ -109,11 +109,11 @@
         "link": "/component/date-picker-panel"
       },
       {
-        "text": "TimePicker 时间滚轮",
+        "text": "TimePicker 时间选择器",
         "link": "/component/time-picker"
       },
       {
-        "text": "TimePickerPanel 时间面板",
+        "text": "TimePickerPanel 时间选择面板",
         "link": "/component/time-picker-panel"
       },
       {
@@ -125,7 +125,7 @@
         "link": "/component/picker-group-panel"
       },
       {
-        "text": "Calendar 日期选择",
+        "text": "Calendar 日期选择器",
         "link": "/component/calendar"
       }
     ]

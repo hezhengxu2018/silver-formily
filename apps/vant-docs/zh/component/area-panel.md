@@ -4,13 +4,10 @@ mobileDemo: area-panel/index.vue
 
 # AreaPanel
 
-> `AreaPanel` 是非弹出框模式的省市区滚轮字段组件，直接渲染 Vant `Area`，适合嵌入页面或自定义容器。
+> 为了统一封装风格而独立的组件，大部分情况下应该配合 `PickerGroup` 使用，独立的弹出式封装请参考 `Area`。
 
 :::tip 提示
-
-- `AreaPanel` 不包含触发输入框和 Popup；滚轮变化只维护临时选择，点击确认后才会写回字段值。
-- 字段值保存为区域编码字符串，例如 `'330102'`。
-
+`AreaPanel` 不包含触发输入框和 Popup；滚轮变化只维护临时选择，点击确认后才会写回字段值。
 :::
 
 ## 基础使用
@@ -38,14 +35,4 @@ mobileDemo: area-panel/index.vue
 | `disabled`           | `boolean`        | 禁用态                       | `false` |
 | `showToolbar`        | `boolean`        | 是否显示顶部工具栏           | `true`  |
 
-### 官方 Area Props
-
 除上述补充能力外，其他属性和插槽均可参考[Vant Area 官方文档](https://vant-ui.github.io/vant/#/zh-CN/area)。
-
-### Events
-
-| 事件名              | 描述                 | 回调参数                                     |
-| ------------------- | -------------------- | -------------------------------------------- |
-| `update:modelValue` | 点击确认后同步字段值 | ^[Function]`(value: string \| null) => void` |
-| `confirm`           | 点击确认后触发       | ^[Function]`(value: string \| null) => void` |
-| `cancel`            | 点击取消后触发       | `-`                                          |

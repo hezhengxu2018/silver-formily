@@ -4,12 +4,12 @@ mobileDemo: time-picker-panel/index.vue
 
 # TimePickerPanel
 
-> `TimePickerPanel` 是非弹出框模式的时间滚轮字段组件，复用 `TimePicker` 的字符串时间解析和格式化能力。
+> `TimePickerPanel` 为了统一封装风格而独立的组件，大部分情况下应该配合 `PickerGroup` 使用，独立的弹出式封装请参考 `TimePicker`。
 
 :::tip 提示
 
-- `TimePickerPanel` 会直接渲染 Vant `TimePicker`，不包含触发输入框和 Popup；滚轮变化只维护临时选择，点击确认后才会写回字段值。
-- 字段值统一保存为字符串，例如 `'09:30'`、`'09:30:15'`。
+- `TimePickerPanel` 不包含触发输入框和 Popup；滚轮变化只维护临时选择，点击确认后才会写回字段值。
+- 为方便业务开发，组件内部使用了 `dayjs` 对事件进行了格式化，现在组件的绑定值不再是数组，而是经过解析的字符串。
 
 :::
 
@@ -23,8 +23,6 @@ mobileDemo: time-picker-panel/index.vue
 
 - 内部会先按 `value-format` 解析字段值，再转换成 Vant `TimePicker` 需要的滚轮数组
 - 如果未显式传 `value-format`，会按 `columnsType` 推导默认格式，例如 `['hour', 'minute'] -> 'HH:mm'`
-- `minTime` / `maxTime` 仍遵循官方格式，固定使用 `HH:mm:ss`
-- 默认显示工具栏；滚轮变化不会立即写回，点击确认后才会触发 `update:modelValue`
 - `readonly` / `disabled` 会让内部滚轮进入只读态
 
 ### Props
@@ -40,8 +38,6 @@ mobileDemo: time-picker-panel/index.vue
 | `readonly`    | `boolean`        | 只读态                                    | `false`              |
 | `disabled`    | `boolean`        | 禁用态                                    | `false`              |
 | `showToolbar` | `boolean`        | 是否显示顶部工具栏                        | `true`               |
-
-### 官方 TimePicker Props
 
 除上述补充能力外，其他属性和插槽均可参考[Vant TimePicker 官方文档](https://vant-ui.github.io/vant/#/zh-CN/time-picker)。
 

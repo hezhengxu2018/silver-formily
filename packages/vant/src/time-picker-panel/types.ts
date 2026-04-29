@@ -39,7 +39,6 @@ export interface TimePickerPanelProps {
   optionHeight?: VanTimePickerProps['optionHeight']
   readonly?: boolean
   disabled?: boolean
-  separator?: string
   showToolbar?: boolean
   swipeDuration?: VanTimePickerProps['swipeDuration']
   title?: VanTimePickerProps['title']

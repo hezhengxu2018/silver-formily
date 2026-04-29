@@ -6,6 +6,12 @@ mobileDemo: cascader/index.vue
 
 > `Cascader` 是基于 Vant 官方 `Cascader` 做的表单封装。
 
+:::tip 提示
+
+由于 `PickerGroup` 不支持内嵌 `Cascader` 组件，没有独立使用的价值，因此暂时没有做xxxPanel的拆分。
+
+:::
+
 ## 基础使用
 
 <<< @/zh/demos/cascader/basic.vue
@@ -34,7 +40,7 @@ mobileDemo: cascader/index.vue
 
 <<< @/zh/demos/cascader/options-top.vue
 
-## 补充：自定义标题与选项
+## 自定义标题与选项
 
 <<< @/zh/demos/cascader/slot.vue
 

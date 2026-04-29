@@ -37,7 +37,7 @@ import { NavBar } from 'vant'
       </MobileDemoSection>
 
       <MobileDemoSection
-        title="补充：自定义标题与选项"
+        title="自定义标题与选项"
         description="这个示例是基于官方 slot 能力再往前走一步，演示 title / option 这类更业务化的自定义方式。"
       >
         <DocsDemoRenderer path="@/zh/demos/cascader/slot.vue" />

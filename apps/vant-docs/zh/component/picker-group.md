@@ -10,7 +10,6 @@ mobileDemo: picker-group/index.vue
 
 - `PickerGroup` 内部通过 `createPopup` 创建弹层，弹层内容复用 `PickerGroupPanel`。
 - 默认插槽中推荐使用 `PickerPanel`、`DatePickerPanel`、`TimePickerPanel`、`AreaPanel` 这类 Panel 组件；如果直接使用 Vant 官方组件，需要自行处理字段值与 Vant 内部值结构之间的转换。
-- 如果不需要字段触发区和 Popup，可以直接使用 [PickerGroupPanel](/component/picker-group-panel)。
 
 :::
 
@@ -53,21 +52,16 @@ type PickerGroupDataSource = PickerGroupDataSourceItem[]
 - 当前不提供外部 `activeTab` prop / `v-model:active-tab` 控制模型；步骤切换由内部 `PickerGroupPanel` 管理
 - 默认插槽里的各个 panel 不会自动读取 `dataSource[index].options`，需要按需把 `dataSource[index].options` 传给 `PickerPanel` 的 `columns`
 
-### 封装补充 Props
+### 补充 Props
 
-| 属性名              | 类型                                                         | 描述                                                                       | 默认值         |
-| ------------------- | ------------------------------------------------------------ | -------------------------------------------------------------------------- | -------------- |
-| `modelValue`        | `Array<string \| number \| Array<string \| number>> \| null` | 当前字段值                                                                 | `-`            |
-| `dataSource`        | `PickerGroupDataSource`                                      | 分步数据；用于提供 tab 标题、展示文案，也可把 `options` 传给 `PickerPanel` | `[]`           |
-| `tabs`              | `string[]`                                                   | 直接指定 tab 标题，优先级高于 `dataSource`                                 | `-`            |
-| `columnsFieldNames` | ^[object]`{ text, value, children }`                         | 自定义选项字段名映射，用于 `dataSource` 展示解析                           | 官方默认值     |
-| `placeholder`       | `string`                                                     | 未选择时的展示文案                                                         | `'请选择选项'` |
-| `popupProps`        | `PickerGroupPopupProps`                                      | 传给内部 Popup 的配置                                                      | `{}`           |
-| `separator`         | `string`                                                     | 字段展示区分隔符                                                           | `' / '`        |
-| `displayFormatter`  | ^[Function]`(value) => string`                               | 自定义字段展示区文案；默认插槽模式建议显式提供                             | `-`            |
-| `nextStepText`      | `string`                                                     | 中间步骤确认按钮文案                                                       | `'下一步'`     |
-| `readonly`          | `boolean`                                                    | 只读态，阻止打开弹层                                                       | `false`        |
-| `disabled`          | `boolean`                                                    | 禁用态，阻止打开弹层                                                       | `false`        |
+| 属性名             | 类型                           | 描述                                           | 默认值         |
+| ------------------ | ------------------------------ | ---------------------------------------------- | -------------- |
+| `placeholder`      | `string`                       | 未选择时的展示文案                             | `'请选择选项'` |
+| `popupProps`       | `PickerGroupPopupProps`        | 传给内部 Popup 的配置                          | `{}`           |
+| `separator`        | `string`                       | 字段展示区分隔符                               | `' / '`        |
+| `displayFormatter` | ^[Function]`(value) => string` | 自定义字段展示区文案；默认插槽模式建议显式提供 | `-`            |
+
+分步选择相关属性可直接参考 [PickerGroupPanel](/component/picker-group-panel)，例如 `modelValue`、`dataSource`、`tabs`、`columnsFieldNames`、`nextStepText`、`readonly`、`disabled` 等。
 
 ### Panel 绑定 Props
 
@@ -80,37 +74,9 @@ type PickerGroupDataSource = PickerGroupDataSourceItem[]
 | `swipeDuration`    | `number \| string` | 滚动惯性动画时长   | 官方默认值 |
 | `allowHtml`        | `boolean`          | 是否渲染 HTML 文案 | 官方默认值 |
 
-### PickerGroupPanel Props
-
-`PickerGroupPanel` 是不带触发输入框和 Popup 的面板组件，`PickerGroup` 会在弹层中使用它承载分步选择逻辑。它支持上方 `modelValue`、`dataSource`、`tabs`、`columnsFieldNames`、`title`、`cancelButtonText`、`confirmButtonText`、`nextStepText`、`readonly`、`readOnly`、`disabled` 以及通用 Picker 配置，并提供和 `PickerGroup` 相同的默认插槽参数。
-
-直接使用 `PickerGroupPanel` 时，`confirm` 和 `cancel` 事件会直接返回当前面板值：
-
-| 事件名              | 描述                 | 回调参数                                                                                 |
-| ------------------- | -------------------- | ---------------------------------------------------------------------------------------- |
-| `update:modelValue` | 最后一步确认后同步值 | ^[Function]`(value: Array<string \| number \| Array<string \| number>> \| null) => void` |
-| `confirm`           | 最后一步点击确认触发 | ^[Function]`(value: Array<string \| number \| Array<string \| number>> \| null) => void` |
-| `cancel`            | 点击取消按钮时触发   | ^[Function]`(value: Array<string \| number \| Array<string \| number>> \| null) => void` |
-
 ### Popup Props
 
-参考[createPopup](/component/create-popup)。为了兼容已有写法，以下弹层属性仍可以直接写在 `PickerGroup` 上；如果同时传入 `popupProps`，`popupProps` 的优先级更高。
-
-| 属性名                | 类型                                            | 描述                 | 默认值     |
-| --------------------- | ----------------------------------------------- | -------------------- | ---------- |
-| `position`            | ^[enum]`'bottom' \| 'top' \| 'left' \| 'right'` | 弹出位置             | `'bottom'` |
-| `round`               | `boolean`                                       | 是否显示圆角         | `true`     |
-| `overlay`             | `boolean`                                       | 是否显示遮罩层       | `true`     |
-| `teleport`            | `string \| Element`                             | 指定挂载节点         | 官方默认值 |
-| `closeOnPopstate`     | `boolean`                                       | 回退时是否自动关闭   | `true`     |
-| `closeOnClickOverlay` | `boolean`                                       | 点击遮罩是否自动关闭 | `true`     |
-| `safeAreaInsetTop`    | `boolean`                                       | 是否开启顶部安全区   | 官方默认值 |
-| `safeAreaInsetBottom` | `boolean`                                       | 是否开启底部安全区   | `true`     |
-| `lockScroll`          | `boolean`                                       | 是否锁定背景滚动     | `true`     |
-| `lazyRender`          | `boolean`                                       | 是否延迟渲染内容     | `true`     |
-| `zIndex`              | `number \| string`                              | 弹层层级             | 官方默认值 |
-| `duration`            | `number \| string`                              | 动画时长             | 官方默认值 |
-| `transition`          | `string`                                        | 自定义过渡动画       | 官方默认值 |
+配置项与默认值可以直接参考[createPopup](/component/create-popup)。
 
 ### Slots
 
@@ -137,8 +103,3 @@ type PickerGroupDataSource = PickerGroupDataSourceItem[]
 | `closed`            | 弹层关闭且动画结束后触发 | `-`                                                                                      |
 | `clickOverlay`      | 点击遮罩层时触发         | ^[Function]`(event: MouseEvent) => void`                                                 |
 | `update:show`       | 弹层开关变化时触发       | ^[Function]`(visible: boolean) => void`                                                  |
-
-### 参考
-
-- [Vant PickerGroup 官方文档（正式站）](https://vant-ui.github.io/vant/#/zh-CN/picker-group)
-- [Vant Picker 官方文档（正式站）](https://vant-ui.github.io/vant/#/zh-CN/picker)

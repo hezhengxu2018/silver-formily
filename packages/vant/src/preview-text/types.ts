@@ -116,7 +116,6 @@ export interface PreviewTextTimePickerProps {
   minSecond?: VanTimePickerProps['minSecond']
   minTime?: VanTimePickerProps['minTime']
   placeholder?: string
-  separator?: string
   displayFormatter?: TimePickerDisplayFormatter
   valueFormat?: string
 }

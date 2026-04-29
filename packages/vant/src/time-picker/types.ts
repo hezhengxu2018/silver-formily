@@ -41,7 +41,6 @@ export interface TimePickerProps {
   placeholder?: string
   popupProps?: TimePickerPopupProps
   disableTriggerWhenInactive?: boolean
-  separator?: string
   swipeDuration?: VanTimePickerProps['swipeDuration']
   title?: VanTimePickerProps['title']
   readonly?: boolean

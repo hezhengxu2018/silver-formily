@@ -18,7 +18,6 @@ defineOptions({
 
 const props = withDefaults(defineProps<TimePickerPanelProps>(), {
   columnsType: () => ['hour', 'minute'],
-  separator: ':',
   showToolbar: true,
 })
 
@@ -43,7 +42,6 @@ const resolvedTimePickerOptions = computed(() => {
     minMinute: props.minMinute,
     minSecond: props.minSecond,
     minTime: props.minTime,
-    separator: props.separator,
     valueFormat: props.valueFormat,
   }
 })
@@ -81,10 +79,6 @@ watch(resolvedInnerValue, (value) => {
   innerValue.value = [...value]
 })
 
-function resolveValue(selectedValues: string[]) {
-  return resolveTimePickerModelValue(selectedValues, resolvedTimePickerOptions.value)
-}
-
 function onPickerValueChange(value: string[]) {
   innerValue.value = [...value]
 }
@@ -95,7 +89,7 @@ function onCancel() {
 }
 
 function onConfirm(payload: { selectedValues: string[] }) {
-  const value = resolveValue(payload.selectedValues)
+  const value = resolveTimePickerModelValue(payload.selectedValues, resolvedTimePickerOptions.value)
 
   emit('update:modelValue', value)
   emit('confirm', value)

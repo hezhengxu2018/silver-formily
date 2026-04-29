@@ -4,13 +4,11 @@ mobileDemo: picker/index.vue
 
 # Picker
 
-> `Picker` 是基于 Vant 官方 `Picker` 做的 Formily 封装，补上了字段触发区、内置弹层、阅读态展示，以及更贴近表单字段心智的值形态适配。
+> `Picker` 是基于 `PickerPanel` 做的弹出式封装，大部分的属性值可以参考 `PickerPanel`。
 
 :::tip 提示
 
 `Field` 上的 `dataSource` 会自动映射到 `columns`
-
-`Picker` 内部复用了 `PickerPanel` 的能力，因此两者有大量 Props 是重复的。
 
 :::
 

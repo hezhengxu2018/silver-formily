@@ -84,6 +84,8 @@ mobileDemo: input/index.vue
 | `formatter`     | ^[Function]`(value: string) => string` | 输入格式化函数                                                          | `-`                                      |
 | `formatTrigger` | ^[enum]`'onChange' \| 'onBlur'`        | 格式化触发时机                                                          | `'onChange'`                             |
 
+输入增强属性的命名与默认值主要参考 [Vant Field 官方文档](https://vant-ui.github.io/vant/#/zh-CN/field)。
+
 ### Input 与 FormItem 联动事件
 
 | 属性名             | 类型                                     | 描述                                   | 默认值 |
@@ -109,7 +111,3 @@ mobileDemo: input/index.vue
 | ------- | -------------- | ---------------------------------------- |
 | `focus` | 获得焦点时触发 | ^[Function]`(event: FocusEvent) => void` |
 | `blur`  | 失去焦点时触发 | ^[Function]`(event: FocusEvent) => void` |
-
-### 参考
-
-输入增强属性的命名与默认值主要参考 [Vant Field 官方文档（正式站）](https://vant-ui.github.io/vant/#/zh-CN/field)。

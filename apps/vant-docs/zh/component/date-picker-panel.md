@@ -4,13 +4,12 @@ mobileDemo: date-picker-panel/index.vue
 
 # DatePickerPanel
 
-> `DatePickerPanel` 是非弹出框模式的日期滚轮字段组件，复用 `DatePicker` 的字符串日期解析和格式化能力。
+> 为了统一封装风格而独立的组件，大部分情况下应该配合 `PickerGroup` 使用，独立的弹出式封装请参考 `DatePicker`。
 
 :::tip 提示
 
-- `DatePickerPanel` 会直接渲染 Vant `DatePicker`，不包含触发输入框和 Popup；滚轮变化只维护临时选择，点击确认后才会写回字段值。
-
-- 为方便业务开发，组件内部使用了 `dayjs` 对日期进行了格式化，不再传入 `Date` 对象。具体说明参考API章节。
+- `DatePickerPanel` 不包含触发输入框和 Popup；滚轮变化只维护临时选择，点击确认后才会写回字段值。
+- 为方便业务开发，组件内部使用了 `dayjs` 对日期进行了格式化，不再传入 `Date` 对象。
 
 :::
 
@@ -41,14 +40,4 @@ mobileDemo: date-picker-panel/index.vue
 | `disabled`    | `boolean`        | 禁用态                                  | `false`      |
 | `showToolbar` | `boolean`        | 是否显示顶部工具栏                      | `true`       |
 
-### 官方 DatePicker Props
-
 除了 `minDate` / `maxDate` 会先按字符串解析成内部需要的日期对象之外，其他属性和插槽均可参考[Vant DatePicker 官方文档](https://vant-ui.github.io/vant/#/zh-CN/date-picker)
-
-### Events
-
-| 事件名              | 描述                 | 回调参数                                     |
-| ------------------- | -------------------- | -------------------------------------------- |
-| `update:modelValue` | 点击确认后同步字段值 | ^[Function]`(value: string \| null) => void` |
-| `confirm`           | 点击确认后触发       | ^[Function]`(value: string \| null) => void` |
-| `cancel`            | 点击取消后触发       | `-`                                          |

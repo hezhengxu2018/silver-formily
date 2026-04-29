@@ -4,11 +4,11 @@ mobileDemo: picker-panel/index.vue
 
 # PickerPanel
 
-> `PickerPanel` 是非弹出框模式的选项滚轮字段组件，复用 `Picker` 的选项归一化和值形态适配能力。
+> 为了统一封装风格而独立的组件，大部分情况下应该配合 `PickerGroup` 使用，独立的弹出式封装请参考 `Picker`。
 
 :::tip 提示
 
-- `PickerPanel` 会直接渲染 Vant `Picker`，不包含触发输入框和 Popup；滚轮变化只维护临时选择，点击确认后才会写回字段值。
+- `PickerPanel` 不包含触发输入框和 Popup；滚轮变化只维护临时选择，点击确认后才会写回字段值。
 - `Field` 上的 `dataSource` 会自动映射到 `columns`。
 
 :::
