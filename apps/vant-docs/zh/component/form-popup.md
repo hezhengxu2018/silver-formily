@@ -37,7 +37,9 @@ const result = await popup
   .forOpen(formProps => formProps)
   .forConfirm(form => form.values)
   .forCancel(form => form)
-  .forSaveDraft(form => ({ type: 'draft', values: form.values }))
+  .forSaveDraft(async (form) => {
+    await saveDraft(form.values)
+  })
   .open({
     values: initialValues,
   })
@@ -46,7 +48,8 @@ const result = await popup
 ### 使用约定
 
 - `FormPopup` 打开时会基于 `open()` 参数创建新的 `form` 实例
-- 默认确认结果是 `toJS(form.values)`；如果 `forConfirm` 或动态 middleware 返回非 `undefined`，则以 middleware 返回值为准
+- 默认确认结果是 `toJS(form.values)`；如果 `forConfirm` 返回非 `undefined`，则以 middleware 返回值为准
+- 动态 middleware 命中后会返回当前 `toJS(form.values)`，与 Element Plus 封装保持一致
 - 传入 `dynamicMiddlewareNames` 后，会在作用域插槽参数上额外注入同名 camelCase 方法，例如 `saveDraft()`
 - 默认底部会渲染“取消 / 确定”按钮，并让确定按钮跟随 `form.submitting` 自动进入 loading
 - 默认 `closeOnClickOverlay` 是 `false`，避免移动端误触导致表单内容丢失

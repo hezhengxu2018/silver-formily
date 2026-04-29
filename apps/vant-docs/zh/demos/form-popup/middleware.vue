@@ -71,16 +71,12 @@ async function handleOpen() {
   )
     .forConfirm(async (form) => {
       await new Promise(resolve => setTimeout(resolve, 400))
-      return {
-        action: 'publish',
-        values: toJS(form.values),
-      }
+      return toJS(form.values)
     })
     .forSaveDraft((form) => {
-      return {
-        action: 'draft',
-        values: toJS(form.values),
-      }
+      form.setValues({
+        summary: `${form.values.summary || ''}（草稿）`,
+      })
     })
     .open({
       values: {

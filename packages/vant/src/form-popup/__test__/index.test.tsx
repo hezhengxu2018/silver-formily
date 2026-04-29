@@ -131,9 +131,10 @@ describe('form-popup', () => {
     })
   })
 
-  it('应该支持 forConfirm 与动态 middleware 改写返回值', async () => {
+  it('应该支持 forConfirm 改写返回值，并在动态 middleware 后返回 form.values', async () => {
     const onConfirmResolved = vi.fn()
     const onDraftResolved = vi.fn()
+    const onSaveDraft = vi.fn()
 
     const renderContent = {
       default: () => (
@@ -157,7 +158,7 @@ describe('form-popup', () => {
       const openConfirmPopup = () => {
         FormPopup<{ name: string }, ['save-draft']>('确认改值', renderContent, ['save-draft'])
           .forConfirm(form => `confirm:${form.values.name}`)
-          .forSaveDraft(form => `draft:${form.values.name}`)
+          .forSaveDraft(() => 'ignored')
           .open({
             values: {
               name: '杭州',
@@ -169,7 +170,10 @@ describe('form-popup', () => {
       const openDraftPopup = () => {
         FormPopup<{ name: string }, ['save-draft']>('草稿改值', renderContent, ['save-draft'])
           .forConfirm(form => `confirm:${form.values.name}`)
-          .forSaveDraft(form => `draft:${form.values.name}`)
+          .forSaveDraft((form) => {
+            onSaveDraft(form.values)
+            return 'ignored'
+          })
           .open({
             values: {
               name: '南京',
@@ -200,7 +204,8 @@ describe('form-popup', () => {
     await vi.waitFor(() => expect(getVisiblePopup()).not.toBeNull())
     await userEvent.click(getVisibleElement('.form-popup-save-draft') as HTMLElement)
     await vi.waitFor(() => {
-      expect(onDraftResolved).toHaveBeenCalledWith('draft:南京')
+      expect(onSaveDraft).toHaveBeenCalledWith({ name: '南京' })
+      expect(onDraftResolved).toHaveBeenCalledWith({ name: '南京' })
       expect(getVisiblePopup()).toBeNull()
     })
   })

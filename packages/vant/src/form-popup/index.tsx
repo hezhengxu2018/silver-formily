@@ -233,6 +233,12 @@ export function FormPopup<
       : env.confirmMiddlewares
   }
 
+  function isDynamicMiddlewareType(type?: string) {
+    const normalizedType = isValid(type) ? camelCase(type) : undefined
+
+    return Boolean(normalizedType && env[`${normalizedType}Middlewares`])
+  }
+
   function handleResolve(type?: string) {
     if (!env.promise || env.settling || !env.form) {
       return
@@ -252,7 +258,9 @@ export function FormPopup<
 
         env.pendingOutcome = {
           status: 'resolve',
-          value: result,
+          value: isDynamicMiddlewareType(type)
+            ? toJS((env.form as Form<TValues>).values)
+            : result,
         }
       }
       catch (error) {
