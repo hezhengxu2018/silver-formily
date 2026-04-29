@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { createForm } from '@formily/core'
-import { FormItem, PickerGroup } from '@silver-formily/vant'
+import { FormItem, PickerGroup, PickerPanel } from '@silver-formily/vant'
 import { Field, FormProvider } from '@silver-formily/vue'
 import { Tag } from 'vant'
 import { appointmentOptions } from './shared'
@@ -22,6 +22,36 @@ const form = createForm({
         :component="[PickerGroup]"
         :data-source="appointmentOptions"
       >
+        <template #default="{ dataSource, panelProps }">
+          <PickerPanel
+            v-bind="panelProps[0]"
+            :columns="dataSource[0].options"
+          >
+            <template #option="option">
+              <div class="picker-group-slot-option">
+                <span>{{ option.text }}</span>
+                <Tag plain size="medium" :type="option.value === 'sh' ? 'danger' : 'primary'">
+                  {{ option.value === 'sh' ? '热门' : '常用' }}
+                </Tag>
+              </div>
+            </template>
+          </PickerPanel>
+
+          <PickerPanel
+            v-bind="panelProps[1]"
+            :columns="dataSource[1].options"
+          >
+            <template #option="option">
+              <div class="picker-group-slot-option">
+                <span>{{ option.text }}</span>
+                <Tag plain size="medium" :type="option.value === 'night' ? 'danger' : 'primary'">
+                  {{ option.value === 'night' ? '热门' : '常用' }}
+                </Tag>
+              </div>
+            </template>
+          </PickerPanel>
+        </template>
+
         <template #title>
           <div class="picker-group-slot-title">
             分步选择预约
@@ -34,15 +64,6 @@ const form = createForm({
 
         <template #confirm>
           <span class="picker-group-slot-action picker-group-slot-action--confirm">下一步 / 完成</span>
-        </template>
-
-        <template #option="option">
-          <div class="picker-group-slot-option">
-            <span>{{ option.text }}</span>
-            <Tag plain size="medium" :type="['sh', 'night'].includes(option.value) ? 'danger' : 'primary'">
-              {{ ['sh', 'night'].includes(option.value) ? '热门' : '常用' }}
-            </Tag>
-          </div>
         </template>
       </Field>
     </div>

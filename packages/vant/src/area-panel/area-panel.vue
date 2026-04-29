@@ -25,6 +25,7 @@ const props = withDefaults(defineProps<AreaPanelProps>(), {
   }),
   columnsNum: 3,
   columnsPlaceholder: () => [],
+  showToolbar: true,
 })
 
 const emit = defineEmits<{
@@ -48,6 +49,7 @@ const areaProps = computed(() => {
     loading: props.loading,
     optionHeight: props.optionHeight,
     readonly: Boolean(props.readonly || props.disabled),
+    showToolbar: props.showToolbar,
     swipeDuration: props.swipeDuration,
     title: props.title,
     visibleOptionNum: props.visibleOptionNum,

@@ -121,6 +121,10 @@
         "link": "/component/picker-group"
       },
       {
+        "text": "PickerGroupPanel 分步选择面板",
+        "link": "/component/picker-group-panel"
+      },
+      {
         "text": "Calendar 日期选择",
         "link": "/component/calendar"
       }

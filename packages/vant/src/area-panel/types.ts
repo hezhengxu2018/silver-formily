@@ -27,6 +27,7 @@ export interface AreaPanelProps {
   optionHeight?: VanAreaPanelProps['optionHeight']
   readonly?: boolean
   disabled?: boolean
+  showToolbar?: boolean
   swipeDuration?: VanAreaPanelProps['swipeDuration']
   title?: VanAreaPanelProps['title']
   visibleOptionNum?: VanAreaPanelProps['visibleOptionNum']

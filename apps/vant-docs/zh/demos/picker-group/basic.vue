@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { createForm } from '@formily/core'
-import { Form, FormButtonGroup, FormItem, PickerGroup, Submit } from '@silver-formily/vant'
+import { Form, FormButtonGroup, FormItem, PickerGroup, PickerPanel, Submit } from '@silver-formily/vant'
 import { Field } from '@silver-formily/vue'
 import { showDemoResult } from '../shared'
 import { appointmentOptions } from './shared'
@@ -24,7 +24,18 @@ async function handleSubmit(values: typeof form.values) {
       :decorator="[FormItem, { isLink: true }]"
       :component="[PickerGroup]"
       :data-source="appointmentOptions"
-    />
+    >
+      <template #default="{ dataSource, panelProps }">
+        <PickerPanel
+          v-bind="panelProps[0]"
+          :columns="dataSource[0].options"
+        />
+        <PickerPanel
+          v-bind="panelProps[1]"
+          :columns="dataSource[1].options"
+        />
+      </template>
+    </Field>
 
     <FormButtonGroup>
       <Submit @submit="handleSubmit">

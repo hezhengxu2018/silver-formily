@@ -7,7 +7,6 @@ import {
   clonePickerGroupValue,
   formatPickerGroupDisplay,
   resolvePickerGroupModelValue,
-  resolvePickerGroupSelectedOptions,
 } from '../picker-group/utils'
 import { usePreviewConfig } from './utils'
 
@@ -34,19 +33,10 @@ const dataSource = computed(() => {
     : props.dataSource
 })
 
-const displayValue = computed(() => resolvePickerGroupModelValue(props.modelValue))
-const selectedOptions = computed(() => {
-  return resolvePickerGroupSelectedOptions(
-    props.modelValue,
-    dataSource.value,
-    props.columnsFieldNames,
-  )
-})
 const displayText = computed(() => {
   if (props.displayFormatter) {
     return props.displayFormatter(
-      clonePickerGroupValue(displayValue.value),
-      [...selectedOptions.value],
+      clonePickerGroupValue(resolvePickerGroupModelValue(props.modelValue)),
     )
   }
 

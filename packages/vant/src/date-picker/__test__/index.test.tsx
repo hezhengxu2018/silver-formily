@@ -1,15 +1,17 @@
+import type { PickerGroupDefaultSlotProps } from '../../picker-group'
 import { createForm } from '@formily/core'
 import { Field, FormProvider } from '@silver-formily/vue'
-import { DatePicker as VanDatePicker, TimePicker as VanTimePicker } from 'vant'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { render } from 'vitest-browser-vue'
 import { userEvent } from 'vitest/browser'
 import { h } from 'vue'
+import DatePickerPanel from '../../date-picker-panel'
 import Form from '../../form'
 import FormButtonGroup from '../../form-button-group'
 import FormItem from '../../form-item'
 import PickerGroup from '../../picker-group'
 import Submit from '../../submit'
+import TimePickerPanel from '../../time-picker-panel'
 import DatePicker from '../index'
 import 'vant/lib/index.css'
 
@@ -17,9 +19,6 @@ const minDate = '2025-01-01'
 const maxDate = '2027-12-31'
 const slashMinDate = '01/01/2025'
 const slashMaxDate = '31/12/2027'
-const vanMinDate = new Date(2025, 0, 1)
-const vanMaxDate = new Date(2027, 11, 31)
-
 function waitForAnimationFrame() {
   return new Promise<void>((resolve) => {
     window.requestAnimationFrame(() => resolve())
@@ -615,10 +614,10 @@ describe('date-picker', () => {
     expect(getTrigger(container).value).toBe(defaultValue)
   })
 
-  it('应该能和官方 DatePicker 一起作为 PickerGroup 默认插槽子组件工作', async () => {
+  it('应该能和 DatePickerPanel 一起作为 PickerGroup 默认插槽子组件工作', async () => {
     const form = createForm({
       values: {
-        schedule: ['2026-03-30', ['09', '30']],
+        schedule: ['2026-03-30', '09:30'],
       },
     })
 
@@ -630,11 +629,11 @@ describe('date-picker', () => {
           decorator={[FormItem]}
           component={[PickerGroup, {
             displayFormatter: (value) => {
-              const [date = '', time = []] = value ?? []
+              const [date = '', time = ''] = value ?? []
 
               return [
                 String(date ?? ''),
-                Array.isArray(time) ? time.join(':') : String(time ?? ''),
+                String(time ?? ''),
               ].filter(Boolean).join(' / ')
             },
           }]}
@@ -644,9 +643,13 @@ describe('date-picker', () => {
           ]}
         >
           {{
-            default: () => [
-              <VanDatePicker minDate={vanMinDate} maxDate={vanMaxDate} />,
-              <VanTimePicker />,
+            default: ({ panelProps }: PickerGroupDefaultSlotProps) => [
+              <DatePickerPanel
+                {...(panelProps[0] as any)}
+                minDate={minDate}
+                maxDate={maxDate}
+              />,
+              <TimePickerPanel {...(panelProps[1] as any)} />,
             ],
           }}
         </Field>
@@ -674,7 +677,7 @@ describe('date-picker', () => {
     await userEvent.click(getPickerGroupConfirmButton())
 
     await vi.waitFor(() => {
-      expect(form.values.schedule).toEqual(['2026-03-31', ['09', '30']])
+      expect(form.values.schedule).toEqual(['2026-03-31', '09:30'])
       expect(trigger.value).toBe('2026-03-31 / 09:30')
       expect(getVisiblePickerGroup()).toBeNull()
     })

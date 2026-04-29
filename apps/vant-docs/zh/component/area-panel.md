@@ -36,6 +36,7 @@ mobileDemo: area-panel/index.vue
 | `columnsPlaceholder` | `string[]`       | 列占位提示                   | `[]`    |
 | `readonly`           | `boolean`        | 只读态                       | `false` |
 | `disabled`           | `boolean`        | 禁用态                       | `false` |
+| `showToolbar`        | `boolean`        | 是否显示顶部工具栏           | `true`  |
 
 ### 官方 Area Props
 

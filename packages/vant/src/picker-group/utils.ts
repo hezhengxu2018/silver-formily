@@ -6,10 +6,8 @@ import type {
   PickerGroupValueItem,
 } from './types'
 import { isValid } from '@formily/shared'
-import { cloneDeep } from 'es-toolkit/compat'
 import {
   findPickerOptionByValue,
-  getFirstEnabledPickerOption,
   normalizePickerColumns,
 } from '../picker/utils'
 
@@ -26,7 +24,7 @@ function isNormalizedSingleColumn(
   return Array.isArray(value) && (value.length === 0 || !Array.isArray(value[0]))
 }
 
-export function normalizePickerGroupDataSource(
+function normalizePickerGroupDataSource(
   dataSource: PickerGroupDataSource | undefined,
   fieldNames?: PickerFieldNames,
 ): NormalizedPickerGroupItem[] {
@@ -45,16 +43,6 @@ export function normalizePickerGroupDataSource(
   })
 }
 
-function isPickerGroupValueItem(value: unknown): value is PickerGroupValueItem {
-  return Array.isArray(value) || isValid(value)
-}
-
-function resolveSinglePickerGroupValue(value: PickerGroupValueItem | undefined) {
-  return Array.isArray(value)
-    ? undefined
-    : value
-}
-
 function formatPickerGroupValueItem(value: PickerGroupValueItem) {
   if (Array.isArray(value)) {
     return value
@@ -68,16 +56,26 @@ function formatPickerGroupValueItem(value: PickerGroupValueItem) {
     : ''
 }
 
-export function normalizePickerGroupValue(modelValue: PickerGroupModelValue): PickerGroupValueItem[] {
+function normalizePickerGroupValue(modelValue: PickerGroupModelValue): PickerGroupValueItem[] {
   return Array.isArray(modelValue)
     ? modelValue
-      .filter(isPickerGroupValueItem)
-      .map(item => cloneDeep(item)) as PickerGroupValueItem[]
+        .reduce<PickerGroupValueItem[]>((values, item) => {
+          if (Array.isArray(item)) {
+            values.push([...item])
+          }
+          else if (isValid(item)) {
+            values.push(item)
+          }
+
+          return values
+        }, [])
     : []
 }
 
 export function clonePickerGroupValue(value: PickerGroupResolvedValue): PickerGroupResolvedValue {
-  return cloneDeep(value)
+  return value
+    ? value.map(item => Array.isArray(item) ? [...item] : item)
+    : null
 }
 
 export function resolvePickerGroupTabs(
@@ -87,7 +85,7 @@ export function resolvePickerGroupTabs(
   return normalizePickerGroupDataSource(dataSource, fieldNames).map(item => item.title)
 }
 
-export function resolvePickerGroupSelectedOptions(
+function resolvePickerGroupSelectedOptions(
   modelValue: PickerGroupModelValue,
   dataSource: PickerGroupDataSource | undefined,
   fieldNames?: PickerFieldNames,
@@ -96,29 +94,13 @@ export function resolvePickerGroupSelectedOptions(
   const normalizedDataSource = normalizePickerGroupDataSource(dataSource, fieldNames)
 
   return normalizedDataSource.map((item, index) => {
+    const selectedValue = selectedValues[index]
     const matchedOption = findPickerOptionByValue(
       item.options,
-      resolveSinglePickerGroupValue(selectedValues[index]),
+      Array.isArray(selectedValue) ? undefined : selectedValue,
     )
 
     return matchedOption
-      ? cloneDeep(matchedOption)
-      : undefined
-  })
-}
-
-export function resolvePickerGroupSelectedIndexes(
-  modelValue: PickerGroupModelValue,
-  dataSource: PickerGroupDataSource | undefined,
-  fieldNames?: PickerFieldNames,
-) {
-  const selectedValues = normalizePickerGroupValue(modelValue)
-  const normalizedDataSource = normalizePickerGroupDataSource(dataSource, fieldNames)
-
-  return normalizedDataSource.map((item, index) => {
-    return item.options.findIndex((option) => {
-      return option.value === resolveSinglePickerGroupValue(selectedValues[index])
-    })
   })
 }
 
@@ -141,29 +123,12 @@ export function resolvePickerGroupSlotInnerValue(
   return Array.from({ length: tabCount }, (_, index) => {
     const currentValue = currentValues[index]
 
-    return isPickerGroupValueItem(currentValue)
-      ? cloneDeep(currentValue)
+    if (Array.isArray(currentValue))
+      return [...currentValue]
+
+    return isValid(currentValue)
+      ? currentValue
       : undefined
-  })
-}
-
-export function resolvePickerGroupInnerValue(
-  modelValue: PickerGroupModelValue,
-  dataSource: PickerGroupDataSource | undefined,
-  fieldNames?: PickerFieldNames,
-) {
-  const normalizedDataSource = normalizePickerGroupDataSource(dataSource, fieldNames)
-  const currentValues = normalizePickerGroupValue(modelValue)
-
-  return normalizedDataSource.flatMap((item, index) => {
-    const matchedOption = findPickerOptionByValue(
-      item.options,
-      resolveSinglePickerGroupValue(currentValues[index]),
-    ) ?? getFirstEnabledPickerOption(item.options)
-
-    return matchedOption
-      ? [matchedOption.value]
-      : []
   })
 }
 

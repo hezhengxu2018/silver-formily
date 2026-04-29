@@ -1,11 +1,13 @@
-import type { PickerGroupDataSource } from '../types'
+import type { AreaPanelProps } from '../../area-panel'
+import type { PickerGroupDataSource, PickerGroupDefaultSlotProps } from '../types'
 import { createForm } from '@formily/core'
 import { Field, FormProvider } from '@silver-formily/vue'
-import { Picker as VanPicker } from 'vant'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { render } from 'vitest-browser-vue'
 import { userEvent } from 'vitest/browser'
+import AreaPanel from '../../area-panel'
 import FormItem from '../../form-item'
+import PickerPanel from '../../picker-panel'
 import PreviewText from '../../preview-text'
 import PickerGroup from '../index'
 import 'vant/lib/index.css'
@@ -44,16 +46,44 @@ const customContentTabs: PickerGroupDataSource = [
   },
 ]
 
+function renderAppointmentPanels({ dataSource, panelProps }: PickerGroupDefaultSlotProps) {
+  return dataSource.map((item, index) => (
+    <PickerPanel
+      key={item.title}
+      {...panelProps[index]}
+      columns={item.options}
+    />
+  ))
+}
+
 function waitForAnimationFrame() {
   return new Promise<void>((resolve) => {
     window.requestAnimationFrame(() => resolve())
   })
 }
 
+function cleanupPopupSideEffects() {
+  Array.from(document.body.children).forEach((element) => {
+    if (
+      element instanceof HTMLElement
+      && element.matches('div[data-v-app]')
+      && element.querySelector('.van-popup, .van-overlay')
+    ) {
+      element.remove()
+    }
+  })
+
+  document.querySelectorAll('.van-popup, .van-overlay').forEach((element) => {
+    element.remove()
+  })
+}
+
 afterEach(async () => {
+  cleanupPopupSideEffects()
   await waitForAnimationFrame()
   await waitForAnimationFrame()
   await waitForAnimationFrame()
+  cleanupPopupSideEffects()
 })
 
 function getTrigger(container: Element, index = 0) {
@@ -159,7 +189,11 @@ describe('picker-group', () => {
           decorator={[FormItem]}
           component={[PickerGroup]}
           dataSource={appointmentOptions}
-        />
+        >
+          {{
+            default: renderAppointmentPanels,
+          }}
+        </Field>
       </FormProvider>
     ))
 
@@ -183,7 +217,11 @@ describe('picker-group', () => {
           decorator={[FormItem]}
           component={[PickerGroup]}
           dataSource={appointmentOptions}
-        />
+        >
+          {{
+            default: renderAppointmentPanels,
+          }}
+        </Field>
       </FormProvider>
     ))
 
@@ -225,14 +263,14 @@ describe('picker-group', () => {
   it('应该在提供默认插槽时优先渲染自定义子组件，并保留各子组件的 modelValue 结构', async () => {
     const form = createForm({
       values: {
-        schedule: [['sh'], ['pm']],
+        schedule: ['sh', 'pm'],
       },
     })
 
     const displayFormatter = vi.fn((value) => {
-      const [city = [], period = []] = value ?? []
+      const [city = '', period = ''] = value ?? []
 
-      return `${Array.isArray(city) ? city[0] ?? '' : city} / ${Array.isArray(period) ? period[0] ?? '' : period}`.trim()
+      return `${city} / ${period}`.trim()
     })
 
     const { container } = render(() => (
@@ -245,14 +283,16 @@ describe('picker-group', () => {
           dataSource={customContentTabs}
         >
           {{
-            default: () => [
-              <VanPicker
+            default: ({ panelProps }: PickerGroupDefaultSlotProps) => [
+              <PickerPanel
+                {...panelProps[0]}
                 columns={[
                   { text: '杭州', value: 'hz' },
                   { text: '上海', value: 'sh' },
                 ]}
               />,
-              <VanPicker
+              <PickerPanel
+                {...panelProps[1]}
                 columns={[
                   { text: '上午', value: 'am' },
                   { text: '晚上', value: 'pm' },
@@ -284,7 +324,7 @@ describe('picker-group', () => {
     await userEvent.click(getConfirmButton())
 
     await vi.waitFor(() => {
-      expect(form.values.schedule).toEqual([['sh'], ['pm']])
+      expect(form.values.schedule).toEqual(['sh', 'pm'])
       expect(getVisiblePickerGroup()).toBeNull()
     })
 
@@ -306,7 +346,11 @@ describe('picker-group', () => {
           decorator={[FormItem]}
           component={[PickerGroup]}
           dataSource={appointmentOptions}
-        />
+        >
+          {{
+            default: renderAppointmentPanels,
+          }}
+        </Field>
       </FormProvider>
     ))
 
@@ -346,10 +390,50 @@ describe('picker-group', () => {
     })
   })
 
+  it('应该在遮罩点击不关闭弹层时继续允许取消按钮触发 cancel', async () => {
+    const handleCancel = vi.fn()
+    const { container } = render(() => (
+      <FormProvider form={createForm()}>
+        <Field
+          name="appointment"
+          title="预约信息"
+          decorator={[FormItem]}
+          component={[PickerGroup, {
+            closeOnClickOverlay: false,
+            onCancel: handleCancel,
+          }]}
+          dataSource={appointmentOptions}
+        >
+          {{
+            default: renderAppointmentPanels,
+          }}
+        </Field>
+      </FormProvider>
+    ))
+
+    await userEvent.click(getTrigger(container))
+
+    await vi.waitFor(() => {
+      expect(getVisiblePickerGroup()).not.toBeNull()
+    })
+
+    await userEvent.click(getVisibleOverlay())
+
+    await vi.waitFor(() => {
+      expect(getVisiblePickerGroup()).not.toBeNull()
+    })
+
+    await userEvent.click(getCancelButton())
+
+    await vi.waitFor(() => {
+      expect(handleCancel).toHaveBeenCalledTimes(1)
+      expect(getVisiblePickerGroup()).toBeNull()
+    })
+  })
+
   it('应该在 readPretty 下支持 displayFormatter', async () => {
-    const displayFormatter = vi.fn((value, selectedOptions) => {
+    const displayFormatter = vi.fn((value) => {
       expect(value).toEqual(['sh', 'pm'])
-      expect(selectedOptions.map(option => option?.text)).toEqual(['上海', '晚上'])
 
       return '上海夜间预约'
     })
@@ -426,13 +510,10 @@ describe('picker-group', () => {
     })
   })
 
-  it('应该在事件 payload 中暴露字段实例与 tabIndex', async () => {
+  it('应该在事件 payload 中暴露字段实例与最终值', async () => {
     const form = createForm()
-    const handleChange = vi.fn()
     const handleCancel = vi.fn()
     const handleConfirm = vi.fn()
-    const handleClickOption = vi.fn()
-    const handleScrollInto = vi.fn()
 
     const { container } = render(() => (
       <FormProvider form={form}>
@@ -442,13 +523,14 @@ describe('picker-group', () => {
           decorator={[FormItem]}
           component={[PickerGroup, {
             onCancel: handleCancel,
-            onChange: handleChange,
-            onClickOption: handleClickOption,
             onConfirm: handleConfirm,
-            onScrollInto: handleScrollInto,
           }]}
           dataSource={appointmentOptions}
-        />
+        >
+          {{
+            default: renderAppointmentPanels,
+          }}
+        </Field>
       </FormProvider>
     ))
 
@@ -464,13 +546,9 @@ describe('picker-group', () => {
     await vi.waitFor(() => {
       const field = form.query('appointment').take()
 
-      expect(handleChange).toHaveBeenCalled()
       expect(handleCancel).toHaveBeenCalledTimes(1)
-      expect(handleClickOption).toHaveBeenCalled()
-      expect(handleChange.mock.calls.some(call => call[0]?.tabIndex === 0 && call[0]?.field === field)).toBe(true)
-      expect(handleClickOption.mock.calls.some(call => call[0]?.tabIndex === 0 && call[0]?.field === field)).toBe(true)
-      expect(handleScrollInto.mock.calls.some(call => call[0]?.tabIndex === 0 && call[0]?.field === field)).toBe(true)
       expect(handleCancel.mock.calls[0]?.[0]?.field).toBe(field)
+      expect(handleCancel.mock.calls[0]?.[0]?.selectedValues).toEqual([])
     })
 
     await userEvent.click(getTrigger(container))
@@ -490,7 +568,6 @@ describe('picker-group', () => {
       expect(handleConfirm).toHaveBeenCalledTimes(1)
       expect(handleConfirm.mock.calls[0]?.[0]?.field).toBe(field)
       expect(handleConfirm.mock.calls[0]?.[0]?.selectedValues).toEqual(['sh', 'pm'])
-      expect(handleScrollInto.mock.calls.some(call => call[0]?.tabIndex === 0 && call[0]?.field === field)).toBe(true)
     })
   })
 
@@ -498,10 +575,20 @@ describe('picker-group', () => {
     const { container } = render(() => (
       <PickerGroup dataSource={appointmentOptions}>
         {{
+          default: ({ panelProps }: PickerGroupDefaultSlotProps) => appointmentOptions.map((item, index) => (
+            <PickerPanel
+              key={item.title}
+              {...panelProps[index]}
+              columns={item.options}
+            >
+              {{
+                option: (option: { text?: string }) => <div class="picker-group-slot-option">{option.text}</div>,
+              }}
+            </PickerPanel>
+          )),
           title: () => <div class="picker-group-slot-title">自定义标题</div>,
           cancel: () => <span class="picker-group-slot-cancel">返回</span>,
           confirm: () => <span class="picker-group-slot-confirm">下一步</span>,
-          option: (option: { text?: string }) => <div class="picker-group-slot-option">{option.text}</div>,
         }}
       </PickerGroup>
     ))
@@ -516,12 +603,46 @@ describe('picker-group', () => {
     })
   })
 
+  it('应该在组合 AreaPanel 时隐藏子面板工具栏', async () => {
+    const { container } = render(() => (
+      <PickerGroup dataSource={customContentTabs}>
+        {{
+          default: ({ panelProps }: PickerGroupDefaultSlotProps) => [
+            <AreaPanel {...(panelProps[0] as AreaPanelProps)} />,
+            <PickerPanel
+              {...panelProps[1]}
+              columns={[
+                { text: '上午', value: 'am' },
+                { text: '晚上', value: 'pm' },
+              ]}
+            />,
+          ],
+        }}
+      </PickerGroup>
+    ))
+
+    await userEvent.click(getTrigger(container))
+
+    await vi.waitFor(() => {
+      expect(getVisiblePickerGroup()?.querySelectorAll('.van-picker__toolbar')).toHaveLength(1)
+    })
+  })
+
   it('应该透传 toolbar 与 empty 插槽', async () => {
     const { container } = render(() => (
       <PickerGroup dataSource={emptyOptions}>
         {{
+          default: ({ panelProps }: PickerGroupDefaultSlotProps) => (
+            <PickerPanel
+              {...panelProps[0]}
+              columns={emptyOptions[0].options}
+            >
+              {{
+                empty: () => <div class="picker-group-slot-empty">暂无选项</div>,
+              }}
+            </PickerPanel>
+          ),
           toolbar: () => <div class="picker-group-slot-toolbar">自定义工具栏</div>,
-          empty: () => <div class="picker-group-slot-empty">暂无选项</div>,
         }}
       </PickerGroup>
     ))

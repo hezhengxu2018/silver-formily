@@ -1,16 +1,15 @@
 <script setup lang="ts">
 import type { PickerGroupResolvedValue } from '@silver-formily/vant'
 import { createForm } from '@formily/core'
-import { Form, FormButtonGroup, FormItem, PickerGroup, Submit } from '@silver-formily/vant'
+import { AreaPanel, Form, FormButtonGroup, FormItem, PickerGroup, Submit, TimePickerPanel } from '@silver-formily/vant'
 import { Field } from '@silver-formily/vue'
 import { areaList } from '@vant/area-data'
-import { Area, TimePicker } from 'vant'
 import { showDemoResult } from '../shared'
 import { deliveryTabs } from './shared'
 
 const form = createForm({
   values: {
-    delivery: ['330106', ['19', '30']],
+    delivery: ['330106', '19:30'],
   },
 })
 
@@ -28,13 +27,11 @@ function resolveAreaText(code: string) {
 }
 
 function formatDelivery(value: PickerGroupResolvedValue) {
-  const [areaCode = '', time = []] = value ?? []
+  const [areaCode = '', time = ''] = value ?? []
   const areaText = typeof areaCode === 'string'
     ? resolveAreaText(areaCode)
     : ''
-  const timeText = Array.isArray(time)
-    ? time.join(':')
-    : String(time ?? '')
+  const timeText = String(time ?? '')
 
   return [areaText, timeText]
     .filter(Boolean)
@@ -55,8 +52,13 @@ async function handleSubmit(values: typeof form.values) {
       :component="[PickerGroup, { displayFormatter: formatDelivery }]"
       :data-source="deliveryTabs"
     >
-      <Area :area-list="areaList" />
-      <TimePicker />
+      <template #default="{ panelProps }">
+        <AreaPanel
+          v-bind="panelProps[0]"
+          :area-list="areaList"
+        />
+        <TimePickerPanel v-bind="panelProps[1]" />
+      </template>
     </Field>
 
     <FormButtonGroup>

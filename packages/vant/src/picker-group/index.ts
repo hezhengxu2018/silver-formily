@@ -1,6 +1,16 @@
 import { connect, mapProps, mapReadPretty } from '@silver-formily/vue'
 import { PreviewText } from '../preview-text'
+import FPickerGroupPanel from './picker-group-panel.vue'
 import FPickerGroup from './picker-group.vue'
+
+export const PickerGroupPanel = connect<typeof FPickerGroupPanel>(
+  FPickerGroupPanel,
+  mapProps({
+    dataSource: 'dataSource',
+    disabled: true,
+  }),
+  mapReadPretty(PreviewText.PickerGroup),
+)
 
 export const PickerGroup = connect<typeof FPickerGroup>(
   FPickerGroup,
@@ -17,19 +27,17 @@ export default PickerGroup
 export type {
   PickerGroupBaseEventParams,
   PickerGroupCancelEventParams,
-  PickerGroupChangeEventParams,
-  PickerGroupClickOptionEventParams,
   PickerGroupConfirmEventParams,
   PickerGroupDataSource,
   PickerGroupDataSourceItem,
   PickerGroupDefaultSlotProps,
   PickerGroupDisplayFormatter,
   PickerGroupModelValue,
+  PickerGroupPanelItemProps,
+  PickerGroupPanelProps,
+  PickerGroupPopupProps,
   PickerGroupProps,
   PickerGroupResolvedValue,
-  PickerGroupScrollIntoEventParams,
-  PickerGroupSelectedIndexItem,
-  PickerGroupSelectedOptionItem,
   PickerGroupSlots,
   PickerGroupThemeVars,
   PickerGroupValueItem,

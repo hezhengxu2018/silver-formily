@@ -1,6 +1,6 @@
+import type { PickerGroupDefaultSlotProps } from '../../picker-group'
 import { createForm } from '@formily/core'
 import { Field, FormProvider } from '@silver-formily/vue'
-import { TimePicker as VanTimePicker } from 'vant'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { render } from 'vitest-browser-vue'
 import { userEvent } from 'vitest/browser'
@@ -8,6 +8,7 @@ import { h } from 'vue'
 import FormProviderComponent from '../../form'
 import FormItem from '../../form-item'
 import PickerGroup from '../../picker-group'
+import TimePickerPanel from '../../time-picker-panel'
 import TimePicker from '../index'
 import 'vant/lib/index.css'
 
@@ -475,7 +476,7 @@ describe('time-picker', () => {
     expect(getTrigger(container).value).toBe('08:20')
   })
 
-  it('应该能和官方 TimePicker 一起作为 PickerGroup 默认插槽子组件工作', async () => {
+  it('应该能和 TimePickerPanel 一起作为 PickerGroup 默认插槽子组件工作', async () => {
     const form = createForm({
       values: {
         schedule: ['09:30', '10:15:20'],
@@ -502,9 +503,18 @@ describe('time-picker', () => {
           ]}
         >
           {{
-            default: () => [
-              <VanTimePicker minTime={minTime} maxTime={maxTime} />,
-              <VanTimePicker columnsType={['hour', 'minute', 'second']} minTime={minTime} maxTime={maxTime} />,
+            default: ({ panelProps }: PickerGroupDefaultSlotProps) => [
+              <TimePickerPanel
+                {...(panelProps[0] as any)}
+                minTime={minTime}
+                maxTime={maxTime}
+              />,
+              <TimePickerPanel
+                {...(panelProps[1] as any)}
+                columnsType={['hour', 'minute', 'second']}
+                minTime={minTime}
+                maxTime={maxTime}
+              />,
             ],
           }}
         </Field>

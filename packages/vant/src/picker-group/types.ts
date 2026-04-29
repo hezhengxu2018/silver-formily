@@ -6,7 +6,7 @@ import type {
   PickerProps as VanPickerProps,
   PopupProps as VanPopupProps,
 } from 'vant'
-import type { PickerColumn, PickerFieldNames, PickerOption, PickerOptionValue } from '../picker/types'
+import type { PickerColumn, PickerFieldNames, PickerOptionValue } from '../picker/types'
 
 export interface PickerGroupDataSourceItem {
   title: string
@@ -17,62 +17,71 @@ export type PickerGroupDataSource = PickerGroupDataSourceItem[]
 
 export type PickerGroupValueItem = PickerOptionValue | PickerOptionValue[]
 
-export type PickerGroupSelectedOptionItem = PickerOption | Array<PickerOption | undefined> | undefined
-
-export type PickerGroupSelectedIndexItem = number | number[]
-
 export type PickerGroupResolvedValue = PickerGroupValueItem[] | null
 
 export type PickerGroupModelValue = PickerGroupResolvedValue | undefined
 
 export type PickerGroupDisplayFormatter = (
   value: PickerGroupResolvedValue,
-  selectedOptions: PickerGroupSelectedOptionItem[],
 ) => string
 
 export interface PickerGroupBaseEventParams {
   selectedValues: PickerGroupValueItem[]
-  selectedOptions: PickerGroupSelectedOptionItem[]
-  selectedIndexes: PickerGroupSelectedIndexItem[]
   field?: Field
-}
-
-export interface PickerGroupChangeEventParams extends PickerGroupBaseEventParams {
-  tabIndex: number
 }
 
 export interface PickerGroupConfirmEventParams extends PickerGroupBaseEventParams {}
 
 export interface PickerGroupCancelEventParams extends PickerGroupBaseEventParams {}
 
-export interface PickerGroupClickOptionEventParams extends PickerGroupBaseEventParams {
-  tabIndex: number
-  currentOption?: PickerOption
-}
-
-export interface PickerGroupScrollIntoEventParams {
-  tabIndex: number
-  currentOption?: PickerOption
-  field?: Field
-}
-
 export interface PickerGroupDefaultSlotProps {
-  activeTab: number
+  dataSource: PickerGroupDataSource
   modelValue: PickerGroupResolvedValue
-  setActiveTab: (value: number | string) => void
+  panelProps: PickerGroupPanelItemProps[]
   setValue: (index: number, value: PickerGroupValueItem | undefined) => void
   values: Array<PickerGroupValueItem | undefined>
 }
 
+export interface PickerGroupPanelItemProps {
+  'allowHtml'?: VanPickerProps['allowHtml']
+  'disabled': boolean
+  'modelValue': PickerGroupValueItem | undefined
+  'onConfirm': (value: unknown) => void
+  'onUpdate:modelValue': (value: unknown) => void
+  'optionHeight'?: VanPickerProps['optionHeight']
+  'readonly': boolean
+  'showToolbar': boolean
+  'swipeDuration'?: VanPickerProps['swipeDuration']
+  'visibleOptionNum'?: VanPickerProps['visibleOptionNum']
+}
+
+export interface PickerGroupPanelProps {
+  allowHtml?: VanPickerProps['allowHtml']
+  cancelButtonText?: VanPickerGroupProps['cancelButtonText']
+  columnsFieldNames?: PickerFieldNames
+  confirmButtonText?: VanPickerGroupProps['confirmButtonText']
+  modelValue?: PickerGroupModelValue
+  dataSource?: PickerGroupDataSource
+  tabs?: VanPickerGroupProps['tabs']
+  nextStepText?: VanPickerGroupProps['nextStepText']
+  optionHeight?: VanPickerProps['optionHeight']
+  swipeDuration?: VanPickerProps['swipeDuration']
+  title?: VanPickerGroupProps['title']
+  readonly?: boolean
+  readOnly?: boolean
+  disabled?: boolean
+  visibleOptionNum?: VanPickerProps['visibleOptionNum']
+}
+
 export interface PickerGroupSlots {
   default?: (props: PickerGroupDefaultSlotProps) => any
-  option?: (option: PickerOption) => any
   title?: () => any
   cancel?: () => any
   confirm?: () => any
   toolbar?: () => any
-  empty?: () => any
 }
+
+export type PickerGroupPopupProps = Partial<Omit<VanPopupProps, 'show' | 'onUpdate:show'>>
 
 export interface PickerGroupProps {
   allowHtml?: VanPickerProps['allowHtml']
@@ -82,10 +91,12 @@ export interface PickerGroupProps {
   confirmButtonText?: VanPickerGroupProps['confirmButtonText']
   modelValue?: PickerGroupModelValue
   dataSource?: PickerGroupDataSource
+  tabs?: VanPickerGroupProps['tabs']
   columnsFieldNames?: PickerFieldNames
   duration?: VanPopupProps['duration']
   lazyRender?: VanPopupProps['lazyRender']
   lockScroll?: VanPopupProps['lockScroll']
+  nextStepText?: VanPickerGroupProps['nextStepText']
   optionHeight?: VanPickerProps['optionHeight']
   overlay?: VanPopupProps['overlay']
   placeholder?: string
@@ -102,6 +113,7 @@ export interface PickerGroupProps {
   readOnly?: boolean
   disabled?: boolean
   displayFormatter?: PickerGroupDisplayFormatter
+  popupProps?: PickerGroupPopupProps
   visibleOptionNum?: VanPickerProps['visibleOptionNum']
   zIndex?: VanPopupProps['zIndex']
 }
