@@ -33,6 +33,7 @@ const hasValue = computed(() => {
 <style scoped>
 .silver-formily-vant-preview-signature {
   display: block;
+  width: 100%;
   max-width: 100%;
   max-height: 240px;
   object-fit: contain;

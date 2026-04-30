@@ -32,6 +32,7 @@ import type {
   TimePickerModelValue,
   VanTimePickerProps,
 } from '../time-picker/types'
+import type { UploadPreviewFile } from '../upload/types'
 
 export interface PreviewTextProps {
   placeholder?: string
@@ -66,6 +67,7 @@ export interface PreviewTextSignatureProps {
 
 export interface PreviewTextUploadProps {
   modelValue?: any
+  previewFile?: UploadPreviewFile
 }
 
 export interface PreviewTextAreaProps {

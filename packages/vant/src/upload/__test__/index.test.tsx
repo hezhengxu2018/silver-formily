@@ -25,22 +25,6 @@ async function uploadFile(container: Element, file: File) {
   input.dispatchEvent(new Event('change', { bubbles: true }))
 }
 
-function createDeferred<T>() {
-  let resolve!: (value: T) => void
-  let reject!: (reason?: unknown) => void
-
-  const promise = new Promise<T>((innerResolve, innerReject) => {
-    resolve = innerResolve
-    reject = innerReject
-  })
-
-  return {
-    promise,
-    resolve,
-    reject,
-  }
-}
-
 describe('upload', () => {
   it('应该正常渲染上传按钮文案', async () => {
     render(() => (
@@ -48,7 +32,7 @@ describe('upload', () => {
         <Field
           name="attachments"
           component={[Upload, {
-            textContent: '上传附件',
+            uploadText: '上传附件',
           }]}
         />
       </FormProvider>
@@ -69,7 +53,7 @@ describe('upload', () => {
           name="attachments"
           component={[Upload, {
             formatValue: fileList => fileList?.map(item => item.file?.name),
-            textContent: '上传文件',
+            uploadText: '上传文件',
           }]}
         />
       </FormProvider>
@@ -87,9 +71,13 @@ describe('upload', () => {
     expect(field.dataSource?.[0]?.file?.name).toBe('avatar.png')
   })
 
-  it('应该在自动上传成功后再写回格式化后的字段值', async () => {
-    const deferred = createDeferred<{ url: string }>()
-    const httpRequest = vi.fn(() => deferred.promise)
+  it('应该在 afterRead 异步处理后重新同步格式化后的字段值', async () => {
+    const afterRead = vi.fn(async (item: any) => {
+      item.status = 'uploading'
+      await Promise.resolve()
+      item.status = 'done'
+      item.url = 'https://cdn.example.com/contract.pdf'
+    })
     const form = createForm()
     const file = new File(['hello'], 'contract.pdf', { type: 'application/pdf' })
 
@@ -98,10 +86,9 @@ describe('upload', () => {
         <Field
           name="attachments"
           component={[Upload, {
-            action: '/api/upload',
+            afterRead,
             formatValue: fileList => fileList?.map(item => item.url),
-            httpRequest,
-            textContent: '上传文件',
+            uploadText: '上传文件',
           }]}
         />
       </FormProvider>
@@ -110,13 +97,7 @@ describe('upload', () => {
     await uploadFile(container, file)
 
     await vi.waitFor(() => {
-      expect(httpRequest).toHaveBeenCalledOnce()
-    })
-
-    expect(form.values.attachments).toBeUndefined()
-
-    deferred.resolve({
-      url: 'https://cdn.example.com/contract.pdf',
+      expect(afterRead).toHaveBeenCalledOnce()
     })
 
     await vi.waitFor(() => {
@@ -127,12 +108,11 @@ describe('upload', () => {
 
     expect(field.dataSource?.[0]?.status).toBe('done')
     expect(field.dataSource?.[0]?.url).toBe('https://cdn.example.com/contract.pdf')
-    expect(field.selfErrors).toEqual([])
-    expect(container.textContent).not.toContain('上传失败')
   })
 
-  it('应该在上传失败时写入字段错误并展示失败状态', async () => {
-    const httpRequest = vi.fn(async () => {
+  it('应该在 afterRead 失败时移除本次选择的文件', async () => {
+    const afterRead = vi.fn(async (item: any) => {
+      item.status = 'uploading'
       throw new Error('上传失败')
     })
     const form = createForm()
@@ -143,9 +123,9 @@ describe('upload', () => {
         <Field
           name="attachments"
           component={[Upload, {
-            action: '/api/upload',
-            httpRequest,
-            textContent: '上传文件',
+            afterRead,
+            formatValue: fileList => fileList?.map(item => item.url),
+            uploadText: '上传文件',
           }]}
         />
       </FormProvider>
@@ -154,12 +134,14 @@ describe('upload', () => {
     await uploadFile(container, file)
 
     await vi.waitFor(() => {
-      expect((form.query('attachments').take() as FormilyField).selfErrors).toContain('上传失败')
+      expect(afterRead).toHaveBeenCalledOnce()
+      expect(form.values.attachments).toEqual([])
     })
 
-    await vi.waitFor(() => {
-      expect(container.textContent).toContain('上传失败')
-    })
+    const field = form.query('attachments').take() as FormilyField
+
+    expect(field.dataSource).toEqual([])
+    expect(container.textContent).not.toContain('上传失败')
   })
 
   it('应该支持通过 field.invoke 获取 Uploader 实例', async () => {
@@ -170,7 +152,7 @@ describe('upload', () => {
         <Field
           name="attachments"
           component={[Upload, {
-            textContent: '上传文件',
+            uploadText: '上传文件',
           }]}
         />
       </FormProvider>
@@ -199,6 +181,46 @@ describe('upload', () => {
 
     expect(container.textContent).toContain('营业执照.pdf')
     expect(container.textContent).toContain('现场照片.jpg')
-    expect(container.querySelector('a')?.getAttribute('href')).toBe('https://cdn.example.com/license.pdf')
+    expect(container.querySelector('.van-uploader__wrapper--disabled')).toBeFalsy()
+    expect(container.querySelector<HTMLElement>('.van-uploader__upload')?.style.display).toBe('none')
+    expect(container.querySelector('.van-uploader__preview-delete')).toBeFalsy()
+  })
+
+  it('应该支持在 readPretty 模式下配置文件打开逻辑', async () => {
+    const previewFile = vi.fn()
+    const { container } = render(() => (
+      <FormProvider form={createForm()}>
+        <Field
+          name="attachments"
+          initialValue={[
+            { name: '营业执照.pdf', url: 'https://cdn.example.com/license.pdf' },
+          ]}
+          readPretty={true}
+          component={[Upload, { previewFile }]}
+        />
+      </FormProvider>
+    ))
+
+    container.querySelector<HTMLElement>('.van-uploader__preview')?.click()
+
+    await vi.waitFor(() => {
+      expect(previewFile).toHaveBeenCalledOnce()
+    })
+
+    expect(previewFile).toHaveBeenCalledWith(
+      expect.objectContaining({
+        name: '营业执照.pdf',
+        url: 'https://cdn.example.com/license.pdf',
+      }),
+      expect.objectContaining({
+        fileList: [
+          expect.objectContaining({
+            name: '营业执照.pdf',
+            url: 'https://cdn.example.com/license.pdf',
+          }),
+        ],
+        index: 0,
+      }),
+    )
   })
 })

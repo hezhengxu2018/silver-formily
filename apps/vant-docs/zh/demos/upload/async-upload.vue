@@ -2,14 +2,36 @@
 import { createForm } from '@formily/core'
 import { Form, FormButtonGroup, FormItem, Submit, Upload } from '@silver-formily/vant'
 import { Field } from '@silver-formily/vue'
+import { showFailToast } from 'vant'
 import { showDemoResult } from '../shared'
 
 const form = createForm()
 
-const uploadApiBase = import.meta.env.VITE_UPLOAD_API_BASE?.replace(/\/$/, '')
-const uploadAction = uploadApiBase
-  ? `${uploadApiBase}/mock/upload`
-  : '/mock/upload'
+const uploadAction = 'https://vant.silver-formily.org/mock/upload'
+
+async function afterRead(item: any) {
+  item.status = 'uploading'
+  item.message = '上传中...'
+
+  try {
+    const formData = new FormData()
+    formData.append('file', item.file)
+
+    const response = await fetch(uploadAction, {
+      body: formData,
+      method: 'POST',
+    })
+    const result = await response.json()
+
+    item.url = result.url
+    item.status = 'done'
+    item.message = ''
+  }
+  catch (error) {
+    showFailToast(error instanceof Error ? error.message : '上传失败')
+    throw error
+  }
+}
 
 async function showUploadResult(values: Record<string, string[]>) {
   await showDemoResult(values, '上传完成后的字段值')
@@ -27,10 +49,10 @@ async function showUploadResult(values: Record<string, string[]>) {
       }]"
       :component="[Upload, {
         accept: 'image/*',
-        action: uploadAction,
+        afterRead,
         formatValue: (fileList: any[] = []) => fileList.map(item => item.url),
         maxCount: 2,
-        textContent: '上传图片',
+        uploadText: '上传图片',
       }]"
     />
 

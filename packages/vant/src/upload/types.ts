@@ -1,4 +1,3 @@
-import type { Field } from '@formily/core'
 import type {
   UploaderAfterRead,
   UploaderInstance,
@@ -14,71 +13,36 @@ export interface UploadFileListItem extends VanUploaderFileListItem {
 
 export type UploadFormatValue = (fileList?: UploadFileListItem[]) => any
 
-export type UploadErrorAdaptor = (error?: Error) => string
-
-export type UploadRequestDataValue
-  = string
-    | number
-    | boolean
-    | Blob
-    | File
-    | null
-    | undefined
-    | Array<string | number | boolean | Blob | File>
-
-export type UploadRequestData = FormData | Record<string, UploadRequestDataValue>
-
-export type UploadRequestFactory<T> = (
-  file: File,
-  item: UploadFileListItem,
-) => T | Promise<T>
-
-export interface UploadRequestOptions {
-  action: string
-  data?: UploadRequestData
-  file: File
+export interface UploadPreviewFileContext {
   fileList: UploadFileListItem[]
-  headers?: HeadersInit
-  item: UploadFileListItem
-  method: string
-  name: string
-  withCredentials?: boolean
+  index?: number
+  name?: number | string
 }
 
-export type UploadHttpRequest = (
-  options: UploadRequestOptions,
-) => Promise<any> | any
+export type UploadPreviewFile = (
+  file: UploadFileListItem,
+  context: UploadPreviewFileContext,
+) => void
 
-export type UploadResponseAdaptor = (
-  response: any,
-  item: UploadFileListItem,
-) => string | Partial<UploadFileListItem> | void
-
-export interface UploadProps {
-  action?: string
-  data?: UploadRequestData | UploadRequestFactory<UploadRequestData | undefined>
-  errorAdaptor?: UploadErrorAdaptor
+export interface UploadComponentProps {
   fileList?: UploadFileListItem[]
   formatValue?: UploadFormatValue
-  headers?: HeadersInit | UploadRequestFactory<HeadersInit | undefined>
-  httpRequest?: UploadHttpRequest
-  method?: string
-  responseAdaptor?: UploadResponseAdaptor
-  textContent?: string
-  withCredentials?: boolean
+  modelValue?: any
+  previewFile?: UploadPreviewFile
+}
+
+export interface UploadProps extends Partial<Omit<VanUploaderProps, 'afterRead' | 'modelValue'>> {
+  afterRead?: UploadAfterRead
+  fileList?: UploadFileListItem[]
+  formatValue?: UploadFormatValue
+  modelValue?: any
+  previewFile?: UploadPreviewFile
 }
 
 export interface UploadSlots {
   'default'?: () => any
   'preview-cover'?: (props: UploadFileListItem & { index: number }) => any
   'preview-delete'?: () => any
-}
-
-export interface UploadUploadContext {
-  file?: File
-  fileList: UploadFileListItem[]
-  field?: Field
-  item: UploadFileListItem
 }
 
 export type UploadAfterRead = UploaderAfterRead

@@ -12,6 +12,12 @@ mobileDemo: preview-text/index.vue
 
 下面的示例把整个 `Form` 设置为 `readPretty`，集中展示当前 Vant 包中已经实现阅读态映射的组件。点击底部按钮可以像 Element Plus 封装库示例一样，通过 `form.setState` 在编辑态和阅读态之间切换。
 
+:::tip 提示
+
+Upload 组件的编辑态的文件预览来自 `dataSource/fileList`，如果需要编辑态回显，除了字段值本身，还需要同时准备 `dataSource/fileList`
+
+:::
+
 <<< @/zh/demos/preview-text/read-pretty.vue
 
 ## 组件映射
@@ -24,7 +30,7 @@ mobileDemo: preview-text/index.vue
 | `Rate`                                 | `PreviewText.Rate`        | 以只读评分展示当前分值                 |
 | `Slider`                               | `PreviewText.Slider`      | 以只读滑块展示当前进度或区间           |
 | `Signature`                            | `PreviewText.Signature`   | 回显已有签名图片                       |
-| `Upload`                               | `PreviewText.Upload`      | 把文件值渲染成标签或链接               |
+| `Upload`                               | `PreviewText.Upload`      | 复用 Vant Uploader 预览样式展示文件    |
 | `Cascader`                             | `PreviewText.Cascader`    | 根据路径值和选项展示完整路径文案       |
 | `Area` / `AreaPanel`                   | `PreviewText.Area`        | 根据省市区编码展示区域文案             |
 | `Picker` / `PickerPanel`               | `PreviewText.Picker`      | 支持单列、多列和级联选择结果           |

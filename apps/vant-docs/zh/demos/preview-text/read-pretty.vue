@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { UploadPreviewFile } from '@silver-formily/vant'
 import { createForm } from '@formily/core'
 import {
   Area,
@@ -32,9 +33,45 @@ import { cityOptions, regionColumns } from '../picker/shared'
 const signatureValue = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(`
 <svg xmlns="http://www.w3.org/2000/svg" width="240" height="96" viewBox="0 0 240 96">
   <path d="M24 58 C58 30, 62 82, 96 48 S152 54, 184 36 S206 44, 216 32" fill="none" stroke="#1989fa" stroke-width="5" stroke-linecap="round" />
-  <path d="M36 74 H204" stroke="#dcdee0" stroke-width="2" stroke-linecap="round" />
 </svg>
 `)}`
+
+function openExternalFile(url: string) {
+  window.open(url, '_blank', 'noopener')
+}
+
+function isImageFile(file: { file?: File, isImage?: boolean, url?: string }) {
+  if (file.isImage) {
+    return true
+  }
+
+  if (file.file?.type.startsWith('image/')) {
+    return true
+  }
+
+  return /\.(?:bmp|gif|jpe?g|png|svg|webp)$/i.test(file.url ?? '')
+}
+
+const previewFile: UploadPreviewFile = (file) => {
+  if (isImageFile(file)) {
+    return
+  }
+
+  if (file.url) {
+    openExternalFile(file.url)
+  }
+}
+
+const attachmentFiles = [
+  {
+    name: '门店照片.jpg',
+    url: 'https://fastly.jsdelivr.net/npm/@vant/assets/cat.jpeg',
+  },
+  {
+    name: '巡检记录.pdf',
+    url: 'https://mozilla.github.io/pdf.js/web/compressed.tracemonkey-pldi-09.pdf',
+  },
+]
 
 const form = createForm({
   readPretty: true,
@@ -47,13 +84,7 @@ const form = createForm({
     score: 4,
     progress: 68,
     signature: signatureValue,
-    attachments: [
-      {
-        name: '门店照片.jpg',
-        url: 'https://cdn.example.com/store-photo.jpg',
-      },
-      '巡检记录.pdf',
-    ],
+    attachments: attachmentFiles,
     cascader: ['330000', '330100', '330106'],
     areaCode: '330102',
     picker: 'hz',
@@ -148,7 +179,8 @@ function toggleReadPretty() {
       name="attachments"
       title="附件"
       :decorator="[FormItem, { labelAlign: 'top' }]"
-      :component="[Upload]"
+      :component="[Upload, { previewFile }]"
+      :data-source="attachmentFiles"
     />
 
     <Field

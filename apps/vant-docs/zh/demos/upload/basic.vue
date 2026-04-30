@@ -24,7 +24,7 @@ async function showUploadResult(values: Record<string, File[]>) {
         accept: 'image/*,.pdf',
         formatValue: (fileList: any[] = []) => fileList.map(item => item.file).filter(Boolean),
         maxCount: 3,
-        textContent: '上传附件',
+        uploadText: '上传附件',
       }]"
     />
 

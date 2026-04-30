@@ -15,7 +15,7 @@ import { NavBar } from 'vant'
 
       <MobileDemoSection
         title="自动上传"
-        description="配置 action 或 httpRequest 后，字段值会在上传成功后再同步。"
+        description="在 Vant 的 afterRead 回调里处理上传，并更新文件项状态。"
       >
         <DocsDemoRenderer path="@/zh/demos/upload/async-upload.vue" />
       </MobileDemoSection>

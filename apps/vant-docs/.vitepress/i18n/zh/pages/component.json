@@ -41,10 +41,6 @@
     "text": "Input 输入组件",
     "items": [
       {
-        "text": "PreviewText 阅读态",
-        "link": "/component/preview-text"
-      },
-      {
         "text": "Input 输入框",
         "link": "/component/input"
       },
@@ -144,6 +140,15 @@
       {
         "text": "FormPopup 表单弹层",
         "link": "/component/form-popup"
+      }
+    ]
+  },
+  {
+    "text": "Read Pretty 阅读态组件",
+    "items": [
+      {
+        "text": "PreviewText 阅读态",
+        "link": "/component/preview-text"
       }
     ]
   },
