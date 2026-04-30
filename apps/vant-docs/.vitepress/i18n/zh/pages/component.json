@@ -41,6 +41,10 @@
     "text": "Input 输入组件",
     "items": [
       {
+        "text": "PreviewText 阅读态",
+        "link": "/component/preview-text"
+      },
+      {
         "text": "Input 输入框",
         "link": "/component/input"
       },

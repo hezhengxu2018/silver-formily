@@ -131,7 +131,7 @@ watch(
 <template>
   <div :class="rootClass">
     <VanSignature
-      v-show="!showPreview"
+      v-if="!showPreview"
       ref="signatureRef"
       v-bind="innerSignatureProps"
       @submit="handleSubmit"

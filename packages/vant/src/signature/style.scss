@@ -4,6 +4,7 @@ $signature-prefix: '#{$style-prefix}-signature';
 
 .#{$signature-prefix} {
   position: relative;
+  width: 100%;
 
   &--disabled,
   &--readonly {

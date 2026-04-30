@@ -139,6 +139,24 @@ describe('formItem', () => {
       await expect.element(getElement(container, '.van-cell__value')).toHaveClass('custom-value')
     })
 
+    it('应该在 readPretty 阅读态下隐藏 isLink 箭头', async () => {
+      const { container } = render(() => (
+        <FormProvider form={createForm()}>
+          <Field
+            name="username"
+            title="用户名"
+            readPretty={true}
+            initialValue="hello"
+            decorator={[FormItem, { isLink: true }]}
+            component={[Input]}
+          />
+        </FormProvider>
+      ))
+
+      await expect.element(getElement(container, '.van-field')).not.toHaveClass('van-cell--clickable')
+      expect(container.querySelector('.van-cell__right-icon')).toBeNull()
+    })
+
     it('应该透传 clearable 并为自定义输入默认启用 always clearTrigger', async () => {
       const { container } = render(() => (
         <FormProvider form={createForm()}>

@@ -156,6 +156,7 @@ describe('signature', () => {
       expect(getPreview(container)).toBeNull()
       expect(getConfirmButton(container)).not.toBeNull()
       expect(getCanvas(container)).not.toBeNull()
+      expect(getCanvas(container)?.width).toBeGreaterThan(0)
     })
   })
 
@@ -200,7 +201,6 @@ describe('signature', () => {
 
     await vi.waitFor(() => {
       expect(getPreviewImage(container)?.src).toContain('data:image/svg+xml')
-      expect(getSignature(container)).not.toBeNull()
     })
 
     expect(getClearButton(container)).toBeNull()

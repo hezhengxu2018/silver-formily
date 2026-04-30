@@ -3,6 +3,8 @@ import type { ComponentPublicInstance, CSSProperties } from 'vue'
 import type { VantFormItemInputController } from './context'
 import type { FormItemProps } from './types'
 import { isValid } from '@formily/shared'
+import { formilyComputed } from '@silver-formily/reactive-vue'
+import { useField } from '@silver-formily/vue'
 import { isNil } from 'es-toolkit'
 import { Cell as VanCell, Icon as VanIcon } from 'vant'
 import { computed, isVNode, provide, ref, useId } from 'vue'
@@ -43,6 +45,7 @@ const formContext = useVantFormContext()
 const fieldRef = ref<ComponentPublicInstance | null>(null)
 const focused = ref(false)
 const baseId = useId()
+const fieldModelRef = useField()
 const inputController = ref<VantFormItemInputController | null>(null)
 
 function resolveControlFlag(name: 'showError' | 'showErrorMessage', defaultValue: boolean) {
@@ -142,7 +145,7 @@ const isRequired = computed(() => {
 const hasFieldError = computed(() => resolvedFieldProps.value.error)
 
 const hasFieldBorder = computed(() => fieldProps.value.border !== false)
-const isLink = computed(() => Boolean(fieldProps.value.isLink))
+const isLink = formilyComputed(() => Boolean(fieldModelRef.value?.pattern !== 'readPretty' && fieldProps.value.isLink))
 const shouldShowClear = computed(() => {
   if (!fieldProps.value.clearable || fieldProps.value.readonly) {
     return false
