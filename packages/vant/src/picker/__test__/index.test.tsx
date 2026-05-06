@@ -333,68 +333,37 @@ describe('picker', () => {
     expect(container.textContent?.trim()).toBe('浙江 / 杭州')
   })
 
-  it('应该默认允许在 disabled、readonly 下打开只读弹层', async () => {
+  it('应该在 disabled、readonly trigger 下阻止打开弹层', async () => {
     const { container } = render(() => (
       <FormProvider form={createForm()}>
         <Field
           name="disabledCity"
           title="禁用"
+          disabled={true}
           decorator={[FormItem]}
-          component={[Picker, { disabled: true }]}
+          component={[Picker]}
           dataSource={cityOptions}
         />
         <Field
           name="readonlyCity"
           title="只读"
+          readOnly={true}
           decorator={[FormItem]}
-          component={[Picker, { readonly: true }]}
+          component={[Picker]}
           dataSource={cityOptions}
         />
       </FormProvider>
     ))
 
-    await userEvent.click(getTrigger(container, 0))
-
-    await vi.waitFor(() => {
-      expect(getVisiblePicker()).not.toBeNull()
-    })
-
-    await userEvent.click(getCancelButton())
-    await userEvent.click(getTrigger(container, 1))
-
-    await vi.waitFor(() => {
-      expect(getVisiblePicker()).not.toBeNull()
-    })
-
-    await userEvent.click(getCancelButton())
-  })
-
-  it('应该在 disableTriggerWhenInactive 下于 trigger 层阻止打开弹层', async () => {
-    const { container } = render(() => (
-      <FormProvider form={createForm()}>
-        <Field
-          name="disabledCity"
-          title="禁用"
-          decorator={[FormItem]}
-          component={[Picker, { disableTriggerWhenInactive: true, disabled: true }]}
-          dataSource={cityOptions}
-        />
-        <Field
-          name="readonlyCity"
-          title="只读"
-          decorator={[FormItem]}
-          component={[Picker, { disableTriggerWhenInactive: true, readonly: true }]}
-          dataSource={cityOptions}
-        />
-      </FormProvider>
-    ))
-
+    expect(getTrigger(container, 0)).toBeDisabled()
     getTrigger(container, 0).click()
+
+    expect(getVisiblePicker()).toBeNull()
+
+    expect(getTrigger(container, 1)).not.toBeDisabled()
     getTrigger(container, 1).click()
 
-    await vi.waitFor(() => {
-      expect(getVisiblePicker()).toBeNull()
-    })
+    expect(getVisiblePicker()).toBeNull()
   })
 
   it('应该通过 popupProps 透传 Popup 配置', async () => {

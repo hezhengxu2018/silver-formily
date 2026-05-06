@@ -48,22 +48,19 @@ mobileDemo: picker/index.vue
 
 - `Field` 上的 `dataSource` 会自动映射到 `columns`，额外支持 `{ label, value }`、`{ label, name }` 的选项形态，同时兼容[官方文档中的字段](https://vant-ui.github.io/vant/#/zh-CN/picker#pickeroption-shu-ju-jie-gou)。
 - 单列字段值是 `string | number | null`，多列 / 级联字段值是 `Array<string | number> | null`。
-- 默认情况下，`readonly` / `disabled` 仍允许打开弹层，内部 Picker 会进入只读态；传入 `disableTriggerWhenInactive` 后，会在触发区层面阻止打开弹层。
+- 触发区交互状态跟随 `Field` 的 `disabled` / `readOnly` / `readPretty`，不会透传到内部 Picker。
 
 ### 补充 Props
 
-| 属性名                       | 类型                                                  | 描述                             | 默认值         |
-| ---------------------------- | ----------------------------------------------------- | -------------------------------- | -------------- |
-| `modelValue`                 | `string \| number \| Array<string \| number> \| null` | 当前字段值                       | `-`            |
-| `columns`                    | `PickerColumn \| PickerColumn[]`                      | 选项列，通常由 `dataSource` 提供 | `[]`           |
-| `columnsFieldNames`          | ^[object]`{ text, value, children }`                  | 自定义字段名映射                 | 官方默认值     |
-| `placeholder`                | `string`                                              | 未选择时的展示文案               | `'请选择选项'` |
-| `popupProps`                 | `PickerPopupProps`                                    | 传给内部 Popup 的配置            | `-`            |
-| `disableTriggerWhenInactive` | `boolean`                                             | 非可编辑态时是否直接禁用触发区   | `false`        |
-| `separator`                  | `string`                                              | 字段展示区分隔符                 | `' / '`        |
-| `displayFormatter`           | ^[Function]`(value, selectedOptions) => string`       | 自定义字段展示区文案             | `-`            |
-| `readonly`                   | `boolean`                                             | 只读态，默认允许打开只读弹层     | `false`        |
-| `disabled`                   | `boolean`                                             | 禁用态，默认允许打开只读弹层     | `false`        |
+| 属性名              | 类型                                                  | 描述                             | 默认值         |
+| ------------------- | ----------------------------------------------------- | -------------------------------- | -------------- |
+| `modelValue`        | `string \| number \| Array<string \| number> \| null` | 当前字段值                       | `-`            |
+| `columns`           | `PickerColumn \| PickerColumn[]`                      | 选项列，通常由 `dataSource` 提供 | `[]`           |
+| `columnsFieldNames` | ^[object]`{ text, value, children }`                  | 自定义字段名映射                 | 官方默认值     |
+| `placeholder`       | `string`                                              | 未选择时的展示文案               | `'请选择选项'` |
+| `popupProps`        | `PickerPopupProps`                                    | 传给内部 Popup 的配置            | `-`            |
+| `separator`         | `string`                                              | 字段展示区分隔符                 | `' / '`        |
+| `displayFormatter`  | ^[Function]`(value, selectedOptions) => string`       | 自定义字段展示区文案             | `-`            |
 
 除上述补充能力外，Picker 选项结构、滚轮交互和已透传的官方属性 / 插槽可参考 [Vant Picker 官方文档](https://vant-ui.github.io/vant/#/zh-CN/picker)。当前封装固定通过 `Popup` 弹层承载，不需要手动维护 `show`；内部固定显示工具栏，不支持隐藏 `showToolbar`。
 

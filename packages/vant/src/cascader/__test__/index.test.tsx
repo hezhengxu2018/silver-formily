@@ -393,7 +393,7 @@ describe('cascader', () => {
     })
   })
 
-  it('应该兼容 readOnly 形式的只读属性', async () => {
+  it('应该兼容 readOnly 形式的只读属性，并阻止打开弹层', async () => {
     const { container } = render(() => (
       <FormProvider form={createForm()}>
         <Field
@@ -408,12 +408,10 @@ describe('cascader', () => {
 
     const trigger = getTrigger(container)
 
-    expect(trigger).toBeDisabled()
+    expect(trigger).not.toBeDisabled()
     trigger.click()
 
-    await vi.waitFor(() => {
-      expect(getVisibleCascader()).toBeNull()
-    })
+    expect(getVisibleCascader()).toBeNull()
   })
 
   it('应该透传官方插槽', async () => {

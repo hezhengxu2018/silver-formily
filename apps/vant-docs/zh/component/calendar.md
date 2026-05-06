@@ -63,7 +63,7 @@ mobileDemo: calendar/index.vue
 
 ### 使用约定
 
-- 由于官方的组件没有`readonly`/`disabled`属性，因此也不再提供`disableTriggerWhenInactive`配置项。 现在`readonly`/`disabled` 都会阻止弹层打开
+- 触发区交互状态跟随 `Field` 的 `disabled` / `readOnly` / `readPretty`，不会透传到内部 Vant `Calendar`
 
 ### 封装补充 Props
 
@@ -74,7 +74,6 @@ mobileDemo: calendar/index.vue
 | `valueFormat`      | `string`                             | 绑定值日期格式       | `YYYY-MM-DD`                               |
 | `placeholder`      | `string`                             | 未选择时的展示文案   | 单选为“请选择日期”，区间为“请选择日期范围” |
 | `displayFormatter` | ^[Function]`(value, type) => string` | 自定义字段展示区文案 | `-`                                        |
-| `disabled`         | `boolean`                            | 禁用状态             | `false`                                    |
 
 ### Props
 

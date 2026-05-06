@@ -11,7 +11,7 @@ import type {
 } from './types'
 import { useField } from '@silver-formily/vue'
 import { computed, useSlots } from 'vue'
-import { callListener, PopupTriggerInput, resolveSelectionPlaceholder, useCleanAttrs } from '../__builtins__'
+import { callListener, PopupTriggerInput, resolveSelectionPlaceholder, useCleanAttrs, usePopupTriggerState } from '../__builtins__'
 import { createPopup } from '../create-popup'
 import CascaderPopupContent from './cascader-popup-content.vue'
 import {
@@ -61,12 +61,10 @@ const emit = defineEmits<{
 const slots = useSlots()
 const fieldRef = useField<Field>()
 const { props: triggerInputProps } = useCleanAttrs()
-
-const isReadonly = computed(() => {
-  return Boolean(props.readonly || props.readOnly)
-})
-const isTriggerDisabled = computed(() => {
-  return Boolean(props.disabled || isReadonly.value)
+const { isTriggerDisabled, isTriggerReadonly } = usePopupTriggerState({
+  field: fieldRef,
+  disabled: () => Boolean(props.disabled),
+  readonly: () => Boolean(props.readonly || props.readOnly),
 })
 
 const normalizedValue = computed(() => {
@@ -166,7 +164,7 @@ const popupContentProps = computed<CascaderPopupContentProps>(() => {
 })
 
 async function open() {
-  if (isTriggerDisabled.value) {
+  if (isTriggerDisabled.value || isTriggerReadonly.value) {
     return
   }
 

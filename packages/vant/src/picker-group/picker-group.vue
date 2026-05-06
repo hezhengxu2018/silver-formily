@@ -11,7 +11,7 @@ import type {
 } from './types'
 import { useField } from '@silver-formily/vue'
 import { computed, useSlots } from 'vue'
-import { callListener, PopupTriggerInput, resolveSelectionPlaceholder, useCleanAttrs } from '../__builtins__'
+import { callListener, PopupTriggerInput, resolveSelectionPlaceholder, useCleanAttrs, usePopupTriggerState } from '../__builtins__'
 import { createPopup } from '../create-popup'
 import PickerGroupPanel from './picker-group-panel.vue'
 import {
@@ -56,12 +56,10 @@ const slots = useSlots()
 const fieldRef = useField<Field>()
 const { props: triggerInputProps } = useCleanAttrs(['dataSource', 'modelValue', 'onUpdate:modelValue', 'tabs'])
 let closingByOverlay = false
-
-const isReadonly = computed(() => {
-  return Boolean(props.readonly || props.readOnly)
-})
-const isTriggerDisabled = computed(() => {
-  return Boolean(props.disabled || isReadonly.value)
+const { isTriggerDisabled, isTriggerReadonly } = usePopupTriggerState({
+  field: fieldRef,
+  disabled: () => Boolean(props.disabled),
+  readonly: () => Boolean(props.readonly || props.readOnly),
 })
 
 const displayText = computed(() => {
@@ -124,12 +122,9 @@ const panelProps = computed<PickerGroupPanelProps>(() => {
     columnsFieldNames: props.columnsFieldNames,
     confirmButtonText: props.confirmButtonText,
     dataSource: props.dataSource,
-    disabled: props.disabled,
     modelValue: props.modelValue,
     nextStepText: props.nextStepText,
     optionHeight: props.optionHeight,
-    readOnly: props.readOnly,
-    readonly: isReadonly.value,
     swipeDuration: props.swipeDuration,
     tabs: props.tabs,
     title: props.title,
@@ -145,7 +140,7 @@ function createBaseEventPayload(modelValue: PickerGroupResolvedValue = props.mod
 }
 
 async function open() {
-  if (isTriggerDisabled.value) {
+  if (isTriggerDisabled.value || isTriggerReadonly.value) {
     return
   }
 

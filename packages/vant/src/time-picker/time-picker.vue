@@ -7,9 +7,8 @@ import type {
   TimePickerResolvedValue,
 } from './types'
 import { computed, useSlots } from 'vue'
-import { PopupTriggerInput, useCleanAttrs } from '../__builtins__'
+import { PopupTriggerInput, useCleanAttrs, usePopupTriggerState } from '../__builtins__'
 import { createPopup } from '../create-popup'
-import { usePickerInactiveState } from '../picker/use-picker-inactive-state'
 import TimePickerPanel from '../time-picker-panel/time-picker-panel.vue'
 import {
   formatTimePickerValue,
@@ -70,7 +69,10 @@ const displayText = computed(() => {
 
   return formatTimePickerValue(resolvedValue.value, resolvedTimePickerOptions.value)
 })
-const { isPopupReadonly, isTriggerDisabled } = usePickerInactiveState(props)
+const { isTriggerDisabled, isTriggerReadonly } = usePopupTriggerState({
+  disabled: () => Boolean(props.disabled),
+  readonly: () => Boolean(props.readonly),
+})
 
 const popupBindings = computed(() => {
   return {
@@ -97,7 +99,6 @@ const panelProps = computed<TimePickerPanelProps>(() => {
     minTime: props.minTime,
     modelValue: props.modelValue,
     optionHeight: props.optionHeight,
-    readonly: isPopupReadonly.value,
     showToolbar: true,
     swipeDuration: props.swipeDuration,
     title: props.title,
@@ -107,7 +108,7 @@ const panelProps = computed<TimePickerPanelProps>(() => {
 })
 
 async function open() {
-  if (isTriggerDisabled.value) {
+  if (isTriggerDisabled.value || isTriggerReadonly.value) {
     return
   }
 

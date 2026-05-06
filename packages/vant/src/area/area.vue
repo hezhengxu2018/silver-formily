@@ -7,10 +7,9 @@ import type {
   AreaResolvedValue,
 } from './types'
 import { computed, useSlots } from 'vue'
-import { PopupTriggerInput, resolveSelectionPlaceholder, useCleanAttrs } from '../__builtins__'
+import { PopupTriggerInput, resolveSelectionPlaceholder, useCleanAttrs, usePopupTriggerState } from '../__builtins__'
 import AreaPanel from '../area-panel/area-panel.vue'
 import { createPopup } from '../create-popup'
-import { usePickerInactiveState } from '../picker/use-picker-inactive-state'
 import {
   cloneAreaValue,
   formatAreaDisplay,
@@ -42,7 +41,10 @@ const emit = defineEmits<{
 
 const slots = useSlots()
 const { props: triggerInputProps } = useCleanAttrs()
-const { isPopupReadonly, isTriggerDisabled } = usePickerInactiveState(props)
+const { isTriggerDisabled, isTriggerReadonly } = usePopupTriggerState({
+  disabled: () => Boolean(props.disabled),
+  readonly: () => Boolean(props.readonly || props.readOnly),
+})
 
 const selectedOptions = computed(() => {
   return resolveAreaSelectedOptions(
@@ -84,7 +86,6 @@ const panelProps = computed<AreaPanelProps>(() => {
     loading: props.loading,
     modelValue: props.modelValue,
     optionHeight: props.optionHeight,
-    readonly: isPopupReadonly.value,
     swipeDuration: props.swipeDuration,
     title: props.title,
     visibleOptionNum: props.visibleOptionNum,
@@ -92,7 +93,7 @@ const panelProps = computed<AreaPanelProps>(() => {
 })
 
 async function open() {
-  if (isTriggerDisabled.value) {
+  if (isTriggerDisabled.value || isTriggerReadonly.value) {
     return
   }
 

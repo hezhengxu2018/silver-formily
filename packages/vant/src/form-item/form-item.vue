@@ -145,7 +145,12 @@ const isRequired = computed(() => {
 const hasFieldError = computed(() => resolvedFieldProps.value.error)
 
 const hasFieldBorder = computed(() => fieldProps.value.border !== false)
-const isLink = formilyComputed(() => Boolean(fieldModelRef.value?.pattern !== 'readPretty' && fieldProps.value.isLink))
+const isLink = formilyComputed(() => Boolean(
+  fieldModelRef.value?.pattern !== 'readPretty'
+  && !fieldProps.value.disabled
+  && !fieldProps.value.readonly
+  && fieldProps.value.isLink,
+))
 const shouldShowClear = computed(() => {
   if (!fieldProps.value.clearable || fieldProps.value.readonly) {
     return false

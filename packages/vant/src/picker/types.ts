@@ -66,7 +66,6 @@ export interface PickerProps {
   optionHeight?: VanPickerProps['optionHeight']
   placeholder?: string
   popupProps?: PickerPopupProps
-  disableTriggerWhenInactive?: boolean
   separator?: string
   swipeDuration?: VanPickerProps['swipeDuration']
   title?: VanPickerProps['title']

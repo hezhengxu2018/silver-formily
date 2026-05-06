@@ -8,10 +8,9 @@ import type {
   PickerOption,
 } from './types'
 import { computed, useSlots } from 'vue'
-import { PopupTriggerInput, useCleanAttrs } from '../__builtins__'
+import { PopupTriggerInput, useCleanAttrs, usePopupTriggerState } from '../__builtins__'
 import { createPopup } from '../create-popup'
 import DatePickerPanel from '../date-picker-panel/date-picker-panel.vue'
-import { usePickerInactiveState } from '../picker/use-picker-inactive-state'
 import {
   formatDatePickerValue,
   resolveDatePickerModelValue,
@@ -73,7 +72,10 @@ const displayText = computed(() => {
 
   return formatDatePickerValue(props.modelValue ?? null, resolvedDatePickerOptions.value)
 })
-const { isPopupReadonly, isTriggerDisabled } = usePickerInactiveState(props)
+const { isTriggerDisabled, isTriggerReadonly } = usePopupTriggerState({
+  disabled: () => Boolean(props.disabled),
+  readonly: () => Boolean(props.readonly),
+})
 
 const popupBindings = computed(() => {
   return {
@@ -94,7 +96,6 @@ const panelProps = computed<DatePickerPanelProps>(() => {
     minDate: props.minDate,
     modelValue: props.modelValue,
     optionHeight: props.optionHeight,
-    readonly: isPopupReadonly.value,
     separator: props.separator,
     swipeDuration: props.swipeDuration,
     title: props.title,
@@ -104,7 +105,7 @@ const panelProps = computed<DatePickerPanelProps>(() => {
 })
 
 async function open() {
-  if (isTriggerDisabled.value) {
+  if (isTriggerDisabled.value || isTriggerReadonly.value) {
     return
   }
 

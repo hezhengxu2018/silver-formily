@@ -14,22 +14,21 @@ mobileDemo: area/index.vue
 
 ### 使用约定
 
-- `readonly` / `disabled` 默认让弹层滚轮只读；如需同时禁用触发区，可开启 `disableTriggerWhenInactive`
+- 触发区交互状态跟随 `Field` 的 `disabled` / `readOnly` / `readPretty`，不会透传到内部 AreaPanel
 - `displayFormatter` 可自定义触发区回显文本
 
 其余约定请参考 [AreaPanel](/component/area-panel)
 
 ### 补充 Props
 
-| 属性名                       | 类型                                            | 描述                           | 默认值     |
-| ---------------------------- | ----------------------------------------------- | ------------------------------ | ---------- |
-| `placeholder`                | `string`                                        | 触发输入框占位文本             | `'请选择'` |
-| `separator`                  | `string`                                        | 触发输入框回显分隔符           | `' / '`    |
-| `popupProps`                 | `AreaPopupProps`                                | 透传给 Popup 的属性            | `{}`       |
-| `disableTriggerWhenInactive` | `boolean`                                       | 非可编辑态时是否直接禁用触发区 | `false`    |
-| `displayFormatter`           | ^[Function]`(value, selectedOptions) => string` | 自定义触发输入框回显           | `-`        |
+| 属性名             | 类型                                            | 描述                 | 默认值     |
+| ------------------ | ----------------------------------------------- | -------------------- | ---------- |
+| `placeholder`      | `string`                                        | 触发输入框占位文本   | `'请选择'` |
+| `separator`        | `string`                                        | 触发输入框回显分隔符 | `' / '`    |
+| `popupProps`       | `AreaPopupProps`                                | 透传给 Popup 的属性  | `{}`       |
+| `displayFormatter` | ^[Function]`(value, selectedOptions) => string` | 自定义触发输入框回显 | `-`        |
 
-地区面板相关属性和插槽可以直接参考 [AreaPanel](/component/area-panel)，例如 `modelValue`、`areaList`、`columnsNum`、`columnsPlaceholder`、`readonly`、`disabled` 等。
+地区面板相关属性和插槽可以直接参考 [AreaPanel](/component/area-panel)，例如 `modelValue`、`areaList`、`columnsNum`、`columnsPlaceholder` 等。
 
 ### Popup Props
 

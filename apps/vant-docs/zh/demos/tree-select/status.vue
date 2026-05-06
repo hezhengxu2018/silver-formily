@@ -17,15 +17,17 @@ const form = createForm({
     <Field
       name="disabledCity"
       title="禁用"
+      disabled
       :decorator="[FormItem, { isLink: true }]"
-      :component="[TreeSelect, { disabled: true, height: 260, title: '禁用态' }]"
+      :component="[TreeSelect, { height: 260, title: '禁用态' }]"
       :data-source="categoryItems"
     />
     <Field
       name="readonlyCity"
       title="只读"
+      read-only
       :decorator="[FormItem, { isLink: true }]"
-      :component="[TreeSelect, { readonly: true, height: 260, title: '只读态' }]"
+      :component="[TreeSelect, { height: 260, title: '只读态' }]"
       :data-source="categoryItems"
     />
   </FormProvider>

@@ -18,7 +18,7 @@ mobileDemo: tree-select/index.vue
 
 ## 只读与禁用
 
-封装层补充了 `readonly` / `disabled` 给表单触发输入框使用，不会透传给内部 Vant `TreeSelect`。
+触发区交互状态跟随 `Field` 的 `disabled` / `readOnly` / `readPretty`，不会透传给内部 Vant `TreeSelect`。
 
 <<< @/zh/demos/tree-select/status.vue
 
@@ -32,14 +32,12 @@ mobileDemo: tree-select/index.vue
 
 ### 补充 Props
 
-| 属性名             | 类型                                            | 描述                                       | 默认值  |
-| ------------------ | ----------------------------------------------- | ------------------------------------------ | ------- |
-| `modelValue`       | `number \| string \| Array`                     | 当前选中项 id，数组值表示多选              | `-`     |
-| `items`            | `TreeSelectItem[]`                              | 分类数据，Formily 中可用 `dataSource` 传入 | `[]`    |
-| `popupProps`       | `TreeSelectPopupProps`                          | 传给内部 Popup 的配置                      | `-`     |
-| `displayFormatter` | ^[Function]`(value, selectedOptions) => string` | 自定义字段展示文案                         | `-`     |
-| `readonly`         | `boolean`                                       | 只作用于表单触发输入框                     | `false` |
-| `disabled`         | `boolean`                                       | 只作用于表单触发输入框                     | `false` |
+| 属性名             | 类型                                            | 描述                                       | 默认值 |
+| ------------------ | ----------------------------------------------- | ------------------------------------------ | ------ |
+| `modelValue`       | `number \| string \| Array`                     | 当前选中项 id，数组值表示多选              | `-`    |
+| `items`            | `TreeSelectItem[]`                              | 分类数据，Formily 中可用 `dataSource` 传入 | `[]`   |
+| `popupProps`       | `TreeSelectPopupProps`                          | 传给内部 Popup 的配置                      | `-`    |
+| `displayFormatter` | ^[Function]`(value, selectedOptions) => string` | 自定义字段展示文案                         | `-`    |
 
 :::tip 提示
 

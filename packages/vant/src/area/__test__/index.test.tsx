@@ -151,10 +151,39 @@ describe('area', () => {
       expect(container.querySelector('.van-field__control')?.textContent?.trim()).toBe('330102:浙江省-杭州市-上城区')
     })
 
-    const disabledResult = render(() => <Area areaList={areaList} disabled disableTriggerWhenInactive modelValue="330102" />)
+    const disabledResult = render(() => <Area areaList={areaList} disabled modelValue="330102" />)
     const disabledTrigger = getTrigger(disabledResult.container)
 
     expect(disabledTrigger).toBeDisabled()
+  })
+
+  it('应该在 readonly、readOnly trigger 下阻止打开弹层', async () => {
+    const { container } = render(() => (
+      <FormProvider form={createForm()}>
+        <Field
+          name="readonlyArea"
+          title="只读"
+          decorator={[FormItem]}
+          component={[Area, { areaList, readonly: true }]}
+        />
+        <Field
+          name="readOnlyArea"
+          title="兼容只读"
+          decorator={[FormItem]}
+          component={[Area, { areaList, readOnly: true }]}
+        />
+      </FormProvider>
+    ))
+
+    const triggers = container.querySelectorAll<HTMLInputElement>('input.van-field__control')
+
+    expect(triggers[0]).not.toBeDisabled()
+    triggers[0].click()
+    expect(getVisiblePicker()).toBeNull()
+
+    expect(triggers[1]).not.toBeDisabled()
+    triggers[1].click()
+    expect(getVisiblePicker()).toBeNull()
   })
 
   it('应该透传 popupProps 和面板插槽', async () => {

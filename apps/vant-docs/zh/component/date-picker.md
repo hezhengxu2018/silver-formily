@@ -27,23 +27,20 @@ mobileDemo: date-picker/index.vue
 ### 使用约定
 
 - 如果未显式传 `format`，字段展示会默认复用 `value-format`
-- 默认情况下，readonly / disabled 仍允许打开弹层，内部 Picker 会进入只读态；传入 `disableTriggerWhenInactive` 后，会在触发区层面阻止打开弹层。
+- 触发区交互状态跟随 `Field` 的 `disabled` / `readOnly` / `readPretty`，不会透传到内部 DatePickerPanel。
 
 其余使用约定请参考[DatePickerPanel使用约定](/component/date-picker-panel.html#使用约定)
 
 ### 封装补充 Props
 
-| 属性名                       | 类型                                            | 描述                                      | 默认值                 |
-| ---------------------------- | ----------------------------------------------- | ----------------------------------------- | ---------------------- |
-| `modelValue`                 | `string \| null`                                | 当前字段值                                | `-`                    |
-| `format`                     | `string`                                        | 字段展示格式                              | 与 `value-format` 一致 |
-| `valueFormat`                | `string`                                        | 字段值格式，对应模板里的 `value-format`   | `YYYY-MM-DD`           |
-| `placeholder`                | `string`                                        | 未选择时的展示文案                        | `'请选择日期'`         |
-| `popupProps`                 | [Popup Props](#popup-props)                     | 传给内部 Popup 的配置                     | `-`                    |
-| `disableTriggerWhenInactive` | `boolean`                                       | 非可编辑态时是否直接禁用触发区            | `false`                |
-| `displayFormatter`           | ^[Function]`(value, selectedOptions) => string` | 自定义字段展示区文案，优先级高于 `format` | `-`                    |
-| `readonly`                   | `boolean`                                       | 只读态，默认允许打开只读弹层              | `false`                |
-| `disabled`                   | `boolean`                                       | 禁用态，默认允许打开只读弹层              | `false`                |
+| 属性名             | 类型                                            | 描述                                      | 默认值                 |
+| ------------------ | ----------------------------------------------- | ----------------------------------------- | ---------------------- |
+| `modelValue`       | `string \| null`                                | 当前字段值                                | `-`                    |
+| `format`           | `string`                                        | 字段展示格式                              | 与 `value-format` 一致 |
+| `valueFormat`      | `string`                                        | 字段值格式，对应模板里的 `value-format`   | `YYYY-MM-DD`           |
+| `placeholder`      | `string`                                        | 未选择时的展示文案                        | `'请选择日期'`         |
+| `popupProps`       | [Popup Props](#popup-props)                     | 传给内部 Popup 的配置                     | `-`                    |
+| `displayFormatter` | ^[Function]`(value, selectedOptions) => string` | 自定义字段展示区文案，优先级高于 `format` | `-`                    |
 
 其余配置项可参考[DatePickerPanel](/component/date-picker-panel.html#API)
 

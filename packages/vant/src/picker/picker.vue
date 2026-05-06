@@ -8,10 +8,9 @@ import type {
 } from './types'
 import { clone } from 'es-toolkit'
 import { computed, useSlots } from 'vue'
-import { PopupTriggerInput, resolveSelectionPlaceholder, useCleanAttrs } from '../__builtins__'
+import { PopupTriggerInput, resolveSelectionPlaceholder, useCleanAttrs, usePopupTriggerState } from '../__builtins__'
 import { createPopup } from '../create-popup'
 import PickerPanel from '../picker-panel/picker-panel.vue'
-import { usePickerInactiveState } from './use-picker-inactive-state'
 import {
   formatPickerDisplay,
   resolvePickerSelectedOptions,
@@ -36,7 +35,10 @@ const emit = defineEmits<{
 
 const slots = useSlots()
 const { props: triggerInputProps } = useCleanAttrs()
-const { isPopupReadonly, isTriggerDisabled } = usePickerInactiveState(props)
+const { isTriggerDisabled, isTriggerReadonly } = usePopupTriggerState({
+  disabled: () => Boolean(props.disabled),
+  readonly: () => Boolean(props.readonly),
+})
 
 const selectedOptions = computed(() => {
   return resolvePickerSelectedOptions(props.modelValue, props.columns, props.columnsFieldNames)
@@ -73,7 +75,6 @@ const panelProps = computed<PickerPanelProps>(() => {
     loading: props.loading,
     modelValue: props.modelValue,
     optionHeight: props.optionHeight,
-    readonly: isPopupReadonly.value,
     showToolbar: true,
     swipeDuration: props.swipeDuration,
     title: props.title,
@@ -83,7 +84,7 @@ const panelProps = computed<PickerPanelProps>(() => {
 })
 
 async function open() {
-  if (isTriggerDisabled.value) {
+  if (isTriggerDisabled.value || isTriggerReadonly.value) {
     return
   }
 

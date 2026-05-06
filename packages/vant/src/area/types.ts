@@ -54,7 +54,6 @@ export interface AreaProps {
   optionHeight?: VanAreaProps['optionHeight']
   placeholder?: string
   popupProps?: AreaPopupProps
-  disableTriggerWhenInactive?: boolean
   separator?: string
   swipeDuration?: VanAreaProps['swipeDuration']
   title?: VanAreaProps['title']

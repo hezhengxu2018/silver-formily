@@ -1,5 +1,7 @@
 <script setup lang="ts">
+import type { Field } from '@formily/core'
 import type { PreviewTextTreeSelectProps } from './types'
+import { useField } from '@silver-formily/vue'
 import { computed } from 'vue'
 import { formatTreeSelectValue, resolveTreeSelectSelectedOptions } from '../tree-select/utils'
 import { usePreviewConfig } from './utils'
@@ -13,10 +15,19 @@ const props = withDefaults(defineProps<PreviewTextTreeSelectProps>(), {
   items: () => [],
 })
 
+const fieldRef = useField<Field>()
 const { placeholder } = usePreviewConfig()
 
+const items = computed(() => {
+  const dataSource = fieldRef.value?.dataSource
+
+  return Array.isArray(dataSource)
+    ? dataSource as PreviewTextTreeSelectProps['items']
+    : props.items
+})
+
 const selectedOptions = computed(() => {
-  return resolveTreeSelectSelectedOptions(props.modelValue, props.items)
+  return resolveTreeSelectSelectedOptions(props.modelValue, items.value)
 })
 
 const displayText = computed(() => {
@@ -24,7 +35,7 @@ const displayText = computed(() => {
     return props.displayFormatter(props.modelValue, selectedOptions.value)
   }
 
-  return formatTreeSelectValue(props.modelValue, props.items)
+  return formatTreeSelectValue(props.modelValue, items.value)
 })
 </script>
 

@@ -1,5 +1,7 @@
-import type { Component, ComputedRef } from 'vue'
+import type { GeneralField } from '@formily/core'
+import type { Component, ComputedRef, Ref } from 'vue'
 import { isPlainObj, paramCase } from '@formily/shared'
+import { useField } from '@silver-formily/vue'
 import bem from 'easy-bem'
 import { omit } from 'es-toolkit/compat'
 import { computed, getCurrentInstance, ref } from 'vue'
@@ -107,6 +109,41 @@ interface UsePopupStateOptions {
   onBeforeOpen?: () => void
   onRestore?: () => void
   onVisibilityChange?: (value: boolean) => void
+}
+
+interface UsePopupTriggerStateOptions {
+  field?: Ref<GeneralField | undefined>
+  disabled?: () => boolean
+  readonly?: () => boolean
+}
+
+export function usePopupTriggerState(options: UsePopupTriggerStateOptions = {}) {
+  const localFieldRef = useField<GeneralField>()
+  const fieldRef = computed(() => options.field?.value ?? localFieldRef.value)
+
+  const isTriggerDisabled = computed(() => {
+    const field = fieldRef.value
+    if (field) {
+      return field.pattern === 'disabled' || field.pattern === 'readPretty'
+    }
+
+    return Boolean(options.disabled?.())
+  })
+
+  const isTriggerReadonly = computed(() => {
+    const field = fieldRef.value
+    if (field) {
+      return field.pattern === 'readOnly'
+    }
+
+    return Boolean(options.readonly?.())
+  })
+
+  return {
+    fieldRef,
+    isTriggerDisabled,
+    isTriggerReadonly,
+  }
 }
 
 export function usePopupState(options: UsePopupStateOptions = {}) {

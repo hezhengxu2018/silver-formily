@@ -36,7 +36,6 @@ export interface DatePickerProps {
   optionHeight?: VanDatePickerProps['optionHeight']
   placeholder?: string
   popupProps?: DatePickerPopupProps
-  disableTriggerWhenInactive?: boolean
   separator?: string
   swipeDuration?: VanDatePickerProps['swipeDuration']
   title?: VanDatePickerProps['title']

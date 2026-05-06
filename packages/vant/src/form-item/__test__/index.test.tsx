@@ -157,6 +157,42 @@ describe('formItem', () => {
       expect(container.querySelector('.van-cell__right-icon')).toBeNull()
     })
 
+    it('应该在字段 disabled 或 readOnly 时隐藏 isLink 箭头', async () => {
+      const { container } = render(() => (
+        <FormProvider form={createForm()}>
+          <Field
+            name="enabled"
+            title="可编辑"
+            decorator={[FormItem, { isLink: true }]}
+            component={[Input]}
+          />
+          <Field
+            name="disabled"
+            title="禁用"
+            disabled={true}
+            decorator={[FormItem, { isLink: true }]}
+            component={[Input]}
+          />
+          <Field
+            name="readOnly"
+            title="只读"
+            readOnly={true}
+            decorator={[FormItem, { isLink: true }]}
+            component={[Input]}
+          />
+        </FormProvider>
+      ))
+
+      const fields = container.querySelectorAll('.van-field')
+
+      expect(fields[0]).toHaveClass('van-cell--clickable')
+      expect(fields[0].querySelector('.van-cell__right-icon')).not.toBeNull()
+      expect(fields[1]).not.toHaveClass('van-cell--clickable')
+      expect(fields[1].querySelector('.van-cell__right-icon')).toBeNull()
+      expect(fields[2]).not.toHaveClass('van-cell--clickable')
+      expect(fields[2].querySelector('.van-cell__right-icon')).toBeNull()
+    })
+
     it('应该透传 clearable 并为自定义输入默认启用 always clearTrigger', async () => {
       const { container } = render(() => (
         <FormProvider form={createForm()}>

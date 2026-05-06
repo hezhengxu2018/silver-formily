@@ -302,64 +302,35 @@ describe('date-picker', () => {
     })
   })
 
-  it('应该默认允许在 disabled、readonly 下打开只读弹层', async () => {
+  it('应该在 disabled、readonly trigger 下阻止打开弹层', async () => {
     const { container } = render(() => (
       <FormProvider form={createForm()}>
         <Field
           name="disabledDate"
           title="禁用"
+          disabled={true}
           decorator={[FormItem]}
-          component={[DatePicker, { disabled: true, maxDate, minDate }]}
+          component={[DatePicker, { maxDate, minDate }]}
         />
         <Field
           name="readonlyDate"
           title="只读"
+          readOnly={true}
           decorator={[FormItem]}
-          component={[DatePicker, { maxDate, minDate, readonly: true }]}
+          component={[DatePicker, { maxDate, minDate }]}
         />
       </FormProvider>
     ))
 
-    await userEvent.click(getTrigger(container, 0))
-
-    await vi.waitFor(() => {
-      expect(getVisiblePickerColumns()).toHaveLength(3)
-    })
-
-    await userEvent.click(getCancelButton())
-    await userEvent.click(getTrigger(container, 1))
-
-    await vi.waitFor(() => {
-      expect(getVisiblePickerColumns()).toHaveLength(3)
-    })
-
-    await userEvent.click(getCancelButton())
-  })
-
-  it('应该在 disableTriggerWhenInactive 下于 trigger 层阻止打开弹层', async () => {
-    const { container } = render(() => (
-      <FormProvider form={createForm()}>
-        <Field
-          name="disabledDate"
-          title="禁用"
-          decorator={[FormItem]}
-          component={[DatePicker, { disableTriggerWhenInactive: true, disabled: true, maxDate, minDate }]}
-        />
-        <Field
-          name="readonlyDate"
-          title="只读"
-          decorator={[FormItem]}
-          component={[DatePicker, { disableTriggerWhenInactive: true, maxDate, minDate, readonly: true }]}
-        />
-      </FormProvider>
-    ))
-
+    expect(getTrigger(container, 0)).toBeDisabled()
     getTrigger(container, 0).click()
+
+    expect(getVisiblePicker()).toBeNull()
+
+    expect(getTrigger(container, 1)).not.toBeDisabled()
     getTrigger(container, 1).click()
 
-    await vi.waitFor(() => {
-      expect(getVisiblePicker()).toBeNull()
-    })
+    expect(getVisiblePicker()).toBeNull()
   })
 
   it('应该通过 popupProps 透传 Popup 配置，并继续触发 opened / closed 事件', async () => {

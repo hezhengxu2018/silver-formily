@@ -3,7 +3,7 @@ import type { FunctionalPopupSlots } from '../create-popup'
 import type { TreeSelectChild, TreeSelectPanelProps, TreeSelectProps, TreeSelectResolvedValue } from './types'
 import { clone } from 'es-toolkit'
 import { computed, useSlots } from 'vue'
-import { PopupTriggerInput, resolveSelectionPlaceholder, useCleanAttrs } from '../__builtins__'
+import { PopupTriggerInput, resolveSelectionPlaceholder, useCleanAttrs, usePopupTriggerState } from '../__builtins__'
 import { createPopup } from '../create-popup'
 import TreeSelectPanel from './tree-select-panel.vue'
 import { formatTreeSelectValue, resolveTreeSelectSelectedOptions } from './utils'
@@ -28,9 +28,9 @@ const emit = defineEmits<{
 
 const slots = useSlots()
 const { props: triggerInputProps } = useCleanAttrs()
-
-const isTriggerDisabled = computed(() => {
-  return Boolean(props.disabled)
+const { isTriggerDisabled, isTriggerReadonly } = usePopupTriggerState({
+  disabled: () => Boolean(props.disabled),
+  readonly: () => Boolean(props.readonly),
 })
 
 const selectedOptions = computed(() => {
@@ -62,7 +62,7 @@ const panelProps = computed<TreeSelectPanelProps>(() => {
 })
 
 async function open() {
-  if (isTriggerDisabled.value) {
+  if (isTriggerDisabled.value || isTriggerReadonly.value) {
     return
   }
 

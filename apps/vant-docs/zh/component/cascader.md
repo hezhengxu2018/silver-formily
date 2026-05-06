@@ -46,7 +46,7 @@ mobileDemo: cascader/index.vue
 
 ## API
 
-由于官方组件没有添加组件本身的`readonly`和`disable`属性，所以本组件也不提供`disableTriggerWhenInactive`配置项，直接禁止了弹出框的展示。
+触发区交互状态跟随 `Field` 的 `disabled` / `readOnly` / `readPretty`，不会透传到内部 Vant `Cascader`。
 
 ### 补充 Props
 
@@ -56,8 +56,6 @@ mobileDemo: cascader/index.vue
 | `separator`        | `string`                                        | 字段展示区路径分隔符   | `' / '` |
 | `displayFormatter` | ^[Function]`(value, selectedOptions) => string` | 自定义展示区文案       | `-`     |
 | `popupProps`       | `CascaderPopupProps`                            | 传给内部 Popup 的配置  | `-`     |
-| `readonly`         | `boolean`                                       | 只读态，阻止打开弹层   | `false` |
-| `disabled`         | `boolean`                                       | 禁用态，阻止打开弹层   | `false` |
 
 其余的属性、事件、插槽可以直接参考官方文档[Vant Cascader 官方文档](https://vant-ui.github.io/vant/#/zh-CN/cascader)
 

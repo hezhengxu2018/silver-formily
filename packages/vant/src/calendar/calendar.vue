@@ -7,10 +7,11 @@ import type {
   CalendarResolvedValue,
   VanCalendarInstance,
 } from './types'
+import { useField } from '@silver-formily/vue'
 import { cloneDeep, omit } from 'es-toolkit'
 import { Calendar as VanCalendar } from 'vant'
 import { computed, ref, useSlots } from 'vue'
-import { PopupTriggerInput, useCleanAttrs, usePopupState } from '../__builtins__'
+import { PopupTriggerInput, useCleanAttrs, usePopupState, usePopupTriggerState } from '../__builtins__'
 import {
   formatCalendarValue,
   resolveCalendarBoundaryDates,
@@ -58,7 +59,13 @@ const emit = defineEmits<{
 }>()
 
 const slots = useSlots()
+const fieldRef = useField()
 const { props: triggerInputProps } = useCleanAttrs(['modelValue', 'onUpdate:modelValue', 'type'])
+const { isTriggerDisabled, isTriggerReadonly } = usePopupTriggerState({
+  field: fieldRef,
+  disabled: () => Boolean(props.disabled),
+  readonly: () => Boolean(props.readonly || props.readOnly),
+})
 
 const calendarRef = ref<VanCalendarInstance>()
 const innerCalendarExcludedProps = [
@@ -162,7 +169,7 @@ const {
   close,
   onPopupShowChange: onCalendarShowChange,
 } = usePopupState({
-  disabled: () => props.disabled || props.readonly,
+  disabled: () => isTriggerDisabled.value || isTriggerReadonly.value,
   onBeforeOpen: resetCalendarSelection,
   onRestore: resetCalendarSelection,
   onVisibilityChange: emitVisibilityChange,
@@ -178,7 +185,6 @@ const innerCalendarProps = computed(() => {
     minDate: boundaryDates.value.minDate,
     show: popupVisible.value,
     poppable: true,
-    readonly: props.readonly || props.readOnly || props.disabled,
   }
 })
 
@@ -214,7 +220,7 @@ function onUnselect(value: Date) {
 <template>
   <PopupTriggerInput
     :input-props="triggerInputProps"
-    :disabled="props.disabled || props.readonly"
+    :disabled="isTriggerDisabled"
     :value="displayText"
     :placeholder="resolveCalendarPlaceholder(props.placeholder, props.type)"
     @click="open"
