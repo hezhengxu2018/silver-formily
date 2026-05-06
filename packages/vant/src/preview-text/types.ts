@@ -32,6 +32,7 @@ import type {
   TimePickerModelValue,
   VanTimePickerProps,
 } from '../time-picker/types'
+import type { TreeSelectDisplayFormatter, TreeSelectItem, TreeSelectValue } from '../tree-select/types'
 import type { UploadPreviewFile } from '../upload/types'
 
 export interface PreviewTextProps {
@@ -147,4 +148,10 @@ export interface PreviewTextPickerGroupProps {
   placeholder?: string
   separator?: string
   displayFormatter?: PickerGroupDisplayFormatter
+}
+
+export interface PreviewTextTreeSelectProps {
+  modelValue?: TreeSelectValue
+  items?: TreeSelectItem[]
+  displayFormatter?: TreeSelectDisplayFormatter
 }

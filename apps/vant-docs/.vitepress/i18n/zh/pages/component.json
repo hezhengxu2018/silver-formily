@@ -85,6 +85,10 @@
         "link": "/component/cascader"
       },
       {
+        "text": "TreeSelect 分类选择",
+        "link": "/component/tree-select"
+      },
+      {
         "text": "Area 省市区选择",
         "link": "/component/area"
       },
