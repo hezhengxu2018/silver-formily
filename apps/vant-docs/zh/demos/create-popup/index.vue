@@ -26,6 +26,13 @@ import { NavBar } from 'vant'
       >
         <DocsDemoRenderer path="@/zh/demos/create-popup/date-picker.vue" />
       </MobileDemoSection>
+
+      <MobileDemoSection
+        title="弹出式分步表单"
+        description="createPopup 负责弹层外壳，FormStep 负责步骤切换和最终提交，适合做分段填写的移动端弹窗。"
+      >
+        <DocsDemoRenderer path="@/zh/demos/create-popup/form-step.vue" />
+      </MobileDemoSection>
     </div>
   </div>
 </template>
