@@ -11,14 +11,11 @@ export type IFormDialogProps = Partial<DialogProps> & {
   okButtonProps?: ButtonProps
   loadingText?: string
   enterSubmit?: boolean
+  closeOnUrlChange?: boolean
 }
 // #endregion props
 
 // #region slots
-type FormDialogDynamicResolveMethods<DynamicMiddlewareName extends string> = {
-  [K in NormalizeFormDialogDynamicMiddlewareName<DynamicMiddlewareName> as K extends ReservedFormDialogMiddlewareName ? never : K]: () => void
-}
-
 export interface FormDialogResolve {
   (type?: string): void
 }
@@ -31,13 +28,10 @@ interface FormDialogBaseSlotProps<T extends object = any> {
 
 export type FormDialogSlotProps<T extends object = any> = FormDialogBaseSlotProps<T> & Record<string, any>
 
-export type FormDialogResolvedSlotProps<T extends object = any, DynamicMiddlewareName extends string = never>
-  = FormDialogBaseSlotProps<T> & FormDialogDynamicResolveMethods<DynamicMiddlewareName>
-
-export interface FormDialogSlots<T extends object = any, DynamicMiddlewareName extends string = never> {
-  header?: (props: FormDialogResolvedSlotProps<T, DynamicMiddlewareName>) => VNode | VNode[]
-  default?: (props: FormDialogResolvedSlotProps<T, DynamicMiddlewareName>) => VNode | VNode[]
-  footer?: (props: FormDialogResolvedSlotProps<T, DynamicMiddlewareName>) => VNode | VNode[]
+export interface FormDialogSlots<T extends object = any, _DynamicMiddlewareName extends string = never> {
+  header?: (props: FormDialogSlotProps<T>) => VNode | VNode[]
+  default?: (props: FormDialogSlotProps<T>) => VNode | VNode[]
+  footer?: (props: FormDialogSlotProps<T>) => VNode | VNode[]
 }
 // #endregion slots
 

@@ -11,14 +11,11 @@ export type IFormDrawerProps = Partial<DrawerProps> & {
   okButtonProps?: ButtonProps
   loadingText?: string
   enterSubmit?: boolean
+  closeOnUrlChange?: boolean
 }
 // #endregion props
 
 // #region slots
-type FormDrawerDynamicResolveMethods<DynamicMiddlewareName extends string> = {
-  [K in NormalizeFormDrawerDynamicMiddlewareName<DynamicMiddlewareName> as K extends ReservedFormDrawerMiddlewareName ? never : K]: () => void
-}
-
 export interface FormDrawerResolve {
   (type?: string): void
 }
@@ -31,13 +28,10 @@ interface FormDrawerBaseSlotProps<T extends object = any> {
 
 export type FormDrawerSlotProps<T extends object = any> = FormDrawerBaseSlotProps<T> & Record<string, any>
 
-export type FormDrawerResolvedSlotProps<T extends object = any, DynamicMiddlewareName extends string = never>
-  = FormDrawerBaseSlotProps<T> & FormDrawerDynamicResolveMethods<DynamicMiddlewareName>
-
-export interface FormDrawerSlots<T extends object = any, DynamicMiddlewareName extends string = never> {
-  header?: (props: FormDrawerResolvedSlotProps<T, DynamicMiddlewareName>) => VNode | VNode[]
-  default?: (props: FormDrawerResolvedSlotProps<T, DynamicMiddlewareName>) => VNode | VNode[]
-  footer?: (props: FormDrawerResolvedSlotProps<T, DynamicMiddlewareName>) => VNode | VNode[]
+export interface FormDrawerSlots<T extends object = any, _DynamicMiddlewareName extends string = never> {
+  header?: (props: FormDrawerSlotProps<T>) => VNode | VNode[]
+  default?: (props: FormDrawerSlotProps<T>) => VNode | VNode[]
+  footer?: (props: FormDrawerSlotProps<T>) => VNode | VNode[]
 }
 // #endregion slots
 

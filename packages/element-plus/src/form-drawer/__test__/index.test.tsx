@@ -16,15 +16,13 @@ import 'element-plus/theme-chalk/el-drawer.css'
 const { SchemaField, SchemaStringField } = createSchemaField({ components: { Input, FormItem } })
 
 const typedFormDrawerSlots: FormDrawerSlots<{ name: string }, 'save-draft'> = {
-  default: ({ form, saveDraft, resolve }) => {
+  default: ({ form, resolve }) => {
     expectTypeOf(form.values).toEqualTypeOf<{ name: string }>()
-    expectTypeOf(saveDraft).toEqualTypeOf<() => void>()
     expectTypeOf(resolve).toEqualTypeOf<(type?: string) => void>()
     return <div />
   },
-  footer: ({ form, saveDraft }) => {
+  footer: ({ form }) => {
     expectTypeOf(form.values.name).toEqualTypeOf<string>()
-    expectTypeOf(saveDraft).toEqualTypeOf<() => void>()
     return <div />
   },
 }
@@ -37,7 +35,7 @@ describe('formDrawer', () => {
     document.body.innerHTML = ''
   })
 
-  it('应该给插槽透传表单值和动态中间件的泛型', () => {
+  it('应该给插槽透传表单值类型', () => {
     expect(typedFormDrawerContent).toBeTruthy()
   })
 
@@ -144,6 +142,55 @@ describe('formDrawer', () => {
       await getByText('打开抽屉').click()
       await expect.element(getByText('输入框4')).toBeInTheDocument()
       await getByText('取消').click()
+      await vi.waitFor(() => {
+        expect(document.querySelector('.el-drawer')).toBeNull()
+      }, { timeout: 2000 })
+    })
+
+    it('应该默认在地址变化时自动关闭抽屉', async () => {
+      const onCancel = vi.fn()
+      const drawerPromise = FormDrawer('测试标题', () => (
+        <div data-testid="drawer-content">抽屉内容</div>
+      ))
+        .forCancel((_form, next) => {
+          onCancel()
+          next()
+        })
+        .open()
+
+      await vi.waitFor(() => {
+        expect(document.querySelector('.el-drawer')).not.toBeNull()
+      }, { timeout: 2000 })
+
+      window.dispatchEvent(new PopStateEvent('popstate'))
+
+      await expect(drawerPromise).rejects.toThrow('cancel')
+      expect(onCancel).toHaveBeenCalledTimes(1)
+      await vi.waitFor(() => {
+        expect(document.querySelector('.el-drawer')).toBeNull()
+      }, { timeout: 2000 })
+    })
+
+    it('在 closeOnUrlChange 为 false 时不应因地址变化关闭抽屉', async () => {
+      const drawer = FormDrawer({
+        title: '测试标题',
+        closeOnUrlChange: false,
+      }, () => (
+        <div data-testid="drawer-content">抽屉内容</div>
+      ))
+      drawer.open().catch(() => undefined)
+
+      await vi.waitFor(() => {
+        expect(document.querySelector('.el-drawer')).not.toBeNull()
+      }, { timeout: 2000 })
+
+      window.dispatchEvent(new PopStateEvent('popstate'))
+
+      await vi.waitFor(() => {
+        expect(document.querySelector('.el-drawer')).not.toBeNull()
+      }, { timeout: 2000 })
+
+      queryElement(document, '.el-drawer__close-btn').dispatchEvent(new MouseEvent('click', { bubbles: true }))
       await vi.waitFor(() => {
         expect(document.querySelector('.el-drawer')).toBeNull()
       }, { timeout: 2000 })
