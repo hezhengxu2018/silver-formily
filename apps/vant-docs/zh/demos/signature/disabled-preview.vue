@@ -3,7 +3,7 @@ import { createForm } from '@formily/core'
 import { Form, FormItem, Signature } from '@silver-formily/vant'
 import { Field } from '@silver-formily/vue'
 
-const readonlySignature = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(`
+const disabledSignature = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(`
   <svg xmlns="http://www.w3.org/2000/svg" width="240" height="120" viewBox="0 0 240 120">
     <rect width="240" height="120" fill="#ffffff" />
     <path
@@ -19,7 +19,7 @@ const readonlySignature = `data:image/svg+xml;charset=utf-8,${encodeURIComponent
 
 const form = createForm({
   values: {
-    signature: readonlySignature,
+    signature: disabledSignature,
   },
 })
 </script>
@@ -29,12 +29,12 @@ const form = createForm({
     <Field
       name="signature"
       title="已存档签名"
-      description="只读状态下会回显已有签名"
+      description="禁用状态下会回显已有签名"
       :decorator="[FormItem, {
         labelAlign: 'top',
       }]"
       :component="[Signature, {
-        readonly: true,
+        disabled: true,
       }]"
     />
   </Form>

@@ -25,7 +25,6 @@ import type {
   PickerFieldNames,
   PickerModelValue,
 } from '../picker/types'
-import type { SignatureModelValue } from '../signature/types'
 import type {
   TimePickerColumnType,
   TimePickerDisplayFormatter,
@@ -63,7 +62,7 @@ export interface PreviewTextSelectProps {
 }
 
 export interface PreviewTextSignatureProps {
-  modelValue?: SignatureModelValue
+  modelValue?: string
 }
 
 export interface PreviewTextUploadProps {

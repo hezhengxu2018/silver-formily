@@ -5,11 +5,11 @@ import type {
 } from 'vant'
 
 export type SignatureType = VanSignatureProps['type']
+export type SignatureModelValue = string
 
 export interface SignatureProps extends Pick<VanSignatureProps, 'backgroundColor' | 'clearButtonText' | 'confirmButtonText' | 'lineWidth' | 'penColor' | 'tips' | 'type'> {
-  modelValue?: string
+  modelValue?: SignatureModelValue
   disabled?: boolean
-  readonly?: boolean
 }
 
 export interface SignatureSlots {

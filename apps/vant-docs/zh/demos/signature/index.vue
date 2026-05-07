@@ -21,10 +21,17 @@ import { NavBar } from 'vant'
       </MobileDemoSection>
 
       <MobileDemoSection
-        title="只读回显"
-        description="字段已有签名时，会自动把签名内容同步回画布用于展示。"
+        title="禁用回显"
+        description="禁用态下如果字段已有签名，会直接显示图片预览。"
       >
-        <DocsDemoRenderer path="@/zh/demos/signature/readonly.vue" />
+        <DocsDemoRenderer path="@/zh/demos/signature/disabled-preview.vue" />
+      </MobileDemoSection>
+
+      <MobileDemoSection
+        title="禁用态"
+        description="对比禁用空白态与禁用回显态，统一确认禁用时不再出现遮罩。"
+      >
+        <DocsDemoRenderer path="@/zh/demos/signature/disabled-state.vue" />
       </MobileDemoSection>
     </div>
   </div>

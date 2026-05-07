@@ -56,7 +56,8 @@ export type CascaderDisplayFormatter = (
   selectedOptions: CascaderOption[],
 ) => string
 
-export interface CascaderPopupCascaderProps extends Pick<VanCascaderProps, 'activeColor' | 'closeIcon' | 'closeable' | 'fieldNames' | 'options' | 'placeholder' | 'showHeader' | 'swipeable' | 'title'> {
+export interface CascaderPopupCascaderProps extends Partial<Pick<VanCascaderProps, 'activeColor' | 'closeIcon' | 'closeable' | 'fieldNames' | 'placeholder' | 'showHeader' | 'swipeable' | 'title'>> {
+  options: CascaderOption[]
   modelValue?: CascaderOptionValue
 }
 

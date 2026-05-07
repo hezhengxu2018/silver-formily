@@ -23,6 +23,10 @@ function getPreviewImage(container: Element) {
   return container.querySelector<HTMLImageElement>('.silver-formily-vant-signature__image img')
 }
 
+function getPlaceholder(container: Element) {
+  return container.querySelector<HTMLElement>('.silver-formily-vant-signature__placeholder')
+}
+
 function getCanvas(container: Element) {
   return container.querySelector<HTMLCanvasElement>('.van-signature canvas')
 }
@@ -207,6 +211,27 @@ describe('signature', () => {
     expect(getConfirmButton(container)).toBeNull()
   })
 
+  it('应该在 disabled 且无值时显示空预览态而不是签名面板', async () => {
+    const { container } = render(() => (
+      <FormProvider form={createForm()}>
+        <Field
+          name="signature"
+          disabled={true}
+          component={[Signature]}
+        />
+      </FormProvider>
+    ))
+
+    await vi.waitFor(() => {
+      expect(getPreview(container)).not.toBeNull()
+    })
+
+    expect(getSignature(container)).toBeNull()
+    expect(getPlaceholder(container)?.textContent).toContain('暂无签名')
+    expect(getClearButton(container)).toBeNull()
+    expect(getConfirmButton(container)).toBeNull()
+  })
+
   it('应该在未传入自定义 tips 插槽时保留降级文案', async () => {
     const getContextSpy = vi.spyOn(HTMLCanvasElement.prototype, 'getContext').mockImplementation(() => null)
 
@@ -248,26 +273,5 @@ describe('signature', () => {
     expect(image).not.toBeNull()
     expect(image?.src).toContain('data:image/svg+xml')
     expect(getSignature(container)).toBeNull()
-  })
-
-  it('应该在 readonly 模式下只显示图片预览', async () => {
-    const { container } = render(() => (
-      <FormProvider form={createForm()}>
-        <Field
-          name="signature"
-          initialValue={blackSquareDataUrl}
-          component={[Signature, {
-            readonly: true,
-          }]}
-        />
-      </FormProvider>
-    ))
-
-    await vi.waitFor(() => {
-      expect(getPreviewImage(container)?.src).toContain('data:image/svg+xml')
-    })
-
-    expect(getClearButton(container)).toBeNull()
-    expect(getConfirmButton(container)).toBeNull()
   })
 })

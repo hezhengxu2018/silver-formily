@@ -28,7 +28,7 @@ const signatureRef = ref<SignatureInstance>()
 const previewValue = ref(props.modelValue)
 
 const isInteractive = computed(() => {
-  return !props.disabled && !props.readonly
+  return !props.disabled
 })
 
 const hasPreviewValue = computed(() => {
@@ -36,7 +36,11 @@ const hasPreviewValue = computed(() => {
 })
 
 const showPreview = computed(() => {
-  return props.readonly || hasPreviewValue.value
+  return props.disabled || hasPreviewValue.value
+})
+
+const previewText = computed(() => {
+  return hasPreviewValue.value ? '' : '暂无签名'
 })
 
 const rootClass = computed(() => {
@@ -44,7 +48,6 @@ const rootClass = computed(() => {
     b(),
     b({
       disabled: props.disabled,
-      readonly: props.readonly,
     }),
   ]
 })
@@ -103,8 +106,6 @@ watch(
       </template>
     </VanSignature>
 
-    <div v-if="!isInteractive && !showPreview" :class="b('mask')" />
-
     <div v-if="showPreview" :class="b('preview')">
       <VanImage
         v-if="hasPreviewValue"
@@ -112,6 +113,9 @@ watch(
         :src="previewValue"
         fit="contain"
       />
+      <span v-else :class="b('placeholder')">
+        {{ previewText }}
+      </span>
     </div>
 
     <div v-if="isInteractive" :class="b('footer')">

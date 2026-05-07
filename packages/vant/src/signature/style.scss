@@ -6,20 +6,12 @@ $signature-prefix: '#{$style-prefix}-signature';
   position: relative;
   width: 100%;
 
-  &--disabled,
-  &--readonly {
+  &--disabled {
     opacity: var(--van-disabled-opacity);
   }
 
   .van-signature__footer {
     display: none;
-  }
-
-  &__mask {
-    position: absolute;
-    inset: 0;
-    z-index: 1;
-    background: transparent;
   }
 
   &__preview {
@@ -31,6 +23,11 @@ $signature-prefix: '#{$style-prefix}-signature';
     border: 1px solid var(--van-gray-3);
     border-radius: var(--van-radius-lg);
     background: var(--van-background-2);
+  }
+
+  &__placeholder {
+    color: var(--van-text-color-3);
+    font-size: var(--van-font-size-md);
   }
 
   &__image {

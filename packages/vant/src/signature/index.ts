@@ -6,7 +6,6 @@ import './style.scss'
 export const Signature = connect<typeof FSignature>(
   FSignature,
   mapProps({
-    readOnly: 'readonly',
     disabled: true,
   }),
   mapReadPretty(PreviewText.Signature),

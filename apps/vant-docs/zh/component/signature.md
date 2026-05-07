@@ -26,11 +26,17 @@ mobileDemo: signature/index.vue
 
 <<< @/zh/demos/signature/custom-style.vue
 
-## 只读回显
+## 禁用回显
 
-当字段本身已经有签名图片时，组件会直接显示图片预览；在 `readonly` 场景下只展示图片，不再显示签字画板。
+当字段已经有签名图片且处于 `disabled` 状态时，组件会直接显示图片预览，不再渲染签字画板。
 
-<<< @/zh/demos/signature/readonly.vue
+<<< @/zh/demos/signature/disabled-preview.vue
+
+## 禁用态
+
+`disabled` 只保留“不可编辑”的语义。无论字段是否已有值，组件都不会再显示可交互的签字画板：有值时显示图片预览，无值时显示空占位态。
+
+<<< @/zh/demos/signature/disabled-state.vue
 
 ## 获取实例
 
@@ -51,7 +57,6 @@ signatureRef?.value?.resize()
 | 属性名       | 类型      | 描述                                  | 默认值 |
 | ------------ | --------- | ------------------------------------- | ------ |
 | `modelValue` | `string`  | 当前签名图片，通常为 `dataURL` 字符串 | `-`    |
-| `readonly`   | `boolean` | 只读状态，仅展示签名图片              | `-`    |
 | `disabled`   | `boolean` | 禁用状态                              | `-`    |
 
 ### 属性
