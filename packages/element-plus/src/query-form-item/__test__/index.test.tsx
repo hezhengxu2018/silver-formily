@@ -6,6 +6,7 @@ import { describe, expect, it, vi } from 'vitest'
 import { render } from 'vitest-browser-vue'
 import { userEvent } from 'vitest/browser'
 import { defineComponent } from 'vue'
+import { ensureDomElement, queryElement } from '../../../test-utils/dom'
 import { QueryFormItem, SelectTable } from '../../index'
 import 'element-plus/theme-chalk/index.css'
 
@@ -359,10 +360,10 @@ describe('queryFormItem', () => {
     const fieldLabel = screen.getByText('Selected Rows')
     const formItemElement = fieldLabel.element().closest('.formily-element-plus-form-item')
 
-    await expect.element(screen.container.querySelector('.el-form-item__label')).toHaveTextContent('Selected Rows')
-    await expect.element(formItemElement).toHaveClass('is-required')
-    await expect.element(formItemElement).toHaveClass('formily-element-plus-form-item--isolated')
-    await expect.element(formItemElement).not.toHaveClass('el-form-item')
+    await expect.element(queryElement(screen.container, '.el-form-item__label')).toHaveTextContent('Selected Rows')
+    await expect.element(ensureDomElement(formItemElement, '.formily-element-plus-form-item')).toHaveClass('is-required')
+    await expect.element(ensureDomElement(formItemElement, '.formily-element-plus-form-item')).toHaveClass('formily-element-plus-form-item--isolated')
+    await expect.element(ensureDomElement(formItemElement, '.formily-element-plus-form-item')).not.toHaveClass('el-form-item')
   })
 
   it('should show validation feedback through form item wrapper', async () => {
@@ -558,7 +559,7 @@ describe('queryFormItem', () => {
       expect(nextButton).not.toBeNull()
       expect(nextButton?.classList.contains('is-disabled')).toBe(false)
     })
-    await userEvent.click(screen.container.querySelector('.btn-next') as HTMLElement)
+    await userEvent.click(queryElement(screen.container, '.btn-next'))
 
     await vi.waitFor(() => {
       expect(screen.container.querySelector('.el-pager .is-active')?.textContent?.trim()).toBe('2')
@@ -569,9 +570,8 @@ describe('queryFormItem', () => {
     })
     expect(request.mock.calls[1]?.[0]).toEqual({ current: 2, pageSize: 10 })
 
-    const pageSizeSelector = screen.container.querySelector('.el-pagination__sizes .el-select')
-    expect(pageSizeSelector).not.toBeNull()
-    await userEvent.click(pageSizeSelector as HTMLElement)
+    const pageSizeSelector = queryElement(screen.container, '.el-pagination__sizes .el-select')
+    await userEvent.click(pageSizeSelector)
 
     await vi.waitFor(() => {
       expect(document.querySelectorAll('.el-select-dropdown__item').length).toBeGreaterThan(0)

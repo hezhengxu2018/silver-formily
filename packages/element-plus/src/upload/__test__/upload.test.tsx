@@ -4,6 +4,7 @@ import { Field, FormProvider } from '@silver-formily/vue'
 import { describe, expect, it, vi } from 'vitest'
 import { render } from 'vitest-browser-vue'
 import { userEvent } from 'vitest/browser'
+import { queryElement } from '../../../test-utils/dom'
 import { Upload } from '../index'
 import 'element-plus/theme-chalk/base.css'
 import 'element-plus/theme-chalk/el-upload.css'
@@ -31,15 +32,15 @@ describe('upload', () => {
       const { container } = render(() => (
         <Upload action="#" drag textContent="拖拽上传" />
       ))
-      await expect.element(container.querySelector('.el-upload-dragger')).toBeInTheDocument()
-      await expect.element(container.querySelector('.el-upload__text')).toHaveTextContent('拖拽上传')
+      await expect.element(queryElement(container, '.el-upload-dragger')).toBeInTheDocument()
+      await expect.element(queryElement(container, '.el-upload__text')).toHaveTextContent('拖拽上传')
     })
 
     it('应该支持卡片上传模式', async () => {
       const { container } = render(() => (
         <Upload action="#" listType="picture-card" />
       ))
-      await expect.element(container.querySelector('.el-upload--picture-card')).toBeInTheDocument()
+      await expect.element(queryElement(container, '.el-upload--picture-card')).toBeInTheDocument()
     })
   })
 
@@ -364,7 +365,7 @@ describe('upload', () => {
       await userEvent.upload(input, file)
       await expect.element(getByText('file.png')).toBeInTheDocument()
       await getByText('file.png').click()
-      await expect.element(document.querySelector('.el-image-viewer__wrapper')).toBeInTheDocument()
+      await expect.element(queryElement(document, '.el-image-viewer__wrapper')).toBeInTheDocument()
       await userEvent.keyboard('{Escape}')
       expect(document.querySelector('.el-image-viewer__wrapper')).toBeNull()
     })

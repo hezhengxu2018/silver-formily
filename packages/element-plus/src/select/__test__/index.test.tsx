@@ -3,6 +3,7 @@ import { Field, FormProvider } from '@silver-formily/vue'
 import { describe, expect, it, vi } from 'vitest'
 import { render } from 'vitest-browser-vue'
 import { userEvent } from 'vitest/browser'
+import { queryElement } from '../../../test-utils/dom'
 import Select from '../index'
 import 'element-plus/theme-chalk/index.css'
 
@@ -89,8 +90,8 @@ describe('select', () => {
         </FormProvider>
       ))
 
-      await expect.element(document.querySelector('.el-select')).toBeVisible()
-      await userEvent.click(document.querySelector('.el-select'))
+      await expect.element(queryElement(document, '.el-select')).toBeVisible()
+      await userEvent.click(queryElement(document, '.el-select'))
       const optionsDOM = document.querySelectorAll('.el-select-dropdown__item')
       await userEvent.click(optionsDOM[0])
       await userEvent.click(optionsDOM[2])

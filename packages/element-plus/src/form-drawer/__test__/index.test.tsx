@@ -1,10 +1,12 @@
+import type { FormDrawerSlotContent, FormDrawerSlots } from '../types'
 import { createSchemaField } from '@silver-formily/vue'
 import { ElButton } from 'element-plus'
-import { afterEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, describe, expect, expectTypeOf, it, vi } from 'vitest'
 import { render } from 'vitest-browser-vue'
 import { userEvent } from 'vitest/browser'
 import { defineComponent } from 'vue'
 import { FormDrawer, FormItem, Input } from '../../'
+import { queryElement } from '../../../test-utils/dom'
 import 'element-plus/theme-chalk/base.css'
 import 'element-plus/theme-chalk/el-input.css'
 import 'element-plus/theme-chalk/el-button.css'
@@ -13,10 +15,30 @@ import 'element-plus/theme-chalk/el-drawer.css'
 
 const { SchemaField, SchemaStringField } = createSchemaField({ components: { Input, FormItem } })
 
+const typedFormDrawerSlots: FormDrawerSlots<{ name: string }, 'save-draft'> = {
+  default: ({ form, saveDraft, resolve }) => {
+    expectTypeOf(form.values).toEqualTypeOf<{ name: string }>()
+    expectTypeOf(saveDraft).toEqualTypeOf<() => void>()
+    expectTypeOf(resolve).toEqualTypeOf<(type?: string) => void>()
+    return <div />
+  },
+  footer: ({ form, saveDraft }) => {
+    expectTypeOf(form.values.name).toEqualTypeOf<string>()
+    expectTypeOf(saveDraft).toEqualTypeOf<() => void>()
+    return <div />
+  },
+}
+
+const typedFormDrawerContent: FormDrawerSlotContent<{ name: string }, 'save-draft'> = typedFormDrawerSlots
+
 describe('formDrawer', () => {
   afterEach(() => {
     vi.clearAllMocks()
     document.body.innerHTML = ''
+  })
+
+  it('应该给插槽透传表单值和动态中间件的泛型', () => {
+    expect(typedFormDrawerContent).toBeTruthy()
   })
 
   describe('基础功能', () => {
@@ -458,11 +480,11 @@ describe('formDrawer', () => {
         },
       })
 
-      await expect.element(container.querySelector('.el-button')).toBeInTheDocument()
-      await userEvent.click(container.querySelector('.el-button'))
-      const input = document.querySelector('input')
+      await expect.element(queryElement(container, '.el-button')).toBeInTheDocument()
+      await userEvent.click(queryElement(container, '.el-button'))
+      const input = queryElement(document, 'input')
       await userEvent.type(input, 'test')
-      const confirmButton = document.querySelector('.el-button--primary')
+      const confirmButton = queryElement(document, '.el-button--primary')
       await userEvent.click(confirmButton)
       await expect.element(confirmButton).toHaveClass('is-loading')
       await vi.waitFor(() => {
@@ -661,11 +683,11 @@ describe('formDrawer', () => {
         },
       })
 
-      await expect.element(container.querySelector('.el-button')).toBeInTheDocument()
-      await userEvent.click(container.querySelector('.el-button'))
-      const input = document.querySelector('input')
+      await expect.element(queryElement(container, '.el-button')).toBeInTheDocument()
+      await userEvent.click(queryElement(container, '.el-button'))
+      const input = queryElement(document, 'input')
       await userEvent.type(input, 'test')
-      const confirmButton = document.querySelector('.el-button--primary')
+      const confirmButton = queryElement(document, '.el-button--primary')
       expect(fn1).not.toHaveBeenCalled()
       await userEvent.click(confirmButton)
       await expect.element(confirmButton).toHaveClass('is-loading')
@@ -717,16 +739,16 @@ describe('formDrawer', () => {
         },
       })
 
-      await expect.element(container.querySelector('.el-button')).toBeInTheDocument()
-      await userEvent.click(container.querySelector('.el-button'))
-      const confirmButton = document.querySelector('.el-button--primary')
+      await expect.element(queryElement(container, '.el-button')).toBeInTheDocument()
+      await userEvent.click(queryElement(container, '.el-button'))
+      const confirmButton = queryElement(document, '.el-button--primary')
       expect(fn1).not.toHaveBeenCalled()
       await userEvent.click(confirmButton)
-      await expect.element(document.querySelector('.el-form-item__content .is-error')).toBeInTheDocument()
+      await expect.element(queryElement(document, '.el-form-item__content .is-error')).toBeInTheDocument()
       await vi.waitFor(() => {
         expect(fn1).not.toHaveBeenCalled()
       })
-      const input = document.querySelector('input')
+      const input = queryElement(document, 'input')
       await userEvent.type(input, 'test')
       await userEvent.click(confirmButton)
       await vi.waitFor(() => {
@@ -769,16 +791,16 @@ describe('formDrawer', () => {
       const initialBodyChildren = document.body.children.length
 
       // 打开drawer
-      await userEvent.click(container.querySelector('.el-button'))
+      await userEvent.click(queryElement(container, '.el-button'))
 
       // 验证drawer已打开，DOM元素增加
-      await expect.element(document.querySelector('.el-drawer')).toBeInTheDocument()
+      await expect.element(queryElement(document, '.el-drawer')).toBeInTheDocument()
       expect(document.body.children.length).toBeGreaterThan(initialBodyChildren)
 
       // 填写表单并提交
-      const input = document.querySelector('input')
+      const input = queryElement(document, 'input')
       await userEvent.type(input, 'test')
-      const confirmButton = document.querySelector('.el-button--primary')
+      const confirmButton = queryElement(document, '.el-button--primary')
       await userEvent.click(confirmButton)
 
       // 等待动画完成和DOM销毁
@@ -825,10 +847,10 @@ describe('formDrawer', () => {
       const initialBodyChildren = document.body.children.length
 
       // 打开drawer
-      await userEvent.click(container.querySelector('.el-button'))
+      await userEvent.click(queryElement(container, '.el-button'))
 
       // 验证drawer已打开，DOM元素增加
-      await expect.element(document.querySelector('.el-drawer')).toBeInTheDocument()
+      await expect.element(queryElement(document, '.el-drawer')).toBeInTheDocument()
       expect(document.body.children.length).toBeGreaterThan(initialBodyChildren)
 
       // 点击取消按钮
@@ -863,14 +885,14 @@ describe('formDrawer', () => {
       const initialBodyChildren = document.body.children.length
 
       // 打开drawer
-      await userEvent.click(container.querySelector('.el-button'))
+      await userEvent.click(queryElement(container, '.el-button'))
 
       // 验证drawer已打开，DOM元素增加
-      await expect.element(document.querySelector('.el-drawer')).toBeInTheDocument()
+      await expect.element(queryElement(document, '.el-drawer')).toBeInTheDocument()
       expect(document.body.children.length).toBeGreaterThan(initialBodyChildren)
 
       // 点击关闭按钮（X按钮）
-      const closeButton = document.querySelector('.el-drawer__close-btn')
+      const closeButton = queryElement(document, '.el-drawer__close-btn')
       await userEvent.click(closeButton)
 
       // 等待动画完成和DOM销毁
@@ -908,8 +930,8 @@ describe('formDrawer', () => {
       // 多次打开和关闭drawer
       for (let i = 0; i < 3; i++) {
         // 打开drawer
-        await userEvent.click(container.querySelector('.el-button'))
-        await expect.element(document.querySelector('.el-drawer')).toBeInTheDocument()
+        await userEvent.click(queryElement(container, '.el-button'))
+        await expect.element(queryElement(document, '.el-drawer')).toBeInTheDocument()
 
         // 关闭drawer
         const cancelButton = getByText('取消')
@@ -946,10 +968,10 @@ describe('formDrawer', () => {
         },
       })
 
-      await userEvent.click(container.querySelector('.el-button'))
-      await expect.element(document.querySelector('.el-drawer')).toBeInTheDocument()
+      await userEvent.click(queryElement(container, '.el-button'))
+      await expect.element(queryElement(document, '.el-drawer')).toBeInTheDocument()
 
-      const closeButton = document.querySelector('.el-drawer__close-btn')
+      const closeButton = queryElement(document, '.el-drawer__close-btn')
       await userEvent.click(closeButton)
 
       expect(beforeCloseMock).toHaveBeenCalledTimes(1)

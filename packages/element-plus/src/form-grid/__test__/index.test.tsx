@@ -4,18 +4,12 @@ import { FormProvider } from '@silver-formily/vue'
 import { describe, expect, it, vi } from 'vitest'
 import { render } from 'vitest-browser-vue'
 import { defineComponent } from 'vue'
+import { queryElement } from '../../../test-utils/dom'
 import FormGridItem from '../form-grid-column.vue'
 import FormGrid from '../form-grid.vue'
 import { useFormGrid } from '../hooks'
 import 'element-plus/theme-chalk/index.css'
 import '../style.scss'
-
-function queryElement(container: Element, selector: string): HTMLElement {
-  const element = container.querySelector<HTMLElement>(selector)
-  if (!element)
-    throw new Error(`Element not found: ${selector}`)
-  return element
-}
 
 const FormGridTest = defineComponent({
   props: {

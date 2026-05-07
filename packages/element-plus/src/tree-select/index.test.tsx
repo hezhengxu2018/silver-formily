@@ -4,6 +4,7 @@ import { describe, expect, it } from 'vitest'
 import { render } from 'vitest-browser-vue'
 import { userEvent } from 'vitest/browser'
 import { defineComponent } from 'vue'
+import { queryElement } from '../../test-utils/dom'
 import TreeSelect from './index'
 import 'element-plus/theme-chalk/index.css'
 
@@ -116,7 +117,7 @@ describe('treeSelect', () => {
       const form = createForm()
       const screen = render(formilyWrapperFactory({}, {}), { props: { form } })
 
-      await userEvent.click(document.querySelector('.el-select'))
+      await userEvent.click(queryElement(document, '.el-select'))
       await expect.element(screen.getByText('Level one 1')).toBeInTheDocument()
       await expect.element(screen.getByText('Level one 2')).toBeInTheDocument()
       await expect.element(screen.getByText('Level one 3')).toBeInTheDocument()
@@ -139,7 +140,7 @@ describe('treeSelect', () => {
       const form = createForm()
       const screen = render(formilyWrapperFactory({}, {}), { props: { form } })
 
-      await userEvent.click(document.querySelector('.el-select'))
+      await userEvent.click(queryElement(document, '.el-select'))
       await screen.getByText('Level one 1').click()
       await expect.element(screen.getByText('Level two 1-1')).toBeInTheDocument()
       await screen.getByText('Level two 1-1').click()
@@ -198,10 +199,10 @@ describe('treeSelect', () => {
       const { container } = render(TestComponent)
 
       // 点击展开下拉框
-      await userEvent.click(container.querySelector('.el-select'))
-      await expect.element(container.querySelector('.custom-tree-node')).toBeInTheDocument()
-      await expect.element(container.querySelector('.custom-label')).toBeInTheDocument()
-      await expect.element(container.querySelector('.custom-value')).toBeInTheDocument()
+      await userEvent.click(queryElement(container, '.el-select'))
+      await expect.element(queryElement(container, '.custom-tree-node')).toBeInTheDocument()
+      await expect.element(queryElement(container, '.custom-label')).toBeInTheDocument()
+      await expect.element(queryElement(container, '.custom-value')).toBeInTheDocument()
     })
 
     it('空状态插槽正常传递', async () => {
@@ -238,12 +239,12 @@ describe('treeSelect', () => {
       const { container } = render(TestComponent)
 
       // 点击展开下拉框
-      await userEvent.click(container.querySelector('.el-select'))
+      await userEvent.click(queryElement(container, '.el-select'))
 
       // 验证自定义空状态插槽被正确渲染
-      await expect.element(container.querySelector('.custom-empty')).toBeInTheDocument()
-      await expect.element(container.querySelector('.empty-icon')).toBeInTheDocument()
-      await expect.element(container.querySelector('.empty-text')).toBeInTheDocument()
+      await expect.element(queryElement(container, '.custom-empty')).toBeInTheDocument()
+      await expect.element(queryElement(container, '.empty-icon')).toBeInTheDocument()
+      await expect.element(queryElement(container, '.empty-text')).toBeInTheDocument()
     })
 
     it('前缀插槽正常传递', async () => {
@@ -277,7 +278,7 @@ describe('treeSelect', () => {
       const { container } = render(TestComponent)
 
       // 验证前缀插槽被正确渲染
-      await expect.element(container.querySelector('.custom-prefix')).toBeInTheDocument()
+      await expect.element(queryElement(container, '.custom-prefix')).toBeInTheDocument()
       expect(container.textContent).toContain('🌳')
     })
 
@@ -320,8 +321,8 @@ describe('treeSelect', () => {
       })
 
       const { container } = render(TestComponent)
-      await userEvent.click(container.querySelector('.el-select'))
-      await expect.element(container.querySelector('.default-slot-content')).toBeInTheDocument()
+      await userEvent.click(queryElement(container, '.el-select'))
+      await expect.element(queryElement(container, '.default-slot-content')).toBeInTheDocument()
       expect(container.textContent).toContain('Level one 1')
     })
   })

@@ -4,6 +4,7 @@ import { createSchemaField, Field, FormProvider } from '@silver-formily/vue'
 import { ElIcon } from 'element-plus'
 import { describe, expect, it, vi } from 'vitest'
 import { render } from 'vitest-browser-vue'
+import { queryElement } from '../../../test-utils/dom'
 import { stylePrefix } from '../../__builtins__'
 import { DatePicker, FormItem, FormLayout, Input } from '../../index'
 import 'element-plus/theme-chalk/index.css'
@@ -24,8 +25,8 @@ describe('formItem', () => {
         </FormProvider>
       ))
 
-      await expect.element(container.querySelector('.formily-element-plus-form-item')).toBeInTheDocument()
-      await expect.element(container.querySelector('.el-form-item__label')).toHaveTextContent('测试标签')
+      await expect.element(queryElement(container, '.formily-element-plus-form-item')).toBeInTheDocument()
+      await expect.element(queryElement(container, '.el-form-item__label')).toHaveTextContent('测试标签')
     })
 
     it('应该支持内部隔离根类名', async () => {
@@ -40,7 +41,7 @@ describe('formItem', () => {
         </FormProvider>
       ))
 
-      const formItemElement = container.querySelector(`.${stylePrefix}-form-item`)
+      const formItemElement = queryElement(container, `.${stylePrefix}-form-item`)
       await expect.element(formItemElement).toHaveClass(`${stylePrefix}-form-item--isolated`)
       await expect.element(formItemElement).not.toHaveClass('el-form-item')
     })
@@ -371,7 +372,7 @@ describe('formItem', () => {
         </FormProvider>
       ))
 
-      const content = container.querySelector('.el-form-item__content')
+      const content = queryElement(container, '.el-form-item__content')
       await expect.element(content).toHaveClass('is-fullness')
     })
 
@@ -389,7 +390,7 @@ describe('formItem', () => {
         </FormProvider>
       ))
 
-      const content = container.querySelector('.el-form-item__content')
+      const content = queryElement(container, '.el-form-item__content')
       await expect.element(content).toHaveClass('is-fullness')
     })
 
@@ -407,7 +408,7 @@ describe('formItem', () => {
         </FormProvider>
       ))
 
-      const content = container.querySelector('.el-form-item__content')
+      const content = queryElement(container, '.el-form-item__content')
       await expect.element(content).toHaveClass('is-fullness')
     })
 
@@ -523,7 +524,7 @@ describe('formItem', () => {
         </FormProvider>
       ))
 
-      const content = container.querySelector('.el-form-item__content')
+      const content = queryElement(container, '.el-form-item__content')
       await expect.element(content).not.toHaveClass('is-fullness')
     })
   })
@@ -543,7 +544,7 @@ describe('formItem', () => {
         </FormProvider>
       ))
 
-      const formItem = container.querySelector('.el-form-item')
+      const formItem = queryElement(container, '.el-form-item')
       await expect.element(formItem).toHaveClass('el-form-item--small')
     })
 
@@ -561,7 +562,7 @@ describe('formItem', () => {
         </FormProvider>
       ))
 
-      const formItem = container.querySelector('.el-form-item')
+      const formItem = queryElement(container, '.el-form-item')
       await expect.element(formItem).toHaveClass('el-form-item--large')
     })
   })
@@ -596,7 +597,7 @@ describe('formItem', () => {
         </FormProvider>
       ))
 
-      const addonElement = container.querySelector('.formily-element-plus-form-item-addon-before')
+      const addonElement = queryElement(container, '.formily-element-plus-form-item-addon-before')
       await expect.element(addonElement).toBeInTheDocument()
       await expect(addonElement.textContent).toBe('前缀文本')
     })
@@ -615,7 +616,7 @@ describe('formItem', () => {
         </FormProvider>
       ))
 
-      const addonElement = container.querySelector('.formily-element-plus-form-item-addon-after')
+      const addonElement = queryElement(container, '.formily-element-plus-form-item-addon-after')
       await expect.element(addonElement).toBeInTheDocument()
       await expect(addonElement.textContent).toBe('后缀文本')
     })
@@ -809,8 +810,8 @@ describe('formItem', () => {
       ))
       await expect.element(getByText('栅格布局')).toBeInTheDocument()
 
-      const labelElement = container.querySelector(`.${stylePrefix}-form-item-col-6`)
-      const wrapperElement = container.querySelector(`.${stylePrefix}-form-item-col-18`)
+      const labelElement = queryElement(container, `.${stylePrefix}-form-item-col-6`)
+      const wrapperElement = queryElement(container, `.${stylePrefix}-form-item-col-18`)
 
       await expect.element(labelElement).toBeInTheDocument()
       await expect.element(wrapperElement).toBeInTheDocument()
@@ -878,9 +879,9 @@ describe('vNode 渲染支持', () => {
       </FormProvider>
     ))
 
-    const customAddon = container.querySelector('.custom-addon-after')
+    const customAddon = queryElement(container, '.custom-addon-after')
     await expect.element(customAddon).toBeInTheDocument()
-    await expect.element(customAddon.querySelector('span')).toHaveTextContent('后缀组件')
+    await expect.element(queryElement(customAddon, 'span')).toHaveTextContent('后缀组件')
   })
 
   it('extra 支持 VNode 渲染', async () => {
@@ -950,9 +951,9 @@ describe('vNode 渲染支持', () => {
     await expect.element(getByText('混合标签')).toBeInTheDocument()
 
     // 字符串前缀和后缀
-    const beforeAddon = container.querySelector('.formily-element-plus-form-item-addon-before')
-    const afterAddon = container.querySelector('.formily-element-plus-form-item-addon-after')
-    const extra = container.querySelector('.formily-element-plus-form-item-extra')
+    const beforeAddon = queryElement(container, '.formily-element-plus-form-item-addon-before')
+    const afterAddon = queryElement(container, '.formily-element-plus-form-item-addon-after')
+    const extra = queryElement(container, '.formily-element-plus-form-item-extra')
 
     await expect.element(beforeAddon).toHaveTextContent('字符串前缀')
     await expect.element(afterAddon).toHaveTextContent('字符串后缀')
@@ -982,8 +983,8 @@ describe('vNode 渲染支持', () => {
     ))
 
     await expect.element(getByText('复杂标签')).toBeInTheDocument()
-    await expect.element(container.querySelector('.complex-label')).toBeInTheDocument()
-    await expect.element(container.querySelector('.label-main')).toHaveTextContent('复杂标签')
-    await expect.element(container.querySelector('.label-sub span')).toHaveTextContent('子标题')
+    await expect.element(queryElement(container, '.complex-label')).toBeInTheDocument()
+    await expect.element(queryElement(container, '.label-main')).toHaveTextContent('复杂标签')
+    await expect.element(queryElement(container, '.label-sub span')).toHaveTextContent('子标题')
   })
 })

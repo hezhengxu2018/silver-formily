@@ -3,6 +3,7 @@ import { Field, FormProvider } from '@silver-formily/vue'
 import { describe, expect, it, vi } from 'vitest'
 import { render } from 'vitest-browser-vue'
 import { userEvent } from 'vitest/browser'
+import { queryElement } from '../../../test-utils/dom'
 import Input from '../index'
 import 'element-plus/theme-chalk/base.css'
 import 'element-plus/theme-chalk/el-input.css'
@@ -111,7 +112,7 @@ describe('input', () => {
       ))
 
       await expect.element(getByText('前缀')).toBeInTheDocument()
-      await expect.element(document.querySelector('.custom-prefix')).toBeInTheDocument()
+      await expect.element(queryElement(document, '.custom-prefix')).toBeInTheDocument()
     })
 
     it('应该支持后缀插槽', async () => {
@@ -126,7 +127,7 @@ describe('input', () => {
       ))
 
       await expect.element(getByText('后缀')).toBeInTheDocument()
-      await expect.element(document.querySelector('.custom-suffix')).toBeInTheDocument()
+      await expect.element(queryElement(document, '.custom-suffix')).toBeInTheDocument()
     })
 
     it('应该支持前置插槽', async () => {
@@ -141,7 +142,7 @@ describe('input', () => {
       ))
 
       await expect.element(getByText('前置')).toBeInTheDocument()
-      await expect.element(document.querySelector('.custom-prepend')).toBeInTheDocument()
+      await expect.element(queryElement(document, '.custom-prepend')).toBeInTheDocument()
     })
 
     it('应该支持后置插槽', async () => {
@@ -156,7 +157,7 @@ describe('input', () => {
       ))
 
       await expect.element(getByText('后置')).toBeInTheDocument()
-      await expect.element(document.querySelector('.custom-append')).toBeInTheDocument()
+      await expect.element(queryElement(document, '.custom-append')).toBeInTheDocument()
     })
 
     it('应该支持多个插槽同时使用', async () => {

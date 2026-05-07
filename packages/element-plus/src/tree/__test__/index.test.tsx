@@ -3,6 +3,7 @@ import { Field, FormProvider } from '@silver-formily/vue'
 import { describe, expect, it, vi } from 'vitest'
 import { render } from 'vitest-browser-vue'
 import { userEvent } from 'vitest/browser'
+import { queryElement } from '../../../test-utils/dom'
 import { FormItem, FormLayout, Tree } from '../../index'
 import 'element-plus/theme-chalk/index.css'
 
@@ -77,9 +78,9 @@ describe('tree', () => {
           </FormLayout>
         </FormProvider>
       ))
-      await expect.element(container.querySelector('.el-tree')).toBeInTheDocument()
-      await expect.element(container.querySelector('.el-tree-node')).toBeInTheDocument()
-      await expect.element(container.querySelector('.el-checkbox')).toBeInTheDocument()
+      await expect.element(queryElement(container, '.el-tree')).toBeInTheDocument()
+      await expect.element(queryElement(container, '.el-tree-node')).toBeInTheDocument()
+      await expect.element(queryElement(container, '.el-checkbox')).toBeInTheDocument()
     })
 
     it('应该支持点击节点勾选功能', async () => {
@@ -538,7 +539,7 @@ describe('tree', () => {
         </FormProvider>
       ))
 
-      await expect.element(container.querySelector('.el-tree')).toBeInTheDocument()
+      await expect.element(queryElement(container, '.el-tree')).toBeInTheDocument()
     })
 
     it('应该无效的初始值', async () => {
@@ -561,7 +562,7 @@ describe('tree', () => {
         </FormProvider>
       ))
 
-      await expect.element(container.querySelector('.el-tree')).toBeInTheDocument()
+      await expect.element(queryElement(container, '.el-tree')).toBeInTheDocument()
     })
 
     it('应该undefined 初始值', async () => {
@@ -584,7 +585,7 @@ describe('tree', () => {
         </FormProvider>
       ))
 
-      await expect.element(container.querySelector('.el-tree')).toBeInTheDocument()
+      await expect.element(queryElement(container, '.el-tree')).toBeInTheDocument()
     })
   })
   describe('valueType=path 功能测试', () => {
@@ -1175,9 +1176,9 @@ describe('tree', () => {
           </FormLayout>
         </FormProvider>
       ))
-      await expect.element(container.querySelector('.custom-tree-node')).toBeInTheDocument()
-      await expect.element(container.querySelector('.custom-label')).toBeInTheDocument()
-      await expect.element(container.querySelector('.custom-id')).toBeInTheDocument()
+      await expect.element(queryElement(container, '.custom-tree-node')).toBeInTheDocument()
+      await expect.element(queryElement(container, '.custom-label')).toBeInTheDocument()
+      await expect.element(queryElement(container, '.custom-id')).toBeInTheDocument()
     })
 
     it('空插槽正常传递', async () => {
