@@ -17,15 +17,15 @@ const appointmentOptions: PickerGroupDataSource = [
     title: '城市',
     options: [
       { label: '杭州', value: 'hz' },
-      { text: '上海', value: 'sh' },
-      { label: '苏州', name: 'sz' },
+      { label: '上海', value: 'sh' },
+      { label: '苏州', value: 'sz' },
     ],
   },
   {
     title: '时段',
     options: [
       { label: '上午', value: 'am' },
-      { text: '晚上', value: 'pm' },
+      { label: '晚上', value: 'pm' },
     ],
   },
 ]
@@ -287,15 +287,15 @@ describe('picker-group', () => {
               <PickerPanel
                 {...panelProps[0]}
                 columns={[
-                  { text: '杭州', value: 'hz' },
-                  { text: '上海', value: 'sh' },
+                  { label: '杭州', value: 'hz' },
+                  { label: '上海', value: 'sh' },
                 ]}
               />,
               <PickerPanel
                 {...panelProps[1]}
                 columns={[
-                  { text: '上午', value: 'am' },
-                  { text: '晚上', value: 'pm' },
+                  { label: '上午', value: 'am' },
+                  { label: '晚上', value: 'pm' },
                 ]}
               />,
             ],
@@ -582,7 +582,7 @@ describe('picker-group', () => {
               columns={item.options}
             >
               {{
-                option: (option: { text?: string }) => <div class="picker-group-slot-option">{option.text}</div>,
+                option: (option: { label?: string }) => <div class="picker-group-slot-option">{option.label}</div>,
               }}
             </PickerPanel>
           )),
@@ -612,8 +612,8 @@ describe('picker-group', () => {
             <PickerPanel
               {...panelProps[1]}
               columns={[
-                { text: '上午', value: 'am' },
-                { text: '晚上', value: 'pm' },
+                { label: '上午', value: 'am' },
+                { label: '晚上', value: 'pm' },
               ]}
             />,
           ],

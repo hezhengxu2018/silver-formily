@@ -75,7 +75,7 @@ describe('previewText.Picker', () => {
         modelValue={modelValue}
         columns={[
           { label: '杭州', value: 'hz' },
-          { label: '宁波', value: 'nb' },
+          { text: '宁波', value: 'nb' },
         ]}
         displayFormatter={displayFormatter}
       />

@@ -6,16 +6,15 @@ import type {
   PickerFieldNames,
   PickerModelValue,
   PickerOption,
-  PickerOptionLike,
   PickerOptionValue,
   PickerResolvedValue,
 } from './types'
-import { isPlainObj, isValid } from '@formily/shared'
+import { isValid } from '@formily/shared'
 import { clone } from 'es-toolkit'
-import { resolveTreeFieldNames } from '../__builtins__'
 
-type NormalizedPickerOption = Omit<PickerOption, 'children' | 'label' | 'name' | 'text' | 'value'> & {
+type NormalizedPickerOption = Omit<PickerOption, 'children' | 'label' | 'text' | 'value'> & {
   children?: NormalizedPickerColumn
+  label: any
   text: any
   value: PickerOptionValue
 }
@@ -24,68 +23,46 @@ type NormalizedPickerColumn = NormalizedPickerOption[]
 
 type NormalizedPickerColumns = NormalizedPickerColumn | NormalizedPickerColumn[]
 
-function isPickerOptionObject(option: PickerOptionLike): option is PickerOption {
-  return isPlainObj(option)
+const DEFAULT_PICKER_FIELD_NAMES: Required<TreeFieldNames> = {
+  text: 'label',
+  value: 'value',
+  children: 'children',
 }
 
-function resolvePickerOptionValue(option: PickerOptionLike, fields: Required<TreeFieldNames>): PickerOptionValue {
-  if (!isPickerOptionObject(option))
-    return option
-
+function resolvePickerOptionValue(option: PickerOption, fields: Required<TreeFieldNames>): PickerOptionValue {
   if (isValid(option[fields.value]))
     return option[fields.value] as PickerOptionValue
 
   if (isValid(option.value))
     return option.value
 
-  if (isValid(option.name))
-    return option.name
-
-  if (isValid(option[fields.text]))
-    return option[fields.text] as PickerOptionValue
-
-  if (isValid(option.text))
-    return option.text as PickerOptionValue
-
-  if (isValid(option.label))
-    return option.label as PickerOptionValue
-
-  return option as unknown as PickerOptionValue
+  return undefined as PickerOptionValue
 }
 
-function resolvePickerOptionText(option: PickerOptionLike, value: PickerOptionValue, fields: Required<TreeFieldNames>) {
-  if (!isPickerOptionObject(option))
-    return option
-
+function resolvePickerOptionLabel(option: PickerOption, value: PickerOptionValue, fields: Required<TreeFieldNames>) {
   if (isValid(option[fields.text]))
     return option[fields.text]
-
-  if (isValid(option.text))
-    return option.text
 
   if (isValid(option.label))
     return option.label
 
+  if (isValid(option.text))
+    return option.text
+
   return value
 }
 
-function normalizePickerOption(option: PickerOptionLike, fields: Required<TreeFieldNames>): NormalizedPickerOption {
+function normalizePickerOption(option: PickerOption, fields: Required<TreeFieldNames>): NormalizedPickerOption {
   const value = resolvePickerOptionValue(option, fields)
-  const text = resolvePickerOptionText(option, value, fields)
-
-  if (!isPickerOptionObject(option)) {
-    return {
-      text,
-      value,
-    }
-  }
+  const label = resolvePickerOptionLabel(option, value, fields)
 
   const rawChildren = option[fields.children] ?? option.children
 
   return {
     ...option,
     children: Array.isArray(rawChildren) ? rawChildren.map(child => normalizePickerOption(child, fields)) : undefined,
-    text,
+    label,
+    text: label,
     value,
   }
 }
@@ -111,7 +88,10 @@ function getColumnsTypeFromNormalized(columns: NormalizedPickerColumns | undefin
 }
 
 export function assignPickerFieldNames(fieldNames?: PickerFieldNames): Required<TreeFieldNames> {
-  return resolveTreeFieldNames(fieldNames)
+  return {
+    ...DEFAULT_PICKER_FIELD_NAMES,
+    ...fieldNames,
+  }
 }
 
 export function normalizePickerColumns(columns: PickerColumns | undefined, fieldNames?: PickerFieldNames): NormalizedPickerColumns {

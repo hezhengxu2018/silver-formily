@@ -22,7 +22,6 @@ export type {
   PickerFieldNames,
   PickerModelValue,
   PickerOption,
-  PickerOptionLike,
   PickerOptionValue,
   PickerPopupProps,
   PickerProps,

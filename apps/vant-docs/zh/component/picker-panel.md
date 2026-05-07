@@ -22,9 +22,13 @@ mobileDemo: picker-panel/index.vue
 ### 使用约定
 
 - 单列字段值是 `string | number | null`，多列 / 级联字段值是 `Array<string | number> | null`
-- 支持 `{ label, value }`、`{ label, name }` 的选项形态，同时兼容官方 `PickerOption` 字段
+- 默认选项结构使用 `{ label, value, children }`，内部会自动映射成 Vant Picker 所需的 `text`
 - 默认显示工具栏；滚轮变化不会立即写回，点击确认后才会触发 `update:modelValue`
 - `readonly` / `disabled` 会让内部滚轮进入只读态
+
+兼容说明：`text` 仍会被当成 `label` 处理，但不再兼容 `name`。
+
+如需对接自定义字段名，可通过 `PickerFieldNames` 把后端字段映射到“文案字段 / 值字段 / 子节点字段”。
 
 ### 补充 Props
 
@@ -32,7 +36,7 @@ mobileDemo: picker-panel/index.vue
 | ------------------- | ----------------------------------------------------- | -------------------------------- | ---------- |
 | `modelValue`        | `string \| number \| Array<string \| number> \| null` | 当前字段值                       | `-`        |
 | `columns`           | `PickerColumn \| PickerColumn[]`                      | 选项列，通常由 `dataSource` 提供 | `[]`       |
-| `columnsFieldNames` | ^[object]`{ text, value, children }`                  | 自定义字段名映射                 | 官方默认值 |
+| `columnsFieldNames` | `PickerFieldNames`                                    | 自定义字段名映射                 | 官方默认值 |
 | `readonly`          | `boolean`                                             | 只读态                           | `false`    |
 | `disabled`          | `boolean`                                             | 禁用态                           | `false`    |
 | `showToolbar`       | `boolean`                                             | 是否显示顶部工具栏               | `true`     |

@@ -13,7 +13,7 @@ import 'vant/lib/index.css'
 const cityOptions = [
   { label: '杭州', value: 'hz' },
   { text: '宁波', value: 'nb' },
-  { label: '苏州', name: 'sz' },
+  { label: '苏州', value: 'sz' },
 ] satisfies FieldDataSource
 
 const scheduleColumns: PickerColumns = [
@@ -22,8 +22,8 @@ const scheduleColumns: PickerColumns = [
     { label: '上海', value: 'sh' },
   ],
   [
-    { text: '上午', value: 'am' },
-    { text: '晚上', value: 'pm' },
+    { label: '上午', value: 'am' },
+    { label: '晚上', value: 'pm' },
   ],
 ]
 const scheduleDataSource = scheduleColumns as unknown as FieldDataSource
@@ -38,7 +38,7 @@ const cascaderLikeColumns = [
     ],
   },
   {
-    text: '江苏',
+    label: '江苏',
     value: 'js',
     children: [
       { text: '南京', value: 'nj' },
@@ -399,7 +399,7 @@ describe('picker', () => {
           'title': () => <div class="picker-slot-title">自定义标题</div>,
           'cancel': () => <span class="picker-slot-cancel">返回</span>,
           'confirm': () => <span class="picker-slot-confirm">确定提交</span>,
-          'option': (option: PickerOption) => <div class="picker-slot-option">{option.text}</div>,
+          'option': (option: PickerOption) => <div class="picker-slot-option">{option.label}</div>,
           'columns-top': () => <div class="picker-slot-top">顶部说明</div>,
           'columns-bottom': () => <div class="picker-slot-bottom">底部说明</div>,
         }}

@@ -7,8 +7,8 @@ function cloneData<T>(value: T): T {
 const cityOptionsSource = [
   { label: '杭州', value: 'hz' },
   { text: '宁波', value: 'nb' },
-  { label: '苏州', name: 'sz' },
-  { text: '上海', value: 'sh' },
+  { label: '苏州', value: 'sz' },
+  { label: '上海', value: 'sh' },
 ]
 
 const scheduleColumnsSource = [
@@ -18,9 +18,9 @@ const scheduleColumnsSource = [
     { label: '苏州', value: 'sz' },
   ],
   [
-    { text: '上午', value: 'am' },
-    { text: '下午', value: 'pm' },
-    { text: '晚上', value: 'night' },
+    { label: '上午', value: 'am' },
+    { label: '下午', value: 'pm' },
+    { label: '晚上', value: 'night' },
   ],
 ]
 
@@ -34,7 +34,7 @@ const regionColumnsSource = [
     ],
   },
   {
-    text: '江苏',
+    label: '江苏',
     value: 'js',
     children: [
       { text: '南京', value: 'nj' },

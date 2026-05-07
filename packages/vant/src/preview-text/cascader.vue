@@ -2,9 +2,9 @@
 import type { Field } from '@formily/core'
 import type { PreviewTextCascaderProps } from './types'
 import { useField } from '@silver-formily/vue'
+import { clone } from 'es-toolkit/compat'
 import { computed } from 'vue'
 import {
-  cloneCascaderValue,
   formatCascaderValue,
   normalizeCascaderValue,
   resolveCascaderSelectedOptions,
@@ -48,7 +48,7 @@ const selectedOptions = computed(() => {
 const displayText = computed(() => {
   if (props.displayFormatter) {
     return props.displayFormatter(
-      cloneCascaderValue(normalizedValue.value),
+      clone(normalizedValue.value),
       selectedOptions.value,
     )
   }

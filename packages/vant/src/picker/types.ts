@@ -2,6 +2,7 @@ import type {
   PickerThemeVars,
   PickerToolbarPosition,
   PopupPosition,
+  PickerFieldNames as VanPickerFieldNames,
   PickerProps as VanPickerProps,
   PopupProps as VanPopupProps,
 } from 'vant'
@@ -11,25 +12,18 @@ export type PickerOptionValue = Numeric
 
 export type PickerColumnsType = 'default' | 'multiple' | 'cascade'
 
-export interface PickerFieldNames {
-  text?: string
-  value?: string
-  children?: string
-}
+export type PickerFieldNames = VanPickerFieldNames
 
 export interface PickerOption extends Record<string, any> {
-  text?: any
   label?: any
+  text?: any
   value?: PickerOptionValue
-  name?: PickerOptionValue
   disabled?: boolean
   children?: PickerColumn
   className?: unknown
 }
 
-export type PickerOptionLike = PickerOption | PickerOptionValue
-
-export type PickerColumn = PickerOptionLike[]
+export type PickerColumn = PickerOption[]
 
 export type PickerColumns = PickerColumn | PickerColumn[]
 

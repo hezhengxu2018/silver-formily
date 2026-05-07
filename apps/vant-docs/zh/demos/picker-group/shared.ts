@@ -23,7 +23,7 @@ export const appointmentOptions: DemoPickerGroupDataSource = [
     options: [
       { label: '上午', value: 'am' },
       { label: '下午', value: 'pm' },
-      { text: '晚上', value: 'night' },
+      { label: '晚上', value: 'night' },
     ],
   },
 ]

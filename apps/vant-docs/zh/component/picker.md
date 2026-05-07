@@ -46,9 +46,26 @@ mobileDemo: picker/index.vue
 
 ## API
 
-- `Field` 上的 `dataSource` 会自动映射到 `columns`，额外支持 `{ label, value }`、`{ label, name }` 的选项形态，同时兼容[官方文档中的字段](https://vant-ui.github.io/vant/#/zh-CN/picker#pickeroption-shu-ju-jie-gou)。
+- `Field` 上的 `dataSource` 会自动映射到 `columns`，默认推荐使用 `{ label, value, children }`，更贴近 Formily 常见的 `dataSource` 风格。
 - 单列字段值是 `string | number | null`，多列 / 级联字段值是 `Array<string | number> | null`。
 - 触发区交互状态跟随 `Field` 的 `disabled` / `readOnly` / `readPretty`，不会透传到内部 Picker。
+
+### 选项结构
+
+默认选项结构如下：
+
+```ts
+interface PickerOption {
+  label?: string | number
+  value?: string | number
+  disabled?: boolean
+  children?: PickerOption[]
+}
+```
+
+- 默认使用 `label` 作为展示文案字段，内部会自动映射成 Vant Picker 所需的 `text`。
+- 旧数据里的 `text` 仍会被当成 `label` 兼容处理。
+- 如果后端字段名不同，可通过 `PickerFieldNames` 指定映射关系，其中 `text` 表示“文案字段名”。
 
 ### 补充 Props
 
@@ -56,7 +73,7 @@ mobileDemo: picker/index.vue
 | ------------------- | ----------------------------------------------------- | -------------------------------- | -------------- |
 | `modelValue`        | `string \| number \| Array<string \| number> \| null` | 当前字段值                       | `-`            |
 | `columns`           | `PickerColumn \| PickerColumn[]`                      | 选项列，通常由 `dataSource` 提供 | `[]`           |
-| `columnsFieldNames` | ^[object]`{ text, value, children }`                  | 自定义字段名映射                 | 官方默认值     |
+| `columnsFieldNames` | `PickerFieldNames`                                    | 自定义字段名映射                 | 官方默认值     |
 | `placeholder`       | `string`                                              | 未选择时的展示文案               | `'请选择选项'` |
 | `popupProps`        | `PickerPopupProps`                                    | 传给内部 Popup 的配置            | `-`            |
 | `separator`         | `string`                                              | 字段展示区分隔符                 | `' / '`        |

@@ -45,7 +45,8 @@ type PickerGroupDataSource = PickerGroupDataSourceItem[]
 ```
 
 - `title` 用于生成内部 tab 标题
-- `options` 可继续用于字段展示、readPretty 展示，以及传给 `PickerPanel`
+- `options` 默认推荐使用 `{ label, value, children }`；内部会自动映射成 Vant Picker 所需的 `text`
+- 旧数据里的 `text` 仍会被当成 `label` 兼容处理
 - 最终字段值会按 tab 保留每个 panel 自己的 `modelValue` 结构，例如 `['2026-03-30', '09:30']`
 - 触发区默认把每个 tab 的选中文案用 `separator` 拼接，默认值为 `' / '`
 - `readPretty` 模式下会自动回显当前选项文案；组合日期、时间、地区等非 `dataSource.options` 场景时，推荐同时提供 `displayFormatter`

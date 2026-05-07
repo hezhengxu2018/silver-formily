@@ -10,12 +10,12 @@ import type {
   CascaderResolvedValue,
 } from './types'
 import { useField } from '@silver-formily/vue'
+import { clone } from 'es-toolkit/compat'
 import { computed, useSlots } from 'vue'
 import { callListener, PopupTriggerInput, resolveSelectionPlaceholder, useCleanAttrs, usePopupTriggerState } from '../__builtins__'
 import { createPopup } from '../create-popup'
 import CascaderPopupContent from './cascader-popup-content.vue'
 import {
-  cloneCascaderValue,
   formatCascaderValue,
   getCascaderLeafValue,
   mapSelectedOptionsToValues,
@@ -78,7 +78,7 @@ const selectedOptions = computed(() => {
 const displayText = computed(() => {
   if (props.displayFormatter) {
     return props.displayFormatter(
-      cloneCascaderValue(normalizedValue.value),
+      clone(normalizedValue.value),
       selectedOptions.value,
     )
   }
