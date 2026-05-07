@@ -16,7 +16,7 @@ export function FormDrawer<
   const DynamicMiddlewareNames extends readonly string[] = [],
 >(
   title: IFormDrawerProps | string,
-  content?: Component | FormDrawerSlotContent,
+  content?: Component | FormDrawerSlotContent<T, DynamicMiddlewareNames[number]>,
   dynamicMiddlewareNames?: DynamicMiddlewareNames,
 ): IFormDrawer<T, DynamicMiddlewareNames[number]> {
   const env: {
@@ -59,7 +59,11 @@ export function FormDrawer<
   const props = (isStr(title) ? ({ title }) : title) as IFormDrawerProps
 
   function render(visible: boolean, resolve?: (type?: string) => any, reject?: () => any) {
-    const _content = isVueOptions(content) ? { default: () => h(content) } : content
+    const _content = isVueOptions(content)
+      ? { default: () => h(content) }
+      : isFn(content)
+        ? { default: content }
+        : content
     if (!env.instance) {
       const ComponentConstructor = observer({
         setup(_, { expose }) {

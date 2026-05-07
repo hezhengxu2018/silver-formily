@@ -15,22 +15,39 @@ export type IFormDrawerProps = Partial<DrawerProps> & {
 // #endregion props
 
 // #region slots
-export interface FormDrawerSlotProps {
-  resolve: (type?: string) => void
-  reject: () => void
-  form: Form
+type FormDrawerDynamicResolveMethods<DynamicMiddlewareName extends string> = {
+  [K in NormalizeFormDrawerDynamicMiddlewareName<DynamicMiddlewareName> as K extends ReservedFormDrawerMiddlewareName ? never : K]: () => void
 }
 
-export interface FormDrawerSlots {
-  header?: (props: FormDrawerSlotProps) => VNode
-  default?: () => VNode
-  footer?: (props: FormDrawerSlotProps) => VNode
+export interface FormDrawerResolve {
+  (type?: string): void
+}
+
+interface FormDrawerBaseSlotProps<T extends object = any> {
+  resolve: FormDrawerResolve
+  reject: () => void
+  form: Form<T>
+}
+
+export type FormDrawerSlotProps<T extends object = any> = FormDrawerBaseSlotProps<T> & Record<string, any>
+
+export type FormDrawerResolvedSlotProps<T extends object = any, DynamicMiddlewareName extends string = never>
+  = FormDrawerBaseSlotProps<T> & FormDrawerDynamicResolveMethods<DynamicMiddlewareName>
+
+export interface FormDrawerSlots<T extends object = any, DynamicMiddlewareName extends string = never> {
+  header?: (props: FormDrawerResolvedSlotProps<T, DynamicMiddlewareName>) => VNode | VNode[]
+  default?: (props: FormDrawerResolvedSlotProps<T, DynamicMiddlewareName>) => VNode | VNode[]
+  footer?: (props: FormDrawerResolvedSlotProps<T, DynamicMiddlewareName>) => VNode | VNode[]
 }
 // #endregion slots
 
-export type FormDrawerSlotContent = SlotsType<FormDrawerSlots> | {
-  [key in keyof FormDrawerSlots]?: FormDrawerSlots[key]
-}
+export type FormDrawerDefaultSlot<T extends object = any, DynamicMiddlewareName extends string = never>
+  = FormDrawerSlots<T, DynamicMiddlewareName>['default']
+
+export type FormDrawerSlotContent<T extends object = any, DynamicMiddlewareName extends string = never>
+  = FormDrawerDefaultSlot<T, DynamicMiddlewareName> | SlotsType<FormDrawerSlots<T, DynamicMiddlewareName>> | {
+    [key in keyof FormDrawerSlots<T, DynamicMiddlewareName>]?: FormDrawerSlots<T, DynamicMiddlewareName>[key]
+  }
 
 // #region iformdrawer
 type ReservedFormDrawerMiddlewareName = 'open' | 'confirm' | 'cancel'

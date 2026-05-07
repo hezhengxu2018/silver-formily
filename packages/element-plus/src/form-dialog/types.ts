@@ -15,22 +15,39 @@ export type IFormDialogProps = Partial<DialogProps> & {
 // #endregion props
 
 // #region slots
-export interface FormDialogSlotProps {
-  resolve: (type?: string) => void
-  reject: () => void
-  form: Form
+type FormDialogDynamicResolveMethods<DynamicMiddlewareName extends string> = {
+  [K in NormalizeFormDialogDynamicMiddlewareName<DynamicMiddlewareName> as K extends ReservedFormDialogMiddlewareName ? never : K]: () => void
 }
 
-export interface FormDialogSlots {
-  header?: (props: FormDialogSlotProps) => VNode
-  default?: () => VNode
-  footer?: (props: FormDialogSlotProps) => VNode
+export interface FormDialogResolve {
+  (type?: string): void
+}
+
+interface FormDialogBaseSlotProps<T extends object = any> {
+  resolve: FormDialogResolve
+  reject: () => void
+  form: Form<T>
+}
+
+export type FormDialogSlotProps<T extends object = any> = FormDialogBaseSlotProps<T> & Record<string, any>
+
+export type FormDialogResolvedSlotProps<T extends object = any, DynamicMiddlewareName extends string = never>
+  = FormDialogBaseSlotProps<T> & FormDialogDynamicResolveMethods<DynamicMiddlewareName>
+
+export interface FormDialogSlots<T extends object = any, DynamicMiddlewareName extends string = never> {
+  header?: (props: FormDialogResolvedSlotProps<T, DynamicMiddlewareName>) => VNode | VNode[]
+  default?: (props: FormDialogResolvedSlotProps<T, DynamicMiddlewareName>) => VNode | VNode[]
+  footer?: (props: FormDialogResolvedSlotProps<T, DynamicMiddlewareName>) => VNode | VNode[]
 }
 // #endregion slots
 
-export type FormDialogSlotContent = SlotsType<FormDialogSlots> | {
-  [key in keyof FormDialogSlots]?: FormDialogSlots[key]
-}
+export type FormDialogDefaultSlot<T extends object = any, DynamicMiddlewareName extends string = never>
+  = FormDialogSlots<T, DynamicMiddlewareName>['default']
+
+export type FormDialogSlotContent<T extends object = any, DynamicMiddlewareName extends string = never>
+  = FormDialogDefaultSlot<T, DynamicMiddlewareName> | SlotsType<FormDialogSlots<T, DynamicMiddlewareName>> | {
+    [key in keyof FormDialogSlots<T, DynamicMiddlewareName>]?: FormDialogSlots<T, DynamicMiddlewareName>[key]
+  }
 
 // #region iformdialog
 type ReservedFormDialogMiddlewareName = 'open' | 'confirm' | 'cancel'

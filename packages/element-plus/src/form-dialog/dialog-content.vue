@@ -28,7 +28,7 @@ const props = defineProps({
     required: true,
   },
   resolve: {
-    type: Function as PropType<() => void>,
+    type: Function as PropType<(type?: string) => void>,
     required: true,
   },
   reject: {

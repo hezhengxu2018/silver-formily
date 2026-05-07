@@ -16,7 +16,7 @@ export function FormDialog<
   const DynamicMiddlewareNames extends readonly string[] = [],
 >(
   title: IFormDialogProps | string,
-  content?: Component | FormDialogSlotContent,
+  content?: Component | FormDialogSlotContent<T, DynamicMiddlewareNames[number]>,
   dynamicMiddlewareNames?: DynamicMiddlewareNames,
 ): IFormDialog<T, DynamicMiddlewareNames[number]> {
   const env: {
@@ -61,7 +61,9 @@ export function FormDialog<
   function render(visible: boolean, resolve?: (type?: string) => any, reject?: () => any) {
     const _content = isVueOptions(content)
       ? { default: () => h(content) }
-      : content
+      : isFn(content)
+        ? { default: content }
+        : content
     if (!env.instance) {
       const ComponentConstructor = observer({
         setup(_, { expose }) {
