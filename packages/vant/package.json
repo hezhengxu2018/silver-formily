@@ -1,7 +1,7 @@
 {
   "name": "@silver-formily/vant",
   "type": "module",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Formily 的 Vant 封装",
   "author": "hezhengxu",
   "license": "MIT",
