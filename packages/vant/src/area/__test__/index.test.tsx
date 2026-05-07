@@ -222,4 +222,89 @@ describe('area', () => {
       expect(document.body.textContent).toContain('浙江省 / 杭州市 / 上城区')
     })
   })
+
+  it('应该在预览态按 columnsNum、columnsPlaceholder 和 separator 生成显示文本', async () => {
+    render(() => (
+      <>
+        <PreviewText.Area
+          areaList={areaList}
+          modelValue="330102"
+          columnsPlaceholder={['请选择省', '请选择市', '请选择区']}
+          separator=" > "
+        />
+        <PreviewText.Area
+          areaList={areaList}
+          modelValue="330100"
+          columnsNum={2}
+          columnsPlaceholder={['请选择省', '请选择市']}
+        />
+        <PreviewText.Area
+          areaList={areaList}
+          modelValue="330000"
+          columnsNum={1}
+          columnsPlaceholder={['请选择省']}
+        />
+      </>
+    ))
+
+    await vi.waitFor(() => {
+      expect(document.body.textContent).toContain('浙江省 > 杭州市 > 上城区')
+      expect(document.body.textContent).toContain('浙江省 / 杭州市')
+      expect(document.body.textContent).toContain('浙江省')
+    })
+  })
+
+  it('应该按 columnsNum 和 columnsPlaceholder 渲染可见列与占位项', async () => {
+    const { container } = render(() => (
+      <Area
+        areaList={areaList}
+        columnsNum={2}
+        columnsPlaceholder={['请选择省', '请选择市']}
+      />
+    ))
+
+    await userEvent.click(getTrigger(container))
+
+    await vi.waitFor(() => {
+      expect(getVisiblePickerColumns()).toHaveLength(2)
+    })
+
+    const [provinceColumn, cityColumn] = getVisiblePickerColumns()
+
+    expect(provinceColumn.textContent).toContain('请选择省')
+    expect(cityColumn.textContent).toContain('请选择市')
+    expect(cityColumn.textContent).not.toContain('请选择区')
+  })
+
+  it('应该在数据未就绪时回退展示原始编码，并支持单列模式', async () => {
+    const singleColumnResult = render(() => (
+      <Area
+        areaList={areaList}
+        columnsNum={1}
+      />
+    ))
+
+    await userEvent.click(getTrigger(singleColumnResult.container))
+
+    await vi.waitFor(() => {
+      expect(getVisiblePickerColumns()).toHaveLength(1)
+    })
+
+    document.body.innerHTML = ''
+
+    render(() => (
+      <PreviewText.Area
+        areaList={{
+          province_list: {},
+          city_list: {},
+          county_list: {},
+        }}
+        modelValue="330102"
+      />
+    ))
+
+    await vi.waitFor(() => {
+      expect(document.body.textContent).toContain('330102')
+    })
+  })
 })

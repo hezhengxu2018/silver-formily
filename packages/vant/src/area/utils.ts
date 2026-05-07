@@ -8,7 +8,13 @@ import { isValid } from '@formily/shared'
 
 const AREA_EMPTY_CODE = '000000'
 
-function makeOption(text = '', value: Numeric = AREA_EMPTY_CODE, children?: PickerOption[]): PickerOption {
+type NormalizedAreaList = AreaList & {
+  city_list: NonNullable<AreaList['city_list']>
+  county_list: NonNullable<AreaList['county_list']>
+  province_list: NonNullable<AreaList['province_list']>
+}
+
+function makeOption(text: string, value: Numeric = AREA_EMPTY_CODE, children?: PickerOption[]): PickerOption {
   return {
     children,
     text,
@@ -17,7 +23,7 @@ function makeOption(text = '', value: Numeric = AREA_EMPTY_CODE, children?: Pick
 }
 
 function resolveColumnsNum(columnsNum: unknown) {
-  const value = Number(columnsNum ?? 3)
+  const value = Number(columnsNum)
 
   if (Number.isNaN(value))
     return 3
@@ -33,14 +39,14 @@ function normalizeAreaCode(value: AreaModelValue): AreaResolvedValue {
 }
 
 export function formatAreaDataForCascade(
-  areaList: AreaList = {} as AreaList,
-  columnsNum: unknown = 3,
-  columnsPlaceholder: string[] = [],
+  areaList: NormalizedAreaList,
+  columnsNum: unknown,
+  columnsPlaceholder: string[],
 ): PickerOption[] {
   const {
-    city_list: city = {},
-    county_list: county = {},
-    province_list: province = {},
+    city_list: city,
+    county_list: county,
+    province_list: province,
   } = areaList
   const showCity = resolveColumnsNum(columnsNum) > 1
   const showCounty = resolveColumnsNum(columnsNum) > 2
@@ -80,13 +86,13 @@ export function formatAreaDataForCascade(
       const option = makeOption(city[code], code, getCityChildren())
 
       cityMap.set(code.slice(0, 4), option)
-      ;(provinceMap.get(code.slice(0, 2))?.children ?? []).push(option)
+      provinceMap.get(code.slice(0, 2))!.children!.push(option)
     })
   }
 
   if (showCounty) {
     Object.keys(county).forEach((code) => {
-      ;(cityMap.get(code.slice(0, 4))?.children ?? []).push(makeOption(county[code], code))
+      cityMap.get(code.slice(0, 4))!.children!.push(makeOption(county[code], code))
     })
   }
 
@@ -104,7 +110,7 @@ export function formatAreaDataForCascade(
 
 export function resolveAreaInnerValue(
   value: AreaModelValue,
-  columnsNum: unknown = 3,
+  columnsNum: unknown,
 ): string[] {
   const code = normalizeAreaCode(value)
 
@@ -128,9 +134,9 @@ export function resolveAreaModelValue(selectedValues: Numeric[] | undefined): Ar
 
 export function resolveAreaSelectedOptions(
   value: AreaModelValue,
-  areaList?: AreaList,
-  columnsNum: unknown = 3,
-  columnsPlaceholder: string[] = [],
+  areaList: NormalizedAreaList,
+  columnsNum: unknown,
+  columnsPlaceholder: string[],
 ): Array<PickerOption | undefined> {
   const values = resolveAreaInnerValue(value, columnsNum)
   const columns = formatAreaDataForCascade(areaList, columnsNum, columnsPlaceholder)
@@ -149,10 +155,10 @@ export function resolveAreaSelectedOptions(
 
 export function formatAreaDisplay(
   value: AreaModelValue,
-  areaList?: AreaList,
-  columnsNum: unknown = 3,
-  columnsPlaceholder: string[] = [],
-  separator = ' / ',
+  areaList: NormalizedAreaList,
+  columnsNum: unknown,
+  columnsPlaceholder: string[],
+  separator: string,
 ) {
   const code = normalizeAreaCode(value)
 

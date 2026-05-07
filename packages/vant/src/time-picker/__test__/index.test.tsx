@@ -181,6 +181,45 @@ describe('time-picker', () => {
     expect(input).toHaveAttribute('data-allow-mismatch', 'attribute')
   })
 
+  it('应该在 displayFormatter 中提供当前选中的选项数据', async () => {
+    const displayFormatter = vi.fn((value, selectedOptions) => {
+      return `${value} => ${selectedOptions.map(option => option?.text ?? '').join(':')}`
+    })
+
+    const { container } = render(() => (
+      <FormProvider form={createForm({
+        values: {
+          appointmentTime: '10:15',
+        },
+      })}
+      >
+        <Field
+          name="appointmentTime"
+          title="预约时间"
+          decorator={[FormItem]}
+          component={[TimePicker, {
+            displayFormatter,
+            maxTime,
+            minTime,
+          }]}
+        />
+      </FormProvider>
+    ))
+
+    await vi.waitFor(() => {
+      expect(getTrigger(container).value).toBe('10:15 => 10:15')
+    })
+
+    expect(displayFormatter).toHaveBeenCalled()
+    expect(displayFormatter).toHaveBeenLastCalledWith(
+      '10:15',
+      [
+        expect.objectContaining({ text: '10', value: '10' }),
+        expect.objectContaining({ text: '15', value: '15' }),
+      ],
+    )
+  })
+
   it('应该在确认后写回时间字符串并更新字段展示', async () => {
     const form = createForm()
     const { container } = render(() => (
