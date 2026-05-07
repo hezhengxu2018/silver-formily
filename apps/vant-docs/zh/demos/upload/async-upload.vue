@@ -23,7 +23,7 @@ async function afterRead(item: any) {
     })
     const result = await response.json()
 
-    item.url = result.url
+    item.url = result.data?.url
     item.status = 'done'
     item.message = ''
   }
