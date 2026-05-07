@@ -15,12 +15,12 @@ export default defineConfig({
   css: {
     inject: true,
   },
-  external: [
-    'lodash-es',
-    '@element-plus/icons-vue',
-    'vue-draggable-plus',
-  ],
   deps: {
+    neverBundle: [
+      'lodash-es',
+      '@element-plus/icons-vue',
+      'vue-draggable-plus',
+    ],
     skipNodeModulesBundle: true,
   },
   plugins: [
