@@ -16,7 +16,6 @@ export default Signature
 
 export type {
   SignatureInstance,
-  SignatureModelValue,
   SignatureProps,
   SignatureSlots,
   SignatureThemeVars,

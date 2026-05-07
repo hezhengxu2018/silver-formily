@@ -45,7 +45,7 @@ function isImageFile(file: { file?: File, isImage?: boolean, url?: string }) {
     return true
   }
 
-  if (file.file?.type.startsWith('image/')) {
+  if (file.file?.type?.startsWith('image/')) {
     return true
   }
 

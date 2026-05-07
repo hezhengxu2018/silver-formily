@@ -6,12 +6,12 @@ import type {
   UploadFileListItem,
   UploadSlots,
 } from './types'
-import { isFn, isPlainObj } from '@formily/shared'
+import { isFn, shallowClone } from '@formily/shared'
 import { reactionWatch } from '@silver-formily/reactive-vue'
 import { useField } from '@silver-formily/vue'
 import { Uploader as RawUploader } from 'vant'
 import { computed, ref, watch } from 'vue'
-import { useAttrs, useCleanAttrs, useHasCustomDefaultSlot } from '../__builtins__'
+import { useCleanAttrs, useHasCustomDefaultSlot } from '../__builtins__'
 
 defineOptions({
   name: 'FUpload',
@@ -24,7 +24,6 @@ const props = withDefaults(defineProps<UploadComponentProps>(), {
 })
 
 const emit = defineEmits<{
-  'update:fileList': [value: UploadFileListItem[]]
   'update:modelValue': [value: any]
 }>()
 
@@ -34,27 +33,18 @@ const VanUploader = RawUploader as unknown as DefineComponent<Record<string, unk
 
 const uploaderRef = ref()
 const innerFileList = ref<UploadFileListItem[]>([])
-const fieldRef = useField<FormilyField | undefined>()
-const rawAttrs = useAttrs()
-const { props: attrs } = useCleanAttrs(['afterRead', 'modelValue', 'onAfterRead', 'onUpdate:modelValue'])
+const fieldRef = useField<FormilyField>()
+const { props: uploadProps } = useCleanAttrs()
 const hasCustomDefaultSlot = useHasCustomDefaultSlot(slots.default)
 
-const resolvedMaxCount = computed(() => {
-  const rawValue = Number(attrs.value.maxCount)
-
-  if (!Number.isFinite(rawValue)) {
-    return undefined
-  }
-
-  return Math.max(Math.trunc(rawValue), 0)
-})
+const isSingleFileUpload = computed(() => Number(uploadProps.value.maxCount) === 1)
 
 const uploaderProps = computed(() => {
   return {
-    ...attrs.value,
+    ...uploadProps.value,
     afterRead: handleAfterRead,
     modelValue: innerFileList.value,
-    reupload: attrs.value.reupload ?? resolvedMaxCount.value === 1,
+    reupload: uploadProps.value.reupload ?? isSingleFileUpload.value,
   }
 })
 
@@ -62,37 +52,27 @@ watch(() => props.fileList, (value) => {
   innerFileList.value = Array.isArray(value) ? [...value] : []
 }, { immediate: true })
 
-fieldRef.value?.inject({
+fieldRef.value.inject({
   getUploaderRef: () => uploaderRef,
 })
 
-if (fieldRef.value) {
-  reactionWatch(() => {
-    return fieldRef.value?.dataSource ?? []
-  }, (value) => {
-    const nextList = Array.isArray(value) ? [...value as UploadFileListItem[]] : []
-    innerFileList.value = nextList
-    emit('update:fileList', nextList)
-    emit('update:modelValue', props.formatValue(nextList))
-  })
-}
+reactionWatch(() => {
+  return fieldRef.value.dataSource ?? []
+}, (value) => {
+  const nextList = shallowClone(value) as UploadFileListItem[]
+  innerFileList.value = nextList
+  emit('update:modelValue', props.formatValue(nextList))
+})
 
 function commitFileList(nextList = innerFileList.value) {
-  const normalizedList = [...nextList]
+  const normalizedList = shallowClone(nextList) as UploadFileListItem[]
 
   innerFileList.value = normalizedList
-
-  if (fieldRef.value) {
-    fieldRef.value.setDataSource(normalizedList)
-    return
-  }
-
-  emit('update:fileList', normalizedList)
-  emit('update:modelValue', props.formatValue(normalizedList))
+  fieldRef.value.setDataSource(normalizedList)
 }
 
 function handleModelValueChange(fileList: UploadFileListItem[]) {
-  innerFileList.value = [...fileList]
+  innerFileList.value = shallowClone(fileList) as UploadFileListItem[]
   commitFileList(innerFileList.value)
 }
 
@@ -106,13 +86,7 @@ function removeFileItems(items: UploadFileListItem | UploadFileListItem[]) {
 }
 
 async function handleAfterRead(items: UploadFileListItem | UploadFileListItem[], detail: { name: string | number, index: number }) {
-  const nestedAttrs = isPlainObj(rawAttrs.value.attrs)
-    ? rawAttrs.value.attrs as Record<string, any>
-    : {}
-  const externalAfterRead = rawAttrs.value.afterRead
-    ?? rawAttrs.value.onAfterRead
-    ?? nestedAttrs.afterRead
-    ?? nestedAttrs.onAfterRead
+  const externalAfterRead = uploadProps.value.afterRead ?? uploadProps.value.onAfterRead
 
   if (isFn(externalAfterRead)) {
     try {

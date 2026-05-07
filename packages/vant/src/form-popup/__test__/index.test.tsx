@@ -36,6 +36,30 @@ afterEach(async () => {
 })
 
 describe('form-popup', () => {
+  it('应该在 open middleware 失败时直接 reject，并允许 close 在未打开时静默返回', async () => {
+    const popup = FormPopup<{ name: string }>('打开失败', () => (
+      <Field
+        name="name"
+        title="姓名"
+        decorator={[FormItem]}
+        component={[Input]}
+      />
+    ))
+      .forOpen(() => {
+        throw new Error('open failed')
+      })
+
+    popup.close()
+
+    await expect(popup.open({
+      values: {
+        name: '杭州',
+      },
+    })).rejects.toThrow('open failed')
+
+    expect(getVisiblePopup()).toBeNull()
+  })
+
   it('应该支持把 defineComponent 组件作为表单内容传入', async () => {
     const onResolved = vi.fn()
 
@@ -263,6 +287,49 @@ describe('form-popup', () => {
 
     await vi.waitFor(() => {
       expect(onResolved).toHaveBeenCalledWith({ name: '无锡' })
+      expect(getVisiblePopup()).toBeNull()
+    })
+  })
+
+  it('应该复用同一次 open 的 promise，并在 close 时经过 cancel middleware reject', async () => {
+    const onCancel = vi.fn()
+
+    const popup = FormPopup<{ name: string }>('关闭弹层', () => (
+      <Field
+        name="name"
+        title="姓名"
+        decorator={[FormItem]}
+        component={[Input]}
+      />
+    ))
+      .forCancel((form) => {
+        onCancel(form.values)
+        return form
+      })
+
+    const firstPromise = popup.open({
+      values: {
+        name: '杭州',
+      },
+    })
+    const secondPromise = popup.open({
+      values: {
+        name: '南京',
+      },
+    })
+
+    expect(secondPromise).toBe(firstPromise)
+
+    await vi.waitFor(() => {
+      expect(getVisiblePopup()).not.toBeNull()
+    })
+
+    popup.close()
+
+    await expect(firstPromise).rejects.toThrow('cancel')
+
+    expect(onCancel).toHaveBeenCalledWith({ name: '杭州' })
+    await vi.waitFor(() => {
       expect(getVisiblePopup()).toBeNull()
     })
   })

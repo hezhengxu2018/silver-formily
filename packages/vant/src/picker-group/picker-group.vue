@@ -54,7 +54,7 @@ const emit = defineEmits<{
 
 const slots = useSlots()
 const fieldRef = useField<Field>()
-const { props: triggerInputProps } = useCleanAttrs(['dataSource', 'modelValue', 'onUpdate:modelValue', 'tabs'])
+const { props: triggerInputProps } = useCleanAttrs()
 let closingByOverlay = false
 const { isTriggerDisabled, isTriggerReadonly } = usePopupTriggerState({
   field: fieldRef,

@@ -11,7 +11,10 @@ defineOptions({
   inheritAttrs: false,
 })
 
-const props = defineProps<SignatureProps>()
+const props = withDefaults(defineProps<SignatureProps>(), {
+  clearButtonText: '清空',
+  confirmButtonText: '确认',
+})
 
 const emit = defineEmits<{
   'update:modelValue': [value: string]
@@ -22,7 +25,7 @@ const { b } = createNamespace('signature')
 const { props: attrs } = useCleanAttrs()
 const fieldRef = useField<FormilyField | undefined>()
 const signatureRef = ref<SignatureInstance>()
-const previewValue = ref(normalizeModelValue(props.modelValue))
+const previewValue = ref(props.modelValue)
 
 const isInteractive = computed(() => {
   return !props.disabled && !props.readonly
@@ -57,66 +60,25 @@ const innerSignatureProps = computed(() => {
   }
 })
 
-const clearButtonText = computed(() => {
-  return props.clearButtonText || '清空'
-})
-
-const confirmButtonText = computed(() => {
-  return props.confirmButtonText || '确认'
-})
-
-function normalizeModelValue(value: SignatureProps['modelValue']) {
-  return typeof value === 'string' ? value : ''
-}
-
 function handleSubmit(payload: { image: string }) {
-  if (!isInteractive.value) {
-    return
-  }
-
   previewValue.value = payload.image
   emit('update:modelValue', payload.image)
 }
 
 function handleClear() {
-  if (!isInteractive.value) {
-    return
-  }
-
   previewValue.value = ''
   signatureRef.value?.clear()
   emit('update:modelValue', '')
 }
 
-function resize() {
-  signatureRef.value?.resize()
-}
-
-function clear() {
-  previewValue.value = ''
-  signatureRef.value?.clear()
-}
-
-function submit() {
-  if (previewValue.value) {
-    emit('update:modelValue', previewValue.value)
-    return
-  }
-
-  signatureRef.value?.submit()
-}
-
 fieldRef.value?.inject({
   getSignatureRef: () => signatureRef,
-  resizeSignature: resize,
-  clearSignature: clear,
-  submitSignature: submit,
 })
 
 watch(
   () => props.modelValue,
   (value) => {
-    previewValue.value = normalizeModelValue(value)
+    previewValue.value = value
 
     if (!previewValue.value) {
       signatureRef.value?.clear()
@@ -158,16 +120,16 @@ watch(
         size="small"
         @click="handleClear"
       >
-        {{ clearButtonText }}
+        {{ props.clearButtonText }}
       </VanButton>
 
       <VanButton
         v-if="!showPreview"
         type="primary"
         size="small"
-        @click="submit"
+        @click="() => signatureRef?.submit()"
       >
-        {{ confirmButtonText }}
+        {{ props.confirmButtonText }}
       </VanButton>
     </div>
   </div>
