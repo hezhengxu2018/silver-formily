@@ -10,7 +10,7 @@ Silver Formily 是一个基于 `pnpm workspace` 和 `Turborepo` 的 Vue 3 / Form
 - Vue: <https://vue.silver-formily.org>
 - Reactive Vue: <https://reactive-vue.silver-formily.org>
 - Element Plus: <https://element-plus.silver-formily.org>
-- Vant: `apps/vant-docs`（骨架已接入，站点待上线）
+- Vant: <https://element-plus.silver-formily.org>
 - Grid: <https://grid.silver-formily.org>
 - 官方的 JSON Schema 文档重构: <https://json-schema.silver-formily.org>
 

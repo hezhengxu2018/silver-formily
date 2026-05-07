@@ -10,7 +10,7 @@ Silver Formily is a Vue 3 / Formily monorepo built with `pnpm workspace` and `Tu
 - Vue: <https://vue.silver-formily.org>
 - Reactive Vue: <https://reactive-vue.silver-formily.org>
 - Element Plus: <https://element-plus.silver-formily.org>
-- Vant: `apps/vant-docs` (scaffold wired in, site not published yet)
+- Vant: <https://vant.silver-formily.org>
 - Grid: <https://grid.silver-formily.org>
 - Reworked JSON Schema docs: <https://json-schema.silver-formily.org>
 
