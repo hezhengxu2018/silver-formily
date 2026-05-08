@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { createForm } from '@formily/core'
-import { DatePicker, FormItem } from '@silver-formily/vant'
 import { Field, FormProvider } from '@silver-formily/vue'
+import { DatePicker, FormItem } from '@sliver/formily-vant'
 
 const form = createForm({
   values: {

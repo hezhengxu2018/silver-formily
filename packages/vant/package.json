@@ -1,5 +1,5 @@
 {
-  "name": "@silver-formily/vant",
+  "name": "@sliver/formily-vant",
   "type": "module",
   "version": "0.0.1",
   "description": "Formily 的 Vant 封装",

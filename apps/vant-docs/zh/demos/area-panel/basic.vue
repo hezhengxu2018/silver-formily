@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { createForm } from '@formily/core'
-import { AreaPanel, Form, FormButtonGroup, Submit } from '@silver-formily/vant'
 import { Field } from '@silver-formily/vue'
+import { AreaPanel, Form, FormButtonGroup, Submit } from '@sliver/formily-vant'
 import { areaList } from '@vant/area-data'
 import { showDemoResult } from '../shared'
 

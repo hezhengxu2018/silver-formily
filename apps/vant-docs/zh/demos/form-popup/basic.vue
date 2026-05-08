@@ -1,6 +1,6 @@
 <script setup lang="tsx">
-import { FormItem, FormPopup, Input } from '@silver-formily/vant'
 import { Field } from '@silver-formily/vue'
+import { FormItem, FormPopup, Input } from '@sliver/formily-vant'
 import { Button as VanButton } from 'vant'
 import { defineComponent, ref } from 'vue'
 import { showDemoResult } from '../shared'

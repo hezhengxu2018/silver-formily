@@ -1,6 +1,6 @@
 <script setup lang="tsx">
 import type { PropType } from 'vue'
-import { createPopup } from '@silver-formily/vant'
+import { createPopup } from '@sliver/formily-vant'
 import { Button as VanButton } from 'vant'
 import { defineComponent } from 'vue'
 import { showDemoResult } from '../shared'

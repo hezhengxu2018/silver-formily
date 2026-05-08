@@ -1,4 +1,4 @@
-import type { CalendarModelValue } from '@silver-formily/vant'
+import type { CalendarModelValue } from '@sliver/formily-vant'
 
 export const marchStart = '2026-03-01'
 export const marchEnd = '2026-03-31'

@@ -472,7 +472,7 @@ importers:
       '@silver-formily/reactive-vue':
         specifier: workspace:*
         version: link:../../packages/reactive-vue
-      '@silver-formily/vant':
+      '@sliver/formily-vant':
         specifier: workspace:*
         version: link:../../packages/vant
       '@silver-formily/vue':

@@ -2,7 +2,7 @@ import type { UserConfig } from 'vitepress'
 import path, { dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { createDocsConfig } from '@silver-formily/docs-toolkit'
-import pkg from '@silver-formily/vant/package.json' with { type: 'json' }
+import pkg from '@sliver/formily-vant/package.json' with { type: 'json' }
 import vueJsx from '@vitejs/plugin-vue-jsx'
 import zhComponent from './i18n/zh/pages/component.json'
 import zhNav from './i18n/zh/pages/nav.json'
@@ -14,7 +14,7 @@ type DocsPluginOption = NonNullable<NonNullable<UserConfig['vite']>['plugins']>[
 export default createDocsConfig({
   pkg,
   alias: {
-    '@silver-formily/vant': vantSource,
+    '@sliver/formily-vant': vantSource,
   },
   locales: {
     root: {

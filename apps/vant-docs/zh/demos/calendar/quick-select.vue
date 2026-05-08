@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import type { CalendarModelValue } from '@silver-formily/vant'
+import type { CalendarModelValue } from '@sliver/formily-vant'
 import { createForm } from '@formily/core'
-import { Calendar, FormItem } from '@silver-formily/vant'
 import { Field, FormProvider } from '@silver-formily/vue'
+import { Calendar, FormItem } from '@sliver/formily-vant'
 import { showToast } from 'vant'
 import { aprilEnd, formatModelValue, marchStart } from './shared'
 

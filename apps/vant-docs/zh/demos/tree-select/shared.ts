@@ -1,4 +1,4 @@
-import type { TreeSelectItem } from '@silver-formily/vant'
+import type { TreeSelectItem } from '@sliver/formily-vant'
 
 export const categoryItems: TreeSelectItem[] = [
   {

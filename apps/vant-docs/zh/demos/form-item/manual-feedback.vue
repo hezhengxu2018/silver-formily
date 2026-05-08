@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { FormItem, Input } from '@silver-formily/vant'
+import { FormItem, Input } from '@sliver/formily-vant'
 import { ref } from 'vue'
 
 const value = ref('')

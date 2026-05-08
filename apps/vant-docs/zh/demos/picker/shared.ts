@@ -1,4 +1,4 @@
-import type { PickerFieldNames } from '@silver-formily/vant'
+import type { PickerFieldNames } from '@sliver/formily-vant'
 
 function cloneData<T>(value: T): T {
   return JSON.parse(JSON.stringify(value)) as T

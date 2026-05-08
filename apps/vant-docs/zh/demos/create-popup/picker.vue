@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { createPopup } from '@silver-formily/vant'
+import { createPopup } from '@sliver/formily-vant'
 import { Button as VanButton, Picker as VanPicker } from 'vant'
 import { h } from 'vue'
 import { showDemoResult } from '../shared'

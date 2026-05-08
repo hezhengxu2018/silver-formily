@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { createForm } from '@formily/core'
-import { Form, FormButtonGroup, FormItem, FormStep, Input, Submit } from '@silver-formily/vant'
 import { createSchemaField, FormConsumer } from '@silver-formily/vue'
+import { Form, FormButtonGroup, FormItem, FormStep, Input, Submit } from '@sliver/formily-vant'
 import { Button as VanButton } from 'vant'
 import { showDemoResult } from '../shared'
 

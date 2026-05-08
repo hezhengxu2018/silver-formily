@@ -14,7 +14,7 @@
   "silverFormily": {
     "docs": {
       "buildDependencies": [
-        "@silver-formily/vant",
+        "@sliver/formily-vant",
         "@silver-formily/reactive-vue",
         "@silver-formily/vue"
       ]
@@ -32,8 +32,8 @@
     "@formily/shared": "catalog:",
     "@silver-formily/docs-toolkit": "workspace:*",
     "@silver-formily/reactive-vue": "workspace:*",
-    "@silver-formily/vant": "workspace:*",
     "@silver-formily/vue": "workspace:*",
+    "@sliver/formily-vant": "workspace:*",
     "@vant/area-data": "catalog:",
     "@vant/touch-emulator": "catalog:",
     "vant": "catalog:",

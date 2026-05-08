@@ -1,4 +1,4 @@
-import type { CascaderFieldNames, CascaderOption } from '@silver-formily/vant'
+import type { CascaderFieldNames, CascaderOption } from '@sliver/formily-vant'
 
 function cloneOptions<T>(options: T): T {
   return JSON.parse(JSON.stringify(options)) as T

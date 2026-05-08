@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { createForm } from '@formily/core'
-import { Cascader, Form, FormButtonGroup, FormItem, Submit } from '@silver-formily/vant'
 import { Field } from '@silver-formily/vue'
+import { Cascader, Form, FormButtonGroup, FormItem, Submit } from '@sliver/formily-vant'
 import { useCascaderAreaData } from '@vant/area-data'
 import { showDemoResult } from '../shared'
 

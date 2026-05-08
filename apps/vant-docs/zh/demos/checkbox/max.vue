@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { createForm } from '@formily/core'
-import { Checkbox, FormItem } from '@silver-formily/vant'
 import { Field, FormProvider } from '@silver-formily/vue'
+import { Checkbox, FormItem } from '@sliver/formily-vant'
 import { channelOptions } from './shared'
 
 const form = createForm({

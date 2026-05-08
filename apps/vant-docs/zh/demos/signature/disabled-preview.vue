@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { createForm } from '@formily/core'
-import { Form, FormItem, Signature } from '@silver-formily/vant'
 import { Field } from '@silver-formily/vue'
+import { Form, FormItem, Signature } from '@sliver/formily-vant'
 
 const disabledSignature = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(`
   <svg xmlns="http://www.w3.org/2000/svg" width="240" height="120" viewBox="0 0 240 120">

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { createForm } from '@formily/core'
-import { Checkbox, Form, FormButtonGroup, Submit } from '@silver-formily/vant'
 import { Field } from '@silver-formily/vue'
+import { Checkbox, Form, FormButtonGroup, Submit } from '@sliver/formily-vant'
 import { Cell, CellGroup, Tag } from 'vant'
 import { showDemoResult } from '../shared'
 import { serviceOptions } from './shared'

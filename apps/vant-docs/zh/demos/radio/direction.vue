@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { createForm } from '@formily/core'
-import { Radio } from '@silver-formily/vant'
 import { Field, FormProvider } from '@silver-formily/vue'
+import { Radio } from '@sliver/formily-vant'
 import { Cell, CellGroup } from 'vant'
 
 const form = createForm({

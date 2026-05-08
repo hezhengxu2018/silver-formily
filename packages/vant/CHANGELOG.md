@@ -11,4 +11,4 @@
 
 ### Initial Changes
 
-- 初始化 `@silver-formily/vant` 包结构、基础组件骨架与文档接入。
+- 初始化 `@sliver/formily-vant` 包结构、基础组件骨架与文档接入。

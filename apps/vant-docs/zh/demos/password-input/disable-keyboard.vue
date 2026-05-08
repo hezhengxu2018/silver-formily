@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { createForm } from '@formily/core'
-import { PasswordInput } from '@silver-formily/vant'
 import { Field, FormProvider } from '@silver-formily/vue'
+import { PasswordInput } from '@sliver/formily-vant'
 import { ref } from 'vue'
 
 const form = createForm({

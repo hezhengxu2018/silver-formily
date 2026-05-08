@@ -1,6 +1,6 @@
 # Silver Formily Vant
 
-`@silver-formily/vant` 当前提供一版最小可扩展骨架，先落基础表单项能力。
+`@sliver/formily-vant` 当前提供一版最小可扩展骨架，先落基础表单项能力。
 
 ## 当前状态
 

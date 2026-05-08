@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import type { UploadPreviewFile } from '@silver-formily/vant'
+import type { UploadPreviewFile } from '@sliver/formily-vant'
 import { createForm } from '@formily/core'
-import { Form, FormItem, Upload } from '@silver-formily/vant'
 import { Field } from '@silver-formily/vue'
+import { Form, FormItem, Upload } from '@sliver/formily-vant'
 
 function openExternalFile(url: string) {
   window.open(url, '_blank', 'noopener')

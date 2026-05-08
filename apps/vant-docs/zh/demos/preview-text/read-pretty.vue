@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import type { UploadPreviewFile } from '@silver-formily/vant'
+import type { UploadPreviewFile } from '@sliver/formily-vant'
 import { createForm } from '@formily/core'
+import { Field } from '@silver-formily/vue'
 import {
   Area,
   Calendar,
@@ -21,8 +22,7 @@ import {
   Switch,
   TimePicker,
   Upload,
-} from '@silver-formily/vant'
-import { Field } from '@silver-formily/vue'
+} from '@sliver/formily-vant'
 import { areaList } from '@vant/area-data'
 import { Button as VanButton } from 'vant'
 import { ref } from 'vue'

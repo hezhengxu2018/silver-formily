@@ -2,8 +2,8 @@
   "extends": "@silver-formily/typescript-config/docs-vue-jsx.json",
   "compilerOptions": {
     "paths": {
-      "@silver-formily/vant": ["../../packages/vant/src"],
-      "@silver-formily/vant/*": ["../../packages/vant/src/*"]
+      "@sliver/formily-vant": ["../../packages/vant/src"],
+      "@sliver/formily-vant/*": ["../../packages/vant/src/*"]
     }
   },
   "include": [

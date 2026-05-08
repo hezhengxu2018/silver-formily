@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import type { DataField } from '@formily/core'
-import type { CascaderChangeEvent, CascaderOption } from '@silver-formily/vant'
+import type { CascaderChangeEvent, CascaderOption } from '@sliver/formily-vant'
 import { createForm, onFieldInit } from '@formily/core'
-import { Cascader, FormItem } from '@silver-formily/vant'
 import { Field, FormProvider } from '@silver-formily/vue'
+import { Cascader, FormItem } from '@sliver/formily-vant'
 import { closeToast, showLoadingToast } from 'vant'
 
 const asyncChildrenMap: Record<string, CascaderOption[]> = {

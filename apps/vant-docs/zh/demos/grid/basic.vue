@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Grid } from '@silver-formily/vant'
+import { Grid } from '@sliver/formily-vant'
 
 const cards = [
   {

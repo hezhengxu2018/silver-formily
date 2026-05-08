@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { createForm } from '@formily/core'
-import { Cascader, FormItem } from '@silver-formily/vant'
 import { Field, FormProvider } from '@silver-formily/vue'
+import { Cascader, FormItem } from '@sliver/formily-vant'
 import { cityOptions } from './shared'
 
 const form = createForm({

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { createForm } from '@formily/core'
-import { Calendar, FormItem } from '@silver-formily/vant'
 import { Field, FormProvider } from '@silver-formily/vue'
+import { Calendar, FormItem } from '@sliver/formily-vant'
 import { juneEnd, marchStart } from './shared'
 
 const form = createForm({

@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import type { CalendarDayItem } from '@silver-formily/vant'
+import type { CalendarDayItem } from '@sliver/formily-vant'
 import { createForm } from '@formily/core'
-import { Calendar, FormItem } from '@silver-formily/vant'
 import { Field, FormProvider } from '@silver-formily/vue'
+import { Calendar, FormItem } from '@sliver/formily-vant'
 import { mayEnd, mayStart } from './shared'
 
 const form = createForm({

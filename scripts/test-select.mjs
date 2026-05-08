@@ -15,7 +15,7 @@ await runWorkspaceTaskSelector({
   introMessage: '输入关键字过滤，支持按名称、路径、目录名或 test 命令搜索。按 Enter 运行，Esc 取消。',
   noMatchesMessage: '未找到匹配项',
   nonTtyActionLabel: '运行',
-  passthroughHelpLine: '单个 workspace 的额外参数会透传给对应 test 脚本，例如 pnpm test -- @silver-formily/vant -- src/functional-popup/__test__/index.test.tsx；Turbo 参数仍可通过 pnpm test -- all --dry 传入。',
+  passthroughHelpLine: '单个 workspace 的额外参数会透传给对应 test 脚本，例如 pnpm test -- @sliver/formily-vant -- src/functional-popup/__test__/index.test.tsx；Turbo 参数仍可通过 pnpm test -- all --dry 传入。',
   promptMessage: '选择要运行测试的模块',
   runSelectedWorkspaceDirectly: true,
   startActionLabel: '运行',

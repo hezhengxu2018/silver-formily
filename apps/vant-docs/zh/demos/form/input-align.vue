@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Form, FormItem, Input } from '@silver-formily/vant'
+import { Form, FormItem, Input } from '@sliver/formily-vant'
 </script>
 
 <template>

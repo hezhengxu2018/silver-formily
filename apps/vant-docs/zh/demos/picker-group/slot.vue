@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { createForm } from '@formily/core'
-import { FormItem, PickerGroup, PickerPanel } from '@silver-formily/vant'
 import { Field, FormProvider } from '@silver-formily/vue'
+import { FormItem, PickerGroup, PickerPanel } from '@sliver/formily-vant'
 import { Tag } from 'vant'
 import { appointmentOptions } from './shared'
 

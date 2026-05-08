@@ -1,8 +1,8 @@
 <script setup lang="tsx">
 import type { PropType } from 'vue'
 import { createForm } from '@formily/core'
-import { createPopup, Form, FormButtonGroup, FormItem, FormStep, Input, Submit } from '@silver-formily/vant'
 import { createSchemaField, FormConsumer } from '@silver-formily/vue'
+import { createPopup, Form, FormButtonGroup, FormItem, FormStep, Input, Submit } from '@sliver/formily-vant'
 import { Button as VanButton } from 'vant'
 import { defineComponent } from 'vue'
 import { showDemoResult } from '../shared'

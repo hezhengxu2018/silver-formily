@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import type { PickerGroupResolvedValue } from '@silver-formily/vant'
+import type { PickerGroupResolvedValue } from '@sliver/formily-vant'
 import { createForm } from '@formily/core'
-import { AreaPanel, Form, FormButtonGroup, FormItem, PickerGroup, Submit, TimePickerPanel } from '@silver-formily/vant'
 import { Field } from '@silver-formily/vue'
+import { AreaPanel, Form, FormButtonGroup, FormItem, PickerGroup, Submit, TimePickerPanel } from '@sliver/formily-vant'
 import { areaList } from '@vant/area-data'
 import { showDemoResult } from '../shared'
 import { deliveryTabs } from './shared'

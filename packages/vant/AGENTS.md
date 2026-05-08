@@ -10,10 +10,10 @@
 
 ## 常用命令
 
-- `pnpm --filter @silver-formily/vant build`：执行库构建并输出到 `esm/`。
-- `pnpm --filter @silver-formily/vant lint`：执行 ESLint 校验。
-- `pnpm --filter @silver-formily/vant format`：执行 ESLint 自动修复。
-- `pnpm --filter @silver-formily/vant check-types`：执行 `vue-tsc --noEmit`。
+- `pnpm --filter @sliver/formily-vant build`：执行库构建并输出到 `esm/`。
+- `pnpm --filter @sliver/formily-vant lint`：执行 ESLint 校验。
+- `pnpm --filter @sliver/formily-vant format`：执行 ESLint 自动修复。
+- `pnpm --filter @sliver/formily-vant check-types`：执行 `vue-tsc --noEmit`。
 
 ## 维护约定
 

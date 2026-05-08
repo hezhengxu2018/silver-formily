@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { createForm } from '@formily/core'
-import { DatePicker, Form, FormButtonGroup, FormItem, Submit } from '@silver-formily/vant'
 import { Field } from '@silver-formily/vue'
+import { DatePicker, Form, FormButtonGroup, FormItem, Submit } from '@sliver/formily-vant'
 import { showDemoResult } from '../shared'
 import { maxDate, minDate } from './shared'
 

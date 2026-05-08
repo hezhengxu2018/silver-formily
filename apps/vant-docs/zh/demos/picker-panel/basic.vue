@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { createForm } from '@formily/core'
-import { Form, FormButtonGroup, PickerPanel, Submit } from '@silver-formily/vant'
 import { Field } from '@silver-formily/vue'
+import { Form, FormButtonGroup, PickerPanel, Submit } from '@sliver/formily-vant'
 import { cityOptions } from '../picker/shared'
 import { showDemoResult } from '../shared'
 

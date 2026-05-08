@@ -1,8 +1,8 @@
 <script setup lang="tsx">
 import type { Form as IForm } from '@formily/core'
 import { createForm } from '@formily/core'
-import { Form, FormButtonGroup, FormItem, FormStep, Input, Submit, useFormStep } from '@silver-formily/vant'
 import { createSchemaField } from '@silver-formily/vue'
+import { Form, FormButtonGroup, FormItem, FormStep, Input, Submit, useFormStep } from '@sliver/formily-vant'
 import { Button as VanButton } from 'vant'
 import { defineComponent } from 'vue'
 import { showDemoResult } from '../shared'

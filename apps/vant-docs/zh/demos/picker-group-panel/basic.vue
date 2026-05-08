@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import type { PickerGroupResolvedValue } from '@silver-formily/vant'
-import { PickerGroupPanel, PickerPanel } from '@silver-formily/vant'
+import type { PickerGroupResolvedValue } from '@sliver/formily-vant'
+import { PickerGroupPanel, PickerPanel } from '@sliver/formily-vant'
 import { ref } from 'vue'
 import { appointmentOptions } from '../picker-group/shared'
 import { showDemoResult } from '../shared'
