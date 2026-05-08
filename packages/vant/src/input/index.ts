@@ -1,0 +1,34 @@
+import { connect, mapProps, mapReadPretty } from '@silver-formily/vue'
+import { composeExport } from '../__builtins__'
+import { PreviewText } from '../preview-text'
+import FInput from './input.vue'
+
+const InnerInput = connect<typeof FInput>(
+  FInput,
+  mapProps({
+    readOnly: 'readonly',
+    disabled: true,
+  }),
+  mapReadPretty(PreviewText.Input),
+)
+
+const TextArea = connect<typeof FInput>(
+  FInput,
+  mapProps((props) => {
+    return {
+      ...props,
+      readonly: props.readOnly,
+      disabled: props.disabled,
+      type: 'textarea',
+    }
+  }),
+  mapReadPretty(PreviewText.Input),
+)
+
+export const Input = composeExport(InnerInput, {
+  TextArea,
+})
+
+export default Input
+
+export type { InputProps } from './types'

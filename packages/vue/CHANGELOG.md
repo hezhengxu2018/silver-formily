@@ -1,5 +1,19 @@
 # 更新日志
 
+## 2.3.4
+
+### Patch Changes
+
+- 00e5df7: 升级Vite版本至8.x
+- 1df0665: 更新TS版本至6.x
+
+## 2.3.3
+
+### Patch Changes
+
+- dd5373a: 修复field模型遗漏的loading状态映射
+- 1e74c77: 修复类型声明错误
+
 ## 2.3.2
 
 ### Patch Changes

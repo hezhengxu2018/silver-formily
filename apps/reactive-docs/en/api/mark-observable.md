@@ -18,7 +18,7 @@ interface markObservable<T> {
 api/mark-observable-en/basic
 :::
 
-#### Example Code
+### Example Code
 
 ```ts
 import { autorun, markObservable, observable } from '@formily/reactive'

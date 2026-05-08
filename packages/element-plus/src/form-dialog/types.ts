@@ -11,26 +11,37 @@ export type IFormDialogProps = Partial<DialogProps> & {
   okButtonProps?: ButtonProps
   loadingText?: string
   enterSubmit?: boolean
+  closeOnUrlChange?: boolean
 }
 // #endregion props
 
 // #region slots
-export interface FormDialogSlotProps {
-  resolve: (type?: string) => void
-  reject: () => void
-  form: Form
+export interface FormDialogResolve {
+  (type?: string): void
 }
 
-export interface FormDialogSlots {
-  header?: (props: FormDialogSlotProps) => VNode
-  default?: () => VNode
-  footer?: (props: FormDialogSlotProps) => VNode
+interface FormDialogBaseSlotProps<T extends object = any> {
+  resolve: FormDialogResolve
+  reject: () => void
+  form: Form<T>
+}
+
+export type FormDialogSlotProps<T extends object = any> = FormDialogBaseSlotProps<T> & Record<string, any>
+
+export interface FormDialogSlots<T extends object = any, _DynamicMiddlewareName extends string = never> {
+  header?: (props: FormDialogSlotProps<T>) => VNode | VNode[]
+  default?: (props: FormDialogSlotProps<T>) => VNode | VNode[]
+  footer?: (props: FormDialogSlotProps<T>) => VNode | VNode[]
 }
 // #endregion slots
 
-export type FormDialogSlotContent = SlotsType<FormDialogSlots> | {
-  [key in keyof FormDialogSlots]?: FormDialogSlots[key]
-}
+export type FormDialogDefaultSlot<T extends object = any, DynamicMiddlewareName extends string = never>
+  = FormDialogSlots<T, DynamicMiddlewareName>['default']
+
+export type FormDialogSlotContent<T extends object = any, DynamicMiddlewareName extends string = never>
+  = FormDialogDefaultSlot<T, DynamicMiddlewareName> | SlotsType<FormDialogSlots<T, DynamicMiddlewareName>> | {
+    [key in keyof FormDialogSlots<T, DynamicMiddlewareName>]?: FormDialogSlots<T, DynamicMiddlewareName>[key]
+  }
 
 // #region iformdialog
 type ReservedFormDialogMiddlewareName = 'open' | 'confirm' | 'cancel'

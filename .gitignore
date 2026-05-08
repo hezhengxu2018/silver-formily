@@ -45,3 +45,5 @@ yarn-error.log*
 **/.vitepress/cache
 **/.vitepress/dist
 **/.vitepress/.temp
+# Added by code-review-graph
+.code-review-graph/

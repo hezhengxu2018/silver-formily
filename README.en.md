@@ -2,7 +2,7 @@
 
 English | [简体中文](./README.md)
 
-Silver Formily is a Vue 3 / Formily monorepo built with `pnpm workspace` and `Turborepo`. It combines runtime bindings, Element Plus integrations, a grid utility package, shared docs tooling, and multiple documentation sites in one workspace.
+Silver Formily is a Vue 3 / Formily monorepo built with `pnpm workspace` and `Turborepo`. It combines runtime bindings, Element Plus and Vant integrations, a grid utility package, shared docs tooling, and multiple documentation sites in one workspace.
 
 ## Documentation Sites
 
@@ -10,6 +10,7 @@ Silver Formily is a Vue 3 / Formily monorepo built with `pnpm workspace` and `Tu
 - Vue: <https://vue.silver-formily.org>
 - Reactive Vue: <https://reactive-vue.silver-formily.org>
 - Element Plus: <https://element-plus.silver-formily.org>
+- Vant: <https://vant.silver-formily.org>
 - Grid: <https://grid.silver-formily.org>
 - Reworked JSON Schema docs: <https://json-schema.silver-formily.org>
 
@@ -24,7 +25,7 @@ Silver Formily is a Vue 3 / Formily monorepo built with `pnpm workspace` and `Tu
 | `@silver-formily/docs-toolkit`      | Shared VitePress theme, plugins, and site config     |
 | `@silver-formily/typescript-config` | Shared TypeScript presets for the workspace          |
 
-The six apps under `apps/*` are private VitePress sites. They all use the standard `vitepress dev/build/preview` scripts and share theme configuration through `@silver-formily/docs-toolkit`.
+The seven apps under `apps/*` are private VitePress sites. They all use the standard `vitepress dev/build/preview` scripts and share theme configuration through `@silver-formily/docs-toolkit`.
 
 ## Repository Layout
 
@@ -35,12 +36,14 @@ The six apps under `apps/*` are private VitePress sites. They all use the standa
 |  |- vue-docs
 |  |- reactive-vue-docs
 |  |- element-plus-docs
+|  |- vant-docs
 |  |- grid-docs
 |  `- json-schema-docs
 |- packages/               # Publishable or internal reusable packages
 |  |- vue
 |  |- reactive-vue
 |  |- element-plus
+|  |- vant
 |  |- grid
 |  |- docs-toolkit
 |  `- typescript-config
@@ -61,8 +64,8 @@ pnpm install
 | `pnpm dev:all`          | Runs `turbo run dev` and starts every workspace that exposes `dev`   |
 | `pnpm build`            | Filters workspaces that expose `build`, then runs Turbo              |
 | `pnpm docs:build`       | Filters workspaces that expose `docs:build`, then runs Turbo         |
-| `pnpm lint`             | Runs `turbo run lint`                                                |
-| `pnpm format`           | Runs `turbo run format`                                              |
+| `pnpm lint`             | Lints repository-level files first, then runs `turbo run lint`       |
+| `pnpm format`           | Formats repository-level files first, then runs `turbo run format`   |
 | `pnpm check-types`      | Runs `turbo run check-types`                                         |
 | `pnpm test`             | Opens a searchable picker and runs `test` for the selected package   |
 | `pnpm test:all`         | Runs `turbo run test` for every available test task                  |
@@ -125,11 +128,11 @@ pnpm run build:changed
 ## Engineering Conventions
 
 - Code style is enforced through `@antfu/eslint-config`: 2 spaces, single quotes, no semicolons.
-- Root `pnpm format` delegates to `turbo run format`; the current Husky `pre-commit` hook runs `pnpm turbo run format`.
+- Root `pnpm format` formats repository-level files first, then delegates to `turbo run format`; Husky `pre-commit` uses `lint-staged` to format only staged files and automatically re-stage formatter changes into the same commit.
 - The Turbo `build` task caches `dist/**`, `.vitepress/dist/**`, and `esm/**`.
-- `reactive-vue` and `grid` are primarily built with `tsdown`; `vue` and `element-plus` currently use Vite library builds.
+- Publishable packages under `packages/*` now build with tsdown, while pure TypeScript packages and Vue component libraries can keep package-specific configs.
 - Documentation sites are standardized on VitePress `2.0.0-alpha.16` with shared theme and plugin wiring from `@silver-formily/docs-toolkit`.
-- Conventional Commits are used across the repo, and `pnpm commit` invokes `czg`.
+- Conventional Commits are enforced through the Husky `commit-msg` hook with `commitlint`, and `pnpm commit` invokes `czg` for guided commit messages.
 
 ## CI and Release
 

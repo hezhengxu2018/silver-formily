@@ -3,6 +3,7 @@ import { createSchemaField, FormProvider } from '@silver-formily/vue'
 import { describe, expect, it, vi } from 'vitest'
 import { render } from 'vitest-browser-vue'
 import { userEvent } from 'vitest/browser'
+import { queryElement } from '../../../test-utils/dom'
 import { ArrayTabs, DatePicker, FormItem, Input } from '../../index'
 import 'element-plus/theme-chalk/index.css'
 
@@ -93,7 +94,7 @@ describe('arrayTabs', () => {
       ))
 
       // 验证组件正常渲染
-      await expect.element(container.querySelector('.formily-element-plus-array-tabs')).toBeInTheDocument()
+      await expect.element(queryElement(container, '.formily-element-plus-array-tabs')).toBeInTheDocument()
       await expect.element(getByText('字符串数组 1')).toBeInTheDocument()
     })
 
@@ -233,7 +234,7 @@ describe('arrayTabs', () => {
       ))
 
       // 点击添加按钮
-      const addButton = container.querySelector('.el-tabs__new-tab')
+      const addButton = queryElement(container, '.el-tabs__new-tab')
       await userEvent.click(addButton)
 
       // 验证新标签页已添加
@@ -276,7 +277,7 @@ describe('arrayTabs', () => {
       ))
 
       // 先添加一个新标签页
-      const addButton = container.querySelector('.el-tabs__new-tab')
+      const addButton = queryElement(container, '.el-tabs__new-tab')
       await userEvent.click(addButton)
 
       // 获取关闭按钮并点击
@@ -322,7 +323,7 @@ describe('arrayTabs', () => {
       // 在第一个标签页输入内容
       await getByRole('textbox').fill('标签页1内容')
       // 先添加一个新标签页
-      const addButton = container.querySelector('.el-tabs__new-tab')
+      const addButton = queryElement(container, '.el-tabs__new-tab')
       await userEvent.click(addButton)
 
       // 切换到第二个标签页
@@ -379,7 +380,7 @@ describe('arrayTabs', () => {
       }
 
       // 验证错误徽标显示
-      await expect.element(container.querySelector('.el-badge')).toBeInTheDocument()
+      await expect.element(queryElement(container, '.el-badge')).toBeInTheDocument()
       await expect.element(getByText('1')).toBeInTheDocument() // 错误数量
     })
   })
@@ -427,7 +428,7 @@ describe('arrayTabs', () => {
       ))
 
       // 点击添加按钮
-      const addButton = container.querySelector('.el-tabs__new-tab')
+      const addButton = queryElement(container, '.el-tabs__new-tab')
       await userEvent.click(addButton)
       expect(onTabAdd).toHaveBeenCalled()
 
@@ -457,7 +458,7 @@ describe('arrayTabs', () => {
       const { container, getByPlaceholder } = render(ArrayTabsWithArrayItemsTestFactory())
 
       // 添加第一个标签页（使用第一个模板）
-      const addButton = container.querySelector('.el-tabs__new-tab')
+      const addButton = queryElement(container, '.el-tabs__new-tab')
       await expect.element(getByPlaceholder('输入字符串')).toBeInTheDocument()
 
       // 添加第二个标签页（使用第二个模板）
@@ -478,7 +479,7 @@ describe('arrayTabs', () => {
       const { container } = render(ArrayTabsWithArrayItemsTestFactory(form))
 
       // 添加三个标签页
-      const addButton = container.querySelector('.el-tabs__new-tab')
+      const addButton = queryElement(container, '.el-tabs__new-tab')
       await userEvent.click(addButton)
       await userEvent.click(addButton)
 

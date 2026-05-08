@@ -1,0 +1,13 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "rootDir": "./src",
+    "paths": {},
+    "declaration": true,
+    "emitDeclarationOnly": true,
+    "inlineSources": true,
+    "noEmit": false,
+    "preserveConstEnums": true,
+    "sourceMap": true
+  }
+}

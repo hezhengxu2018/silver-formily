@@ -3,6 +3,7 @@ import { createSchemaField, FormProvider } from '@silver-formily/vue'
 import { describe, expect, it, vi } from 'vitest'
 import { render } from 'vitest-browser-vue'
 import { userEvent } from 'vitest/browser'
+import { ensureDomElement, queryElement } from '../../../test-utils/dom'
 import { FormCollapse, FormItem, FormLayout, Input, Submit } from '../../index'
 import 'element-plus/theme-chalk/index.css'
 
@@ -77,9 +78,9 @@ describe('formCollapse', () => {
         </FormProvider>
       ))
 
-      await expect.element(container.querySelector('.formily-element-plus-form-collapse')).toBeInTheDocument()
-      await expect.element(container.querySelector('.el-collapse')).toBeInTheDocument()
-      await expect.element(container.querySelector('.el-collapse-item')).toBeInTheDocument()
+      await expect.element(queryElement(container, '.formily-element-plus-form-collapse')).toBeInTheDocument()
+      await expect.element(queryElement(container, '.el-collapse')).toBeInTheDocument()
+      await expect.element(queryElement(container, '.el-collapse-item')).toBeInTheDocument()
     })
 
     it('应该支持设置默认展开项', async () => {
@@ -151,7 +152,7 @@ describe('formCollapse', () => {
         </FormProvider>
       ))
 
-      const activePanel = container.querySelector('.el-collapse-item.is-active')
+      const activePanel = ensureDomElement(container.querySelector('.el-collapse-item.is-active'), '.el-collapse-item.is-active')
       await expect.element(activePanel).toBeInTheDocument()
       await expect.element(activePanel).toHaveTextContent('A1')
     })
@@ -226,7 +227,7 @@ describe('formCollapse', () => {
         </FormProvider>
       ))
 
-      const activePanel = container.querySelector('.el-collapse-item.is-active')
+      const activePanel = ensureDomElement(container.querySelector('.el-collapse-item.is-active'), '.el-collapse-item.is-active')
       await expect.element(activePanel).toBeInTheDocument()
       await expect.element(activePanel).toHaveTextContent('A2')
     })
@@ -296,8 +297,8 @@ describe('formCollapse', () => {
         </FormProvider>
       ))
       await getByText('提交').click()
-      await expect.element(container.querySelector('.formily-element-plus-form-collapse-errors-badge')).toBeInTheDocument()
-      await expect.element(container.querySelector('.el-badge__content')).toHaveTextContent('1')
+      await expect.element(queryElement(container, '.formily-element-plus-form-collapse-errors-badge')).toBeInTheDocument()
+      await expect.element(queryElement(container, '.el-badge__content')).toHaveTextContent('1')
     })
   })
 
@@ -396,8 +397,8 @@ describe('formCollapse', () => {
         </FormProvider>
       ))
 
-      await expect.element(container.querySelector('.el-collapse-item__header')).toBeInTheDocument()
-      await expect.element(container.querySelector('.el-collapse-item__header')).toHaveTextContent('自定义标题')
+      await expect.element(queryElement(container, '.el-collapse-item__header')).toBeInTheDocument()
+      await expect.element(queryElement(container, '.el-collapse-item__header')).toHaveTextContent('自定义标题')
     })
 
     it('应该可以通过 x-content.title 函数自定义标题', async () => {
@@ -459,8 +460,8 @@ describe('formCollapse', () => {
         </FormProvider>
       ))
 
-      await expect.element(container.querySelector('.el-collapse-item__header')).toBeInTheDocument()
-      await expect.element(container.querySelector('.el-collapse-item__header')).toHaveTextContent('自定义标题 (0)')
+      await expect.element(queryElement(container, '.el-collapse-item__header')).toBeInTheDocument()
+      await expect.element(queryElement(container, '.el-collapse-item__header')).toHaveTextContent('自定义标题 (0)')
       expect(customTitle).toHaveBeenCalled()
     })
 
@@ -539,11 +540,11 @@ describe('formCollapse', () => {
       expect(customTitle).toHaveBeenCalledWith(1)
 
       // 验证错误徽标显示
-      await expect.element(container.querySelector('.formily-element-plus-form-collapse-errors-badge')).toBeInTheDocument()
-      await expect.element(container.querySelector('.el-badge__content')).toHaveTextContent('1')
+      await expect.element(queryElement(container, '.formily-element-plus-form-collapse-errors-badge')).toBeInTheDocument()
+      await expect.element(queryElement(container, '.el-badge__content')).toHaveTextContent('1')
 
       // 验证标题内容
-      await expect.element(container.querySelector('.el-collapse-item__header')).toHaveTextContent('自定义标题 (1)')
+      await expect.element(queryElement(container, '.el-collapse-item__header')).toHaveTextContent('自定义标题 (1)')
     })
   })
 
@@ -621,7 +622,7 @@ describe('formCollapse', () => {
       // 初始状态下，tab1 应该是展开的
       const activePanels = container.querySelectorAll('.el-collapse-item.is-active')
       expect(activePanels.length).toBe(1)
-      await expect.element(activePanels[0]).toHaveTextContent('A1')
+      await expect.element(ensureDomElement(activePanels[0], 'activePanels[0]')).toHaveTextContent('A1')
 
       // 模拟点击第二个面板
       const secondPanelHeader = container.querySelectorAll('.el-collapse-item__header')[1]
@@ -629,7 +630,7 @@ describe('formCollapse', () => {
       // 点击后，只有第二个面板展开，第一个面板关闭
       const newActivePanels = container.querySelectorAll('.el-collapse-item.is-active')
       expect(newActivePanels.length).toBe(1)
-      await expect.element(newActivePanels[0]).toHaveTextContent('A2')
+      await expect.element(ensureDomElement(newActivePanels[0], 'newActivePanels[0]')).toHaveTextContent('A2')
 
       // 验证 formCollapse 中的 activeKeys 也被正确更新
       expect(formCollapse.hasActiveKey('tab1')).toBe(false)
@@ -702,8 +703,8 @@ describe('formCollapse', () => {
       ))
 
       // 验证组件正常渲染
-      await expect.element(container.querySelector('.formily-element-plus-form-collapse')).toBeInTheDocument()
-      await expect.element(container.querySelector('.el-collapse')).toBeInTheDocument()
+      await expect.element(queryElement(container, '.formily-element-plus-form-collapse')).toBeInTheDocument()
+      await expect.element(queryElement(container, '.el-collapse')).toBeInTheDocument()
 
       // 默认情况下，所有面板都应该展开
       const activePanels = container.querySelectorAll('.el-collapse-item.is-active')
@@ -779,12 +780,12 @@ describe('formCollapse', () => {
       ))
 
       // 验证组件正常渲染
-      await expect.element(container.querySelector('.formily-element-plus-form-collapse')).toBeInTheDocument()
+      await expect.element(queryElement(container, '.formily-element-plus-form-collapse')).toBeInTheDocument()
 
       // 只有 tab2 应该被展开
       const activePanels = container.querySelectorAll('.el-collapse-item.is-active')
       expect(activePanels.length).toBe(1)
-      await expect.element(activePanels[0]).toHaveTextContent('A2')
+      await expect.element(ensureDomElement(activePanels[0], 'activePanels[0]')).toHaveTextContent('A2')
     })
 
     it('应该通过 visible 属性控制面板的显示和隐藏', async () => {

@@ -11,26 +11,37 @@ export type IFormDrawerProps = Partial<DrawerProps> & {
   okButtonProps?: ButtonProps
   loadingText?: string
   enterSubmit?: boolean
+  closeOnUrlChange?: boolean
 }
 // #endregion props
 
 // #region slots
-export interface FormDrawerSlotProps {
-  resolve: (type?: string) => void
-  reject: () => void
-  form: Form
+export interface FormDrawerResolve {
+  (type?: string): void
 }
 
-export interface FormDrawerSlots {
-  header?: (props: FormDrawerSlotProps) => VNode
-  default?: () => VNode
-  footer?: (props: FormDrawerSlotProps) => VNode
+interface FormDrawerBaseSlotProps<T extends object = any> {
+  resolve: FormDrawerResolve
+  reject: () => void
+  form: Form<T>
+}
+
+export type FormDrawerSlotProps<T extends object = any> = FormDrawerBaseSlotProps<T> & Record<string, any>
+
+export interface FormDrawerSlots<T extends object = any, _DynamicMiddlewareName extends string = never> {
+  header?: (props: FormDrawerSlotProps<T>) => VNode | VNode[]
+  default?: (props: FormDrawerSlotProps<T>) => VNode | VNode[]
+  footer?: (props: FormDrawerSlotProps<T>) => VNode | VNode[]
 }
 // #endregion slots
 
-export type FormDrawerSlotContent = SlotsType<FormDrawerSlots> | {
-  [key in keyof FormDrawerSlots]?: FormDrawerSlots[key]
-}
+export type FormDrawerDefaultSlot<T extends object = any, DynamicMiddlewareName extends string = never>
+  = FormDrawerSlots<T, DynamicMiddlewareName>['default']
+
+export type FormDrawerSlotContent<T extends object = any, DynamicMiddlewareName extends string = never>
+  = FormDrawerDefaultSlot<T, DynamicMiddlewareName> | SlotsType<FormDrawerSlots<T, DynamicMiddlewareName>> | {
+    [key in keyof FormDrawerSlots<T, DynamicMiddlewareName>]?: FormDrawerSlots<T, DynamicMiddlewareName>[key]
+  }
 
 // #region iformdrawer
 type ReservedFormDrawerMiddlewareName = 'open' | 'confirm' | 'cancel'

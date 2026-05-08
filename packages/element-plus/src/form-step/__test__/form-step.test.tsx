@@ -5,6 +5,7 @@ import { ElButton } from 'element-plus'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { render } from 'vitest-browser-vue'
 import { defineComponent } from 'vue'
+import { queryElement } from '../../../test-utils/dom'
 import { FormButtonGroup, FormItem, FormLayout, FormStep, Input, Submit } from '../../index'
 import 'element-plus/theme-chalk/index.css'
 
@@ -77,9 +78,9 @@ describe('formStep', () => {
         </FormProvider>
       ))
 
-      await expect.element(container.querySelector('.formily-element-plus-form-step')).toBeInTheDocument()
-      await expect.element(container.querySelector('.el-steps')).toBeInTheDocument()
-      await expect.element(container.querySelector('.el-step')).toBeInTheDocument()
+      await expect.element(queryElement(container, '.formily-element-plus-form-step')).toBeInTheDocument()
+      await expect.element(queryElement(container, '.el-steps')).toBeInTheDocument()
+      await expect.element(queryElement(container, '.el-step')).toBeInTheDocument()
       expect(container.querySelectorAll('.el-step').length).toBe(2)
     })
 
@@ -387,8 +388,8 @@ describe('formStep', () => {
         </FormProvider>
       ))
 
-      await expect.element(container.querySelector('.custom-title')).toBeInTheDocument()
-      await expect.element(container.querySelector('.custom-title')).toHaveTextContent('自定义标题')
+      await expect.element(queryElement(container, '.custom-title')).toBeInTheDocument()
+      await expect.element(queryElement(container, '.custom-title')).toHaveTextContent('自定义标题')
     })
 
     it('应该支持自定义 icon 插槽', async () => {
@@ -451,8 +452,8 @@ describe('formStep', () => {
         </FormProvider>
       ))
 
-      await expect.element(container.querySelector('.custom-icon')).toBeInTheDocument()
-      await expect.element(container.querySelector('.custom-icon')).toHaveTextContent('图标')
+      await expect.element(queryElement(container, '.custom-icon')).toBeInTheDocument()
+      await expect.element(queryElement(container, '.custom-icon')).toHaveTextContent('图标')
     })
 
     it('应该支持自定义 description 插槽', async () => {
@@ -515,8 +516,8 @@ describe('formStep', () => {
         </FormProvider>
       ))
 
-      await expect.element(container.querySelector('.custom-description')).toBeInTheDocument()
-      await expect.element(container.querySelector('.custom-description')).toHaveTextContent('自定义描述')
+      await expect.element(queryElement(container, '.custom-description')).toBeInTheDocument()
+      await expect.element(queryElement(container, '.custom-description')).toHaveTextContent('自定义描述')
     })
 
     it('应该支持字符串类型的插槽内容', async () => {

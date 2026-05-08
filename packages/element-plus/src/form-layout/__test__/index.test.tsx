@@ -6,6 +6,7 @@ import { describe, expect, it } from 'vitest'
 import { render } from 'vitest-browser-vue'
 import { page } from 'vitest/browser'
 import { defineComponent, ref } from 'vue'
+import { queryElement } from '../../../test-utils/dom'
 import FormLayout from '../index'
 import {
   calcBreakpointIndex,
@@ -48,10 +49,10 @@ describe('formLayout', () => {
       ))
 
       await expect
-        .element(container.querySelector('.formily-element-plus-form'))
+        .element(queryElement(container, '.formily-element-plus-form'))
         .toBeInTheDocument()
       await expect
-        .element(container.querySelector('[data-testid="content"]'))
+        .element(queryElement(container, '[data-testid="content"]'))
         .toBeInTheDocument()
     })
 

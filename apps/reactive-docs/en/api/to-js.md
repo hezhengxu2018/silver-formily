@@ -20,7 +20,7 @@ interface toJS<T> {
 api/to-js-en/basic
 :::
 
-#### Example Code
+### Example Code
 
 ```ts
 import { autorun, observable, toJS } from '@formily/reactive'

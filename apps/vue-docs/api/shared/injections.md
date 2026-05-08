@@ -11,11 +11,11 @@ outline: 2
 
 ## FormSymbol
 
-#### 描述
+### 描述
 
 Form 上下文，可以获取当前 Form 实例
 
-#### 签名
+### 签名
 
 ```ts
 import type { Form } from '@formily/core'
@@ -26,11 +26,11 @@ export const FormSymbol: InjectionKey<Ref<Form>> = Symbol('form')
 
 ## FieldSymbol
 
-#### 描述
+### 描述
 
 字段上下文，可以获取当前字段实例
 
-#### 签名
+### 签名
 
 ```ts
 import type { GeneralField } from '@formily/core'
@@ -41,13 +41,13 @@ export const FieldSymbol: InjectionKey<Ref<GeneralField>> = Symbol('field')
 
 ## SchemaMarkupSymbol
 
-#### 描述
+### 描述
 
 Schema 标签上下文，主要用于收集 JSX Markup 写法的 Schema 标签，然后转换成标准 JSON Schema
 
 完整的 Schema 协议、属性定义和联动规则请查看 [JSON Schema 重建文档站](https://json-schema.silver-formily.org/)。当前页只说明 `@silver-formily/vue` 暴露出来的注入点。
 
-#### 签名
+### 签名
 
 ```ts
 import type { Schema } from '@formily/json-schema'
@@ -59,7 +59,7 @@ export const SchemaMarkupSymbol: InjectionKey<Ref<Schema>>
 
 ## SchemaSymbol
 
-#### 描述
+### 描述
 
 字段 Schema 上下文，主要用于获取当前字段的 Schema 信息
 
@@ -76,11 +76,11 @@ export const SchemaSymbol: InjectionKey<Ref<Schema>> = Symbol('schema')
 
 ## SchemaExpressionScopeSymbol
 
-#### 描述
+### 描述
 
 Schema 表达式作用域上下文
 
-#### 签名
+### 签名
 
 ```ts
 import type { InjectionKey, Ref } from 'vue'
@@ -94,7 +94,7 @@ export const SchemaExpressionScopeSymbol: InjectionKey<
 
 ## SchemaOptionsSymbol
 
-#### 描述
+### 描述
 
 Schema 全局参数上下文，主要用于获取从 createSchemaField 传入的参数
 

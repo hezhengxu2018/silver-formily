@@ -1,7 +1,7 @@
 {
   "name": "@silver-formily/grid",
   "type": "module",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Grid package scaffold for silver-formily",
   "author": "hezhengxu",
   "license": "MIT",
@@ -15,12 +15,14 @@
     "url": "https://github.com/hezhengxu2018/silver-formily/issues"
   },
   "exports": {
-    ".": "./dist/index.mjs",
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "default": "./dist/index.mjs"
+    },
     "./package.json": "./package.json"
   },
-  "main": "./dist/index.mjs",
-  "module": "./dist/index.mjs",
-  "types": "./dist/index.d.mts",
+  "types": "./dist/index.d.ts",
   "publishConfig": {
     "access": "public"
   },
@@ -28,8 +30,8 @@
     "dist"
   ],
   "scripts": {
-    "build": "tsdown",
-    "dev": "tsdown --watch",
+    "build": "tsdown --tsconfig tsconfig.build.json",
+    "dev": "tsdown --watch --tsconfig tsconfig.build.json",
     "lint": "eslint .",
     "format": "eslint . --fix",
     "check-types": "vue-tsc --noEmit",
@@ -41,15 +43,16 @@
     "@formily/reactive": "^2"
   },
   "devDependencies": {
-    "@formily/reactive": "^2.3.7",
+    "@formily/reactive": "catalog:",
     "@silver-formily/typescript-config": "workspace:*",
-    "@vitest/browser-playwright": "^4.0.18",
-    "@vitest/coverage-istanbul": "^4.0.18",
-    "eslint": "^9.36.0",
-    "oxc-resolver": "^11.19.1",
-    "playwright": "^1.58.2",
-    "tsdown": "^0.18.1",
-    "typescript": "5.9.2",
-    "vitest": "^4.0.18"
+    "@vitest/browser-playwright": "catalog:",
+    "@vitest/coverage-istanbul": "catalog:",
+    "eslint": "catalog:",
+    "oxc-resolver": "catalog:",
+    "playwright": "catalog:",
+    "tsdown": "catalog:",
+    "typescript": "catalog:",
+    "vitest": "catalog:",
+    "vue-tsc": "catalog:"
   }
 }

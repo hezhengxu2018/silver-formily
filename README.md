@@ -2,7 +2,7 @@
 
 [English README](./README.en.md)
 
-Silver Formily 是一个基于 `pnpm workspace` 和 `Turborepo` 的 Vue 3 / Formily monorepo，聚合了运行时封装、Element Plus 组件封装、Grid 工具库、共享文档主题与多站点文档工程。
+Silver Formily 是一个基于 `pnpm workspace` 和 `Turborepo` 的 Vue 3 / Formily monorepo，聚合了运行时封装、Element Plus 与 Vant 组件封装、Grid 工具库、共享文档主题与多站点文档工程。
 
 ## 文档站点
 
@@ -10,6 +10,7 @@ Silver Formily 是一个基于 `pnpm workspace` 和 `Turborepo` 的 Vue 3 / Form
 - Vue: <https://vue.silver-formily.org>
 - Reactive Vue: <https://reactive-vue.silver-formily.org>
 - Element Plus: <https://element-plus.silver-formily.org>
+- Vant: <https://element-plus.silver-formily.org>
 - Grid: <https://grid.silver-formily.org>
 - 官方的 JSON Schema 文档重构: <https://json-schema.silver-formily.org>
 
@@ -24,7 +25,7 @@ Silver Formily 是一个基于 `pnpm workspace` 和 `Turborepo` 的 Vue 3 / Form
 | `@silver-formily/docs-toolkit`      | 内部共享的 VitePress 主题、插件与站点配置工具 |
 | `@silver-formily/typescript-config` | 内部 TypeScript 配置共享包                    |
 
-`apps/*` 下的 6 个文档应用均为私有 workspace，当前统一使用 VitePress 站点脚本（`vitepress dev/build/preview`）并通过 `@silver-formily/docs-toolkit` 复用主题配置。
+`apps/*` 下的 7 个文档应用均为私有 workspace，当前统一使用 VitePress 站点脚本（`vitepress dev/build/preview`）并通过 `@silver-formily/docs-toolkit` 复用主题配置。
 
 ## 仓库结构
 
@@ -35,12 +36,14 @@ Silver Formily 是一个基于 `pnpm workspace` 和 `Turborepo` 的 Vue 3 / Form
 |  |- vue-docs
 |  |- reactive-vue-docs
 |  |- element-plus-docs
+|  |- vant-docs
 |  |- grid-docs
 |  `- json-schema-docs
 |- packages/               # 可发布或内部复用包
 |  |- vue
 |  |- reactive-vue
 |  |- element-plus
+|  |- vant
 |  |- grid
 |  |- docs-toolkit
 |  `- typescript-config
@@ -61,8 +64,8 @@ pnpm install
 | `pnpm dev:all`          | `turbo run dev`，并行启动声明了 `dev` 的 workspace        |
 | `pnpm build`            | 先筛选声明了 `build` 的 workspace，再执行 Turbo 构建      |
 | `pnpm docs:build`       | 先筛选声明了 `docs:build` 的 workspace，再执行 Turbo 构建 |
-| `pnpm lint`             | `turbo run lint`                                          |
-| `pnpm format`           | `turbo run format`                                        |
+| `pnpm lint`             | 先检查仓库级文件，再执行 `turbo run lint`                 |
+| `pnpm format`           | 先格式化仓库级文件，再执行 `turbo run format`             |
 | `pnpm check-types`      | `turbo run check-types`                                   |
 | `pnpm test`             | 打开可搜索的 workspace 选择器，仅运行选中包的 `test`      |
 | `pnpm test:all`         | `turbo run test`，运行全部测试任务                        |
@@ -125,11 +128,11 @@ pnpm run build:changed
 ## 工程约定
 
 - 代码风格由 `@antfu/eslint-config` 驱动，统一采用 2 空格、单引号、无分号。
-- 根目录 `pnpm format` 会委托给 `turbo run format`；Husky `pre-commit` 当前执行 `pnpm turbo run format`。
+- 根目录 `pnpm format` 会先格式化仓库级文件，再委托给 `turbo run format`；Husky `pre-commit` 通过 `lint-staged` 仅格式化已暂存文件，并自动把 formatter 产生的改动重新加入本次提交。
 - `build` 任务在 Turbo 中声明了 `dist/**`、`.vitepress/dist/**`、`esm/**` 作为缓存输出。
-- `reactive-vue` 与 `grid` 主要使用 `tsdown` 构建；`vue` 与 `element-plus` 当前使用 Vite 库模式构建。
+- 目前 `packages/*` 中需要发布的库包统一使用 tsdown 构建；纯 TS 包与 Vue 组件库可按各自需求使用独立配置。
 - 文档站点统一基于 VitePress `2.0.0-alpha.16`，共享 `@silver-formily/docs-toolkit` 中的主题与插件配置。
-- 提交规范采用 Conventional Commits，可通过 `pnpm commit` 调用 `czg`。
+- 提交规范采用 Conventional Commits；Husky `commit-msg` 会执行 `commitlint` 校验，`pnpm commit` 可调用 `czg` 生成提交信息。
 
 ## CI 与发布
 

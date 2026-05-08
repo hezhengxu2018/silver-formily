@@ -9,6 +9,7 @@ import { observer } from '@silver-formily/reactive-vue'
 import { camelCase } from 'lodash-es'
 import { createApp, h, ref } from 'vue'
 import { getTransitionDuration, isVueOptions, loading } from '../__builtins__'
+import { onUrlChange } from '../shared/url-change-listener'
 import DialogContent from './dialog-content.vue'
 
 export function FormDialog<
@@ -16,7 +17,7 @@ export function FormDialog<
   const DynamicMiddlewareNames extends readonly string[] = [],
 >(
   title: IFormDialogProps | string,
-  content?: Component | FormDialogSlotContent,
+  content?: Component | FormDialogSlotContent<T, DynamicMiddlewareNames[number]>,
   dynamicMiddlewareNames?: DynamicMiddlewareNames,
 ): IFormDialog<T, DynamicMiddlewareNames[number]> {
   const env: {
@@ -25,6 +26,8 @@ export function FormDialog<
     promise?: Promise<any>
     instance?: any
     app?: App<Element>
+    stopUrlChangeListener?: () => void
+    settled?: boolean
     openMiddlewares: IMiddleware<IFormProps<T>>[]
     confirmMiddlewares: IMiddleware<Form<T>>[]
     cancelMiddlewares: IMiddleware<Form<T>>[]
@@ -35,6 +38,8 @@ export function FormDialog<
     promise: null,
     app: null,
     instance: null,
+    stopUrlChangeListener: undefined,
+    settled: false,
     openMiddlewares: [],
     confirmMiddlewares: [],
     cancelMiddlewares: [],
@@ -56,12 +61,18 @@ export function FormDialog<
 
   document.body.append(env.root)
 
-  const props = (isStr(title) ? ({ title }) : title) as IFormDialogProps
+  const rawProps = (isStr(title) ? { title } : title) as IFormDialogProps
+  const props = {
+    ...rawProps,
+    closeOnUrlChange: rawProps.closeOnUrlChange ?? true,
+  } as IFormDialogProps
 
   function render(visible: boolean, resolve?: (type?: string) => any, reject?: () => any) {
     const _content = isVueOptions(content)
       ? { default: () => h(content) }
-      : content
+      : isFn(content)
+        ? { default: content }
+        : content
     if (!env.instance) {
       const ComponentConstructor = observer({
         setup(_, { expose }) {
@@ -85,6 +96,8 @@ export function FormDialog<
   }
 
   function disposeDialog() {
+    env.stopUrlChangeListener?.()
+    env.stopUrlChangeListener = undefined
     const animationDuration = getTransitionDuration()
     setTimeout(() => {
       env.app?.unmount?.()
@@ -93,6 +106,20 @@ export function FormDialog<
       env.root?.remove()
       env.root = undefined
     }, animationDuration)
+  }
+
+  async function rejectDialog(reject?: () => any) {
+    if (env.settled)
+      return
+
+    env.settled = true
+    env.stopUrlChangeListener?.()
+    env.stopUrlChangeListener = undefined
+    await loading(props.loadingText, () =>
+      applyMiddleware(env.form, env.cancelMiddlewares))
+    render(false)
+    disposeDialog()
+    reject?.()
   }
 
   const formDialog = {
@@ -113,24 +140,30 @@ export function FormDialog<
       if (env.promise)
         return env.promise
 
+      env.settled = false
       env.promise = new Promise((res, rej) => {
         loading(props.loadingText, () => applyMiddleware(payload, env.openMiddlewares))
           .then((resPayload) => {
             env.form = env.form || createForm(resPayload as IFormProps<T>)
             render(true, (type: string) => {
               env.form.submit(async () => {
+                if (env.settled)
+                  return
+
+                env.settled = true
+                env.stopUrlChangeListener?.()
+                env.stopUrlChangeListener = undefined
                 await (isValid(type) ? applyMiddleware(env.form, env[`${type}Middlewares`]) : applyMiddleware(env.form, env.confirmMiddlewares))
                 res(toJS(env.form.values))
                 formDialog.close()
                 disposeDialog()
               }).catch(() => undefined)
-            }, async () => {
-              await loading(props.loadingText, () =>
-                applyMiddleware(env.form, env.cancelMiddlewares))
-              formDialog.close()
-              disposeDialog()
-              rej(new Error('cancel'))
-            })
+            }, () => rejectDialog(() => rej(new Error('cancel'))))
+            if (props.closeOnUrlChange) {
+              env.stopUrlChangeListener = onUrlChange(() => {
+                void rejectDialog(() => rej(new Error('cancel')))
+              })
+            }
           })
           .catch(/* istanbul ignore next -- @preserve */ error => rej(error))
       })

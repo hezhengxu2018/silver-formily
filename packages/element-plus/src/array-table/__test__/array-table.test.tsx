@@ -4,6 +4,7 @@ import { describe, expect, it, vi } from 'vitest'
 import { render } from 'vitest-browser-vue'
 import { userEvent } from 'vitest/browser'
 import { defineComponent } from 'vue'
+import { queryElement } from '../../../test-utils/dom'
 import { ArrayTable, Editable, FormItem, Input, Space } from '../../index'
 import 'element-plus/theme-chalk/index.css'
 
@@ -459,7 +460,7 @@ export const ArrayTableNoPaginationTest = defineComponent({
 describe('arrayTable', async () => {
   it('应该渲染', async () => {
     const screen = render(ArrayTableJSONSchemaTestFactory())
-    await expect.element(screen.container.querySelector('.formily-element-plus-array-table')).toBeInTheDocument()
+    await expect.element(queryElement(screen.container, '.formily-element-plus-array-table')).toBeInTheDocument()
   })
 
   it('应该支持添加条目功能', async () => {
@@ -468,7 +469,7 @@ describe('arrayTable', async () => {
     // 初始状态应该没有数据行
     const initialRows = screen.container.querySelectorAll('.el-table__row')
     expect(initialRows).toHaveLength(0)
-    const addItemButton = screen.container.querySelector('.formily-element-plus-array-base-addition')
+    const addItemButton = queryElement(screen.container, '.formily-element-plus-array-base-addition')
     await userEvent.click(addItemButton)
     const rows = screen.container.querySelectorAll('.el-table__row')
     expect(rows).toHaveLength(1)
@@ -529,7 +530,7 @@ describe('arrayTable', async () => {
     })
 
     // 点击下一页
-    const nextButton = screen.container.querySelector('.btn-next')
+    const nextButton = queryElement(screen.container, '.btn-next')
     await userEvent.click(nextButton)
 
     // 验证页面切换后仍有数据
@@ -540,9 +541,9 @@ describe('arrayTable', async () => {
 
     // 验证页面切换后仍有数据
     await vi.waitFor(async () => {
-      const pageSizeSelecter = screen.container.querySelector('.el-select')
+      const pageSizeSelecter = queryElement(screen.container, '.el-select')
       await userEvent.click(pageSizeSelecter)
-      const lastLabel = document.querySelector('.el-select-dropdown__item:last-child')
+      const lastLabel = queryElement(document, '.el-select-dropdown__item:last-child')
       await userEvent.click(lastLabel)
       const rows = screen.container.querySelectorAll('.el-table__row')
       expect(rows).toHaveLength(15)
@@ -575,14 +576,14 @@ describe('arrayTable', async () => {
       expect(rows).toHaveLength(15)
     })
 
-    const addItemButton = screen.container.querySelector('.formily-element-plus-array-base-addition')
+    const addItemButton = queryElement(screen.container, '.formily-element-plus-array-base-addition')
     await userEvent.click(addItemButton)
   })
 
   it('应该表格属性继承', async () => {
     const screen = render(ArrayTableMarkupSchemaTest)
-    await userEvent.click(screen.container.querySelector('.formily-element-plus-array-base-addition'))
-    await userEvent.click(screen.container.querySelector('.formily-element-plus-array-base-addition'))
+    await userEvent.click(queryElement(screen.container, '.formily-element-plus-array-base-addition'))
+    await userEvent.click(queryElement(screen.container, '.formily-element-plus-array-base-addition'))
 
     // 检查表格是否有条纹样式
     await vi.waitFor(() => {

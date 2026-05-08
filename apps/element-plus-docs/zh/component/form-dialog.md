@@ -42,9 +42,52 @@ form-dialog/template-slot
 
 :::
 
+## 泛型使用
+
+`FormDialog` 现在支持通过泛型声明表单值类型，以及动态中间件名称。最常见的用法有两种：
+
+1. 只声明表单值类型，让 `form.values`、`open({ values })` 和 `forConfirm` 拿到准确类型
+2. 同时声明动态中间件名称，让 `forSaveDraft` 这类方法获得类型提示，并配合 `resolve('saveDraft')` 触发对应逻辑
+
+```tsx
+type UserFormValues = {
+  name: string
+  age: number
+}
+
+FormDialog<UserFormValues>('编辑用户', ({ form }) => {
+  form.values.name
+  form.values.age
+  return <UserForm />
+})
+
+FormDialog<UserFormValues, ['save-draft']>(
+  '编辑用户',
+  {
+    footer: ({ resolve, reject, form }) => {
+      form.values.name
+      resolve('saveDraft')
+      resolve()
+      reject()
+      return []
+    },
+  },
+  ['save-draft'] as const,
+)
+  .forSaveDraft((form) => {
+    return form.values
+  })
+```
+
+::: tip 提示
+如果你传入了 `dynamicMiddlewareNames`，建议使用 `['save-draft'] as const` 这类只读字面量写法，这样 `forSaveDraft` 这类返回值方法才能被正确推导出来。
+:::
+
 ## 回车提交配置
 
 FormDialog 默认会在输入框激活时响应键盘回车并触发 `resolve`。若需要关闭该行为，可通过 `enterSubmit: false` 禁用监听。
+
+同时，FormDialog 现在会默认在浏览器地址发生变化时自动关闭当前弹窗，包括前进、后退以及应用内触发的 `pushState` / `replaceState`。如果你的场景希望路由切换后仍然保留弹窗，可以显式传入 `closeOnUrlChange: false`。
 
 :::demo
 
@@ -80,11 +123,11 @@ form-dialog/nested
 
 ```ts
 interface FormDialog {
-  (
+  <TValues extends object = any, DynamicMiddlewareNames extends readonly string[] = []>(
     title: IFormDialogProps | string,
-    content?: Component | FormDialogSlotContent,
-    dynamicMiddlewareNames?: string[]
-  ): IFormDialog
+    content?: Component | FormDialogSlotContent<TValues, DynamicMiddlewareNames[number]>,
+    dynamicMiddlewareNames?: DynamicMiddlewareNames
+  ): IFormDialog<TValues, DynamicMiddlewareNames[number]>
 }
 ```
 
@@ -100,6 +143,7 @@ interface FormDialog {
 | `okButtonProps`     | 确定按钮的props                          | `ButtonProps` | -         |
 | `loadingText`       | 加载中文字                               | `string`      | `loading` |
 | `enterSubmit`       | 是否允许在输入框回车时立即触发 `resolve` | `boolean`     | `true`    |
+| `closeOnUrlChange`  | 浏览器地址变化时是否自动关闭弹窗         | `boolean`     | `true`    |
 
 其余参数请参考参考 [https://cn.element-plus.org/zh-CN/component/dialog.html](https://cn.element-plus.org/zh-CN/component/dialog.html#attributes)
 
@@ -109,7 +153,7 @@ interface FormDialog {
 
 | 插槽名    | 说明                                                                                                         | 类型                  |
 | --------- | ------------------------------------------------------------------------------------------------------------ | --------------------- |
-| `default` | 表单弹窗组件的内容，支持组件，VNode和插槽的写法                                                              | -                     |
+| `default` | 表单弹窗组件的内容，支持组件，VNode 和作用域插槽写法；会注入 `form`、`resolve`、`reject`                     | `FormDialogSlotProps` |
 | `header`  | 头部插槽，可以通过作用域插槽调用resolve或reject来关闭，resovle可以接受`dynamicMiddlewareNames`中传入的字符串 | `FormDialogSlotProps` |
 | `footer`  | 底部插槽，可以通过作用域插槽调用resolve或reject来关闭，resovle可以接受`dynamicMiddlewareNames`中传入的字符串 | `FormDialogSlotProps` |
 
@@ -123,6 +167,12 @@ interface FormDialog {
 ::: tip 提示
 传入`dynamicMiddlewareNames`中的字符串会被转成Camel Case命名风格，比如`'save-draft'`会被转成`'saveDraft'`。
 :::
+
+::: tip 提示
+如果配合泛型使用，`dynamicMiddlewareNames` 传入的字面量会影响返回值上的类型提示：
+
+- 返回值上的 `forSaveDraft` / `forPublishNow`
+  :::
 
 ### IFormDialog 函数返回
 
@@ -146,14 +196,14 @@ interface FormDialog {
 
 ### 类型声明
 
-##### IFormDialogProps
+#### IFormDialogProps
 
 <<< @/../../packages/element-plus/src/form-dialog/types.ts#props
 
-##### FormDialogSlots
+#### FormDialogSlots
 
 <<< @/../../packages/element-plus/src/form-dialog/types.ts#slots
 
-##### IFormDialog
+#### IFormDialog
 
 <<< @/../../packages/element-plus/src/form-dialog/types.ts#iformdialog

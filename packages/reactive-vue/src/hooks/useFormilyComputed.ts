@@ -1,4 +1,5 @@
 import type { IReactionOptions } from '@formily/reactive'
+import type { ComputedRef } from 'vue'
 import { reaction } from '@formily/reactive'
 import { computed, onBeforeUnmount, shallowRef } from 'vue'
 
@@ -6,7 +7,7 @@ import { computed, onBeforeUnmount, shallowRef } from 'vue'
  * Bridges a Formily observable expression into a Vue computed ref.
  * The getter runs inside a Formily reaction so Vue stays reactive to Formily sources.
  */
-export function formilyComputed<T>(getter: () => T, options?: IReactionOptions<T>) {
+export function formilyComputed<T>(getter: () => T, options?: IReactionOptions<T>): ComputedRef<T> {
   const state = shallowRef<T>()
   const stop = reaction(
     () => getter(),

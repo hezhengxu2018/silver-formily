@@ -24,7 +24,7 @@ interface autorun {
 api/autorun-en/basic
 :::
 
-#### Example Code
+### Example Code
 
 ```ts
 import { autorun, observable } from '@formily/reactive'
@@ -64,7 +64,7 @@ Note: The default dependency is `[]`, that is, if the dependency is not passed, 
 api/autorun-en/memo
 :::
 
-#### Example Code
+### Example Code
 
 ```ts
 import { autorun, observable } from '@formily/reactive'
@@ -120,7 +120,7 @@ Note: The default dependency is `[{}]`, that is, if the dependency is not passed
 api/autorun-en/effect
 :::
 
-#### Example Code
+### Example Code
 
 ```ts
 import { autorun, observable } from '@formily/reactive'

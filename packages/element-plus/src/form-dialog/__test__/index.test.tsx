@@ -1,17 +1,38 @@
+import type { FormDialogSlotContent, FormDialogSlots } from '../types'
 import { createSchemaField } from '@silver-formily/vue'
 import { ElButton } from 'element-plus'
-import { afterEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, describe, expect, expectTypeOf, it, vi } from 'vitest'
 import { render } from 'vitest-browser-vue'
 import { userEvent } from 'vitest/browser'
+import { defineComponent } from 'vue'
 import { FormDialog, FormItem, Input } from '../../'
+import { queryElement } from '../../../test-utils/dom'
 import 'element-plus/theme-chalk/index.css'
 
 const { SchemaField, SchemaStringField } = createSchemaField({ components: { Input, FormItem } })
+
+const typedFormDialogSlots: FormDialogSlots<{ name: string }, 'save-draft'> = {
+  default: ({ form, resolve }) => {
+    expectTypeOf(form.values).toEqualTypeOf<{ name: string }>()
+    expectTypeOf(resolve).toEqualTypeOf<(type?: string) => void>()
+    return <div />
+  },
+  footer: ({ form }) => {
+    expectTypeOf(form.values.name).toEqualTypeOf<string>()
+    return <div />
+  },
+}
+
+const typedFormDialogContent: FormDialogSlotContent<{ name: string }, 'save-draft'> = typedFormDialogSlots
 
 describe('formDialog', () => {
   afterEach(() => {
     vi.clearAllMocks()
     document.body.innerHTML = ''
+  })
+
+  it('应该给插槽透传表单值类型', () => {
+    expect(typedFormDialogContent).toBeTruthy()
   })
 
   describe('基础功能', () => {
@@ -114,6 +135,95 @@ describe('formDialog', () => {
       await expect.element(getByText('输入框4')).toBeInTheDocument()
       await getByText('取消').click()
       expect(document.querySelector('.el-drawer__wrapper')).toBeNull()
+    })
+
+    it('应该默认在地址变化时自动关闭对话框', async () => {
+      const onCancel = vi.fn()
+      const dialogPromise = FormDialog('测试标题', () => (
+        <div data-testid="dialog-content">对话框内容</div>
+      ))
+        .forCancel((_form, next) => {
+          onCancel()
+          next()
+        })
+        .open()
+
+      await vi.waitFor(() => {
+        expect(document.querySelector('.el-dialog')).not.toBeNull()
+      }, { timeout: 2000 })
+
+      window.dispatchEvent(new PopStateEvent('popstate'))
+
+      await expect(dialogPromise).rejects.toThrow('cancel')
+      expect(onCancel).toHaveBeenCalledTimes(1)
+      await vi.waitFor(() => {
+        expect(document.querySelector('.el-dialog')).toBeNull()
+      }, { timeout: 2000 })
+    })
+
+    it('在 closeOnUrlChange 为 false 时不应因地址变化关闭对话框', async () => {
+      const dialog = FormDialog({
+        title: '测试标题',
+        closeOnUrlChange: false,
+      }, () => (
+        <div data-testid="dialog-content">对话框内容</div>
+      ))
+      dialog.open().catch(() => undefined)
+
+      await vi.waitFor(() => {
+        expect(document.querySelector('.el-dialog')).not.toBeNull()
+      }, { timeout: 2000 })
+
+      window.dispatchEvent(new PopStateEvent('popstate'))
+
+      await vi.waitFor(() => {
+        expect(document.querySelector('.el-dialog')).not.toBeNull()
+      }, { timeout: 2000 })
+
+      queryElement(document, '.el-dialog__headerbtn').dispatchEvent(new MouseEvent('click', { bubbles: true }))
+      await vi.waitFor(() => {
+        expect(document.querySelector('.el-dialog')).toBeNull()
+      }, { timeout: 2000 })
+    })
+
+    it('应该支持渲染 defineComponent 组件', async () => {
+      const DialogForm = defineComponent({
+        name: 'FormDialogSetupContent',
+        setup() {
+          return () => (
+            <SchemaField>
+              <SchemaStringField
+                name="name"
+                title="输入框-setup"
+                required
+                x-decorator="FormItem"
+                x-component="Input"
+              />
+            </SchemaField>
+          )
+        },
+      })
+
+      const TestComponent = () => {
+        const handleOpen = () => {
+          FormDialog('测试标题', DialogForm).open().catch(() => undefined)
+        }
+
+        return <ElButton onClick={handleOpen}>打开 setup 对话框</ElButton>
+      }
+
+      const { getByText } = render(() => <TestComponent />, {
+        global: {
+          stubs: {
+            Transition: false,
+          },
+        },
+      })
+
+      await getByText('打开 setup 对话框').click()
+      await expect.element(getByText('输入框-setup')).toBeInTheDocument()
+      await getByText('取消').click()
+      expect(document.querySelector('.el-dialog__wrapper')).toBeNull()
     })
   })
 
@@ -402,11 +512,11 @@ describe('formDialog', () => {
         },
       })
 
-      await expect.element(container.querySelector('.el-button')).toBeInTheDocument()
-      await userEvent.click(container.querySelector('.el-button'))
-      const input = document.querySelector('input')
+      await expect.element(queryElement(container, '.el-button')).toBeInTheDocument()
+      await userEvent.click(queryElement(container, '.el-button'))
+      const input = queryElement(document, 'input')
       await userEvent.type(input, 'test')
-      const confirmButton = document.querySelector('.el-button--primary')
+      const confirmButton = queryElement(document, '.el-button--primary')
       await userEvent.click(confirmButton)
       await expect.element(confirmButton).toHaveClass('is-loading')
       await vi.waitFor(() => {
@@ -605,11 +715,11 @@ describe('formDialog', () => {
         },
       })
 
-      await expect.element(container.querySelector('.el-button')).toBeInTheDocument()
-      await userEvent.click(container.querySelector('.el-button'))
-      const input = document.querySelector('input')
+      await expect.element(queryElement(container, '.el-button')).toBeInTheDocument()
+      await userEvent.click(queryElement(container, '.el-button'))
+      const input = queryElement(document, 'input')
       await userEvent.type(input, 'test')
-      const confirmButton = document.querySelector('.el-button--primary')
+      const confirmButton = queryElement(document, '.el-button--primary')
       expect(fn1).not.toHaveBeenCalled()
       await userEvent.click(confirmButton)
       await expect.element(confirmButton).toHaveClass('is-loading')
@@ -661,16 +771,16 @@ describe('formDialog', () => {
         },
       })
 
-      await expect.element(container.querySelector('.el-button')).toBeInTheDocument()
-      await userEvent.click(container.querySelector('.el-button'))
-      const confirmButton = document.querySelector('.el-button--primary')
+      await expect.element(queryElement(container, '.el-button')).toBeInTheDocument()
+      await userEvent.click(queryElement(container, '.el-button'))
+      const confirmButton = queryElement(document, '.el-button--primary')
       expect(fn1).not.toHaveBeenCalled()
       await userEvent.click(confirmButton)
-      await expect.element(document.querySelector('.el-form-item__content .is-error')).toBeInTheDocument()
+      await expect.element(queryElement(document, '.el-form-item__content .is-error')).toBeInTheDocument()
       await vi.waitFor(() => {
         expect(fn1).not.toHaveBeenCalled()
       })
-      const input = document.querySelector('input')
+      const input = queryElement(document, 'input')
       await userEvent.type(input, 'test')
       await userEvent.click(confirmButton)
       await vi.waitFor(() => {
@@ -713,16 +823,16 @@ describe('formDialog', () => {
       const initialBodyChildren = document.body.children.length
 
       // 打开dialog
-      await userEvent.click(container.querySelector('.el-button'))
+      await userEvent.click(queryElement(container, '.el-button'))
 
       // 验证dialog已打开，DOM元素增加
-      await expect.element(document.querySelector('.el-dialog')).toBeInTheDocument()
+      await expect.element(queryElement(document, '.el-dialog')).toBeInTheDocument()
       expect(document.body.children.length).toBeGreaterThan(initialBodyChildren)
 
       // 填写表单并提交
-      const input = document.querySelector('input')
+      const input = queryElement(document, 'input')
       await userEvent.type(input, 'test')
-      const confirmButton = document.querySelector('.el-button--primary')
+      const confirmButton = queryElement(document, '.el-button--primary')
       await userEvent.click(confirmButton)
 
       // 等待动画完成和DOM销毁
@@ -768,8 +878,8 @@ describe('formDialog', () => {
       // 记录初始DOM状态
       const initialBodyChildren = document.body.children.length
 
-      await userEvent.click(container.querySelector('.el-button'))
-      await expect.element(document.querySelector('.el-dialog')).toBeInTheDocument()
+      await userEvent.click(queryElement(container, '.el-button'))
+      await expect.element(queryElement(document, '.el-dialog')).toBeInTheDocument()
       expect(document.body.children.length).toBeGreaterThan(initialBodyChildren)
 
       const cancelButton = getByText('取消')
@@ -803,14 +913,14 @@ describe('formDialog', () => {
       const initialBodyChildren = document.body.children.length
 
       // 打开dialog
-      await userEvent.click(container.querySelector('.el-button'))
+      await userEvent.click(queryElement(container, '.el-button'))
 
       // 验证dialog已打开，DOM元素增加
-      await expect.element(document.querySelector('.el-dialog')).toBeInTheDocument()
+      await expect.element(queryElement(document, '.el-dialog')).toBeInTheDocument()
       expect(document.body.children.length).toBeGreaterThan(initialBodyChildren)
 
       // 点击关闭按钮（X按钮）
-      const closeButton = document.querySelector('.el-dialog__headerbtn')
+      const closeButton = queryElement(document, '.el-dialog__headerbtn')
       await userEvent.click(closeButton)
 
       // 等待动画完成和DOM销毁
@@ -848,8 +958,8 @@ describe('formDialog', () => {
       // 多次打开和关闭dialog
       for (let i = 0; i < 3; i++) {
         // 打开dialog
-        await userEvent.click(container.querySelector('.el-button'))
-        await expect.element(document.querySelector('.el-dialog')).toBeInTheDocument()
+        await userEvent.click(queryElement(container, '.el-button'))
+        await expect.element(queryElement(document, '.el-dialog')).toBeInTheDocument()
 
         // 关闭dialog
         const cancelButton = getByText('取消')
@@ -887,11 +997,11 @@ describe('formDialog', () => {
       })
 
       // 打开对话框
-      await userEvent.click(container.querySelector('.el-button'))
-      await expect.element(document.querySelector('.el-dialog')).toBeInTheDocument()
+      await userEvent.click(queryElement(container, '.el-button'))
+      await expect.element(queryElement(document, '.el-dialog')).toBeInTheDocument()
 
       // 点击关闭按钮（X按钮）触发 beforeClose
-      const closeButton = document.querySelector('.el-dialog__headerbtn')
+      const closeButton = queryElement(document, '.el-dialog__headerbtn')
       await userEvent.click(closeButton)
 
       // 验证 beforeClose 回调被调用

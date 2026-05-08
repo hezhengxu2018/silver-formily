@@ -50,7 +50,7 @@
 | $ref                 | Reads a predefined schema and merges it in place | String                                                                             | -                                                                        |
 | x-data               | Extra extension data                             | Object                                                                             | `data`                                                                   |
 
-### Notes
+## Notes
 
 - The `x-component` identifier must match a key from the component registry passed to [createSchemaField](https://vue.silver-formily.org/api/components/schema-field#signature)
 - The `x-decorator` identifier must match a key from the decorator registry passed to [createSchemaField](https://vue.silver-formily.org/api/components/schema-field#signature)

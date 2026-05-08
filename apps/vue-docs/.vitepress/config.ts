@@ -1,3 +1,4 @@
+import type { UserConfig } from 'vitepress'
 import path, { dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { transformerTwoslash } from '@shikijs/vitepress-twoslash'
@@ -12,6 +13,7 @@ const SITE_URL = 'https://vue.silver-formily.org'
 const currentDir = dirname(fileURLToPath(import.meta.url))
 const demoDir = path.resolve(currentDir, '../demos')
 const vueSource = `${path.resolve(currentDir, '../../../packages/vue/src')}/`
+type DocsPluginOption = NonNullable<NonNullable<UserConfig['vite']>['plugins']>[number]
 
 const footer = {
   message: 'Released under the MIT License.',
@@ -77,7 +79,7 @@ export default createDocsConfig({
   },
   vite: {
     plugins: [
-      vueJsx(),
+      vueJsx() as unknown as DocsPluginOption,
     ],
     optimizeDeps: {
       include: [

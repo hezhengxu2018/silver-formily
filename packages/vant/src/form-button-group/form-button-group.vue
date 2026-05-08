@@ -1,0 +1,59 @@
+<script setup lang="ts">
+import type { CSSProperties } from 'vue'
+import type { FormButtonGroupProps } from './types'
+import { ActionBar as VanActionBar } from 'vant'
+import { computed, provide } from 'vue'
+import { vantFormButtonGroupContextKey } from './context'
+import { b } from './utils'
+
+defineOptions({
+  name: 'FFormButtonGroup',
+  inheritAttrs: false,
+})
+
+const props = withDefaults(defineProps<FormButtonGroupProps>(), {
+  layout: 'vertical',
+  gap: 12,
+  inset: true,
+  safeAreaInsetBottom: false,
+})
+
+const isCompact = computed(() => props.layout === 'compact')
+const normalizedGap = computed(() => {
+  return typeof props.gap === 'number'
+    ? `${props.gap}px`
+    : props.gap
+})
+const innerClass = b('inner')
+
+const rootClass = computed(() => {
+  return [
+    b(),
+    b({
+      [props.layout]: true,
+      inset: props.inset,
+    }),
+  ]
+})
+
+const rootStyle = computed<CSSProperties>(() => {
+  return {
+    '--f-form-button-group-gap': normalizedGap.value,
+  }
+})
+
+provide(vantFormButtonGroupContextKey, computed(() => ({
+  layout: props.layout,
+})))
+</script>
+
+<template>
+  <div v-bind="$attrs" :class="rootClass" :style="rootStyle">
+    <VanActionBar v-if="isCompact" :safe-area-inset-bottom="props.safeAreaInsetBottom">
+      <slot />
+    </VanActionBar>
+    <div v-else :class="innerClass">
+      <slot />
+    </div>
+  </div>
+</template>

@@ -41,7 +41,7 @@ api/components/recursion-field-with-component
 | mapProperties        | Mapper run before rendering each property.                  | ^[Function]`(schema: Schema, name: SchemaKey) => Schema`               | —                  |
 | filterProperties     | Filter function; return `false` to skip a node.             | ^[Function]`(schema: Schema, name: SchemaKey) => boolean`              | —                  |
 
-#### FormPathPattern
+### FormPathPattern
 
 ```ts
 type FormPathPattern = string | number | Array<string | number> | RegExp

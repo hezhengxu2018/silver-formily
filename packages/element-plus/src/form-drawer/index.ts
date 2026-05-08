@@ -9,6 +9,7 @@ import { observer } from '@silver-formily/reactive-vue'
 import { camelCase } from 'lodash-es'
 import { createApp, h, ref } from 'vue'
 import { getTransitionDuration, isVueOptions, loading } from '../__builtins__'
+import { onUrlChange } from '../shared/url-change-listener'
 import DrawerContent from './drawer-content.vue'
 
 export function FormDrawer<
@@ -16,7 +17,7 @@ export function FormDrawer<
   const DynamicMiddlewareNames extends readonly string[] = [],
 >(
   title: IFormDrawerProps | string,
-  content?: Component | FormDrawerSlotContent,
+  content?: Component | FormDrawerSlotContent<T, DynamicMiddlewareNames[number]>,
   dynamicMiddlewareNames?: DynamicMiddlewareNames,
 ): IFormDrawer<T, DynamicMiddlewareNames[number]> {
   const env: {
@@ -25,6 +26,8 @@ export function FormDrawer<
     promise?: Promise<any>
     instance?: any
     app?: App<Element>
+    stopUrlChangeListener?: () => void
+    settled?: boolean
     openMiddlewares: IMiddleware<IFormProps<T>>[]
     confirmMiddlewares: IMiddleware<Form<T>>[]
     cancelMiddlewares: IMiddleware<Form<T>>[]
@@ -35,6 +38,8 @@ export function FormDrawer<
     promise: null,
     app: null,
     instance: null,
+    stopUrlChangeListener: undefined,
+    settled: false,
     openMiddlewares: [],
     confirmMiddlewares: [],
     cancelMiddlewares: [],
@@ -56,10 +61,18 @@ export function FormDrawer<
 
   document.body.append(env.root)
 
-  const props = (isStr(title) ? ({ title }) : title) as IFormDrawerProps
+  const rawProps = (isStr(title) ? { title } : title) as IFormDrawerProps
+  const props = {
+    ...rawProps,
+    closeOnUrlChange: rawProps.closeOnUrlChange ?? true,
+  } as IFormDrawerProps
 
   function render(visible: boolean, resolve?: (type?: string) => any, reject?: () => any) {
-    const _content = isVueOptions(content) ? { default: () => h(content) } : content
+    const _content = isVueOptions(content)
+      ? { default: () => h(content) }
+      : isFn(content)
+        ? { default: content }
+        : content
     if (!env.instance) {
       const ComponentConstructor = observer({
         setup(_, { expose }) {
@@ -83,6 +96,8 @@ export function FormDrawer<
   }
 
   function disposeDrawer() {
+    env.stopUrlChangeListener?.()
+    env.stopUrlChangeListener = undefined
     const animationDuration = getTransitionDuration()
     setTimeout(() => {
       env.app?.unmount?.()
@@ -91,6 +106,20 @@ export function FormDrawer<
       env.root?.remove()
       env.root = undefined
     }, animationDuration)
+  }
+
+  async function rejectDrawer(reject?: () => any) {
+    if (env.settled)
+      return
+
+    env.settled = true
+    env.stopUrlChangeListener?.()
+    env.stopUrlChangeListener = undefined
+    await loading(props.loadingText, () =>
+      applyMiddleware(env.form, env.cancelMiddlewares))
+    render(false)
+    disposeDrawer()
+    reject?.()
   }
 
   const formDrawer = {
@@ -111,24 +140,30 @@ export function FormDrawer<
       if (env.promise)
         return env.promise
 
+      env.settled = false
       env.promise = new Promise((res, rej) => {
         loading(props.loadingText, () => applyMiddleware(payload, env.openMiddlewares))
           .then((resPayload) => {
             env.form = env.form || createForm(resPayload as IFormProps<T>)
             render(true, (type: string) => {
               env.form.submit(async () => {
+                if (env.settled)
+                  return
+
+                env.settled = true
+                env.stopUrlChangeListener?.()
+                env.stopUrlChangeListener = undefined
                 await (isValid(type) ? applyMiddleware(env.form, env[`${type}Middlewares`]) : applyMiddleware(env.form, env.confirmMiddlewares))
                 res(toJS(env.form.values))
                 formDrawer.close()
                 disposeDrawer()
               }).catch(() => undefined)
-            }, async () => {
-              await loading(props.loadingText, () =>
-                applyMiddleware(env.form, env.cancelMiddlewares))
-              formDrawer.close()
-              disposeDrawer()
-              rej(new Error('cancel'))
-            })
+            }, () => rejectDrawer(() => rej(new Error('cancel'))))
+            if (props.closeOnUrlChange) {
+              env.stopUrlChangeListener = onUrlChange(() => {
+                void rejectDrawer(() => rej(new Error('cancel')))
+              })
+            }
           })
           .catch(/* istanbul ignore next -- @preserve */ error => rej(error))
       })

@@ -1,0 +1,213 @@
+import type { GeneralField } from '@formily/core'
+import type { Component, ComputedRef, Ref } from 'vue'
+import { isPlainObj, paramCase } from '@formily/shared'
+import { useField } from '@silver-formily/vue'
+import bem from 'easy-bem'
+import { omit } from 'es-toolkit/compat'
+import { computed, getCurrentInstance, ref } from 'vue'
+
+interface UseAttrsParams {
+  excludeListeners?: boolean
+  excludeKeys?: ComputedRef<string[]>
+}
+
+export interface TreeFieldNames {
+  text?: string
+  value?: string
+  children?: string
+}
+
+const DEFAULT_EXCLUDE_KEYS: string[] = []
+const LISTENER_PREFIX = /^on[A-Z]/
+const DEFAULT_TREE_FIELD_NAMES = {
+  text: 'text',
+  value: 'value',
+  children: 'children',
+} satisfies Required<TreeFieldNames>
+
+export function useAttrs(params: UseAttrsParams = {}): ComputedRef<Record<string, any>> {
+  const { excludeListeners = false, excludeKeys } = params
+  const allExcludeKeys = computed(() => {
+    return (excludeKeys?.value || []).concat(DEFAULT_EXCLUDE_KEYS)
+  })
+  const instance = getCurrentInstance()
+
+  if (!instance) {
+    return computed(() => ({}))
+  }
+
+  return computed(() => {
+    return Object.fromEntries(
+      Object.entries(instance.proxy?.$attrs ?? {}).filter(([key]) => {
+        return !allExcludeKeys.value.includes(key) && !(excludeListeners && LISTENER_PREFIX.test(key))
+      }),
+    )
+  })
+}
+
+export function useCleanAttrs(removeAttrsList: string[] = []): {
+  props: ComputedRef<Record<string, any>>
+} {
+  const attrs = useAttrs()
+  const props = computed(() => {
+    const DEFAULT_REMOVE_ATTRS = ['value', 'onChange', 'attrs', 'on', 'readOnly']
+    if (isPlainObj(attrs.value.attrs)) {
+      return omit({ ...attrs.value, ...attrs.value.attrs }, DEFAULT_REMOVE_ATTRS.concat(removeAttrsList))
+    }
+    return omit(attrs.value, DEFAULT_REMOVE_ATTRS.concat(removeAttrsList))
+  })
+  return {
+    props,
+  }
+}
+
+export function composeExport<T0 extends object, T1 extends object>(
+  s0: T0,
+  s1: T1,
+): T0 & T1 {
+  return Object.assign(s0, s1)
+}
+
+export function isVueOptions(options: any): options is Component {
+  return (
+    options
+    && typeof options !== 'function'
+    && (typeof options.template === 'string'
+      || typeof options.render === 'function'
+      || typeof options.setup === 'function'
+      || typeof options.__asyncLoader === 'function'
+      || typeof options.__name === 'string')
+  )
+}
+
+export function resolveTreeFieldNames(fieldNames?: TreeFieldNames): Required<TreeFieldNames> {
+  return {
+    ...DEFAULT_TREE_FIELD_NAMES,
+    ...fieldNames,
+  }
+}
+
+export function resolveSelectionPlaceholder(placeholder?: string) {
+  return placeholder || '请选择选项'
+}
+
+export function useHasExplicitVNodeProp() {
+  const instance = getCurrentInstance()
+
+  return (key: string) => {
+    const vnodeProps = instance?.vnode.props
+    if (!vnodeProps) {
+      return false
+    }
+
+    return key in vnodeProps || paramCase(key) in vnodeProps
+  }
+}
+
+interface UsePopupStateOptions {
+  disabled?: () => boolean
+  onBeforeOpen?: () => void
+  onRestore?: () => void
+  onVisibilityChange?: (value: boolean) => void
+}
+
+interface UsePopupTriggerStateOptions {
+  field?: Ref<GeneralField | undefined>
+  disabled?: () => boolean
+  readonly?: () => boolean
+}
+
+export function usePopupTriggerState(options: UsePopupTriggerStateOptions = {}) {
+  const localFieldRef = useField<GeneralField>()
+  const fieldRef = computed(() => options.field?.value ?? localFieldRef.value)
+
+  const isTriggerDisabled = computed(() => {
+    const field = fieldRef.value
+    if (field) {
+      return field.pattern === 'disabled' || field.pattern === 'readPretty'
+    }
+
+    return Boolean(options.disabled?.())
+  })
+
+  const isTriggerReadonly = computed(() => {
+    const field = fieldRef.value
+    if (field) {
+      return field.pattern === 'readOnly'
+    }
+
+    return Boolean(options.readonly?.())
+  })
+
+  return {
+    fieldRef,
+    isTriggerDisabled,
+    isTriggerReadonly,
+  }
+}
+
+export function usePopupState(options: UsePopupStateOptions = {}) {
+  const popupVisible = ref(false)
+
+  function restore() {
+    options.onRestore?.()
+  }
+
+  function setPopupVisible(value: boolean, restoreSelection = true) {
+    if (popupVisible.value === value) {
+      if (!value && restoreSelection) {
+        restore()
+      }
+
+      return
+    }
+
+    popupVisible.value = value
+    options.onVisibilityChange?.(value)
+
+    if (!value && restoreSelection) {
+      restore()
+    }
+  }
+
+  function open() {
+    if (options.disabled?.()) {
+      return
+    }
+
+    options.onBeforeOpen?.()
+    setPopupVisible(true, false)
+  }
+
+  function close(restoreSelection = true) {
+    setPopupVisible(false, restoreSelection)
+  }
+
+  function onPopupShowChange(value: boolean) {
+    if (value) {
+      setPopupVisible(true, false)
+      return
+    }
+
+    close()
+  }
+
+  return {
+    popupVisible,
+    setPopupVisible,
+    open,
+    close,
+    onPopupShowChange,
+  }
+}
+
+const stylePrefix = 'silver-formily-vant'
+
+export function createNamespace(name: string) {
+  const prefixCls = `${stylePrefix}-${name}`
+
+  return {
+    prefixCls,
+    b: bem(prefixCls),
+  }
+}

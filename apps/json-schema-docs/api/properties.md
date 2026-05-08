@@ -50,7 +50,7 @@
 | $ref                 | 从 Schema 预定义中读取 Schema 并合并至当前 Schema | String                                                                             | -                                                                        |
 | x-data               | 扩展属性                                          | Object                                                                             | data                                                                     |
 
-### 详细说明
+## 详细说明
 
 - x-component 的组件标识与[createSchemaField](https://vue.silver-formily.org/api/components/schema-field#签名)传入的组件集合的 Key 匹配
 - x-decorator 的组件标识与[createSchemaField](https://vue.silver-formily.org/api/components/schema-field#签名)传入的组件集合的 Key 匹配

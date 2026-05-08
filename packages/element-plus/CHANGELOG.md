@@ -1,5 +1,15 @@
 # 更新日志
 
+## 3.0.3
+
+### Patch Changes
+
+- 00e5df7: 升级Vite版本至8.x
+- d8d378f: FormDialog与FormDrawer支持泛型
+- 1df0665: 更新TS版本至6.x
+- 95bd57d: 完善对vueOptions的判断逻辑
+- bd66869: FormDialog和FormDrawer添加地址栏改变时关闭弹框的功能，并默认开启。
+
 ## 3.0.2
 
 ### Patch Changes

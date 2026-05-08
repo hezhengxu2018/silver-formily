@@ -1,0 +1,168 @@
+[
+  {
+    "text": "Overview 总览",
+    "items": [
+      {
+        "text": "Quick Start 快速开始",
+        "link": "/component/quick-start"
+      }
+    ]
+  },
+  {
+    "text": "Layout 布局组件",
+    "items": [
+      {
+        "text": "Form 表单",
+        "link": "/component/form"
+      },
+      {
+        "text": "FormItem 表单项",
+        "link": "/component/form-item"
+      },
+      {
+        "text": "Grid 宫格",
+        "link": "/component/grid"
+      },
+      {
+        "text": "FormButtonGroup 按钮布局",
+        "link": "/component/form-button-group"
+      },
+      {
+        "text": "Submit 提交按钮",
+        "link": "/component/submit"
+      },
+      {
+        "text": "Reset 重置按钮",
+        "link": "/component/reset"
+      }
+    ]
+  },
+  {
+    "text": "Input 输入组件",
+    "items": [
+      {
+        "text": "Input 输入框",
+        "link": "/component/input"
+      },
+      {
+        "text": "PasswordInput 密码框",
+        "link": "/component/password-input"
+      },
+      {
+        "text": "Checkbox 复选框",
+        "link": "/component/checkbox"
+      },
+      {
+        "text": "Radio 单选框",
+        "link": "/component/radio"
+      },
+      {
+        "text": "Switch 开关",
+        "link": "/component/switch"
+      },
+      {
+        "text": "Stepper 步进器",
+        "link": "/component/stepper"
+      },
+      {
+        "text": "Rate 评分",
+        "link": "/component/rate"
+      },
+      {
+        "text": "Slider 滑块",
+        "link": "/component/slider"
+      },
+      {
+        "text": "Signature 签名",
+        "link": "/component/signature"
+      },
+      {
+        "text": "Upload 上传",
+        "link": "/component/upload"
+      },
+      {
+        "text": "Cascader 级联选择",
+        "link": "/component/cascader"
+      },
+      {
+        "text": "TreeSelect 分类选择",
+        "link": "/component/tree-select"
+      },
+      {
+        "text": "Area 省市区选择",
+        "link": "/component/area"
+      },
+      {
+        "text": "AreaPanel 省市区面板",
+        "link": "/component/area-panel"
+      },
+      {
+        "text": "Picker 选择器",
+        "link": "/component/picker"
+      },
+      {
+        "text": "PickerPanel 选择器面板",
+        "link": "/component/picker-panel"
+      },
+      {
+        "text": "DatePicker 日期选择器",
+        "link": "/component/date-picker"
+      },
+      {
+        "text": "DatePickerPanel 日期面板",
+        "link": "/component/date-picker-panel"
+      },
+      {
+        "text": "TimePicker 时间选择器",
+        "link": "/component/time-picker"
+      },
+      {
+        "text": "TimePickerPanel 时间选择面板",
+        "link": "/component/time-picker-panel"
+      },
+      {
+        "text": "PickerGroup 分步选择器",
+        "link": "/component/picker-group"
+      },
+      {
+        "text": "PickerGroupPanel 分步选择面板",
+        "link": "/component/picker-group-panel"
+      },
+      {
+        "text": "Calendar 日期选择器",
+        "link": "/component/calendar"
+      }
+    ]
+  },
+  {
+    "text": "Scenario 场景组件",
+    "items": [
+      {
+        "text": "FormStep 分步表单",
+        "link": "/component/form-step"
+      },
+      {
+        "text": "FormPopup 表单弹层",
+        "link": "/component/form-popup"
+      }
+    ]
+  },
+  {
+    "text": "Read Pretty 阅读态组件",
+    "items": [
+      {
+        "text": "PreviewText 阅读态",
+        "link": "/component/preview-text"
+      }
+    ]
+  },
+  {
+    "text": "Utilities 工具函数",
+    "items": [
+      {
+        "text": "createPopup 轻量弹层工厂",
+        "link": "/component/create-popup"
+      }
+    ]
+  }
+]

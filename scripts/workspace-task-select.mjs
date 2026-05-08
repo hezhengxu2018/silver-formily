@@ -131,9 +131,7 @@ function getWorkspaceScriptArgs(selection, options, extraArgs) {
 }
 
 function formatSelectionLabel(selection) {
-  return selection?.type === 'workspace'
-    ? `${selection.workspace.path} (${selection.workspace.name})`
-    : '全部项目'
+  return `${selection.workspace.path} (${selection.workspace.name})`
 }
 
 function runTurbo(selection, options, extraTurboArgs) {
@@ -229,17 +227,8 @@ function getChoiceScore(query, choice) {
   return score
 }
 
-function createPromptChoices(workspaces, options) {
-  const { allChoiceDescription, commandName, task } = options
-
+function createPromptChoices(workspaces) {
   return [
-    {
-      description: allChoiceDescription,
-      rank: 0,
-      searchText: normalizeSearchText(`all 全部项目 所有 workspace turbo run ${task} ${commandName}`),
-      title: '全部项目',
-      value: { type: 'all' },
-    },
     ...workspaces.map((workspace, index) => ({
       description: `${workspace.name} · ${workspace.command}`,
       rank: index + 1,

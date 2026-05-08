@@ -86,7 +86,7 @@ describe('submit', () => {
       // 模拟长时间运行的提交
       const onSubmit = vi.fn().mockImplementation(() => {
         return new Promise((resolve) => {
-          setTimeout(() => resolve('success'), 1000)
+          setTimeout(resolve, 1000, 'success')
         })
       })
 

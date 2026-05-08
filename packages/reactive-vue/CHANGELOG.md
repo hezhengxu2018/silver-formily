@@ -1,5 +1,12 @@
 # 更新日志
 
+## 1.1.1
+
+### Patch Changes
+
+- 00e5df7: 升级Vite版本至8.x
+- 1df0665: 更新TS版本至6.x
+
 ## 1.1.0
 
 ### Minor Changes

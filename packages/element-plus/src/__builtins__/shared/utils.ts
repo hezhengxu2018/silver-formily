@@ -24,8 +24,12 @@ export function useCleanAttrs(removeAttrsList: string[] = []): {
 export function isVueOptions(options: any): options is Component {
   return (
     options
+    && typeof options !== 'function'
     && (typeof options.template === 'string'
-      || typeof options.render === 'function')
+      || typeof options.render === 'function'
+      || typeof options.setup === 'function'
+      || typeof options.__asyncLoader === 'function'
+      || typeof options.__name === 'string')
   )
 }
 

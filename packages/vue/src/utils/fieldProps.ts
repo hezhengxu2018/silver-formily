@@ -22,6 +22,7 @@ export const fieldProps = {
   disabled: createBooleanProp(),
   readOnly: createBooleanProp(),
   readPretty: createBooleanProp(),
+  loading: createBooleanProp(),
   dataSource: createProp<IFieldProps['dataSource']>(),
   validatePattern: createProp<IFieldProps['validatePattern']>(),
   validateDisplay: createProp<IFieldProps['validateDisplay']>(),

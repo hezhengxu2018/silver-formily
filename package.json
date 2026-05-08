@@ -2,9 +2,9 @@
   "name": "silver-formily",
   "type": "module",
   "private": true,
-  "packageManager": "pnpm@9.0.0",
+  "packageManager": "pnpm@10.33.0",
   "engines": {
-    "node": ">=18"
+    "node": ">=24"
   },
   "scripts": {
     "build": "turbo run build",
@@ -12,8 +12,10 @@
     "build:changed": "node scripts/build-changed.mjs",
     "dev": "node scripts/dev-select.mjs",
     "dev:all": "turbo run dev",
-    "lint": "turbo run lint",
-    "format": "turbo run format",
+    "lint": "pnpm run lint:root && turbo run lint",
+    "lint:root": "eslint . --ignore-pattern 'apps/**' --ignore-pattern 'packages/**'",
+    "format": "pnpm run format:root && turbo run format",
+    "format:root": "eslint . --fix --ignore-pattern 'apps/**' --ignore-pattern 'packages/**'",
     "test": "node scripts/test-select.mjs",
     "test:all": "turbo run test",
     "commit": "czg",
@@ -24,28 +26,29 @@
     "prepare": "husky"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^4.19.0",
-    "@changesets/cli": "^2.29.8",
-    "@commitlint/cli": "^19.8.1",
-    "@commitlint/config-conventional": "^19.8.1",
-    "@eslint/js": "^9.36.0",
-    "@eslint/markdown": "^6.6.0",
-    "@types/node": "^24.0.0",
-    "consola": "^3.4.2",
-    "cross-spawn": "^7.0.6",
-    "cz-git": "^1.12.0",
-    "czg": "^1.12.0",
-    "eslint": "^9.36.0",
-    "eslint-plugin-unicorn": "^59.0.1",
-    "eslint-plugin-vue": "^10.5.0",
-    "husky": "^9.1.7",
-    "oxc-resolver": "^11.19.1",
-    "prettier": "^3.7.4",
-    "prompts": "^2.4.2",
-    "tsdown": "^0.18.1",
-    "turbo": "^2.8.5",
-    "typescript": "5.9.2",
-    "vitest": "^4.0.18",
-    "vue-tsc": "^3.1.2"
+    "@antfu/eslint-config": "catalog:",
+    "@changesets/cli": "catalog:",
+    "@commitlint/cli": "catalog:",
+    "@commitlint/config-conventional": "catalog:",
+    "@eslint/js": "catalog:",
+    "@eslint/markdown": "catalog:",
+    "@types/node": "catalog:",
+    "consola": "catalog:",
+    "cross-spawn": "catalog:",
+    "cz-git": "catalog:",
+    "czg": "catalog:",
+    "eslint": "catalog:",
+    "eslint-plugin-unicorn": "catalog:",
+    "eslint-plugin-vue": "catalog:",
+    "husky": "catalog:",
+    "lint-staged": "catalog:",
+    "oxc-resolver": "catalog:",
+    "prettier": "catalog:",
+    "prompts": "catalog:",
+    "turbo": "catalog:",
+    "typescript": "catalog:"
+  },
+  "lint-staged": {
+    "*.{js,cjs,mjs,ts,tsx,jsx,vue,md,json,jsonc,yml,yaml,html,css,scss}": "eslint --fix"
   }
 }
