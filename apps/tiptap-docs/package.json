@@ -1,0 +1,46 @@
+{
+  "name": "tiptap-docs",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "pnpm run docs:deps && vitepress dev .",
+    "docs:deps": "node ../../scripts/docs-deps.mjs",
+    "preview": "vitepress preview .",
+    "lint": "eslint .",
+    "format": "eslint . --fix",
+    "check-types": "vue-tsc --noEmit",
+    "docs:build": "pnpm run docs:deps && vitepress build ."
+  },
+  "silverFormily": {
+    "docs": {
+      "buildDependencies": [
+        "@silver-formily/vue"
+      ]
+    },
+    "tasks": {
+      "dev": {
+        "filterMode": "workspace-only"
+      }
+    }
+  },
+  "dependencies": {
+    "@formily/core": "catalog:",
+    "@formily/json-schema": "catalog:",
+    "@formily/reactive": "catalog:",
+    "@formily/shared": "catalog:",
+    "@silver-formily/docs-toolkit": "workspace:*",
+    "@silver-formily/tiptap": "workspace:*",
+    "@silver-formily/vue": "workspace:*",
+    "@tiptap/core": "catalog:",
+    "@tiptap/html": "catalog:",
+    "@tiptap/starter-kit": "catalog:",
+    "@tiptap/vue-3": "catalog:",
+    "vue": "catalog:"
+  },
+  "devDependencies": {
+    "@silver-formily/typescript-config": "workspace:*",
+    "typescript": "catalog:",
+    "vitepress": "catalog:",
+    "vue-tsc": "catalog:"
+  }
+}

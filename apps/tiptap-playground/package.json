@@ -1,0 +1,30 @@
+{
+  "name": "tiptap-playground",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "vite",
+    "build": "vue-tsc -b && vite build",
+    "preview": "vite preview",
+    "lint": "eslint .",
+    "format": "eslint . --fix",
+    "check-types": "vue-tsc --noEmit"
+  },
+  "dependencies": {
+    "@formily/core": "catalog:",
+    "@silver-formily/tiptap": "workspace:*",
+    "@silver-formily/vue": "workspace:*",
+    "@tiptap/core": "catalog:",
+    "@tiptap/starter-kit": "catalog:",
+    "vue": "catalog:"
+  },
+  "devDependencies": {
+    "@silver-formily/typescript-config": "workspace:*",
+    "@types/node": "catalog:",
+    "@vitejs/plugin-vue": "catalog:",
+    "eslint": "catalog:",
+    "typescript": "catalog:",
+    "vite": "catalog:",
+    "vue-tsc": "catalog:"
+  }
+}

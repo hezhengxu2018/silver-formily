@@ -1,0 +1,72 @@
+{
+  "name": "@silver-formily/tiptap",
+  "type": "module",
+  "version": "0.1.0",
+  "description": "基于 Tiptap 的 Silver Formily 富文本封装",
+  "author": "hezhengxu",
+  "license": "MIT",
+  "homepage": "https://github.com/hezhengxu2018/silver-formily",
+  "repository": {
+    "type": "github",
+    "url": "https://github.com/hezhengxu2018/silver-formily",
+    "directory": "packages/tiptap"
+  },
+  "bugs": {
+    "url": "https://github.com/hezhengxu2018/silver-formily/issues"
+  },
+  "sideEffects": [
+    "**/*.css",
+    "**/*.scss"
+  ],
+  "exports": {
+    ".": {
+      "types": "./esm/index.d.ts",
+      "import": "./esm/index.mjs",
+      "default": "./esm/index.mjs"
+    },
+    "./*": {
+      "types": "./esm/*.d.ts",
+      "import": "./esm/*.mjs",
+      "default": "./esm/*.mjs"
+    },
+    "./package.json": "./package.json"
+  },
+  "main": "./esm/index.mjs",
+  "types": "./esm/index.d.ts",
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "esm"
+  ],
+  "scripts": {
+    "build": "tsdown --tsconfig tsconfig.build.json",
+    "lint": "eslint .",
+    "format": "eslint . --fix",
+    "check-types": "vue-tsc --noEmit --project tsconfig.json",
+    "prepublishOnly": "pnpm run build"
+  },
+  "peerDependencies": {
+    "@silver-formily/vue": "^2.3.1",
+    "vue": "^3.3.0"
+  },
+  "dependencies": {
+    "@tiptap/core": "catalog:",
+    "@tiptap/html": "catalog:",
+    "@tiptap/pm": "catalog:",
+    "@tiptap/starter-kit": "catalog:",
+    "@tiptap/vue-3": "catalog:"
+  },
+  "devDependencies": {
+    "@silver-formily/typescript-config": "workspace:*",
+    "@silver-formily/vue": "workspace:*",
+    "@types/node": "catalog:",
+    "@vitejs/plugin-vue": "catalog:",
+    "eslint": "catalog:",
+    "tsdown": "catalog:",
+    "typescript": "catalog:",
+    "unplugin-vue": "catalog:",
+    "vue": "catalog:",
+    "vue-tsc": "catalog:"
+  }
+}

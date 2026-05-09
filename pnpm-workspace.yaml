@@ -27,6 +27,11 @@ catalog:
   '@formily/shared': ^2.3.7
   '@formily/validator': ^2.3.7
   '@shikijs/vitepress-twoslash': ^4.0.2
+  '@tiptap/core': ^3.22.5
+  '@tiptap/html': ^3.22.5
+  '@tiptap/pm': ^3.22.5
+  '@tiptap/starter-kit': ^3.22.5
+  '@tiptap/vue-3': ^3.22.5
   '@tsdown/css': ^0.21.8
   '@types/lodash-es': ^4.17.12
   '@types/markdown-it-container': ^4.0.0

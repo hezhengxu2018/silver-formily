@@ -1,0 +1,21 @@
+:root:root {
+  --vp-c-brand: #7c3aed;
+  --vp-c-brand-1: #7c3aed;
+  --vp-c-brand-2: #6d28d9;
+  --vp-c-brand-3: #5b21b6;
+  --tiptap-docs-brand-rgb: 124, 58, 237;
+  --vp-c-brand-soft: rgba(var(--tiptap-docs-brand-rgb), 0.08);
+}
+
+.VPHomeHero .name {
+  letter-spacing: -0.03em;
+}
+
+.VPFeature {
+  border-image: linear-gradient(135deg, rgba(249, 115, 22, 0.18), rgba(124, 58, 237, 0.18)) 1;
+}
+
+.vitepress-demo-preview__actions,
+.vitepress-ep-demo-plugin__header {
+  backdrop-filter: saturate(140%) blur(8px);
+}

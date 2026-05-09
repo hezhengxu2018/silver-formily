@@ -1,0 +1,22 @@
+{
+  "extends": "@silver-formily/typescript-config/base.json",
+  "compilerOptions": {
+    "target": "ES2022",
+    "jsx": "preserve",
+    "lib": ["DOM", "ES2022"],
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "paths": {
+      "@silver-formily/tiptap": ["../../packages/tiptap/src"],
+      "@silver-formily/tiptap/*": ["../../packages/tiptap/src/*"]
+    },
+    "resolveJsonModule": true,
+    "types": ["node"]
+  },
+  "include": [
+    ".vitepress/**/*.ts",
+    "zh/**/*.md",
+    "zh/**/*.vue",
+    "env.d.ts"
+  ]
+}
