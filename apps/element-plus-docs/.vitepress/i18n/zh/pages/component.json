@@ -97,6 +97,10 @@
         "text": "Select 下拉选择框"
       },
       {
+        "link": "/component/picker-select",
+        "text": "PickerSelect 弹窗选择框"
+      },
+      {
         "link": "/component/tree-select",
         "text": "TreeSelect 树形选择框"
       },
