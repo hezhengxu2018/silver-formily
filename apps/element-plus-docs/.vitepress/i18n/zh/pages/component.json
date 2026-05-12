@@ -98,7 +98,8 @@
       },
       {
         "link": "/component/picker-select",
-        "text": "PickerSelect 弹窗选择框"
+        "text": "PickerSelect 弹窗选择框",
+        "promotion": "4.0.1"
       },
       {
         "link": "/component/tree-select",
