@@ -44,4 +44,4 @@ mobileDemo: grid/index.vue
 
 ### 参考
 
-组件封装方式延续了 `@silver-formily/element-plus` 的 `FormGrid` 使用习惯，但实现已经切换为更适合移动端的本地轻量版本。
+组件封装方式延续了 `@sliver/formily-element-plus` 的 `FormGrid` 使用习惯，但实现已经切换为更适合移动端的本地轻量版本。

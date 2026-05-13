@@ -35,6 +35,7 @@
     "@silver-formily/grid": "workspace:*",
     "@silver-formily/reactive-vue": "workspace:*",
     "@silver-formily/vue": "workspace:*",
+    "@sliver/formily-element-plus": "workspace:*",
     "@types/lodash-es": "catalog:",
     "element-plus": "catalog:",
     "lodash-es": "catalog:",

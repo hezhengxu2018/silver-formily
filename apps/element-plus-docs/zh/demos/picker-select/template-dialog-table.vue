@@ -1,7 +1,7 @@
 <script setup lang="tsx">
 import { createForm } from '@formily/core'
-import { FormDialog, FormItem, PickerSelect, SelectTable, Submit } from '@silver-formily/element-plus'
 import { Field, FormProvider } from '@silver-formily/vue'
+import { FormDialog, FormItem, PickerSelect, SelectTable, Submit } from '@sliver/formily-element-plus'
 
 const form = createForm()
 

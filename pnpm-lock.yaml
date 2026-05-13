@@ -296,6 +296,9 @@ importers:
       '@silver-formily/vue':
         specifier: workspace:*
         version: link:../../packages/vue
+      '@sliver/formily-element-plus':
+        specifier: workspace:*
+        version: link:../../packages/element-plus
       '@types/lodash-es':
         specifier: 'catalog:'
         version: 4.17.12
@@ -472,12 +475,12 @@ importers:
       '@silver-formily/reactive-vue':
         specifier: workspace:*
         version: link:../../packages/reactive-vue
-      '@sliver/formily-vant':
-        specifier: workspace:*
-        version: link:../../packages/vant
       '@silver-formily/vue':
         specifier: workspace:*
         version: link:../../packages/vue
+      '@sliver/formily-vant':
+        specifier: workspace:*
+        version: link:../../packages/vant
       '@vant/area-data':
         specifier: 'catalog:'
         version: 2.1.0

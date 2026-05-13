@@ -10,7 +10,7 @@
 
 ## 安装
 
-出于灵活组合的考虑，`@silver-formily/element-plus` 的所有依赖都采用了 peerDependencies，不再有项目中的 `element-plus` 与 `@formily/element-plus` 使用的 `element-plus` 的版本不一致导致的渲染效果不一致的问题。
+出于灵活组合的考虑，`@sliver/formily-element-plus` 的所有依赖都采用了 peerDependencies，不再有项目中的 `element-plus` 与 `@formily/element-plus` 使用的 `element-plus` 的版本不一致导致的渲染效果不一致的问题。
 
 其中 `element-plus` 目前要求 `>= 2.11.0`。这是因为组件库根入口会聚合导出所有组件，而部分封装组件依赖了较新的 Element Plus 组件能力；如果宿主项目安装的 `element-plus` 版本过低，导入根入口时就可能直接报错。
 
