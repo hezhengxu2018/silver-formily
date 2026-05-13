@@ -1,5 +1,21 @@
 # 更新日志
 
+## 4.0.1
+
+### Patch Changes
+
+- 9c47974: 修复4.0.0版本号被占用的问题。
+
+## 4.0.0
+
+### Major Changes
+
+- d1c6b56: 更新element-plus最低版本要求
+
+### Minor Changes
+
+- 02458dc: 新增PickerSelect组件
+
 ## 3.0.3
 
 ### Patch Changes
