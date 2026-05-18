@@ -70,5 +70,5 @@ catalog:
   vitest: ^4.1.4
   vitest-browser-vue: ^2.0.2
   vue: ^3.5.27
-  vue-draggable-plus: ^0.5.6
+  vue-draggable-plus: ^0.5.0
   vue-tsc: ^3.2.6
