@@ -10,7 +10,7 @@ This document defines repository-wide expectations for anyone automating tasks (
 
 ## Required Tooling
 
-- Node ≥ 24 and `pnpm@10`.
+- Node ≥ 24 and `pnpm@11`.
 - Run `pnpm install` after pulling changes that touch `pnpm-lock.yaml` or `package.json`.
 - Husky runs `lint-staged` on commit so only staged files are formatted and re-staged automatically. The root `pnpm format` command first formats repository-level files, then delegates to `turbo run format`, so every package must expose a `format` script if it wants to participate in full-repo formatting.
 
