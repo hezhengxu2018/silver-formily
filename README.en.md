@@ -2,7 +2,7 @@
 
 English | [简体中文](./README.md)
 
-Silver Formily is a Vue 3 / Formily monorepo built with `pnpm workspace` and `Turborepo`. It combines runtime bindings, Element Plus and Vant integrations, a grid utility package, shared docs tooling, and multiple documentation sites in one workspace.
+Silver Formily is a Formily ecosystem rebuilt on top of Vite and Turborepo. It is currently focused on the Vue 3 ecosystem, with reworked Element Plus and Vant integrations. Most foundational packages, including Grid, have already been migrated. A few base libraries still depend on the upstream official wrappers, but those wrappers are effectively no longer maintained, so the remaining libraries will be migrated as well.
 
 ## Documentation Sites
 
@@ -12,7 +12,7 @@ Silver Formily is a Vue 3 / Formily monorepo built with `pnpm workspace` and `Tu
 - Element Plus: <https://element-plus.silver-formily.org>
 - Vant: <https://vant.silver-formily.org>
 - Grid: <https://grid.silver-formily.org>
-- Reworked JSON Schema docs: <https://json-schema.silver-formily.org>
+- Refactored official JSON Schema docs: <https://json-schema.silver-formily.org>
 
 ## Workspace Packages
 

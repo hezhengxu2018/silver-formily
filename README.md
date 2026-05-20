@@ -2,7 +2,7 @@
 
 [English README](./README.en.md)
 
-Silver Formily 是一个基于 `pnpm workspace` 和 `Turborepo` 的 Vue 3 / Formily monorepo，聚合了运行时封装、Element Plus 与 Vant 组件封装、Grid 工具库、共享文档主题与多站点文档工程。
+Silver Formily 是一个基于 `Vite` 和 `Turborepo` 另外封装的一套 Formily 生态，目前主要聚焦于Vue3的生态，重构了Element Plus 与 Vant 组件封装。迁移了包括Grid 在内的大部分基础库，目前仍有部分基础库使用的官方封装，由于官方的封装已经实质上停止更新了，之后会将所有的基础库迁移过来。
 
 ## 文档站点
 
@@ -10,7 +10,7 @@ Silver Formily 是一个基于 `pnpm workspace` 和 `Turborepo` 的 Vue 3 / Form
 - Vue: <https://vue.silver-formily.org>
 - Reactive Vue: <https://reactive-vue.silver-formily.org>
 - Element Plus: <https://element-plus.silver-formily.org>
-- Vant: <https://element-plus.silver-formily.org>
+- Vant: <https://vant.silver-formily.org>
 - Grid: <https://grid.silver-formily.org>
 - 官方的 JSON Schema 文档重构: <https://json-schema.silver-formily.org>
 
