@@ -4,7 +4,7 @@ import { createSchemaField, Field, FormProvider } from '@silver-formily/vue'
 import { ElTableColumn } from 'element-plus'
 import { describe, expect, it, vi } from 'vitest'
 import { render } from 'vitest-browser-vue'
-import { defineComponent, Fragment } from 'vue'
+import { defineComponent, Fragment, h } from 'vue'
 import SelectTable from '../index'
 import 'element-plus/theme-chalk/base.css'
 import 'element-plus/theme-chalk/el-table.css'
@@ -752,6 +752,60 @@ describe('单选框交互', async () => {
     await expect
       .element(screen.getByRole('row', { name: 'title-1' }).getByRole('radio'))
       .toBeChecked()
+  })
+
+  it('应该在单选模式下optionAsValue为true且空值时正常渲染', async () => {
+    const form = createForm()
+    const screen = render(
+      formilyWrapperFactory({
+        rowKey: 'key',
+        mode: 'single',
+        optionAsValue: true,
+        dataSource: [
+          { key: '1', name: 'title-1', description: 'description-1' },
+          { key: '2', name: 'title-2', description: 'description-2' },
+        ],
+      }),
+      {
+        props: {
+          form,
+        },
+      },
+    )
+
+    await expect.element(screen.getByText('title-1')).toBeInTheDocument()
+    await expect
+      .element(screen.getByRole('row', { name: 'title-1' }).getByRole('radio'))
+      .not
+      .toBeChecked()
+    expect(form.query('selectTable').get('value')).toEqual(undefined)
+  })
+
+  it('应该在单选初始化同步时不额外触发update:modelValue', async () => {
+    const onUpdateModelValue = vi.fn()
+
+    render(
+      defineComponent({
+        setup() {
+          return () => h(SelectTable, {
+            'rowKey': 'key',
+            'mode': 'single',
+            'modelValue': '1',
+            'dataSource': [
+              { key: '1', name: 'title-1', description: 'description-1' },
+              { key: '2', name: 'title-2', description: 'description-2' },
+            ],
+            'columns': [
+              { prop: 'name', label: 'Title' },
+              { prop: 'description', label: 'Description' },
+            ],
+            'onUpdate:modelValue': onUpdateModelValue,
+          })
+        },
+      }),
+    )
+
+    expect(onUpdateModelValue).not.toHaveBeenCalled()
   })
 
   it('应该点击行触发单选框选中事件', async () => {

@@ -38,34 +38,84 @@ const emit = defineEmits(['update:modelValue'])
 
 const elTableProps = useAttrs()
 const field = useField()
+const elTableRef = ref<TableInstance>()
+const radioSelectedKey = ref()
+
+function requireRowKey() {
+  if (!props.rowKey) {
+    throw new Error('rowKey is required')
+  }
+  return props.rowKey
+}
+
+function getRowValue(item?: Record<string, any> | null) {
+  if (!props.rowKey || !item) {
+    return undefined
+  }
+  return item[props.rowKey]
+}
+
+function getSingleSelectedKey(value: any) {
+  if (!isValid(value)) {
+    return null
+  }
+  return props.optionAsValue ? getRowValue(value) ?? null : value
+}
+
+function getMultipleSelectedKeys(value: any) {
+  if (!Array.isArray(value)) {
+    return []
+  }
+  return value
+    .map(item => props.optionAsValue ? getRowValue(item) : item)
+    .filter(isValid)
+}
+
+function syncRadioSelection(item?: Record<string, any> | null) {
+  radioSelectedKey.value = getRowValue(item) ?? null
+  elTableRef.value?.setCurrentRow(item)
+}
 
 function compatibleRadioValue(key: string) {
   return lt(version, '2.6.0') ? { label: key } : { value: key }
 }
 
-const elTableRef = ref<TableInstance>()
-const rowKey = props.rowKey
 function getInitialSelectedList() {
+  if (!isValid(props.modelValue)) {
+    return []
+  }
+
   if (props.mode === 'multiple') {
-    return props.modelValue?.map((item) => {
+    if (!Array.isArray(props.modelValue)) {
+      return []
+    }
+
+    return props.modelValue.map((item) => {
       if (!props.optionAsValue) {
+        if (!props.rowKey) {
+          return null
+        }
         return {
-          [rowKey]: item,
+          [props.rowKey]: item,
         }
       }
       return item
-    }) ?? []
+    }).filter(isValid)
   }
   else {
-    return props.optionAsValue ? [props.modelValue] : [{ [rowKey]: props.modelValue }]
+    if (props.optionAsValue) {
+      return [props.modelValue]
+    }
+    if (!props.rowKey) {
+      return []
+    }
+    return [{ [props.rowKey]: props.modelValue }]
   }
 }
 const initialSelectedList = getInitialSelectedList()
 const selectedFlatDataSource = ref(initialSelectedList)
 // 为了获取移除的项而缓存的当前页面的前一次选择。由于element-plus没有获取移除项的方法，需要通过这种方式移除field中移除的项
 let prevSelection = []
-
-const radioSelectedKey = ref()
 
 const currentSelectLength = computed(() => {
   if (props.mode === 'multiple') {
@@ -80,21 +130,21 @@ watch(
   () => props.dataSource,
   async () => {
     const selectedKeys = uniq(
-      selectedFlatDataSource.value.map(item => item[rowKey]),
+      selectedFlatDataSource.value.map(item => getRowValue(item)).filter(isValid),
     )
     await nextTick()
     for (const item of props.dataSource) {
-      if (selectedKeys.includes(item[rowKey])) {
+      const itemKey = getRowValue(item)
+      if (isValid(itemKey) && selectedKeys.includes(itemKey)) {
         if (props.mode === 'multiple') {
           elTableRef.value?.toggleRowSelection(item, true, props.ignoreSelectable)
         }
         else {
-          elTableRef.value?.setCurrentRow(item)
-          onRadioClick(item)
+          syncRadioSelection(item)
         }
       }
       await nextTick()
-      prevSelection = elTableRef.value?.getSelectionRows()
+      prevSelection = elTableRef.value?.getSelectionRows() ?? []
     }
   },
   { immediate: true },
@@ -107,27 +157,30 @@ watch(
       return
     }
     if (props.mode === 'single') {
-      radioSelectedKey.value = props.optionAsValue ? value[rowKey] : value
+      const selectedKey = getSingleSelectedKey(value)
+      radioSelectedKey.value = selectedKey
+      const selectedItem = props.dataSource.find(item => getRowValue(item) === selectedKey)
+      elTableRef.value?.setCurrentRow(selectedItem)
     }
     else {
       await nextTick()
       const currentDisplayDataKeys = elTableRef.value
         ?.getSelectionRows()
-        .map(item => item[rowKey])
-      const valueKeys = props.optionAsValue
-        ? value?.map(item => item[rowKey])
-        : value ?? []
+        .map(item => getRowValue(item))
+        .filter(isValid) ?? []
+      const valueKeys = getMultipleSelectedKeys(value)
       selectedFlatDataSource.value = selectedFlatDataSource.value.filter(
-        item => valueKeys.includes(item[rowKey]),
+        item => valueKeys.includes(getRowValue(item)),
       )
       if (isEqual(valueKeys, currentDisplayDataKeys)) {
         return
       }
       const diffItems = xor(valueKeys, currentDisplayDataKeys)
       for (const tableItem of props.dataSource) {
-        if (diffItems.includes(tableItem[rowKey])) {
-          const shouldSelect = valueKeys.includes(tableItem[rowKey])
-          elTableRef.value.toggleRowSelection(tableItem, shouldSelect, props.ignoreSelectable)
+        const itemKey = getRowValue(tableItem)
+        if (isValid(itemKey) && diffItems.includes(itemKey)) {
+          const shouldSelect = valueKeys.includes(itemKey)
+          elTableRef.value?.toggleRowSelection(tableItem, shouldSelect, props.ignoreSelectable)
         }
       }
     }
@@ -138,10 +191,7 @@ watch(
 )
 
 function onSelect(newSelection: Record<string, any>[]) {
-  /* istanbul ignore if -- @preserve */
-  if (!rowKey) {
-    throw new Error('rowKey is required')
-  }
+  const rowKey = requireRowKey()
 
   const removedItemList
     = prevSelection.length > newSelection.length
@@ -178,7 +228,8 @@ function onSelect(newSelection: Record<string, any>[]) {
 }
 
 function onRadioClick(item) {
-  radioSelectedKey.value = item[rowKey]
+  const rowKey = requireRowKey()
+  syncRadioSelection(item)
   if (props.optionAsValue) {
     emit('update:modelValue', item)
   }
@@ -215,7 +266,7 @@ function onClearSelectionClick() {
     selectedFlatDataSource.value = []
   }
   else {
-    radioSelectedKey.value = null
+    syncRadioSelection(null)
     emit('update:modelValue', null)
   }
 }

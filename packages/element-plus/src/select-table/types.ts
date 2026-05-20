@@ -8,7 +8,7 @@ export interface ISelectTableProps {
   optionAsValue?: boolean
   valueType?: 'all' | 'parent' | 'child' | 'path'
   loading?: boolean
-  rowKey?: string
+  rowKey: string
   clickRowToSelect?: boolean
   showAlertToolbar?: boolean
   modelValue?: any
