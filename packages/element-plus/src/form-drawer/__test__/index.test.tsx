@@ -541,6 +541,67 @@ describe('formDrawer', () => {
       })
     })
 
+    it('应该在 forConfirm 中间件失败后允许再次提交', async () => {
+      const forConfirm = vi.fn()
+      let attempt = 0
+
+      const TestComponent = () => {
+        const handleOpen = () => {
+          FormDrawer('测试标题', () => (
+            <SchemaField>
+              <SchemaStringField
+                name="input"
+                title="输入框"
+                x-decorator="FormItem"
+                x-component="Input"
+                x-component-props={{
+                  placeholder: '请输入',
+                }}
+                required={true}
+              />
+            </SchemaField>
+          ))
+            .forConfirm(async (form, next) => {
+              attempt += 1
+              forConfirm(form.values)
+              if (attempt === 1)
+                throw new Error('confirm failed')
+              next()
+            })
+            .open()
+            .catch(() => undefined)
+        }
+
+        return <ElButton onClick={handleOpen}>支持 forConfirm 重试</ElButton>
+      }
+
+      const { container } = render(() => <TestComponent />, {
+        global: {
+          stubs: {
+            Transition: false,
+          },
+        },
+      })
+
+      await expect.element(queryElement(container, '.el-button')).toBeInTheDocument()
+      await userEvent.click(queryElement(container, '.el-button'))
+      const input = queryElement(document, 'input')
+      await userEvent.type(input, 'test')
+      const confirmButton = queryElement(document, '.el-button--primary')
+
+      await userEvent.click(confirmButton)
+      await vi.waitFor(() => {
+        expect(forConfirm).toHaveBeenCalledTimes(1)
+        expect(document.querySelector('.el-drawer')).not.toBeNull()
+      })
+
+      await userEvent.click(confirmButton)
+      await vi.waitFor(() => {
+        expect(forConfirm).toHaveBeenCalledTimes(2)
+        expect(document.querySelector('.el-drawer')).toBeNull()
+      })
+    })
+
     it('应该支持 forCancel 中间件', async () => {
       const forCancel = vi.fn()
       const TestComponent = () => {

@@ -76,8 +76,8 @@ useEnterSubmit({
       }
     }"
   >
-    <template v-if="slots.header" #header>
-      <slot name="header" :resolve="resolve" :reject="reject" :form="form" />
+    <template #header>
+      <slot v-if="slots.header" name="header" :resolve="resolve" :reject="reject" :form="form" />
     </template>
 
     <template #default>
