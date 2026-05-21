@@ -155,9 +155,25 @@ jobs:
 
       - name: Configure npm auth
         if: steps.commit.outputs.has_changes == 'true'
-        run: echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
+        run: |
+          config_file="${NPM_CONFIG_USERCONFIG:-$HOME/.npmrc}"
+          cat <<EOF > "$config_file"
+          @silver-formily:registry=https://registry.npmjs.org
+          //registry.npmjs.org/:_authToken=${NPM_TOKEN}
+          always-auth=true
+          EOF
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Verify npm publish context
+        if: steps.commit.outputs.has_changes == 'true'
+        run: |
+          echo "userconfig=$(npm config get userconfig)"
+          echo "registry=$(npm config get registry)"
+          npm whoami
+          npm owner ls @silver-formily/element-plus
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Publish packages and create GitHub releases
         if: steps.commit.outputs.has_changes == 'true'
