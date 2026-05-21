@@ -1,5 +1,13 @@
 # 更新日志
 
+## 4.0.2
+
+### Patch Changes
+
+- f0d6ebb: 退回 form-dialog 与 form-drawer 对路由导航自动关闭的支持
+- 4fec51d: 修复单选且 optionAsValue 为 true 时 SelectTable 的报错
+- 0a00e06: 修改所需依赖`vue-draggable-plus`的版本号
+
 ## 4.0.1
 
 ### Patch Changes
