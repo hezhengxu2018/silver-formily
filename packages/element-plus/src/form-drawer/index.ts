@@ -104,11 +104,17 @@ export function FormDrawer<
       return
 
     env.settled = true
-    await loading(props.loadingText, () =>
-      applyMiddleware(env.form, env.cancelMiddlewares))
-    render(false)
-    disposeDrawer()
-    reject?.()
+
+    try {
+      await loading(props.loadingText, () =>
+        applyMiddleware(env.form, env.cancelMiddlewares))
+      render(false)
+      disposeDrawer()
+      reject?.()
+    }
+    catch {
+      env.settled = false
+    }
   }
 
   async function submitDrawer(type: string | undefined, resolve: (payload: any) => void, close: () => void) {

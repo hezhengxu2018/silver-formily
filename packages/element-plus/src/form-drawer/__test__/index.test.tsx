@@ -598,6 +598,64 @@ describe('formDrawer', () => {
         expect(forCancel).toHaveBeenCalled()
       })
     })
+
+    it('应该在 forCancel 中间件失败后允许再次取消', async () => {
+      const forCancel = vi.fn()
+      let attempt = 0
+
+      const TestComponent = () => {
+        const handleOpen = () => {
+          FormDrawer('测试标题', () => (
+            <SchemaField>
+              <SchemaStringField
+                name="input"
+                title="输入框"
+                x-decorator="FormItem"
+                x-component="Input"
+                x-component-props={{
+                  placeholder: '请输入',
+                }}
+                required={true}
+              />
+            </SchemaField>
+          ))
+            .forCancel(async (form, next) => {
+              attempt += 1
+              forCancel(form.values)
+              if (attempt === 1)
+                throw new Error('cancel failed')
+              next()
+            })
+            .open()
+            .catch(() => undefined)
+        }
+
+        return <ElButton onClick={handleOpen}>支持 forCancel 重试</ElButton>
+      }
+
+      const { getByText } = render(() => <TestComponent />, {
+        global: {
+          stubs: {
+            Transition: false,
+          },
+        },
+      })
+
+      await getByText('支持 forCancel 重试').click()
+      const cancelButton = getByText('取消')
+
+      await userEvent.click(cancelButton)
+      await vi.waitFor(() => {
+        expect(forCancel).toHaveBeenCalledTimes(1)
+        expect(document.querySelector('.el-drawer')).not.toBeNull()
+      })
+
+      await userEvent.click(cancelButton)
+      await vi.waitFor(() => {
+        expect(forCancel).toHaveBeenCalledTimes(2)
+        expect(document.querySelector('.el-drawer')).toBeNull()
+      })
+    })
   })
 
   describe('自定义内容', () => {
