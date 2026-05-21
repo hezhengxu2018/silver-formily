@@ -21,7 +21,7 @@ This document only lists requirements unique to `packages/vue`. Follow the root-
 ## Coding Style & Naming Conventions
 
 - Adopt the Antfu ESLint defaults: 2-space indentation, single quotes, dangling commas where valid, and no semicolons.
-- Export every public symbol through `src/index.ts` to keep the `@sliver/formily-element-plus` alias predictable.
+- Export every public symbol through `src/index.ts` to keep the `@silver-formily/element-plus` alias predictable.
 - Components are `PascalCase.ts`, composables use `use` prefixes, utility helpers use descriptive verbs (`resolveSchemaProps`).
 - Prefer explicit generics and public interfaces in `src/types`; update both runtime and types when APIs change.
 
