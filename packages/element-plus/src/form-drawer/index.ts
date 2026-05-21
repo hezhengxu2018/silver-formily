@@ -9,7 +9,6 @@ import { observer } from '@silver-formily/reactive-vue'
 import { camelCase } from 'lodash-es'
 import { createApp, h, ref } from 'vue'
 import { getTransitionDuration, isVueOptions, loading } from '../__builtins__'
-import { onUrlChange } from '../shared/url-change-listener'
 import DrawerContent from './drawer-content.vue'
 
 export function FormDrawer<
@@ -26,7 +25,6 @@ export function FormDrawer<
     promise?: Promise<any>
     instance?: any
     app?: App<Element>
-    stopUrlChangeListener?: () => void
     settled?: boolean
     openMiddlewares: IMiddleware<IFormProps<T>>[]
     confirmMiddlewares: IMiddleware<Form<T>>[]
@@ -38,7 +36,6 @@ export function FormDrawer<
     promise: null,
     app: null,
     instance: null,
-    stopUrlChangeListener: undefined,
     settled: false,
     openMiddlewares: [],
     confirmMiddlewares: [],
@@ -61,21 +58,7 @@ export function FormDrawer<
 
   document.body.append(env.root)
 
-  const rawProps = (isStr(title) ? { title } : title) as IFormDrawerProps
-  const props = {
-    ...rawProps,
-    closeOnUrlChange: rawProps.closeOnUrlChange ?? true,
-  } as IFormDrawerProps
-
-  function bindUrlChangeListener(reject?: () => void) {
-    if (!props.closeOnUrlChange)
-      return
-
-    env.stopUrlChangeListener?.()
-    env.stopUrlChangeListener = onUrlChange(() => {
-      void rejectDrawer(reject)
-    })
-  }
+  const props = (isStr(title) ? { title } : title) as IFormDrawerProps
 
   function render(visible: boolean, resolve?: (type?: string) => any, reject?: () => any) {
     const _content = isVueOptions(content)
@@ -106,8 +89,6 @@ export function FormDrawer<
   }
 
   function disposeDrawer() {
-    env.stopUrlChangeListener?.()
-    env.stopUrlChangeListener = undefined
     const animationDuration = getTransitionDuration()
     setTimeout(() => {
       env.app?.unmount?.()
@@ -123,8 +104,6 @@ export function FormDrawer<
       return
 
     env.settled = true
-    env.stopUrlChangeListener?.()
-    env.stopUrlChangeListener = undefined
     await loading(props.loadingText, () =>
       applyMiddleware(env.form, env.cancelMiddlewares))
     render(false)
@@ -132,13 +111,11 @@ export function FormDrawer<
     reject?.()
   }
 
-  async function submitDrawer(type: string | undefined, resolve: (payload: any) => void, close: () => void, reject?: () => void) {
+  async function submitDrawer(type: string | undefined, resolve: (payload: any) => void, close: () => void) {
     if (env.settled)
       return
 
     env.settled = true
-    env.stopUrlChangeListener?.()
-    env.stopUrlChangeListener = undefined
 
     try {
       await (isValid(type) ? applyMiddleware(env.form, env[`${type}Middlewares`]) : applyMiddleware(env.form, env.confirmMiddlewares))
@@ -148,7 +125,6 @@ export function FormDrawer<
     }
     catch {
       env.settled = false
-      bindUrlChangeListener(reject)
     }
   }
 
@@ -177,10 +153,9 @@ export function FormDrawer<
             env.form = env.form || createForm(resPayload as IFormProps<T>)
             render(true, (type: string) => {
               env.form.submit(async () => {
-                await submitDrawer(type, res, formDrawer.close, () => rej(new Error('cancel')))
+                await submitDrawer(type, res, formDrawer.close)
               }).catch(() => undefined)
             }, () => rejectDrawer(() => rej(new Error('cancel'))))
-            bindUrlChangeListener(() => rej(new Error('cancel')))
           })
           .catch(/* istanbul ignore next -- @preserve */ error => rej(error))
       })

@@ -2,4 +2,4 @@
 '@sliver/formily-element-plus': patch
 ---
 
-修复forConfirm中失败无法再次发起提交的错误
+退回 form-dialog 与 form-drawer 对路由导航自动关闭的支持

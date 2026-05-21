@@ -11,7 +11,6 @@ export type IFormDrawerProps = Partial<DrawerProps> & {
   okButtonProps?: ButtonProps
   loadingText?: string
   enterSubmit?: boolean
-  closeOnUrlChange?: boolean
 }
 // #endregion props
 

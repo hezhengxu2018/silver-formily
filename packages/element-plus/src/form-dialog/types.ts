@@ -11,7 +11,6 @@ export type IFormDialogProps = Partial<DialogProps> & {
   okButtonProps?: ButtonProps
   loadingText?: string
   enterSubmit?: boolean
-  closeOnUrlChange?: boolean
 }
 // #endregion props
 

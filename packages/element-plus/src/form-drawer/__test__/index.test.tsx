@@ -147,55 +147,6 @@ describe('formDrawer', () => {
       }, { timeout: 2000 })
     })
 
-    it('应该默认在地址变化时自动关闭抽屉', async () => {
-      const onCancel = vi.fn()
-      const drawerPromise = FormDrawer('测试标题', () => (
-        <div data-testid="drawer-content">抽屉内容</div>
-      ))
-        .forCancel((_form, next) => {
-          onCancel()
-          next()
-        })
-        .open()
-
-      await vi.waitFor(() => {
-        expect(document.querySelector('.el-drawer')).not.toBeNull()
-      }, { timeout: 2000 })
-
-      window.dispatchEvent(new PopStateEvent('popstate'))
-
-      await expect(drawerPromise).rejects.toThrow('cancel')
-      expect(onCancel).toHaveBeenCalledTimes(1)
-      await vi.waitFor(() => {
-        expect(document.querySelector('.el-drawer')).toBeNull()
-      }, { timeout: 2000 })
-    })
-
-    it('在 closeOnUrlChange 为 false 时不应因地址变化关闭抽屉', async () => {
-      const drawer = FormDrawer({
-        title: '测试标题',
-        closeOnUrlChange: false,
-      }, () => (
-        <div data-testid="drawer-content">抽屉内容</div>
-      ))
-      drawer.open().catch(() => undefined)
-
-      await vi.waitFor(() => {
-        expect(document.querySelector('.el-drawer')).not.toBeNull()
-      }, { timeout: 2000 })
-
-      window.dispatchEvent(new PopStateEvent('popstate'))
-
-      await vi.waitFor(() => {
-        expect(document.querySelector('.el-drawer')).not.toBeNull()
-      }, { timeout: 2000 })
-
-      queryElement(document, '.el-drawer__close-btn').dispatchEvent(new MouseEvent('click', { bubbles: true }))
-      await vi.waitFor(() => {
-        expect(document.querySelector('.el-drawer')).toBeNull()
-      }, { timeout: 2000 })
-    })
-
     it('应该支持渲染 defineComponent 组件', async () => {
       const DrawerForm = defineComponent({
         name: 'FormDrawerSetupContent',
