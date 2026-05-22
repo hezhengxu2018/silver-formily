@@ -8,6 +8,7 @@ import { lt, useCleanAttrs } from '../__builtins__'
 
 defineOptions({
   name: 'FRadioGroup',
+  inheritAttrs: false,
 })
 
 const props = defineProps({
@@ -22,6 +23,7 @@ const props = defineProps({
 })
 
 const { props: radioProps } = useCleanAttrs()
+const normalizedOptions = computed(() => Array.isArray(props.options) ? props.options : [])
 
 const OptionType = computed(() => {
   return props.optionType === 'button' ? ElRadioButton : ElRadio
@@ -33,14 +35,14 @@ function isRadioPropsObject(option: any): option is RadioProps {
 }
 
 function getOptionLabel(option: any, index: number) {
-  if (isRadioPropsObject(props.options[index])) {
-    return props.options[index].label
+  if (isRadioPropsObject(normalizedOptions.value[index])) {
+    return normalizedOptions.value[index].label
   }
   return option.label
 }
 
 const compatiableProps = computed(() => {
-  return props.options.map((option) => {
+  return normalizedOptions.value.map((option) => {
     if (!isRadioPropsObject(option)) {
       return {
         label: option,
