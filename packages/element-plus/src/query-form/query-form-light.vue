@@ -31,7 +31,7 @@ const fieldSchemaRef = useFieldSchema()
 const prefixCls = `${stylePrefix}-query-form-light`
 
 const { externalForm, activeForm } = useQueryFormForm({
-  formProps,
+  formProps: computed(() => ({ form: props.form })),
   fallbackForm: formRef,
 })
 const resolvedSchema = computed(() => props.schema ?? fieldSchemaRef.value)
@@ -40,18 +40,22 @@ const innerFormProps = computed(() => ({
   fullness: false,
   ...formProps.value,
   form: externalForm.value,
+  onAutoSubmit: props.onAutoSubmit,
+  onAutoSubmitFailed: props.onAutoSubmitFailed,
 }))
 
 function submitByChange() {
   const form = activeForm.value
+  if (!form)
+    return
   form
     .submit((values) => {
       emit('autoSubmit', values)
-      return formProps.value.onAutoSubmit?.(values)
+      return props.onAutoSubmit?.(values)
     })
     .catch((error) => {
       emit('autoSubmitFailed', error)
-      formProps.value.onAutoSubmitFailed?.(error)
+      props.onAutoSubmitFailed?.(error)
     })
 }
 

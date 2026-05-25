@@ -1,7 +1,9 @@
-import type { GeneralField } from '@formily/core'
+import type { Form, GeneralField, IFormFeedback } from '@formily/core'
 import type { ISchema } from '@formily/json-schema'
 import type { Grid, GridNode, IGridOptions } from '@silver-formily/grid'
 import type { Component } from 'vue'
+
+export type QueryFormFormProvider = Form | (() => Form | undefined)
 
 // #region visible
 export interface QueryFormVisibleContext {
@@ -19,6 +21,7 @@ export type QueryFormVisible = (context: QueryFormVisibleContext) => boolean
 
 // #region props
 export interface IQueryFormProps {
+  form?: QueryFormFormProvider
   schema?: ISchema
   schemaField?: Component
   components?: Record<string, Component>
@@ -36,16 +39,21 @@ export interface IQueryFormProps {
   showReset?: boolean
   submitProps?: Record<string, any>
   resetProps?: Record<string, any>
+  onAutoSubmit?: (values: Form['values']) => Promise<any>
+  onAutoSubmitFailed?: (error: IFormFeedback[]) => void
 }
 // #endregion props
 
 // #region light-props
 export interface IQueryFormLightProps {
+  form?: QueryFormFormProvider
   schema?: ISchema
   schemaField?: Component
   components?: Record<string, Component>
   scope?: Record<string, any>
   throttleWait?: number
+  onAutoSubmit?: (values: Form['values']) => Promise<any>
+  onAutoSubmitFailed?: (error: any) => void
 }
 // #endregion light-props
 

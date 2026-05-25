@@ -45,13 +45,15 @@ const COLLAPSED_ROWS = 1
 const fieldSchemaRef = useFieldSchema()
 const formRef = useForm()
 const { externalForm, activeForm } = useQueryFormForm({
-  formProps,
+  formProps: computed(() => ({ form: props.form })),
   fallbackForm: formRef,
 })
 const innerFormProps = computed(() => ({
   fullness: true,
   ...formProps.value,
   form: externalForm.value,
+  onAutoSubmit: props.onAutoSubmit,
+  onAutoSubmitFailed: props.onAutoSubmitFailed,
 }))
 
 const schemaList = computed<SchemaEntry[]>(() => {
