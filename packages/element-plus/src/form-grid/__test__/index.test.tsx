@@ -133,6 +133,22 @@ describe('formgrid', () => {
       })
     })
 
+    it('应该透传自定义 data 属性到根节点', async () => {
+      const { container } = render(() => (
+        <FormProvider form={createForm()}>
+          <FormGrid>
+            <FormGridItem data-query-form-actions data-testid="grid-item">
+              <div>动作区</div>
+            </FormGridItem>
+          </FormGrid>
+        </FormProvider>
+      ))
+
+      const gridItem = queryElement(container, '[data-testid="grid-item"]')
+      await expect.element(gridItem).toBeInTheDocument()
+      expect(gridItem.getAttribute('data-query-form-actions')).toBeTruthy()
+    })
+
     it('应该支持设置 offset', async () => {
       const { container } = render(() => (
         <FormProvider form={createForm()}>

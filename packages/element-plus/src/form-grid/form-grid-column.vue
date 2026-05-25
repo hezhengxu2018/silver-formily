@@ -1,8 +1,9 @@
 <script lang="ts" setup>
-import { computed } from 'vue'
+import { computed, useAttrs } from 'vue'
 
 defineOptions({
   name: 'FFormGridColumn',
+  inheritAttrs: false,
 })
 
 const props = defineProps({
@@ -11,6 +12,8 @@ const props = defineProps({
     default: 1,
   },
 })
+
+const attrs = useAttrs()
 
 const gridColumnStyle = computed(() => {
   if (props.gridSpan === -1) {
@@ -26,7 +29,7 @@ const gridColumnStyle = computed(() => {
 
 <template>
   <!-- @silver-formily/grid 会优先使用这个值，如果没有会自动生成 -->
-  <div :data-grid-span="props.gridSpan" :style="gridColumnStyle">
+  <div v-bind="attrs" :data-grid-span="props.gridSpan" :style="gridColumnStyle">
     <slot />
   </div>
 </template>

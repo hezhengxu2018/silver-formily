@@ -121,10 +121,11 @@ function resolveVisibleWhen(context: ReturnType<typeof createVisibleContext>) {
 }
 
 function isActionsNode(node: GridNode, grid: Grid<HTMLElement>) {
+  const isLastNode = node.index === grid.childSize - 1
   if ('element' in node && node.element) {
-    return node.element.dataset.queryFormActions !== undefined
+    return node.element.dataset.queryFormActions !== undefined || isLastNode
   }
-  return node.index === grid.childSize - 1
+  return isLastNode
 }
 
 function getFieldRowCount(grid: Grid<HTMLElement>) {

@@ -212,6 +212,34 @@ describe('queryForm', () => {
     await expect.element(getByText('Less')).toBeInTheDocument()
   })
 
+  it('should fallback to index-based actions node detection when actions attribute is missing', async () => {
+    const form = createForm()
+    let mutated = false
+    const { getByText } = render(() => (
+      <QueryForm
+        form={form}
+        schema={createInputSchema(12)}
+        expandText="More"
+        collapseText="Less"
+        gridProps={{ maxColumns: 2, maxWidth: 160 }}
+        visibleWhen={(context) => {
+          if (!mutated) {
+            const lastNode = (context.grid.children ?? []).at(-1)
+            lastNode?.element?.removeAttribute('data-query-form-actions')
+            mutated = true
+          }
+          if (!context.collapsed)
+            return true
+          return context.index === 0
+        }}
+      />
+    ))
+
+    await expect.element(getByText('More')).toBeInTheDocument()
+    await getByText('More').click()
+    await expect.element(getByText('Less')).toBeInTheDocument()
+  })
+
   it('should render with custom schemaField', async () => {
     const form = createForm()
     const CustomSchemaField = defineComponent({
