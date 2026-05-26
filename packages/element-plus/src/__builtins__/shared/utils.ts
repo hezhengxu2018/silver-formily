@@ -37,7 +37,10 @@ export function composeExport<T0 extends object, T1 extends object>(
   s0: T0,
   s1: T1,
 ): T0 & T1 {
-  return Object.assign(s0, s1)
+  const composed = Object.create(Object.getPrototypeOf(s0))
+  Object.defineProperties(composed, Object.getOwnPropertyDescriptors(s0))
+  Object.defineProperties(composed, Object.getOwnPropertyDescriptors(s1))
+  return composed
 }
 
 // Adapted from https://github.com/vuejs/vue-next/blob/ca17162e377e0a0bf3fae9d92d0fdcb32084a9fe/packages/runtime-core/src/helpers/renderSlot.ts#L77
