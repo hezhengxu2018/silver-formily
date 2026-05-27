@@ -58,9 +58,9 @@
   "devDependencies": {
     "@antfu/eslint-config": "catalog:",
     "@commitlint/config-conventional": "catalog:",
-    "@formily/validator": "catalog:",
     "@silver-formily/reactive-vue": "workspace:*",
     "@silver-formily/typescript-config": "workspace:*",
+    "@silver-formily/validator": "workspace:*",
     "@types/node": "catalog:",
     "@vue/language-core": "catalog:",
     "@vue/shared": "catalog:",
