@@ -16,6 +16,9 @@ jobs:
   version-release:
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.58.2-noble
+      options: --user 1001
     env:
       TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
       TURBO_TEAM: ${{ vars.TURBO_TEAM }}
@@ -50,9 +53,6 @@ jobs:
 
       - name: Run type check
         run: pnpm check-types
-
-      - name: Install Playwright browsers
-        run: pnpm --filter @silver-formily/element-plus exec playwright install --with-deps chromium
 
       - name: Run unit tests
         run: pnpm test:all
