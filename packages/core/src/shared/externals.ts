@@ -1,5 +1,5 @@
 import type { IFormProps } from '../types'
-import { FormPath } from '@silver-formily/shared'
+import { Path as FormPath } from '@silver-formily/path'
 import {
   getLocaleByPath,
   getValidateLocaleIOSCode,

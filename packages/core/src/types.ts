@@ -1,4 +1,4 @@
-import type { FormPath } from '@silver-formily/shared'
+import type { Path as FormPath, Pattern as PathPattern } from '@silver-formily/path'
 import type {
   IValidatorRules,
   Validator,
@@ -177,15 +177,7 @@ export type FormPatternTypes
     | ({} & string)
 export type FormDisplayTypes = 'none' | 'hidden' | 'visible' | ({} & string)
 
-export type FormPathPattern
-  = | string
-    | number
-    | Array<string | number>
-    | FormPath
-    | RegExp
-    | (((address: Array<string | number>) => boolean) & {
-      path: FormPath
-    })
+export type FormPathPattern = PathPattern
 
 export interface IBaseFieldState<
   Decorator extends JSXComponent = any,

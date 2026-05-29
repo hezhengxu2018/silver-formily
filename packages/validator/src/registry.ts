@@ -6,10 +6,10 @@ import type {
   ValidatorFunction,
   ValidatorFunctionResponse,
 } from './types'
+import { Path as FormPath } from '@silver-formily/path'
 import {
   merge as deepmerge,
   each,
-  FormPath,
   globalThisPolyfill,
   isFn,
   isStr,

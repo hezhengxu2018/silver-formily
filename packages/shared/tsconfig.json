@@ -4,7 +4,6 @@
     "useDefineForClassFields": false,
     "paths": {
       "@silver-formily/core": ["../core/src/index.ts"],
-      "@silver-formily/path": ["../path/src/index.ts"],
       "@silver-formily/reactive": ["../reactive/src/index.ts"],
       "@silver-formily/shared": ["./src/index.ts"],
       "@silver-formily/validator": ["../validator/src/index.ts"]

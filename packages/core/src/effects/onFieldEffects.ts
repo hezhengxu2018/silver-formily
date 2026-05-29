@@ -5,8 +5,9 @@ import type {
   GeneralField,
   IFieldState,
 } from '../types'
+import { Path as FormPath } from '@silver-formily/path'
 import { autorun, batch, reaction } from '@silver-formily/reactive'
-import { FormPath, isFn, toArr } from '@silver-formily/shared'
+import { isFn, toArr } from '@silver-formily/shared'
 import { createEffectHook, useEffectForm } from '../shared/effective'
 import {
   LifeCycleTypes,

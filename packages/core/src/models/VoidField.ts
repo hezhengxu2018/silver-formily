@@ -1,5 +1,5 @@
-import type { FormPathPattern } from '@silver-formily/shared'
 import type {
+  FormPathPattern,
   IModelGetter,
   IModelSetter,
   IVoidFieldProps,

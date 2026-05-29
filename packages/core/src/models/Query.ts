@@ -1,7 +1,7 @@
-import type { FormPathPattern } from '@silver-formily/shared'
-import type { GeneralField, IGeneralFieldState, IQueryProps } from '../types'
+import type { FormPathPattern, GeneralField, IGeneralFieldState, IQueryProps } from '../types'
 import type { Form } from './Form'
-import { each, FormPath, isFn } from '@silver-formily/shared'
+import { Path as FormPath } from '@silver-formily/path'
+import { each, isFn } from '@silver-formily/shared'
 import { buildDataPath } from '../shared/internals'
 
 function output(field: GeneralField, taker: (field: GeneralField, address: FormPath) => any) {

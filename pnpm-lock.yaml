@@ -567,6 +567,9 @@ importers:
 
   packages/core:
     dependencies:
+      '@silver-formily/path':
+        specifier: workspace:*
+        version: link:../path
       '@silver-formily/reactive':
         specifier: workspace:*
         version: link:../reactive
@@ -804,6 +807,9 @@ importers:
 
   packages/reactive:
     devDependencies:
+      '@silver-formily/path':
+        specifier: workspace:*
+        version: link:../path
       '@silver-formily/shared':
         specifier: workspace:*
         version: link:../shared
@@ -860,10 +866,6 @@ importers:
         version: 3.2.6(typescript@6.0.2)
 
   packages/shared:
-    dependencies:
-      '@silver-formily/path':
-        specifier: workspace:*
-        version: link:../path
     devDependencies:
       '@vitest/browser':
         specifier: 'catalog:'
@@ -900,6 +902,9 @@ importers:
 
   packages/validator:
     dependencies:
+      '@silver-formily/path':
+        specifier: workspace:*
+        version: link:../path
       '@silver-formily/shared':
         specifier: workspace:*
         version: link:../shared

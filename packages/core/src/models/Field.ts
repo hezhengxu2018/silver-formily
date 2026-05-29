@@ -1,13 +1,11 @@
 import type {
-  FormPathPattern,
-} from '@silver-formily/shared'
-import type {
   ValidatorTriggerType,
 } from '@silver-formily/validator'
 import type {
   FeedbackMessage,
   FieldDataSource,
   FieldValidator,
+  FormPathPattern,
   IFieldCaches,
   IFieldFeedback,
   IFieldProps,

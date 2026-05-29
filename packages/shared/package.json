@@ -39,9 +39,6 @@
     "test:coverage": "vitest run --coverage --browser.headless",
     "prepublishOnly": "pnpm run build"
   },
-  "dependencies": {
-    "@silver-formily/path": "workspace:*"
-  },
   "devDependencies": {
     "@vitest/browser": "catalog:",
     "@vitest/browser-playwright": "catalog:",

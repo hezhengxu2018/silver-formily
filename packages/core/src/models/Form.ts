@@ -1,30 +1,7 @@
-import type {
-  FormPathPattern,
-} from '@silver-formily/shared'
-import type {
-  FormDisplayTypes,
-  FormPatternTypes,
-  HeartSubscriber,
-  IFieldFactoryProps,
-  IFieldResetOptions,
-  IFieldStateGetter,
-  IFieldStateSetter,
-  IFormFeedback,
-  IFormFields,
-  IFormGraph,
-  IFormMergeStrategy,
-  IFormProps,
-  IFormRequests,
-  IFormState,
-  IModelGetter,
-  IModelSetter,
-  ISearchFeedback,
-  IVoidFieldFactoryProps,
-  JSXComponent,
-} from '../types'
+import type { FormDisplayTypes, FormPathPattern, FormPatternTypes, HeartSubscriber, IFieldFactoryProps, IFieldResetOptions, IFieldStateGetter, IFieldStateSetter, IFormFeedback, IFormFields, IFormGraph, IFormMergeStrategy, IFormProps, IFormRequests, IFormState, IModelGetter, IModelSetter, ISearchFeedback, IVoidFieldFactoryProps, JSXComponent } from '../types'
+import { Path as FormPath } from '@silver-formily/path'
 import { action, batch, define, observable, observe } from '@silver-formily/reactive'
 import {
-  FormPath,
   globalThisPolyfill,
   isArr,
   isObj,

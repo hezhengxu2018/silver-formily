@@ -1,7 +1,8 @@
 import type { IFormGraph } from '../types'
 import type { Form } from './Form'
+import { Path as FormPath } from '@silver-formily/path'
 import { batch, define } from '@silver-formily/reactive'
-import { each, FormPath } from '@silver-formily/shared'
+import { each } from '@silver-formily/shared'
 import {
   isArrayFieldState,
   isFieldState,

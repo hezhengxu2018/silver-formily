@@ -40,6 +40,7 @@
     "prepublishOnly": "pnpm run build"
   },
   "dependencies": {
+    "@silver-formily/path": "workspace:*",
     "@silver-formily/reactive": "workspace:*",
     "@silver-formily/shared": "workspace:*",
     "@silver-formily/validator": "workspace:*"

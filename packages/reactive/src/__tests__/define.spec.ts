@@ -1,4 +1,4 @@
-import { FormPath } from '@silver-formily/shared'
+import { Path as FormPath } from '@silver-formily/path'
 import { describe, expect, it, vi } from 'vitest'
 import { autorun, define, model, observable } from '..'
 import { batch } from '../batch'

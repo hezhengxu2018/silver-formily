@@ -2,9 +2,6 @@ import type {
   DataChange,
 } from '@silver-formily/reactive'
 import type {
-  FormPathPattern,
-} from '@silver-formily/shared'
-import type {
   ValidatorTriggerType,
 } from '@silver-formily/validator'
 import type { ArrayField, Field, Form, ObjectField } from '../models'
@@ -12,6 +9,7 @@ import type { BaseField } from '../models/BaseField'
 import type {
   FieldFeedbackTypes,
   FieldMatchPattern,
+  FormPathPattern,
   GeneralField,
   IExchangeArrayStateProps,
   IFieldFeedback,
@@ -21,6 +19,7 @@ import type {
   ISearchFeedback,
   ISpliceArrayStateProps,
 } from '../types'
+import { Path as FormPath } from '@silver-formily/path'
 import {
   autorun,
   batch,
@@ -33,7 +32,6 @@ import {
 import {
   clone,
   each,
-  FormPath,
   isEmpty,
   isFn,
   isNumberLike,

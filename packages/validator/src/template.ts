@@ -1,5 +1,6 @@
 import type { IValidateResult, IValidatorRules } from './types'
-import { FormPath, isFn, isStr } from '@silver-formily/shared'
+import { Path as FormPath } from '@silver-formily/path'
+import { isFn, isStr } from '@silver-formily/shared'
 import { getValidateMessageTemplateEngine } from './registry'
 
 export function render(result: IValidateResult, rules: IValidatorRules): IValidateResult {

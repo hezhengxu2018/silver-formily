@@ -1,18 +1,16 @@
 import type {
-  FormPathPattern,
-} from '@silver-formily/shared'
-import type {
   FieldComponent,
   FieldDecorator,
   FieldDisplayTypes,
   FieldPatternTypes,
+  FormPathPattern,
   IFieldActions,
   JSXComponent,
 } from '../types'
 import type { Form } from './Form'
+import { Path as FormPath } from '@silver-formily/path'
 import {
   each,
-  FormPath,
   isFn,
   isValid,
   toArr,
