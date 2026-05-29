@@ -55,6 +55,7 @@ catalog:
   lint-staged: ^16.2.0
   lodash-es: ^4.17.23
   markdown-it-container: ^4.0.0
+  mitata: ^1.0.34
   oxc-resolver: ^11.19.1
   playwright: ^1.58.2
   prettier: ^3.7.4
@@ -62,6 +63,7 @@ catalog:
   sass-embedded: ^1.97.3
   shiki: ^3.22.0
   tsdown: ^0.21.7
+  tsx: ^4.22.3
   turbo: ^2.8.5
   typescript: 6.0.2
   unplugin-vue: ^7.1.1
