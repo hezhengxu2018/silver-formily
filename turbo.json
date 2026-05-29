@@ -26,6 +26,7 @@
     },
     "test": {
       "dependsOn": ["^build"],
+      "passThroughEnv": ["PLAYWRIGHT_*"],
       "outputs": []
     },
     "dev": {
