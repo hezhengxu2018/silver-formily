@@ -1,0 +1,31 @@
+{
+  "name": "path-docs",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "vitepress dev .",
+    "preview": "vitepress preview .",
+    "lint": "eslint .",
+    "format": "eslint . --fix",
+    "check-types": "vue-tsc --noEmit",
+    "docs:build": "vitepress build ."
+  },
+  "silverFormily": {
+    "tasks": {
+      "dev": {
+        "filterMode": "workspace-only"
+      }
+    }
+  },
+  "dependencies": {
+    "@silver-formily/docs-toolkit": "workspace:*",
+    "@silver-formily/path": "workspace:*",
+    "vue": "catalog:"
+  },
+  "devDependencies": {
+    "@silver-formily/typescript-config": "workspace:*",
+    "typescript": "catalog:",
+    "vitepress": "catalog:",
+    "vue-tsc": "catalog:"
+  }
+}

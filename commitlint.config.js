@@ -90,6 +90,7 @@ export default {
       { value: 'apps/grid-docs', name: 'apps/grid-docs' },
       { value: 'apps/json-schema-docs', name: 'apps/json-schema-docs' },
       { value: 'apps/reactive-docs', name: 'apps/reactive-docs' },
+      { value: 'apps/path-docs', name: 'apps/path-docs' },
       { value: 'packages/core', name: 'packages/core' },
       { value: 'packages/docs-toolkit', name: 'packages/docs-toolkit' },
       { value: 'packages/element-plus', name: 'packages/element-plus' },

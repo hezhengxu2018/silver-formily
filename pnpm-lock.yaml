@@ -405,6 +405,31 @@ importers:
         specifier: 'catalog:'
         version: 3.2.6(typescript@6.0.2)
 
+  apps/path-docs:
+    dependencies:
+      '@silver-formily/docs-toolkit':
+        specifier: workspace:*
+        version: link:../../packages/docs-toolkit
+      '@silver-formily/path':
+        specifier: workspace:*
+        version: link:../../packages/path
+      vue:
+        specifier: 'catalog:'
+        version: 3.5.32(typescript@6.0.2)
+    devDependencies:
+      '@silver-formily/typescript-config':
+        specifier: workspace:*
+        version: link:../../packages/typescript-config
+      typescript:
+        specifier: 'catalog:'
+        version: 6.0.2
+      vitepress:
+        specifier: 'catalog:'
+        version: 2.0.0-alpha.16(@types/node@24.10.13)(async-validator@4.2.5)(change-case@5.4.4)(jiti@2.6.1)(lightningcss@1.32.0)(nprogress@0.2.0)(postcss@8.5.9)(sass-embedded@1.97.3)(sass@1.97.3)(tsx@4.22.3)(typescript@6.0.2)(yaml@2.8.2)
+      vue-tsc:
+        specifier: 'catalog:'
+        version: 3.2.6(typescript@6.0.2)
+
   apps/reactive-docs:
     dependencies:
       '@formily/reactive':

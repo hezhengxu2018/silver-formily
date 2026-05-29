@@ -1,0 +1,140 @@
+.playground {
+  display: grid;
+  gap: 16px;
+}
+
+.playground p {
+  margin: 0;
+}
+
+.grid {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.field {
+  display: grid;
+  gap: 6px;
+}
+
+.fieldLabel {
+  color: var(--vp-c-text-2);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.input,
+.textarea {
+  width: 100%;
+  border: 1px solid var(--vp-c-border);
+  border-radius: 12px;
+  background: var(--vp-c-bg-soft);
+  color: var(--vp-c-text-1);
+  font: inherit;
+  padding: 10px 12px;
+}
+
+.textarea {
+  min-height: 180px;
+  resize: vertical;
+}
+
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.btn {
+  border: 0;
+  border-radius: 999px;
+  background: var(--vp-c-brand-1);
+  color: white;
+  cursor: pointer;
+  font: inherit;
+  font-weight: 600;
+  padding: 9px 14px;
+}
+
+.btn.secondary {
+  background: var(--vp-c-default-2);
+  color: var(--vp-c-text-1);
+}
+
+.panelGrid {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.panel {
+  border: 1px solid var(--vp-c-border);
+  border-radius: 16px;
+  background: linear-gradient(
+    180deg,
+    var(--vp-c-bg-soft) 0%,
+    color-mix(in srgb, var(--vp-c-bg-soft) 75%, transparent) 100%
+  );
+  overflow: hidden;
+}
+
+.panelTitle {
+  border-bottom: 1px solid var(--vp-c-border);
+  color: var(--vp-c-text-2);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  padding: 10px 12px;
+  text-transform: uppercase;
+}
+
+.panelBody {
+  padding: 12px;
+}
+
+.metricValue {
+  color: var(--vp-c-text-1);
+  font-family: var(--vp-font-family-mono);
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.errorBox {
+  border: 1px solid color-mix(in srgb, #dc2626 30%, var(--vp-c-border));
+  border-radius: 14px;
+  background: color-mix(in srgb, #dc2626 8%, var(--vp-c-bg));
+  color: #b91c1c;
+  padding: 12px;
+}
+
+.tagRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.tag {
+  border-radius: 999px;
+  background: var(--vp-c-bg-soft);
+  color: var(--vp-c-text-2);
+  padding: 6px 10px;
+}
+
+.statusTrue {
+  color: #15803d;
+  font-weight: 700;
+}
+
+.statusFalse {
+  color: #b91c1c;
+  font-weight: 700;
+}
+
+@media (max-width: 640px) {
+  .textarea {
+    min-height: 150px;
+  }
+}
