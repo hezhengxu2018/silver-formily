@@ -190,3 +190,5 @@ Path.setIn(values, 'user.address.{city,zip}', {
 Path.getIn(values, 'user.address.{city,zip}')
 // { city: 'Shanghai', zip: '200000' }
 ```
+
+This syntax is especially useful for schemas, field mapping, batch renaming, and structural projection.

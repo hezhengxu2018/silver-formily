@@ -6,6 +6,10 @@
 - `Path.getIn` / `Path.setIn` / `Path.deleteIn` / `Path.existIn` / `Path.ensureIn`
 - `Path.match`：把 pattern 编译成 matcher 函数
 
+:::tip 提示
+这是一个 `formily` 框架内部使用的依赖，对普通用户来说只要熟悉[Pattern 语法](/api/patterns)即可。
+:::
+
 ## 导入
 
 ```ts

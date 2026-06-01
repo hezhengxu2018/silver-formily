@@ -1,6 +1,6 @@
 # Matching
 
-Matching is the part of path that Formily core relies on heavily for effects, queries, and alias resolution.
+Matching is the part of path that Formily relies on heavily for field linkage, effects, and queries. Once this section is clear, the `matchAliasGroup` logic in core becomes much easier to read.
 
 ## Interactive demo
 
