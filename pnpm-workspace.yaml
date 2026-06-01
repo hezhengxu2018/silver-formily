@@ -38,6 +38,7 @@ catalog:
   '@vitest/browser-playwright': ^4.1.4
   '@vitest/coverage-istanbul': ^4.1.4
   '@vue/language-core': ~3.0.1
+  '@vue/reactivity': ^3.5.32
   '@vue/shared': ^3.5.27
   commitlint: ^19.8.1
   consola: ^3.4.2
@@ -56,6 +57,7 @@ catalog:
   lodash-es: ^4.17.23
   markdown-it-container: ^4.0.0
   mitata: ^1.0.34
+  mobx: ^6.15.4
   oxc-resolver: ^11.19.1
   playwright: ^1.58.2
   prettier: ^3.7.4

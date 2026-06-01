@@ -1,38 +1,54 @@
-import * as vueReactivity from '@vue/reactivity'
-import b from 'benny'
-import _ from 'lodash'
+import { reactive } from '@vue/reactivity'
+import { times } from 'es-toolkit/compat'
+import { bench, do_not_optimize, run } from 'mitata'
 import * as mobx from 'mobx'
-import * as formilyReactive from './src'
+import { observable } from './src'
 
-function func(obs, times) {
+interface BenchmarkState {
+  arr: number[]
+  num: number
+  obj: Record<string, number>
+  str: string
+}
+
+function createState(): BenchmarkState {
+  return {
+    arr: [],
+    num: 0,
+    obj: {},
+    str: '',
+  }
+}
+
+function fillObservable(obs: BenchmarkState, count: number) {
   obs.arr = []
   obs.obj = {}
-  _.times(times, (v) => {
-    obs.num = v
-    obs.str = `${v}`
-    obs.arr.push(v)
-    obs.obj[`${v}`] = v
+
+  times(count, (value) => {
+    obs.num = value
+    obs.str = `${value}`
+    obs.arr.push(value)
+    obs.obj[`${value}`] = value
   })
 }
 
-b.suite(
-  'Reactive Observable',
+bench('Case MobX', () => {
+  const obs = mobx.observable(createState())
+  fillObservable(obs, 1e3)
+  do_not_optimize(obs)
+})
 
-  b.add('Case MobX', () => {
-    const obs = mobx.observable({})
-    func(obs, 1e3)
-  }),
+bench('Case @vue/reactivity', () => {
+  const obs = reactive(createState())
+  fillObservable(obs, 1e3)
+  do_not_optimize(obs)
+})
 
-  b.add('Case @vue/reactivity', () => {
-    const obs = vueReactivity.reactive({})
-    func(obs, 1e3)
-  }),
+bench('Case @formily/reactive', () => {
+  const obs = observable(createState())
+  fillObservable(obs, 1e3)
+  do_not_optimize(obs)
+})
 
-  b.add('Case @formily/reactive', () => {
-    const obs = formilyReactive.observable({})
-    func(obs, 1e3)
-  }),
-
-  b.cycle(),
-  b.complete(),
-)
+// eslint-disable-next-line antfu/no-top-level-await
+await run()

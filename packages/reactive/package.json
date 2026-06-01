@@ -1,7 +1,7 @@
 {
   "name": "@silver-formily/reactive",
   "type": "module",
-  "version": "2.3.7",
+  "version": "0.0.0-alpha.0",
   "description": "Silver Formily maintained fork of @formily/reactive",
   "author": "hezhengxu",
   "license": "MIT",
@@ -32,6 +32,7 @@
   ],
   "scripts": {
     "build": "tsdown --tsconfig tsconfig.build.json",
+    "benchmark": "tsx benchmark.ts",
     "lint": "eslint .",
     "format": "eslint . --fix",
     "check-types": "tsc --noEmit --project tsconfig.json && tsc --noEmit --project tsconfig.spec.json",
@@ -43,9 +44,14 @@
     "@silver-formily/path": "workspace:*",
     "@silver-formily/shared": "workspace:*",
     "@vitest/coverage-istanbul": "catalog:",
+    "@vue/reactivity": "catalog:",
+    "es-toolkit": "catalog:",
     "eslint": "catalog:",
+    "mitata": "catalog:",
+    "mobx": "catalog:",
     "oxc-resolver": "catalog:",
     "tsdown": "catalog:",
+    "tsx": "catalog:",
     "typescript": "catalog:",
     "vitest": "catalog:"
   }
