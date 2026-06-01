@@ -1,3 +1,3 @@
-# @formily/path
+# @silver-formily/path
 
 > Path System
