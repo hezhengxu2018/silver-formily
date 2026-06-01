@@ -1,0 +1,13 @@
+{
+  "extends": "../../packages/typescript-config/docs.json",
+  "include": [
+    ".vitepress/**/*.ts",
+    ".vitepress/**/*.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "**/*.vue",
+    "components.d.ts",
+    "env.d.ts"
+  ],
+  "exclude": ["node_modules", ".vitepress/cache", ".vitepress/dist"]
+}

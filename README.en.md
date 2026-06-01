@@ -26,7 +26,7 @@ Silver Formily is a Formily ecosystem rebuilt on top of Vite and Turborepo. It i
 | `@silver-formily/docs-toolkit`      | Shared VitePress theme, plugins, and site config      |
 | `@silver-formily/typescript-config` | Shared TypeScript presets for the workspace           |
 
-The seven apps under `apps/*` are private VitePress sites. They all use the standard `vitepress dev/build/preview` scripts and share theme configuration through `@silver-formily/docs-toolkit`.
+The eight apps under `apps/*` are private VitePress sites. They all use the standard `vitepress dev/build/preview` scripts and share theme configuration through `@silver-formily/docs-toolkit`.
 
 ## Repository Layout
 
@@ -39,7 +39,8 @@ The seven apps under `apps/*` are private VitePress sites. They all use the stan
 |  |- element-plus-docs
 |  |- vant-docs
 |  |- grid-docs
-|  `- json-schema-docs
+|  |- json-schema-docs
+|  `- validator-docs
 |- packages/               # Publishable or internal reusable packages
 |  |- vue
 |  |- reactive-vue

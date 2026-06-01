@@ -26,7 +26,7 @@ Silver Formily 是一个基于 `Vite` 和 `Turborepo` 另外封装的一套 Form
 | `@silver-formily/docs-toolkit`      | 内部共享的 VitePress 主题、插件与站点配置工具    |
 | `@silver-formily/typescript-config` | 内部 TypeScript 配置共享包                       |
 
-`apps/*` 下的 7 个文档应用均为私有 workspace，当前统一使用 VitePress 站点脚本（`vitepress dev/build/preview`）并通过 `@silver-formily/docs-toolkit` 复用主题配置。
+`apps/*` 下的 8 个文档应用均为私有 workspace，当前统一使用 VitePress 站点脚本（`vitepress dev/build/preview`）并通过 `@silver-formily/docs-toolkit` 复用主题配置。
 
 ## 仓库结构
 
@@ -39,7 +39,8 @@ Silver Formily 是一个基于 `Vite` 和 `Turborepo` 另外封装的一套 Form
 |  |- element-plus-docs
 |  |- vant-docs
 |  |- grid-docs
-|  `- json-schema-docs
+|  |- json-schema-docs
+|  `- validator-docs
 |- packages/               # 可发布或内部复用包
 |  |- vue
 |  |- reactive-vue
