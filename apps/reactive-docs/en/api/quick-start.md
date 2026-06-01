@@ -3,13 +3,13 @@
 ## Installation
 
 ```bash
-npm install --save @formily/reactive
+npm install --save @silver-formily/reactive
 ```
 
 ## Example
 
 ```ts
-import { autorun, observable } from '@formily/reactive'
+import { autorun, observable } from '@silver-formily/reactive'
 
 const obs = observable({
   value: 'Hello world',

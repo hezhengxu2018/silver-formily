@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { observable } from '@formily/reactive'
+import { observable } from '@silver-formily/reactive'
 import { ref } from 'vue'
 import { formatValue, pushLog, useAutorunEffect } from './shared'
 

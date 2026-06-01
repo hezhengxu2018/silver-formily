@@ -21,7 +21,7 @@ api/action-en/compare
 When you want to package update logic into a reusable method, `action.bound` gives you batching behavior similar to `batch`:
 
 ```ts
-import { action, autorun, observable } from '@formily/reactive'
+import { action, autorun, observable } from '@silver-formily/reactive'
 
 const obs = observable({})
 const handler = action.bound(() => {
@@ -57,7 +57,7 @@ api/action-en/basic
 ### Example Code
 
 ```ts
-import { action, observable } from '@formily/reactive'
+import { action, observable } from '@silver-formily/reactive'
 
 const obs = observable({
   count: 0,

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { batch, observable, reaction } from '@formily/reactive'
+import { batch, observable, reaction } from '@silver-formily/reactive'
 import { onBeforeUnmount, ref } from 'vue'
 import { pushLog } from '../observable/shared'
 

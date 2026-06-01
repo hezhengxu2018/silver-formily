@@ -21,7 +21,7 @@ api/action/compare
 如果你希望把更新逻辑封装成可复用方法，可以用 `action.bound` 做高阶包装，得到和 `batch` 类似的合并更新效果：
 
 ```ts
-import { action, autorun, observable } from '@formily/reactive'
+import { action, autorun, observable } from '@silver-formily/reactive'
 
 const obs = observable({})
 const handler = action.bound(() => {
@@ -57,7 +57,7 @@ api/action/basic
 ### 示例代码
 
 ```ts
-import { action, observable } from '@formily/reactive'
+import { action, observable } from '@silver-formily/reactive'
 
 const obs = observable({
   count: 0,

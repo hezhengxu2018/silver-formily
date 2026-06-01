@@ -1,7 +1,7 @@
 import path, { dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import pkg from '@formily/reactive/package.json' with { type: 'json' }
 import { createDocsConfig } from '@silver-formily/docs-toolkit'
+import pkg from '@silver-formily/reactive/package.json' with { type: 'json' }
 
 const currentDir = dirname(fileURLToPath(import.meta.url))
 const demoDir = path.resolve(currentDir, '../demos')
@@ -14,8 +14,8 @@ export default createDocsConfig({
     root: {
       label: '简体中文',
       lang: 'zh-CN',
-      title: 'Formily Reactive',
-      description: '@formily/reactive 响应式文档',
+      title: 'Silver Formily Reactive',
+      description: '@silver-formily/reactive 响应式文档',
       themeConfig: {
         nav: [
           { text: 'Guide', link: '/', activeMatch: '^/(guide/)?$|^/guide/' },
@@ -26,8 +26,8 @@ export default createDocsConfig({
     en: {
       label: 'English',
       lang: 'en-US',
-      title: 'Formily Reactive',
-      description: 'Documentation for @formily/reactive',
+      title: 'Silver Formily Reactive',
+      description: 'Documentation for @silver-formily/reactive',
       themeConfig: {
         nav: [
           { text: 'Guide', link: '/en/', activeMatch: '^/en/(guide/)?$|^/en/guide/' },
@@ -134,6 +134,7 @@ export default createDocsConfig({
       {
         title: 'Silver Formily',
         children: [
+          { text: 'Reactive', link: 'https://reactive.silver-formily.org/' },
           { text: 'Vue', link: 'https://vue.silver-formily.org/' },
           { text: 'Reactive Vue', link: 'https://reactive-vue.silver-formily.org/' },
           { text: 'Element Plus', link: 'https://element-plus.silver-formily.org/' },
@@ -153,7 +154,7 @@ export default createDocsConfig({
   ],
   vite: {
     optimizeDeps: {
-      include: ['@formily/reactive'],
+      include: ['@silver-formily/reactive'],
     },
   },
   extra: {

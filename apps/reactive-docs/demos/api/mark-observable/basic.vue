@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { autorun, markObservable, observable } from '@formily/reactive'
+import { autorun, markObservable, observable } from '@silver-formily/reactive'
 import { onBeforeUnmount, ref } from 'vue'
 import { formatValue, pushLog } from '../observable/shared'
 
@@ -111,7 +111,7 @@ onBeforeUnmount(() => stop())
   <div class="playground">
     <p class="hint">
       默认情况下，带有 <code>toJSON</code> / <code>toJS</code> 方法的对象会被
-      <code>@formily/reactive</code> 跳过。使用 <code>markObservable</code> 之后，
+      <code>@silver-formily/reactive</code> 跳过。使用 <code>markObservable</code> 之后，
       实例级和类级都可以重新开启 observable 劫持。
     </p>
 

@@ -23,7 +23,7 @@ api/to-js-en/basic
 ### Example Code
 
 ```ts
-import { autorun, observable, toJS } from '@formily/reactive'
+import { autorun, observable, toJS } from '@silver-formily/reactive'
 
 const obs = observable({
   aa: {

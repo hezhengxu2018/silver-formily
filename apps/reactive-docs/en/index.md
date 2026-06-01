@@ -1,10 +1,10 @@
 # Introduction
 
-This documentation site is a rebuilt version of the official `@formily/reactive` docs. It removes the Mobx background section from the original documentation to reduce extra cognitive load, and it adds interactive demos to the examples to make them easier to understand.
+This documentation site focuses on the `@silver-formily/reactive` package itself. It keeps the core ideas of Formily Reactive, while adding examples and interactive demos that better match real silver-formily integration scenarios.
 
 ## Background
 
-`@formily/reactive` follows the same overall architecture as `mobx`. It is the reactive foundation of the entire `formily` framework, and having an independent reactive solution makes it easier to integrate cleanly with different frontend frameworks.
+`@silver-formily/reactive` follows the same overall architecture as `mobx`. It is the reactive foundation of the silver-formily ecosystem, and having an independent reactive solution makes it easier to integrate cleanly with different frontend frameworks.
 
 If you are not building your own components, you usually do not need this documentation. Formily's framework binding libraries already smooth over that gap, so it is mostly transparent in everyday use.
 
@@ -12,7 +12,7 @@ If you are just getting started with Formily, you can skip this documentation fo
 
 ## Best Practices
 
-The best practices from the official docs can be summarized in three points:
+The best practices carried into this package documentation can be summarized in three points:
 
 1. Avoid deep wrapping unless you really need it.
 2. Prefer `computed` and `batch` where appropriate.
@@ -20,6 +20,6 @@ The best practices from the official docs can be summarized in three points:
 
 ## Removed Sections
 
-This rebuilt documentation removes the sections about framework-specific binding libraries. The main reason is that each frontend framework binding is a separate library and should have its own dedicated documentation. If you are looking for `@formily/reactive-vue` or `@formily/reactive-react`, see the [official Formily documentation](https://reactive.formilyjs.org/).
+This site does not duplicate the documentation for framework-specific binding libraries. Each frontend binding is still a separate package and should have its own dedicated documentation. If you are looking for `@formily/reactive-vue` or `@formily/reactive-react`, see the [official Formily documentation](https:/-formily/reactive.formilyjs.org/).
 
-If you are already using `silver-formily`, you can read the documentation for `@silver-formily/reactive-vue` in its [official docs](https://reactive-vue.silver-formily.org/), which add some utility functions on top of the original documentation.
+If you are already using silver-formily, you can also read the documentation for `@silver-formily/reactive-vue` in its [official docs](https://reactive-vue.silver-formily.org/), which add Vue-oriented utilities on top of the reactive foundation.

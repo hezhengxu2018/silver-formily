@@ -25,7 +25,7 @@ api/raw/basic
 ### 示例代码
 
 ```ts
-import { observable, raw } from '@formily/reactive'
+import { observable, raw } from '@silver-formily/reactive'
 
 const obs = observable({})
 

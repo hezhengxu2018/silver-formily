@@ -55,7 +55,7 @@ api/observe-en/basic
 ### Example Code
 
 ```ts
-import { observable, observe } from '@formily/reactive'
+import { observable, observe } from '@silver-formily/reactive'
 
 const obs = observable({
   aa: 11,

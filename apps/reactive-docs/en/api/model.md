@@ -29,7 +29,7 @@ api/model-en/basic
 ### Example Code
 
 ```ts
-import { autorun, model } from '@formily/reactive'
+import { autorun, model } from '@silver-formily/reactive'
 
 const obs = model({
   aa: 1,

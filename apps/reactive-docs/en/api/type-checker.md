@@ -33,7 +33,7 @@ interface isAnnotation {
 ### Example
 
 ```ts
-import { action, batch, isAnnotation, observable } from '@formily/reactive'
+import { action, batch, isAnnotation, observable } from '@silver-formily/reactive'
 
 console.log(isAnnotation(observable)) // true
 console.log(isAnnotation(observable.computed)) // true

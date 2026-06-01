@@ -21,7 +21,7 @@ api/batch-en/compare
 Without batching, changing several properties in sequence can trigger repeated reactions:
 
 ```ts
-import { autorun, observable } from '@formily/reactive'
+import { autorun, observable } from '@silver-formily/reactive'
 
 const obs = observable({})
 function handler() {
@@ -41,7 +41,7 @@ This example prints 3 times: once for the initial `autorun`, once for the `obs.a
 With `batch`, the whole update group produces only one extra reaction:
 
 ```ts
-import { autorun, batch, observable } from '@formily/reactive'
+import { autorun, batch, observable } from '@silver-formily/reactive'
 
 const obs = observable({})
 function handler() {
@@ -78,7 +78,7 @@ api/batch-en/scope
 ### Example Code
 
 ```ts
-import { autorun, batch, observable } from '@formily/reactive'
+import { autorun, batch, observable } from '@silver-formily/reactive'
 
 const obs = observable({})
 

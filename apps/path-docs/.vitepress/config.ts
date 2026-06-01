@@ -88,6 +88,7 @@ export default createDocsConfig({
       {
         title: 'Silver Formily',
         children: [
+          { text: 'Reactive', link: 'https://reactive.silver-formily.org/' },
           { text: 'Vue', link: 'https://vue.silver-formily.org/' },
           { text: 'Reactive Vue', link: 'https://reactive-vue.silver-formily.org/' },
           { text: 'Grid', link: 'https://grid.silver-formily.org/' },
@@ -96,7 +97,6 @@ export default createDocsConfig({
       {
         title: 'Rebuilt Formily Docs',
         children: [
-          { text: 'Reactive', link: 'https://reactive.silver-formily.org/' },
           { text: 'JSON Schema', link: 'https://json-schema.silver-formily.org/' },
         ],
       },

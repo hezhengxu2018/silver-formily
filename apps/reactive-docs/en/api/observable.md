@@ -4,7 +4,7 @@
 
 ## Core Idea
 
-observable is the foundation of the reactive model. By creating a subscribable object, @formily/reactive can collect dependencies when a property is read and notify subscribers when a property is written. Internally it is mainly implemented with ES Proxy, so data operations on objects can be intercepted completely.
+observable is the foundation of the reactive model. By creating a subscribable object, @silver-formily/reactive can collect dependencies when a property is read and notify subscribers when a property is written. Internally it is mainly implemented with ES Proxy, so data operations on objects can be intercepted completely.
 
 Besides using the observable APIs directly, you can also build domain models with [define](/en/api/define) and [model](/en/api/model). Under the hood, they are still combining observable, computed, and action/batch capabilities.
 
@@ -35,7 +35,7 @@ api/observable-en/deep
 #### Example Code
 
 ```ts
-import { autorun, observable } from '@formily/reactive'
+import { autorun, observable } from '@silver-formily/reactive'
 
 const obs = observable({
   aa: {
@@ -73,7 +73,7 @@ api/observable-en/shallow
 #### Example Code
 
 ```ts
-import { autorun, observable } from '@formily/reactive'
+import { autorun, observable } from '@silver-formily/reactive'
 
 const obs = observable.shallow({
   aa: {
@@ -121,7 +121,7 @@ api/observable-en/computed
 #### Example Code
 
 ```ts
-import { autorun, observable } from '@formily/reactive'
+import { autorun, observable } from '@silver-formily/reactive'
 
 const obs = observable({
   aa: 11,
@@ -160,7 +160,7 @@ api/observable-en/ref
 #### Example Code
 
 ```ts
-import { autorun, observable } from '@formily/reactive'
+import { autorun, observable } from '@silver-formily/reactive'
 
 const ref = observable.ref(1)
 
@@ -194,7 +194,7 @@ api/observable-en/box
 #### Example Code
 
 ```ts
-import { autorun, observable } from '@formily/reactive'
+import { autorun, observable } from '@silver-formily/reactive'
 
 const box = observable.box(1)
 

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { observable, observe } from '@formily/reactive'
+import { observable, observe } from '@silver-formily/reactive'
 import { onBeforeUnmount, ref } from 'vue'
 import { formatValue, pushLog } from '../observable/shared'
 

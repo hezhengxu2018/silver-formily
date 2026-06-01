@@ -438,12 +438,12 @@ importers:
 
   apps/reactive-docs:
     dependencies:
-      '@formily/reactive':
-        specifier: 'catalog:'
-        version: 2.3.7
       '@silver-formily/docs-toolkit':
         specifier: workspace:*
         version: link:../../packages/docs-toolkit
+      '@silver-formily/reactive':
+        specifier: workspace:*
+        version: link:../../packages/reactive
       vue:
         specifier: 'catalog:'
         version: 3.5.32(typescript@6.0.2)

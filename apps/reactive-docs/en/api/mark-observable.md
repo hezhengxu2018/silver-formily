@@ -2,7 +2,7 @@
 
 ## Description
 
-Mark any object or class prototype as being hijacked by observable. React Node and objects with toJSON/toJS methods will be automatically bypassed in @formily/reactive. In special scenarios, we may hope that the object should be hijacked, so you can use it markObservable mark
+Mark any object or class prototype as being hijacked by observable. React Node and objects with toJSON/toJS methods will be automatically bypassed in @silver-formily/reactive. In special scenarios, we may hope that the object should be hijacked, so you can use it markObservable mark
 
 ## Signature
 
@@ -21,7 +21,7 @@ api/mark-observable-en/basic
 ### Example Code
 
 ```ts
-import { autorun, markObservable, observable } from '@formily/reactive'
+import { autorun, markObservable, observable } from '@silver-formily/reactive'
 
 class A {
   property = ''

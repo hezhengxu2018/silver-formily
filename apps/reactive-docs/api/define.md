@@ -43,7 +43,7 @@ api/define/basic
 ### 示例代码
 
 ```ts
-import { action, autorun, define, observable } from '@formily/reactive'
+import { action, autorun, define, observable } from '@silver-formily/reactive'
 
 class DomainModel {
   deep = { aa: 1 }

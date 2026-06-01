@@ -23,7 +23,7 @@ api/mark-raw/basic
 ### 示例代码
 
 ```ts
-import { autorun, markRaw, observable } from '@formily/reactive'
+import { autorun, markRaw, observable } from '@silver-formily/reactive'
 
 class A {
   property = ''

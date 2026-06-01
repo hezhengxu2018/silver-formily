@@ -2,7 +2,7 @@
 
 ## 描述
 
-标记任意一个对象或者类原型为可被 observable 劫持，在@formily/reactive 中会自动绕过 React Node 与带有 toJSON/toJS 方法的对象，特殊场景，我们可能希望该对象应该被劫持，所以可以使用 markObservable 标记
+标记任意一个对象或者类原型为可被 observable 劫持，在@silver-formily/reactive 中会自动绕过 React Node 与带有 toJSON/toJS 方法的对象，特殊场景，我们可能希望该对象应该被劫持，所以可以使用 markObservable 标记
 
 ## 签名
 
@@ -21,7 +21,7 @@ api/mark-observable/basic
 ### 示例代码
 
 ```ts
-import { autorun, markObservable, observable } from '@formily/reactive'
+import { autorun, markObservable, observable } from '@silver-formily/reactive'
 
 class A {
   property = ''

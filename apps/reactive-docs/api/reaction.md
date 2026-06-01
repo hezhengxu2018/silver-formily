@@ -41,7 +41,7 @@ api/reaction/basic
 ### 示例代码
 
 ```ts
-import { batch, observable, reaction } from '@formily/reactive'
+import { batch, observable, reaction } from '@silver-formily/reactive'
 
 const obs = observable({
   aa: 1,

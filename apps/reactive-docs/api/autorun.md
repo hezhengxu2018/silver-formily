@@ -27,7 +27,7 @@ api/autorun/basic
 ### 示例代码
 
 ```ts
-import { autorun, observable } from '@formily/reactive'
+import { autorun, observable } from '@silver-formily/reactive'
 
 const obs = observable({})
 
@@ -67,7 +67,7 @@ api/autorun/memo
 ### 示例代码
 
 ```ts
-import { autorun, observable } from '@formily/reactive'
+import { autorun, observable } from '@silver-formily/reactive'
 
 const obs1 = observable({
   aa: 0,
@@ -123,7 +123,7 @@ api/autorun/effect
 ### 示例代码
 
 ```ts
-import { autorun, observable } from '@formily/reactive'
+import { autorun, observable } from '@silver-formily/reactive'
 
 const obs1 = observable({
   aa: 0,

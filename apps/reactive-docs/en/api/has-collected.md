@@ -15,7 +15,7 @@ interface hasCollected {
 ## Example
 
 ```ts
-import { autorun, observable } from '@formily/reactive'
+import { autorun, observable } from '@silver-formily/reactive'
 
 const obs = observable({
   aa: 11,

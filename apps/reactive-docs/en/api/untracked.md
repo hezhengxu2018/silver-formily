@@ -21,7 +21,7 @@ api/untracked-en/basic
 ### Example Code
 
 ```ts
-import { autorun, observable, untracked } from '@formily/reactive'
+import { autorun, observable, untracked } from '@silver-formily/reactive'
 
 const obs = observable({
   aa: 11,

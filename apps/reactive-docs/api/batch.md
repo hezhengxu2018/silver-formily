@@ -21,7 +21,7 @@ api/batch/compare
 如果不做批处理，连续写入多个属性会导致多次重复响应：
 
 ```ts
-import { autorun, observable } from '@formily/reactive'
+import { autorun, observable } from '@silver-formily/reactive'
 
 const obs = observable({})
 function handler() {
@@ -41,7 +41,7 @@ handler()
 使用 `batch` 后，整组更新只会触发一次额外响应：
 
 ```ts
-import { autorun, batch, observable } from '@formily/reactive'
+import { autorun, batch, observable } from '@silver-formily/reactive'
 
 const obs = observable({})
 function handler() {
@@ -78,7 +78,7 @@ api/batch/scope
 ### 示例代码
 
 ```ts
-import { autorun, batch, observable } from '@formily/reactive'
+import { autorun, batch, observable } from '@silver-formily/reactive'
 
 const obs = observable({})
 

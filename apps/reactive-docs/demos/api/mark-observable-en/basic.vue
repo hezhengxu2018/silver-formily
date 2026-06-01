@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { autorun, markObservable, observable } from '@formily/reactive'
+import { autorun, markObservable, observable } from '@silver-formily/reactive'
 import { onBeforeUnmount, ref } from 'vue'
 import { formatValue, pushLog } from '../observable/shared'
 
@@ -111,7 +111,7 @@ onBeforeUnmount(() => stop())
   <div class="playground">
     <p class="hint">
       By default, objects with <code>toJSON</code> / <code>toJS</code> methods are skipped by
-      <code>@formily/reactive</code>. After using <code>markObservable</code>, both instance-level
+      <code>@silver-formily/reactive</code>. After using <code>markObservable</code>, both instance-level
       and class-level marks can opt those objects back into observable tracking.
     </p>
 

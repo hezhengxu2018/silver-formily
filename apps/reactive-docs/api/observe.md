@@ -55,7 +55,7 @@ api/observe/basic
 ### 示例代码
 
 ```ts
-import { observable, observe } from '@formily/reactive'
+import { observable, observe } from '@silver-formily/reactive'
 
 const obs = observable({
   aa: 11,

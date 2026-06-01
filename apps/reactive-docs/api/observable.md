@@ -4,7 +4,7 @@
 
 ## 核心概念
 
-observable 是整个响应式模型的基础。通过创建可订阅对象，@formily/reactive 可以在属性被读取时收集依赖，在属性被写入时通知订阅者。底层主要基于 ES Proxy 实现，因此可以完整拦截对象上的数据操作。
+observable 是整个响应式模型的基础。通过创建可订阅对象，@silver-formily/reactive 可以在属性被读取时收集依赖，在属性被写入时通知订阅者。底层主要基于 ES Proxy 实现，因此可以完整拦截对象上的数据操作。
 
 除了直接使用 observable 系列 API，也可以结合 [define](/api/define) 和 [model](/api/model) 组织领域模型，本质上仍然是在组合 observable、computed 与 action/batch 的能力。
 
@@ -35,7 +35,7 @@ api/observable/deep
 #### 示例代码
 
 ```ts
-import { autorun, observable } from '@formily/reactive'
+import { autorun, observable } from '@silver-formily/reactive'
 
 const obs = observable({
   aa: {
@@ -73,7 +73,7 @@ api/observable/shallow
 #### 示例代码
 
 ```ts
-import { autorun, observable } from '@formily/reactive'
+import { autorun, observable } from '@silver-formily/reactive'
 
 const obs = observable.shallow({
   aa: {
@@ -121,7 +121,7 @@ api/observable/computed
 #### 示例代码
 
 ```ts
-import { autorun, observable } from '@formily/reactive'
+import { autorun, observable } from '@silver-formily/reactive'
 
 const obs = observable({
   aa: 11,
@@ -160,7 +160,7 @@ api/observable/ref
 #### 示例代码
 
 ```ts
-import { autorun, observable } from '@formily/reactive'
+import { autorun, observable } from '@silver-formily/reactive'
 
 const ref = observable.ref(1)
 
@@ -194,7 +194,7 @@ api/observable/box
 #### 示例代码
 
 ```ts
-import { autorun, observable } from '@formily/reactive'
+import { autorun, observable } from '@silver-formily/reactive'
 
 const box = observable.box(1)
 
