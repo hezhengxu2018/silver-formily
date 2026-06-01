@@ -20,6 +20,6 @@ The best practices carried into this package documentation can be summarized in 
 
 ## Removed Sections
 
-This site does not duplicate the documentation for framework-specific binding libraries. Each frontend binding is still a separate package and should have its own dedicated documentation. If you are looking for `@formily/reactive-vue` or `@formily/reactive-react`, see the [official Formily documentation](https:/-formily/reactive.formilyjs.org/).
+This site does not duplicate the documentation for framework-specific binding libraries. Each frontend binding is still a separate package and should have its own dedicated documentation. If you are looking for `@formily/reactive-vue` or `@formily/reactive-react`, see the [official Formily documentation](https://reactive.formilyjs.org/).
 
 If you are already using silver-formily, you can also read the documentation for `@silver-formily/reactive-vue` in its [official docs](https://reactive-vue.silver-formily.org/), which add Vue-oriented utilities on top of the reactive foundation.

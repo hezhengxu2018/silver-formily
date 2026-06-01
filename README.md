@@ -6,25 +6,25 @@ Silver Formily 是一个基于 `Vite` 和 `Turborepo` 另外封装的一套 Form
 
 ## 文档站点
 
-- Reactive: <https://reactive.silver-formily.org>
+- Reactive: `@silver-formily/reactive` 包文档与交互示例 <https://reactive.silver-formily.org>
 - Vue: <https://vue.silver-formily.org>
 - Reactive Vue: <https://reactive-vue.silver-formily.org>
 - Element Plus: <https://element-plus.silver-formily.org>
 - Vant: <https://vant.silver-formily.org>
 - Grid: <https://grid.silver-formily.org>
-- 官方的 JSON Schema 文档重构: <https://json-schema.silver-formily.org>
+- JSON Schema: Formily JSON Schema 文档重构 <https://json-schema.silver-formily.org>
 
 ## 工作区包
 
-| 包名                                | 说明                                          |
-| ----------------------------------- | --------------------------------------------- |
-| `@silver-formily/reactive-vue`      | Vue 3 版 `@formily/reactive` 响应式适配层     |
-| `@silver-formily/vue`               | Vue 3 版 Formily 运行时绑定                   |
-| `@silver-formily/element-plus`      | Formily + Element Plus 组件封装与场景组件     |
-| `@silver-formily/vant`              | Formily + Vant 移动端组件封装骨架             |
-| `@silver-formily/grid`              | 与 Formily 生态配套的网格布局运行时           |
-| `@silver-formily/docs-toolkit`      | 内部共享的 VitePress 主题、插件与站点配置工具 |
-| `@silver-formily/typescript-config` | 内部 TypeScript 配置共享包                    |
+| 包名                                | 说明                                             |
+| ----------------------------------- | ------------------------------------------------ |
+| `@silver-formily/reactive-vue`      | Vue 3 版 `@silver-formily/reactive` 响应式适配层 |
+| `@silver-formily/vue`               | Vue 3 版 Formily 运行时绑定                      |
+| `@silver-formily/element-plus`      | Formily + Element Plus 组件封装与场景组件        |
+| `@silver-formily/vant`              | Formily + Vant 移动端组件封装骨架                |
+| `@silver-formily/grid`              | 与 Formily 生态配套的网格布局运行时              |
+| `@silver-formily/docs-toolkit`      | 内部共享的 VitePress 主题、插件与站点配置工具    |
+| `@silver-formily/typescript-config` | 内部 TypeScript 配置共享包                       |
 
 `apps/*` 下的 7 个文档应用均为私有 workspace，当前统一使用 VitePress 站点脚本（`vitepress dev/build/preview`）并通过 `@silver-formily/docs-toolkit` 复用主题配置。
 

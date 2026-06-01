@@ -6,25 +6,25 @@ Silver Formily is a Formily ecosystem rebuilt on top of Vite and Turborepo. It i
 
 ## Documentation Sites
 
-- Reactive: <https://reactive.silver-formily.org>
+- Reactive: docs and interactive demos for `@silver-formily/reactive` <https://reactive.silver-formily.org>
 - Vue: <https://vue.silver-formily.org>
 - Reactive Vue: <https://reactive-vue.silver-formily.org>
 - Element Plus: <https://element-plus.silver-formily.org>
 - Vant: <https://vant.silver-formily.org>
 - Grid: <https://grid.silver-formily.org>
-- Refactored official JSON Schema docs: <https://json-schema.silver-formily.org>
+- JSON Schema: rebuilt Formily JSON Schema docs <https://json-schema.silver-formily.org>
 
 ## Workspace Packages
 
-| Package                             | Purpose                                              |
-| ----------------------------------- | ---------------------------------------------------- |
-| `@silver-formily/reactive-vue`      | Vue 3 adapter layer around `@formily/reactive`       |
-| `@silver-formily/vue`               | Vue 3 Formily runtime binding                        |
-| `@silver-formily/element-plus`      | Formily + Element Plus bindings and scenario widgets |
-| `@silver-formily/vant`              | Formily + Vant mobile component scaffold             |
-| `@silver-formily/grid`              | Grid runtime package for the Formily ecosystem       |
-| `@silver-formily/docs-toolkit`      | Shared VitePress theme, plugins, and site config     |
-| `@silver-formily/typescript-config` | Shared TypeScript presets for the workspace          |
+| Package                             | Purpose                                               |
+| ----------------------------------- | ----------------------------------------------------- |
+| `@silver-formily/reactive-vue`      | Vue 3 adapter layer around `@silver-formily/reactive` |
+| `@silver-formily/vue`               | Vue 3 Formily runtime binding                         |
+| `@silver-formily/element-plus`      | Formily + Element Plus bindings and scenario widgets  |
+| `@silver-formily/vant`              | Formily + Vant mobile component scaffold              |
+| `@silver-formily/grid`              | Grid runtime package for the Formily ecosystem        |
+| `@silver-formily/docs-toolkit`      | Shared VitePress theme, plugins, and site config      |
+| `@silver-formily/typescript-config` | Shared TypeScript presets for the workspace           |
 
 The seven apps under `apps/*` are private VitePress sites. They all use the standard `vitepress dev/build/preview` scripts and share theme configuration through `@silver-formily/docs-toolkit`.
 
