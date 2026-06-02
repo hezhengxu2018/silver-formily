@@ -1,7 +1,7 @@
 {
   "name": "@silver-formily/core",
   "type": "module",
-  "version": "2.3.7",
+  "version": "0.0.0-alpha.0",
   "description": "Silver Formily maintained fork of @formily/core",
   "author": "hezhengxu",
   "license": "MIT",
