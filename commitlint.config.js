@@ -83,6 +83,7 @@ export default {
     aiNumber: 1,
     themeColorCode: '',
     scopes: [
+      { value: 'apps/core-docs', name: 'apps/core-docs' },
       { value: 'apps/element-plus-docs', name: 'apps/element-plus-docs' },
       { value: 'apps/vant-docs', name: 'apps/vant-docs' },
       { value: 'apps/reactive-vue-docs', name: 'apps/reactive-vue-docs' },
