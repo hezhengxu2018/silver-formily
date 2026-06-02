@@ -4,7 +4,7 @@ Most users do not call `@silver-formily/validator` directly. In real projects, v
 
 In other words, most application code works with `Field.validator`, not raw `validate(...)` calls.
 
-## The mental model
+## End-to-end flow
 
 In Formily, field validation usually follows this path:
 
@@ -38,7 +38,7 @@ Three details matter here:
 
 That is why custom validators can read both the field instance and the form instance.
 
-## Where you should declare rules
+## How to add validation rules
 
 The practical question is not how `validate` works internally. It is where validation should be declared in a Formily app.
 
@@ -152,6 +152,12 @@ field.setValidator([
 
 Arrays are usually the most practical shape because they let you separate base rules, triggers, and custom logic.
 
+For the full rule surface, see the [Validation Rules](/en/api/validate) section.
+
+:::tip Tip
+`setValidator` is only one of the [three ways to add validation rules](/en/guide/formily-validator#how-to-add-validation-rules). These three approaches are equivalent. In real business code, rules are usually declared directly on `Field` or inside `x-validator` in Markup Schema. This guide uses `field.setValidator(...)` in a few examples mainly because it highlights more cleanly in code blocks.
+:::
+
 ## When rules run
 
 This part is often scattered across official docs, but the actual model is simple:
@@ -180,7 +186,7 @@ This means:
 
 That is usually a better UX than running every expensive rule on each keystroke.
 
-## What custom validators receive
+## Custom validator arguments
 
 The function signature already shows how Formily passes context in:
 
@@ -208,9 +214,92 @@ Here:
 - `ctx` contains `field` and `form`
 - `render` applies template rendering
 
+Here, `render` is not React render and it is not a component render function. Its only job is to combine a message string with the current validation context and produce the final message string.
+
+Its shape is effectively:
+
+```ts
+type MessageRenderer = (message: string, scope?: Record<string, any>) => string
+```
+
+Two common patterns are:
+
+### 1. Use the existing context directly
+
+```ts
+return render('Field {{field.title}} is required')
+```
+
+This reads `field.title` from the current validation context.
+
+### 2. Add temporary variables
+
+```ts
+return render('Field {{field.title}} must be greater than {{min}}', {
+  min: 10,
+})
+```
+
+The second argument is merged into the current context, so you can use both built-in values like `field` and `form`, and extra values such as `min`.
+
 If you only need other field values, prefer `ctx.form.values`. Reach for `ctx.field` when you need the field instance itself.
 
-## How to read return values
+## A more realistic custom validator example
+
+The example below combines several common needs:
+
+- cross-field validation based on other form values
+- different branches returning errors and warnings
+- `render(...)` used as the unified message builder
+- extra variables passed through `scope`
+
+```ts
+const rule = {
+  triggerType: 'onBlur',
+  async validator(value, rule, ctx, render) {
+    const { field, form } = ctx
+    const role = form.values.role
+    const domain = value?.split('@')[1]
+
+    if (!value)
+      return ''
+
+    if (!value.includes('@')) {
+      return render('Field {{field.title}} must be a valid email')
+    }
+
+    if (role === 'admin' && domain !== 'company.com') {
+      return render('Admin accounts must use the {{expectedDomain}} domain', {
+        expectedDomain: 'company.com',
+      })
+    }
+
+    if (role === 'guest' && domain === 'company.com') {
+      return {
+        type: 'warning',
+        message: render('Guest accounts usually should not use the {{currentDomain}} domain', {
+          currentDomain: domain,
+        }),
+      }
+    }
+
+    if (field.required && value.length < 6) {
+      return render('Field {{field.title}} must be at least {{min}} characters long', {
+        min: 6,
+      })
+    }
+
+    return ''
+  },
+}
+```
+
+In this example, `render(...)` is useful for two reasons:
+
+- it keeps message templates consistent without manual string concatenation
+- it can reuse both the built-in context (`field`, `form`) and temporary variables passed in at the call site
+
+## Return value formats
 
 The easiest way to understand return values is to group them by whether they carry an explicit feedback type.
 
@@ -249,9 +338,9 @@ return {
 }
 ```
 
-This explicitly chooses the feedback bucket instead of defaulting to an error.
+This directly decides which feedback type the message goes into, so in practice it also depends on whether your component layer handles warning and success feedback correctly.
 
-## Where the result ends up
+## Where to read validation results
 
 In Formily, validator output is not just returned to the caller. It is also written into the field feedback system.
 
@@ -273,7 +362,7 @@ console.log(field.selfErrors)
 
 So in practice, a validator is not only a predicate. It is also a producer of field feedback state.
 
-## Global rules vs local rules
+## Best practices for global and local rules
 
 In practice, this split works well.
 

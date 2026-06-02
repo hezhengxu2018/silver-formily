@@ -4,7 +4,7 @@
 
 换句话说，业务代码通常面对的是 `Field.validator`，不是裸 `validate(...)`。
 
-## 先建立整体模型
+## 完整链路
 
 在 Formily 里，一次字段校验大致会经过这条链路：
 
@@ -17,8 +17,6 @@
 
 - 把字段上的声明式规则转换成可执行函数
 - 把执行结果规范化成 Formily 可消费的反馈消息
-
-## Formily 是怎么接进去的
 
 在 `@silver-formily/core` 里，字段校验最终会走到类似下面的调用：
 
@@ -38,7 +36,7 @@ const results = await validate(field.value, field.validator, {
 
 这也是为什么自定义校验函数里可以直接读取表单实例和字段实例。
 
-## 你真正应该写在哪里
+## 如何添加校验规则
 
 对使用者来说，最重要的问题不是 `validate` 怎么调用，而是规则应该声明在哪。
 
@@ -150,11 +148,13 @@ field.setValidator([
 ])
 ```
 
-数组是 Formily 里最实用的形态，因为它允许你把基础规则、触发时机和复杂业务规则拆开写。
+数组是 Formily 里最实用的形态，因为它允许你把基础规则、触发时机和复杂业务规则拆开写。完整的说明可以参考[校验规则](/api/validate) 章节
+
+:::tip 提示
+`setValidator` 只是[三种添加校验的方式](/guide/formily-validator#如何添加校验规则)之一，这三种方式是等价的。在业务开发中一般会直接声明在`Field` 上或者 MarkupSchema 中的 `x-validator` 中。这里写成`field.setValidator` 的形式只是为了代码高亮。
+:::
 
 ## 什么时候触发
-
-这是官方文档里最容易写散的部分，但实际理解起来很简单：
 
 - 没写 `triggerType` 时，规则默认走 `onInput`
 - 写了 `triggerType: 'onBlur'`，就只会在失焦时触发
@@ -180,7 +180,7 @@ field.setValidator([
 
 这通常比把所有规则都塞到 `onInput` 上更符合实际交互。
 
-## 自定义函数拿到什么
+## 自定义函数的入参
 
 当你写函数型校验器时，签名本身就能看出 Formily 是怎么把上下文接进来的：
 
@@ -208,9 +208,92 @@ const rule = {
 - `ctx` 里会有 `field` 和 `form`
 - `render` 用来做消息模板渲染
 
+其中 `render` 不是 React 里的 render，也不是组件渲染函数。它的职责只有一个：把消息字符串和当前上下文合并，生成最终要显示的校验消息。
+
+它的签名可以理解成：
+
+```ts
+type MessageRenderer = (message: string, scope?: Record<string, any>) => string
+```
+
+常见用法有两种：
+
+### 1. 直接使用现有上下文
+
+```ts
+return render('字段 {{field.title}} 不能为空')
+```
+
+这里会直接从当前上下文里读取 `field.title`。
+
+### 2. 临时补充额外变量
+
+```ts
+return render('字段 {{field.title}} 必须大于 {{min}}', {
+  min: 10,
+})
+```
+
+这里的第二个参数会和原有上下文合并，所以你既可以访问 `field`、`form`，也可以访问手动传入的 `min`。
+
 如果你只是需要访问其他字段值，优先通过 `ctx.form.values` 读取；如果你需要字段实例行为，再使用 `ctx.field`。
 
-## 返回值该怎么理解
+## 一个更复杂的自定义函数例子
+
+下面这个例子把几个常见需求放在了一起：
+
+- 根据其他字段值做交叉校验
+- 在不同分支返回 error 和 warning
+- 用 `render(...)` 统一拼装消息
+- 通过 `scope` 传入额外变量
+
+```ts
+const rule = {
+  triggerType: 'onBlur',
+  async validator(value, rule, ctx, render) {
+    const { field, form } = ctx
+    const role = form.values.role
+    const domain = value?.split('@')[1]
+
+    if (!value)
+      return ''
+
+    if (!value.includes('@')) {
+      return render('字段 {{field.title}} 必须是合法邮箱')
+    }
+
+    if (role === 'admin' && domain !== 'company.com') {
+      return render('管理员账号必须使用 {{expectedDomain}} 域名', {
+        expectedDomain: 'company.com',
+      })
+    }
+
+    if (role === 'guest' && domain === 'company.com') {
+      return {
+        type: 'warning',
+        message: render('访客账号通常不建议使用 {{currentDomain}} 域名', {
+          currentDomain: domain,
+        }),
+      }
+    }
+
+    if (field.required && value.length < 6) {
+      return render('字段 {{field.title}} 的长度不能小于 {{min}}', {
+        min: 6,
+      })
+    }
+
+    return ''
+  },
+}
+```
+
+这个例子里，`render(...)` 的价值主要有两个：
+
+- 保持消息模板写法一致，不需要手动拼接字符串
+- 同时复用 `ctx` 里的 `field`、`form` 和临时传入的额外变量
+
+## 返回值的格式
 
 这也是用户容易困惑的点。把它按“是否携带类型”来记最简单：
 
@@ -249,9 +332,9 @@ return {
 }
 ```
 
-这会直接决定消息进入哪个反馈桶，而不一定是错误。
+这会直接决定消息进入哪个反馈类型，需要结合正确封装的组件库使用。
 
-## 结果最后会落到哪里
+## 校验结果获取
 
 在 Formily 里，validator 的结果不会只是“返回给调用者”，还会被同步写进字段反馈系统。
 
@@ -273,7 +356,7 @@ console.log(field.selfErrors)
 
 所以从 UI 角度看，validator 不只是一个判断函数，它还是字段反馈状态的来源。
 
-## 全局规则和局部规则怎么分工
+## 全局规则和局部规则的最佳实践
 
 实践上建议这样分：
 
@@ -312,8 +395,6 @@ const fieldProps = {
 ```
 
 这样的好处是：字段上保留声明式配置，复杂规则逻辑集中在一处维护。
-
-## 推荐的组织方式
 
 如果你是从 Formily 角度使用这个库，建议优先采用下面的层次：
 

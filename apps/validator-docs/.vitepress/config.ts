@@ -96,6 +96,10 @@ export default createDocsConfig({
   socialLinks: [
     { icon: 'github', link: 'https://github.com/hezhengxu2018/silver-formily' },
   ],
+  themeConfig: {
+    logo: '/logo.svg',
+    outline: [2, 4],
+  },
   vite: {
     optimizeDeps: {
       include: ['@silver-formily/validator'],

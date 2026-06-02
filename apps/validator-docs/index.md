@@ -10,7 +10,7 @@
 4. 通过 parser 把字符串、函数、规则对象统一解析成可运行的校验函数。
 
 :::tip 提示
-`@silver-formily/core` 会直接依赖这个包，所以这里的规则语义和消息渲染行为应该保持稳定、可预测。
+普通用户是在使用 `@silver-formily/core` 的过程中间接使用其能力的。因此可以重点查看[在Formily中使用](/guide/formily-validator)章节。API部分中最常参考的章节是[校验规则](/api/validate)，偶尔会用到[注册中心](/api/registry)的部分。解析器的部分主要暴露给 `@silver-formily/core`， 业务开发很少会用到。
 :::
 
 ## 安装
