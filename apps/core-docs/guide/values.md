@@ -166,32 +166,10 @@ batch(() => {
 })
 ```
 
-## 常见模式
+## 相关机制
 
-### 联动修改值
+值与状态是其他机制的基础，但具体规则分别在独立章节说明：
 
-```ts
-onFieldValueChange('source', (field) => {
-  form.setValuesIn('target', field.value)
-})
-```
-
-### 条件显隐
-
-```ts
-onFieldValueChange('type', (field) => {
-  form.query('extra').take()?.setDisplay(
-    field.value === 'special' ? 'visible' : 'hidden',
-  )
-})
-```
-
-### 设置反馈
-
-```ts
-field.setFeedback({
-  type: 'error',
-  code: 'ValidateError',
-  messages: ['字段值不合法'],
-})
-```
+- 通过字段路径读写嵌套数据：[路径系统](/guide/path)
+- 根据状态变化修改其他字段：[联动系统](/guide/linkage)
+- 读取和写入错误、警告、成功反馈：[校验系统](/guide/validation)

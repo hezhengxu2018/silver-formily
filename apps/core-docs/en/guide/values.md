@@ -84,22 +84,10 @@ batch(() => {
 })
 ```
 
-## Common Patterns
+## Related Mechanisms
 
-### Linked Value Update
+Values and state are the foundation for other mechanisms, but their detailed rules are covered in standalone pages:
 
-```ts
-onFieldValueChange('source', (field) => {
-  form.setValuesIn('target', field.value)
-})
-```
-
-### Conditional Visibility
-
-```ts
-onFieldValueChange('type', (field) => {
-  form.query('extra').take()?.setDisplay(
-    field.value === 'special' ? 'visible' : 'hidden',
-  )
-})
-```
+- Reading and writing nested data through field paths: [Path System](/en/guide/path)
+- Updating other fields after state changes: [Linkage System](/en/guide/linkage)
+- Reading and writing error, warning, and success feedback: [Validation System](/en/guide/validation)

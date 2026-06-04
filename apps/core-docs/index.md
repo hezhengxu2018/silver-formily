@@ -3,17 +3,17 @@ layout: home
 
 hero:
   name: Silver Formily Core
-  tagline: 框架无关的表单状态管理引擎
+  tagline: 独立维护的 @formily/core
   image:
     src: /logo.svg
     alt: Silver Formily Element Plus
   actions:
     - theme: brand
-      text: 主站文档
-      link: https://www.silver-formily.org/
-    - theme: alt
-      text: 内核文档
+      text: 指南
       link: /guide/
+    - theme: alt
+      text: API文档
+      link: /api/entry/createForm
 
 features:
   - title: 🚀 超高的性能

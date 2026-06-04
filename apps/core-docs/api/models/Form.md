@@ -4,7 +4,7 @@
 
 ## 描述
 
-`Form` 是 `@silver-formily/core` 的核心模型类。它聚合了 `Graph`（字段图）和 `Heart`（事件总线），提供字段创建、查询、校验、提交等全部表单能力。
+`Form` 是 `@silver-formily/core` 的顶层聚合模型。它聚合了 `Graph`（字段图）和 `Heart`（事件总线），并提供字段创建、查询、值操作、校验、提交等表单入口能力。
 
 通常不直接 `new Form()`，而是通过 `createForm()` 创建。
 
@@ -76,43 +76,62 @@ const form = createForm(options)
 | ---------------- | ----------------------------------- |
 | `query(pattern)` | 按路径模式查询字段，返回 Query 对象 |
 
+### 字段图
+
+| 方法                                    | 说明                   |
+| --------------------------------------- | ---------------------- |
+| `getFormGraph()`                        | 导出 Form 和字段状态图 |
+| `setFormGraph(graph)`                   | 导入 Form 和字段状态图 |
+| `clearFormGraph(pattern?, forceClear?)` | 清空匹配字段           |
+
 ### 值操作
 
-| 方法                           | 说明             |
-| ------------------------------ | ---------------- |
-| `setValues(values, strategy?)` | 设置表单值       |
-| `setValuesIn(path, value)`     | 设置指定路径的值 |
-| `getValuesIn(path)`            | 获取指定路径的值 |
-| `deleteValuesIn(path)`         | 删除指定路径的值 |
-| `existValuesIn(path)`          | 判断路径是否存在 |
+| 方法                                  | 说明                   |
+| ------------------------------------- | ---------------------- |
+| `setValues(values, strategy?)`        | 设置表单值             |
+| `setValuesIn(path, value)`            | 设置指定路径的值       |
+| `getValuesIn(path)`                   | 获取指定路径的值       |
+| `deleteValuesIn(path)`                | 删除指定路径的值       |
+| `existValuesIn(path)`                 | 判断值路径是否存在     |
+| `setInitialValues(values, strategy?)` | 设置表单默认值         |
+| `setInitialValuesIn(path, value)`     | 设置指定路径的默认值   |
+| `getInitialValuesIn(path)`            | 获取指定路径的默认值   |
+| `deleteInitialValuesIn(path)`         | 删除指定路径的默认值   |
+| `existInitialValuesIn(path)`          | 判断默认值路径是否存在 |
 
 ### 表单操作
 
-| 方法                 | 说明     |
-| -------------------- | -------- |
-| `submit(onSubmit?)`  | 提交表单 |
-| `validate(pattern?)` | 校验表单 |
-| `reset(options?)`    | 重置表单 |
+| 方法                        | 说明         |
+| --------------------------- | ------------ |
+| `submit(onSubmit?)`         | 提交表单     |
+| `validate(pattern?)`        | 校验匹配字段 |
+| `reset(pattern?, options?)` | 重置匹配字段 |
 
 ### 模式与显隐
 
-| 方法                  | 说明         |
-| --------------------- | ------------ |
-| `setPattern(pattern)` | 设置表单模式 |
-| `setDisplay(display)` | 设置表单显隐 |
-| `setReadOnly(flag)`   | 设置只读     |
-| `setDisabled(flag)`   | 设置禁用     |
-| `setHidden(flag)`     | 设置隐藏     |
-| `setEditable(flag)`   | 设置可编辑   |
-| `setReadPretty(flag)` | 设置阅读态   |
+| 方法                  | 说明                       |
+| --------------------- | -------------------------- |
+| `setPattern(pattern)` | 设置表单模式               |
+| `setDisplay(display)` | 设置表单显隐               |
+| `readOnly = flag`     | 通过属性 setter 设置只读   |
+| `disabled = flag`     | 通过属性 setter 设置禁用   |
+| `hidden = flag`       | 通过属性 setter 设置隐藏   |
+| `visible = flag`      | 通过属性 setter 设置可见   |
+| `editable = flag`     | 通过属性 setter 设置可编辑 |
+| `readPretty = flag`   | 通过属性 setter 设置阅读态 |
 
 ### 生命周期
 
-| 方法                     | 说明             |
-| ------------------------ | ---------------- |
-| `onMount()`              | 挂载表单         |
-| `onUnmount()`            | 卸载表单         |
-| `notify(type, payload?)` | 发布生命周期事件 |
+| 方法                      | 说明             |
+| ------------------------- | ---------------- |
+| `onMount()`               | 挂载表单         |
+| `onUnmount()`             | 卸载表单         |
+| `notify(type, payload?)`  | 发布生命周期事件 |
+| `subscribe(subscriber)`   | 订阅生命周期事件 |
+| `unsubscribe(id)`         | 取消订阅         |
+| `setEffects(effects)`     | 替换副作用配置   |
+| `addEffects(id, effects)` | 添加副作用配置   |
+| `removeEffects(id)`       | 移除副作用配置   |
 
 ## 用例
 

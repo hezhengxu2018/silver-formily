@@ -1,91 +1,33 @@
 # 介绍
 
-## UI 无关
+`@silver-formily/core` 是整个formily框架的核心。不同于官方文档，这里不会一开始就介绍诸如领域模型、超高性能等对开发毫无帮助的概念，这里着重会介绍 `@silver-formily/core` 是什么。当你对 `formily` 的各个模块建立了正确的概念之后再来了解这些概念会轻松得多。
 
-`@silver-formily/core` 是一个**独立的框架无关包**，它存在的价值在于将领域模型从 UI 框架中抽离出来。
+## 定位
 
-这样做有两层好处：
+有两种角度去解释 `@silver-formily/core` 的定位：
 
-- 开发者不再需要将业务逻辑与 UI 组件强耦合，代码可维护性大幅提升
-- 让框架天然具备**跨终端、跨框架**的能力。不管是 React、Vue 还是其他框架，都可以共享 Formily 的领域模型
+1. 对用户来说，这是整个框架的核心，它负责了主要的表单模型及字段模型
+2. 对整个 `formily` 框架的其他库来说，这是整个框架的胶水,它负责把其他各种底层库融合起来。它融合了 `reactive` 的响应式，整合了 `path` 提供的路径查询系统，接入了 `validator` 提供的校验系统，使得表单可以在正确的时机校验并反馈给模型。
 
-```ts
-// core 是纯逻辑，不依赖任何 UI 框架
-import { createForm } from '@silver-formily/core'
+上面这三个库，特别是 `@silver-formily/validator` 及 `@silver-formily/path`，对用户来说是引用透明的。脱离了 `@silver-formily/core` 这两个包很难独立使用。可以认为是：
 
-// 你可以用同一个 form 实例驱动不同框架的 View 层
-// Vue:  @silver-formily/vue
-// 或任何自定义渲染
-```
+- `@silver-formily/core` 需要一个响应式系统了才有的`@silver-formily/reactive`
+- `@silver-formily/core` 需要一个字段模型路径查询系统了才有的 `@silver-formily/path`
+- `@silver-formily/core` 需要一个完善的表单校验系统了才有的 `@silver-formily/validator`
 
-## 超高性能
+这些功能都是为了服务于表单模型的。因此，可以说整个 `@silver-formily/core` 最大的价值是建立了一个完善的表单模型和字段模型，`@silver-formily/reactive`、`@silver-formily/path`、`@silver-formily/validator` 都是为了服务于字段或者表单模型而衍生出的依赖。
 
-借助 `@silver-formily/reactive` 的响应式内核，`@silver-formily/core` 实现了：
+## 阅读路径
 
-- **依赖追踪**：自动收集字段状态和副作用之间的依赖关系
-- **高效更新**：仅在依赖变化时精准通知，避免全量更新
-- **按需渲染**：只重新渲染实际发生变化的字段组件
+这份 Guide 会把模型和机制拆开讲，避免把所有能力都塞进“表单模型”一页里：
 
-无论面对频繁的字段输入还是复杂的字段联动，都能保证 **O(1)** 级别的更新性能。你无需关心性能优化的事情，专注于业务逻辑即可。
+| 章节                          | 重点                                                                    |
+| ----------------------------- | ----------------------------------------------------------------------- |
+| [表单模型](/guide/form)       | Form 的顶层聚合职责：状态容器、字段工厂、字段图、生命周期和聚合操作入口 |
+| [字段模型](/guide/field)      | Field / ArrayField / ObjectField / VoidField 的字段状态和差异           |
+| [值与状态](/guide/values)     | `values`、`initialValues`、表单状态、字段状态和批量更新                 |
+| [路径系统](/guide/path)       | `address`、`path`、`FormPath`、`query()` 和嵌套数据读写                 |
+| [校验系统](/guide/validation) | 校验器、触发时机、校验策略和 feedback 聚合                              |
+| [联动系统](/guide/linkage)    | `effects` 与 `reactions` 的区别、共同底层和适用场景                     |
 
-## 领域模型
-
-`@silver-formily/core` 将表单问题拆解为四个领域级问题，并逐一提供了完备的解决方案：
-
-### 数据管理
-
-提供 `values` 和 `initialValues` 双重值管理，支持覆盖、浅合并、深合并三种策略。值与默认值的冲突解决遵循"以用户为准"原则。
-
-```ts
-form.setValues({ username: 'silver' })
-form.setValues({ profile: { name: 'new' } }, 'deepMerge')
-```
-
-### 字段管理
-
-通过 `createField` / `createArrayField` / `createObjectField` / `createVoidField` 创建字段，通过 `query` 灵活查找，通过 `getFormGraph` / `setFormGraph` 导入导出字段集。
-
-```ts
-const field = form.createField({ name: 'username' })
-const fields = form.query('user.*.name').map()
-```
-
-### 校验管理
-
-提供声明式校验规则、动态规则修改、多触发时机（onInput/onBlur/onFocus）、校验策略（validateFirst）、以及丰富的反馈结果（error/warning/success）。
-
-```ts
-field.setValidator([
-  { required: true },
-  { format: 'email', triggerType: 'onBlur' },
-])
-```
-
-### 联动管理
-
-提供**主动联动**（基于生命周期钩子）和**被动联动**（基于 reactions 依赖追踪）两种模式，覆盖一对一、一对多、多对一等各种联动场景。
-
-```ts
-onFieldValueChange('source', (field) => {
-  field.form.setValuesIn('target', field.value)
-})
-```
-
-## 智能提示
-
-`@silver-formily/core` 是一个完整的 TypeScript 项目，在 VSCode、WebStorm 等编辑器中使用时可以获得最大化的智能提示体验。所有 API 都提供了精确的类型定义和泛型支持，让你在编写代码时能享受到完整的自动补全和类型校验。
-
-## 状态可观测
-
-通过安装 [FormilyDevtools](https://chrome.google.com/webstore/detail/formily-devtools/kkocalmbfnplecdmbadaapgapdioecfm?hl=zh-CN) 浏览器扩展，你可以实时观测表单模型的状态变化，快速排查联动问题或校验异常。
-
-## 何时需要手动使用 Core
-
-大多数情况下，你是通过 `@silver-formily/vue` 等 UI 绑定包间接使用 core 的能力。以下场景需要直接使用 core：
-
-- **自定义组件封装**：需要操作字段的底层 API（如 setState、setValidator）
-- **副作用逻辑复用**：需要在 effects 函数中编写跨页面的联动逻辑
-- **脱离 UI 的表单操作**：如服务端表单校验、测试场景
-- **框架无关的工具函数**：如编写一个纯逻辑的表单处理器
-
-如果你刚刚开始接触 Formily，可以从 [快速开始](/) 开始，先感受整体流程，再深入本章了解设计原理。
+如果只是想知道 Form 是什么，先读 [表单模型](/guide/form) 就够了；如果要理解复杂动态表单，再继续读路径、校验和联动这几个机制页。

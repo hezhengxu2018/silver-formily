@@ -1,91 +1,38 @@
 # Introduction
 
-## UI-Agnostic
+`@silver-formily/core` is the core package of the Silver Formily runtime. It is UI-agnostic: the same form domain model can drive Vue, React, or a custom renderer.
 
-`@silver-formily/core` is a **standalone framework-agnostic package**. Its value lies in decoupling the domain model from any UI framework.
+Its value is not that one class does everything. Instead, it builds a form runtime by composing several mechanisms:
 
-This offers two key benefits:
+- `@silver-formily/reactive` provides reactive state and dependency tracking
+- `@silver-formily/path` provides field path matching and nested data paths
+- `@silver-formily/validator` provides validation rule execution and feedback
+- `@silver-formily/core` combines them into Form and Field models
 
-- Developers no longer need to tightly couple business logic with UI components, dramatically improving maintainability
-- The framework gains native **cross-platform, cross-framework** capabilities. Whether using React, Vue, or other frameworks, you can share the Formily domain model
+## Positioning
 
-```ts
-// core is pure logic, independent of any UI framework
-import { createForm } from '@silver-formily/core'
+There are two useful ways to understand `@silver-formily/core`:
 
-// The same form instance can drive View layers from different frameworks
-// Vue:  @silver-formily/vue
-// or any custom renderer
-```
+1. For application developers, it provides the main form model and field model.
+2. For other Formily packages, it is the glue that connects reactivity, path queries, validation, lifecycle events, and UI consumers.
 
-## High Performance
+The path and validator packages are mostly transparent to users. They exist to serve the form model:
 
-Powered by `@silver-formily/reactive`'s reactive kernel, `@silver-formily/core` delivers:
+- `@silver-formily/core` needs a reactive system, so it depends on `@silver-formily/reactive`
+- `@silver-formily/core` needs field path querying, so it depends on `@silver-formily/path`
+- `@silver-formily/core` needs validation, so it depends on `@silver-formily/validator`
 
-- **Dependency tracking**: Automatically collects dependencies between field state and side effects
-- **Efficient updates**: Precise notifications only when dependencies change — no wholesale updates
-- **Render on demand**: Only re-renders fields that actually changed
+## Reading Path
 
-Whether handling frequent field input or complex cross-field linkage, it guarantees **O(1)** update performance. You don't need to worry about optimization — focus on business logic.
+This guide separates models from mechanisms, so the Form page does not become a catch-all page:
 
-## Domain Model
+| Page                                      | Focus                                                                                                             |
+| ----------------------------------------- | ----------------------------------------------------------------------------------------------------------------- |
+| [Form Model](/en/guide/form)              | Form as the top-level aggregate: state container, field factory, field graph, lifecycle, and aggregate operations |
+| [Field Model](/en/guide/field)            | Field / ArrayField / ObjectField / VoidField state and differences                                                |
+| [Values & State](/en/guide/values)        | `values`, `initialValues`, form state, field state, and batch updates                                             |
+| [Path System](/en/guide/path)             | `address`, `path`, `FormPath`, `query()`, and nested data operations                                              |
+| [Validation System](/en/guide/validation) | Validators, trigger timing, validation strategy, and feedback aggregation                                         |
+| [Linkage System](/en/guide/linkage)       | `effects` and `reactions`, their shared foundation, and when to use each                                          |
 
-`@silver-formily/core` breaks down form-related problems into four domain-level concerns, each with a complete solution:
-
-### Data Management
-
-Dual value management with `values` and `initialValues`, supporting overwrite, shallow merge, and deep merge strategies. Conflict resolution follows a "user-first" principle.
-
-```ts
-form.setValues({ username: 'silver' })
-form.setValues({ profile: { name: 'new' } }, 'deepMerge')
-```
-
-### Field Management
-
-Create fields via `createField` / `createArrayField` / `createObjectField` / `createVoidField`, query flexibly via `query`, import/export field sets via `getFormGraph` / `setFormGraph`.
-
-```ts
-const field = form.createField({ name: 'username' })
-const fields = form.query('user.*.name').map()
-```
-
-### Validation Management
-
-Declarative validation rules, dynamic rule modification, multiple trigger timings (onInput/onBlur/onFocus), validation strategies (validateFirst), and rich feedback results (error/warning/success).
-
-```ts
-field.setValidator([
-  { required: true },
-  { format: 'email', triggerType: 'onBlur' },
-])
-```
-
-### Linkage Management
-
-Two linkage models — **active** (lifecycle-hook-based) and **passive** (reactions-based dependency tracking) — covering one-to-one, one-to-many, and many-to-one scenarios.
-
-```ts
-onFieldValueChange('source', (field) => {
-  field.form.setValuesIn('target', field.value)
-})
-```
-
-## TypeScript Intelligence
-
-`@silver-formily/core` is a fully TypeScript project. When using VSCode, WebStorm, or similar editors, you get maximized intelligent code completion. All APIs provide precise type definitions and generic support.
-
-## Observable State
-
-Install [FormilyDevtools](https://chrome.google.com/webstore/detail/formily-devtools/kkocalmbfnplecdmbadaapgapdioecfm?hl=zh-CN) to observe form model state changes in real time, quickly troubleshooting linkage issues or validation anomalies.
-
-## When to Use Core Directly
-
-In most cases, you consume core indirectly through UI binding packages like `@silver-formily/vue`. Use core directly when:
-
-- **Custom component authoring**: need low-level field APIs (setState, setValidator)
-- **Reusable side-effect logic**: writing cross-page linkage logic in effects functions
-- **UI-independent form operations**: server-side validation, testing scenarios
-- **Framework-agnostic utilities**: building pure-logic form processors
-
-If you're new to Formily, start with [Quick Start](/en/) to get a feel for the overall flow, then return here for the design principles.
+If you only want to know what Form is, start with [Form Model](/en/guide/form). If you need to understand complex dynamic forms, continue with the path, validation, and linkage pages.

@@ -284,6 +284,9 @@ importers:
       '@silver-formily/docs-toolkit':
         specifier: workspace:*
         version: link:../../packages/docs-toolkit
+      element-plus:
+        specifier: 'catalog:'
+        version: 2.13.2(vue@3.5.32(typescript@6.0.2))
       vue:
         specifier: 'catalog:'
         version: 3.5.32(typescript@6.0.2)
