@@ -152,23 +152,8 @@ const form = createForm({
 
 ## Data Flow
 
-```mermaid
-graph TD
-    A["👤 User input"] --> B["Field.onInput / setValue"]
-    B --> C["Write observable field state"]
-    C --> D["Reactive schedules related Reactions"]
-    D --> E["field.reactions<br/>re-run field linkage"]
-    E --> F["Update visible / display / pattern state"]
-    F --> C
-    D --> G["Built-in model Reaction<br/>publish LifeCycleTypes"]
-    G --> H["effects Hook callback"]
-    D --> I["Observer / UI render update"]
-    C --> J["Validation scheduling<br/>validator.validate"]
-    J --> K["feedbacks written"]
-```
-
-## Relationship with Upstream
-
-`@silver-formily/core` is a fork of `@formily/core`. It keeps compatibility with the core model APIs, side-effect system, lifecycle type definitions, and validation scheduling mechanism.
-
-Main differences: the underlying dependency packages are replaced with the `@silver-formily/*` series, the implementation is optimized for the Vue ecosystem, and some upstream issues have been fixed.
+<ThemeImage
+  light="/architecture/data-flow.en.png"
+  dark="/architecture/data-flow.en.dark.png"
+  alt="Formily linkage system"
+/>
