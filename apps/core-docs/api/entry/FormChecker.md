@@ -1,141 +1,439 @@
-# FormChecker
+---
+outline: 2
+---
 
-> 类型判断工具函数集合，用于运行时检查对象是否为特定的 Formily 模型或状态
+# Form Checkers
 
-## 描述
+> 类型检查器主要用于判断某个对象具体是什么类型
 
-`@silver-formily/core` 导出了一组类型检查函数，用于在运行时安全地判断对象类型。
+## isForm
 
-## 判断模型实例
+### 描述
 
-### isForm
+判断一个对象是否为 [Form](/api/models/form) 对象
+
+### 签名
 
 ```ts
-function isForm(node: any): node is Form
+interface isForm {
+  (target: any): target is Form
+}
 ```
 
-检查一个对象是否为 `Form` 实例：
+### 用例
 
 ```ts
 import { createForm, isForm } from '@silver-formily/core'
 
 const form = createForm()
+
 console.log(isForm(form)) // true
-console.log(isForm({})) // false
 ```
 
-### isField
+## isField
+
+### 描述
+
+判断一个对象是否为 [Field](/api/models/field) 对象
+
+### 签名
 
 ```ts
-function isField(node: any): node is Field
-```
-
-检查是否为 `Field` 实例。
-
-### isArrayField
-
-```ts
-function isArrayField(node: any): node is ArrayField
-```
-
-检查是否为 `ArrayField` 实例。
-
-### isObjectField
-
-```ts
-function isObjectField(node: any): node is ObjectField
-```
-
-检查是否为 `ObjectField` 实例。
-
-### isVoidField
-
-```ts
-function isVoidField(node: any): node is VoidField
-```
-
-检查是否为 `VoidField` 实例。
-
-### isGeneralField
-
-```ts
-function isGeneralField(node: any): node is GeneralField
-```
-
-检查是否为任意字段实例 (Field | VoidField)：
-
-```ts
-import { isGeneralField, isVoidField } from '@silver-formily/core'
-
-if (isGeneralField(node) && !isVoidField(node)) {
-  // node 为数据类字段 (Field | ArrayField | ObjectField)
+interface isField {
+  (target: any): target is Field
 }
 ```
 
-### isDataField
+### 用例
 
 ```ts
-function isDataField(node: any): node is DataField
+import { createForm, isField } from '@silver-formily/core'
+
+const form = createForm()
+
+const field = form.createField({ name: 'target' })
+
+console.log(isField(field)) // true
 ```
 
-检查是否为数据字段 (Field | ArrayField | ObjectField)。
+## isArrayField
 
-### isQuery
+### 描述
 
-```ts
-function isQuery(query: any): query is Query
-```
+判断一个对象是否为 [ArrayField](/api/models/ArrayField) 对象
 
-检查是否为 `Query` 实例。
-
-## 判断状态对象
-
-除了模型实例，core 还提供了状态对象的类型检查：
-
-| 函数                         | 说明                        |
-| ---------------------------- | --------------------------- |
-| `isFormState(state)`         | 检查是否为 FormState        |
-| `isFieldState(state)`        | 检查是否为 FieldState       |
-| `isArrayFieldState(state)`   | 检查是否为 ArrayFieldState  |
-| `isObjectFieldState(state)`  | 检查是否为 ObjectFieldState |
-| `isVoidFieldState(state)`    | 检查是否为 VoidFieldState   |
-| `isGeneralFieldState(state)` | 检查是否为任意 FieldState   |
-| `isDataFieldState(state)`    | 检查是否为数据类 FieldState |
+### 签名
 
 ```ts
-import { isFieldState, isFormState } from '@silver-formily/core'
-
-const state = field.getState()
-console.log(isFieldState(state)) // true
-console.log(isFormState(state)) // false
-```
-
-## 实际场景
-
-```ts
-import {
-  isArrayField,
-  isField,
-  isObjectField,
-  isVoidField,
-} from '@silver-formily/core'
-
-function handleField(field) {
-  if (isField(field)) {
-    // 处理数据字段
-    console.log(field.value)
-  }
-  else if (isArrayField(field)) {
-    // 处理数组字段
-    field.push({})
-  }
-  else if (isObjectField(field)) {
-    // 处理对象字段
-    console.log(field.properties)
-  }
-  else if (isVoidField(field)) {
-    // 处理虚字段
-    console.log('虚字段')
-  }
+interface isArrayField {
+  (target: any): target is ArrayField
 }
+```
+
+### 用例
+
+```ts
+import { createForm, isArrayField } from '@silver-formily/core'
+
+const form = createForm()
+
+const field = form.createArrayField({ name: 'target' })
+
+console.log(isArrayField(field)) // true
+```
+
+## isObjectField
+
+### 描述
+
+判断一个对象是否为 [ObjectField](/api/models/ObjectField) 对象
+
+### 签名
+
+```ts
+interface isObjectField {
+  (target: any): target is ObjectField
+}
+```
+
+### 用例
+
+```ts
+import { createForm, isObjectField } from '@silver-formily/core'
+
+const form = createForm()
+
+const field = form.createObjectField({ name: 'target' })
+
+console.log(isObjectField(field)) // true
+```
+
+## isVoidField
+
+### 描述
+
+判断一个对象是否为 [VoidField](/api/models/VoidField) 对象
+
+### 签名
+
+```ts
+interface isVoidField {
+  (target: any): target is VoidField
+}
+```
+
+### 用例
+
+```ts
+import { createForm, isVoidField } from '@silver-formily/core'
+
+const form = createForm()
+
+const field = form.createVoidField({ name: 'target' })
+
+console.log(isVoidField(field)) // true
+```
+
+## isGeneralField
+
+### 描述
+
+判断一个对象是否为 Field/ArrayField/ObjectField/VoidField 对象
+
+### 签名
+
+```ts
+interface isGeneralField {
+  (target: any): target is Field | ArrayField | ObjectField | VoidField
+}
+```
+
+### 用例
+
+```ts
+import { createForm, isGeneralField } from '@silver-formily/core'
+
+const form = createForm()
+
+const field = form.createField({ name: 'target' })
+const arr = form.createArrayField({ name: 'array' })
+const obj = form.createObjectField({ name: 'object' })
+const vod = form.createVoidField({ name: 'void' })
+
+console.log(isGeneralField(field)) // true
+console.log(isGeneralField(arr)) // true
+console.log(isGeneralField(obj)) // true
+console.log(isGeneralField(vod)) // true
+console.log(isGeneralField({})) // false
+```
+
+## isDataField
+
+### 描述
+
+判断一个对象是否为 Field/ArrayField/ObjectField 对象
+
+### 签名
+
+```ts
+interface isDataField {
+  (target: any): target is Field | ArrayField | ObjectField
+}
+```
+
+### 用例
+
+```ts
+import { createForm, isDataField } from '@silver-formily/core'
+
+const form = createForm()
+
+const field = form.createField({ name: 'target' })
+const arr = form.createArrayField({ name: 'array' })
+const obj = form.createObjectField({ name: 'object' })
+const vod = form.createVoidField({ name: 'void' })
+
+console.log(isDataField(field)) // true
+console.log(isDataField(arr)) // true
+console.log(isDataField(obj)) // true
+console.log(isDataField(vod)) // false
+console.log(isDataField({})) // false
+```
+
+## isFormState
+
+### 描述
+
+判断一个对象是否为 [IFormState](/api/models/form#iformstate) 对象
+
+### 签名
+
+```ts
+interface isFormState {
+  (target: any): target is IFormState
+}
+```
+
+### 用例
+
+```ts
+import { createForm, isFormState } from '@silver-formily/core'
+
+const form = createForm()
+
+console.log(isFormState(form)) // false
+console.log(isFormState(form.getState())) // true
+```
+
+## isFieldState
+
+### 描述
+
+判断一个对象是否为 [IFieldState](/api/models/field#ifieldstate) 对象
+
+### 签名
+
+```ts
+interface isFieldState {
+  (target: any): target is IFieldState
+}
+```
+
+### 用例
+
+```ts
+import { createForm, isFieldState } from '@silver-formily/core'
+
+const form = createForm()
+const field = form.createField({
+  name: 'target',
+})
+
+console.log(isFieldState(field)) // false
+console.log(isFieldState(field.getState())) // true
+```
+
+## isArrayFieldState
+
+### 描述
+
+判断一个对象是否为 [IArrayFieldState](/api/models/ArrayField#iarrayfieldstate) 对象
+
+### 签名
+
+```ts
+interface isArrayFieldState {
+  (target: any): target is IArrayFieldState
+}
+```
+
+### 用例
+
+```ts
+import { createForm, isArrayFieldState } from '@silver-formily/core'
+
+const form = createForm()
+const field = form.createArrayField({
+  name: 'target',
+})
+
+console.log(isArrayFieldState(field)) // false
+console.log(isArrayFieldState(field.getState())) // true
+```
+
+## isObjectFieldState
+
+### 描述
+
+判断一个对象是否为 [IObjectFieldState](/api/models/ObjectField#iobjectfieldstate) 对象
+
+### 签名
+
+```ts
+interface isObjectFieldState {
+  (target: any): target is IObjectFieldState
+}
+```
+
+### 用例
+
+```ts
+import { createForm, isObjectFieldState } from '@silver-formily/core'
+
+const form = createForm()
+const field = form.createObjectField({
+  name: 'target',
+})
+
+console.log(isObjectFieldState(field)) // false
+console.log(isObjectFieldState(field.getState())) // true
+```
+
+## isVoidFieldState
+
+### 描述
+
+判断一个对象是否为 [IVoidFieldState](/api/models/VoidField#ivoidfieldstate) 对象
+
+### 签名
+
+```ts
+interface isVoidFieldState {
+  (target: any): target is IVoidFieldState
+}
+```
+
+### 用例
+
+```ts
+import { createForm, isVoidFieldState } from '@silver-formily/core'
+
+const form = createForm()
+const field = form.createVoidField({
+  name: 'target',
+})
+
+console.log(isVoidFieldState(field)) // false
+console.log(isVoidFieldState(field.getState())) // true
+```
+
+## isGeneralFieldState
+
+### 描述
+
+判断一个对象是否为 IFieldState/IArrayFieldState/IObjectFieldState/IVoidFieldState 对象
+
+### 签名
+
+```ts
+interface isGeneralFieldState {
+  (target: any): target is
+  | IFieldState
+  | IArrayFieldState
+  | IObjectFieldState
+  | IVoidFieldState
+}
+```
+
+### 用例
+
+```ts
+import { createForm, isGeneralFieldState } from '@silver-formily/core'
+
+const form = createForm()
+
+const field = form.createField({ name: 'target' })
+const arr = form.createArrayField({ name: 'array' })
+const obj = form.createObjectField({ name: 'object' })
+const vod = form.createVoidField({ name: 'void' })
+
+console.log(isGeneralFieldState(field)) // false
+console.log(isGeneralFieldState(arr)) // false
+console.log(isGeneralFieldState(obj)) // false
+console.log(isGeneralFieldState(vod)) // false
+console.log(isGeneralFieldState(field.getState())) // true
+console.log(isGeneralFieldState(arr.getState())) // true
+console.log(isGeneralFieldState(obj.getState())) // true
+console.log(isGeneralFieldState(vod.getState())) // true
+console.log(isGeneralFieldState({})) // false
+```
+
+## isDataFieldState
+
+### 描述
+
+判断一个对象是否为 IFieldState/IArrayFieldState/IObjectFieldState 对象
+
+### 签名
+
+```ts
+interface isDataFieldState {
+  (target: any): target is IFieldState | IArrayFieldState | IObjectFieldState
+}
+```
+
+### 用例
+
+```ts
+import { createForm, isDataFieldState } from '@silver-formily/core'
+
+const form = createForm()
+
+const field = form.createField({ name: 'target' })
+const arr = form.createArrayField({ name: 'array' })
+const obj = form.createObjectField({ name: 'object' })
+const vod = form.createVoidField({ name: 'void' })
+
+console.log(isDataFieldState(field)) // false
+console.log(isDataFieldState(arr)) // false
+console.log(isDataFieldState(obj)) // false
+console.log(isDataFieldState(vod)) // false
+console.log(isDataFieldState(field.getState())) // true
+console.log(isDataFieldState(arr.getState())) // true
+console.log(isDataFieldState(obj.getState())) // true
+console.log(isDataFieldState(vod.getState())) // false
+console.log(isDataFieldState({})) // false
+```
+
+## isQuery
+
+### 描述
+
+判断一个对象是否为 Query 对象
+
+### 签名
+
+```ts
+interface isQuery {
+  (target: any): target is Query
+}
+```
+
+### 用例
+
+```ts
+import { createForm, isQuery } from '@silver-formily/core'
+
+const form = createForm()
+console.log(isQuery(form.query('target'))) // true
 ```

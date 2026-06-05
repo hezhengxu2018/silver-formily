@@ -1,120 +1,81 @@
-# FormHooksAPI
+---
+outline: 2
+---
 
-> 用于创建自定义副作用 Hook 的低层 API
-
-## 描述
-
-`FormHooksAPI` 包含 `createEffectHook`、`createEffectContext` 和 `useEffectForm`，用于扩展自定义的生命周期事件和副作用 Hook。
+# Form Hooks API
 
 ## createEffectHook
+
+### 描述
+
+创建自定义钩子监听器
 
 ### 签名
 
 ```ts
-function createEffectHook<T, P>(
-  type: string,
-  handler: (payload: T, form: Form) => (params: P) => void
-): (params: P) => void
-```
-
-### 描述
-
-创建一个自定义的副作用 Hook。`@silver-formily/core` 内部所有的 `onFormXxx` 和 `onFieldXxx` Hook 都是通过它创建的。
-
-### 内部原理
-
-```ts
-// core 内部的简化实现
-function createFormEffect(type: LifeCycleTypes) {
-  return createEffectHook(
-    type,
-    (form: Form) => (callback: (form: Form) => void) => {
-      batch(() => {
-        callback(form)
-      })
-    },
+interface createEffectHook {
+  (
+    type: string,
+    callback?: (
+      payload: any,
+      form: Form,
+      ...ctx: any[] // 用户注入的上下文
+    ) => (...args: any[]) => void // 高阶回调用于处理监听器的封装，帮助用户实现参数定制能力
   )
 }
-
-// 使用它创建 onFormInit
-const onFormInit = createFormEffect(LifeCycleTypes.ON_FORM_INIT)
 ```
 
 ### 用例
 
-```ts
-import { createEffectHook, createForm } from '@silver-formily/core'
+::: demo
 
-// 定义一个自定义钩子
-const onCustomEvent = createEffectHook(
-  'onCustom',
-  (payload, form) => (callback: (data: any) => void) => {
-    callback(payload)
-  },
-)
+api/entry/form-hooks-api/create-effect-hook
 
-// 在 effects 中使用
-const form = createForm({
-  effects() {
-    onCustomEvent((data) => {
-      console.log('custom event:', data)
-    })
-  },
-})
-```
+:::
 
 ## createEffectContext
 
 ### 描述
 
-创建副作用上下文，用于隔离不同 Form 实例的副作用。
-
-```ts
-function createEffectContext(): EffectContext
-```
-
-## useEffectForm
+在 effects 函数中如果我们抽象了很多细粒度的 hooks，想要在 hooks 里读到顶层上下文数据就需要层层传递，这样明显是很低效的事情，所以 formily 提供了 createEffectContext 帮助用户快速获取上下文数据
 
 ### 签名
 
 ```ts
-function useEffectForm(): Form
+interface createEffectContext<T> {
+  (defaultValue: T): {
+    provide: (value: T) => void
+    consume: () => T
+  }
+}
 ```
+
+### 用例
+
+::: demo
+
+api/entry/form-hooks-api/create-effect-context
+
+:::
+
+## useEffectForm
 
 ### 描述
 
-在副作用回调中获取当前所属的 Form 实例。通常只在内部使用，自定义 Hook 可通过回调参数的 `form` 参数获取。
+useEffectForm 其实是 EffectContext 的便利用法，因为大多数场景用户都会读取 Form 实例，所以就不需要手动定义一个 EffectFormContext
 
-## 实际场景
-
-### 扩展自定义生命周期
+### 签名
 
 ```ts
-import { createEffectHook, LifeCycleTypes } from '@silver-formily/core'
-
-// 利用已有的生命周期类型创建自定义 Hook
-const onFormReady = createEffectHook(
-  'onFormReady',
-  form => (callback: (form: Form) => void) => {
-    // 组合多个已有生命周期
-    let mounted = false
-    let validated = false
-
-    const check = () => {
-      if (mounted && validated) {
-        callback(form)
-      }
-    }
-
-    form.notify(LifeCycleTypes.ON_FORM_MOUNT, () => {
-      mounted = true
-      check()
-    })
-
-    form.notify(LifeCycleTypes.ON_FORM_VALIDATE_END, () => {
-      validated = true
-      check()
-    })
-  },
-)
+interface useEffectForm {
+  (): Form
+}
 ```
+
+### 用例
+
+::: demo
+
+api/entry/form-hooks-api/use-effect-form
+
+:::

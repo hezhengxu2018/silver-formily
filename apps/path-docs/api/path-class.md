@@ -2,13 +2,21 @@
 outline: [2, 3]
 ---
 
-# Path API
+# Path
 
-`Path.parse(...)` 返回的是一个真正的 `Path` 实例，而不是简单的 segments 数组。本页只保留 `Path` 类型本身的属性和方法，语法与访问器使用方式请看指南章节。
+整个 `@silver-formily/path` 库只导出一个类，即Path，直接引入即可：
 
-## Attributes
+```ts
+import { Path } from '@silver-formily/path'
+```
 
-除了 `toString()`、`toArr()` 这类方法，`Path` 本身还带着一组可以直接读取的属性：
+如果你更习惯从`@silver-formily/core` 中引入，需要改一下名字， core中导出的名字是 FormPath。
+
+```ts
+import { FormPath } from '@silver-formily/core'
+```
+
+## 属性
 
 | 属性                  | 说明                                 |
 | --------------------- | ------------------------------------ |

@@ -4,9 +4,12 @@ import pkg from '@silver-formily/core/package.json' with { type: 'json' }
 import { createDocsConfig } from '@silver-formily/docs-toolkit'
 
 const currentDir = dirname(fileURLToPath(import.meta.url))
+const demoDir = path.resolve(currentDir, '../demos')
 
 export default createDocsConfig({
   pkg,
+  demoDir,
+  demoCodeFold: false,
   alias: {
     '@silver-formily/core': `${path.resolve(currentDir, '../../../packages/core/src')}/`,
   },

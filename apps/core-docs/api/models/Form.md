@@ -1,164 +1,837 @@
-# Form 模型
+---
+order: 0
+---
 
-> 表单的顶层容器模型，管理全局状态、字段图和事件总线
+# Form
 
-## 描述
-
-`Form` 是 `@silver-formily/core` 的顶层聚合模型。它聚合了 `Graph`（字段图）和 `Heart`（事件总线），并提供字段创建、查询、值操作、校验、提交等表单入口能力。
-
-通常不直接 `new Form()`，而是通过 `createForm()` 创建。
-
-## 构造
-
-```txt
-const form = new Form(options?: IFormProps)
-```
-
-推荐使用工厂函数：
-
-```ts
-import { createForm } from '@silver-formily/core'
-
-const form = createForm(options)
-```
+调用[createForm](/api/entry/create-form)所返回的核心[表单模型](/guide/form) API，以下会列出所有模型属性，如果该属性是可写的，那么我们可以直接引用是修改该属性，@formily/reactive 便会响应从而触发 UI 更新。
 
 ## 属性
 
-### 状态属性
-
-| 属性            | 类型               | 说明             |
-| --------------- | ------------------ | ---------------- |
-| `values`        | `T`                | 表单当前值       |
-| `initialValues` | `T`                | 表单初始值       |
-| `valid`         | `boolean`          | 是否全部校验通过 |
-| `invalid`       | `boolean`          | 是否有校验不通过 |
-| `validating`    | `boolean`          | 是否正在校验     |
-| `submitting`    | `boolean`          | 是否正在提交     |
-| `loading`       | `boolean`          | 是否加载中       |
-| `errors`        | `IFormFeedback[]`  | 表单级错误消息   |
-| `warnings`      | `IFormFeedback[]`  | 表单级警告消息   |
-| `successes`     | `IFormFeedback[]`  | 表单级成功消息   |
-| `mounted`       | `boolean`          | 是否已挂载       |
-| `unmounted`     | `boolean`          | 是否已卸载       |
-| `modified`      | `boolean`          | 是否有修改       |
-| `hidden`        | `boolean`          | 是否隐藏         |
-| `visible`       | `boolean`          | 是否可见         |
-| `editable`      | `boolean`          | 是否可编辑       |
-| `readOnly`      | `boolean`          | 是否只读         |
-| `readPretty`    | `boolean`          | 是否阅读态       |
-| `disabled`      | `boolean`          | 是否禁用         |
-| `pattern`       | `FormPatternTypes` | 表单模式         |
-| `display`       | `FormDisplayTypes` | 表单显隐         |
-| `initialized`   | `boolean`          | 是否已初始化     |
-
-### 模型引用
-
-| 属性         | 类型          | 说明                       |
-| ------------ | ------------- | -------------------------- |
-| `graph`      | `Graph`       | 字段图，管理字段拓扑关系   |
-| `heart`      | `Heart`       | 事件总线，管理生命周期事件 |
-| `lifecycles` | `LifeCycle[]` | 生命周期处理器列表         |
+| 属性          | 描述                   | 类型                                  | 是否只读 | 默认值            |
+| ------------- | ---------------------- | ------------------------------------- | -------- | ----------------- |
+| initialized   | 表单是否初始化         | Boolean                               | 否       | `false`           |
+| validating    | 表单是否正在校验       | Boolean                               | 否       | `false`           |
+| submitting    | 表单是否正在提交       | Boolean                               | 否       | `false`           |
+| modified      | 表单值是否已被手动修改 | Boolean                               | 否       | `false`           |
+| pattern       | 表单交互模式           | [FormPatternTypes](#formpatterntypes) | 否       | `"editable"`      |
+| display       | 表单展示形态           | [FormDisplayTypes](#formdisplaytypes) | 否       | `"visible"`       |
+| mounted       | 表单是否已挂载         | Boolean                               | 否       | `false`           |
+| unmounted     | 表单是否已卸载         | Boolean                               | 否       | `false`           |
+| values        | 表单值                 | Object                                | 否       | `{}`              |
+| initialValues | 表单默认值             | Object                                | 否       | `{}`              |
+| valid         | 表单是否合法           | Boolean                               | 是       | `true`            |
+| invalid       | 表单是否非法           | Boolean                               | 是       | `false`           |
+| errors        | 表单校验错误消息       | [IFormFeedback](#iformfeedback)       | 是       | `[]`              |
+| warnings      | 表单校验警告消息       | [IFormFeedback](#iformfeedback)       | 是       | `[]`              |
+| successes     | 表单校验成功消息       | [IFormFeedback](#iformfeedback)       | 是       | `[]`              |
+| hidden        | 表单是否隐藏           | Boolean                               | 否       | `false`           |
+| visible       | 表单是否显示           | Boolean                               | 否       | `true`            |
+| editable      | 表单是否可编辑         | Boolean                               | 否       | `true`            |
+| readOnly      | 表单是否只读           | Boolean                               | 否       | `false`           |
+| disabled      | 表单是否禁用           | Boolean                               | 否       | `false`           |
+| readPretty    | 表单是否为阅读态       | Boolean                               | 否       | `false`           |
+| id            | 表单 ID                | String                                | 否       | `{RANDOM_STRING}` |
+| displayName   | 模型标签               | String                                | 否       | `"Form"`          |
 
 ## 方法
 
-### 字段创建
+### createField
 
-| 方法                       | 说明         |
-| -------------------------- | ------------ |
-| `createField(props)`       | 创建数据字段 |
-| `createVoidField(props)`   | 创建虚字段   |
-| `createArrayField(props)`  | 创建数组字段 |
-| `createObjectField(props)` | 创建对象字段 |
+#### 描述
 
-### 字段查询
+创建一个 Field 实例的工厂函数，如果路径相同，多次调用，会复用实例对象
 
-| 方法             | 说明                                |
-| ---------------- | ----------------------------------- |
-| `query(pattern)` | 按路径模式查询字段，返回 Query 对象 |
-
-### 字段图
-
-| 方法                                    | 说明                   |
-| --------------------------------------- | ---------------------- |
-| `getFormGraph()`                        | 导出 Form 和字段状态图 |
-| `setFormGraph(graph)`                   | 导入 Form 和字段状态图 |
-| `clearFormGraph(pattern?, forceClear?)` | 清空匹配字段           |
-
-### 值操作
-
-| 方法                                  | 说明                   |
-| ------------------------------------- | ---------------------- |
-| `setValues(values, strategy?)`        | 设置表单值             |
-| `setValuesIn(path, value)`            | 设置指定路径的值       |
-| `getValuesIn(path)`                   | 获取指定路径的值       |
-| `deleteValuesIn(path)`                | 删除指定路径的值       |
-| `existValuesIn(path)`                 | 判断值路径是否存在     |
-| `setInitialValues(values, strategy?)` | 设置表单默认值         |
-| `setInitialValuesIn(path, value)`     | 设置指定路径的默认值   |
-| `getInitialValuesIn(path)`            | 获取指定路径的默认值   |
-| `deleteInitialValuesIn(path)`         | 删除指定路径的默认值   |
-| `existInitialValuesIn(path)`          | 判断默认值路径是否存在 |
-
-### 表单操作
-
-| 方法                        | 说明         |
-| --------------------------- | ------------ |
-| `submit(onSubmit?)`         | 提交表单     |
-| `validate(pattern?)`        | 校验匹配字段 |
-| `reset(pattern?, options?)` | 重置匹配字段 |
-
-### 模式与显隐
-
-| 方法                  | 说明                       |
-| --------------------- | -------------------------- |
-| `setPattern(pattern)` | 设置表单模式               |
-| `setDisplay(display)` | 设置表单显隐               |
-| `readOnly = flag`     | 通过属性 setter 设置只读   |
-| `disabled = flag`     | 通过属性 setter 设置禁用   |
-| `hidden = flag`       | 通过属性 setter 设置隐藏   |
-| `visible = flag`      | 通过属性 setter 设置可见   |
-| `editable = flag`     | 通过属性 setter 设置可编辑 |
-| `readPretty = flag`   | 通过属性 setter 设置阅读态 |
-
-### 生命周期
-
-| 方法                      | 说明             |
-| ------------------------- | ---------------- |
-| `onMount()`               | 挂载表单         |
-| `onUnmount()`             | 卸载表单         |
-| `notify(type, payload?)`  | 发布生命周期事件 |
-| `subscribe(subscriber)`   | 订阅生命周期事件 |
-| `unsubscribe(id)`         | 取消订阅         |
-| `setEffects(effects)`     | 替换副作用配置   |
-| `addEffects(id, effects)` | 添加副作用配置   |
-| `removeEffects(id)`       | 移除副作用配置   |
-
-## 用例
+#### 签名
 
 ```ts
-import { createForm } from '@silver-formily/core'
-
-const form = createForm({
-  values: { username: '', email: '' },
-  pattern: 'editable',
-})
-
-// 创建字段
-const field = form.createField({ name: 'username', value: '' })
-
-// 查询字段
-const queryResult = form.query('*.email').take()
-
-// 操作值
-form.setValuesIn('username', 'silver')
-console.log(form.getValuesIn('username')) // 'silver'
-
-// 提交
-await form.submit((values) => {
-  console.log('提交的值:', values)
-})
-
-// 校验
-await form.validate()
-console.log(form.valid, form.errors)
+interface createField {
+  (props: IFieldFactoryProps): Field
+}
 ```
+
+函数入参请参考[IFieldFactoryProps](#ifieldfactoryprops)
+
+### createArrayField
+
+#### 描述
+
+创建一个 ArrayField 实例的工厂函数，如果路径相同，多次调用，会复用实例对象
+
+#### 签名
+
+```ts
+interface createArrayField {
+  (props: IFieldFactoryProps): ArrayField
+}
+```
+
+函数入参请参考[IFieldFactoryProps](#ifieldfactoryprops)
+
+### createObjectField
+
+#### 描述
+
+创建一个 ObjectField 实例的工厂函数，如果路径相同，多次调用，会复用实例对象
+
+#### 签名
+
+```ts
+interface createObjectField {
+  (props: IFieldFactoryProps): ArrayField
+}
+```
+
+函数入参请参考[IFieldFactoryProps](#ifieldfactoryprops)
+
+### createVoidField
+
+#### 描述
+
+创建一个 VoidField 实例的工厂函数，如果路径相同，多次调用，会复用实例对象
+
+#### 签名
+
+```ts
+interface createVoidField {
+  (props: IVoidFieldFactoryProps): ArrayField
+}
+```
+
+函数入参请参考[IVoidFieldFactoryProps](#ivoidfieldfactoryprops)
+
+### setValues
+
+#### 描述
+
+设置表单值，可以设置合并策略 [IFormMergeStrategy](#iformmergestrategy)
+
+#### 签名
+
+```ts
+interface setValues {
+  (values: object, strategy: IFormMergeStrategy = 'merge'): void
+}
+```
+
+### setInitialValues
+
+#### 描述
+
+设置表单默认值，可以设置合并策略
+
+#### 签名
+
+```ts
+interface setInitialValues {
+  (initialValues: object, strategy: IFormMergeStrategy = 'merge'): void
+}
+```
+
+### setValuesIn
+
+#### 描述
+
+精确设置表单值
+
+#### 签名
+
+```ts
+interface setValuesIn {
+  (path: FormPathPattern, value: any): void
+}
+```
+
+FormPathPattern API 参考 [FormPath](https://path.silver-formily.org/api/patterns)
+
+### setInitialValuesIn
+
+#### 描述
+
+精确设置表单默认值
+
+#### 签名
+
+```ts
+interface setInitialValuesIn {
+  (path: FormPathPattern, initialValue: any): void
+}
+```
+
+FormPathPattern API 参考 [FormPath](https://path.silver-formily.org/api/patterns)
+
+### existValuesIn
+
+#### 描述
+
+根据指定路径判断值是否存在
+
+#### 签名
+
+```ts
+interface existValuesIn {
+  (path: FormPathPattern): boolean
+}
+```
+
+FormPathPattern API 参考 [FormPath](https://path.silver-formily.org/api/patterns)
+
+### existInitialValuesIn
+
+#### 描述
+
+根据指定路径判断默认值是否存在
+
+#### 签名
+
+```ts
+interface existInitialValuesIn {
+  (path: FormPathPattern): boolean
+}
+```
+
+FormPathPattern API 参考 [FormPath](https://path.silver-formily.org/api/patterns)
+
+### getValuesIn
+
+#### 描述
+
+根据指定路径获取表单值
+
+#### 签名
+
+```ts
+interface getValuesIn {
+  (path: FormPathPattern): any
+}
+```
+
+FormPathPattern API 参考 [FormPath](https://path.silver-formily.org/api/patterns)
+
+### getInitialValuesIn
+
+#### 描述
+
+根据指定路径获取表单默认值
+
+#### 签名
+
+```ts
+interface getInitialValuesIn {
+  (path: FormPathPattern): any
+}
+```
+
+FormPathPattern API 参考 [FormPath](https://path.silver-formily.org/api/patterns)
+
+### deleteValuesIn
+
+#### 描述
+
+根据指定路径删除表单值
+
+#### 签名
+
+```ts
+interface deleteValuesIn {
+  (path: FormPathPattern): void
+}
+```
+
+FormPathPattern API 参考 [FormPath](https://path.silver-formily.org/api/patterns)
+
+### deleteInitialValuesIn
+
+#### 描述
+
+根据指定路径删除表单默认值
+
+#### 签名
+
+```ts
+interface deleteInitialValuesIn {
+  (path: FormPathPattern): void
+}
+```
+
+FormPathPattern API 参考 [FormPath](https://path.silver-formily.org/api/patterns)
+
+### setSubmitting
+
+#### 描述
+
+设置表单是否正在提交状态
+
+#### 签名
+
+```ts
+interface setSubmitting {
+  (submitting: boolean): void
+}
+```
+
+### setValidating
+
+#### 描述
+
+设置表单是否正在校验状态
+
+#### 签名
+
+```ts
+interface setValidating {
+  (validating: boolean): void
+}
+```
+
+### setDisplay
+
+#### 描述
+
+设置表单展示状态
+
+#### 签名
+
+```ts
+interface setDisplay {
+  (display: FormDisplayTypes): void
+}
+```
+
+函数入参请参考[FormDisplayTypes](#formdisplaytypes)
+
+### setPattern
+
+#### 描述
+
+设置表单交互模式
+
+#### 签名
+
+```ts
+interface setPattern {
+  (pattern: FormPatternTypes): void
+}
+```
+
+函数入参请参考[FormPatternTypes](#formpatterntypes)
+
+### addEffects
+
+#### 描述
+
+添加副作用
+
+#### 签名
+
+```ts
+interface addEffects {
+  (id: string, effects: (form: Form) => void): void
+}
+```
+
+### removeEffects
+
+#### 描述
+
+移除副作用，id 与 addEffects 的 id 保持一致
+
+#### 签名
+
+```ts
+interface removeEffects {
+  (id: string): void
+}
+```
+
+### setEffects
+
+#### 描述
+
+覆盖式更新副作用
+
+#### 签名
+
+```ts
+interface setEffects {
+  (effects: (form: Form) => void): void
+}
+```
+
+### clearErrors
+
+#### 描述
+
+清空错误消息
+
+#### 签名
+
+```ts
+interface clearErrors {
+  (pattern?: FormPathPattern): void
+}
+```
+
+FormPathPattern API 参考 [FormPath](https://path.silver-formily.org/api/patterns)
+
+### clearWarnings
+
+#### 描述
+
+清空警告消息
+
+#### 签名
+
+```ts
+interface clearWarnings {
+  (pattern?: FormPathPattern): void
+}
+```
+
+FormPathPattern API 参考 [FormPath](https://path.silver-formily.org/api/patterns)
+
+### clearSuccesses
+
+#### 描述
+
+清空成功消息
+
+#### 签名
+
+```ts
+interface clearSuccesses {
+  (pattern?: FormPathPattern): void
+}
+```
+
+FormPathPattern API 参考 [FormPath](https://path.silver-formily.org/api/patterns)
+
+### query
+
+#### 描述
+
+查询字段节点
+
+#### 签名
+
+```ts
+interface query {
+  (pattern: FormPathPattern): Query
+}
+```
+
+FormPathPattern API 参考 [FormPath](https://path.silver-formily.org/api/patterns)
+
+Query 对象 API 参考 [Query](/api/models/query)
+
+### queryFeedbacks
+
+#### 描述
+
+查询消息反馈
+
+#### 签名
+
+```ts
+interface queryFeedbacks {
+  (search: ISearchFeedback): IFormFeedback[]
+}
+```
+
+ISearchFeedback 参考 [ISearchFeedback](/api/models/field#isearchfeedback)
+
+IFormFeedback 参考[IFormFeedback](#iformfeedback)
+
+### notify
+
+#### 描述
+
+广播消息
+
+#### 签名
+
+```ts
+interface notify<T> {
+  (type?: string, payload: T): void
+}
+```
+
+### subscribe
+
+#### 描述
+
+订阅消息
+
+#### 签名
+
+```ts
+interface subscribe<T> {
+  (callback: (payload: T) => void): number
+}
+```
+
+### unsubscribe
+
+#### 描述
+
+取消订阅
+
+#### 签名
+
+```ts
+interface unsubscribe {
+  (id: number): void
+}
+```
+
+### onInit
+
+#### 描述
+
+触发表单初始化，默认不需要手动调用
+
+#### 签名
+
+```ts
+interface onInit {
+  (): void
+}
+```
+
+### onMount
+
+#### 描述
+
+触发挂载
+
+#### 签名
+
+```ts
+interface onMount {
+  (): void
+}
+```
+
+### onUnmount
+
+#### 描述
+
+触发卸载
+
+#### 签名
+
+```ts
+interface onUnmount {
+  (): void
+}
+```
+
+### setState
+
+#### 描述
+
+设置表单状态
+
+#### 签名
+
+```ts
+interface setState {
+  (callback: (state: IFormState) => void): void
+  (state: IFormState): void
+}
+```
+
+IFormState 参考 [IFormState](#iformstate)
+
+### getState
+
+#### 描述
+
+获取表单状态
+
+#### 签名
+
+```ts
+interface getState<T> {
+  (): IFormState
+  (callback: (state: IFormState) => T): T
+}
+```
+
+IFormState 参考 [IFormState](#iformstate)
+
+### setFormState
+
+与 setState API 一致
+
+### getFormState
+
+与 getState API 一致
+
+### setFieldState
+
+#### 描述
+
+设置字段状态
+
+#### 签名
+
+```ts
+interface setFieldState {
+  (pattern: FormPathPattern, setter: (state: IGeneralFieldState) => void): void
+  (pattern: FormPathPattern, setter: IGeneralFieldState): void
+}
+```
+
+FormPathPattern API 参考 [FormPath](https://path.silver-formily.org/api/patterns)
+
+IGeneralFieldState 参考 [IGeneralFieldState](/api/models/field/#igeneralfieldstate)
+
+### getFieldState
+
+#### 描述
+
+获取字段状态
+
+#### 签名
+
+```ts
+interface getFieldState<T> {
+  (pattern: FormPathPattern): IGeneralFieldState
+  (pattern: FormPathPattern, callback: (state: IGeneralFieldState) => T): T
+}
+```
+
+FormPathPattern API 参考 [FormPath](https://path.silver-formily.org/api/patterns)
+
+IGeneralFieldState 参考 [IGeneralFieldState](/api/models/field/#igeneralfieldstate)
+
+### getFormGraph
+
+#### 描述
+
+获取表单字段集
+
+#### 签名
+
+```ts
+interface getFormGraph {
+  (): {
+    [key: string]: GeneralFieldState | FormState
+  }
+}
+```
+
+### setFormGraph
+
+#### 描述
+
+设置表单字段集
+
+#### 签名
+
+```ts
+interface setFormGraph {
+  (graph: { [key: string]: GeneralFieldState | FormState }): void
+}
+```
+
+### clearFormGraph
+
+#### 描述
+
+清空字段集
+
+#### 签名
+
+```ts
+interface clearFormGraph {
+  (pattern: FormPathPattern): void
+}
+```
+
+### validate
+
+#### 描述
+
+表单校验触发器，可以按照指定路径校验，如果校验成功是不会有任何返回，校验失败会在 promise reject 中返回[IFormFeedback](#iformfeedback)
+
+#### 签名
+
+```ts
+interface validate {
+  (pattern: FormPathPattern): Promise<void>
+}
+```
+
+### submit
+
+#### 描述
+
+表单提交方法，如果在 onSubmit 回调函数中返回 Promise，表单会在提交开始的时候设置 submitting 状态为 true，Promise resolve 的时候再设置为 false，视图层可以消费 submitting 状态来实现防重复提交
+
+#### 签名
+
+```ts
+interface submit<T> {
+  (): Promise<Form['values']>
+  (onSubmit?: (values: Form['values']) => Promise<T> | void): Promise<T>
+}
+```
+
+### reset
+
+#### 描述
+
+表单重置方法，可以指定重置具体字段，也可以指定重置时自动校验
+
+#### 描述
+
+```ts
+interface reset {
+  (pattern: FormPathPattern, options?: IFieldResetOptions): Promise<void>
+}
+```
+
+FormPathPattern API 参考 [FormPath](https://path.silver-formily.org/api/patterns)
+
+IFieldResetOptions 参考 [IFieldResetOptions](/api/models/field/#ifieldresetoptions)
+
+## 类型
+
+<Alert>
+注意：如果要手动消费类型，直接从包模块中导出即可
+</Alert>
+
+### FormPatternTypes
+
+```ts
+type FormPatternTypes = 'editable' | 'disabled' | 'readOnly' | 'readPretty'
+```
+
+### FormDisplayTypes
+
+```ts
+type FormDisplayTypes = 'none' | 'hidden' | 'visible'
+```
+
+### IFormFeedback
+
+```ts
+interface IFormFeedback {
+  path?: string // 校验字段数据路径
+  address?: string // 校验字段绝对路径
+  triggerType?: 'onInput' | 'onFocus' | 'onBlur' // 校验触发类型
+  type?: 'error' | 'success' | 'warning' // 反馈类型
+  code?: // 反馈编码
+    | 'ValidateError'
+    | 'ValidateSuccess'
+    | 'ValidateWarning'
+    | 'EffectError'
+    | 'EffectSuccess'
+    | 'EffectWarning'
+  messages?: string[] // 反馈消息
+}
+```
+
+### IFormState
+
+```ts
+interface IFormState {
+  editable?: boolean
+  readOnly?: boolean
+  disabled?: boolean
+  readPretty?: boolean
+  hidden?: boolean
+  visible?: boolean
+  initialized?: boolean
+  validating?: boolean
+  submitting?: boolean
+  modified?: boolean
+  pattern?: FormPatternTypes
+  display?: FormDisplayTypes
+  values?: any
+  initialValues?: any
+  mounted?: boolean
+  unmounted?: boolean
+  readonly valid?: boolean
+  readonly invalid?: boolean
+  readonly errors?: IFormFeedback[]
+  readonly warnings?: IFormFeedback[]
+  readonly successes?: IFormFeedback[]
+}
+```
+
+### IFormMergeStrategy
+
+```ts
+type IFormMergeStrategy = 'overwrite' | 'merge' | 'deepMerge' | 'shallowMerge'
+```
+
+### IFieldFactoryProps
+
+```ts
+interface IFieldFactoryProps {
+  name: FormPathPattern // 字段名称，当前节点的路径名称
+  basePath?: FormPathPattern // 基础路径
+  title?: string | JSXElement // 字段标题
+  description?: string | JSXElement // 字段描述
+  value?: any // 字段值
+  initialValue?: any // 字段默认值
+  required?: boolean // 字段是否必填
+  display?: 'none' | 'hidden' | 'visible' // 字段展示形式
+  pattern?: 'editable' | 'disabled' | 'readOnly' | 'readPretty' // 字段交互模式
+  hidden?: boolean // 字段是否隐藏
+  visible?: boolean // 字段是否显示
+  editable?: boolean // 字段是否可编辑
+  disabled?: boolean // 字段是否禁用
+  readOnly?: boolean // 字段是否只读
+  readPretty?: boolean // 字段是否为阅读态
+  dataSource?: any[] // 字段数据源
+  validateFirst?: boolean // 字段校验是否只校验第一个非法规则
+  validatePattern?: ('editable' | 'disabled' | 'readOnly' | 'readPretty')[] // validator 可以在哪些 pattern 下运行
+  validateDisplay?: ('none' | 'hidden' | 'visible')[] // validator 可以在哪些 display 下运行
+  validator?: FieldValidator // 字段校验器
+  decorator?: any[] // 字段装饰器，第一个元素代表组件引用，第二个元素代表组件属性
+  component?: any[] // 字段组件，第一个元素代表组件引用，第二个元素代表组件属性
+  reactions?: FieldReaction[] | FieldReaction // 字段响应器
+}
+```
+
+FormPathPattern API 参考 [FormPath](https://path.silver-formily.org/api/patterns)
+
+FieldValidator 参考 [FieldValidator](/api/models/field#fieldvalidator)
+
+FieldReaction 参考 [FieldReaction](/api/models/Field.html#fieldreaction)
+
+### IVoidFieldFactoryProps
+
+```ts
+interface IFieldFactoryProps {
+  name: FormPathPattern // 字段名称，当前节点的路径名称
+  basePath?: FormPathPattern // 基础路径
+  title?: string | JSXElement // 字段标题
+  description?: string | JSXElement // 字段描述
+  required?: boolean // 字段是否必填
+  display?: 'none' | 'hidden' | 'visible' // 字段展示形式
+  pattern?: 'editable' | 'disabled' | 'readOnly' | 'readPretty' // 字段交互模式
+  hidden?: boolean // 字段是否隐藏
+  visible?: boolean // 字段是否显示
+  editable?: boolean // 字段是否可编辑
+  disabled?: boolean // 字段是否禁用
+  readOnly?: boolean // 字段是否只读
+  readPretty?: boolean // 字段是否为阅读态
+  decorator?: any[] // 字段装饰器，第一个元素代表组件引用，第二个元素代表组件属性
+  component?: any[] // 字段组件，第一个元素代表组件引用，第二个元素代表组件属性
+  reactions?: FieldReaction[] | FieldReaction // 字段响应器
+}
+```
+
+FormPathPattern API 参考 [FormPath](https://path.silver-formily.org/api/patterns)
+
+FieldReaction 参考 [FieldReaction](/api/models/Field.html#fieldreaction)
+
+> Formily Typescript 类型约定
+>
+> - 简单非对象数据类型或 Union 数据类型用 type 定义类型，不能以大写`I`字符开头
+> - 简单对象类型统一用 interface 定义类型，且以大写`I`字符开头，如果存在不同 interface 的组合(Intersection or Extends)使用 type 定义类型，同样以大写`I`字符开头

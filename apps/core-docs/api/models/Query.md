@@ -1,134 +1,140 @@
-# Query 模型
+---
+order: 5
+---
 
-> 字段查询器，支持按路径模式灵活匹配和批量操作字段
+# Query
 
-## 描述
-
-`Query` 是表单的字段查询工具，通过 `form.query(pattern)` 获得。它支持路径模式匹配、条件过滤和批量操作。
-
-## 获取 Query
-
-```ts
-const query = form.query('user.*.name')
-```
+调用[Form](/api/models/form#query)或[Field](/api/models/field#query)实例中的 query 方法所返回的 Query 对象
 
 ## 方法
 
 ### take
 
-```txt
-query.take(): GeneralField | undefined
-```
+#### 描述
 
-获取匹配的第一个字段：
+从查询结果集中提取第一个结果
+
+注意，必须要存在对应的节点才能读取
+
+#### 签名
 
 ```ts
-const firstField = form.query('**.name').take()
+interface take {
+  (): GeneralField
+  <Result>(getter: (field: GeneralField, address: FormPath) => Result): Result
+}
 ```
 
 ### map
 
-```txt
-query.map<T>(mapper?: (field: GeneralField) => T): T[]
-```
+#### 描述
 
-映射匹配的所有字段：
+遍历并映射查询结果集
+
+注意，必须要存在对应的节点才能遍历
+
+#### 签名
 
 ```ts
-// 获取所有 name 字段的值
-const nameValues = form.query('**.name').map(field => field.value)
+interface map {
+  (): GeneralField[]
+  <Result>(
+    mapper?: (field: GeneralField, address: FormPath) => Result
+  ): Result[]
+}
 ```
 
 ### forEach
 
-```txt
-query.forEach(iterator: (field: GeneralField) => void): void
-```
+#### 描述
 
-遍历所有匹配字段：
+遍历查询结果集
+
+注意，必须要存在对应的节点才能遍历
+
+#### 签名
 
 ```ts
-form.query('**.email').forEach((field) => {
-  field.setValidator({ format: 'email' })
-})
+interface forEach {
+  <Result>(eacher: (field: GeneralField, address: FormPath) => Result): void
+}
 ```
 
 ### reduce
 
-```txt
-query.reduce<T>(reducer: (accumulator: T, field: GeneralField) => T, initial: T): T
-```
+#### 描述
 
-聚合操作：
+对查询结果集执行 reduce 操作
 
-```ts
-const allValid = form.query('**').reduce((valid, field) => {
-  return valid && field.valid
-}, true)
-```
+注意，必须要存在对应的节点才能遍历
 
-### filter
-
-```txt
-query.filter(predicate: (field: GeneralField) => boolean): GeneralField[]
-```
-
-按条件过滤：
+#### 签名
 
 ```ts
-const invalidFields = form.query('**').filter(field => field.invalid)
+interface reduce {
+  <Result>(
+    reducer: (value: Result, field: GeneralField, address: FormPath) => Result,
+    initial?: Result
+  ): Result
+}
 ```
 
-### sort
+### get
 
-```txt
-query.sort(comparator: (a: GeneralField, b: GeneralField) => number): GeneralField[]
-```
+#### 描述
 
-排序匹配字段：
+从查询结果集中找到第一个结果，并读取其属性
+
+注意，必须要存在对应的节点才能读取
+
+#### 签名
 
 ```ts
-const sorted = form.query('items.*').sort((a, b) => a.index - b.index)
+interface get {
+  <K extends keyof IGeneralFieldState>(key: K): IGeneralFieldState[K]
+}
 ```
 
-## 路径模式
+### getIn
 
-Query 支持 `FormPath` 的完整模式语法：
+#### 描述
 
-| 模式      | 示例                         | 说明         |
-| --------- | ---------------------------- | ------------ |
-| 精确匹配  | `form.query('username')`     | 精确匹配路径 |
-| `*` 通配  | `form.query('user.*')`       | 匹配单层     |
-| `**` 通配 | `form.query('**.name')`      | 匹配任意多层 |
-| 排除      | `form.query('** !**.email')` | 排除匹配     |
+从查询结果集中找到第一个结果，并读取其属性，支持 [FormPathPattern](https://path.silver-formily.org/api/path-class#formpathpattern) 路径语法
 
-## 用例
+注意，必须要存在对应的节点才能读取
 
-### 批量操作
+#### 签名
 
 ```ts
-// 将所有 name 字段设为必填
-form.query('**.name').forEach((field) => {
-  field.setRequired(true)
-})
+interface getIn {
+  (pattern?: FormPathPattern): any
+}
 ```
 
-### 条件查询
+### value
+
+#### 描述
+
+查询指定路径值，不局限于 Field 节点
+
+#### 签名
 
 ```ts
-// 查找所有校验失败的字段
-const failed = form.query('*').filter(field => field.selfInvalid)
-
-// 统计
-console.log(`共 ${failed.length} 个字段校验失败`)
+interface value {
+  (): any
+}
 ```
 
-### 值提取
+### initialValue
+
+#### 描述
+
+查询指定路径初始值，不局限于 Field 节点
+
+#### 签名
 
 ```ts
-// 提取所有字段的值
-const allValues = form.query('*').map(field => ({
-  name: field.path,
-  value: field.value,
-}))
+interface initialValue {
+  (): any
+}
 ```
