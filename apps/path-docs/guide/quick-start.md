@@ -7,7 +7,7 @@
 - `Path.match`：把 pattern 编译成 matcher 函数
 
 :::tip 提示
-这是一个 `formily` 框架内部使用的依赖，对普通用户来说只要熟悉[Pattern 语法](/api/patterns)即可。
+这是一个 `formily` 框架内部使用的依赖，对普通用户来说只要熟悉[Pattern 语法](/guide/patterns)即可。
 :::
 
 ## 导入
@@ -114,6 +114,92 @@ pattern.isMatchPattern
 
 pattern.haveExcludePattern
 // true
+```
+
+## 路径实例操作
+
+`Path.parse(...)` 返回的是一个真正的路径对象，所以除了匹配和访问器，它也支持一组“按 segment 操作路径”的实例方法。
+
+### 转回字符串或数组
+
+```ts
+const path = Path.parse('a.b.c')
+
+path.toString()
+// 'a.b.c'
+
+path.toArr()
+// ['a', 'b', 'c']
+```
+
+### 拼接和裁剪
+
+```ts
+const path = Path.parse('a.b.c')
+
+path.concat('d.e').toString()
+// 'a.b.c.d.e'
+
+path.slice(0, 2).toString()
+// 'a.b'
+
+path.parent().toString()
+// 'a.b'
+```
+
+### 类数组操作
+
+这些方法虽然名字看起来像数组原型，但都返回新的 `Path`，不会原地修改旧对象：
+
+```ts
+const path = Path.parse('a.b.c')
+
+path.push('d').toString()
+// 'a.b.c.d'
+
+path.pop().toString()
+// 'a.b'
+
+path.splice(0, 1).toString()
+// 'b.c'
+```
+
+### 遍历 segments
+
+```ts
+const path = Path.parse('a.b.c')
+
+path.forEach((segment) => {
+  console.log(segment)
+})
+
+path.map(segment => segment)
+// ['a', 'b', 'c']
+
+path.reduce((buf, segment) => buf + segment, '')
+// 'abc'
+```
+
+### 什么时候会抛错
+
+如果当前实例本身是 match pattern 或正则路径，那么很多“数组式操作”都不再有确定语义，因此会抛错：
+
+- `concat`
+- `slice`
+- `pop`
+- `splice`
+- `forEach`
+- `map`
+- `reduce`
+- `transform`
+
+例如：
+
+```ts
+const wildcard = Path.parse('*')
+
+wildcard.concat('a')
+// throw Error
 ```
 
 ## 访问对象

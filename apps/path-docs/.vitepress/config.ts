@@ -22,7 +22,7 @@ export default createDocsConfig({
       description: 'Path 语法、匹配规则与访问器 API 文档',
       themeConfig: {
         nav: [
-          { text: '文档', link: '/', activeMatch: '^/$|^/api/' },
+          { text: '文档', link: '/', activeMatch: '^/$|^/guide/|^/api/' },
         ],
       },
     },
@@ -33,7 +33,7 @@ export default createDocsConfig({
       description: 'Path syntax, matcher rules, and accessor APIs',
       themeConfig: {
         nav: [
-          { text: 'Docs', link: '/en/', activeMatch: '^/en/$|^/en/api/' },
+          { text: 'Docs', link: '/en/', activeMatch: '^/en/$|^/en/guide/|^/en/api/' },
         ],
       },
     },
@@ -44,16 +44,16 @@ export default createDocsConfig({
         text: '指南',
         items: [
           { text: '介绍', link: '/' },
+          { text: '快速开始', link: '/guide/quick-start' },
+          { text: '模式语法', link: '/guide/patterns' },
+          { text: '匹配能力', link: '/guide/matching' },
+          { text: '访问器', link: '/guide/accessors' },
         ],
       },
       {
         text: 'API',
         items: [
-          { text: '快速开始', link: '/api/quick-start' },
-          { text: '访问器', link: '/api/accessors' },
-          { text: '模式语法', link: '/api/patterns' },
-          { text: '匹配能力', link: '/api/matching' },
-          { text: 'Path 实例方法', link: '/api/path-class' },
+          { text: 'Path API', link: '/api/path-class' },
         ],
       },
     ],
@@ -62,16 +62,16 @@ export default createDocsConfig({
         text: 'Guide',
         items: [
           { text: 'Introduction', link: '/en/' },
+          { text: 'Quick Start', link: '/en/guide/quick-start' },
+          { text: 'Pattern Syntax', link: '/en/guide/patterns' },
+          { text: 'Matching', link: '/en/guide/matching' },
+          { text: 'Accessors', link: '/en/guide/accessors' },
         ],
       },
       {
         text: 'API',
         items: [
-          { text: 'Quick Start', link: '/en/api/quick-start' },
-          { text: 'Accessors', link: '/en/api/accessors' },
-          { text: 'Pattern Syntax', link: '/en/api/patterns' },
-          { text: 'Matching', link: '/en/api/matching' },
-          { text: 'Path Instance Methods', link: '/en/api/path-class' },
+          { text: 'Path API', link: '/en/api/path-class' },
         ],
       },
     ],

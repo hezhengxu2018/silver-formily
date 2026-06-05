@@ -12,7 +12,7 @@ api/matching/alias-playground
 
 ## match
 
-Both sides do not have to be plain paths. Two common forms are:
+`Path#match` does not require both sides to be plain paths. Two common forms are:
 
 ```ts
 Path.parse('a.b.c').match('*')
@@ -25,7 +25,7 @@ Path.parse('aa.1.cc').match('aa.*.cc')
 // true
 ```
 
-If both sides are match patterns, path throws because the matching direction is ambiguous.
+If both sides are match patterns, it throws because the matching direction is ambiguous.
 
 ```ts
 Path.parse('*').match('aa.*.cc')
@@ -70,7 +70,7 @@ After each match, a `Path` instance updates its `matchScore`. You usually do not
 
 ## matchAliasGroup
 
-This method is especially important in core. It evaluates both the field name and the alias against the same pattern.
+This is one of the key methods used in core. It evaluates both the field name and the alias against the same pattern.
 
 ```ts
 const pattern = Path.parse('aa.*(!bb)')
@@ -113,4 +113,4 @@ Path.parse('a.b').includes('a.b.c')
 // false
 ```
 
-If either side is a match pattern in the wrong position, it may throw. `includes` is a prefix check, not a generic matcher.
+If either side is a match pattern in the wrong position, it may throw. It is not a replacement for `match`, but a stricter prefix check.

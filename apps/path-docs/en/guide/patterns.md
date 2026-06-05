@@ -53,7 +53,7 @@ Path.parse('parent.[aa,bb]').toString()
 // 'parent.[aa,bb]'
 ```
 
-This is especially useful when your frontend and backend structures do not align one to one.
+This syntax is especially useful when frontend and backend structures do not align one to one.
 
 ## Single-level wildcard `*`
 
@@ -91,7 +91,7 @@ Path.parse('t.0.value~').match(['t', 0, 'value_list'])
 // true
 ```
 
-This is especially useful for Formily field aliases and expanded child paths.
+This is common in Formily field aliases and expanded child paths.
 
 ## Relative expressions
 

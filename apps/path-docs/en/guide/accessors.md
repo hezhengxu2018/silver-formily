@@ -1,6 +1,6 @@
 # Accessors
 
-The accessor APIs exist for one reason: safely work with deeply nested data without manually checking every intermediate level.
+The goal of the accessor APIs is simple: safely work with deeply nested data without manually checking every intermediate level.
 
 ## Interactive demo
 
@@ -28,7 +28,7 @@ Path.getIn(values, 'user.profile.missing')
 // undefined
 ```
 
-If you already have a `Path` instance, the instance method is equally valid:
+If you already have a `Path` instance, the instance method is equally natural:
 
 ```ts
 const profileName = Path.parse('user.profile.nickname')

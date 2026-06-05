@@ -1,38 +1,27 @@
-# Path Instance Methods
+---
+outline: [2, 3]
+---
 
-`Path.parse(...)` returns a real `Path` instance, not just an array of segments. Besides accessors and matching, the instance itself has a useful set of methods.
+# Path API
 
-## Basics
+`Path.parse(...)` returns a real `Path` instance, not just an array of segments. This page focuses on the `Path` type itself. For syntax, matching behavior, and accessor usage, use the guide pages.
 
-```ts
-const path = Path.parse('a.b.c')
+## Attributes
 
-path.toString()
-// 'a.b.c'
-
-path.toArr()
-// ['a', 'b', 'c']
-
-path.length
-// 3
-```
-
-## Property overview
-
-In addition to methods like `toString()` and `toArr()`, a `Path` instance exposes a set of readable properties:
+In addition to methods like `toString()` and `toArr()`, a `Path` instance also exposes readable structural metadata:
 
 | Property              | Meaning                                                 |
 | --------------------- | ------------------------------------------------------- |
-| `length`              | number of path segments, meaningful for non-match paths |
-| `entire`              | full path string or regular expression                  |
-| `segments`            | parsed path segments                                    |
-| `isMatchPattern`      | whether this is a match path                            |
-| `isWildMatchPattern`  | whether wildcard semantics are involved                 |
-| `haveRelativePattern` | whether relative-path syntax is present                 |
-| `haveExcludePattern`  | whether exclude patterns are present                    |
-| `isRegExp`            | whether it was created from a regular expression        |
-| `tree`                | parsed AST                                              |
-| `matchScore`          | score from the most recent `match`                      |
+| `length`              | Number of path segments, meaningful for non-match paths |
+| `entire`              | Full path string or regular expression                  |
+| `segments`            | Parsed path segments                                    |
+| `isMatchPattern`      | Whether this is a match pattern                         |
+| `isWildMatchPattern`  | Whether wildcard semantics are involved                 |
+| `haveRelativePattern` | Whether relative-path syntax is present                 |
+| `haveExcludePattern`  | Whether exclude patterns are present                    |
+| `isRegExp`            | Whether it was created from a regular expression        |
+| `tree`                | Parsed AST                                              |
+| `matchScore`          | Score from the most recent `match`                      |
 
 Example:
 
@@ -46,127 +35,284 @@ pattern.haveExcludePattern
 // true
 ```
 
-## toString and toArr
+## Instance methods
 
-Older Formily docs often refer to `toArray()`, but the current `@silver-formily/path` API exposes `toArr()`:
+### toString
 
-```ts
-Path.parse('aa.bb.cc').toString()
-// 'aa.bb.cc'
-
-Path.parse('aa.bb.cc').toArr()
-// ['aa', 'bb', 'cc']
-
-Path.parse('aa.bb.*').toArr()
-// []
-```
-
-That naming difference is worth documenting explicitly so the current package docs stay aligned with the actual implementation.
-
-## Concatenation and slicing
+#### Signature
 
 ```ts
-const path = Path.parse('a.b.c')
-
-path.concat('d.e').toString()
-// 'a.b.c.d.e'
-
-path.slice(0, 2).toString()
-// 'a.b'
-
-path.parent().toString()
-// 'a.b'
-
-path.pop().toString()
-// 'a.b'
+interface toString {
+  (): string
+}
 ```
 
-## Array-like names, immutable results
+Examples: [Quick Start / Path instance operations / Convert back to string or array](/en/guide/quick-start#convert-back-to-string-or-array)
 
-These methods look array-like, but they return new `Path` objects:
+### toArr
+
+#### Signature
 
 ```ts
-const path = Path.parse('a.b.c')
-
-path.push('d').toString()
-// 'a.b.c.d'
-
-path.splice(0, 1).toString()
-// 'b.c'
+interface toArr {
+  (): Array<string | number>
+}
 ```
 
-## Iterating segments
+Examples: [Quick Start / Path instance operations / Convert back to string or array](/en/guide/quick-start#convert-back-to-string-or-array)
+
+### concat
+
+#### Signature
 
 ```ts
-const path = Path.parse('a.b.c')
-
-path.map(segment => segment)
-// ['a', 'b', 'c']
-
-path.reduce((buf, segment) => buf + segment, '')
-// 'abc'
+interface concat {
+  (...args: Pattern[]): Path
+}
 ```
 
-## transform
+Examples: [Quick Start / Path instance operations / Concatenate and slice](/en/guide/quick-start#concatenate-and-slice)
 
-`transform` filters segments by a regular expression and passes them to a callback:
+### slice
+
+#### Signature
 
 ```ts
-Path.parse('a.b.c').transform(/[ab]/, (...segments) => segments)
-// ['a', 'b']
+interface slice {
+  (start?: number, end?: number): Path
+}
 ```
 
-There is also a static version:
+Examples: [Quick Start / Path instance operations / Concatenate and slice](/en/guide/quick-start#concatenate-and-slice)
+
+### parent
+
+#### Signature
 
 ```ts
-Path.transform('a.b.c', /[a-z]/, (...segments) => segments)
-// ['a', 'b', 'c']
+interface parent {
+  (): Path
+}
 ```
 
-## includes
+Examples: [Quick Start / Path instance operations / Concatenate and slice](/en/guide/quick-start#concatenate-and-slice)
 
-`includes` checks whether another plain path is a prefix child-path of the current one:
+### push
+
+#### Signature
 
 ```ts
-Path.parse('aa.bb.cc').includes('aa.bb')
-// true
-
-Path.parse('aa.bb.cc').includes('cc.bb')
-// false
+interface push {
+  (...items: Pattern[]): Path
+}
 ```
 
-## matchAliasGroup
+These methods look array-like, but they return a new `Path`.
 
-This is the method used heavily by core to compare a field name and its alias against the same pattern:
+Examples: [Quick Start / Path instance operations / Array-like operations](/en/guide/quick-start#array-like-operations)
+
+### pop
+
+#### Signature
 
 ```ts
-Path.parse('aa.*(!bb)').matchAliasGroup('kk.mm.aa.cc', 'aa.cc')
-// true
-
-Path.parse('aa.*(!bb)').matchAliasGroup('kk.mm.aa.bb', 'aa.bb')
-// false
+interface pop {
+  (): Path
+}
 ```
 
-## Static helpers
+Examples: [Quick Start / Path instance operations / Array-like operations](/en/guide/quick-start#array-like-operations)
 
-If you do not want to parse into an instance first, the package also exposes static helpers:
+### splice
+
+#### Signature
 
 ```ts
-Path.match('user.*')('user.name')
-// true
-
-Path.getIn({ user: { name: 'silver' } }, 'user.name')
-// 'silver'
-
-Path.setIn({}, 'user.name', 'silver')
-Path.deleteIn({ user: { name: 'silver' } }, 'user.name')
-Path.existIn({ user: { name: 'silver' } }, 'user.name')
-Path.ensureIn({}, 'user.name', 'guest')
+interface splice {
+  (
+    start: number,
+    deleteCount?: number,
+    ...items: Array<string | number>
+  ): Path
+}
 ```
 
-## When methods throw
+Examples: [Quick Start / Path instance operations / Array-like operations](/en/guide/quick-start#array-like-operations)
 
-If the current instance is itself a match pattern or regular expression path, many array-style operations no longer have a deterministic meaning and will throw:
+### forEach
+
+#### Signature
+
+```ts
+interface forEach {
+  (callback: (key: string | number) => any): void
+}
+```
+
+Examples: [Quick Start / Path instance operations / Iterate over segments](/en/guide/quick-start#iterate-over-segments)
+
+### map
+
+#### Signature
+
+```ts
+interface map {
+  (callback: (key: string | number) => any): any[]
+}
+```
+
+Examples: [Quick Start / Path instance operations / Iterate over segments](/en/guide/quick-start#iterate-over-segments)
+
+### reduce
+
+#### Signature
+
+```ts
+interface reduce {
+  <T>(
+    callback: (buffer: T, item: string | number, index: number) => T,
+    initial: T
+  ): T
+}
+```
+
+Examples: [Quick Start / Path instance operations / Iterate over segments](/en/guide/quick-start#iterate-over-segments)
+
+### transform
+
+#### Signature
+
+```ts
+interface transform {
+  <T>(regexp: string | RegExp, callback: (...args: string[]) => T): T
+}
+```
+
+`transform` filters matching segments and passes them to a callback.
+
+Examples: [Matching / transform](/en/guide/matching#transform)
+
+### includes
+
+#### Signature
+
+```ts
+interface includes {
+  (pattern: Pattern): boolean
+}
+```
+
+`includes` checks whether another plain path is a prefix child-path of the current one.
+
+Examples: [Matching / includes](/en/guide/matching#includes)
+
+### matchAliasGroup
+
+#### Signature
+
+```ts
+interface matchAliasGroup {
+  (name: Pattern, alias: Pattern): boolean
+}
+```
+
+This method is used heavily by core to compare a field name and alias against the same pattern.
+
+Examples: [Matching / matchAliasGroup](/en/guide/matching#matchaliasgroup)
+
+## Static methods
+
+### match
+
+#### Signature
+
+```ts
+interface match {
+  (pattern: Pattern): (target: Pattern) => boolean
+}
+```
+
+Examples: [Matching / Path.match](/en/guide/matching#path-match)
+
+### transform
+
+#### Signature
+
+```ts
+interface transform {
+  <T>(
+    pattern: Pattern,
+    regexp: string | RegExp,
+    callback: (...args: string[]) => T
+  ): T
+}
+```
+
+Examples: [Matching / transform](/en/guide/matching#transform)
+
+### getIn
+
+#### Signature
+
+```ts
+interface getIn {
+  (source: any, pattern: Pattern): any
+}
+```
+
+Examples: [Accessors / getIn](/en/guide/accessors#getin)
+
+### setIn
+
+#### Signature
+
+```ts
+interface setIn {
+  (source: any, pattern: Pattern, value: any): any
+}
+```
+
+Examples: [Accessors / setIn](/en/guide/accessors#setin)
+
+### deleteIn
+
+#### Signature
+
+```ts
+interface deleteIn {
+  (source: any, pattern: Pattern): any
+}
+```
+
+Examples: [Accessors / deleteIn](/en/guide/accessors#deletein)
+
+### existIn
+
+#### Signature
+
+```ts
+interface existIn {
+  (source: any, pattern: Pattern, start?: number | Path): boolean
+}
+```
+
+Examples: [Accessors / existIn](/en/guide/accessors#existin)
+
+### ensureIn
+
+#### Signature
+
+```ts
+interface ensureIn {
+  (source: any, pattern: Pattern, defaultValue?: any): any
+}
+```
+
+Examples: [Accessors / ensureIn](/en/guide/accessors#ensurein)
+
+## Notes
+
+If the current instance is itself a match pattern or regular-expression path, many array-style operations no longer have a deterministic meaning and will throw:
 
 - `concat`
 - `slice`
@@ -186,4 +332,4 @@ wildcard.concat('a')
 // throw Error
 ```
 
-That is a useful mental model in business code as well: plain paths behave like structured values, while match patterns behave like compiled rules.
+That is a useful mental model as well: plain paths behave like structured values, while match patterns behave more like compiled rules.

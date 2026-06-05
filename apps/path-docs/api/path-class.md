@@ -1,23 +1,12 @@
-# Path 实例方法
+---
+outline: [2, 3]
+---
 
-`Path.parse(...)` 返回的是一个真正的 `Path` 实例，而不是简单的 segments 数组。除了访问器和匹配，它本身也有一批实用方法。
+# Path API
 
-## 基础信息
+`Path.parse(...)` 返回的是一个真正的 `Path` 实例，而不是简单的 segments 数组。本页只保留 `Path` 类型本身的属性和方法，语法与访问器使用方式请看指南章节。
 
-```ts
-const path = Path.parse('a.b.c')
-
-path.toString()
-// 'a.b.c'
-
-path.toArr()
-// ['a', 'b', 'c']
-
-path.length
-// 3
-```
-
-## 属性总览
+## Attributes
 
 除了 `toString()`、`toArr()` 这类方法，`Path` 本身还带着一组可以直接读取的属性：
 
@@ -46,125 +35,284 @@ pattern.haveExcludePattern
 // true
 ```
 
-## toString 与 toArr
+## 实例方法
 
-官方 Formily 文档里常写 `toArray()`，而当前 `@silver-formily/path` 暴露的方法名是 `toArr()`：
+### toString
 
-```ts
-Path.parse('aa.bb.cc').toString()
-// 'aa.bb.cc'
-
-Path.parse('aa.bb.cc').toArr()
-// ['aa', 'bb', 'cc']
-
-Path.parse('aa.bb.*').toArr()
-// []
-```
-
-这一点是当前站点文档需要明确区分的，不然会和老的 `FormPath` 心智混淆。
-
-## 拼接与裁剪
+#### 签名
 
 ```ts
-const path = Path.parse('a.b.c')
-
-path.concat('d.e').toString()
-// 'a.b.c.d.e'
-
-path.slice(0, 2).toString()
-// 'a.b'
-
-path.parent().toString()
-// 'a.b'
-
-path.pop().toString()
-// 'a.b'
+interface toString {
+  (): string
+}
 ```
 
-## 可变式语义，但返回新对象
+用例见[快速开始 / 路径实例操作 / 转回字符串或数组](/guide/quick-start#转回字符串或数组)。
 
-这些方法虽然名字看起来像数组原型，但都返回新的 `Path`：
+### toArr
+
+#### 签名
 
 ```ts
-const path = Path.parse('a.b.c')
-
-path.push('d').toString()
-// 'a.b.c.d'
-
-path.splice(0, 1).toString()
-// 'b.c'
+interface toArr {
+  (): Array<string | number>
+}
 ```
 
-## 遍历 segments
+用例见[快速开始 / 路径实例操作 / 转回字符串或数组](/guide/quick-start#转回字符串或数组)。
+
+### concat
+
+#### 签名
 
 ```ts
-const path = Path.parse('a.b.c')
-
-path.map(segment => segment)
-// ['a', 'b', 'c']
-
-path.reduce((buf, segment) => buf + segment, '')
-// 'abc'
+interface concat {
+  (...args: Pattern[]): Path
+}
 ```
 
-## transform
+用例见[快速开始 / 路径实例操作 / 拼接和裁剪](/guide/quick-start#拼接和裁剪)。
 
-`transform` 会从 segments 中挑出符合正则的部分，再交给回调：
+### slice
+
+#### 签名
 
 ```ts
-Path.parse('a.b.c').transform(/[ab]/, (...segments) => segments)
-// ['a', 'b']
+interface slice {
+  (start?: number, end?: number): Path
+}
 ```
 
-静态版本同样存在：
+用例见[快速开始 / 路径实例操作 / 拼接和裁剪](/guide/quick-start#拼接和裁剪)。
+
+### parent
+
+#### 签名
 
 ```ts
-Path.transform('a.b.c', /[a-z]/, (...segments) => segments)
-// ['a', 'b', 'c']
+interface parent {
+  (): Path
+}
 ```
 
-## includes
+用例见[快速开始 / 路径实例操作 / 拼接和裁剪](/guide/quick-start#拼接和裁剪)。
 
-`includes` 用于判断另一个普通路径是否是当前路径的前缀子路径：
+### push
+
+#### 签名
 
 ```ts
-Path.parse('aa.bb.cc').includes('aa.bb')
-// true
-
-Path.parse('aa.bb.cc').includes('cc.bb')
-// false
+interface push {
+  (...items: Pattern[]): Path
+}
 ```
 
-## matchAliasGroup
+这些方法虽然名字看起来像数组原型，但都返回新的 `Path`。
 
-这是 `core` 里大量依赖的方法，用同一个 pattern 同时比较 name 和 alias：
+用例见[快速开始 / 路径实例操作 / 类数组操作](/guide/quick-start#类数组操作)。
+
+### pop
+
+#### 签名
 
 ```ts
-Path.parse('aa.*(!bb)').matchAliasGroup('kk.mm.aa.cc', 'aa.cc')
-// true
-
-Path.parse('aa.*(!bb)').matchAliasGroup('kk.mm.aa.bb', 'aa.bb')
-// false
+interface pop {
+  (): Path
+}
 ```
 
-## 静态辅助方法
+用例见[快速开始 / 路径实例操作 / 类数组操作](/guide/quick-start#类数组操作)。
 
-如果你不想先手动 `parse()` 成实例，也可以直接用静态方法：
+### splice
+
+#### 签名
 
 ```ts
-Path.match('user.*')('user.name')
-// true
-
-Path.getIn({ user: { name: 'silver' } }, 'user.name')
-// 'silver'
-
-Path.setIn({}, 'user.name', 'silver')
-Path.deleteIn({ user: { name: 'silver' } }, 'user.name')
-Path.existIn({ user: { name: 'silver' } }, 'user.name')
-Path.ensureIn({}, 'user.name', 'guest')
+interface splice {
+  (
+    start: number,
+    deleteCount?: number,
+    ...items: Array<string | number>
+  ): Path
+}
 ```
 
-## 何时会抛错
+用例见[快速开始 / 路径实例操作 / 类数组操作](/guide/quick-start#类数组操作)。
+
+### forEach
+
+#### 签名
+
+```ts
+interface forEach {
+  (callback: (key: string | number) => any): void
+}
+```
+
+用例见[快速开始 / 路径实例操作 / 遍历 segments](/guide/quick-start#遍历-segments)。
+
+### map
+
+#### 签名
+
+```ts
+interface map {
+  (callback: (key: string | number) => any): any[]
+}
+```
+
+用例见[快速开始 / 路径实例操作 / 遍历 segments](/guide/quick-start#遍历-segments)。
+
+### reduce
+
+#### 签名
+
+```ts
+interface reduce {
+  <T>(
+    callback: (buffer: T, item: string | number, index: number) => T,
+    initial: T
+  ): T
+}
+```
+
+用例见[快速开始 / 路径实例操作 / 遍历 segments](/guide/quick-start#遍历-segments)。
+
+### transform
+
+#### 签名
+
+```ts
+interface transform {
+  <T>(regexp: string | RegExp, callback: (...args: string[]) => T): T
+}
+```
+
+`transform` 会从 segments 中挑出符合正则的部分，再交给回调。
+
+用例见[匹配能力 / transform](/guide/matching#transform)。
+
+### includes
+
+#### 签名
+
+```ts
+interface includes {
+  (pattern: Pattern): boolean
+}
+```
+
+`includes` 用于判断另一个普通路径是否是当前路径的前缀子路径。
+
+用例见[匹配能力 / includes](/guide/matching#includes)。
+
+### matchAliasGroup
+
+#### 签名
+
+```ts
+interface matchAliasGroup {
+  (name: Pattern, alias: Pattern): boolean
+}
+```
+
+这是 `core` 里大量依赖的方法，用同一个 pattern 同时比较 name 和 alias。
+
+用例见[匹配能力 / matchAliasGroup](/guide/matching#matchaliasgroup)。
+
+## 静态方法
+
+### match
+
+#### 签名
+
+```ts
+interface match {
+  (pattern: Pattern): (target: Pattern) => boolean
+}
+```
+
+用例见[匹配能力 / Path.match](/guide/matching#path-match)。
+
+### transform
+
+#### 签名
+
+```ts
+interface transform {
+  <T>(
+    pattern: Pattern,
+    regexp: string | RegExp,
+    callback: (...args: string[]) => T
+  ): T
+}
+```
+
+静态版本同样存在。
+
+用例见[匹配能力 / transform](/guide/matching#transform)。
+
+### getIn
+
+#### 签名
+
+```ts
+interface getIn {
+  (source: any, pattern: Pattern): any
+}
+```
+
+用例见[访问器 / getIn](/guide/accessors#getin)。
+
+### setIn
+
+#### 签名
+
+```ts
+interface setIn {
+  (source: any, pattern: Pattern, value: any): any
+}
+```
+
+用例见[访问器 / setIn](/guide/accessors#setin)。
+
+### deleteIn
+
+#### 签名
+
+```ts
+interface deleteIn {
+  (source: any, pattern: Pattern): any
+}
+```
+
+用例见[访问器 / deleteIn](/guide/accessors#deletein)。
+
+### existIn
+
+#### 签名
+
+```ts
+interface existIn {
+  (source: any, pattern: Pattern, start?: number | Path): boolean
+}
+```
+
+用例见[访问器 / existIn](/guide/accessors#existin)。
+
+### ensureIn
+
+#### 签名
+
+```ts
+interface ensureIn {
+  (source: any, pattern: Pattern, defaultValue?: any): any
+}
+```
+
+用例见[访问器 / ensureIn](/guide/accessors#ensurein)。
+
+## 注意事项
 
 如果当前实例本身是 match pattern 或正则路径，那么很多“数组式操作”都不再有确定语义，因此会抛错：
 

@@ -7,7 +7,7 @@
 3. 用一套更强的模式语法描述字段匹配规则。
 
 :::tip 提示
-这是一个 `formily` 框架内部使用的依赖，对普通用户来说只要熟悉[Pattern 语法](/api/patterns)即可。
+这是一个 `formily` 框架内部使用的依赖，对普通用户来说只要熟悉[Pattern 语法](/guide/patterns)即可。
 :::
 
 ## 安装

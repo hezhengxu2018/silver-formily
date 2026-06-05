@@ -6,6 +6,10 @@ The API surface of `Path` is intentionally small, but it covers a lot:
 - `Path.getIn` / `Path.setIn` / `Path.deleteIn` / `Path.existIn` / `Path.ensureIn`
 - `Path.match`: compile a pattern into a reusable matcher function
 
+:::tip Tip
+This package is mostly an internal dependency used by Formily. For most users, understanding [Pattern Syntax](/en/guide/patterns) is already enough.
+:::
+
 ## Import
 
 ```ts
@@ -22,7 +26,7 @@ class Path {
 }
 ```
 
-These are equivalent in capability:
+These two forms are equivalent in capability:
 
 ```ts
 const created = new Path('user.profile.name')
@@ -100,7 +104,7 @@ Path.parse(/^[a-z]+$/)
 Path.parse(Path.match('user.*'))
 ```
 
-You can also inspect its flags directly:
+If you need to preserve its structural traits, you can also read these flags directly:
 
 ```ts
 const pattern = Path.parse('*(!user.temp)')
@@ -110,6 +114,94 @@ pattern.isMatchPattern
 
 pattern.haveExcludePattern
 // true
+```
+
+## Path instance operations
+
+`Path.parse(...)` returns a real path object, so in addition to matching and accessors it also supports a group of segment-oriented instance methods.
+
+### Convert back to string or array
+
+```ts
+const path = Path.parse('a.b.c')
+
+path.toString()
+// 'a.b.c'
+
+path.toArr()
+// ['a', 'b', 'c']
+```
+
+Older Formily docs often refer to `toArray()`, but the current `@silver-formily/path` API exposes `toArr()`.
+
+### Concatenate and slice
+
+```ts
+const path = Path.parse('a.b.c')
+
+path.concat('d.e').toString()
+// 'a.b.c.d.e'
+
+path.slice(0, 2).toString()
+// 'a.b'
+
+path.parent().toString()
+// 'a.b'
+```
+
+### Array-like operations
+
+These methods look like array methods, but they all return a new `Path` instead of mutating the original one:
+
+```ts
+const path = Path.parse('a.b.c')
+
+path.push('d').toString()
+// 'a.b.c.d'
+
+path.pop().toString()
+// 'a.b'
+
+path.splice(0, 1).toString()
+// 'b.c'
+```
+
+### Iterate over segments
+
+```ts
+const path = Path.parse('a.b.c')
+
+path.forEach((segment) => {
+  console.log(segment)
+})
+
+path.map(segment => segment)
+// ['a', 'b', 'c']
+
+path.reduce((buf, segment) => buf + segment, '')
+// 'abc'
+```
+
+### When methods throw
+
+If the current instance is itself a match pattern or a regular-expression path, many array-style operations no longer have a deterministic meaning and will throw:
+
+- `concat`
+- `slice`
+- `pop`
+- `splice`
+- `forEach`
+- `map`
+- `reduce`
+- `transform`
+
+For example:
+
+```ts
+const wildcard = Path.parse('*')
+
+wildcard.concat('a')
+// throw Error
 ```
 
 ## Access nested data
@@ -167,4 +259,4 @@ Path.parse('..[+10].dd', 'aa.1.cc').toString()
 // 'aa.11.dd'
 ```
 
-That is the same mechanism used by `FormPath.parse(pattern, base)` in core.
+If you have seen `FormPath.parse(pattern, base)` in core, this is the same underlying mechanism.
