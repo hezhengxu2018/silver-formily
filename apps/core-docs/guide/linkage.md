@@ -1,50 +1,42 @@
 # 联动系统
 
+:::tip 提示
+整个 formily 的响应式都基于 `@silver-formily/reactive`，如果你对下面的 `autorun` 、`reaction`、`observer`等概念不了解的话可以先去阅读其[官方文档](https://reactive.silver-formily.org/)
+:::
+
 联动系统用于描述“状态变化后要做什么”。Formily 提供两种常用入口：`effects` 和 `reactions`。
 
 它们看起来一个是主动订阅，一个是被动依赖追踪，但底层都围绕响应式状态变化展开：状态被写入后，系统调度相关消费者，消费者再执行副作用或更新字段状态。
 
-```mermaid
-graph LR
-    Write["字段 / 表单状态写入"]
-    Reactive["Reactive 状态系统"]
-    Schedule["调度相关消费者"]
+它们的区别主要在**语义包装**上：
 
-    subgraph Effects["主动副作用：effects"]
-        Heart["Heart.publish<br/>发布生命周期事件"]
-        Hooks["Effect Hooks<br/>onFormSubmit / onFieldValueChange / ..."]
-        EffectCallback["业务副作用回调"]
-    end
+- `reactions` 保留依赖语义：在 `autorun` 中执行 `reaction(field)`，函数里读到哪些字段状态，就自动追踪哪些依赖
+- `effects` 保留事件语义：内置模型 reaction 监听关键状态变化，再通过 Heart 发布 `LifeCycleTypes`
+- `Observer` 保留渲染语义：渲染过程中读取过的状态变化后，只通知相关视图更新
 
-    subgraph Reactions["被动联动：field.reactions"]
-        Autorun["autorun<br/>首次执行 reaction(field)"]
-        ReadDeps["读取依赖<br/>form.values / field.query(...)"]
-        BindDeps["收集依赖"]
-        ReRun["依赖变化后重新执行"]
-        MutateField["修改字段状态<br/>visible / display / pattern / componentProps"]
-    end
+<ThemeImage
+  light="/architecture/reaction.png"
+  dark="/architecture/reaction.dark.png"
+  alt="Formily 联动系统"
+/>
 
-    subgraph Render["数据消费方"]
-        Observer["Observer / UI 渲染"]
-        RenderUpdate["视图更新"]
-    end
+因此，主动副作用和被动联动的底层并不是两套互不相关的系统。它们都依赖 observable 的读写追踪，只是触发后的表达方式不同：`reactions` 直接重跑联动函数，`effects` 先转换成生命周期事件，再交给业务 Hook 处理。
 
-    Write --> Reactive
-    Reactive --> Schedule
+每个事件类型都有对应的 Hook API：
 
-    Schedule --> Heart
-    Heart --> Hooks
-    Hooks --> EffectCallback
+```ts
+import { onFieldValueChange, onFormSubmit } from '@silver-formily/core'
 
-    Autorun --> ReadDeps
-    ReadDeps --> BindDeps
-    BindDeps --> Schedule
-    Schedule --> ReRun
-    ReRun --> MutateField
-    MutateField --> Write
-
-    Schedule --> Observer
-    Observer --> RenderUpdate
+const form = createForm({
+  effects() {
+    onFormSubmit((form) => {
+      // 表单提交时的副作用
+    })
+    onFieldValueChange('*', (field) => {
+      // 任意字段值变化时的副作用
+    })
+  },
+})
 ```
 
 ## effects：主动副作用
@@ -121,5 +113,3 @@ form.createField({
 | 字段显隐、必填、组件属性等状态推导 | `reactions` |
 
 实际项目中两者经常同时存在：`effects` 负责事件型业务流程，`reactions` 负责字段状态推导。
-
-更完整的运行时关系，请阅读 [架构设计](/guide/architecture)。

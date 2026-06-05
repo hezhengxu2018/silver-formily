@@ -23,6 +23,14 @@ Formily 的字段模型包含两大类：**数据型字段**和**虚数据型字
 
 > Field 并不只能存储简单类型，它可以存放任意数据类型。区别在于：如果需要数组项添加、删除、移动，应使用 ArrayField；如果需要对象属性添加、删除，应使用 ObjectField。没有这类交互需求时，统一使用 Field 即可。
 
+<ThemeImage
+  light="/architecture/field.png"
+  dark="/architecture/field.dark.png"
+  alt="Formily Field"
+/>
+
+Field 和 VoidField 之间存在**父子继承**关系——当父节点设置 display 后，子节点默认继承。同时也存在**隐式控制**关系——父级的状态变更会联动影响子级。
+
 ## 基础状态
 
 字段常见状态可以分成几组：

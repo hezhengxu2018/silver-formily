@@ -1,6 +1,14 @@
 # 路径系统
 
+<script setup>
+import ThemeImage from '../.vitepress/theme/components/ThemeImage.vue'
+</script>
+
 路径系统是 Formily 连接字段树和表单数据的关键。Form 创建字段、Query 查询字段、Field 表达父子关系、values 深层读写，都依赖同一套路径语义。
+
+:::tip 提示
+本章节的大部分能力都依赖于 [`@silver-formily/path`](https://path.silver-formily.org)。本章主要介绍 `@silver-formily/core` 是如何与 `@silver-formily/path` 工作的，完整的能力请参考 path 的文档。
+:::
 
 ## address 与 path
 
@@ -13,29 +21,11 @@
 
 `VoidField` 是 UI 容器，不参与表单数据。因此它会出现在 `address` 中，但不会出现在子数据字段的 `path` 中。
 
-```mermaid
-graph TD
-    subgraph AddressTree["address：字段树路径"]
-        A_root["form"]
-        A_layout["layout (VoidField)<br/>address: layout<br/>path: layout"]
-        A_username["username (Field)<br/>address: layout.username<br/>path: username"]
-        A_email["email (Field)<br/>address: layout.email<br/>path: email"]
-        A_root --> A_layout
-        A_layout --> A_username
-        A_layout --> A_email
-    end
-
-    subgraph PathTree["path：数据路径"]
-        P_root["form.values"]
-        P_username["username"]
-        P_email["email"]
-        P_root --> P_username
-        P_root --> P_email
-    end
-
-    A_username -.->|"跳过 VoidField"| P_username
-    A_email -.->|"跳过 VoidField"| P_email
-```
+<ThemeImage
+  light="/architecture/path.png"
+  dark="/architecture/path.dark.png"
+  alt="Formily 路径系统"
+/>
 
 ```ts
 form.createVoidField({ name: 'layout' })
@@ -74,6 +64,27 @@ form.query('**.email').forEach((field) => {
 | `**`           | 匹配任意层级路径                       |
 | `a.b`          | 精确匹配指定路径                       |
 | `users.*.name` | 匹配数组项或动态子节点中的 `name` 字段 |
+
+完整的匹配能力请参考 `@silver-formily/path` 的文档中[模式语法](https://path.silver-formily.org/api/patterns)的章节
+
+### 别名组匹配
+
+在 `@silver-formily/core` 中，字段匹配不是只比较一个路径。`form.query()`、`field.match()` 和 `onFieldXxx(pattern)` 这类 API 会用同一个 pattern 同时匹配字段的 `address` 和 `path`。
+
+这背后使用的是 `FormPath.parse(pattern).matchAliasGroup(field.address, field.path)`。这里的 `alias` 不是一种额外的路径写法，而是指同一个字段可以同时用“字段树路径”和“数据路径”被命中。
+
+```ts
+form.createVoidField({ name: 'layout' })
+form.createField({ name: 'layout.username' })
+
+// 命中 address: layout.username
+form.query('layout.username').take()
+
+// 命中 path: username
+form.query('username').take()
+```
+
+因此，在包含 `VoidField` 的结构里，既可以按完整字段树位置查找字段，也可以按最终数据路径查找字段。更底层的行为请参考 [`matchAliasGroup`](https://path.silver-formily.org/api/matching.html#matchaliasgroup)。
 
 ## 字段关系
 

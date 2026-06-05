@@ -43,9 +43,8 @@ export default createDocsConfig({
         items: [
           { text: '介绍', link: '/guide/' },
           { text: '架构设计', link: '/guide/architecture' },
-          { text: 'MVVM 模式', link: '/guide/mvvm' },
-          { text: '表单 (Form)', link: '/guide/form' },
-          { text: '字段 (Field)', link: '/guide/field' },
+          { text: '表单模型', link: '/guide/form' },
+          { text: '字段模型', link: '/guide/field' },
           { text: '值与状态', link: '/guide/values' },
           { text: '路径系统', link: '/guide/path' },
           { text: '校验系统', link: '/guide/validation' },

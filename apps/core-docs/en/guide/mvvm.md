@@ -1,32 +1,18 @@
 # MVVM Pattern
 
+<script setup>
+import ThemeImage from '../.vitepress/theme/components/ThemeImage.vue'
+</script>
+
 MVVM (Model-View-ViewModel) is an OOP architectural pattern. `@silver-formily/core` adopts this pattern to cleanly separate form **data**, **state**, and **side-effect logic**.
 
 Here's a diagram to illustrate:
 
-```mermaid
-graph LR
-    subgraph ViewLayer[" "]
-        View["🖥️ View<br/><br/>Presentation Layer"]
-    end
-    subgraph ViewModelLayer[" "]
-        ViewModel["⚙️ ViewModel<br/><br/>View-Model Layer"]
-    end
-    subgraph ModelLayer[" "]
-        Model["🗄️ Model<br/><br/>Data Layer"]
-    end
-
-    View <-->|"DataBinding"| ViewModel
-    ViewModel -->|"One-way Request"| Model
-
-    subgraph Legend[" "]
-        L1["Presentation and<br/>Presentation Logic"]
-        L2["BusinessLogic<br/>and Data"]
-    end
-
-    L1 --- View
-    L2 --- Model
-```
+<ThemeImage
+  light="/architecture/mvvm.png"
+  dark="/architecture/mvvm.dark.png"
+  alt="MVVM"
+/>
 
 - **View ↔ ViewModel**: Bidirectional via DataBinding. View passes user actions to ViewModel; ViewModel notifies View of state changes
 - **ViewModel → Model**: One-way request. ViewModel reads/writes Model data; Model doesn't directly perceive ViewModel
