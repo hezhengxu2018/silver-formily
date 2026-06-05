@@ -1,9 +1,5 @@
 # MVVM Pattern
 
-<script setup>
-import ThemeImage from '../.vitepress/theme/components/ThemeImage.vue'
-</script>
-
 MVVM (Model-View-ViewModel) is an OOP architectural pattern. `@silver-formily/core` adopts this pattern to cleanly separate form **data**, **state**, and **side-effect logic**.
 
 Here's a diagram to illustrate:

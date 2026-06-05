@@ -1,9 +1,5 @@
 # 路径系统
 
-<script setup>
-import ThemeImage from '../.vitepress/theme/components/ThemeImage.vue'
-</script>
-
 路径系统是 Formily 连接字段树和表单数据的关键。Form 创建字段、Query 查询字段、Field 表达父子关系、values 深层读写，都依赖同一套路径语义。
 
 :::tip 提示

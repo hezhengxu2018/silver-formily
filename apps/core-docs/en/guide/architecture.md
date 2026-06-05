@@ -1,9 +1,5 @@
 # Architecture
 
-<script setup>
-import ThemeImage from '../../.vitepress/theme/components/ThemeImage.vue'
-</script>
-
 The architecture of `@silver-formily/core` is based on the MVVM pattern. It separates form state, side effects, and validation logic into independent layers.
 
 ## What Is a Domain Model?
