@@ -1,3 +1,4 @@
+import vueJsx from '@vitejs/plugin-vue-jsx'
 import { defineConfig } from 'tsdown'
 import Vue from 'unplugin-vue/rolldown'
 
@@ -20,6 +21,8 @@ export default defineConfig({
   },
   plugins: [
     Vue({ isProduction: true }),
+    // @ts-expect-error Vite plugin is supported by tsdown plugins
+    vueJsx(),
   ],
   outExtensions: () => ({
     dts: '.d.ts',
