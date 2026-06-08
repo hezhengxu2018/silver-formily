@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { createForm } from '@formily/core'
+import { createForm } from '@silver-formily/core'
 import { DatePicker, Form, FormItem, Submit } from '@silver-formily/element-plus'
 import { ArrayField, Field } from '@silver-formily/vue'
 

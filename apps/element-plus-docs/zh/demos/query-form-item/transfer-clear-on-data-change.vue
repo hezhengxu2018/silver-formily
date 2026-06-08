@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import type { ISchema } from '@formily/json-schema'
-import { createForm } from '@formily/core'
+import type { ISchema } from '@silver-formily/json-schema'
+import { createForm } from '@silver-formily/core'
 import { QueryFormItem, Transfer } from '@silver-formily/element-plus'
 import { createSchemaField, FormProvider } from '@silver-formily/vue'
 import { ElButton, ElMessage } from 'element-plus'

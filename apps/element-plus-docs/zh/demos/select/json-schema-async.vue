@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-import { createForm } from '@formily/core'
-import { action } from '@formily/reactive'
+import { createForm } from '@silver-formily/core'
 import { Form, FormItem, Select, Submit } from '@silver-formily/element-plus'
+import { action } from '@silver-formily/reactive'
 import { createSchemaField } from '@silver-formily/vue'
 
 const schema = {

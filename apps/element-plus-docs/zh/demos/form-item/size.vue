@@ -1,6 +1,6 @@
 <script setup lang="tsx">
-import type { DataField } from '@formily/core'
-import { createForm, onFieldChange } from '@formily/core'
+import type { DataField } from '@silver-formily/core'
+import { createForm, onFieldChange } from '@silver-formily/core'
 import {
   Cascader,
   DatePicker,

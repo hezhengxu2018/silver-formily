@@ -103,9 +103,10 @@ export default createDocsConfig({
     },
     optimizeDeps: {
       include: [
-        '@formily/core',
-        '@formily/reactive',
-        '@formily/shared',
+        '@silver-formily/core',
+        '@silver-formily/reactive',
+        '@silver-formily/shared',
+        '@silver-formily/json-schema',
         '@silver-formily/reactive-vue',
         '@silver-formily/vue',
         '@silver-formily/grid',

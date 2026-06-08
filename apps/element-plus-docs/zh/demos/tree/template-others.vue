@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { createForm } from '@formily/core'
+import { createForm } from '@silver-formily/core'
 import { FormItem, FormLayout, Input, Tree } from '@silver-formily/element-plus'
 import { Field, FormProvider } from '@silver-formily/vue'
 import { omit } from 'lodash-es'

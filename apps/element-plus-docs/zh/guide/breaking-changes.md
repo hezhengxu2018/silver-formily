@@ -8,6 +8,8 @@
 
 - 从 3.x 版本起，组件库的grid封装从 `@formily/grid` 迁移到了 `@silver-formily/grid`，详细的使用请参考独立文档，新建Grid实例请使用其内置的 `createGrid` 函数。
 
+- 从 5.x 版本起，`@silver-formily/element-plus`使用的所有对等依赖全部迁移到了 Silver Formily独立维护，所需的依赖完全独立于 Formily。
+
 ::: warning 注意
 `@silver-formily/vue` 对的绑定方式也做了修改，不再是`value` / `onChange`的方式。使用自定义组件时请务必注意。
 :::

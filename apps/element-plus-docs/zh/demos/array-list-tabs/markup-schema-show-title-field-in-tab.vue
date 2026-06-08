@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { Close } from '@element-plus/icons-vue'
-import { createForm } from '@formily/core'
+import { createForm } from '@silver-formily/core'
 import {
   ArrayListTabs,
   Editable,

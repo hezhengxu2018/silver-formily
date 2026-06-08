@@ -1,5 +1,5 @@
 <script setup lang="tsx">
-import type { ISchema } from '@formily/json-schema'
+import type { ISchema } from '@silver-formily/json-schema'
 import { FormDrawer, FormItem, FormLayout, Input } from '@silver-formily/element-plus'
 import { createSchemaField } from '@silver-formily/vue'
 import { ElButton } from 'element-plus'

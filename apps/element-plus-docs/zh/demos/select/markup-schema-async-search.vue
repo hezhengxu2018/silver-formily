@@ -1,8 +1,8 @@
 <script lang="ts" setup>
-import type { DataField } from '@formily/core'
-import { createForm, onFieldInit, onFieldReact } from '@formily/core'
-import { action, observable } from '@formily/reactive'
+import type { DataField } from '@silver-formily/core'
+import { createForm, onFieldInit, onFieldReact } from '@silver-formily/core'
 import { FormItem, Select, Submit } from '@silver-formily/element-plus'
+import { action, observable } from '@silver-formily/reactive'
 import { createSchemaField, FormProvider } from '@silver-formily/vue'
 
 let timeout

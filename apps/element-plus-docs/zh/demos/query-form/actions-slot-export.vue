@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import type { ISchema } from '@formily/json-schema'
+import type { ISchema } from '@silver-formily/json-schema'
 import { Download, RefreshRight, Search } from '@element-plus/icons-vue'
-import { createForm } from '@formily/core'
+import { createForm } from '@silver-formily/core'
 import {
   QueryForm,
   Reset,

@@ -8,7 +8,7 @@
 
 - 希望延续或复用 Element Plus 视觉体系，但又想享受到 Formily 强大的 Schema 表达力与编排能力的团队。
 - 需要在大型业务系统中维护一套稳定、可测试的表单组件集合，并且期望通过 DSL 对表单行为做“配置化”编排的项目。
-- 已经使用 `@formily/element-plus`，但在交互体验、版本依赖或扩展性上遇到瓶颈，需要更贴合实际场景实现的用户。
+- 已经使用 `@formily/element-plus`，但在交互体验、版本依赖或扩展性上遇到瓶颈，希望迁移到 `@silver-formily/element-plus` 的用户。
 
 ## 快速上手流程
 
@@ -41,7 +41,7 @@ export const { SchemaField } = createSchemaField({
 ### 3. 创建表单实例
 
 ```ts
-import { createForm } from '@formily/core'
+import { createForm, onFieldValueChange } from '@silver-formily/core'
 
 const form = createForm({
   effects(form) {
@@ -61,7 +61,7 @@ const form = createForm({
 
 ```vue
 <script setup lang="ts">
-import { createForm, onFieldValueChange } from '@formily/core'
+import { createForm, onFieldValueChange } from '@silver-formily/core'
 import { FormItem, Input, Select, Submit } from '@silver-formily/element-plus'
 import { createSchemaField, FormProvider } from '@silver-formily/vue'
 

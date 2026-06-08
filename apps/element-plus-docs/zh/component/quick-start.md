@@ -4,8 +4,12 @@
 
 `@silver-formily/element-plus` 是基于 `@formily/element-plus` 重新封装的组件库，提供了一套开箱即用的表单解决方案。在原来的基础上，我们还做了一大量的重构及优化，使得组件更加易用、灵活。
 
-::: warning 注意
+:::warning 注意
 从 2.x 版本起，组件库的vue绑定库从 `@formily/vue` 迁移至 `@silver-formily/vue`。除了需要注意使用时 Field、SchemaField等组件也需要从 @silver-formily/vue 中引入之外。使用自定义封装组件时也需要注意，默认的绑定行为已经改变，请不要再使用 `value` / `onChange` 的方式绑定自定义组件。详情请参考[官方文档](https://vue.silver-formily.org/)
+:::
+
+:::warning 注意
+从 5.x 版本起，`@silver-formily/element-plus`使用的所有对等依赖全部迁移到了 Silver Formily独立维护，所需的依赖完全独立于 Formily。
 :::
 
 ## 安装

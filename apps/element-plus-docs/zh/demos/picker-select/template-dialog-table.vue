@@ -1,5 +1,5 @@
 <script setup lang="tsx">
-import { createForm } from '@formily/core'
+import { createForm } from '@silver-formily/core'
 import { FormDialog, FormItem, PickerSelect, SelectTable, Submit } from '@silver-formily/element-plus'
 import { Field, FormProvider } from '@silver-formily/vue'
 

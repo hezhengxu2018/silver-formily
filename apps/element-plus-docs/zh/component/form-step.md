@@ -9,7 +9,7 @@
 ## Markup Schema 案例
 
 ::: tip 提示
-通过`createFormStep`创建出来的对象属于`@formily/reactive`的响应式，在例子中通过`FormConsumer`包裹才实现了渲染的更新。
+通过`createFormStep`创建出来的对象属于`@silver-formily/reactive`的响应式，在例子中通过`FormConsumer`包裹才实现了渲染的更新。
 :::
 
 :::demo

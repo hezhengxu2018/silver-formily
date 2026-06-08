@@ -1,8 +1,8 @@
 <script lang="ts" setup>
-import { createForm } from '@formily/core'
-import { autorun, toJS } from '@formily/reactive'
-import { isPlainObj } from '@formily/shared'
+import { createForm } from '@silver-formily/core'
 import { FormItem, FormLayout, Select, Switch, Tree } from '@silver-formily/element-plus'
+import { autorun, toJS } from '@silver-formily/reactive'
+import { isPlainObj } from '@silver-formily/shared'
 import { Field, FormProvider } from '@silver-formily/vue'
 import { omit } from 'lodash-es'
 import { codeToHtml } from 'shiki'

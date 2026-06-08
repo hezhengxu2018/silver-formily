@@ -1,5 +1,5 @@
 <script>
-import { createForm } from '@formily/core'
+import { createForm } from '@silver-formily/core'
 import {
   Form,
   FormButtonGroup,

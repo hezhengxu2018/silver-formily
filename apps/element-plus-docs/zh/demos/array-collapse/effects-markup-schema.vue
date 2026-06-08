@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { createForm, isField, onFieldChange, onFieldReact } from '@formily/core'
+import { createForm, isField, onFieldChange, onFieldReact } from '@silver-formily/core'
 import { ArrayCollapse, FormItem, Input, Submit } from '@silver-formily/element-plus'
 import { createSchemaField, FormProvider } from '@silver-formily/vue'
 

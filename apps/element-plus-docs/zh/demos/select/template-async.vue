@@ -1,8 +1,8 @@
 <script lang="ts" setup>
-import type { DataField } from '@formily/core'
-import { createForm, onFieldReact } from '@formily/core'
-import { action } from '@formily/reactive'
+import type { DataField } from '@silver-formily/core'
+import { createForm, onFieldReact } from '@silver-formily/core'
 import { Form, FormItem, Select, Submit } from '@silver-formily/element-plus'
+import { action } from '@silver-formily/reactive'
 import { Field } from '@silver-formily/vue'
 
 function useAsyncDataSource(pattern, service) {
