@@ -94,6 +94,7 @@ export default {
       { value: 'apps/path-docs', name: 'apps/path-docs' },
       { value: 'apps/validator-docs', name: 'apps/validator-docs' },
       { value: 'packages/core', name: 'packages/core' },
+      { value: 'packages/json-schema', name: 'packages/json-schema' },
       { value: 'packages/docs-toolkit', name: 'packages/docs-toolkit' },
       { value: 'packages/element-plus', name: 'packages/element-plus' },
       { value: 'packages/vant', name: 'packages/vant' },
