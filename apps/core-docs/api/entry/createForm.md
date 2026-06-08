@@ -18,20 +18,20 @@ interface createForm {
 
 ## IFormProps
 
-| 属性          | 描述                             | 类型                                                     | 默认值       |
-| ------------- | -------------------------------- | -------------------------------------------------------- | ------------ |
-| values        | 表单值                           | Object                                                   | `{}`         |
-| initialValues | 表单默认值                       | Object                                                   | `{}`         |
-| pattern       | 表单交互模式                     | `"editable" \| "disabled" \| "readOnly" \| "readPretty"` | `"editable"` |
-| display       | 表单显隐                         | `"visible" \| "hidden" \| "none"`                        | `"visible`   |
-| hidden        | UI 隐藏                          | Boolean                                                  | `false`      |
-| visible       | 显示/隐藏(数据隐藏)              | Boolean                                                  | `true`       |
-| editable      | 是否可编辑                       | Boolean                                                  | `true`       |
-| disabled      | 是否禁用                         | Boolean                                                  | `false`      |
-| readOnly      | 是否只读                         | Boolean                                                  | `false`      |
-| readPretty    | 是否是优雅阅读态                 | Boolean                                                  | `false`      |
-| effects       | 副作用逻辑，用于实现各种联动逻辑 | `(form:Form)=>void`                                      |              |
-| validateFirst | 是否只校验第一个非法规则         | Boolean                                                  | `false`      |
+| 属性          | 描述                             | 类型                                                       | 默认值       |
+| ------------- | -------------------------------- | ---------------------------------------------------------- | ------------ |
+| values        | 表单值                           | Object                                                     | `{}`         |
+| initialValues | 表单默认值                       | Object                                                     | `{}`         |
+| pattern       | 表单交互模式                     | [FormPatternTypes](/api/models/Form.html#formpatterntypes) | `"editable"` |
+| display       | 表单显隐                         | [FormDisplayTypes](/api/models/Form.html#formdisplaytypes) | `"visible"`  |
+| hidden        | UI 隐藏                          | Boolean                                                    | `false`      |
+| visible       | 显示/隐藏(数据隐藏)              | Boolean                                                    | `true`       |
+| editable      | 是否可编辑                       | Boolean                                                    | `true`       |
+| disabled      | 是否禁用                         | Boolean                                                    | `false`      |
+| readOnly      | 是否只读                         | Boolean                                                    | `false`      |
+| readPretty    | 是否是优雅阅读态                 | Boolean                                                    | `false`      |
+| effects       | 副作用逻辑，用于实现各种联动逻辑 | `(form:Form)=>void`                                        |              |
+| validateFirst | 是否只校验第一个非法规则         | Boolean                                                    | `false`      |
 
 ## 用例
 
