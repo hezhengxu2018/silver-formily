@@ -23,7 +23,7 @@ This package re-exports Formily’s reactivity bindings for Vue 3. Follow the gl
 - Stick to Composition API utilities—avoid mixing legacy Formily Vue 2 constructs.
 - Keep reactivity helpers pure; anything with side effects belongs in `src/shared/effects`.
 - Export through `src/index.ts` only. If you need sub-path exports, add them to `package.json#exports`.
-- Peer dependencies (`@formily/reactive`, `vue`) are externalized at build time. Don’t bundle them.
+- Peer dependencies (`@silver-formily/reactive`, `vue`) are externalized at build time. Don’t bundle them.
 
 ## Testing & Verification
 

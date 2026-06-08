@@ -55,12 +55,12 @@ useObserver
 
 ## formilyComputed <ElTag>1.0.0</ElTag>
 
-将一个 `@formily/reactive`的响应式转为 Vue3 的响应式（ComputedRef）。在Vue3中可以完全替代 `observable.computed`
+将一个 `@silver-formily/reactive` 的响应式转为 Vue3 的响应式（ComputedRef）。在 Vue3 中可以完全替代 `observable.computed`。
 
 ### 签名
 
 ```ts
-import type { IReactionOptions } from '@formily/reactive'
+import type { IReactionOptions } from '@silver-formily/reactive'
 import type { ComputedRef } from 'vue'
 
 // options 默认值为 { fireImmediately: true }
@@ -82,7 +82,7 @@ formilyComputed
 ### 签名
 
 ```ts
-import type { Dispose, Reaction } from '@formily/reactive'
+import type { Dispose, Reaction } from '@silver-formily/reactive'
 
 interface autorunEffect {
   (tracker: Reaction, name?: string): Dispose
@@ -102,7 +102,7 @@ autorunEffect
 ### 签名
 
 ```ts
-import type { Dispose, IReactionOptions } from '@formily/reactive'
+import type { Dispose, IReactionOptions } from '@silver-formily/reactive'
 
 interface reactionWatch {
   <T>(

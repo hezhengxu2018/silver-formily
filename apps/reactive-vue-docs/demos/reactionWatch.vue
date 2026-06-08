@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { batch, observable } from '@formily/reactive'
+import { batch, observable } from '@silver-formily/reactive'
 import { reactionWatch } from '@silver-formily/reactive-vue'
 import { ref } from 'vue'
 

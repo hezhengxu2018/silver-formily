@@ -18,8 +18,8 @@
     }
   },
   "dependencies": {
-    "@formily/reactive": "catalog:",
     "@silver-formily/docs-toolkit": "workspace:*",
+    "@silver-formily/reactive": "workspace:*",
     "@silver-formily/reactive-vue": "workspace:*",
     "vue": "catalog:"
   },

@@ -55,12 +55,12 @@ useObserver
 
 ## formilyComputed <ElTag>1.0.0</ElTag>
 
-Converts a `@formily/reactive` computation into a Vue 3 `ComputedRef`. You can use it anywhere Vue expects a computed value (Pinia, props, etc.).
+Converts a `@silver-formily/reactive` computation into a Vue 3 `ComputedRef`. You can use it anywhere Vue expects a computed value (Pinia, props, etc.).
 
 ### Signature
 
 ```ts
-import type { IReactionOptions } from '@formily/reactive'
+import type { IReactionOptions } from '@silver-formily/reactive'
 import type { ComputedRef } from 'vue'
 
 // options default to { fireImmediately: true }
@@ -82,7 +82,7 @@ Wraps `autorun` as a Vue composable. It subscribes immediately inside `setup()` 
 ### Signature
 
 ```ts
-import type { Dispose, Reaction } from '@formily/reactive'
+import type { Dispose, Reaction } from '@silver-formily/reactive'
 
 interface autorunEffect {
   (tracker: Reaction, name?: string): Dispose
@@ -102,7 +102,7 @@ Wraps `reaction` as a Vue composable. It keeps the same `tracker`, `subscriber`,
 ### Signature
 
 ```ts
-import type { Dispose, IReactionOptions } from '@formily/reactive'
+import type { Dispose, IReactionOptions } from '@silver-formily/reactive'
 
 interface reactionWatch {
   <T>(

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { observable } from '@formily/reactive'
+import { observable } from '@silver-formily/reactive'
 import { autorunEffect } from '@silver-formily/reactive-vue'
 import { ref } from 'vue'
 

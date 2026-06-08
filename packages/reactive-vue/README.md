@@ -1,6 +1,10 @@
 # @silver-formily/reactive-vue
 
-> 🧠 使用 Vue3 封装的 `@formily/reactive-vue`。
+> 🧠 Silver Formily 体系下的 Vue 3 响应式绑定层。
+
+::: tip 迁移说明
+从 `2.x` 版本开始，`@silver-formily/reactive-vue` 的运行时依赖已经完全迁移到 `@silver-formily/*` 命名空间。安装、示例和工程接入都应使用 `@silver-formily/reactive`，不再推荐 `@formily/reactive`。
+:::
 
 ## ✨ 特性
 
@@ -11,7 +15,7 @@
 ## 📦 安装
 
 ```bash
-pnpm add @silver-formily/reactive-vue @formily/reactive
+pnpm add @silver-formily/reactive-vue @silver-formily/reactive
 # 或者：npm install / yarn add
 ```
 
@@ -21,7 +25,7 @@ pnpm add @silver-formily/reactive-vue @formily/reactive
 
 ```vue
 <script setup lang="ts">
-import { observable } from '@formily/reactive'
+import { observable } from '@silver-formily/reactive'
 import {
   autorunEffect,
   formilyComputed,

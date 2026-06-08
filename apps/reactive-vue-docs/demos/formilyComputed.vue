@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { observable } from '@formily/reactive'
+import { observable } from '@silver-formily/reactive'
 import { formilyComputed } from '@silver-formily/reactive-vue'
 
 const obs = observable({

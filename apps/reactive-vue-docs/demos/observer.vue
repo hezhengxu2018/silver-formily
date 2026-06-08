@@ -1,5 +1,5 @@
 <script>
-import { observable } from '@formily/reactive'
+import { observable } from '@silver-formily/reactive'
 import { observer } from '@silver-formily/reactive-vue'
 
 export default observer({
