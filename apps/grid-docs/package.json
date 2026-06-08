@@ -18,9 +18,9 @@
     }
   },
   "dependencies": {
-    "@formily/reactive": "catalog:",
     "@silver-formily/docs-toolkit": "workspace:*",
     "@silver-formily/grid": "workspace:*",
+    "@silver-formily/reactive": "workspace:*",
     "vue": "catalog:"
   },
   "devDependencies": {

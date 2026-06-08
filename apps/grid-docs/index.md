@@ -2,16 +2,20 @@
 
 `@silver-formily/grid` 用于根据容器尺寸和子节点 `span` 动态计算网格布局。
 
+::: tip 迁移说明
+从 `2.x` 版本开始，Grid 的响应式依赖已经完全迁移到 `@silver-formily/reactive`。本文档与 demo 默认使用 `@silver-formily/*` 命名空间，旧的 `@formily/*` 写法仅代表迁移前背景。
+:::
+
 ## 安装
 
 ::: code-group
 
 ```bash [pnpm]
-pnpm add @silver-formily/grid @formily/reactive
+pnpm add @silver-formily/grid @silver-formily/reactive
 ```
 
 ```bash [npm]
-npm install @silver-formily/grid @formily/reactive
+npm install @silver-formily/grid @silver-formily/reactive
 ```
 
 :::
@@ -39,7 +43,7 @@ basicGrid
 
 展示在 Vue 中推荐的接入方式：
 
-- 使用 `createGrid` 创建实例来跳过 @formily/reactive 的深响应式代理。
+- 使用 `createGrid` 创建实例来跳过 `@silver-formily/reactive` 的深响应式代理。
 
 :::demo
 vueUsage

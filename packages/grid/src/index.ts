@@ -1,5 +1,5 @@
 import type { GridNode, IGridOptions } from './types'
-import { batch, define, markRaw, observable, reaction } from '@formily/reactive'
+import { batch, define, markRaw, observable, reaction } from '@silver-formily/reactive'
 import { ChildListMutationObserver } from './observer'
 import {
   calcBreakpointIndex,

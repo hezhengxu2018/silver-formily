@@ -373,15 +373,15 @@ importers:
 
   apps/grid-docs:
     dependencies:
-      '@formily/reactive':
-        specifier: 'catalog:'
-        version: 2.3.7
       '@silver-formily/docs-toolkit':
         specifier: workspace:*
         version: link:../../packages/docs-toolkit
       '@silver-formily/grid':
         specifier: workspace:*
         version: link:../../packages/grid
+      '@silver-formily/reactive':
+        specifier: workspace:*
+        version: link:../../packages/reactive
       vue:
         specifier: 'catalog:'
         version: 3.5.32(typescript@6.0.2)
@@ -828,9 +828,9 @@ importers:
 
   packages/grid:
     devDependencies:
-      '@formily/reactive':
-        specifier: 'catalog:'
-        version: 2.3.7
+      '@silver-formily/reactive':
+        specifier: workspace:*
+        version: link:../reactive
       '@silver-formily/typescript-config':
         specifier: workspace:*
         version: link:../typescript-config

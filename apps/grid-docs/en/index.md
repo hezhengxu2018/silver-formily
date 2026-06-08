@@ -2,16 +2,20 @@
 
 `@silver-formily/grid` builds responsive layouts from container size and child `span` metadata.
 
+::: tip Migration Note
+Starting with `2.x`, Grid's reactivity dependency is fully migrated to `@silver-formily/reactive`. This docs site and its demos use the `@silver-formily/*` namespace by default, while older `@formily/*` snippets should be treated as pre-migration context.
+:::
+
 ## Installation
 
 ::: code-group
 
 ```bash [pnpm]
-pnpm add @silver-formily/grid @formily/reactive
+pnpm add @silver-formily/grid @silver-formily/reactive
 ```
 
 ```bash [npm]
-npm install @silver-formily/grid @formily/reactive
+npm install @silver-formily/grid @silver-formily/reactive
 ```
 
 :::
@@ -39,7 +43,7 @@ basicGrid
 
 This demo shows the recommended Vue integration pattern:
 
-- Use `createGrid` to create instance which skips `@formily/reactive` deep proxy wrapping.
+- Use `createGrid` to create an instance that skips `@silver-formily/reactive` deep proxy wrapping.
 
 :::demo
 vueUsage

@@ -2,7 +2,7 @@
   "name": "@silver-formily/grid",
   "type": "module",
   "version": "1.0.2",
-  "description": "Grid package scaffold for silver-formily",
+  "description": "Responsive grid runtime for Silver Formily",
   "author": "hezhengxu",
   "license": "MIT",
   "homepage": "https://github.com/hezhengxu2018/silver-formily",
@@ -40,10 +40,10 @@
     "prepublishOnly": "pnpm run build"
   },
   "peerDependencies": {
-    "@formily/reactive": "^2"
+    "@silver-formily/reactive": "workspace:*"
   },
   "devDependencies": {
-    "@formily/reactive": "catalog:",
+    "@silver-formily/reactive": "workspace:*",
     "@silver-formily/typescript-config": "workspace:*",
     "@vitest/browser-playwright": "catalog:",
     "@vitest/coverage-istanbul": "catalog:",
