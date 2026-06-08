@@ -83,7 +83,7 @@ Detailed linkage patterns and runnable examples are documented in [Linkage Examp
 ### Signature
 
 ```ts
-import { IGeneralFieldState } from '@formily/core'
+import { IGeneralFieldState } from '@silver-formily/core'
 
 type SchemaReactionEffect
   = | 'onFieldInit'

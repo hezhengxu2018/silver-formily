@@ -217,7 +217,7 @@ interface compile {
 下面的例子会把 Schema 里的表达式编译成最终值，适合在手动创建 `Schema` 实例后，先注入一组运行时变量再继续消费 Schema 的场景。
 
 ```ts
-import { Schema } from '@formily/json-schema'
+import { Schema } from '@silver-formily/json-schema'
 
 const schema = new Schema({
   type: 'object',
@@ -280,12 +280,12 @@ interface toJSON {
 
 ### 描述
 
-将当前 Schema 对象转换成 Formily 字段模型属性，映射关系参考 [属性](/api/properties#属性)
+将当前 Schema 对象转换成字段模型属性，映射关系参考 [属性](/api/properties#属性)
 
 ### 签名
 
 ```ts
-import { IFieldFactoryProps } from '@formily/core'
+import { IFieldFactoryProps } from '@silver-formily/core'
 
 interface toFieldProps {
   (): IFieldFactoryProps

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { createForm } from '@formily/core'
+import { createForm } from '@silver-formily/core'
 import { createSchemaField, FormConsumer, FormProvider } from '@silver-formily/vue'
 import { InputBox, TextAreaBox } from './shared'
 
@@ -37,7 +37,7 @@ const schema = {
 const form = createForm({
   values: {
     nickname: 'Silver',
-    bio: 'Hello Formily',
+    bio: 'Hello Silver',
   },
 })
 </script>

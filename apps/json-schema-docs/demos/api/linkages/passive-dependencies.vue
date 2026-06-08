@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { createForm } from '@formily/core'
+import { createForm } from '@silver-formily/core'
 import { createSchemaField, FormConsumer, FormProvider } from '@silver-formily/vue'
 import { InputBox } from './shared'
 

@@ -25,12 +25,12 @@
     }
   },
   "dependencies": {
-    "@formily/core": "catalog:",
-    "@formily/json-schema": "catalog:",
-    "@formily/reactive": "catalog:",
-    "@formily/shared": "catalog:",
+    "@silver-formily/core": "workspace:*",
     "@silver-formily/docs-toolkit": "workspace:*",
+    "@silver-formily/json-schema": "workspace:*",
+    "@silver-formily/reactive": "workspace:*",
     "@silver-formily/reactive-vue": "workspace:*",
+    "@silver-formily/shared": "workspace:*",
     "@silver-formily/vue": "workspace:*",
     "vue": "catalog:"
   },

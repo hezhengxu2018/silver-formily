@@ -1,4 +1,4 @@
-import { isArrayField } from '@formily/core'
+import { isArrayField } from '@silver-formily/core'
 import { observer } from '@silver-formily/reactive-vue'
 import { RecursionField, useField, useFieldSchema } from '@silver-formily/vue'
 import { defineComponent, h } from 'vue'

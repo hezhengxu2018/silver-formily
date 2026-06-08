@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import type { GeneralField } from '@formily/core'
-import { createForm, isField } from '@formily/core'
+import type { GeneralField } from '@silver-formily/core'
+import { createForm, isField } from '@silver-formily/core'
 import { createSchemaField, FormConsumer, FormProvider } from '@silver-formily/vue'
 import { InputBox, PreviewBlock } from './shared'
 

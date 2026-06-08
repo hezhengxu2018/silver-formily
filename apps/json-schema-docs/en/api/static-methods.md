@@ -33,7 +33,7 @@ interface compile {
 Static `compile` is more like a generic utility. The target does not need to be a `Schema` instance.
 
 ```ts
-import { Schema } from '@formily/json-schema'
+import { Schema } from '@silver-formily/json-schema'
 
 const result = Schema.compile(
   {
@@ -77,7 +77,7 @@ interface shallowCompile {
 `shallowCompile` only compiles the value you pass in directly. It does not recursively compile nested object or array members.
 
 ```ts
-import { Schema } from '@formily/json-schema'
+import { Schema } from '@silver-formily/json-schema'
 
 console.log(Schema.shallowCompile('{{count + 1}}', { count: 2 }))
 // 3
@@ -165,7 +165,7 @@ interface registerPatches {
 
 ### Description
 
-Mark components as void components for Formily 1.x compatibility.
+Mark components as void components, usually together with the `1.0` protocol compatibility polyfill.
 
 ### Signature
 
@@ -178,7 +178,7 @@ interface registerVoidComponents {
 ### Example
 
 ```ts
-import { Schema } from '@formily/react'
+import { Schema } from '@silver-formily/json-schema'
 
 Schema.registerVoidComponents(['card', 'tab', 'step'])
 ```
@@ -205,7 +205,7 @@ interface registerTypeDefaultComponents {
 ### Example
 
 ```ts
-import { Schema } from '@formily/vue'
+import { Schema } from '@silver-formily/json-schema'
 
 Schema.registerTypeDefaultComponents({
   string: 'Input',
@@ -235,7 +235,7 @@ interface registerPolyfills {
 ### Example
 
 ```ts
-import { Schema } from '@formily/react'
+import { Schema } from '@silver-formily/json-schema'
 
 Schema.registerPolyfills('1.0', (schema) => {
   schema['x-decorator'] = 'FormItem'
@@ -268,7 +268,7 @@ interface enablePolyfills {
 ### Example
 
 ```ts
-import { Schema } from '@formily/vue'
+import { Schema } from '@silver-formily/json-schema'
 
 Schema.enablePolyfills(['1.0'])
 ```

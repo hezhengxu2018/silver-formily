@@ -1,7 +1,7 @@
 import path, { dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import pkg from '@formily/json-schema/package.json' with { type: 'json' }
 import { createDocsConfig } from '@silver-formily/docs-toolkit'
+import pkg from '@silver-formily/json-schema/package.json' with { type: 'json' }
 
 const currentDir = dirname(fileURLToPath(import.meta.url))
 const demoDir = path.resolve(currentDir, '../demos')
@@ -14,14 +14,14 @@ export default createDocsConfig({
     root: {
       label: '简体中文',
       lang: 'zh-CN',
-      title: 'Formily JSON Schema',
-      description: '@formily/json-schema 文档',
+      title: 'Silver Formily JSON Schema',
+      description: '@silver-formily/json-schema 文档',
     },
     en: {
       label: 'English',
       lang: 'en-US',
-      title: 'Formily JSON Schema',
-      description: 'Documentation for @formily/json-schema',
+      title: 'Silver Formily JSON Schema',
+      description: 'Documentation for @silver-formily/json-schema',
     },
   },
   sidebar: {
@@ -68,7 +68,7 @@ export default createDocsConfig({
     message: 'Released under the MIT License.',
     blogroll: [
       {
-        title: 'Formily',
+        title: 'Upstream References',
         children: [
           { text: 'Core', link: 'https://core.formilyjs.org/' },
           { text: 'Vue', link: 'https://vue.formilyjs.org/' },
@@ -93,10 +93,10 @@ export default createDocsConfig({
   vite: {
     optimizeDeps: {
       include: [
-        '@formily/core',
-        '@formily/reactive',
-        '@formily/shared',
-        '@formily/json-schema',
+        '@silver-formily/core',
+        '@silver-formily/reactive',
+        '@silver-formily/shared',
+        '@silver-formily/json-schema',
         '@silver-formily/reactive-vue',
         '@silver-formily/vue',
         'vue',

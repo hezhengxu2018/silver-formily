@@ -217,7 +217,7 @@ interface compile {
 The following example compiles expressions inside a Schema into final values. It is useful when you manually create a `Schema` instance and want to inject runtime variables before consuming it elsewhere.
 
 ```ts
-import { Schema } from '@formily/json-schema'
+import { Schema } from '@silver-formily/json-schema'
 
 const schema = new Schema({
   type: 'object',
@@ -280,12 +280,12 @@ interface toJSON {
 
 ### Description
 
-Convert the current Schema into Formily field model props. See [Properties](/en/api/properties#properties) for the field mapping reference.
+Convert the current Schema into field model props. See [Properties](/en/api/properties#properties) for the field mapping reference.
 
 ### Signature
 
 ```ts
-import { IFieldFactoryProps } from '@formily/core'
+import { IFieldFactoryProps } from '@silver-formily/core'
 
 interface toFieldProps {
   (): IFieldFactoryProps

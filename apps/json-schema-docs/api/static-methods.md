@@ -33,7 +33,7 @@ interface compile {
 静态 `compile` 更像一个通用工具方法，不要求目标对象必须是 `Schema` 实例。
 
 ```ts
-import { Schema } from '@formily/json-schema'
+import { Schema } from '@silver-formily/json-schema'
 
 const result = Schema.compile(
   {
@@ -77,7 +77,7 @@ interface shallowCompile {
 `shallowCompile` 只会编译当前传入值本身，不会继续递归处理对象或数组内部的成员。
 
 ```ts
-import { Schema } from '@formily/json-schema'
+import { Schema } from '@silver-formily/json-schema'
 
 console.log(Schema.shallowCompile('{{count + 1}}', { count: 2 }))
 // 3
@@ -165,7 +165,7 @@ interface registerPatches {
 
 ### 描述
 
-给字段组件打上标识，标识该组件是虚拟组件，与 formily1.x 做兼容
+给字段组件打上标识，标识该组件是虚拟组件，通常配合 `1.0` 协议兼容垫片使用
 
 ### 签名
 
@@ -178,7 +178,7 @@ interface registerVoidComponents {
 ### 用例
 
 ```ts
-import { Schema } from '@formily/react'
+import { Schema } from '@silver-formily/json-schema'
 
 Schema.registerVoidComponents(['card', 'tab', 'step'])
 ```
@@ -205,7 +205,7 @@ interface registerTypeDefaultComponents {
 ### 用例
 
 ```ts
-import { Schema } from '@formily/vue'
+import { Schema } from '@silver-formily/json-schema'
 
 Schema.registerTypeDefaultComponents({
   string: 'Input',
@@ -235,7 +235,7 @@ interface registerPolyfills {
 ### 用例
 
 ```ts
-import { Schema } from '@formily/react'
+import { Schema } from '@silver-formily/json-schema'
 
 Schema.registerPolyfills('1.0', (schema) => {
   schema['x-decorator'] = 'FormItem'
@@ -268,7 +268,7 @@ interface enablePolyfills {
 ### 用例
 
 ```ts
-import { Schema } from '@formily/vue'
+import { Schema } from '@silver-formily/json-schema'
 
 Schema.enablePolyfills(['1.0'])
 ```

@@ -4,29 +4,21 @@ outline: [2, 3]
 
 # 快速上手
 
-`@formily/json-schema` 是 Formily 在 JSON Schema 开发模式里的协议层。官方文档将表单开发分为 `Markup Schema`、`JSON Schema` 和 `JSX Components` 三种模式；`Markup Schema`、`JSON Schema`都依赖于`@formily/json-schema`的能力。`@formily/json-schema` 使用一份普通对象来描述表单结构、组件映射与联动逻辑，使得递归渲染成为可能。
+`@silver-formily/json-schema` 是 Silver Formily 在 JSON Schema 开发模式里的协议层。当前文档将表单开发分为 `Markup Schema`、`JSON Schema` 和 `JSX Components` 三种模式；其中 `Markup Schema` 和 `JSON Schema` 都依赖 `@silver-formily/json-schema` 提供的协议能力。`@silver-formily/json-schema` 使用一份普通对象来描述表单结构、组件映射与联动逻辑，使得递归渲染成为可能。
 
 简单来说不同库的负责功能如下：
 
-- `@formily/core` 负责 Form 实例、字段状态、校验与副作用
-- `@formily/json-schema` 负责 Schema 协议、表达式编译与 Schema 类能力
-- 前端框架绑定库（如：`@silver-formily/vue`、`@formily/vue`、`@formily/react`） 负责把 Schema 递归渲染成组件树。
-
-::: tip 提示
-Formily 官方示例使用的是 `@formily/vue`。当前重构的文档使用的是 `@silver-formily/vue`，两者在能力上没有区别，在接口上也大致相同，具体区别请参考[官方文档](https://vue.silver-formily.org/)。
-:::
-
-## 编写动机
-
-官方文档写的较为粗糙，阅读体验很差，有些地方也没有写清楚。本文档网站是对官方文档的一次重构，提供了完善的例子与良好的搜索体验。
+- `@silver-formily/core` 负责 Form 实例、字段状态、校验与副作用
+- `@silver-formily/json-schema` 负责 Schema 协议、表达式编译与 Schema 类能力
+- 前端框架绑定库（如：`@silver-formily/vue`） 负责把 Schema 递归渲染成组件树。
 
 ## 安装
 
 ```bash
-pnpm add @silver-formily/vue @formily/core @formily/json-schema @formily/reactive @silver-formily/reactive-vue @formily/shared
+pnpm add @silver-formily/vue @silver-formily/core @silver-formily/json-schema @silver-formily/reactive @silver-formily/reactive-vue @silver-formily/shared
 ```
 
-`@formily/json-schema` 本身不负责渲染 UI。要在 Vue 中把 Schema 变成真正的表单，还需要 `@formily/core` 和 `@silver-formily/vue`（或者其他前端框架绑定库）。
+`@silver-formily/json-schema` 本身不负责渲染 UI。要在 Vue 中把 Schema 变成真正的表单，还需要 `@silver-formily/core` 和 `@silver-formily/vue`（或者其他前端框架绑定库）。
 
 ## 最小可运行示例
 
@@ -50,4 +42,4 @@ guide/quick-start
 
 ## 参考
 
-- [Formily 官方：核心概念 / JSON Schema 开发模式](https://vue.formilyjs.org/guide/concept#json-schema-%E5%BC%80%E5%8F%91%E6%A8%A1%E5%BC%8F)
+- [上游参考：Formily 核心概念 / JSON Schema 开发模式](https://vue.formilyjs.org/guide/concept#json-schema-%E5%BC%80%E5%8F%91%E6%A8%A1%E5%BC%8F)

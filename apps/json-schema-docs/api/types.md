@@ -81,7 +81,7 @@ FormPathPattern 路径语法文档看[这里](https://core.formilyjs.org/zh-CN/a
 ### 签名
 
 ```ts
-import { IGeneralFieldState } from '@formily/core'
+import { IGeneralFieldState } from '@silver-formily/core'
 
 type SchemaReactionEffect
   = | 'onFieldInit'
