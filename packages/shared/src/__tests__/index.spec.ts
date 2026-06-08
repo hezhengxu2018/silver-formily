@@ -16,6 +16,7 @@ import {
   isHTMLElement,
   isMap,
   isNumberLike,
+  isPlainObj,
   isReactElement,
   isSet,
   isWeakMap,
@@ -164,6 +165,18 @@ describe('case', () => {
   it('lowercase', () => {
     expect(lowerCase('SOME_UPPER_CASE_TEXT')).toEqual('some_upper_case_text')
     expect(lowerCase('')).toEqual('')
+  })
+})
+
+describe('checkers', () => {
+  it('treats upstream-style object instances as plain objects', () => {
+    class SchemaLike {
+      constructor(public value = 1) {}
+    }
+
+    expect(isPlainObj({ value: 1 })).toBe(true)
+    expect(isPlainObj(new SchemaLike())).toBe(true)
+    expect(isPlainObj([])).toBe(false)
   })
 })
 
@@ -865,9 +878,14 @@ describe('merge', () => {
     })
 
     const getOwnPropertySymbols = Object.getOwnPropertySymbols
-    Object.getOwnPropertySymbols = null
-    const mergedObject = merge({ [symbol]: 123 }, { aa: 321 })
-    Object.getOwnPropertySymbols = getOwnPropertySymbols
+    let mergedObject: Record<string, any>
+    try {
+      Object.getOwnPropertySymbols = null as unknown as typeof Object.getOwnPropertySymbols
+      mergedObject = merge({ [symbol]: 123 }, { aa: 321 })
+    }
+    finally {
+      Object.getOwnPropertySymbols = getOwnPropertySymbols
+    }
 
     expect(mergedObject).toEqual({
       aa: 321,

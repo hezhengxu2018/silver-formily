@@ -5,7 +5,6 @@ import {
   isMap,
   isNumber,
   isObject,
-  isPlainObject,
   isRegExp,
   isSet,
   isString,
@@ -18,7 +17,7 @@ export const getType = (obj: any) => toString.call(obj)
 
 export const isFn = isFunction
 export const isArr = isArray
-export const isPlainObj = isPlainObject
+export const isPlainObj = (obj: unknown): obj is object => getType(obj) === '[object Object]'
 export const isStr = isString
 export const isBool = isBoolean
 export const isNum = isNumber
