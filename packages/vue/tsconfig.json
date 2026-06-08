@@ -2,6 +2,7 @@
   "extends": "@silver-formily/typescript-config/base.json",
   "compilerOptions": {
     "jsx": "preserve",
+    "jsxImportSource": "vue",
     "experimentalDecorators": true,
     "paths": {
       "@silver-formily/reactive-vue": ["../reactive-vue/src"],

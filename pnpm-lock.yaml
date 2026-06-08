@@ -1156,19 +1156,6 @@ importers:
         version: 3.2.6(typescript@6.0.2)
 
   packages/vue:
-    dependencies:
-      '@silver-formily/core':
-        specifier: workspace:*
-        version: link:../core
-      '@silver-formily/json-schema':
-        specifier: workspace:*
-        version: link:../json-schema
-      '@silver-formily/reactive':
-        specifier: workspace:*
-        version: link:../reactive
-      '@silver-formily/shared':
-        specifier: workspace:*
-        version: link:../shared
     devDependencies:
       '@antfu/eslint-config':
         specifier: 'catalog:'
@@ -1176,12 +1163,24 @@ importers:
       '@commitlint/config-conventional':
         specifier: 'catalog:'
         version: 19.8.1
+      '@silver-formily/core':
+        specifier: workspace:*
+        version: link:../core
+      '@silver-formily/json-schema':
+        specifier: workspace:*
+        version: link:../json-schema
       '@silver-formily/path':
         specifier: workspace:*
         version: link:../path
+      '@silver-formily/reactive':
+        specifier: workspace:*
+        version: link:../reactive
       '@silver-formily/reactive-vue':
         specifier: workspace:*
         version: link:../reactive-vue
+      '@silver-formily/shared':
+        specifier: workspace:*
+        version: link:../shared
       '@silver-formily/typescript-config':
         specifier: workspace:*
         version: link:../typescript-config
@@ -1191,6 +1190,18 @@ importers:
       '@types/node':
         specifier: 'catalog:'
         version: 24.10.13
+      '@vitejs/plugin-vue-jsx':
+        specifier: 'catalog:'
+        version: 5.1.5(vite@8.0.8(@types/node@24.10.13)(esbuild@0.28.0)(jiti@2.6.1)(sass-embedded@1.97.3)(sass@1.97.3)(tsx@4.22.3)(yaml@2.8.2))(vue@3.5.32(typescript@6.0.2))
+      '@vitest/browser':
+        specifier: 'catalog:'
+        version: 4.1.4(vite@8.0.8(@types/node@24.10.13)(esbuild@0.28.0)(jiti@2.6.1)(sass-embedded@1.97.3)(sass@1.97.3)(tsx@4.22.3)(yaml@2.8.2))(vitest@4.1.4)
+      '@vitest/browser-playwright':
+        specifier: 'catalog:'
+        version: 4.1.4(playwright@1.58.2)(vite@8.0.8(@types/node@24.10.13)(esbuild@0.28.0)(jiti@2.6.1)(sass-embedded@1.97.3)(sass@1.97.3)(tsx@4.22.3)(yaml@2.8.2))(vitest@4.1.4)
+      '@vitest/coverage-istanbul':
+        specifier: 'catalog:'
+        version: 4.1.4(vitest@4.1.4)
       '@vue/language-core':
         specifier: 'catalog:'
         version: 3.0.10(typescript@6.0.2)
@@ -1212,12 +1223,21 @@ importers:
       eslint-plugin-format:
         specifier: 'catalog:'
         version: 1.4.0(eslint@9.39.1(jiti@2.6.1))
+      playwright:
+        specifier: 'catalog:'
+        version: 1.58.2
       tsdown:
         specifier: 'catalog:'
         version: 0.21.8(@tsdown/css@0.21.8)(oxc-resolver@11.19.1(@emnapi/core@1.9.2)(@emnapi/runtime@1.9.2))(synckit@0.11.12)(typescript@6.0.2)(vue-tsc@3.2.6(typescript@6.0.2))
       typescript:
         specifier: 'catalog:'
         version: 6.0.2
+      vitest:
+        specifier: 'catalog:'
+        version: 4.1.4(@types/node@24.10.13)(@vitest/browser-playwright@4.1.4)(@vitest/coverage-istanbul@4.1.4)(vite@8.0.8(@types/node@24.10.13)(esbuild@0.28.0)(jiti@2.6.1)(sass-embedded@1.97.3)(sass@1.97.3)(tsx@4.22.3)(yaml@2.8.2))
+      vitest-browser-vue:
+        specifier: 'catalog:'
+        version: 2.0.2(vitest@4.1.4)(vue@3.5.32(typescript@6.0.2))
       vue:
         specifier: 'catalog:'
         version: 3.5.32(typescript@6.0.2)
