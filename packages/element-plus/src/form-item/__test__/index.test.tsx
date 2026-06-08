@@ -1,5 +1,5 @@
 import { InfoFilled } from '@element-plus/icons-vue'
-import { createForm } from '@formily/core'
+import { createForm } from '@silver-formily/core'
 import { createSchemaField, Field, FormProvider } from '@silver-formily/vue'
 import { ElIcon } from 'element-plus'
 import { describe, expect, it, vi } from 'vitest'

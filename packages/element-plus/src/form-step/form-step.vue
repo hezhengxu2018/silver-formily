@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import type { VoidField } from '@formily/core'
+import type { VoidField } from '@silver-formily/core'
 import type { IFormStepProps } from './types'
-import { isObj } from '@formily/shared'
 import { useObserver } from '@silver-formily/reactive-vue'
+import { isObj } from '@silver-formily/shared'
 import { RecursionField, useField, useFieldSchema } from '@silver-formily/vue'
 import { ElStep, ElSteps } from 'element-plus'
 import { computed } from 'vue'

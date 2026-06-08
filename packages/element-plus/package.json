@@ -2,7 +2,7 @@
   "name": "@silver-formily/element-plus",
   "type": "module",
   "version": "4.0.3",
-  "description": "Formily 的 Element Plus 封装",
+  "description": "Silver Formily bindings for Element Plus",
   "author": "hezhengxu",
   "license": "MIT",
   "homepage": "https://element-plus.silver-formily.org/",
@@ -47,13 +47,13 @@
     "prepublishOnly": "pnpm run build"
   },
   "peerDependencies": {
-    "@formily/core": "^2.0.8",
-    "@formily/json-schema": "^2.0.8",
-    "@formily/reactive": "^2.0.8",
-    "@formily/shared": "^2.0.8",
-    "@silver-formily/grid": "^1.0.1",
-    "@silver-formily/reactive-vue": "^1.1.0",
-    "@silver-formily/vue": "^2.3.1",
+    "@silver-formily/core": "workspace:*",
+    "@silver-formily/grid": "workspace:*",
+    "@silver-formily/json-schema": "workspace:*",
+    "@silver-formily/reactive": "workspace:*",
+    "@silver-formily/reactive-vue": "workspace:*",
+    "@silver-formily/shared": "workspace:*",
+    "@silver-formily/vue": "workspace:*",
     "@vueuse/core": "*",
     "element-plus": "^2.11.0",
     "vue": "^3.3.0"
@@ -64,8 +64,12 @@
     "vue-draggable-plus": "catalog:"
   },
   "devDependencies": {
+    "@silver-formily/core": "workspace:*",
     "@silver-formily/grid": "workspace:*",
+    "@silver-formily/json-schema": "workspace:*",
+    "@silver-formily/reactive": "workspace:*",
     "@silver-formily/reactive-vue": "workspace:*",
+    "@silver-formily/shared": "workspace:*",
     "@silver-formily/typescript-config": "workspace:*",
     "@silver-formily/vue": "workspace:*",
     "@tsdown/css": "catalog:",

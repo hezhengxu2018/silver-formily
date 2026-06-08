@@ -1,8 +1,8 @@
 <script lang="ts" setup>
-import type { Field } from '@formily/core'
+import type { Field } from '@silver-formily/core'
 import type { IFormItemProps } from '../form-item/types'
 import { Close, Edit } from '@element-plus/icons-vue'
-import { isPlainObj, isValid } from '@formily/shared'
+import { isPlainObj, isValid } from '@silver-formily/shared'
 import { useField } from '@silver-formily/vue'
 import { ClickOutside as vClickOutside } from 'element-plus'
 import { omit } from 'lodash-es'

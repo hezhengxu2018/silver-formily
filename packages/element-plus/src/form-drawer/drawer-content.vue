@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import type { Form } from '@formily/core'
+import type { Form } from '@silver-formily/core'
 import type { ComponentPublicInstance, PropType } from 'vue'
 import type { FormDrawerSlots, IFormDrawerProps } from './types'
-import { isFn } from '@formily/shared'
+import { isFn } from '@silver-formily/shared'
 import { FormProvider } from '@silver-formily/vue'
 import { ElButton, ElConfigProvider, ElDrawer } from 'element-plus'
 import { omit } from 'lodash-es'

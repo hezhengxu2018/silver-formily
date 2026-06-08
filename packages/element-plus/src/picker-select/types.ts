@@ -1,4 +1,4 @@
-import type { Field } from '@formily/core'
+import type { Field } from '@silver-formily/core'
 
 export interface PickerSelectOption {
   label: string

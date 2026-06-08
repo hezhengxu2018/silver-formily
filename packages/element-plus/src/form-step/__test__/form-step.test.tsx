@@ -1,4 +1,4 @@
-import { createForm } from '@formily/core'
+import { createForm } from '@silver-formily/core'
 import { observer } from '@silver-formily/reactive-vue'
 import { createSchemaField, FormProvider } from '@silver-formily/vue'
 import { ElButton } from 'element-plus'

@@ -1,5 +1,5 @@
-import type { GeneralField } from '@formily/core'
-import type { Schema, SchemaKey } from '@formily/json-schema'
+import type { GeneralField } from '@silver-formily/core'
+import type { Schema, SchemaKey } from '@silver-formily/json-schema'
 
 export type Tabs = { name: SchemaKey, props: any, schema: Schema }[]
 

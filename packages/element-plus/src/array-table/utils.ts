@@ -1,4 +1,4 @@
-import type { Schema } from '@formily/json-schema'
+import type { Schema } from '@silver-formily/json-schema'
 import { stylePrefix } from '../__builtins__'
 import { isAdditionComponent, isOperationComponent } from '../array-base/utils'
 

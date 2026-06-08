@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import type { Form } from '@formily/core'
+import type { Form } from '@silver-formily/core'
 import type { IQueryFormLightProps } from './types'
-import { toJS } from '@formily/reactive'
+import { toJS } from '@silver-formily/reactive'
 import { reactionWatch } from '@silver-formily/reactive-vue'
 import { useFieldSchema, useForm } from '@silver-formily/vue'
 import { throttle } from 'lodash-es'

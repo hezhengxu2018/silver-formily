@@ -1,5 +1,5 @@
-import type { Form } from '@formily/core'
-import type { ISchema } from '@formily/json-schema'
+import type { Form } from '@silver-formily/core'
+import type { ISchema } from '@silver-formily/json-schema'
 import type { PaginationProps } from 'element-plus'
 import type { IFormItemProps } from '../form-item'
 import type { IQueryFormLightProps, IQueryFormProps } from '../query-form'

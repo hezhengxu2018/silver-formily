@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { ArrayField } from '@formily/core'
+import type { ArrayField } from '@silver-formily/core'
 import { DArrowLeft, DArrowRight, MoreFilled } from '@element-plus/icons-vue'
 import { formilyComputed, useObserver } from '@silver-formily/reactive-vue'
 import { useField } from '@silver-formily/vue'

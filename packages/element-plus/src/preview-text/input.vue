@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { isFn, isValid } from '@formily/shared'
+import { isFn, isValid } from '@silver-formily/shared'
 import { ElSpace, ElText } from 'element-plus'
 import { stylePrefix, useCleanAttrs } from '../__builtins__'
 import { usePreviewConfig } from './utils'

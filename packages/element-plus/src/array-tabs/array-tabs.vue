@@ -1,8 +1,8 @@
 <script lang="ts" setup>
-import type { ArrayField } from '@formily/core'
+import type { ArrayField } from '@silver-formily/core'
 import type { TabPaneName } from 'element-plus'
-import { isEqual, isFn } from '@formily/shared'
 import { reactionWatch } from '@silver-formily/reactive-vue'
+import { isEqual, isFn } from '@silver-formily/shared'
 import { RecursionField, useField, useFieldSchema } from '@silver-formily/vue'
 import { ElBadge, ElTabPane, ElTabs } from 'element-plus'
 import { ref } from 'vue'
@@ -31,8 +31,8 @@ function getTabTitle(index: number) {
   return `${field.title || 'Untitled'} ${index + 1}`
 }
 
-const errorCountList = ref([])
-reactionWatch(() => {
+const errorCountList = ref<number[]>([])
+reactionWatch<number[]>(() => {
   return field.value.map((item, index) => {
     const panelErrors = field.form.queryFeedbacks({
       type: 'error',

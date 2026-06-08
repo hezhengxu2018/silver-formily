@@ -1,5 +1,5 @@
-import type { Field } from '@formily/core'
-import { isArr } from '@formily/shared'
+import type { Field } from '@silver-formily/core'
+import { isArr } from '@silver-formily/shared'
 
 export function getFeedbackMessage(field: Field) {
   const messages = {

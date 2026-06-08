@@ -1,7 +1,7 @@
-import type { GeneralField } from '@formily/core'
-import type { Schema, SchemaKey } from '@formily/json-schema'
-import { model } from '@formily/reactive'
-import { toArr } from '@formily/shared'
+import type { GeneralField } from '@silver-formily/core'
+import type { Schema, SchemaKey } from '@silver-formily/json-schema'
+import { model } from '@silver-formily/reactive'
+import { toArr } from '@silver-formily/shared'
 
 type ActiveKeys = string | number | Array<string | number>
 

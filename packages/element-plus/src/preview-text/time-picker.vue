@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { isArr } from '@formily/shared'
+import { isArr } from '@silver-formily/shared'
 import { dayjs, ElText } from 'element-plus'
 import { stylePrefix, useCleanAttrs } from '../__builtins__'
 import { usePreviewConfig } from './utils'

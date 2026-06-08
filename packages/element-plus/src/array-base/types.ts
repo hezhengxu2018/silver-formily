@@ -1,5 +1,5 @@
-import type { ArrayField } from '@formily/core'
-import type { Schema } from '@formily/json-schema'
+import type { ArrayField } from '@silver-formily/core'
+import type { Schema } from '@silver-formily/json-schema'
 import type { Ref } from 'vue'
 
 export interface IArrayBaseAdditionProps {

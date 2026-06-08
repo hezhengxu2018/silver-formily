@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { IFormFeedback } from '@formily/core'
+import type { IFormFeedback } from '@silver-formily/core'
 import type { PropType } from 'vue'
 import { useParentForm } from '@silver-formily/vue'
 import { ElButton } from 'element-plus'

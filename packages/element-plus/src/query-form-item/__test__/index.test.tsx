@@ -1,6 +1,6 @@
-import type { Form } from '@formily/core'
+import type { Form } from '@silver-formily/core'
 import type { QueryFormItemRequest } from '../../index'
-import { createForm } from '@formily/core'
+import { createForm } from '@silver-formily/core'
 import { createSchemaField, Field, FormProvider } from '@silver-formily/vue'
 import { describe, expect, it, vi } from 'vitest'
 import { render } from 'vitest-browser-vue'

@@ -1,4 +1,4 @@
-import type { Form, VoidField } from '@formily/core'
+import type { Form, VoidField } from '@silver-formily/core'
 import type { SchemaStep } from './utils'
 
 export interface IFormStep {

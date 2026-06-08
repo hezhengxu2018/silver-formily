@@ -1,4 +1,4 @@
-import type { GeneralField } from '@formily/core'
+import type { GeneralField } from '@silver-formily/core'
 import type { Column } from 'element-plus'
 
 export interface ISelectTableProps {

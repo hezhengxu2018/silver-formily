@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { CheckboxProps } from 'element-plus'
 import type { PropType } from 'vue'
-import { isPlainObj } from '@formily/shared'
+import { isPlainObj } from '@silver-formily/shared'
 import { ElCheckbox, ElCheckboxButton, ElCheckboxGroup, version } from 'element-plus'
 import { computed, useSlots } from 'vue'
 import { lt, useCleanAttrs } from '../__builtins__'

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Field } from '@formily/core'
+import type { Field } from '@silver-formily/core'
 import { useField } from '@silver-formily/vue'
 import { ElInputTag } from 'element-plus'
 import { useCleanAttrs } from '../__builtins__'

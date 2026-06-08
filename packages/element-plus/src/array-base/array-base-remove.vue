@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { IArrayBaseOperationProps } from './types'
 import { Delete } from '@element-plus/icons-vue'
-import { isArr } from '@formily/shared'
+import { isArr } from '@silver-formily/shared'
 import { ElLink } from 'element-plus'
 import { compatibleUnderlineProp } from '../__builtins__'
 import { prefixCls, useArray, useIndex } from './utils'

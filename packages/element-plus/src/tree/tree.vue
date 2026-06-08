@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import type { Field } from '@formily/core'
+import type { Field } from '@silver-formily/core'
 import type { TreeValueTypeProps } from './types'
-import { isFn } from '@formily/shared'
+import { isFn } from '@silver-formily/shared'
 import { useField } from '@silver-formily/vue'
 import { ElScrollbar, ElTree, vLoading } from 'element-plus'
 import { computed, nextTick, ref, useSlots, watch } from 'vue'

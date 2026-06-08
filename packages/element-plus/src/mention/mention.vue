@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Field } from '@formily/core'
+import type { Field } from '@silver-formily/core'
 import type { MentionOption } from 'element-plus/es/components/mention'
 import { useField } from '@silver-formily/vue'
 import { ElMention } from 'element-plus'

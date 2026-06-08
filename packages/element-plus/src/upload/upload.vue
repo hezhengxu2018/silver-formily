@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { Field } from '@formily/core'
+import type { Field } from '@silver-formily/core'
 import type { ImageViewerInstance, ImageViewerProps, UploadFile, UploadInstance, UploadProps, UploadRawFile } from 'element-plus'
 import type { PropType } from 'vue'
 import {
@@ -7,8 +7,8 @@ import {
   UploadFilled as UploadFilledIcon,
   Upload as UploadIcon,
 } from '@element-plus/icons-vue'
-import { isFn } from '@formily/shared'
 import { reactionWatch } from '@silver-formily/reactive-vue'
+import { isFn } from '@silver-formily/shared'
 import { useField } from '@silver-formily/vue'
 import { ElButton, ElIcon, ElImageViewer, ElUpload, genFileId } from 'element-plus'
 import { omit } from 'lodash-es'

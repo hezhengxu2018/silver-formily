@@ -1,6 +1,6 @@
 import type { PropType } from 'vue'
 import type { IFormLayoutProps } from '../types'
-import { createForm } from '@formily/core'
+import { createForm } from '@silver-formily/core'
 import { FormProvider } from '@silver-formily/vue'
 import { describe, expect, it } from 'vitest'
 import { render } from 'vitest-browser-vue'

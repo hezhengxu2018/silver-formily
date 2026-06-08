@@ -1,6 +1,6 @@
-import type { ISchema } from '@formily/json-schema'
+import type { ISchema } from '@silver-formily/json-schema'
 import type { QueryFormVisibleContext } from '../types'
-import { createForm } from '@formily/core'
+import { createForm } from '@silver-formily/core'
 import { describe, expect, it, vi } from 'vitest'
 import { render } from 'vitest-browser-vue'
 import { defineComponent, h } from 'vue'

@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { Field } from '@formily/core'
+import type { Field } from '@silver-formily/core'
 import type {
   FormItemContext,
   FormItemValidateState,
@@ -10,7 +10,7 @@ import type { CSSProperties } from 'vue'
 import type { ICalculatedFormLayoutProps } from '../form-layout/types'
 import type { IFormItemProps } from './types'
 import { CircleCheck, CircleClose, InfoFilled, Warning } from '@element-plus/icons-vue'
-import { isArr, isValid } from '@formily/shared'
+import { isArr, isValid } from '@silver-formily/shared'
 import { useField } from '@silver-formily/vue'
 import { useResizeObserver } from '@vueuse/core'
 import { ElIcon, ElTooltip, formItemContextKey, useFormSize, useId, useNamespace } from 'element-plus'

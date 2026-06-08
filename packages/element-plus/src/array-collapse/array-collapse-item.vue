@@ -1,8 +1,8 @@
 <script lang="ts" setup>
-import type { ArrayField } from '@formily/core'
-import type { ISchema } from '@formily/json-schema'
-import { isArr } from '@formily/shared'
+import type { ArrayField } from '@silver-formily/core'
+import type { ISchema } from '@silver-formily/json-schema'
 import { formilyComputed } from '@silver-formily/reactive-vue'
+import { isArr } from '@silver-formily/shared'
 import { RecursionField, useField, useFieldSchema } from '@silver-formily/vue'
 import { ElBadge, ElCollapseItem } from 'element-plus'
 import { useCleanAttrs } from '../__builtins__'

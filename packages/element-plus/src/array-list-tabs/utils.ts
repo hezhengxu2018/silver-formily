@@ -1,4 +1,4 @@
-import type { ISchema } from '@formily/json-schema'
+import type { ISchema } from '@silver-formily/json-schema'
 import { stylePrefix } from '../__builtins__'
 
 export const prefixCls = `${stylePrefix}-array-list-tabs`

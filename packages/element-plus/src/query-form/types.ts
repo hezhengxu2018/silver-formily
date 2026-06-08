@@ -1,6 +1,6 @@
-import type { Form, GeneralField, IFormFeedback } from '@formily/core'
-import type { ISchema } from '@formily/json-schema'
+import type { Form, GeneralField, IFormFeedback } from '@silver-formily/core'
 import type { Grid, GridNode, IGridOptions } from '@silver-formily/grid'
+import type { ISchema } from '@silver-formily/json-schema'
 import type { Component } from 'vue'
 
 export type QueryFormFormProvider = Form | (() => Form | undefined)

@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import type { Field } from '@formily/core'
-import { isValid } from '@formily/shared'
+import type { Field } from '@silver-formily/core'
 import { formilyComputed } from '@silver-formily/reactive-vue'
+import { isValid } from '@silver-formily/shared'
 import { useField } from '@silver-formily/vue'
 import { ElSpace, ElTag, ElText } from 'element-plus'
 import { stylePrefix, useCleanAttrs } from '../__builtins__'

@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { isArr, isEqual } from '@formily/shared'
+import { isArr, isEqual } from '@silver-formily/shared'
 import { ElOption, ElSelect, useLocale, useNamespace } from 'element-plus'
 import { usePagination } from 'element-plus/es/components/pagination/src/usePagination'
 import { computed, ref, watch } from 'vue'

@@ -1,6 +1,6 @@
 import type { IComponentMapper } from '@silver-formily/vue'
 import type { Component } from 'vue'
-import { isVoidField } from '@formily/core'
+import { isVoidField } from '@silver-formily/core'
 import { observer } from '@silver-formily/reactive-vue'
 import { useField } from '@silver-formily/vue'
 import { defineComponent, h } from 'vue'

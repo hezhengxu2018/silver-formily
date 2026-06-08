@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { FormContext } from 'element-plus'
 import type { IFormLayoutProps } from './types'
-import { isEmpty, isValid } from '@formily/shared'
+import { isEmpty, isValid } from '@silver-formily/shared'
 import { useThrottleFn } from '@vueuse/core'
 import { formContextKey, useId } from 'element-plus'
 import { computed, provide, reactive, ref, toRef, watch } from 'vue'

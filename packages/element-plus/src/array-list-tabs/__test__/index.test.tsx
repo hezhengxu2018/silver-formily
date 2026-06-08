@@ -1,5 +1,5 @@
 import { Close } from '@element-plus/icons-vue'
-import { createForm } from '@formily/core'
+import { createForm } from '@silver-formily/core'
 import { createSchemaField, FormProvider } from '@silver-formily/vue'
 import { describe, expect, it } from 'vitest'
 import { render } from 'vitest-browser-vue'

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Field } from '@formily/core'
+import type { Field } from '@silver-formily/core'
 import type { AutocompleteInstance } from 'element-plus'
 import type { AutocompleteData, AutocompleteFetchSuggestions } from 'element-plus/es/components/autocomplete'
 import { useField } from '@silver-formily/vue'

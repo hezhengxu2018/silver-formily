@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import type { ArrayField } from '@formily/core'
-import type { Schema } from '@formily/json-schema'
+import type { ArrayField } from '@silver-formily/core'
+import type { Schema } from '@silver-formily/json-schema'
 import type { TableInstance } from 'element-plus'
 import type { IArrayTableProps } from './types'
-import { isArr, isEqual } from '@formily/shared'
 import { autorunEffect, formilyComputed, reactionWatch } from '@silver-formily/reactive-vue'
+import { isArr, isEqual } from '@silver-formily/shared'
 import { RecursionField, useField, useFieldSchema } from '@silver-formily/vue'
 import { ElTable, ElTableColumn, vLoading } from 'element-plus'
 import { omit } from 'lodash-es'

@@ -1,6 +1,6 @@
-import type { ISchema, Schema } from '@formily/json-schema'
+import type { ISchema, Schema } from '@silver-formily/json-schema'
 import type { IArrayBaseItemProps } from './types'
-import { clone, isArr, isValid, uid } from '@formily/shared'
+import { clone, isArr, isValid, uid } from '@silver-formily/shared'
 import { inject, toRefs } from 'vue'
 import { stylePrefix } from '../__builtins__'
 import { ArrayBaseSymbol, ItemSymbol } from './symbols'

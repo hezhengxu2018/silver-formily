@@ -1,7 +1,7 @@
-import type { Schema, SchemaKey } from '@formily/json-schema'
+import type { Schema, SchemaKey } from '@silver-formily/json-schema'
 import type { Slots } from 'vue'
 import type { FormStepEnv, IFormStep } from './types'
-import { action, model, observable } from '@formily/reactive'
+import { action, model, observable } from '@silver-formily/reactive'
 
 export interface SchemaStep {
   name: SchemaKey

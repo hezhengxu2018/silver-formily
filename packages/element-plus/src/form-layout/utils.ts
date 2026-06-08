@@ -1,6 +1,6 @@
 import type { ComputedRef, InjectionKey, Ref } from 'vue'
 import type { IFormLayoutProps } from './types'
-import { isArr, isValid } from '@formily/shared'
+import { isArr, isValid } from '@silver-formily/shared'
 import { useResizeObserver } from '@vueuse/core'
 import { computed, inject, ref } from 'vue'
 

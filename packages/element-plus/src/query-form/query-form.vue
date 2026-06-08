@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import type { ISchema } from '@formily/json-schema'
 import type { Grid, GridNode, IGridOptions } from '@silver-formily/grid'
+import type { ISchema } from '@silver-formily/json-schema'
 import type { IQueryFormProps, SchemaEntry } from './types'
 import { ArrowDown, ArrowUp } from '@element-plus/icons-vue'
-import { Schema } from '@formily/json-schema'
 import { createGrid } from '@silver-formily/grid'
+import { Schema } from '@silver-formily/json-schema'
 import { autorunEffect } from '@silver-formily/reactive-vue'
 import { useFieldSchema, useForm } from '@silver-formily/vue'
 import { ElIcon, ElLink } from 'element-plus'

@@ -1,4 +1,4 @@
-import { model } from '@formily/reactive'
+import { model } from '@silver-formily/reactive'
 
 export function createFormTab(defaultActiveKey?: string) {
   const formTab = model({

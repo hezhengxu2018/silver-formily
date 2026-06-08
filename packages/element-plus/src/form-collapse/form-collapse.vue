@@ -1,8 +1,8 @@
 <script lang="ts" setup>
 import type { PropType } from 'vue'
 import type { IFormCollapse } from './utils'
-import { isFn } from '@formily/shared'
 import { formilyComputed } from '@silver-formily/reactive-vue'
+import { isFn } from '@silver-formily/shared'
 import { RecursionField, useField, useFieldSchema } from '@silver-formily/vue'
 import { ElBadge, ElCollapse, ElCollapseItem } from 'element-plus'
 import { computed } from 'vue'

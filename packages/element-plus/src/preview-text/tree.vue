@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { ArrayField } from '@formily/core'
+import type { ArrayField } from '@silver-formily/core'
 import { useField } from '@silver-formily/vue'
 import { ElScrollbar, ElText, ElTree } from 'element-plus'
 import { computed } from 'vue'

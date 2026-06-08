@@ -1,4 +1,4 @@
-import type { Form } from '@formily/core'
+import type { Form } from '@silver-formily/core'
 import { reactionWatch } from '@silver-formily/reactive-vue'
 import { useDebounceFn } from '@vueuse/core'
 import { ElLoading } from 'element-plus'

@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-import type { ArrayField } from '@formily/core'
-import { isArr } from '@formily/shared'
+import type { ArrayField } from '@silver-formily/core'
 import { autorunEffect } from '@silver-formily/reactive-vue'
+import { isArr } from '@silver-formily/shared'
 import { RecursionField, useField, useFieldSchema } from '@silver-formily/vue'
 import { ref } from 'vue'
 import { VueDraggable } from 'vue-draggable-plus'

@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import type { Field } from '@formily/core'
+import type { Field } from '@silver-formily/core'
 import type { PickerSelectOpenPicker, PickerSelectOption, PickerSelectProps } from './types'
-import { isArr, isEqual, isValid } from '@formily/shared'
+import { isArr, isEqual, isValid } from '@silver-formily/shared'
 import { useField } from '@silver-formily/vue'
 import { ElOption, ElSelect } from 'element-plus'
 import { computed, ref } from 'vue'

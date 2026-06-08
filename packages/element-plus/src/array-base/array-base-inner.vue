@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { ArrayField } from '@formily/core'
+import type { ArrayField } from '@silver-formily/core'
 import type { IArrayBaseProps } from './types'
 import { useField, useFieldSchema } from '@silver-formily/vue'
 import { provide, useAttrs } from 'vue'

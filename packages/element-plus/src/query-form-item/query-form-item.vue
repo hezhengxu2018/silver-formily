@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import type { Field } from '@formily/core'
-import type { ISchema } from '@formily/json-schema'
+import type { Field } from '@silver-formily/core'
+import type { ISchema } from '@silver-formily/json-schema'
 import type { PropType } from 'vue'
 import type {
   QueryFormItemMode,
@@ -10,8 +10,8 @@ import type {
   QueryFormItemRequest,
   QueryFormItemRequestSuccessPayload,
 } from './types'
-import { createForm } from '@formily/core'
-import { isNum } from '@formily/shared'
+import { createForm } from '@silver-formily/core'
+import { isNum } from '@silver-formily/shared'
 import { useField } from '@silver-formily/vue'
 import { ElPagination } from 'element-plus'
 import { computed, onMounted, ref, watch } from 'vue'
