@@ -4,7 +4,7 @@ order: 0
 
 # Form
 
-调用[createForm](/api/entry/create-form)所返回的核心[表单模型](/guide/form) API，以下会列出所有模型属性，如果该属性是可写的，那么我们可以直接引用是修改该属性，@formily/reactive 便会响应从而触发 UI 更新。
+调用[createForm](/api/entry/createForm)所返回的核心[表单模型](/guide/form) API，以下会列出所有模型属性，如果该属性是可写的，那么我们可以直接引用是修改该属性，@formily/reactive 便会响应从而触发 UI 更新。
 
 ## 属性
 
@@ -422,7 +422,7 @@ interface query {
 
 FormPathPattern API 参考 [FormPath](https://path.silver-formily.org/api/patterns)
 
-Query 对象 API 参考 [Query](/api/models/query)
+Query 对象 API 参考 [Query](/api/models/Query)
 
 ### queryFeedbacks
 
@@ -438,7 +438,7 @@ interface queryFeedbacks {
 }
 ```
 
-ISearchFeedback 参考 [ISearchFeedback](/api/models/field#isearchfeedback)
+ISearchFeedback 参考 [ISearchFeedback](/api/models/Field#isearchfeedback)
 
 IFormFeedback 参考[IFormFeedback](#iformfeedback)
 
@@ -585,7 +585,7 @@ interface setFieldState {
 
 FormPathPattern API 参考 [FormPath](https://path.silver-formily.org/api/patterns)
 
-IGeneralFieldState 参考 [IGeneralFieldState](/api/models/field/#igeneralfieldstate)
+IGeneralFieldState 参考 [IGeneralFieldState](/api/models/Field#igeneralfieldstate)
 
 ### getFieldState
 
@@ -604,7 +604,7 @@ interface getFieldState<T> {
 
 FormPathPattern API 参考 [FormPath](https://path.silver-formily.org/api/patterns)
 
-IGeneralFieldState 参考 [IGeneralFieldState](/api/models/field/#igeneralfieldstate)
+IGeneralFieldState 参考 [IGeneralFieldState](/api/models/Field#igeneralfieldstate)
 
 ### getFormGraph
 
@@ -695,7 +695,7 @@ interface reset {
 
 FormPathPattern API 参考 [FormPath](https://path.silver-formily.org/api/patterns)
 
-IFieldResetOptions 参考 [IFieldResetOptions](/api/models/field/#ifieldresetoptions)
+IFieldResetOptions 参考 [IFieldResetOptions](/api/models/Field#ifieldresetoptions)
 
 ## 类型
 
@@ -800,7 +800,7 @@ interface IFieldFactoryProps {
 
 FormPathPattern API 参考 [FormPath](https://path.silver-formily.org/api/patterns)
 
-FieldValidator 参考 [FieldValidator](/api/models/field#fieldvalidator)
+FieldValidator 参考 [FieldValidator](/api/models/Field#fieldvalidator)
 
 FieldReaction 参考 [FieldReaction](/api/models/Field.html#fieldreaction)
 

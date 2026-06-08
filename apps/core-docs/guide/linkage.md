@@ -1,7 +1,7 @@
 # 联动系统
 
 :::tip 提示
-整个 formily 的响应式都基于 `@silver-formily/reactive`，如果你对下面的 `autorun` 、`reaction`、`observer`等概念不了解的话可以先去阅读其[官方文档](https://reactive.silver-formily.org/)
+整个 formily 的响应式都基于 `@silver-formily/reactive`，如果你对下面的 `autorun` 、`reaction`、`observer`等概念不了解的话可以先去阅读其[说明文档](https://reactive.silver-formily.org/)
 :::
 
 联动系统用于描述“状态变化后要做什么”。Formily 提供两种常用入口：`effects` 和 `reactions`。

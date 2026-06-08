@@ -39,6 +39,10 @@ field.value = 'silver'
 console.log(form.values) // { username: 'silver' }
 ```
 
+即 Address 永远是代表节点的绝对路径，而 Path 会跳过 VoidField 的节点路径。但如果是 VoidField 的 Path，会保留它自身的路径位置。
+
+所以，不管是 Field 还是 VoidField，都会有它的 Address 和 Path。在用 `query` 方法查询字段的时候，既可以用 Address 规则查询，也可以用 Path 规则查询。比如 `query("b.c")` 可以查询到 c 字段，同样用 `query("a.b.c")` 也能查询到 c 字段。
+
 ## 字段查询
 
 `form.query()` 会按路径表达式查找字段，既可匹配 `address`，也可匹配数据字段的 `path`。
@@ -61,7 +65,7 @@ form.query('**.email').forEach((field) => {
 | `a.b`          | 精确匹配指定路径                       |
 | `users.*.name` | 匹配数组项或动态子节点中的 `name` 字段 |
 
-完整的匹配能力请参考 `@silver-formily/path` 的文档中[模式语法](https://path.silver-formily.org/api/patterns)的章节
+完整的匹配能力请参考 `@silver-formily/path` 的文档中[模式语法](https://path.silver-formily.org/guide/patterns)的章节
 
 ### 别名组匹配
 
@@ -80,7 +84,7 @@ form.query('layout.username').take()
 form.query('username').take()
 ```
 
-因此，在包含 `VoidField` 的结构里，既可以按完整字段树位置查找字段，也可以按最终数据路径查找字段。更底层的行为请参考 [`matchAliasGroup`](https://path.silver-formily.org/api/matching.html#matchaliasgroup)。
+因此，在包含 `VoidField` 的结构里，既可以按完整字段树位置查找字段，也可以按最终数据路径查找字段。更底层的行为请参考 [`matchAliasGroup`](https://path.silver-formily.org/api/path-class.html#matchaliasgroup)。
 
 ## 字段关系
 

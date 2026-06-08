@@ -4,9 +4,9 @@ order: 2
 
 # ArrayField
 
-调用[createArrayField](/api/models/form#createarrayfield)所返回的 ArrayField 模型。
+调用[createArrayField](/api/models/Form#createarrayfield)所返回的 ArrayField 模型。
 
-因为 ArrayField 是继承至 [Field](/api/models/field) 模型的，所以大部分 API 参考 Field 模型即可，该文档只讲解扩展方法
+因为 ArrayField 是继承至 [Field](/api/models/Field) 模型的，所以大部分 API 参考 Field 模型即可，该文档只讲解扩展方法
 
 ## 方法
 
@@ -146,4 +146,4 @@ interface moveDown {
 
 ### IArrayFieldState
 
-主要属性参考[IFieldState](/api/models/field#ifieldstate)，只是 value 的数据类型要求是数组
+主要属性参考[IFieldState](/api/models/Field#ifieldstate)，只是 value 的数据类型要求是数组

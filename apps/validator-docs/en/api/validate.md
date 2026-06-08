@@ -67,21 +67,23 @@ await validate('hello@example.com', 'email')
 await validate('https://silver-formily.org', { format: 'url' })
 ```
 
-Built-in formats include:
+Built-in `format` checks only run for non-empty values. Use `required` as well when the field must not be blank. The built-in formats are:
 
-- `url`
-- `email`
-- `ipv6`
-- `ipv4`
-- `number`
-- `integer`
-- `idcard`
-- `qq`
-- `phone`
-- `money`
-- `zh`
-- `date`
-- `zip`
+| Format    | Meaning                                                                                                                                                                                                                                                                                                               | Example                                                  |
+| --------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------- |
+| `url`     | Accepts only `http://`, `https://`, `ftp://`, `rtmp://`, or protocol-relative `//` URLs. Hostnames must contain at least two labels and a top-level domain with at least 2 characters. Public IPv4 hosts are allowed, while private, loopback, link-local, multicast, and other reserved IPv4 addresses are rejected. | `https://silver-formily.org`, `//cdn.example.com/app.js` |
+| `email`   | Regular-expression-based email validation. It requires a local part, `@`, and a domain part. The local part allows letters, digits, underscores, and internal `-`, `+`, `.` characters; the domain part also allows `-` and `.` separators.                                                                           | `hello@example.com`                                      |
+| `ipv6`    | Validates IPv6 addresses, including full 8-group notation, `::` compression, mixed IPv6/IPv4 endings, and optional zone ids such as `%eth0`.                                                                                                                                                                          | `2001:db8::1`, `fe80::1%en0`, `::ffff:192.168.1.1`       |
+| `ipv4`    | Validates IPv4 syntax only: exactly 4 decimal segments, each in the range `0-255`. Unlike `url`, this check does not distinguish public vs. private ranges.                                                                                                                                                           | `192.168.1.10`, `8.8.8.8`                                |
+| `number`  | Decimal number with an optional sign and optional fractional part. It requires at least one digit before the decimal point, so `.5` does not pass, and scientific notation is not supported.                                                                                                                          | `123`, `-123.45`, `+8.0`                                 |
+| `integer` | Integer with an optional sign. Decimal points are not allowed.                                                                                                                                                                                                                                                        | `0`, `-42`, `+7`                                         |
+| `idcard`  | Basic mainland China ID-card shape validation: either 15 digits, or 17 digits plus a final digit / `X` / `x`. It does not verify region codes, birth dates, or checksum correctness.                                                                                                                                  | `11010519491231002X`                                     |
+| `qq`      | QQ-number format validation. In practice this means a non-negative integer string: `0` is allowed, a leading `+` is also accepted, but negative numbers, decimals, and whitespace are not.                                                                                                                            | `0`, `123456789`                                         |
+| `phone`   | Phone-number validation. Supports an 11-digit mobile number, or landline forms `3-digit area code-8-digit number` and `4-digit area code-7-digit number`.                                                                                                                                                             | `15934567899`, `010-12345678`, `0571-1234567`            |
+| `money`   | Currency-format validation. An optional single currency symbol prefix is allowed (such as `$`, `¥`, `￥`, `€`). The integer part may be plain digits or comma-grouped thousands, and the fractional part is optional, but if a decimal point appears it must be followed by at least one digit.                       | `$12`, `¥ 1,234.56`, `1000`                              |
+| `zh`      | Chinese-text validation. Only CJK Chinese characters are allowed; spaces, Latin letters, digits, and punctuation do not pass.                                                                                                                                                                                         | `中文`, `验证器`                                         |
+| `date`    | Loose date-string validation. The date part must contain exactly 3 numeric segments separated by `-`, `/`, or `.`, and the optional time part must be `HH:mm:ss`. It checks structure only, not real calendar validity, so a structurally valid value like `2020-99-99` still passes.                                 | `2020-01-12`, `12/01/2020 11:23:33`                      |
+| `zip`     | Exactly 6 digits, intended for postal codes.                                                                                                                                                                                                                                                                          | `310000`                                                 |
 
 ## Custom validators
 

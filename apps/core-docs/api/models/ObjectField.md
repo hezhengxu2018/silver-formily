@@ -4,9 +4,9 @@ order: 3
 
 # ObjectField
 
-调用[createObjectField](/api/models/form#createobjectfield)所返回的 ObjectField 模型。
+调用[createObjectField](/api/models/Form#createobjectfield)所返回的 ObjectField 模型。
 
-因为 ObjectField 是继承至 [Field](/api/models/field) 模型的，所以大部分 API 参考 Field 模型即可，该文档只讲解扩展方法
+因为 ObjectField 是继承至 [Field](/api/models/Field) 模型的，所以大部分 API 参考 Field 模型即可，该文档只讲解扩展方法
 
 ## 方法
 
@@ -56,4 +56,4 @@ interface existProperty {
 
 ### IObjectFieldState
 
-主要属性参考[IFieldState](/api/models/field#ifieldstate)，只是 value 的数据类型要求是对象
+主要属性参考[IFieldState](/api/models/Field#ifieldstate)，只是 value 的数据类型要求是对象
