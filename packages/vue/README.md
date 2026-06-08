@@ -9,30 +9,31 @@
 - **纯粹的 Vue 3 代码路径**：完全抛弃 `vue-demi`、`vue-frag` 等兼容依赖，渲染树贴近原生组件库。
 - **原生 DOM 与事件语义**：统一使用 `modelValue` / `onUpdate:modelValue`，Element Plus 等组件可直接对接。
 - **完善的 TypeScript 类型**：在运行时附近维护显式泛型与公共接口，确保生成的 `.d.ts` 与实现同步。
-- **Formily 生态对齐**：与 `@formily/core`、`@formily/json-schema` 等官方包保持兼容，迁移成本低。
+- **Formily 生态对齐**：与 `@silver-formily/core`、`@silver-formily/json-schema` 等仓库内配套包协同工作，迁移路径清晰。
 - **Decorator 插槽支持**：通过 `:decorator-content` 与 `x-decorator-content` 将 `FormItem` 等装饰器的 `default`、`label`、`extra` 插槽与 schema 数据解耦，详见[常见问题](../../apps/vue-docs/questions/index.md#如何向装饰器传递插槽)。
 - **配套文档与示例**：内置 VitePress 文档应用，包含 API、迁移提示以及 Element Plus 示例，可在仓库根目录执行 `pnpm dev -- vue-docs` 本地查看。
 
 ## 🔄 与 `@formily/vue` 的差异
 
-| 项目        | `@silver-formily/vue` 2.x                                   | 官方 `@formily/vue`              |
-| ----------- | ----------------------------------------------------------- | -------------------------------- |
-| 事件契约    | `modelValue` / `onUpdate:modelValue`                        | `value` / `onChange`             |
-| DOM 结构    | 无额外 `template` / `display: contents` 包裹                | 含 Vue 2 兼容容器                |
-| 依赖        | 仅依赖 Vue 3 生态                                           | 借助 `vue-demi` 同时支持 Vue 2/3 |
-| Schema 导出 | 不再 re-export `Schema`（请从 `@formily/json-schema` 引入） | 仍导出                           |
-| 兼容策略    | 需要与官方保持完全一致时可使用 `@silver-formily/vue@1.x`    | 官方包                           |
+| 项目        | `@silver-formily/vue` 2.x                                          | 官方 `@formily/vue`              |
+| ----------- | ------------------------------------------------------------------ | -------------------------------- |
+| 事件契约    | `modelValue` / `onUpdate:modelValue`                               | `value` / `onChange`             |
+| DOM 结构    | 无额外 `template` / `display: contents` 包裹                       | 含 Vue 2 兼容容器                |
+| 依赖        | 仅依赖 Vue 3 生态                                                  | 借助 `vue-demi` 同时支持 Vue 2/3 |
+| Schema 导出 | 不再 re-export `Schema`（请从 `@silver-formily/json-schema` 引入） | 仍导出                           |
+| 兼容策略    | 需要与官方保持完全一致时可使用 `@silver-formily/vue@1.x`           | 官方包                           |
 
 ## 📦 Peer Dependencies
 
 在宿主应用中需要同时安装：
 
 ```
-@formily/core ^2
-@formily/json-schema ^2
-@formily/reactive ^2
+@silver-formily/core workspace:*
+@silver-formily/json-schema workspace:*
+@silver-formily/path workspace:*
+@silver-formily/reactive workspace:*
 @silver-formily/reactive-vue ^1
-@formily/shared ^2
+@silver-formily/shared workspace:*
 vue ^3.3.0+
 ```
 
@@ -41,7 +42,7 @@ vue ^3.3.0+
 推荐使用 pnpm：
 
 ```bash
-pnpm add @silver-formily/vue @formily/core @formily/json-schema @formily/reactive @silver-formily/reactive-vue @formily/shared
+pnpm add @silver-formily/vue @silver-formily/core @silver-formily/json-schema @silver-formily/path @silver-formily/reactive @silver-formily/reactive-vue @silver-formily/shared
 ```
 
 ## ⚡️ 快速开始
@@ -50,7 +51,7 @@ pnpm add @silver-formily/vue @formily/core @formily/json-schema @formily/reactiv
 
 ```vue
 <script setup lang="ts">
-import { createForm } from '@formily/core'
+import { createForm } from '@silver-formily/core'
 import { connect, Field, FormProvider, mapProps } from '@silver-formily/vue'
 import { ElFormItem, ElInput } from 'element-plus'
 

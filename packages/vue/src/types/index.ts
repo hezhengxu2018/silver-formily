@@ -4,12 +4,12 @@ import type {
   Field,
   FieldDisplayTypes,
   Form,
+  FormPathPattern,
   FormPatternTypes,
   GeneralField,
   IVoidFieldFactoryProps,
-} from '@formily/core'
-import type { ISchema, Schema, SchemaKey } from '@formily/json-schema'
-import type { FormPathPattern } from '@formily/shared'
+} from '@silver-formily/core'
+import type { ISchema, Schema, SchemaKey } from '@silver-formily/json-schema'
 import type { Component } from 'vue'
 import type {
   MultiValidator as FormilyMultiValidator,

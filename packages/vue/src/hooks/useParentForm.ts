@@ -1,6 +1,6 @@
-import type { Form, GeneralField, ObjectField } from '@formily/core'
+import type { Form, GeneralField, ObjectField } from '@silver-formily/core'
 import type { Ref } from 'vue'
-import { isObjectField } from '@formily/core'
+import { isObjectField } from '@silver-formily/core'
 import { computed } from 'vue'
 import { useField } from './useField'
 import { useForm } from './useForm'

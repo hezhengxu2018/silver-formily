@@ -1,9 +1,10 @@
-import type { GeneralField } from '@formily/core'
+import type { GeneralField } from '@silver-formily/core'
 import type { Component } from 'vue'
 import type { IComponentMapper, IStateMapper, VueComponentProps } from '../types'
-import { isVoidField } from '@formily/core'
-import { each, FormPath, isFn, isStr, isValid } from '@formily/shared'
+import { isVoidField } from '@silver-formily/core'
+import { Path as FormPath } from '@silver-formily/path'
 import { observer } from '@silver-formily/reactive-vue'
+import { each, isFn, isStr, isValid } from '@silver-formily/shared'
 import { defineComponent, h, markRaw } from 'vue'
 import { useField } from '../hooks/useField'
 

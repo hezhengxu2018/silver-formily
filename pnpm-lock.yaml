@@ -1154,18 +1154,18 @@ importers:
 
   packages/vue:
     dependencies:
-      '@formily/core':
-        specifier: ^2
-        version: 2.3.7
-      '@formily/json-schema':
-        specifier: ^2
-        version: 2.3.7(typescript@6.0.2)
-      '@formily/reactive':
-        specifier: ^2
-        version: 2.3.7
-      '@formily/shared':
-        specifier: ^2
-        version: 2.3.7
+      '@silver-formily/core':
+        specifier: workspace:*
+        version: link:../core
+      '@silver-formily/json-schema':
+        specifier: workspace:*
+        version: link:../json-schema
+      '@silver-formily/reactive':
+        specifier: workspace:*
+        version: link:../reactive
+      '@silver-formily/shared':
+        specifier: workspace:*
+        version: link:../shared
     devDependencies:
       '@antfu/eslint-config':
         specifier: 'catalog:'
@@ -1173,6 +1173,9 @@ importers:
       '@commitlint/config-conventional':
         specifier: 'catalog:'
         version: 19.8.1
+      '@silver-formily/path':
+        specifier: workspace:*
+        version: link:../path
       '@silver-formily/reactive-vue':
         specifier: workspace:*
         version: link:../reactive-vue

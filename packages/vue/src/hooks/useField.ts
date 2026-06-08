@@ -1,4 +1,4 @@
-import type { GeneralField } from '@formily/core'
+import type { GeneralField } from '@silver-formily/core'
 import type { Ref } from 'vue'
 import { inject, ref } from 'vue'
 import { FieldSymbol } from '../shared/context'

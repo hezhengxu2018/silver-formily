@@ -9,30 +9,31 @@
 - **Pure Vue 3 runtime** – no `vue-demi`, `vue-frag`, or compatibility shims; the render tree mirrors native Vue component libraries.
 - **Native DOM & events** – relies on `modelValue` / `onUpdate:modelValue`, so Element Plus and most Vue 3 UI kits work without extra adapters.
 - **Richer TypeScript hints** – explicit generics and shared interfaces sit beside the runtime to keep emitted `.d.ts` files in sync.
-- **Formily ecosystem alignment** – works with `@formily/core`, `@formily/json-schema`, and other official packages, keeping migration costs low.
+- **Formily ecosystem alignment** – works with the in-repo `@silver-formily/core`, `@silver-formily/json-schema`, and companion packages for a clearer migration path.
 - **Decorator slots** – wire `FormItem` and other wrappers to the form schema via `:decorator-content` / `x-decorator-content`, covering `default`, `label`, `extra`, or any named slot. See the [FAQ entry](../../apps/vue-docs/en/questions/index.md#how-do-i-pass-slots-to-a-decorator).
 - **Docs & demos included** – the VitePress docs app covers APIs, migration notes, and Element Plus demos; run `pnpm dev -- vue-docs` from the repo root to browse locally.
 
 ## 🔄 Differences vs `@formily/vue`
 
-| Aspect         | `@silver-formily/vue` 2.x                                          | Official `@formily/vue`                  |
-| -------------- | ------------------------------------------------------------------ | ---------------------------------------- |
-| Event contract | `modelValue` / `onUpdate:modelValue`                               | `value` / `onChange`                     |
-| DOM structure  | No extra `template` / `display: contents` wrappers                 | Extra containers for Vue 2 compatibility |
-| Dependencies   | Vue 3–only runtime deps                                            | Uses `vue-demi` to target Vue 2 + 3      |
-| Schema export  | Schema is **not** re-exported (import from `@formily/json-schema`) | Schema is re-exported                    |
-| Compatibility  | Use `@silver-formily/vue@1.x` for strict parity                    | Official package                         |
+| Aspect         | `@silver-formily/vue` 2.x                                                 | Official `@formily/vue`                  |
+| -------------- | ------------------------------------------------------------------------- | ---------------------------------------- |
+| Event contract | `modelValue` / `onUpdate:modelValue`                                      | `value` / `onChange`                     |
+| DOM structure  | No extra `template` / `display: contents` wrappers                        | Extra containers for Vue 2 compatibility |
+| Dependencies   | Vue 3–only runtime deps                                                   | Uses `vue-demi` to target Vue 2 + 3      |
+| Schema export  | Schema is **not** re-exported (import from `@silver-formily/json-schema`) | Schema is re-exported                    |
+| Compatibility  | Use `@silver-formily/vue@1.x` for strict parity                           | Official package                         |
 
 ## 📦 Peer Dependencies
 
 Install these alongside the library in your host app:
 
 ```
-@formily/core ^2
-@formily/json-schema ^2
-@formily/reactive ^2
+@silver-formily/core workspace:*
+@silver-formily/json-schema workspace:*
+@silver-formily/path workspace:*
+@silver-formily/reactive workspace:*
 @silver-formily/reactive-vue ^1
-@formily/shared ^2
+@silver-formily/shared workspace:*
 vue ^3.3.0+
 ```
 
@@ -41,7 +42,7 @@ vue ^3.3.0+
 Recommended pnpm command:
 
 ```bash
-pnpm add @silver-formily/vue @formily/core @formily/json-schema @formily/reactive @silver-formily/reactive-vue @formily/shared
+pnpm add @silver-formily/vue @silver-formily/core @silver-formily/json-schema @silver-formily/path @silver-formily/reactive @silver-formily/reactive-vue @silver-formily/shared
 ```
 
 ## ⚡️ Quick Start
@@ -50,7 +51,7 @@ The snippet below wires Element Plus inputs into Formily:
 
 ```vue
 <script setup lang="ts">
-import { createForm } from '@formily/core'
+import { createForm } from '@silver-formily/core'
 import { connect, Field, FormProvider, mapProps } from '@silver-formily/vue'
 import { ElFormItem, ElInput } from 'element-plus'
 

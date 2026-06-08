@@ -1,12 +1,12 @@
-import type { ISchema, SchemaTypes } from '@formily/json-schema'
+import type { ISchema, SchemaTypes } from '@silver-formily/json-schema'
 import type { VNode } from 'vue'
 import type {
   ISchemaFieldVueFactoryOptions,
   SchemaExpressionScope,
   SchemaVueComponents,
 } from '../types'
-import { Schema } from '@formily/json-schema'
-import { lazyMerge } from '@formily/shared'
+import { Schema } from '@silver-formily/json-schema'
+import { lazyMerge } from '@silver-formily/shared'
 import { computed, defineComponent, Fragment, h, inject, provide, shallowRef, watch } from 'vue'
 import { SchemaExpressionScopeSymbol, SchemaMarkupSymbol, SchemaOptionsSymbol } from '../shared'
 import { resolveSchemaProps } from '../utils/resolveSchemaProps'

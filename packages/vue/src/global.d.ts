@@ -1,5 +1,5 @@
-/// <reference types="@formily/core" />
-/// <reference types="@formily/json-schema" />
+/// <reference types="@silver-formily/core" />
+/// <reference types="@silver-formily/json-schema" />
 import * as Types from './types'
 
 declare global {

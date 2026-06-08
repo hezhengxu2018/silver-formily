@@ -2,7 +2,7 @@
   "name": "@silver-formily/vue",
   "type": "module",
   "version": "2.3.4",
-  "description": "Vue3 版本的 @formily/vue",
+  "description": "Vue3 版本的 Silver Formily 运行时封装",
   "author": "hezhengxu",
   "license": "MIT",
   "homepage": "https://vue.silver-formily.org",
@@ -43,11 +43,12 @@
     "prepublishOnly": "pnpm run build"
   },
   "peerDependencies": {
-    "@formily/core": "^2",
-    "@formily/json-schema": "^2",
-    "@formily/reactive": "^2",
-    "@formily/shared": "^2",
-    "@silver-formily/reactive-vue": "^1.0.0",
+    "@silver-formily/core": "workspace:*",
+    "@silver-formily/json-schema": "workspace:*",
+    "@silver-formily/path": "workspace:*",
+    "@silver-formily/reactive": "workspace:*",
+    "@silver-formily/reactive-vue": "workspace:*",
+    "@silver-formily/shared": "workspace:*",
     "vue": "^3.3.0"
   },
   "config": {
@@ -58,6 +59,7 @@
   "devDependencies": {
     "@antfu/eslint-config": "catalog:",
     "@commitlint/config-conventional": "catalog:",
+    "@silver-formily/path": "workspace:*",
     "@silver-formily/reactive-vue": "workspace:*",
     "@silver-formily/typescript-config": "workspace:*",
     "@silver-formily/validator": "workspace:*",

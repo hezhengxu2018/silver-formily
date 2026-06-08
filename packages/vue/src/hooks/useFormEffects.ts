@@ -1,5 +1,5 @@
-import type { Form } from '@formily/core'
-import { uid } from '@formily/shared'
+import type { Form } from '@silver-formily/core'
+import { uid } from '@silver-formily/shared'
 import { onBeforeUnmount, watchEffect } from 'vue'
 import { useForm } from './useForm'
 

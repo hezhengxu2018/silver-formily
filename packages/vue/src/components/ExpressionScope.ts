@@ -1,6 +1,6 @@
 import type { PropType, Ref } from 'vue'
 import type { IExpressionScopeProps, SchemaExpressionScope } from '../types'
-import { lazyMerge } from '@formily/shared'
+import { lazyMerge } from '@silver-formily/shared'
 import { computed, defineComponent, inject, provide } from 'vue'
 import { SchemaExpressionScopeSymbol } from '../shared'
 

@@ -1,5 +1,5 @@
-import type { Form, GeneralField } from '@formily/core'
-import type { Schema } from '@formily/json-schema'
+import type { Form, GeneralField } from '@silver-formily/core'
+import type { Schema } from '@silver-formily/json-schema'
 import type { InjectionKey, Ref } from 'vue'
 import type { ISchemaFieldVueFactoryOptions, SchemaExpressionScope } from '../types'
 
