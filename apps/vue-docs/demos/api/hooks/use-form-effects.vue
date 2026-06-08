@@ -1,5 +1,5 @@
 <script setup lang="tsx">
-import { createForm, isField, onFieldReact } from '@formily/core'
+import { createForm, isField, onFieldReact } from '@silver-formily/core'
 import { Field, FormConsumer, FormProvider, useFormEffects } from '@silver-formily/vue'
 import { ElFormItem, ElInput } from 'element-plus'
 import { defineComponent } from 'vue'

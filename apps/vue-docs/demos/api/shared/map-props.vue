@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import type { Field as TypeField } from '@formily/core'
-import { createForm, setValidateLanguage } from '@formily/core'
+import type { Field as TypeField } from '@silver-formily/core'
+import { createForm, setValidateLanguage } from '@silver-formily/core'
 import {
   connect,
   Field,

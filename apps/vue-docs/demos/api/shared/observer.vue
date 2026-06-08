@@ -1,5 +1,5 @@
 <script setup lang="tsx">
-import { createForm } from '@formily/core'
+import { createForm } from '@silver-formily/core'
 import { observer } from '@silver-formily/reactive-vue'
 import { Field, FormProvider, useForm } from '@silver-formily/vue'
 import { ElInput, ElSpace } from 'element-plus'

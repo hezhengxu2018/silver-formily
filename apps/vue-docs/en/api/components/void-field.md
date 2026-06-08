@@ -2,7 +2,7 @@
 
 ## Description
 
-Vue binding for [createVoidField](https://core.formilyjs.org/api/models/form#createvoidfield) from `@formily/core`. Void fields are layout-only nodes that let you control visibility, interaction modes, and decorators for their descendants while not carrying values themselves. Props follow [IVoidFieldFactoryProps](https://core.formilyjs.org/api/models/form#ivoidfieldfactoryprops).
+Vue binding for [createVoidField](https://core.formilyjs.org/api/models/form#createvoidfield) from `@silver-formily/core`. Void fields are layout-only nodes that let you control visibility, interaction modes, and decorators for their descendants while not carrying values themselves. Props follow [IVoidFieldFactoryProps](https://core.formilyjs.org/api/models/form#ivoidfieldfactoryprops).
 
 ## Usage
 

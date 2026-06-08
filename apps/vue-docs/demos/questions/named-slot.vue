@@ -1,6 +1,6 @@
 <script setup lang="tsx">
 import { User } from '@element-plus/icons-vue'
-import { createForm } from '@formily/core'
+import { createForm } from '@silver-formily/core'
 import { createSchemaField, FormProvider } from '@silver-formily/vue'
 import { ElIcon, ElInput } from 'element-plus'
 import { defineComponent } from 'vue'

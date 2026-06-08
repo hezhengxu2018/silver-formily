@@ -1,6 +1,6 @@
 <script setup lang="tsx">
-import type { Field as FieldType } from '@formily/core'
-import { createForm, setValidateLanguage } from '@formily/core'
+import type { Field as FieldType } from '@silver-formily/core'
+import { createForm, setValidateLanguage } from '@silver-formily/core'
 import { observer } from '@silver-formily/reactive-vue'
 import { Field, FormConsumer, FormProvider, useField } from '@silver-formily/vue'
 import { ElButton, ElFormItem, ElInput } from 'element-plus'

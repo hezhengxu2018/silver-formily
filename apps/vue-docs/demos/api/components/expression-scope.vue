@@ -1,5 +1,5 @@
 <script setup>
-import { createForm } from '@formily/core'
+import { createForm } from '@silver-formily/core'
 import { createSchemaField, ExpressionScope, FormProvider } from '@silver-formily/vue'
 import { defineComponent, h } from 'vue'
 

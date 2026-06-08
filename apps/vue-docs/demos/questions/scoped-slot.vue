@@ -1,6 +1,6 @@
 <script setup lang="tsx">
 import type { PropType } from 'vue'
-import { createForm } from '@formily/core'
+import { createForm } from '@silver-formily/core'
 import { observer } from '@silver-formily/reactive-vue'
 import { createSchemaField, FormProvider } from '@silver-formily/vue'
 import { defineComponent } from 'vue'

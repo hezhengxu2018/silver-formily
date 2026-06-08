@@ -2,7 +2,7 @@
 
 ## 描述
 
-作为@formily/core 的 [createVoidField](https://core.formilyjs.org/api/models/form#createvoidfield) Vue 实现，它是专门用于将 ViewModel 与虚拟布局控件做绑定的桥接组件，可以用来控制数据型字段的显示隐藏，交互模式等，VoidField 组件属性参考[IVoidFieldFactoryProps](https://core.formilyjs.org/api/models/form#ivoidfieldfactoryprops)
+作为 `@silver-formily/core` 中 [createVoidField](https://core.formilyjs.org/api/models/form#createvoidfield) 的 Vue 实现，它是专门用于将 ViewModel 与虚拟布局控件做绑定的桥接组件，可以用来控制数据型字段的显示隐藏、交互模式等，VoidField 组件属性参考 [IVoidFieldFactoryProps](https://core.formilyjs.org/api/models/form#ivoidfieldfactoryprops)
 
 ## 用例
 

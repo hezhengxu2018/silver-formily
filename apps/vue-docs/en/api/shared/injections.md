@@ -14,7 +14,7 @@ Symbols exposed by `@silver-formily/vue`. Inject them to consume lower-level con
 Provides the current `Form` instance.
 
 ```ts
-import type { Form } from '@formily/core'
+import type { Form } from '@silver-formily/core'
 import type { InjectionKey, Ref } from 'vue'
 
 export const FormSymbol: InjectionKey<Ref<Form>> = Symbol(form)
@@ -25,7 +25,7 @@ export const FormSymbol: InjectionKey<Ref<Form>> = Symbol(form)
 Access the current field instance.
 
 ```ts
-import type { GeneralField } from '@formily/core'
+import type { GeneralField } from '@silver-formily/core'
 import type { InjectionKey, Ref } from 'vue'
 
 export const FieldSymbol: InjectionKey<Ref<GeneralField>> = Symbol(field)
@@ -38,7 +38,7 @@ Collects JSX/markup schema definitions before they are transformed into canonica
 For the full schema protocol, property contracts, and linkage rules, see the [rebuilt JSON Schema docs](https://json-schema.silver-formily.org/en/). This page only documents the injection points exposed by `@silver-formily/vue`.
 
 ```ts
-import type { Schema } from '@formily/json-schema'
+import type { Schema } from '@silver-formily/json-schema'
 import type { InjectionKey, Ref } from 'vue'
 
 export const SchemaMarkupSymbol: InjectionKey<Ref<Schema>>
@@ -52,7 +52,7 @@ Provides the schema of the current field.
 The complete `Schema` API now lives on the [rebuilt JSON Schema docs](https://json-schema.silver-formily.org/en/). This site keeps [Schema](/en/api/shared/schema) as a local bridge page only.
 
 ```ts
-import type { Schema } from '@formily/json-schema'
+import type { Schema } from '@silver-formily/json-schema'
 import type { InjectionKey, Ref } from 'vue'
 
 export const SchemaSymbol: InjectionKey<Ref<Schema>> = Symbol(schema)

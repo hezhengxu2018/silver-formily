@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { createForm } from '@formily/core'
+import { createForm } from '@silver-formily/core'
 import { ArrayField, Field, FormProvider } from '@silver-formily/vue'
 import { ElButton, ElInput, ElSpace } from 'element-plus'
 

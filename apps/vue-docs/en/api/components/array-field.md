@@ -2,7 +2,7 @@
 
 ## Description
 
-Vue binding for [createArrayField](https://core.formilyjs.org/api/models/form#createarrayfield) from `@formily/core`. Use it to bind array-like data sources to view components. Props follow [IFieldFactoryProps](https://core.formilyjs.org/api/models/form#ifieldfactoryprops).
+Vue binding for [createArrayField](https://core.formilyjs.org/api/models/form#createarrayfield) from `@silver-formily/core`. Use it to bind array-like data sources to view components. Props follow [IFieldFactoryProps](https://core.formilyjs.org/api/models/form#ifieldfactoryprops).
 
 The `name` prop is required. Consume the instance via a scoped slot.
 

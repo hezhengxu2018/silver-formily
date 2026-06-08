@@ -2,7 +2,7 @@
 
 ## Description
 
-`@silver-formily/vue` ships the Vue adapter for [createField](https://core.formilyjs.org/api/models/form#createfield) from `@formily/core`. It wires the Formily ViewModel to your input components. Component props follow [IFieldFactoryProps](https://core.formilyjs.org/api/models/form#ifieldfactoryprops).
+`@silver-formily/vue` ships the Vue adapter for [createField](https://core.formilyjs.org/api/models/form#createfield) from `@silver-formily/core`. It wires the Formily ViewModel to your input components. Component props follow [IFieldFactoryProps](https://core.formilyjs.org/api/models/form#ifieldfactoryprops).
 
 The `name` prop is required.
 

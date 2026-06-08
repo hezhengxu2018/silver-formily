@@ -7,7 +7,7 @@ hero:
   image:
     src: /logo.svg
     alt: Silver Formily Vue
-  tagline: A Vue 3-focused wrapper around @formily/vue
+  tagline: The Vue 3 form runtime for the Silver Formily stack
   actions:
     - theme: alt
       text: Guide
@@ -17,10 +17,10 @@ hero:
       link: ./api/components/field
 
 features:
-  - title: 💡 Vue 3-first Formily binding
-    details: A lean rewrite that drops the legacy Vue 2 adapters and extra DOM wrappers, resulting in cleaner markup and fewer dependencies.
+  - title: 💡 Vue 3 runtime for Silver Formily
+    details: Starting with 3.x, package names, dependencies, demos, and docs all move to the `@silver-formily/*` namespace, so this site documents the Silver Formily stack by default.
   - title: 📝 Stronger typings
-    details: Compared to @formily/vue you get richer TypeScript hints, so composing complex schemas stays ergonomic.
+    details: Companion packages such as core, json-schema, reactive, and reactive-vue now evolve together, keeping the TypeScript surface more consistent.
   - title: ✅ SSR-ready
     details: Fixes the rendering glitches that happen in the upstream repo under SSR and keeps hydration predictable.
 ---

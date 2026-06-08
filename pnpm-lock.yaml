@@ -602,24 +602,27 @@ importers:
       '@element-plus/icons-vue':
         specifier: 'catalog:'
         version: 2.3.2(vue@3.5.32(typescript@6.0.2))
-      '@formily/core':
-        specifier: 'catalog:'
-        version: 2.3.7
-      '@formily/json-schema':
-        specifier: 'catalog:'
-        version: 2.3.7(typescript@6.0.2)
-      '@formily/reactive':
-        specifier: 'catalog:'
-        version: 2.3.7
-      '@formily/shared':
-        specifier: 'catalog:'
-        version: 2.3.7
+      '@silver-formily/core':
+        specifier: workspace:*
+        version: link:../../packages/core
       '@silver-formily/docs-toolkit':
         specifier: workspace:*
         version: link:../../packages/docs-toolkit
+      '@silver-formily/json-schema':
+        specifier: workspace:*
+        version: link:../../packages/json-schema
+      '@silver-formily/path':
+        specifier: workspace:*
+        version: link:../../packages/path
+      '@silver-formily/reactive':
+        specifier: workspace:*
+        version: link:../../packages/reactive
       '@silver-formily/reactive-vue':
         specifier: workspace:*
         version: link:../../packages/reactive-vue
+      '@silver-formily/shared':
+        specifier: workspace:*
+        version: link:../../packages/shared
       '@silver-formily/vue':
         specifier: workspace:*
         version: link:../../packages/vue

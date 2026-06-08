@@ -1,5 +1,5 @@
 <script setup lang="tsx">
-import { createForm, isArrayField } from '@formily/core'
+import { createForm, isArrayField } from '@silver-formily/core'
 import { observer } from '@silver-formily/reactive-vue'
 import {
   createSchemaField,

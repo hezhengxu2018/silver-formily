@@ -1,5 +1,5 @@
 <script>
-import { createForm, isVoidField, setValidateLanguage } from '@formily/core'
+import { createForm, isVoidField, setValidateLanguage } from '@silver-formily/core'
 import {
   connect,
   Field,

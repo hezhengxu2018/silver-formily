@@ -1,5 +1,5 @@
 <script>
-import { createForm } from '@formily/core'
+import { createForm } from '@silver-formily/core'
 import { createSchemaField, FormProvider } from '@silver-formily/vue'
 import { ElInput } from 'element-plus'
 
