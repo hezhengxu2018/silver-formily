@@ -14,7 +14,7 @@ const autorunMock = vi.hoisted(() => vi.fn(() => autorunDispose))
 const reactionMock = vi.hoisted(() => vi.fn(() => reactionDispose))
 
 vi.mock('vue', () => vueMocks)
-vi.mock('@formily/reactive', () => ({
+vi.mock('@silver-formily/reactive', () => ({
   autorun: autorunMock,
   reaction: reactionMock,
 }))

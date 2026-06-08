@@ -1,6 +1,6 @@
-import type { IReactionOptions } from '@formily/reactive'
+import type { IReactionOptions } from '@silver-formily/reactive'
 import type { ComputedRef } from 'vue'
-import { reaction } from '@formily/reactive'
+import { reaction } from '@silver-formily/reactive'
 import { computed, onBeforeUnmount, shallowRef } from 'vue'
 
 /**

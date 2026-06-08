@@ -1,5 +1,5 @@
-import type { Dispose, IReactionOptions } from '@formily/reactive'
-import { reaction } from '@formily/reactive'
+import type { Dispose, IReactionOptions } from '@silver-formily/reactive'
+import { reaction } from '@silver-formily/reactive'
 import { getCurrentScope, onScopeDispose } from 'vue'
 
 export function reactionWatch<T>(

@@ -973,9 +973,9 @@ importers:
 
   packages/reactive-vue:
     devDependencies:
-      '@formily/reactive':
-        specifier: 'catalog:'
-        version: 2.3.7
+      '@silver-formily/reactive':
+        specifier: workspace:*
+        version: link:../reactive
       '@silver-formily/typescript-config':
         specifier: workspace:*
         version: link:../typescript-config

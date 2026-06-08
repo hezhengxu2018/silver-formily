@@ -1,5 +1,5 @@
-import type { Dispose, Reaction } from '@formily/reactive'
-import { autorun } from '@formily/reactive'
+import type { Dispose, Reaction } from '@silver-formily/reactive'
+import { autorun } from '@silver-formily/reactive'
 import { getCurrentScope, onScopeDispose } from 'vue'
 
 export function autorunEffect(tracker: Reaction, name?: string): Dispose {

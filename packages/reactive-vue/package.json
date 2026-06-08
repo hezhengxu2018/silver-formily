@@ -2,7 +2,7 @@
   "name": "@silver-formily/reactive-vue",
   "type": "module",
   "version": "1.1.1",
-  "description": "Another @formily/reactive-vue",
+  "description": "Reactive Vue bindings for Silver Formily",
   "author": "Hezhengxu",
   "license": "MIT",
   "homepage": "https://reactive-vue.silver-formily.org",
@@ -40,11 +40,11 @@
     "prepublishOnly": "pnpm run build"
   },
   "peerDependencies": {
-    "@formily/reactive": "^2",
+    "@silver-formily/reactive": "workspace:*",
     "vue": "^3.3.0"
   },
   "devDependencies": {
-    "@formily/reactive": "catalog:",
+    "@silver-formily/reactive": "workspace:*",
     "@silver-formily/typescript-config": "workspace:*",
     "@vitest/coverage-istanbul": "catalog:",
     "eslint": "catalog:",

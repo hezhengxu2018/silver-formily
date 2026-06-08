@@ -1,6 +1,6 @@
 import type { ComponentInternalInstance } from 'vue'
 import type { IObserverOptions } from '../types'
-import { Tracker } from '@formily/reactive'
+import { Tracker } from '@silver-formily/reactive'
 import { getCurrentInstance, onBeforeUnmount } from 'vue'
 
 interface InternalRenderEffect {

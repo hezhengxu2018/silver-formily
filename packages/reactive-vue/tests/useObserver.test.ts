@@ -28,7 +28,7 @@ const trackerMockFactory = vi.hoisted(() =>
 )
 
 vi.mock('vue', () => vueMocks)
-vi.mock('@formily/reactive', () => ({
+vi.mock('@silver-formily/reactive', () => ({
   Tracker: trackerMockFactory,
 }))
 
