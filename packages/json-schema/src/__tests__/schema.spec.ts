@@ -105,4 +105,24 @@ describe('schema', () => {
     expect(typeof Schema.compile).toBe('function')
     expect(typeof Schema.getOrderProperties).toBe('function')
   })
+
+  it('keeps unordered properties when x-index is absent', async () => {
+    const Schema = await loadSchema()
+    const schema = new Schema({
+      type: 'object',
+      properties: {
+        first: {
+          type: 'string',
+        },
+        second: {
+          type: 'string',
+        },
+      },
+    })
+
+    expect(Schema.getOrderProperties(schema).map(item => item.key)).toEqual([
+      'first',
+      'second',
+    ])
+  })
 })

@@ -607,7 +607,7 @@ export class Schema<
     for (const key in schema[propertiesName]) {
       const item = schema[propertiesName][key]
       const index = item['x-index']
-      if (!Number.isNaN(index)) {
+      if (typeof index === 'number' && !Number.isNaN(index)) {
         orderProperties[index] = { schema: item, key }
       }
       else {
