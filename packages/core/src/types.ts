@@ -385,6 +385,7 @@ export interface IFieldProps<
   basePath?: FormPathPattern
   title?: TextType
   description?: TextType
+  loading?: boolean
   value?: ValueType
   initialValue?: ValueType
   required?: boolean

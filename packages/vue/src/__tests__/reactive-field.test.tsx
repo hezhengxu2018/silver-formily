@@ -271,4 +271,17 @@ describe('reactive field branches', () => {
     expect(form.query('first').take()?.unmounted).toBeTruthy()
     expect(form.query('second').take()?.mounted).toBeTruthy()
   })
+
+  it('应该把 Field 的 loading 属性初始化到 core 字段模型', async () => {
+    const form = createForm()
+
+    await render(() => (
+      <FormProvider form={form}>
+        <Field name="loadingField" loading />
+      </FormProvider>
+    ))
+
+    const field = form.query('loadingField').take()
+    expect(field && 'loading' in field && field.loading).toBeTruthy()
+  })
 })

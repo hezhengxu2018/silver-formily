@@ -35,27 +35,11 @@ export default defineComponent({
 
     useObserver()
 
-    // HACK: 修复运行时状态：https://github.com/alibaba/formily/issues/4357
-    const syncFieldRuntimeState = (field?: GeneralField) => {
-      if (!field || isVoidField(field)) {
-        return field
-      }
-
-      const loading = 'loading' in props.fieldProps
-        ? props.fieldProps.loading
-        : undefined
-      if (loading !== undefined && field.loading !== loading) {
-        field.setLoading?.(loading)
-      }
-
-      return field
-    }
-
     const createField = () =>
-      syncFieldRuntimeState(formRef?.value?.[`create${props.fieldType}`]?.({
+      formRef?.value?.[`create${props.fieldType}`]?.({
         ...props.fieldProps,
         basePath: props.fieldProps?.basePath ?? parentRef.value?.address,
-      }))
+      })
 
     const fieldRef = shallowRef(createField()) as Ref<GeneralField>
 

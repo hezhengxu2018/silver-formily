@@ -47,7 +47,6 @@ export interface IFieldProps<
   TextType = any,
   ValueType = any,
 > extends Omit<CoreFieldProps<D, C, TextType, ValueType>, 'validator'> {
-  loading?: boolean
   validator?: SchemaFieldValidator
   decoratorContent?: any
 }
@@ -58,7 +57,6 @@ export interface IFieldFactoryProps<
   TextType = any,
   ValueType = any,
 > extends Omit<CoreFieldFactoryProps<D, C, TextType, ValueType>, 'validator'> {
-  loading?: boolean
   validator?: SchemaFieldValidator
   decoratorContent?: any
 }

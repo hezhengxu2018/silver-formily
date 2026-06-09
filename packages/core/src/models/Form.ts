@@ -566,6 +566,7 @@ export class Form<ValueType extends object = any> {
 
   onMount = () => {
     this.mounted = true
+    this.unmounted = false
     this.notify(LifeCycleTypes.ON_FORM_MOUNT)
     if (globalThisPolyfill[DEV_TOOLS_HOOK] && !this.props.designable) {
       globalThisPolyfill[DEV_TOOLS_HOOK].inject(this.id, this)
@@ -576,6 +577,7 @@ export class Form<ValueType extends object = any> {
     this.notify(LifeCycleTypes.ON_FORM_UNMOUNT)
     this.query('*').forEach(field => field.destroy(false))
     this.disposers.forEach(dispose => dispose())
+    this.mounted = false
     this.unmounted = true
     this.indexes = {}
     this.heart.clear()

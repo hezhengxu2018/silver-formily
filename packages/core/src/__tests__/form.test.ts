@@ -958,6 +958,21 @@ it('devtools', () => {
   form.onUnmount()
 })
 
+it('form mount state should stay consistent across mount lifecycle', () => {
+  const form = createForm()
+
+  expect(form.mounted).toBeFalsy()
+  expect(form.unmounted).toBeFalsy()
+
+  form.onMount()
+  expect(form.mounted).toBeTruthy()
+  expect(form.unmounted).toBeFalsy()
+
+  form.onUnmount()
+  expect(form.mounted).toBeFalsy()
+  expect(form.unmounted).toBeTruthy()
+})
+
 it('reset array field', async () => {
   const form = attach(
     createForm({

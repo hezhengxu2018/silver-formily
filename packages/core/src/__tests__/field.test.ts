@@ -66,6 +66,13 @@ it('create field props', () => {
   )
   expect(field5.value).toEqual(123)
   expect(field5.initialValue).toEqual(123)
+  const field6 = attach(
+    form.createField({
+      name: 'field6',
+      loading: true,
+    }),
+  )
+  expect(field6.loading).toBeTruthy()
 })
 
 it('field display and value', () => {

@@ -351,6 +351,46 @@ it('onFieldInit/onFieldMount/onFieldUnmount', () => {
   expect(fieldUnmount).toBeCalledTimes(1)
 })
 
+it('onFieldInit should replay existing fields and subscribe future fields', () => {
+  const fieldInit = vi.fn()
+  const form = attach(createForm())
+  attach(
+    form.createField({
+      name: 'aa.0',
+    }),
+  )
+
+  form.addEffects('late-effects', () => {
+    onFieldInit('aa.*', fieldInit)
+  })
+
+  attach(
+    form.createField({
+      name: 'aa.1',
+    }),
+  )
+
+  expect(fieldInit.mock.calls.map(([field]) => field.address.toString())).toEqual([
+    'aa.0',
+    'aa.1',
+  ])
+})
+
+it('onFieldInit should allow missing callback', () => {
+  const form = attach(createForm())
+  attach(
+    form.createField({
+      name: 'aa',
+    }),
+  )
+
+  expect(() => {
+    form.addEffects('no-callback', () => {
+      onFieldInit('aa')
+    })
+  }).not.toThrow()
+})
+
 it('onFieldInitialValueChange/onFieldValueChange/onFieldInputValueChange', () => {
   const fieldValueChange = vi.fn()
   const fieldInitialValueChange = vi.fn()

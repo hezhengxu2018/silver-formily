@@ -104,7 +104,7 @@ export class Field<
 
   protected initialize() {
     this.initialized = false
-    this.loading = false
+    this.loading = this.props.loading ?? false
     this.validating = false
     this.submitting = false
     this.selfModified = false
