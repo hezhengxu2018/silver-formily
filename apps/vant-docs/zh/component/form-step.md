@@ -11,7 +11,7 @@ mobileDemo: form-step/index.vue
 :::
 
 :::tip 提示
-`createFormStep()` 返回的是 `@formily/reactive` 响应式模型。示例里使用 `FormConsumer` 搭配 `FormButtonGroup` 包裹按钮区，让“上一步 / 下一步 / 提交”的禁用状态跟着步骤自动刷新，同时也能沿用统一的按钮布局配置。
+`createFormStep()` 返回的是 `@silver-formily/reactive` 响应式模型。示例里使用 `FormConsumer` 搭配 `FormButtonGroup` 包裹按钮区，让“上一步 / 下一步 / 提交”的禁用状态跟着步骤自动刷新，同时也能沿用统一的按钮布局配置。
 :::
 
 ## Markup Schema
@@ -20,7 +20,7 @@ mobileDemo: form-step/index.vue
 
 ## JSON Schema
 
-<<< @/zh/demos/form-step/json-schema.vue
+<<< @/zh/demos/form-step-formily/json-schema.vue
 
 ## 内部创建实例
 

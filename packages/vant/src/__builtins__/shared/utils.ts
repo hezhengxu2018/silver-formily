@@ -1,6 +1,6 @@
-import type { GeneralField } from '@formily/core'
+import type { GeneralField } from '@silver-formily/core'
 import type { Component, ComputedRef, Ref } from 'vue'
-import { isPlainObj, paramCase } from '@formily/shared'
+import { isPlainObj, paramCase } from '@silver-formily/shared'
 import { useField } from '@silver-formily/vue'
 import bem from 'easy-bem'
 import { omit } from 'es-toolkit/compat'

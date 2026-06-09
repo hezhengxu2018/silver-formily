@@ -5,7 +5,7 @@ import type {
   PickerGroupResolvedValue,
   PickerGroupValueItem,
 } from './types'
-import { isValid } from '@formily/shared'
+import { isValid } from '@silver-formily/shared'
 import {
   findPickerOptionByValue,
   normalizePickerColumns,

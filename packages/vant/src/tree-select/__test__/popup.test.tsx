@@ -1,5 +1,5 @@
 import type { TreeSelectChild, TreeSelectResolvedValue } from '../types'
-import { createForm } from '@formily/core'
+import { createForm } from '@silver-formily/core'
 import { Field, FormProvider } from '@silver-formily/vue'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { render } from 'vitest-browser-vue'

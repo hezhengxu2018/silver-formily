@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Form } from '@formily/core'
+import type { Form } from '@silver-formily/core'
 import type { PropType } from 'vue'
 import type { FormPopupProps, FormPopupResolve, FormPopupSlots } from './types'
 import { formilyComputed } from '@silver-formily/reactive-vue'

@@ -1,5 +1,5 @@
-import type { ISchema } from '@formily/json-schema'
-import { createForm } from '@formily/core'
+import type { ISchema } from '@silver-formily/json-schema'
+import { createForm } from '@silver-formily/core'
 import { observer } from '@silver-formily/reactive-vue'
 import { createSchemaField, FormProvider } from '@silver-formily/vue'
 import { beforeEach, describe, expect, it, vi } from 'vitest'

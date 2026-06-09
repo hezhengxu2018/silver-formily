@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { PickerOption } from '@silver-formily/vant'
-import { createForm } from '@formily/core'
+import { createForm } from '@silver-formily/core'
 import { FormItem, TimePicker } from '@silver-formily/vant'
 import { Field, FormProvider } from '@silver-formily/vue'
 

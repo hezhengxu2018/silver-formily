@@ -9,7 +9,7 @@ import type {
   PickerOptionValue,
   PickerResolvedValue,
 } from './types'
-import { isValid } from '@formily/shared'
+import { isValid } from '@silver-formily/shared'
 import { clone } from 'es-toolkit'
 
 type NormalizedPickerOption = Omit<PickerOption, 'children' | 'label' | 'text' | 'value'> & {

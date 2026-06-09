@@ -2,7 +2,7 @@
 import type { DefineComponent } from 'vue'
 import type { UploadFileListItem } from '../upload/types'
 import type { PreviewTextUploadProps } from './types'
-import { isPlainObj, isValid } from '@formily/shared'
+import { isPlainObj, isValid } from '@silver-formily/shared'
 import { Uploader as RawUploader } from 'vant'
 import { computed } from 'vue'
 import { usePreviewConfig } from './utils'

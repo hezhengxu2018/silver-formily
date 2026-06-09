@@ -1,5 +1,5 @@
-import type { GeneralField } from '@formily/core'
-import { isVoidField } from '@formily/core'
+import type { GeneralField } from '@silver-formily/core'
+import { isVoidField } from '@silver-formily/core'
 import { connect, mapProps } from '@silver-formily/vue'
 import { callListener, composeExport } from '../__builtins__'
 import FormBaseItem from './form-item.vue'

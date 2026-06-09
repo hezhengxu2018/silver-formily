@@ -1,4 +1,4 @@
-import type { Field } from '@formily/core'
+import type { Field } from '@silver-formily/core'
 import type {
   CascaderFieldNames,
   CascaderOption,

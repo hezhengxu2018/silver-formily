@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { InputProps } from './types'
-import { isValid } from '@formily/shared'
+import { isValid } from '@silver-formily/shared'
 import { computed, onBeforeUnmount, ref, watchEffect } from 'vue'
 import { useCleanAttrs } from '../__builtins__'
 import { useVantFormItemControlContext } from '../form-item/context'

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Field } from '@formily/core'
+import type { Field } from '@silver-formily/core'
 import type { PreviewTextCascaderProps } from './types'
 import { useField } from '@silver-formily/vue'
 import { clone } from 'es-toolkit/compat'

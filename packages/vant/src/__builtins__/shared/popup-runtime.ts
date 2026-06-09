@@ -1,7 +1,7 @@
-import type { IMiddleware } from '@formily/shared'
+import type { IMiddleware } from '@silver-formily/shared'
 import type { App, Ref, VNodeChild } from 'vue'
-import { camelCase, isStr, pascalCase } from '@formily/shared'
 import { observer } from '@silver-formily/reactive-vue'
+import { camelCase, isStr, pascalCase } from '@silver-formily/shared'
 import { createApp, ref } from 'vue'
 
 const DEFAULT_RESERVED_MIDDLEWARE_NAMES = ['open', 'confirm', 'cancel']

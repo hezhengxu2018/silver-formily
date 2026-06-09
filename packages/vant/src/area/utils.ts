@@ -4,7 +4,7 @@ import type {
   AreaModelValue,
   AreaResolvedValue,
 } from './types'
-import { isValid } from '@formily/shared'
+import { isValid } from '@silver-formily/shared'
 
 const AREA_EMPTY_CODE = '000000'
 

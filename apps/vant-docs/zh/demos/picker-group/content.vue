@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { PickerGroupResolvedValue } from '@silver-formily/vant'
-import { createForm } from '@formily/core'
+import { createForm } from '@silver-formily/core'
 import { DatePickerPanel, Form, FormButtonGroup, FormItem, PickerGroup, Submit, TimePickerPanel } from '@silver-formily/vant'
 import { Field } from '@silver-formily/vue'
 import { showDemoResult } from '../shared'

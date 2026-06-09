@@ -1,4 +1,4 @@
-import type { Form as FormType } from '@formily/core'
+import type { Form as FormType } from '@silver-formily/core'
 import type { FieldTextAlign, FieldValidateTrigger } from 'vant'
 
 export interface VantFormProps {

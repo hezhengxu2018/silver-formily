@@ -1,6 +1,6 @@
-import type { Field as FormilyField } from '@formily/core'
+import type { Field as FormilyField } from '@silver-formily/core'
 import type { CascaderChangeEvent, CascaderOption } from '../types'
-import { createForm } from '@formily/core'
+import { createForm } from '@silver-formily/core'
 import { Field, FormProvider } from '@silver-formily/vue'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { render } from 'vitest-browser-vue'

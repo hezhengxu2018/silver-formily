@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { UploadPreviewFile } from '@silver-formily/vant'
-import { createForm } from '@formily/core'
+import { createForm } from '@silver-formily/core'
 import { Form, FormItem, Upload } from '@silver-formily/vant'
 import { Field } from '@silver-formily/vue'
 

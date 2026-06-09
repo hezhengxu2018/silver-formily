@@ -1,5 +1,5 @@
 <script setup lang="tsx">
-import { createForm } from '@formily/core'
+import { createForm } from '@silver-formily/core'
 import { Form, FormButtonGroup, FormItem, FormStep, Input, Submit } from '@silver-formily/vant'
 import { createSchemaField, FormConsumer } from '@silver-formily/vue'
 import { Button as VanButton, Icon as VanIcon } from 'vant'

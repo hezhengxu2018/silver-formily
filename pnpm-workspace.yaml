@@ -21,10 +21,6 @@ catalog:
   '@element-plus/icons-vue': ^2.3.2
   '@eslint/js': ^9.36.0
   '@eslint/markdown': ^6.6.0
-  '@formily/core': ^2.3.7
-  '@formily/json-schema': ^2.3.7
-  '@formily/reactive': ^2.3.7
-  '@formily/shared': ^2.3.7
   '@shikijs/vitepress-twoslash': ^4.0.2
   '@tsdown/css': ^0.21.8
   '@types/lodash-es': ^4.17.12

@@ -1,4 +1,4 @@
-import type { IFormFeedback } from '@formily/core'
+import type { IFormFeedback } from '@silver-formily/core'
 import type { VantButtonBaseProps } from '../__builtins__'
 
 export interface SubmitProps extends Omit<VantButtonBaseProps, 'nativeType'> {

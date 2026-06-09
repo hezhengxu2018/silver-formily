@@ -1,5 +1,5 @@
-import type { IFormFeedback } from '@formily/core'
-import type { FormPathPattern } from '@formily/shared'
+import type { IFormFeedback } from '@silver-formily/core'
+import type { Pattern as FormPathPattern } from '@silver-formily/path'
 import type { ComponentPublicInstance, InjectionKey, MaybeRefOrGetter, Ref } from 'vue'
 import { computed, inject, onBeforeUnmount, provide, toValue, watch } from 'vue'
 import { normalizeFormPath } from './context'

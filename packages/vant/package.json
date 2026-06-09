@@ -47,12 +47,13 @@
     "prepublishOnly": "pnpm run build"
   },
   "peerDependencies": {
-    "@formily/core": "^2.0.8",
-    "@formily/json-schema": "^2.0.8",
-    "@formily/reactive": "^2.0.8",
-    "@formily/shared": "^2.0.8",
-    "@silver-formily/reactive-vue": "^1.1.0",
-    "@silver-formily/vue": "^2.3.3",
+    "@silver-formily/core": "workspace:*",
+    "@silver-formily/json-schema": "workspace:*",
+    "@silver-formily/path": "workspace:*",
+    "@silver-formily/reactive": "workspace:*",
+    "@silver-formily/reactive-vue": "workspace:*",
+    "@silver-formily/shared": "workspace:*",
+    "@silver-formily/vue": "workspace:*",
     "dayjs": "^1",
     "vant": "^4.9.22",
     "vue": "^3.3.0"
@@ -62,7 +63,12 @@
     "es-toolkit": "catalog:"
   },
   "devDependencies": {
+    "@silver-formily/core": "workspace:*",
+    "@silver-formily/json-schema": "workspace:*",
+    "@silver-formily/path": "workspace:*",
+    "@silver-formily/reactive": "workspace:*",
     "@silver-formily/reactive-vue": "workspace:*",
+    "@silver-formily/shared": "workspace:*",
     "@silver-formily/typescript-config": "workspace:*",
     "@silver-formily/vue": "workspace:*",
     "@tsdown/css": "catalog:",

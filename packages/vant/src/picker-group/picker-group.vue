@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Field } from '@formily/core'
+import type { Field } from '@silver-formily/core'
 import type { FunctionalPopupSlots } from '../create-popup'
 import type {
   PickerGroupCancelEventParams,

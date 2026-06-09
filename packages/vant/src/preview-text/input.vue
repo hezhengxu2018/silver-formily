@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { PreviewTextInputProps } from './types'
-import { isFn, isValid } from '@formily/shared'
+import { isFn, isValid } from '@silver-formily/shared'
 import { computed } from 'vue'
 import { useCleanAttrs } from '../__builtins__'
 import { usePreviewConfig } from './utils'

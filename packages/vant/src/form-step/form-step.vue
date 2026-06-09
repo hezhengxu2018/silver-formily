@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import type { VoidField } from '@formily/core'
+import type { VoidField } from '@silver-formily/core'
 import type { FormStepSchemaSlots, IFormStepProps } from './types'
-import { isValid } from '@formily/shared'
 import { formilyComputed } from '@silver-formily/reactive-vue'
+import { isValid } from '@silver-formily/shared'
 import { RecursionField, useField, useFieldSchema } from '@silver-formily/vue'
 import { Step as VanStep, Steps as VanSteps } from 'vant'
 import { computed, provide, watch } from 'vue'

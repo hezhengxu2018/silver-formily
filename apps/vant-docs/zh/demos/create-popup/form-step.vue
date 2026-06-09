@@ -1,6 +1,6 @@
 <script setup lang="tsx">
 import type { PropType } from 'vue'
-import { createForm } from '@formily/core'
+import { createForm } from '@silver-formily/core'
 import { createPopup, Form, FormButtonGroup, FormItem, FormStep, Input, Submit } from '@silver-formily/vant'
 import { createSchemaField, FormConsumer } from '@silver-formily/vue'
 import { Button as VanButton } from 'vant'

@@ -1,5 +1,5 @@
-import type { Form, IFormProps } from '@formily/core'
-import type { IMiddleware } from '@formily/shared'
+import type { Form, IFormProps } from '@silver-formily/core'
+import type { IMiddleware } from '@silver-formily/shared'
 import type { ButtonProps, PopupProps as VanPopupProps } from 'vant'
 import type { Component, SlotsType, VNode } from 'vue'
 

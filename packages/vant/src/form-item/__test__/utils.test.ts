@@ -1,4 +1,4 @@
-import { createForm } from '@formily/core'
+import { createForm } from '@silver-formily/core'
 import { describe, expect, it, vi } from 'vitest'
 import { defineComponent } from 'vue'
 import { Input } from '../../input'

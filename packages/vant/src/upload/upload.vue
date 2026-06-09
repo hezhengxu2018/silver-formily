@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import type { Field as FormilyField } from '@formily/core'
+import type { Field as FormilyField } from '@silver-formily/core'
 import type { DefineComponent } from 'vue'
 import type {
   UploadComponentProps,
   UploadFileListItem,
   UploadSlots,
 } from './types'
-import { isFn, shallowClone } from '@formily/shared'
 import { reactionWatch } from '@silver-formily/reactive-vue'
+import { isFn, shallowClone } from '@silver-formily/shared'
 import { useField } from '@silver-formily/vue'
 import { Uploader as RawUploader } from 'vant'
 import { computed, ref, watch } from 'vue'

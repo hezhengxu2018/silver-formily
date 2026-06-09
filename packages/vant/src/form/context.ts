@@ -1,6 +1,6 @@
-import type { FormPathPattern } from '@formily/shared'
+import type { Pattern as FormPathPattern } from '@silver-formily/path'
 import type { ComputedRef, InjectionKey } from 'vue'
-import { FormPath } from '@formily/shared'
+import { Path as FormPath } from '@silver-formily/path'
 import { isNil } from 'es-toolkit'
 import { inject } from 'vue'
 

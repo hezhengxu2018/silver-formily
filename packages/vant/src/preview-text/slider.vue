@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { PreviewTextSliderProps } from './types'
-import { isValid } from '@formily/shared'
+import { isValid } from '@silver-formily/shared'
 import { Slider as VanSlider } from 'vant'
 import { computed } from 'vue'
 import { useCleanAttrs } from '../__builtins__'

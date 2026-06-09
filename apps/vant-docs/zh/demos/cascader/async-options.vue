@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import type { DataField } from '@formily/core'
+import type { DataField } from '@silver-formily/core'
 import type { CascaderChangeEvent, CascaderOption } from '@silver-formily/vant'
-import { createForm, onFieldInit } from '@formily/core'
+import { createForm, onFieldInit } from '@silver-formily/core'
 import { Cascader, FormItem } from '@silver-formily/vant'
 import { Field, FormProvider } from '@silver-formily/vue'
 import { closeToast, showLoadingToast } from 'vant'

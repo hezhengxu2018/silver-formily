@@ -6,7 +6,7 @@ import type {
   CascaderOptionValue,
   CascaderResolvedValue,
 } from './types'
-import { isValid } from '@formily/shared'
+import { isValid } from '@silver-formily/shared'
 import { resolveTreeFieldNames } from '../__builtins__'
 
 function isCascaderOptionValue(value: unknown): value is CascaderOptionValue {

@@ -1,5 +1,5 @@
 import type { Dayjs } from 'dayjs'
-import { isValid } from '@formily/shared'
+import { isValid } from '@silver-formily/shared'
 import dayjs from 'dayjs'
 import customParseFormat from 'dayjs/plugin/customParseFormat'
 

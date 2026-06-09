@@ -1,6 +1,6 @@
-import type { Schema } from '@formily/json-schema'
+import type { Schema } from '@silver-formily/json-schema'
 import type { FormStepEnv, IFormStep, SchemaStep } from './types'
-import { action, model, observable } from '@formily/reactive'
+import { action, model, observable } from '@silver-formily/reactive'
 
 function normalizeCurrent(current: number, steps: SchemaStep[]) {
   if (!Number.isFinite(current))

@@ -8,7 +8,7 @@ import type {
   PickerGroupSlots,
   PickerGroupValueItem,
 } from './types'
-import { isValid } from '@formily/shared'
+import { isValid } from '@silver-formily/shared'
 import { PickerGroup as VanPickerGroup } from 'vant'
 import {
   computed,

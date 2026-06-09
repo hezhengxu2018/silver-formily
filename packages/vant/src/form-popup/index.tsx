@@ -1,5 +1,5 @@
-import type { Form, IFormProps } from '@formily/core'
-import type { IMiddleware } from '@formily/shared'
+import type { Form, IFormProps } from '@silver-formily/core'
+import type { IMiddleware } from '@silver-formily/shared'
 import type { Component } from 'vue'
 import type {
   FormPopupProps,
@@ -7,9 +7,9 @@ import type {
   FormPopupSlotContent,
   IFormPopup,
 } from './types'
-import { createForm } from '@formily/core'
-import { toJS } from '@formily/reactive'
-import { camelCase, isFn, isValid, pascalCase } from '@formily/shared'
+import { createForm } from '@silver-formily/core'
+import { toJS } from '@silver-formily/reactive'
+import { camelCase, isFn, isValid, pascalCase } from '@silver-formily/shared'
 import { cloneDeep } from 'es-toolkit/compat'
 import { isVueOptions } from '../__builtins__'
 import {

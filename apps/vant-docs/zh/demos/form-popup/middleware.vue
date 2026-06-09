@@ -1,6 +1,6 @@
 <script setup lang="tsx">
 import type { FormPopupSlotProps } from '@silver-formily/vant'
-import { toJS } from '@formily/reactive'
+import { toJS } from '@silver-formily/reactive'
 import { FormItem, FormPopup, Input } from '@silver-formily/vant'
 import { Field } from '@silver-formily/vue'
 import { Button as VanButton } from 'vant'

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { createForm } from '@formily/core'
+import { createForm } from '@silver-formily/core'
 import { Calendar, FormItem } from '@silver-formily/vant'
 import { Field, FormProvider } from '@silver-formily/vue'
 import { marchCustomMax, marchCustomMin } from './shared'

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Field as FormilyField } from '@formily/core'
+import type { Field } from '@silver-formily/core'
 import type { SwitchProps, SwitchValue } from './types'
 import { useField } from '@silver-formily/vue'
 import { isPromise, omit } from 'es-toolkit'
@@ -17,7 +17,7 @@ const emit = defineEmits<{
   'change': [value: SwitchValue]
 }>()
 
-const fieldRef = useField<FormilyField | undefined>()
+const fieldRef = useField<Field>()
 const pending = ref(false)
 
 const switchBindings = computed(() => {

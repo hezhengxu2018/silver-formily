@@ -7,7 +7,7 @@ import type {
   TimePickerModelValue,
   TimePickerResolvedValue,
 } from './types'
-import { isValid } from '@formily/shared'
+import { isValid } from '@silver-formily/shared'
 import dayjs from 'dayjs'
 import customParseFormat from 'dayjs/plugin/customParseFormat'
 import { cloneDeep } from 'es-toolkit/compat'

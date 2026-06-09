@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { PreviewTextRateProps } from './types'
-import { isValid } from '@formily/shared'
+import { isValid } from '@silver-formily/shared'
 import { Rate as VanRate } from 'vant'
 import { computed } from 'vue'
 import { useCleanAttrs } from '../__builtins__'

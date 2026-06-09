@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Field as FormilyField } from '@formily/core'
+import type { Field as FormilyField } from '@silver-formily/core'
 import type { SignatureInstance, SignatureProps, SignatureSlots } from './types'
 import { useField } from '@silver-formily/vue'
 import { Button as VanButton, Image as VanImage, Signature as VanSignature } from 'vant'

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Field } from '@formily/core'
+import type { Field } from '@silver-formily/core'
 import type { PreviewTextTreeSelectProps } from './types'
 import { useField } from '@silver-formily/vue'
 import { computed } from 'vue'

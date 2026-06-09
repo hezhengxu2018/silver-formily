@@ -1,7 +1,7 @@
-import type { Field, GeneralField } from '@formily/core'
+import type { Field, GeneralField } from '@silver-formily/core'
 import type { Field as VanField } from 'vant'
-import { toJS } from '@formily/reactive'
-import { isArr, isValid } from '@formily/shared'
+import { toJS } from '@silver-formily/reactive'
+import { isArr, isValid } from '@silver-formily/shared'
 import { createNamespace } from '../__builtins__'
 import { Input } from '../input'
 

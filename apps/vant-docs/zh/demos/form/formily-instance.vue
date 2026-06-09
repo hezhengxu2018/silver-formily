@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { createForm } from '@formily/core'
+import { createForm } from '@silver-formily/core'
 import { Form, FormItem, Input } from '@silver-formily/vant'
 import { Field } from '@silver-formily/vue'
 import { Radio, RadioGroup } from 'vant'

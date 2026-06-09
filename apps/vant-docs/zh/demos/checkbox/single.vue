@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { createForm } from '@formily/core'
+import { createForm } from '@silver-formily/core'
 import { Checkbox, Form, FormButtonGroup, Submit } from '@silver-formily/vant'
 import { Field } from '@silver-formily/vue'
 import { showDemoResult } from '../shared'

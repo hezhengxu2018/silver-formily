@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { PasswordInputKeyboardProps, PasswordInputProps } from './types'
-import { isObj, isValid } from '@formily/shared'
+import { isObj, isValid } from '@silver-formily/shared'
 import { NumberKeyboard as VanNumberKeyboard, PasswordInput as VanPasswordInput } from 'vant'
 import { computed, ref, watch } from 'vue'
 import { useCleanAttrs, useHasExplicitVNodeProp } from '../__builtins__'

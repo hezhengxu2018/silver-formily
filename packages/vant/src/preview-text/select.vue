@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import type { Field } from '@formily/core'
-import { isPlainObj, isValid } from '@formily/shared'
+import type { Field } from '@silver-formily/core'
+import { isPlainObj, isValid } from '@silver-formily/shared'
 import { useField } from '@silver-formily/vue'
 import { computed } from 'vue'
 import { usePreviewConfig } from './utils'
