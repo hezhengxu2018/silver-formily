@@ -10,7 +10,7 @@ outline: 2
 
 ### 描述
 
-判断一个对象是否为 [Form](/api/models/form) 对象
+判断一个对象是否为 [Form](/api/models/Form) 对象
 
 ### 签名
 
@@ -34,7 +34,7 @@ console.log(isForm(form)) // true
 
 ### 描述
 
-判断一个对象是否为 [Field](/api/models/field) 对象
+判断一个对象是否为 [Field](/api/models/Field) 对象
 
 ### 签名
 
@@ -204,7 +204,7 @@ console.log(isDataField({})) // false
 
 ### 描述
 
-判断一个对象是否为 [IFormState](/api/models/form#iformstate) 对象
+判断一个对象是否为 [IFormState](/api/models/Form#iformstate) 对象
 
 ### 签名
 
@@ -229,7 +229,7 @@ console.log(isFormState(form.getState())) // true
 
 ### 描述
 
-判断一个对象是否为 [IFieldState](/api/models/field#ifieldstate) 对象
+判断一个对象是否为 [IFieldState](/api/models/Field#ifieldstate) 对象
 
 ### 签名
 
