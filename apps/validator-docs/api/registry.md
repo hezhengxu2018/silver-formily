@@ -120,7 +120,7 @@ getValidateRules('required')
 
 ## 模板引擎
 
-默认情况下，消息只会做 `{{path.to.value}}` 这种占位符替换。你也可以接入自己的模板引擎：
+默认情况下，消息只会做 <code v-pre>{{path.to.value}}</code> 这种占位符替换。你也可以接入自己的模板引擎：
 
 ```ts
 import { registerValidateMessageTemplateEngine } from '@silver-formily/validator'
@@ -130,4 +130,4 @@ registerValidateMessageTemplateEngine((message, context) => {
 })
 ```
 
-模板引擎会先执行，然后再执行内置的 `{{...}}` 路径替换，因此两者可以组合使用。
+模板引擎会先执行，然后再执行内置的 <code v-pre>{{...}}</code> 路径替换，因此两者可以组合使用。
