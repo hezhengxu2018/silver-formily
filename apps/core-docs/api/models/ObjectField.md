@@ -20,7 +20,7 @@ order: 3
 
 ```ts
 interface addProperty {
-  (key: FormPathPattern, value: any): Promise<void>
+  (key: string, value: any): Promise<void>
 }
 ```
 
@@ -34,7 +34,7 @@ interface addProperty {
 
 ```ts
 interface removeProperty {
-  (key: FormPathPattern): Promise<void>
+  (key: string): Promise<void>
 }
 ```
 
@@ -48,7 +48,7 @@ interface removeProperty {
 
 ```ts
 interface existProperty {
-  (key: FormPathPattern): boolean
+  (key: string): boolean
 }
 ```
 
@@ -57,3 +57,7 @@ interface existProperty {
 ### IObjectFieldState
 
 主要属性参考[IFieldState](/api/models/Field#ifieldstate)，只是 value 的数据类型要求是对象
+
+```ts
+type IObjectFieldState = IFieldState<any, any, any, Record<string, any>>
+```

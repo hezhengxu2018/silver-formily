@@ -4,9 +4,11 @@ order: 1
 
 # Field
 
-调用[createField](/api/models/Form#createfield)所返回的 Field 模型。
+调用[createField](/api/models/Form#createfield)所返回的 Field 模型。以下会列出所有模型属性。多数可写属性都可以直接赋值，@formily/reactive 会响应并触发 UI 更新。
 
-以下会列出所有模型属性，如果该属性是可写的，那么我们可以直接引用是修改该属性，@formily/reactive 便会响应从而触发 UI 更新。
+:::warning 注意
+像 `loading`、`validating`、`submitting` 这类流程状态，直接赋值与对应的 `setXxx` 方法并不完全等价，通常应优先使用 setter。
+:::
 
 ## 属性
 
@@ -17,10 +19,11 @@ order: 1
 | unmounted      | 字段是否已卸载                    | Boolean                                                    | 否       | `false`      |
 | address        | 字段节点路径                      | [FormPath](https://path.silver-formily.org/api/path-class) | 是       |              |
 | path           | 字段数据路径                      | [FormPath](https://path.silver-formily.org/api/path-class) | 是       |              |
-| title          | 字段标题                          | [FieldMessage](#fieldmessage)                              | 否       | `""`         |
-| description    | 字段描述                          | [FieldMessage](#fieldmessage)                              | 否       | `""`         |
+| title          | 字段标题                          | Any（由泛型 `TextType` 决定）                              | 否       | `""`         |
+| description    | 字段描述                          | Any（由泛型 `TextType` 决定）                              | 否       | `""`         |
 | loading        | 字段加载状态                      | Boolean                                                    | 否       | `false`      |
 | validating     | 字段是否正在校验                  | Boolean                                                    | 否       | `false`      |
+| submitting     | 字段是否正在提交                  | Boolean                                                    | 否       | `false`      |
 | modified       | 字段子树是否被手动修改过          | Boolean                                                    | 否       | `false`      |
 | selfModified   | 字段自身是否被手动修改过          | Boolean                                                    | 否       | `false`      |
 | active         | 字段是否处于激活态                | Boolean                                                    | 否       | `false`      |
@@ -36,8 +39,8 @@ order: 1
 | errors         | 字段汇总(包含子节点)错误消息      | [IFormFeedback](/api/models/Form#iformfeedback)            | 是       | `[]`         |
 | warnings       | 字段汇总(包含子节点)警告消息      | [IFormFeedback](/api/models/Form#iformfeedback)            | 是       | `[]`         |
 | successes      | 字段汇总(包含子节点)成功消息      | [IFormFeedback](/api/models/Form#iformfeedback)            | 是       | `[]`         |
-| valid          | 字段是否合法(包含子节点)          | Boolean                                                    | 否       | `true`       |
-| invalid        | 字段是否非法(包含子节点)          | Boolean                                                    | 否       | `false`      |
+| valid          | 字段是否合法(包含子节点)          | Boolean                                                    | 是       | `true`       |
+| invalid        | 字段是否非法(包含子节点)          | Boolean                                                    | 是       | `false`      |
 | value          | 字段值                            | Any                                                        | 否       |              |
 | initialValue   | 字段默认值                        | Any                                                        | 否       |              |
 | display        | 字段展示状态                      | [FieldDisplayTypes](#fielddisplaytypes)                    | 否       | `"visible"`  |
@@ -52,12 +55,12 @@ order: 1
 | validateStatus | 字段校验状态                      | [FieldValidateStatus](#fieldvalidatestatus)                | 是       | `null`       |
 | content        | 字段内容，一般作为子节点          | any                                                        | 否       | `null`       |
 | data           | 字段扩展属性                      | Object                                                     | 否       | `null`       |
-| selfErrors     | 字段自身错误消息                  | [FieldMessage](#FieldMessage)                              | 否       | `[]`         |
-| selfWarnings   | 字段自身警告消息                  | [FieldMessage](#FieldMessage)                              | 否       | `[]`         |
-| selfSuccesses  | 字段自身成功消息                  | [FieldMessage](#FieldMessage)                              | 否       | `[]`         |
-| selfValid      | 字段自身是否合法                  | Boolean                                                    | 否       | `true`       |
-| selfInvalid    | 字段自身是否非法                  | Boolean                                                    | 否       | `false`      |
-| indexes        | 字段数字索引集合                  | Number                                                     | 是       | `-`          |
+| selfErrors     | 字段自身错误消息                  | [FeedbackMessage](#feedbackmessage)                        | 否       | `[]`         |
+| selfWarnings   | 字段自身警告消息                  | [FeedbackMessage](#feedbackmessage)                        | 否       | `[]`         |
+| selfSuccesses  | 字段自身成功消息                  | [FeedbackMessage](#feedbackmessage)                        | 否       | `[]`         |
+| selfValid      | 字段自身是否合法                  | Boolean                                                    | 是       | `true`       |
+| selfInvalid    | 字段自身是否非法                  | Boolean                                                    | 是       | `false`      |
+| indexes        | 字段数字索引集合                  | Number[]                                                   | 是       | `-`          |
 | index          | 字段数字索引，取 indexes 最后一个 | Number                                                     | 是       | `-`          |
 
 ### 详细解释
@@ -77,6 +80,10 @@ order: 1
 **inputValues**
 
 触发 onInput 收集到的多参值
+
+**loading / validating / submitting**
+
+这三个状态建议优先通过 `setLoading`、`setValidating`、`setSubmitting` 更新。对应 setter 除了修改值本身，还会处理内部计时器与生命周期事件；直接赋值只会修改当前状态值。
 
 **hidden**
 
@@ -98,11 +105,9 @@ order: 1
 
 ```ts
 interface setTitle {
-  (title?: FieldMessage): void
+  (title?: any): void
 }
 ```
-
-FieldMessage 参考 [FieldMessage](#fieldmessage)
 
 ### setDescription
 
@@ -114,11 +119,9 @@ FieldMessage 参考 [FieldMessage](#fieldmessage)
 
 ```ts
 interface setDescription {
-  (title?: FieldMessage): void
+  (title?: any): void
 }
 ```
-
-FieldMessage 参考 [FieldMessage](#fieldmessage)
 
 ### setDataSource
 
@@ -162,7 +165,7 @@ IFieldFeedback 参考 [IFieldFeedback](#ifieldfeedback)
 
 ```ts
 interface setSelfErrors {
-  (messages?: FieldMessage[]): void
+  (messages?: FeedbackMessage): void
 }
 ```
 
@@ -175,8 +178,8 @@ interface setSelfErrors {
 #### 签名
 
 ```ts
-interface setSelfWarning {
-  (messages?: FieldMessage[]): void
+interface setSelfWarnings {
+  (messages?: FeedbackMessage): void
 }
 ```
 
@@ -190,7 +193,7 @@ interface setSelfWarning {
 
 ```ts
 interface setSelfSuccesses {
-  (messages?: FieldMessage[]): void
+  (messages?: FeedbackMessage): void
 }
 ```
 
@@ -306,7 +309,7 @@ FieldPatternTypes 参考 [FieldPatternTypes](#fieldpatterntypes)
 
 #### 描述
 
-设置字段加载状态
+设置字段加载状态。相比直接写 `field.loading = true`，该方法还会处理内部延迟与生命周期通知。
 
 #### 签名
 
@@ -320,13 +323,27 @@ interface setLoading {
 
 #### 描述
 
-设置字段校验中状态
+设置字段校验中状态。相比直接写 `field.validating = true`，该方法还会处理校验中的运行时状态与生命周期通知。
 
 #### 签名
 
 ```ts
 interface setValidating {
   (validating?: boolean): void
+}
+```
+
+### setSubmitting
+
+#### 描述
+
+设置字段提交中状态。相比直接写 `field.submitting = true`，该方法还会处理提交中的运行时状态与生命周期通知。
+
+#### 签名
+
+```ts
+interface setSubmitting {
+  (submitting?: boolean): void
 }
 ```
 
@@ -778,20 +795,24 @@ type FieldValidator<Context = any>
     | MultiValidator<Context>
 ```
 
-### FieldMessage
+### FeedbackMessage
 
 ```ts
-type FieldMessage = string | JSXElement
+type FeedbackMessage = any[]
 ```
 
-如果在支持 JSX 的 UI 框架下，我们可以直接传 JSX 的 Node，否则，我们只能传字符串
+当前源码里的反馈消息集合直接定义为 `any[]`。这意味着消息内容本身并不被核心层限制为字符串，具体消费方式由上层 UI 适配决定。
 
 ### FieldDataSource
 
 ```ts
-type FieldDataSource<ValueType> = Array<{
-  label: string | JSXElement
-  value: ValueType
+type FieldDataSource = Array<{
+  label?: any
+  value?: any
+  title?: any
+  key?: any
+  text?: any
+  children?: FieldDataSource
   [key: string]: any
 }>
 ```
@@ -805,18 +826,26 @@ type FieldDataSource<ValueType> = Array<{
 ### FieldComponent
 
 ```ts
-type FieldComponent = string | JSXComponentConstructor
+type FieldComponent<Component extends JSXComponent, ComponentProps = any>
+  = | [Component]
+    | [Component, ComponentProps]
+    | boolean
+    | any[]
 ```
 
-字段组件，如果我们在支持 JSX 的框架中使用，FieldComponent 推荐直接存储 JSX 组件引用，否则可以存储一个组件标识字符串，在实际渲染的时候做一次分发。
+核心层里字段组件保存的是运行时配置槽位，通常以 `[组件, 属性]` 元组形式传入，也允许直接传 `boolean` 或其他数组形态供上层适配层解释。
 
 ### FieldDecorator
 
 ```ts
-type FieldDecorator = string | JSXComponentConstructor
+type FieldDecorator<Decorator extends JSXComponent, DecoratorProps = any>
+  = | [Decorator]
+    | [Decorator, DecoratorProps]
+    | boolean
+    | any[]
 ```
 
-字段装饰器，如果我们在支持 JSX 的框架中使用，FieldDecorator 推荐直接存储 JSX 组件引用，否则可以存储一个组件标识字符串，在实际渲染的时候做一次分发。
+字段装饰器的存储形式与 `FieldComponent` 一致，也是运行时配置数据，而不是仅限字符串或组件构造器。
 
 ### FieldReaction
 
@@ -827,13 +856,18 @@ type FieldReaction = (field: GeneralField) => void
 ### FieldDisplayTypes
 
 ```ts
-type FieldDisplayTypes = 'none' | 'hidden' | 'visible'
+type FieldDisplayTypes = 'none' | 'hidden' | 'visible' | ({} & string)
 ```
 
 ### FieldPatternTypes
 
 ```ts
-type FieldPatternTypes = 'editable' | 'disabled' | 'readOnly' | 'readPretty'
+type FieldPatternTypes
+  = | 'editable'
+    | 'readOnly'
+    | 'disabled'
+    | 'readPretty'
+    | ({} & string)
 ```
 
 ### FieldValidateStatus
@@ -867,7 +901,8 @@ interface IFieldFeedback {
     | 'EffectError'
     | 'EffectSuccess'
     | 'EffectWarning'
-  messages?: string[] // 反馈消息
+    | (string & {})
+  messages?: FeedbackMessage // 反馈消息
 }
 ```
 
@@ -884,9 +919,10 @@ interface ISearchFeedback {
     | 'EffectError'
     | 'EffectSuccess'
     | 'EffectWarning'
+    | (string & {})
   address?: FormPathPattern
   path?: FormPathPattern
-  messages?: string[]
+  messages?: FeedbackMessage
 }
 ```
 
@@ -894,6 +930,15 @@ interface ISearchFeedback {
 
 ```ts
 interface IFieldState {
+  selfDisplay?: FieldDisplayTypes
+  selfPattern?: FieldPatternTypes
+  content?: any
+  data?: any
+  decoratorType?: any
+  decoratorProps?: Record<string, any>
+  componentType?: any
+  componentProps?: Record<string, any>
+  designable?: boolean
   hidden?: boolean
   visible?: boolean
   editable?: boolean
@@ -904,6 +949,8 @@ interface IFieldState {
   description?: any
   loading?: boolean
   validating?: boolean
+  submitting?: boolean
+  selfModified?: boolean
   modified?: boolean
   active?: boolean
   visited?: boolean
@@ -916,18 +963,25 @@ interface IFieldState {
   validator?: FieldValidator
   decorator?: FieldDecorator
   component?: FieldComponent
-  readonly parent?: GeneralField
-  errors?: FieldMessage[]
-  warnings?: FieldMessage[]
-  successes?: FieldMessage[]
-  readonly valid?: boolean
-  readonly invalid?: boolean
+  feedbacks?: IFieldFeedback[]
+  errors?: IFormFeedback[]
+  warnings?: IFormFeedback[]
+  successes?: IFormFeedback[]
+  selfErrors?: FeedbackMessage
+  selfWarnings?: FeedbackMessage
+  selfSuccesses?: FeedbackMessage
+  selfValid?: boolean
+  selfInvalid?: boolean
+  valid?: boolean
+  invalid?: boolean
   value?: FieldValue
   initialValue?: FieldValue
   display?: FieldDisplayTypes
   pattern?: FieldPatternTypes
   required?: boolean
-  readonly validateStatus?: 'error' | 'success' | 'warning' | 'validating'
+  validateStatus?: 'error' | 'success' | 'warning' | 'validating'
+  index?: number
+  indexes?: number[]
 }
 ```
 
@@ -938,6 +992,14 @@ type IGeneralFieldState = IFieldState & IVoidFieldState
 ```
 
 IVoidFieldState 参考 [IVoidFieldState](/api/models/VoidField#ivoidfieldstate)
+
+### FieldMatchPattern
+
+```ts
+type FieldMatchPattern = FormPathPattern | Query | GeneralField
+```
+
+Query 参考 [Query](/api/models/Query)
 
 ### IFieldResetOptions
 

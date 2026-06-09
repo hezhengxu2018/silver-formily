@@ -23,11 +23,11 @@ export class VoidField<
   TextType = any,
 > extends BaseField<Decorator, Component, TextType> {
   displayName = 'VoidField' as const
-  props: IVoidFieldProps<Decorator, Component>
+  props: IVoidFieldProps<Decorator, Component, TextType>
 
   constructor(
     address: FormPathPattern,
-    props: IVoidFieldProps<Decorator, Component>,
+    props: IVoidFieldProps<Decorator, Component, TextType>,
     form: Form,
     designable: boolean,
   ) {

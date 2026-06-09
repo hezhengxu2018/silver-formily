@@ -166,6 +166,59 @@ batch(() => {
 })
 ```
 
+## 直接赋值与 Setter 的区别
+
+大部分字段状态都可以直接赋值，也可以通过对应的 `setXxx` 方法更新；但它们并不总是完全等价。
+
+### 基本等价的常见场景
+
+以下属性的直接赋值通常会转发到对应 setter，适合按常规属性来理解：
+
+- `field.value = x` 与 `field.setValue(x)`
+- `field.initialValue = x` 与 `field.setInitialValue(x)`
+- `field.required = x` 与 `field.setRequired(x)`
+- `field.selfErrors = []` 与 `field.setSelfErrors([])`
+- `field.selfWarnings = []` 与 `field.setSelfWarnings([])`
+- `field.selfSuccesses = []` 与 `field.setSelfSuccesses([])`
+
+### 不完全等价的流程状态
+
+以下状态建议优先使用 setter，而不是直接赋值：
+
+- `loading`
+- `validating`
+- `submitting`
+
+原因是这些 setter 除了修改状态值本身，还会附带运行时语义，例如：
+
+- 清理上一次异步计时器
+- 延迟切换某些状态，避免瞬时闪烁
+- 触发对应的生命周期事件
+
+例如：
+
+```ts
+field.loading = true
+field.setLoading(true)
+```
+
+这两种写法最终都可能让 `field.loading` 变成 `true`，但只有 `setLoading(true)` 会走完整的运行时流程。
+
+同理：
+
+```ts
+form.validating = true
+form.setValidating(true)
+```
+
+也不应视为完全等价。
+
+### 推荐规则
+
+- 普通值、默认值、反馈状态可以直接赋值
+- `loading`、`validating`、`submitting` 这类流程状态优先使用 `setXxx`
+- 需要一次性更新多个状态时，优先使用 `setState` / `setFieldState` / `setFormState` 配合 `batch`
+
 ## 相关机制
 
 值与状态是其他机制的基础，但具体规则分别在独立章节说明：

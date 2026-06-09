@@ -20,8 +20,8 @@ order: 5
 
 ```ts
 interface take {
-  (): GeneralField
-  <Result>(getter: (field: GeneralField, address: FormPath) => Result): Result
+  (): GeneralField | undefined
+  <Result>(getter: (field: GeneralField, address: FormPath) => Result): Result | undefined
 }
 ```
 
@@ -91,7 +91,7 @@ interface reduce {
 
 ```ts
 interface get {
-  <K extends keyof IGeneralFieldState>(key: K): IGeneralFieldState[K]
+  <K extends keyof IGeneralFieldState>(key: K): IGeneralFieldState[K] | undefined
 }
 ```
 

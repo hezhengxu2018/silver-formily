@@ -286,7 +286,7 @@ export class Form<ValueType extends object = any> {
     Component extends JSXComponent,
   >(
     props: IFieldFactoryProps<Decorator, Component>,
-  ): Field<Decorator, Component> => {
+  ): Field<Decorator, Component> | undefined => {
     const address = FormPath.parse(props.basePath).concat(props.name)
     const identifier = address.toString()
     if (!identifier)
@@ -306,7 +306,7 @@ export class Form<ValueType extends object = any> {
     Component extends JSXComponent,
   >(
     props: IFieldFactoryProps<Decorator, Component>,
-  ): ArrayField<Decorator, Component> => {
+  ): ArrayField<Decorator, Component> | undefined => {
     const address = FormPath.parse(props.basePath).concat(props.name)
     const identifier = address.toString()
     if (!identifier)
@@ -334,7 +334,7 @@ export class Form<ValueType extends object = any> {
     Component extends JSXComponent,
   >(
     props: IFieldFactoryProps<Decorator, Component>,
-  ): ObjectField<Decorator, Component> => {
+  ): ObjectField<Decorator, Component> | undefined => {
     const address = FormPath.parse(props.basePath).concat(props.name)
     const identifier = address.toString()
     if (!identifier)
@@ -362,7 +362,7 @@ export class Form<ValueType extends object = any> {
     Component extends JSXComponent,
   >(
     props: IVoidFieldFactoryProps<Decorator, Component>,
-  ): VoidField<Decorator, Component> => {
+  ): VoidField<Decorator, Component> | undefined => {
     const address = FormPath.parse(props.basePath).concat(props.name)
     const identifier = address.toString()
     if (!identifier)

@@ -374,7 +374,7 @@ export type FieldDecorator<
   ComponentProps = any,
 > = [Decorator] | [Decorator, ComponentProps] | boolean | any[]
 
-export type FieldReaction = (field: Field) => void
+export type FieldReaction = (field: GeneralField) => void
 export interface IFieldProps<
   Decorator extends JSXComponent = any,
   Component extends JSXComponent = any,
@@ -474,16 +474,16 @@ export interface IModelGetter<P = any> {
 export type FieldMatchPattern = FormPathPattern | Query | GeneralField
 
 export interface IFieldStateSetter {
-  (pattern: FieldMatchPattern, setter: (state: IFieldState) => void): void
-  (pattern: FieldMatchPattern, setter: Partial<IFieldState>): void
+  (pattern: FieldMatchPattern, setter: (state: IGeneralFieldState) => void): void
+  (pattern: FieldMatchPattern, setter: Partial<IGeneralFieldState>): void
 }
 
 export interface IFieldStateGetter {
   <Getter extends (state: IGeneralFieldState) => any>(
     pattern: FieldMatchPattern,
     getter: Getter
-  ): ReturnType<Getter>
-  (pattern: FieldMatchPattern): IGeneralFieldState
+  ): ReturnType<Getter> | undefined
+  (pattern: FieldMatchPattern): IGeneralFieldState | undefined
 }
 
 export interface IFieldActions {

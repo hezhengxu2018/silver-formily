@@ -95,7 +95,7 @@ export class Query {
     )
   }
 
-  get<K extends keyof IGeneralFieldState>(key: K): IGeneralFieldState[K] {
+  get<K extends keyof IGeneralFieldState>(key: K): IGeneralFieldState[K] | undefined {
     const results: any = this.take()
     if (results) {
       return results[key]

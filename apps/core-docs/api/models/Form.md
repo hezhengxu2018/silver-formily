@@ -4,13 +4,18 @@ order: 0
 
 # Form
 
-调用[createForm](/api/entry/createForm)所返回的核心[表单模型](/guide/form) API，以下会列出所有模型属性，如果该属性是可写的，那么我们可以直接引用是修改该属性，@formily/reactive 便会响应从而触发 UI 更新。
+调用[createForm](/api/entry/createForm)所返回的核心[表单模型](/guide/form) API。以下会列出所有模型属性。多数可写属性都可以直接赋值，`@formily/reactive` 会响应并触发 UI 更新。
+
+:::warning 注意
+像 `loading`、`validating`、`submitting` 这类流程状态，直接赋值与对应的 `setXxx` 方法并不完全等价，通常应优先使用 setter。
+:::
 
 ## 属性
 
 | 属性          | 描述                   | 类型                                  | 是否只读 | 默认值            |
 | ------------- | ---------------------- | ------------------------------------- | -------- | ----------------- |
 | initialized   | 表单是否初始化         | Boolean                               | 否       | `false`           |
+| loading       | 表单是否正在加载       | Boolean                               | 否       | `false`           |
 | validating    | 表单是否正在校验       | Boolean                               | 否       | `false`           |
 | submitting    | 表单是否正在提交       | Boolean                               | 否       | `false`           |
 | modified      | 表单值是否已被手动修改 | Boolean                               | 否       | `false`           |
@@ -46,7 +51,7 @@ order: 0
 
 ```ts
 interface createField {
-  (props: IFieldFactoryProps): Field
+  (props: IFieldFactoryProps): Field | undefined
 }
 ```
 
@@ -62,7 +67,7 @@ interface createField {
 
 ```ts
 interface createArrayField {
-  (props: IFieldFactoryProps): ArrayField
+  (props: IFieldFactoryProps): ArrayField | undefined
 }
 ```
 
@@ -78,7 +83,7 @@ interface createArrayField {
 
 ```ts
 interface createObjectField {
-  (props: IFieldFactoryProps): ArrayField
+  (props: IFieldFactoryProps): ObjectField | undefined
 }
 ```
 
@@ -94,7 +99,7 @@ interface createObjectField {
 
 ```ts
 interface createVoidField {
-  (props: IVoidFieldFactoryProps): ArrayField
+  (props: IVoidFieldFactoryProps): VoidField | undefined
 }
 ```
 
@@ -260,7 +265,7 @@ FormPathPattern API 参考 [FormPath](https://path.silver-formily.org/api/patter
 
 #### 描述
 
-设置表单是否正在提交状态
+设置表单是否正在提交状态。相比直接写 `form.submitting = true`，该方法还会处理提交中的运行时状态与生命周期通知。
 
 #### 签名
 
@@ -274,13 +279,27 @@ interface setSubmitting {
 
 #### 描述
 
-设置表单是否正在校验状态
+设置表单是否正在校验状态。相比直接写 `form.validating = true`，该方法还会处理校验中的运行时状态与生命周期通知。
 
 #### 签名
 
 ```ts
 interface setValidating {
   (validating: boolean): void
+}
+```
+
+### setLoading
+
+#### 描述
+
+设置表单是否正在加载状态。相比直接写 `form.loading = true`，该方法还会处理内部延迟与生命周期通知。
+
+#### 签名
+
+```ts
+interface setLoading {
+  (loading: boolean): void
 }
 ```
 
@@ -578,12 +597,12 @@ IFormState 参考 [IFormState](#iformstate)
 
 ```ts
 interface setFieldState {
-  (pattern: FormPathPattern, setter: (state: IGeneralFieldState) => void): void
-  (pattern: FormPathPattern, setter: IGeneralFieldState): void
+  (pattern: FieldMatchPattern, setter: (state: IGeneralFieldState) => void): void
+  (pattern: FieldMatchPattern, setter: IGeneralFieldState): void
 }
 ```
 
-FormPathPattern API 参考 [FormPath](https://path.silver-formily.org/api/patterns)
+FieldMatchPattern 参考 [FieldMatchPattern](/api/models/Field#fieldmatchpattern)
 
 IGeneralFieldState 参考 [IGeneralFieldState](/api/models/Field#igeneralfieldstate)
 
@@ -597,12 +616,12 @@ IGeneralFieldState 参考 [IGeneralFieldState](/api/models/Field#igeneralfieldst
 
 ```ts
 interface getFieldState<T> {
-  (pattern: FormPathPattern): IGeneralFieldState
-  (pattern: FormPathPattern, callback: (state: IGeneralFieldState) => T): T
+  (pattern: FieldMatchPattern): IGeneralFieldState | undefined
+  (pattern: FieldMatchPattern, callback: (state: IGeneralFieldState) => T): T | undefined
 }
 ```
 
-FormPathPattern API 参考 [FormPath](https://path.silver-formily.org/api/patterns)
+FieldMatchPattern 参考 [FieldMatchPattern](/api/models/Field#fieldmatchpattern)
 
 IGeneralFieldState 参考 [IGeneralFieldState](/api/models/Field#igeneralfieldstate)
 
@@ -616,11 +635,11 @@ IGeneralFieldState 参考 [IGeneralFieldState](/api/models/Field#igeneralfieldst
 
 ```ts
 interface getFormGraph {
-  (): {
-    [key: string]: GeneralFieldState | FormState
-  }
+  (): IFormGraph
 }
 ```
+
+IFormGraph 参考 [IFormGraph](#iformgraph)
 
 ### setFormGraph
 
@@ -632,9 +651,11 @@ interface getFormGraph {
 
 ```ts
 interface setFormGraph {
-  (graph: { [key: string]: GeneralFieldState | FormState }): void
+  (graph: IFormGraph): void
 }
 ```
+
+IFormGraph 参考 [IFormGraph](#iformgraph)
 
 ### clearFormGraph
 
@@ -646,7 +667,7 @@ interface setFormGraph {
 
 ```ts
 interface clearFormGraph {
-  (pattern: FormPathPattern): void
+  (pattern?: FormPathPattern, forceClear?: boolean): void
 }
 ```
 
@@ -706,13 +727,18 @@ IFieldResetOptions 参考 [IFieldResetOptions](/api/models/Field#ifieldresetopti
 ### FormPatternTypes
 
 ```ts
-type FormPatternTypes = 'editable' | 'disabled' | 'readOnly' | 'readPretty'
+type FormPatternTypes
+  = | 'editable'
+    | 'readOnly'
+    | 'disabled'
+    | 'readPretty'
+    | ({} & string)
 ```
 
 ### FormDisplayTypes
 
 ```ts
-type FormDisplayTypes = 'none' | 'hidden' | 'visible'
+type FormDisplayTypes = 'none' | 'hidden' | 'visible' | ({} & string)
 ```
 
 ### IFormFeedback
@@ -730,7 +756,8 @@ interface IFormFeedback {
     | 'EffectError'
     | 'EffectSuccess'
     | 'EffectWarning'
-  messages?: string[] // 反馈消息
+    | (string & {})
+  messages?: FeedbackMessage // 反馈消息
 }
 ```
 
@@ -745,6 +772,7 @@ interface IFormState {
   hidden?: boolean
   visible?: boolean
   initialized?: boolean
+  loading?: boolean
   validating?: boolean
   submitting?: boolean
   modified?: boolean
@@ -762,6 +790,12 @@ interface IFormState {
 }
 ```
 
+### IFormGraph
+
+```ts
+type IFormGraph = Record<string, IGeneralFieldState | IFormState>
+```
+
 ### IFormMergeStrategy
 
 ```ts
@@ -774,8 +808,9 @@ type IFormMergeStrategy = 'overwrite' | 'merge' | 'deepMerge' | 'shallowMerge'
 interface IFieldFactoryProps {
   name: FormPathPattern // 字段名称，当前节点的路径名称
   basePath?: FormPathPattern // 基础路径
-  title?: string | JSXElement // 字段标题
-  description?: string | JSXElement // 字段描述
+  title?: any // 字段标题，由泛型 TextType 决定
+  description?: any // 字段描述，由泛型 TextType 决定
+  loading?: boolean // 字段加载状态
   value?: any // 字段值
   initialValue?: any // 字段默认值
   required?: boolean // 字段是否必填
@@ -787,14 +822,16 @@ interface IFieldFactoryProps {
   disabled?: boolean // 字段是否禁用
   readOnly?: boolean // 字段是否只读
   readPretty?: boolean // 字段是否为阅读态
-  dataSource?: any[] // 字段数据源
+  dataSource?: FieldDataSource // 字段数据源
   validateFirst?: boolean // 字段校验是否只校验第一个非法规则
   validatePattern?: ('editable' | 'disabled' | 'readOnly' | 'readPretty')[] // validator 可以在哪些 pattern 下运行
   validateDisplay?: ('none' | 'hidden' | 'visible')[] // validator 可以在哪些 display 下运行
   validator?: FieldValidator // 字段校验器
-  decorator?: any[] // 字段装饰器，第一个元素代表组件引用，第二个元素代表组件属性
-  component?: any[] // 字段组件，第一个元素代表组件引用，第二个元素代表组件属性
+  decorator?: FieldDecorator // 字段装饰器
+  component?: FieldComponent // 字段组件
   reactions?: FieldReaction[] | FieldReaction // 字段响应器
+  content?: any // 字段内容
+  data?: any // 字段扩展属性
 }
 ```
 
@@ -802,17 +839,22 @@ FormPathPattern API 参考 [FormPath](https://path.silver-formily.org/api/patter
 
 FieldValidator 参考 [FieldValidator](/api/models/Field#fieldvalidator)
 
-FieldReaction 参考 [FieldReaction](/api/models/Field.html#fieldreaction)
+FieldDataSource 参考 [FieldDataSource](/api/models/Field#fielddatasource)
+
+FieldDecorator 参考 [FieldDecorator](/api/models/Field#fielddecorator)
+
+FieldComponent 参考 [FieldComponent](/api/models/Field#fieldcomponent)
+
+FieldReaction 参考 [FieldReaction](/api/models/Field#fieldreaction)
 
 ### IVoidFieldFactoryProps
 
 ```ts
-interface IFieldFactoryProps {
+interface IVoidFieldFactoryProps {
   name: FormPathPattern // 字段名称，当前节点的路径名称
   basePath?: FormPathPattern // 基础路径
-  title?: string | JSXElement // 字段标题
-  description?: string | JSXElement // 字段描述
-  required?: boolean // 字段是否必填
+  title?: any // 字段标题，由泛型 TextType 决定
+  description?: any // 字段描述，由泛型 TextType 决定
   display?: 'none' | 'hidden' | 'visible' // 字段展示形式
   pattern?: 'editable' | 'disabled' | 'readOnly' | 'readPretty' // 字段交互模式
   hidden?: boolean // 字段是否隐藏
@@ -821,15 +863,21 @@ interface IFieldFactoryProps {
   disabled?: boolean // 字段是否禁用
   readOnly?: boolean // 字段是否只读
   readPretty?: boolean // 字段是否为阅读态
-  decorator?: any[] // 字段装饰器，第一个元素代表组件引用，第二个元素代表组件属性
-  component?: any[] // 字段组件，第一个元素代表组件引用，第二个元素代表组件属性
+  decorator?: FieldDecorator // 字段装饰器
+  component?: FieldComponent // 字段组件
   reactions?: FieldReaction[] | FieldReaction // 字段响应器
+  content?: any // 字段内容
+  data?: any // 字段扩展属性
 }
 ```
 
 FormPathPattern API 参考 [FormPath](https://path.silver-formily.org/api/patterns)
 
-FieldReaction 参考 [FieldReaction](/api/models/Field.html#fieldreaction)
+FieldDecorator 参考 [FieldDecorator](/api/models/Field#fielddecorator)
+
+FieldComponent 参考 [FieldComponent](/api/models/Field#fieldcomponent)
+
+FieldReaction 参考 [FieldReaction](/api/models/Field#fieldreaction)
 
 > Formily Typescript 类型约定
 >

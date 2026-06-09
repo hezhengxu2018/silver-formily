@@ -1,7 +1,7 @@
 import type { DataField } from '../types'
 import { autorun, batch, observable } from '@silver-formily/reactive'
 import { expect, it, vi } from 'vitest'
-import { createForm, isField, onFieldReact } from '../'
+import { createForm, isDataField, isField, onFieldReact } from '../'
 import { attach, sleep } from './shared'
 
 it('create field', () => {
@@ -352,7 +352,8 @@ it('reaction initialValue', () => {
     form.createField({
       name: 'aa',
       reactions(field) {
-        field.initialValue = 321
+        if (isDataField(field))
+          field.initialValue = 321
       },
     }),
   )
@@ -361,7 +362,8 @@ it('reaction initialValue', () => {
       name: 'bb',
       value: 123,
       reactions(field) {
-        field.initialValue = 321
+        if (isDataField(field))
+          field.initialValue = 321
       },
     }),
   )
@@ -1777,8 +1779,10 @@ it('reactions initialValue and value', () => {
       name: 'aa',
       reactions: [
         (field) => {
-          field.initialValue = {}
-          field.initialValue.input = 123
+          if (isDataField(field)) {
+            field.initialValue = {}
+            field.initialValue.input = 123
+          }
         },
       ],
     }),

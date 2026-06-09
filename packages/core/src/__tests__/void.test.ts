@@ -1,5 +1,5 @@
 import { expect, it } from 'vitest'
-import { createForm } from '../'
+import { createForm, isDataField } from '../'
 import { attach } from './shared'
 
 function asComponentTuple(value: unknown) {
@@ -303,7 +303,8 @@ it('child field reactions', () => {
       basePath: voidField.address,
       reactions: [
         (field) => {
-          field.value = field.query('field3').getIn('value')
+          if (isDataField(field))
+            field.value = field.query('field3').getIn('value')
         },
       ],
     }),
@@ -314,7 +315,8 @@ it('child field reactions', () => {
       basePath: voidField.address,
       reactions: [
         (field) => {
-          field.value = field.query('.field3').getIn('value')
+          if (isDataField(field))
+            field.value = field.query('.field3').getIn('value')
         },
       ],
     }),

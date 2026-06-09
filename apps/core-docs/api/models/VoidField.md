@@ -17,8 +17,10 @@ order: 4
 | unmounted   | 字段是否已卸载     | Boolean                                                    | 否       | `false`      |
 | address     | 字段节点路径       | [FormPath](https://path.silver-formily.org/api/path-class) | 是       |              |
 | path        | 字段数据路径       | [FormPath](https://path.silver-formily.org/api/path-class) | 是       |              |
-| title       | 字段标题           | [FieldMessage](#fieldmessage)                              | 否       | `""`         |
-| description | 字段描述           | [FieldMessage](#fieldmessage)                              | 否       | `""`         |
+| title       | 字段标题           | Any（由泛型 `TextType` 决定）                              | 否       | `""`         |
+| description | 字段描述           | Any（由泛型 `TextType` 决定）                              | 否       | `""`         |
+| data        | 字段扩展属性       | Object                                                     | 否       | `null`       |
+| content     | 字段内容           | any                                                        | 否       | `null`       |
 | decorator   | 字段装饰器         | Any[]                                                      | 否       | `null`       |
 | component   | 字段组件           | Any[]                                                      | 否       | `null`       |
 | parent      | 父级字段           | [GeneralField](#generalfield)                              | 是       | `null`       |
@@ -30,6 +32,8 @@ order: 4
 | readOnly    | 字段是否只读       | Boolean                                                    | 否       | `false`      |
 | readPretty  | 字段是否为阅读态   | Boolean                                                    | 否       | `false`      |
 | editable    | 字段是可编辑       | Boolean                                                    | 否       | `true`       |
+| indexes     | 字段数字索引集合   | Number[]                                                   | 是       | `-`          |
+| index       | 字段数字索引       | Number                                                     | 是       | `-`          |
 
 ### 详细解释
 
@@ -53,11 +57,9 @@ order: 4
 
 ```ts
 interface setTitle {
-  (title?: FieldMessage): void
+  (title?: any): void
 }
 ```
-
-FieldMessage 参考 [FieldMessage](#fieldmessage)
 
 ### setDescription
 
@@ -69,11 +71,9 @@ FieldMessage 参考 [FieldMessage](#fieldmessage)
 
 ```ts
 interface setDescription {
-  (title?: FieldMessage): void
+  (title?: any): void
 }
 ```
-
-FieldMessage 参考 [FieldMessage](#fieldmessage)
 
 ### setDisplay
 
@@ -367,13 +367,13 @@ interface invoke {
 注意：如果要手动消费类型，直接从包模块中导出即可
 </Alert>
 
-### FieldMessage
+### TextType
 
 ```ts
-type FieldMessage = string | JSXElement
+type TextType = any
 ```
 
-如果在支持 JSX 的 UI 框架下，我们可以直接传 JSX 的 Node，否则，我们只能传字符串
+`VoidField` 在核心层并不单独约束标题和描述的消息类型，而是通过泛型 `TextType` 交给上层适配。
 
 ### FieldComponent
 
@@ -425,6 +425,15 @@ ObjectField 参考 [ObjectField](/api/models/ObjectField)
 
 ```ts
 interface IVoidFieldState {
+  selfDisplay?: FieldDisplayTypes
+  selfPattern?: FieldPatternTypes
+  content?: any
+  data?: any
+  decoratorType?: any
+  decoratorProps?: Record<string, any>
+  componentType?: any
+  componentProps?: Record<string, any>
+  designable?: boolean
   hidden?: boolean
   visible?: boolean
   editable?: boolean
@@ -433,17 +442,15 @@ interface IVoidFieldState {
   readPretty?: boolean
   title?: any
   description?: any
-  modified?: boolean
-  active?: boolean
-  visited?: boolean
   initialized?: boolean
   mounted?: boolean
   unmounted?: boolean
   decorator?: FieldDecorator
   component?: FieldComponent
-  readonly parent?: GeneralField
   display?: FieldDisplayTypes
   pattern?: FieldPatternTypes
+  index?: number
+  indexes?: number[]
 }
 ```
 

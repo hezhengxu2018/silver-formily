@@ -40,7 +40,7 @@ interface push {
 
 ```ts
 interface pop {
-  (): Promise<void>
+  (): Promise<void> | void
 }
 ```
 
@@ -68,7 +68,7 @@ interface insert {
 
 ```ts
 interface remove {
-  (index: number): Promise<void>
+  (index: number): Promise<void> | void
 }
 ```
 
@@ -82,7 +82,7 @@ interface remove {
 
 ```ts
 interface shift {
-  (): Promise<void>
+  (): Promise<void> | void
 }
 ```
 
@@ -110,7 +110,7 @@ interface unshift {
 
 ```ts
 interface move {
-  (fromIndex: number, toIndex: number): Promise<void>
+  (fromIndex: number, toIndex: number): Promise<void> | void
 }
 ```
 
@@ -124,7 +124,7 @@ interface move {
 
 ```ts
 interface moveUp {
-  (index: number): Promise<void>
+  (index: number): Promise<void> | void
 }
 ```
 
@@ -138,7 +138,7 @@ interface moveUp {
 
 ```ts
 interface moveDown {
-  (index: number): Promise<void>
+  (index: number): Promise<void> | void
 }
 ```
 
@@ -147,3 +147,7 @@ interface moveDown {
 ### IArrayFieldState
 
 主要属性参考[IFieldState](/api/models/Field#ifieldstate)，只是 value 的数据类型要求是数组
+
+```ts
+type IArrayFieldState = IFieldState<any, any, any, any[]>
+```
