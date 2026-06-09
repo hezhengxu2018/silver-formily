@@ -86,9 +86,8 @@ export default createDocsConfig({
         items: [
           { text: 'Introduction', link: '/en/guide/' },
           { text: 'Architecture', link: '/en/guide/architecture' },
-          { text: 'MVVM Pattern', link: '/en/guide/mvvm' },
-          { text: 'Form', link: '/en/guide/form' },
-          { text: 'Field', link: '/en/guide/field' },
+          { text: 'Form Model', link: '/en/guide/form' },
+          { text: 'Field Model', link: '/en/guide/field' },
           { text: 'Values & State', link: '/en/guide/values' },
           { text: 'Path System', link: '/en/guide/path' },
           { text: 'Validation System', link: '/en/guide/validation' },

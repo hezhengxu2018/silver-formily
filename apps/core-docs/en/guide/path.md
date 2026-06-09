@@ -1,41 +1,27 @@
 # Path System
 
-The path system connects the field tree with form data. Form field creation, Query field lookup, Field parent-child relationships, and deep value operations all use the same path semantics.
+The path system is the key connection between the Formily field tree and form data. Form field creation, Query field lookup, Field parent-child relationships, and deep read/write on `values` all rely on the same set of path semantics.
 
-## address vs path
+:::tip
+Most of the capabilities in this chapter depend on [`@silver-formily/path`](https://path.silver-formily.org). This page mainly explains how `@silver-formily/core` works together with `@silver-formily/path`. For the complete feature set, please refer to the path documentation.
+:::
+
+## address and path
 
 Every field has two paths:
 
-| Path      | Meaning                                                         |
-| --------- | --------------------------------------------------------------- |
-| `address` | Absolute position in the field tree, including every field node |
-| `path`    | Data read/write path, skipping parent `VoidField` nodes         |
+| Path      | Meaning                                                                         |
+| --------- | ------------------------------------------------------------------------------- |
+| `address` | The absolute position of the field in the model tree, including all field nodes |
+| `path`    | The data read/write path, which skips parent `VoidField` nodes                  |
 
-`VoidField` is a UI container and does not participate in form data. It appears in `address`, but it is skipped in the `path` of child data fields.
+`VoidField` is a UI container and does not participate in form data. So it appears in `address`, but it does not appear in the `path` of child data fields.
 
-```mermaid
-graph TD
-    subgraph AddressTree["address: field tree path"]
-        A_root["form"]
-        A_layout["layout (VoidField)<br/>address: layout<br/>path: layout"]
-        A_username["username (Field)<br/>address: layout.username<br/>path: username"]
-        A_email["email (Field)<br/>address: layout.email<br/>path: email"]
-        A_root --> A_layout
-        A_layout --> A_username
-        A_layout --> A_email
-    end
-
-    subgraph PathTree["path: data path"]
-        P_root["form.values"]
-        P_username["username"]
-        P_email["email"]
-        P_root --> P_username
-        P_root --> P_email
-    end
-
-    A_username -.->|"skip VoidField"| P_username
-    A_email -.->|"skip VoidField"| P_email
-```
+<ThemeImage
+  light="/architecture/path.png"
+  dark="/architecture/path.dark.png"
+  alt="Formily path system"
+/>
 
 ```ts
 form.createVoidField({ name: 'layout' })
@@ -53,9 +39,13 @@ field.value = 'silver'
 console.log(form.values) // { username: 'silver' }
 ```
 
+In other words, Address always represents the node's absolute path, while Path skips the node path of `VoidField`. But for a `VoidField` itself, its Path retains its own path position.
+
+So whether it is a Field or a VoidField, it has both an Address and a Path. When using `query` to find fields, you can search by either Address rules or Path rules. For example, `query("b.c")` can find field `c`, and `query("a.b.c")` can also find field `c`.
+
 ## Field Query
 
-`form.query()` finds fields by path expressions. It can match both `address` and data field `path`.
+`form.query()` looks up fields by path expression, matching both `address` and the `path` of data fields.
 
 ```ts
 form.query('layout.username').take()
@@ -68,25 +58,46 @@ form.query('**.email').forEach((field) => {
 
 Common wildcard semantics:
 
-| Expression     | Meaning                                                   |
-| -------------- | --------------------------------------------------------- |
-| `*`            | Match one path segment                                    |
-| `**`           | Match any depth                                           |
-| `a.b`          | Exact path                                                |
-| `users.*.name` | Match `name` fields under array items or dynamic children |
+| Expression     | Meaning                                                       |
+| -------------- | ------------------------------------------------------------- |
+| `*`            | Match a single path level                                     |
+| `**`           | Match any path depth                                          |
+| `a.b`          | Exactly match the specified path                              |
+| `users.*.name` | Match `name` fields inside array items or dynamic child nodes |
+
+For the full matching capability, refer to the [Pattern Syntax](https://path.silver-formily.org/guide/patterns) chapter in the `@silver-formily/path` documentation.
+
+### Alias Group Matching
+
+In `@silver-formily/core`, field matching does not compare only one path. APIs such as `form.query()`, `field.match()`, and `onFieldXxx(pattern)` use the same pattern to match both `field.address` and `field.path`.
+
+Under the hood, this is implemented through `FormPath.parse(pattern).matchAliasGroup(field.address, field.path)`. Here, `alias` is not an extra path syntax. It means the same field can be matched by both its "field tree path" and its "data path".
+
+```ts
+form.createVoidField({ name: 'layout' })
+form.createField({ name: 'layout.username' })
+
+// Matches address: layout.username
+form.query('layout.username').take()
+
+// Matches path: username
+form.query('username').take()
+```
+
+Therefore, in structures containing `VoidField`, you can look up a field either by its full field tree position or by its final data path. For lower-level behavior, refer to [`matchAliasGroup`](https://path.silver-formily.org/api/path-class.html#matchaliasgroup).
 
 ## Field Relationships
 
-Field relationships are also expressed through paths:
+The parent-child relationship between fields is also expressed through the path system:
 
 ```ts
-field.parent // parent field
-field.form // owner Form
-field.address // absolute field tree path
-field.path // data read/write path
+field.parent // Parent field
+field.form // Owning Form
+field.address // Absolute field tree path
+field.path // Data read/write path
 ```
 
-Linkage logic can query related fields from the current field:
+In linkage scenarios, it is also common to look up other fields from the current field:
 
 ```ts
 field.query('.target').take()
@@ -96,7 +107,7 @@ field.form.query('**.email').take()
 
 ## Data Read/Write
 
-Form deep value helpers use the same `FormPath` semantics:
+Form deep-path read/write methods use the same `FormPath` semantics:
 
 ```ts
 form.setValuesIn('profile.name', 'Silver')
@@ -106,7 +117,7 @@ const name = form.getValuesIn('profile.name')
 form.deleteValuesIn('profile.name')
 ```
 
-`field.value` is a convenience wrapper around the field `path`:
+`field.value` is a convenience read/write wrapper based on the field `path`:
 
 ```ts
 const field = form.createField({
@@ -118,11 +129,11 @@ field.value = 'Silver'
 console.log(form.values.profile.name) // 'Silver'
 ```
 
-## Related Modules
+## Relationship With Other Modules
 
-- Form uses paths to create, query, and batch-operate fields
-- Field uses `path` to read and write `form.values`
-- Validation aggregates field feedback through paths
-- Linkage uses paths to locate dependency and target fields
+- Form creates, queries, and batch-operates fields through paths
+- Field reads and writes `form.values` through `path`
+- The validation system aggregates field feedback through paths
+- The linkage system locates dependent and target fields through paths
 
-For the full path expression API, see [FormPath API](/en/api/entry/FormPath) and [Query API](/en/api/models/Query).
+For more complete path expression capabilities, refer to [FormPath API](/en/api/entry/FormPath) and [Query API](/en/api/models/Query).

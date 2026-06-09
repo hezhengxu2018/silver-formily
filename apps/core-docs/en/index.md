@@ -9,11 +9,11 @@ hero:
     alt: Silver Formily Element Plus
   actions:
     - theme: brand
-      text: Main Docs
-      link: https://vue.silver-formily.org/
-    - theme: alt
-      text: Core Docs
+      text: Guide
       link: /en/guide/
+    - theme: alt
+      text: API Reference
+      link: /en/api/entry/createForm
 
 features:
   - title: 🚀 High Performance

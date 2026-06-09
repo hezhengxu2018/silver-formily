@@ -36,7 +36,6 @@ catalog:
   '@vue/language-core': ~3.0.1
   '@vue/reactivity': ^3.5.32
   '@vue/shared': ^3.5.27
-  commitlint: ^19.8.1
   consola: ^3.4.2
   cross-spawn: ^7.0.6
   cz-git: ^1.12.0

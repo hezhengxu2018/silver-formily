@@ -1,20 +1,159 @@
+---
+outline: 2
+---
+
 # FormValidatorRegistry
-
-> Convenient re-exports of validation registry APIs for registering global rules, formats, locales, and template engines
-
-## Description
 
 `@silver-formily/core` re-exports the core registry APIs from `@silver-formily/validator`, providing a unified entry point for validation configuration in Formily scenarios.
 
-## Exported APIs
+All registrations are **global** and affect every Form instance in the current application.
 
-### registerValidateRules
+## setValidateLanguage
+
+### Description
+
+Sets the current validation language.
+
+### Signature
 
 ```ts
-function registerValidateRules(rules: Record<string, ValidateRule>): void
+interface setValidateLanguage {
+  (language: string): void
+}
 ```
 
-Register global validation rules:
+### Usage
+
+```ts
+import { setValidateLanguage } from '@silver-formily/core'
+
+setValidateLanguage('en-US')
+setValidateLanguage('zh-CN')
+```
+
+## registerValidateFormats
+
+### Description
+
+Registers global format validators. Formats support `string`, `RegExp`, and function matchers.
+
+For built-in formats, see the [Built-in Formats](https://validator.silver-formily.org/api/validate#built-in-formats) documentation.
+
+### Signature
+
+```ts
+interface registerValidateFormats {
+  (formats: {
+    [key: string]: string | RegExp | ((value: any) => boolean)
+  }): void
+}
+```
+
+### Usage
+
+```ts
+import { registerValidateFormats } from '@silver-formily/core'
+
+registerValidateFormats({
+  integer: /^[+-]?\d+$/,
+  internalCode: value => typeof value === 'string' && value.startsWith('SF-'),
+})
+```
+
+After registration, use `format` in field validation rules:
+
+```ts
+field.setValidator({
+  format: 'internalCode',
+})
+```
+
+## registerValidateLocale
+
+### Description
+
+Registers global validation locale messages. The language key typically uses values like `zh-CN` or `en-US`.
+
+For built-in locales, see the [Built-in Locales](https://validator.silver-formily.org/api/registry#built-in-locales) documentation.
+
+### Signature
+
+```ts
+interface registerValidateLocale {
+  (locales: {
+    [language: string]: {
+      [key: string]: string | any
+    }
+  }): void
+}
+```
+
+### Usage
+
+```ts
+import {
+  registerValidateLocale,
+  setValidateLanguage,
+} from '@silver-formily/core'
+
+registerValidateLocale({
+  'zh-CN': {
+    required: 'This field is required',
+    maxLength: 'Max length is {{maxLength}}',
+  },
+})
+
+setValidateLanguage('zh-CN')
+```
+
+## registerValidateMessageTemplateEngine
+
+### Description
+
+Registers a global template engine for custom rendering of validation messages.
+
+### Signature
+
+```ts
+interface registerValidateMessageTemplateEngine {
+  (template: (message: ValidatorFunctionResponse, context: any) => any): void
+}
+```
+
+### Usage
+
+```ts
+import { registerValidateMessageTemplateEngine } from '@silver-formily/core'
+
+registerValidateMessageTemplateEngine((message, context) => {
+  return String(message).replace(/\{\{(\w+)\}\}/g, (_, key) => context[key] ?? '')
+})
+```
+
+## registerValidateRules
+
+### Description
+
+Registers global validation rules, useful for reusable business rules.
+
+For built-in rules, see the [Built-in Rules](https://validator.silver-formily.org/api/validate#built-in-rules) documentation.
+
+### Signature
+
+```ts
+interface registerValidateRules {
+  (rules: {
+    [key: string]: (
+      value: any,
+      rule: IValidatorRules,
+      ctx: any,
+      render: (message: string, scope?: any) => string,
+    ) => ValidatorFunctionResponse | Promise<ValidatorFunctionResponse> | null
+  }): void
+}
+```
+
+### Usage
 
 ```ts
 import { registerValidateRules } from '@silver-formily/core'
@@ -26,72 +165,35 @@ registerValidateRules({
     return value === 'silver' ? '' : 'Username already taken'
   },
 })
-
-// Use on any field
-field.setValidator({ usernameAvailable: true })
 ```
 
-### registerValidateFormats
+After registration, use on any field:
 
 ```ts
-function registerValidateFormats(formats: Record<string, ValidateFormat>): void
-```
-
-Register global validation formats:
-
-```ts
-import { registerValidateFormats } from '@silver-formily/core'
-
-registerValidateFormats({
-  idCard: /^\d{17}[\dX]$/i,
-})
-
-field.setValidator({ format: 'idCard' })
-```
-
-### registerValidateLocale & setValidateLanguage
-
-```ts
-registerValidateLocale({
-  'zh-CN': {
-    required: 'This field is required',
-    maxLength: 'Max length is {{maxLength}}',
-  },
-})
-
-setValidateLanguage('zh-CN')
-```
-
-### registerValidateMessageTemplateEngine
-
-Register a custom template engine for rendering validation messages:
-
-```ts
-registerValidateMessageTemplateEngine((message, scope) => {
-  return message.replace(/\{\{(\w+)\}\}/g, (_, key) => scope[key] ?? '')
+field.setValidator({
+  usernameAvailable: true,
 })
 ```
 
-## Complete Example
+## getValidateLocaleIOSCode
+
+### Description
+
+Returns the closest matching language identifier from the current registry based on the input language value.
+
+### Signature
 
 ```ts
-import {
-  registerValidateFormats,
-  registerValidateRules,
-  setValidateLanguage,
-} from '@silver-formily/core'
-
-registerValidateFormats({ phone: /^1[3-9]\d{9}$/ })
-
-registerValidateRules({
-  customRule(value, rule, ctx) {
-    if (!value)
-      return ''
-    return value.length > 3 ? '' : 'At least 3 characters required'
-  },
-})
-
-setValidateLanguage('zh-CN')
+interface getValidateLocaleIOSCode {
+  (language: string): string | undefined
+}
 ```
 
-> **Note:** These registrations are global and affect all Form instances.
+### Usage
+
+```ts
+import { getValidateLocaleIOSCode } from '@silver-formily/core'
+
+getValidateLocaleIOSCode('en')
+// ==> 'en-US'
+```

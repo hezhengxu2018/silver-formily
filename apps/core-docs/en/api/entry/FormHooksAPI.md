@@ -1,102 +1,81 @@
-# FormHooksAPI
+---
+outline: 2
+---
 
-> Low-level APIs for creating custom side-effect hooks
-
-## Description
-
-`FormHooksAPI` includes `createEffectHook`, `createEffectContext`, and `useEffectForm` for extending custom lifecycle events and side-effect hooks.
+# Form Hooks API
 
 ## createEffectHook
+
+### Description
+
+Creates a custom hook listener.
 
 ### Signature
 
 ```ts
-function createEffectHook<T, P>(
-  type: string,
-  handler: (payload: T, form: Form) => (params: P) => void
-): (params: P) => void
-```
-
-### Description
-
-Creates a custom side-effect hook. All internal `onFormXxx` and `onFieldXxx` hooks are built using this function.
-
-```ts
-// Simplified internal implementation
-function createFormEffect(type: LifeCycleTypes) {
-  return createEffectHook(
-    type,
-    (form: Form) => (callback: (form: Form) => void) => {
-      batch(() => {
-        callback(form)
-      })
-    },
+interface createEffectHook {
+  (
+    type: string,
+    callback?: (
+      payload: any,
+      form: Form,
+      ...ctx: any[] // user-injected context
+    ) => (...args: any[]) => void // higher-order callback used to wrap listeners and help users customize parameters
   )
 }
-
-const onFormInit = createFormEffect(LifeCycleTypes.ON_FORM_INIT)
 ```
 
-### Example
+### Usage
 
-```ts
-import { createEffectHook, createForm } from '@silver-formily/core'
+::: demo
 
-const onCustomEvent = createEffectHook(
-  'onCustom',
-  (payload, form) => (callback: (data: any) => void) => {
-    callback(payload)
-  },
-)
+api/entry/form-hooks-api/create-effect-hook
 
-const form = createForm({
-  effects() {
-    onCustomEvent((data) => {
-      console.log('custom event:', data)
-    })
-  },
-})
-```
+:::
 
 ## createEffectContext
 
-Creates an effect context to isolate side effects across Form instances.
+### Description
+
+Inside the `effects` function, if we abstract many fine-grained hooks and want to read top-level context data inside those hooks, passing data layer by layer is obviously inefficient. Formily provides `createEffectContext` to help users access context data quickly.
+
+### Signature
 
 ```ts
-function createEffectContext(): EffectContext
+interface createEffectContext<T> {
+  (defaultValue: T): {
+    provide: (value: T) => void
+    consume: () => T
+  }
+}
 ```
+
+### Usage
+
+::: demo
+
+api/entry/form-hooks-api/create-effect-context
+
+:::
 
 ## useEffectForm
 
-Retrieves the current Form instance within a side-effect callback.
+### Description
+
+`useEffectForm` is essentially a convenience wrapper around `EffectContext`. Since most scenarios involve reading the `Form` instance, there is no need to manually define an `EffectFormContext`.
+
+### Signature
 
 ```ts
-function useEffectForm(): Form
+interface useEffectForm {
+  (): Form
+}
 ```
 
-## Composing Custom Lifecycles
+### Usage
 
-```ts
-import { createEffectHook, LifeCycleTypes } from '@silver-formily/core'
+::: demo
 
-const onFormReady = createEffectHook(
-  'onFormReady',
-  form => (callback: (form: Form) => void) => {
-    let mounted = false
-    let validated = false
-    const check = () => {
-      if (mounted && validated)
-        callback(form)
-    }
+api/entry/form-hooks-api/use-effect-form
 
-    form.notify(LifeCycleTypes.ON_FORM_MOUNT, () => {
-      mounted = true
-      check()
-    })
-    form.notify(LifeCycleTypes.ON_FORM_VALIDATE_END, () => {
-      validated = true
-      check()
-    })
-  },
-)
-```
+:::

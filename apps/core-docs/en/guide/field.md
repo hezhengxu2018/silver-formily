@@ -21,7 +21,15 @@ There are three concrete data field types:
 | `ArrayField`  | Extends Field | Maintains an array field with insert/remove/move operations   |
 | `ObjectField` | Extends Field | Maintains an object field with property add/remove operations |
 
-> Field can store any data type, including arrays and objects. Use ArrayField only when you need item-level array operations. Use ObjectField only when you need dynamic property operations. Otherwise, a normal Field is enough.
+> Field can store any data type, including arrays and objects. Use ArrayField only when you need item-level array operations (push/pop/insert/remove/move). Use ObjectField only when you need dynamic property operations (addProperty/removeProperty). Otherwise, a normal Field is enough.
+
+<ThemeImage
+  light="/architecture/field.png"
+  dark="/architecture/field.dark.png"
+  alt="Formily Field"
+/>
+
+Field and VoidField have a **parent-child inheritance** relationship: when a parent sets `display`, child nodes inherit it by default. There is also an **implicit control** relationship: parent state changes can affect child fields.
 
 ## Basic State
 

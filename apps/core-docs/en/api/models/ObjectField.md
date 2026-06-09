@@ -1,83 +1,59 @@
-# ObjectField Model
+# ObjectField
 
-> Object field model for managing nested object structures and their child fields
+> ObjectField model returned by [createObjectField](/en/api/models/Form#createobjectfield).
 
-## Description
+Since ObjectField inherits from [Field](/en/api/models/Field), most APIs are covered by the Field model. This document only covers the extended methods.
 
-`ObjectField` manages nested object structures. Unlike `Field`, it typically acts as a container, with specific properties managed by child `Field` instances.
+## Methods
 
-## Constructor
+### addProperty
+
+#### Description
+
+Adds a property to the object and triggers `onInput`.
+
+#### Signature
 
 ```ts
-const objectField = form.createObjectField({
-  name: 'profile',
-  value: {},
-})
+interface addProperty {
+  (key: string, value: any): Promise<void>
+}
 ```
 
-## Properties
+### removeProperty
 
-Inherits all properties from `Field`. Key characteristic: it **aggregates** child field validation state:
+#### Description
+
+Removes a property from the object and triggers `onInput`.
+
+#### Signature
 
 ```ts
-// profile is an ObjectField
-// profile.name and profile.age are child fields
-
-// objectField.valid aggregates all children's valid state
-// objectField.errors includes all children's errors
-// objectField.selfErrors contains only the object field's own errors
+interface removeProperty {
+  (key: string): Promise<void>
+}
 ```
 
-## Usage
+### existProperty
 
-### Basic Nested Structure
+#### Description
+
+Checks whether a property exists.
+
+#### Signature
 
 ```ts
-const form = createForm({
-  values: {
-    profile: { name: 'Silver', age: 25 },
-  },
-})
-
-const profile = form.createObjectField({ name: 'profile' })
-
-const nameField = form.createField({
-  name: 'profile.name',
-  value: 'Silver',
-})
-
-const ageField = form.createField({
-  name: 'profile.age',
-  value: 25,
-})
-
-console.log(profile.value) // { name: 'Silver', age: 25 }
+interface existProperty {
+  (key: string): boolean
+}
 ```
 
-### Aggregated Validation
+## Types
+
+### IObjectFieldState
+
+Main properties follow [IFieldState](/en/api/models/Field#ifieldstate), with the `value` type required to be an object.
 
 ```ts
-nameField.setValidator({ required: true })
-ageField.setValidator({ min: 18 })
-
-await form.validate()
-console.log(profile.valid) // Aggregated from children
-console.log(profile.errors) // Includes all children's errors
-console.log(profile.selfErrors) // ObjectField's own errors (usually empty)
-```
-
-### With ArrayField
-
-```ts
-const form = createForm({
-  values: {
-    users: [
-      { profile: { name: 'Alice', age: 25 } },
-    ],
-  },
-})
-
-const user0Profile = form.createObjectField({
-  name: 'users.0.profile',
-})
+type IObjectFieldState = IFieldState<any, any, any, Record<string, any>>
 ```

@@ -1,10 +1,33 @@
 # Architecture
 
-The architecture of `@silver-formily/core` is based on the MVVM pattern. It separates form state, side effects, and validation logic into independent layers.
+## Prerequisites
 
-## What Is a Domain Model?
+### What Is MVVM?
 
-Before diving into the architecture, it helps to understand one core idea: **Domain Model**.
+MVVM (Model-View-ViewModel) is an OOP architectural pattern. Unlike React's `UI = fn(State)` philosophy, Vue adopts the MVVM design approach, which is also a very important design pattern in front-end development. `@silver-formily/core` follows this pattern, cleanly separating form **data**, **state**, and **side-effect logic** into distinct layers.
+
+Here's a diagram to illustrate:
+
+<ThemeImage
+  light="/architecture/mvvm.png"
+  dark="/architecture/mvvm.dark.png"
+  alt="MVVM"
+/>
+
+- **View ↔ ViewModel** are bidirectionally connected through DataBinding. View passes user actions to ViewModel, and ViewModel notifies View of state changes.
+- **ViewModel → Model** is a one-way request. ViewModel reads and modifies Model data, but Model does not directly perceive ViewModel.
+- The labels at the top show each layer's responsibility: View and ViewModel together handle presentation and presentation logic, while Model handles business logic and data.
+
+Formily provides the View and ViewModel layers:
+
+- The View layer includes framework bindings like `@silver-formily/vue` and component library bindings like `@silver-formily/element-plus`.
+- The ViewModel layer includes `@silver-formily/core` and its supporting libraries.
+
+Formily's goal is to reduce the cost of designing the ViewModel, letting developers focus more on business logic. The Model layer (i.e., the actual business code layer) is **not part of Formily's scope**. In most cases, the front-end form model differs from the back-end API data — business requirements vary widely, and developers need to maintain this layer of transformation on their own.
+
+### What Is a Domain Model?
+
+Before diving into the architecture, it helps to understand one core concept: **Domain Model**.
 
 Put simply, a domain model is an abstraction of the core concepts, rules, and relationships in a business domain. It does not care about technical implementation details, such as whether React or Vue renders the UI. Instead, it answers: what is the essence of this domain, who participates in it, and how do they collaborate?
 
@@ -64,92 +87,24 @@ This diagram describes one main runtime line:
 
 In other words, **Form / Field Tree / Field / VoidField** are more like "domain objects", while **Heart / Reactive / Observer** are more like "mechanisms that make those objects run". Keeping these two kinds of concepts separate makes the architecture much easier to understand.
 
-## Core Modules
+For the complete data flow, see the [Data Flow](#data-flow) section.
 
-### Form
+## Core Concepts
 
-Form is the root node of a form. It aggregates Graph and Heart, and provides the full set of form capabilities such as field creation, query, validation, and submit:
+This section is an index of all core concepts. For complete behavior, APIs, and usage, please follow the links to the corresponding guide pages.
 
-- **Values**: dual management of `values` and `initialValues`, with multiple merge strategies
-- **Display control**: `display` (`visible` / `hidden` / `none`) and convenience properties `visible` / `hidden`
-- **Interaction pattern**: `pattern` (`editable` / `disabled` / `readOnly` / `readPretty`)
-- **Feedback**: `errors`, `warnings`, and `successes`
-- **Lifecycle**: complete Form / Field lifecycle event system
-- **Setters**: state setters such as `setValues` and `setInitialValues`
-- **Node query**: `query()` supports path pattern matching
-
-### Graph
-
-Graph maintains the topology of all fields in a form:
-
-- Fields are located in the graph by path
-- Tree-shaped structure supports add, remove, update, and lookup operations
-- Changes trigger the notification mechanism
-- Query provides flexible field matching and batch operations
-
-### Heart
-
-Heart is the core event system:
-
-- Registers and manages all LifeCycle instances
-- Publishes notifications when lifecycle events are triggered
-- Allows external effects functions to subscribe to events
-- Provides the `createEffectHook` API for extending custom events
-
-### Field Model Hierarchy
-
-Field and VoidField are the two core field types. Field maintains data, while VoidField is a container field with data-maintenance capability removed. ArrayField and ObjectField extend Field:
-
-```mermaid
-graph TD
-    BaseField["BaseField<br/>Base field"]
-    BaseField --> Field["Field<br/>Data field<br/>value/inputValue/validator"]
-    BaseField --> VoidField["VoidField<br/>Virtual field<br/>layout container / no data"]
-    Field --> ArrayField["ArrayField<br/>Array field<br/>push/insert/move..."]
-    Field --> ObjectField["ObjectField<br/>Object field<br/>addProperty/removeProperty"]
-```
-
-There is a **parent-child inheritance** relationship between Field and VoidField: when a parent sets `display`, child nodes inherit it by default. There is also an **implicit control** relationship: parent state changes can affect child fields.
-
-### Side Effects and Linkage System
-
-The side-effect system should not be understood as an isolated "event chain". In the Formily kernel, field and form state are first defined as observable: reading state collects dependencies, and writing state triggers scheduling. `effects`, `reactions`, and UI `Observer` are different consumers built on top of this reactive mechanism.
-
-Their main difference is the **semantic wrapper**:
-
-- `reactions` keeps dependency semantics: it runs `reaction(field)` inside `autorun`; whichever field state is read inside the function is automatically tracked as a dependency
-- `effects` keeps event semantics: built-in model reactions listen to key state changes, then publish `LifeCycleTypes` through Heart
-- `Observer` keeps rendering semantics: after state read during rendering changes, only the related view is notified to update
-
-<ThemeImage
-  light="/architecture/reaction.en.png"
-  dark="/architecture/reaction.en.dark.png"
-  alt="Formily linkage system"
-/>
-
-Therefore, active side effects and passive linkage are not two unrelated systems underneath. Both rely on observable read/write tracking. They only differ in how the trigger is expressed afterward: `reactions` directly re-runs the linkage function, while `effects` first converts the change into a lifecycle event and then lets business hooks handle it.
-
-Each event type has a corresponding Hook API:
-
-```ts
-import { onFieldValueChange, onFormSubmit } from '@silver-formily/core'
-
-const form = createForm({
-  effects() {
-    onFormSubmit((form) => {
-      // side effects when the form submits
-    })
-    onFieldValueChange('*', (field) => {
-      // side effects when any field value changes
-    })
-  },
-})
-```
+- **Form**: The root model that aggregates fields, values, validation, submission, lifecycle, and linkage entry points. Continue reading: [Form Model](/en/guide/form) / [Form API](/en/api/models/Form)
+- **Field Tree / Graph**: The organization structure of fields, maintaining parent-child relationships, node registration, and field graph snapshots. Continue reading: [Form Model — Field Graph](/en/guide/form.html#field-graph)
+- **Field / VoidField**: The core nodes on the field tree. Field carries data, while VoidField is more about layout and structure. ArrayField and ObjectField are field extensions for array and object structures. Continue reading: [Field Model](/en/guide/field)
+- **Values / State**: Form values, initial values, display states, interaction patterns, feedback states, and other runtime state. Continue reading: [Values & State](/en/guide/values)
+- **Path / Query**: Path semantics connecting the field tree and form data, and the foundation for field lookup, batch operations, and linkage targeting. Continue reading: [Path System](/en/guide/path) / [FormPath API](/en/api/entry/FormPath) / [Query API](/en/api/models/Query)
+- **Validation / Feedback**: Fields declare validation rules; Form provides aggregate validation and submission entry points; validation results are collected as feedbacks. Continue reading: [Validation System](/en/guide/validation) / [FormValidatorRegistry API](/en/api/entry/FormValidatorRegistry)
+- **Heart / LifeCycle**: The lifecycle event center inside Form. `effects` and all effect hooks are built on top of it. Continue reading: [Linkage System](/en/guide/linkage) / [FormEffectHooks API](/en/api/entry/FormEffectHooks) / [FieldEffectHooks API](/en/api/entry/FieldEffectHooks)
 
 ## Data Flow
 
 <ThemeImage
   light="/architecture/data-flow.en.png"
   dark="/architecture/data-flow.en.dark.png"
-  alt="Formily linkage system"
+  alt="Formily data flow"
 />

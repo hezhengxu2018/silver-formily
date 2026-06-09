@@ -1,116 +1,140 @@
-# Query Model
+---
+order: 5
+---
 
-> Field query utility supporting flexible path pattern matching and batch operations
+# Query
 
-## Description
-
-`Query` is a field query tool obtained via `form.query(pattern)`. It supports path pattern matching, conditional filtering, and batch operations.
-
-## Getting a Query
-
-```ts
-const query = form.query('user.*.name')
-```
+The Query object returned by calling the `query` method on a [Form](/en/api/models/Form#query) or [Field](/en/api/models/Field#query) instance.
 
 ## Methods
 
 ### take
 
-```txt
-query.take(): GeneralField | undefined
-```
+#### Description
 
-Returns the first matching field:
+Extracts the first result from the query result set.
+
+Note: the corresponding node must exist in order to read.
+
+#### Signature
 
 ```ts
-const firstField = form.query('**.name').take()
+interface take {
+  (): GeneralField | undefined
+  <Result>(getter: (field: GeneralField, address: FormPath) => Result): Result | undefined
+}
 ```
 
 ### map
 
-```txt
-query.map<T>(mapper?: (field: GeneralField) => T): T[]
-```
+#### Description
 
-Maps all matching fields:
+Iterates over and maps the query result set.
+
+Note: the corresponding node must exist in order to iterate.
+
+#### Signature
 
 ```ts
-const nameValues = form.query('**.name').map(field => field.value)
+interface map {
+  (): GeneralField[]
+  <Result>(
+    mapper?: (field: GeneralField, address: FormPath) => Result
+  ): Result[]
+}
 ```
 
 ### forEach
 
-```txt
-query.forEach(iterator: (field: GeneralField) => void): void
-```
+#### Description
 
-Iterates over all matching fields:
+Iterates over the query result set.
+
+Note: the corresponding node must exist in order to iterate.
+
+#### Signature
 
 ```ts
-form.query('**.email').forEach((field) => {
-  field.setValidator({ format: 'email' })
-})
+interface forEach {
+  <Result>(eacher: (field: GeneralField, address: FormPath) => Result): void
+}
 ```
 
 ### reduce
 
-```txt
-query.reduce<T>(reducer: (acc: T, field: GeneralField) => T, initial: T): T
-```
+#### Description
 
-Aggregates over matches:
+Performs a reduce operation on the query result set.
 
-```ts
-const allValid = form.query('**').reduce((valid, field) => {
-  return valid && field.valid
-}, true)
-```
+Note: the corresponding node must exist in order to iterate.
 
-### filter
-
-```txt
-query.filter(predicate: (field: GeneralField) => boolean): GeneralField[]
-```
-
-Filters by condition:
+#### Signature
 
 ```ts
-const invalidFields = form.query('**').filter(field => field.invalid)
+interface reduce {
+  <Result>(
+    reducer: (value: Result, field: GeneralField, address: FormPath) => Result,
+    initial?: Result
+  ): Result
+}
 ```
 
-### sort
+### get
 
-```txt
-query.sort(comparator: (a: GeneralField, b: GeneralField) => number): GeneralField[]
-```
+#### Description
 
-Sorts matching fields:
+Finds the first result from the query result set and reads its property.
+
+Note: the corresponding node must exist in order to read.
+
+#### Signature
 
 ```ts
-const sorted = form.query('items.*').sort((a, b) => a.index - b.index)
+interface get {
+  <K extends keyof IGeneralFieldState>(key: K): IGeneralFieldState[K] | undefined
+}
 ```
 
-## Path Patterns
+### getIn
 
-| Pattern       | Example                      | Description      |
-| ------------- | ---------------------------- | ---------------- |
-| Exact         | `form.query('username')`     | Exact path match |
-| `*` wildcard  | `form.query('user.*')`       | Single segment   |
-| `**` wildcard | `form.query('**.name')`      | Any depth        |
-| Exclusion     | `form.query('** !**.email')` | Exclude match    |
+#### Description
 
-## Examples
+Finds the first result from the query result set and reads its property, supporting [FormPathPattern](https://path.silver-formily.org/api/path-class#formpathpattern) path syntax.
+
+Note: the corresponding node must exist in order to read.
+
+#### Signature
 
 ```ts
-// Bulk set required
-form.query('**.name').forEach(f => f.setRequired(true))
+interface getIn {
+  (pattern?: FormPathPattern): any
+}
+```
 
-// Find invalid fields
-const failed = form.query('*').filter(f => f.selfInvalid)
+### value
 
-// Extract values
-const allValues = form.query('*').map(f => ({
-  name: f.path,
-  value: f.value
-}))
+#### Description
+
+Queries the value at the specified path, not limited to Field nodes.
+
+#### Signature
+
+```ts
+interface value {
+  (): any
+}
+```
+
+### initialValue
+
+#### Description
+
+Queries the initial value at the specified path, not limited to Field nodes.
+
+#### Signature
+
+```ts
+interface initialValue {
+  (): any
+}
 ```

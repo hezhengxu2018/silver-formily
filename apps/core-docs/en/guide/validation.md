@@ -2,6 +2,8 @@
 
 Validation is mainly carried by fields, while Form provides aggregate entry points. A field declares rules, validates itself, and stores feedback. `form.validate()` / `form.submit()` aggregate data fields from the field tree and dispatch validation in batch.
 
+Most validation capabilities depend on `@silver-formily/validator`. You can also read the validator guide chapter [Using in Formily](https://validator.silver-formily.org/guide/formily-validator) for reference.
+
 ## Validators
 
 Fields use `validator` to describe validation rules.

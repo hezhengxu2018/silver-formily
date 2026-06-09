@@ -1,55 +1,47 @@
 # Linkage System
 
-The linkage system describes "what should happen after state changes." Formily provides two common entries: `effects` and `reactions`.
+:::tip
+The entire reactive system of Formily is based on `@silver-formily/reactive`. If you are not familiar with concepts such as `autorun`, `reaction`, or `observer`, you can read its [documentation](https://reactive.silver-formily.org/) first.
+:::
 
-They look different: one is active event subscription, the other is passive dependency tracking. But both are built around reactive state changes. After state is written, the system schedules related consumers, and consumers then run side effects or update field state.
+The linkage system describes "what should happen after state changes." Formily provides two common entry points: `effects` and `reactions`.
 
-```mermaid
-graph LR
-    Write["Field / form state write"]
-    Reactive["Reactive state system"]
-    Schedule["Schedule related consumers"]
+One looks like active subscription and the other like passive dependency tracking, but underneath both are built around reactive state changes: after state is written, the system schedules related consumers, and the consumers then execute side effects or update field state.
 
-    subgraph Effects["Active side effects: effects"]
-        Heart["Heart.publish<br/>publish lifecycle event"]
-        Hooks["Effect Hooks<br/>onFormSubmit / onFieldValueChange / ..."]
-        EffectCallback["Business side-effect callback"]
-    end
+The main difference lies in the **semantic wrapper**:
 
-    subgraph Reactions["Passive linkage: field.reactions"]
-        Autorun["autorun<br/>first run reaction(field)"]
-        ReadDeps["Read dependencies<br/>form.values / field.query(...)"]
-        BindDeps["Collect dependencies"]
-        ReRun["Re-run after dependency changes"]
-        MutateField["Update field state<br/>visible / display / pattern / componentProps"]
-    end
+- `reactions` preserves dependency semantics: `reaction(field)` runs inside `autorun`, and whichever field state is read inside the function becomes tracked automatically
+- `effects` preserves event semantics: built-in model reactions listen to key state changes and then publish `LifeCycleTypes` through Heart
+- `Observer` preserves rendering semantics: when state that was read during rendering changes, only the related views are notified to update
 
-    subgraph Render["Data consumers"]
-        Observer["Observer / UI render"]
-        RenderUpdate["View update"]
-    end
+<ThemeImage
+  light="/architecture/reaction.en.png"
+  dark="/architecture/reaction.en.dark.png"
+  alt="Formily linkage system"
+/>
 
-    Write --> Reactive
-    Reactive --> Schedule
+Therefore, active side effects and passive linkage are not two unrelated systems underneath. Both rely on observable read/write tracking. They just differ in how the trigger is expressed afterward: `reactions` directly re-run the linkage function, while `effects` first convert the change into a lifecycle event and then hand it to business hooks.
 
-    Schedule --> Heart
-    Heart --> Hooks
-    Hooks --> EffectCallback
+Each event type has a corresponding Hook API:
 
-    Autorun --> ReadDeps
-    ReadDeps --> BindDeps
-    BindDeps --> Schedule
-    Schedule --> ReRun
-    ReRun --> MutateField
-    MutateField --> Write
+```ts
+import { onFieldValueChange, onFormSubmit } from '@silver-formily/core'
 
-    Schedule --> Observer
-    Observer --> RenderUpdate
+const form = createForm({
+  effects() {
+    onFormSubmit((form) => {
+      // Side effects when the form is submitted
+    })
+    onFieldValueChange('*', (field) => {
+      // Side effects when any field value changes
+    })
+  },
+})
 ```
 
 ## effects: Active Side Effects
 
-`effects` is useful when a lifecycle event should run some business logic.
+`effects` is suitable for expressing "when a lifecycle event happens, execute a piece of business logic."
 
 ```ts
 import {
@@ -73,16 +65,16 @@ const form = createForm({
 })
 ```
 
-Active side effects:
+Characteristics of active side effects:
 
-- are triggered by lifecycle events
-- can select target fields by paths
-- work well when one change affects many targets
-- read like imperative event subscriptions
+- Triggered by lifecycle events
+- Can select target fields by path
+- Suitable for scenarios where one change affects many targets in batch
+- Reads more like an imperative flow, similar to event subscription
 
 ## reactions: Passive Linkage
 
-`reactions` is useful when the current field depends on state and should recompute itself when that state changes.
+`reactions` is suitable for expressing "which states the current field depends on, and automatically recomputing field state when those states change."
 
 ```ts
 form.createField({
@@ -95,31 +87,29 @@ form.createField({
       field.visible = role !== 'guest'
 
       field.setComponentProps({
-        placeholder: role === 'admin' ? 'Admin email' : 'Email',
+        placeholder: role === 'admin' ? 'Please enter admin email' : 'Please enter email',
       })
     },
   ],
 })
 ```
 
-When `reaction(field)` runs for the first time, the reactive state it reads is collected as dependencies. When those dependencies change, the reaction runs again.
+When `reaction(field)` runs for the first time, whichever reactive state is read gets collected automatically as dependencies. Later, when those dependencies change, the reaction runs again.
 
-Passive linkage:
+Characteristics of passive linkage:
 
-- is triggered by dependency tracking
-- works well when multiple dependencies determine one field state
-- reads like declarative computation
-- reduces the need to manually wire multiple lifecycle hooks
+- Triggered by dependency tracking
+- Suitable for scenarios where multiple dependencies jointly determine one field state
+- Reads more like declarative computation, where field state is derived from dependency state
+- Can reduce the cost of manually wiring multiple lifecycle hooks
 
-## Choosing Between Them
+## How To Choose
 
 | Scenario                                                             | Recommended |
 | -------------------------------------------------------------------- | ----------- |
-| One field change syncs many fields                                   | `effects`   |
-| Multiple fields determine one field state                            | `reactions` |
-| Submit, reset, validate, and other lifecycle side effects            | `effects`   |
-| Field visibility, required state, component props, and derived state | `reactions` |
+| One field change synchronizes multiple fields                        | `effects`   |
+| Multiple fields jointly determine one field state                    | `reactions` |
+| Lifecycle side effects such as submit, reset, and validation         | `effects`   |
+| Derived state such as visibility, required, and component properties | `reactions` |
 
-In real projects, both often exist together: `effects` handles event-like business flows, while `reactions` derives field state.
-
-For the full runtime relationship, see [Architecture](/en/guide/architecture).
+In real projects the two often coexist: `effects` handles event-style business flows, while `reactions` handles field state derivation.

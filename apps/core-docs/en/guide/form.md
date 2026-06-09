@@ -67,6 +67,10 @@ form.query('**.email').forEach((field) => {
 
 For field-level state rules, data read/write, display behavior, and component proxying, see [Field Model](/en/guide/field).
 
+:::tip
+In normal Formily usage you rarely create fields manually with `createXXXField`. The examples here are for illustration only.
+:::
+
 ## Field Graph
 
 Form can export and import the field graph. The graph stores field structure and field state, which is useful for restoring runtime state, debugging snapshots, or reusing dynamic form structures.
