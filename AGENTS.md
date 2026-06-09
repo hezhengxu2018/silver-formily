@@ -35,6 +35,7 @@ This document defines repository-wide expectations for anyone automating tasks (
 - Docs dependency build targets belong in `silverFormily.docs.buildDependencies`; keep `docs:deps` itself as a shared script entry instead of repeating Turbo filter commands in every docs app.
 - If an internal dependency does not need source-level hot updates, prefer built artifacts and skip VitePress `alias`.
 - Package-level `dev` tasks still exist for explicit use (`pnpm dev -- <workspace-name>`), but they are not the default docs workflow.
+- Keep docs app scripts ordered as `dev`, `docs:deps`, `preview`, `lint`, `format`, `check-types`, `docs:build`. Even when a site has no build dependencies, keep `docs:deps` wired to the shared script so the shape stays consistent.
 
 ## Code Style & Quality Gates
 
@@ -42,6 +43,8 @@ This document defines repository-wide expectations for anyone automating tasks (
 - Prettier is not run directly in hooks; any formatting should go through ESLint or `pnpm format`.
 - Conventional Commits are enforced by Husky `commit-msg` via `commitlint`, and `pnpm commit` still uses `czg` as the guided prompt. Typical types: `feat`, `fix`, `docs`, `chore`, `refactor`, `test`.
 - Always document manual testing in PR descriptions until automated tests exist.
+- Use English `description` values in every workspace `package.json`. Published packages should describe the runtime or upstream fork succinctly; docs apps should follow `Documentation site for <package-name>`.
+- Keep package scripts ordered consistently. Publishable packages should use the baseline order `build`, optional `dev`/`benchmark`, `lint`, `format`, `check-types`, `test`, `test:watch`, optional `test:browser`, `test:coverage`, `prepublishOnly`. Private tooling packages should at least expose `lint` and `format` when applicable.
 
 ## AGENTS.md Best Practices
 

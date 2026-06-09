@@ -28,7 +28,7 @@ This document only lists requirements unique to `packages/vue`. Follow the root-
 ## Testing Guidelines
 
 - Automated tests are not yet wired in; document manual verification (Vue + Formily versions, schema used) in every PR.
-- When adding a harness, prefer Vitest to stay aligned with Vite, place specs beside the source as `*.spec.ts`, and expose a `pnpm test` script.
+- When adding a harness, prefer Vitest to stay aligned with Vite, place tests beside the source as `*.test.ts`, and expose a `pnpm test` script.
 - Regression fixes should include minimal reproduction snippets or playground links and demonstrate a passing `pnpm build`.
 
 ## Commit & Pull Request Guidelines

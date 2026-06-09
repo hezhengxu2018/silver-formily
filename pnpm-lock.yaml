@@ -72,9 +72,6 @@ catalogs:
     '@vue/shared':
       specifier: ^3.5.27
       version: 3.5.32
-    commitlint:
-      specifier: ^19.8.1
-      version: 19.8.1
     consola:
       specifier: ^3.4.2
       version: 3.4.2
@@ -1151,9 +1148,6 @@ importers:
       '@antfu/eslint-config':
         specifier: 'catalog:'
         version: 8.2.0(@typescript-eslint/rule-tester@8.58.1(eslint@9.39.1(jiti@2.6.1))(typescript@6.0.2))(@typescript-eslint/typescript-estree@8.58.1(typescript@6.0.2))(@typescript-eslint/utils@8.58.1(eslint@9.39.1(jiti@2.6.1))(typescript@6.0.2))(@vue/compiler-sfc@3.5.32)(eslint-plugin-format@1.4.0(eslint@9.39.1(jiti@2.6.1)))(eslint@9.39.1(jiti@2.6.1))(typescript@6.0.2)(vitest@4.1.4)
-      '@commitlint/config-conventional':
-        specifier: 'catalog:'
-        version: 19.8.1
       '@silver-formily/core':
         specifier: workspace:*
         version: link:../core
@@ -1199,15 +1193,6 @@ importers:
       '@vue/shared':
         specifier: 'catalog:'
         version: 3.5.32
-      commitlint:
-        specifier: 'catalog:'
-        version: 19.8.1(@types/node@24.10.13)(typescript@6.0.2)
-      cz-git:
-        specifier: 'catalog:'
-        version: 1.12.0
-      czg:
-        specifier: 'catalog:'
-        version: 1.12.0
       eslint:
         specifier: 'catalog:'
         version: 9.39.1(jiti@2.6.1)
@@ -3479,11 +3464,6 @@ packages:
   comment-parser@1.4.6:
     resolution: {integrity: sha512-ObxuY6vnbWTN6Od72xfwN9DbzC7Y2vv8u1Soi9ahRKL37gb6y1qk6/dgjs+3JWuXJHWvsg3BXIwzd/rkmAwavg==}
     engines: {node: '>= 12.0.0'}
-
-  commitlint@19.8.1:
-    resolution: {integrity: sha512-j7jojdmHrVOZ16gnjK2nbQuzdwA9TpxS9iNb9Q9QS3ytgt3JZVIGmsNbCuhmnsJWGspotlQ34yH8n1HvIKImiQ==}
-    engines: {node: '>=v18'}
-    hasBin: true
 
   compare-func@2.0.0:
     resolution: {integrity: sha512-zHig5N+tPWARooBnb0Zx1MFcdfpyJrfTJ3Y5L+IFvUm8rM74hHz66z0gw0x4tijh5CorKkKUCnW82R2vmpeCRA==}
@@ -9081,14 +9061,6 @@ snapshots:
   comment-parser@1.4.5: {}
 
   comment-parser@1.4.6: {}
-
-  commitlint@19.8.1(@types/node@24.10.13)(typescript@6.0.2):
-    dependencies:
-      '@commitlint/cli': 19.8.1(@types/node@24.10.13)(typescript@6.0.2)
-      '@commitlint/types': 19.8.1
-    transitivePeerDependencies:
-      - '@types/node'
-      - typescript
 
   compare-func@2.0.0:
     dependencies:

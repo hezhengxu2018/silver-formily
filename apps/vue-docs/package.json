@@ -2,6 +2,7 @@
   "name": "vue-docs",
   "type": "module",
   "private": true,
+  "description": "Documentation site for @silver-formily/vue",
   "scripts": {
     "dev": "pnpm run docs:deps && vitepress dev .",
     "docs:deps": "node ../../scripts/docs-deps.mjs",

@@ -2,13 +2,15 @@
   "name": "path-docs",
   "type": "module",
   "private": true,
+  "description": "Documentation site for @silver-formily/path",
   "scripts": {
-    "dev": "vitepress dev .",
+    "dev": "pnpm run docs:deps && vitepress dev .",
+    "docs:deps": "node ../../scripts/docs-deps.mjs",
     "preview": "vitepress preview .",
     "lint": "eslint .",
     "format": "eslint . --fix",
     "check-types": "vue-tsc --noEmit",
-    "docs:build": "vitepress build ."
+    "docs:build": "pnpm run docs:deps && vitepress build ."
   },
   "silverFormily": {
     "tasks": {

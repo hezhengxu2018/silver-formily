@@ -2,7 +2,7 @@
   "name": "@silver-formily/grid",
   "type": "module",
   "version": "1.0.2",
-  "description": "Responsive grid runtime for Silver Formily",
+  "description": "Responsive grid primitives for Silver Formily",
   "author": "hezhengxu",
   "license": "MIT",
   "homepage": "https://github.com/hezhengxu2018/silver-formily",
@@ -35,7 +35,8 @@
     "lint": "eslint .",
     "format": "eslint . --fix",
     "check-types": "vue-tsc --noEmit",
-    "test": "vitest run",
+    "test": "vitest run --reporter=dot",
+    "test:watch": "vitest",
     "test:coverage": "vitest run --coverage --browser.headless",
     "prepublishOnly": "pnpm run build"
   },

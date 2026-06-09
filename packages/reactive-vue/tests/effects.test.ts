@@ -1,3 +1,4 @@
+import type { Reaction } from '@silver-formily/reactive'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { autorunEffect } from '../src/hooks/autorunEffect'
 import { reactionWatch } from '../src/hooks/reactionWatch'
@@ -32,8 +33,9 @@ describe('effect hooks', () => {
   describe('autorunEffect', () => {
     it('throws when called without an active effect scope', () => {
       vueMocks.getCurrentScope.mockReturnValue(undefined)
+      const tracker = vi.fn() as unknown as Reaction
 
-      expect(() => autorunEffect(vi.fn())).toThrowError(
+      expect(() => autorunEffect(tracker)).toThrowError(
         'autorunEffect must be called within setup() or an active effect scope.',
       )
     })

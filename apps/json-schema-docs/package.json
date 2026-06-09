@@ -2,6 +2,7 @@
   "name": "json-schema-docs",
   "type": "module",
   "private": true,
+  "description": "Documentation site for @silver-formily/json-schema",
   "scripts": {
     "dev": "pnpm run docs:deps && vitepress dev .",
     "docs:deps": "node ../../scripts/docs-deps.mjs",

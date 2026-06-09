@@ -2,6 +2,7 @@
   "name": "grid-docs",
   "type": "module",
   "private": true,
+  "description": "Documentation site for @silver-formily/grid",
   "scripts": {
     "dev": "pnpm run docs:deps && vitepress dev .",
     "docs:deps": "node ../../scripts/docs-deps.mjs",

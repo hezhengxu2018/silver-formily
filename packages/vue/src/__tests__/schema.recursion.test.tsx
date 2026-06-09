@@ -3,21 +3,21 @@ import { createForm } from '@silver-formily/core'
 import { Schema } from '@silver-formily/json-schema'
 import { describe, expect, it } from 'vitest'
 import { render } from 'vitest-browser-vue'
-import { defineComponent, h, markRaw, provide, ref, shallowRef } from 'vue'
+import { defineComponent, markRaw, provide, ref, shallowRef } from 'vue'
 import { createSchemaField, Field, FormProvider, RecursionField } from '../components'
 import { SchemaExpressionScopeSymbol, SchemaOptionsSymbol } from '../shared'
 
 const Input = defineComponent({
   name: 'SchemaRecursionInput',
   setup() {
-    return () => h('div', { 'data-testid': 'schema-recursion-input' }, 'input')
+    return () => <div data-testid="schema-recursion-input">input</div>
   },
 })
 
 const AltInput = defineComponent({
   name: 'SchemaRecursionAltInput',
   setup() {
-    return () => h('div', { 'data-testid': 'schema-recursion-alt-input' }, 'alt-input')
+    return () => <div data-testid="schema-recursion-alt-input">alt-input</div>
   },
 })
 

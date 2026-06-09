@@ -5,7 +5,7 @@ import { defineConfig } from 'vitest/config'
 export default defineConfig({
   plugins: [vueJsx()],
   test: {
-    include: ['src/__tests__/**/*.spec.{ts,tsx}'],
+    include: ['src/__tests__/**/*.test.{ts,tsx}'],
     setupFiles: ['vitest-browser-vue'],
     coverage: {
       provider: 'istanbul',

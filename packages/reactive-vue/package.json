@@ -2,7 +2,7 @@
   "name": "@silver-formily/reactive-vue",
   "type": "module",
   "version": "1.1.1",
-  "description": "Reactive Vue bindings for Silver Formily",
+  "description": "Vue reactive bindings for Silver Formily",
   "author": "Hezhengxu",
   "license": "MIT",
   "homepage": "https://reactive-vue.silver-formily.org",
@@ -31,12 +31,12 @@
   "scripts": {
     "build": "tsdown --tsconfig tsconfig.build.json",
     "dev": "tsdown --watch --tsconfig tsconfig.build.json",
-    "test": "vitest run",
-    "test:watch": "vitest",
-    "test:coverage": "vitest run --coverage --coverage.provider=istanbul --coverage.reporter=clover --coverage.reporter=json --coverage.reporter=html",
     "lint": "eslint .",
     "format": "eslint . --fix",
-    "check-types": "vue-tsc --noEmit",
+    "check-types": "vue-tsc --noEmit --project tsconfig.json && vue-tsc --noEmit --project tsconfig.test.json",
+    "test": "vitest run --reporter=dot",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage --browser.headless",
     "prepublishOnly": "pnpm run build"
   },
   "peerDependencies": {

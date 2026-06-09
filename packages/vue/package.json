@@ -2,7 +2,7 @@
   "name": "@silver-formily/vue",
   "type": "module",
   "version": "2.3.4",
-  "description": "Vue3 版本的 Silver Formily 运行时封装",
+  "description": "Vue 3 runtime bindings for Silver Formily",
   "author": "hezhengxu",
   "license": "MIT",
   "homepage": "https://vue.silver-formily.org",
@@ -36,12 +36,12 @@
   ],
   "scripts": {
     "build": "tsdown --tsconfig tsconfig.build.json",
-    "test": "vitest run --reporter=dot --browser.headless",
-    "test:coverage": "vitest run --coverage --browser.headless",
     "lint": "eslint .",
     "format": "eslint . --fix",
     "check-types": "vue-tsc --noEmit",
-    "commit": "czg",
+    "test": "vitest run --reporter=dot --browser.headless",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage --browser.headless",
     "prepublishOnly": "pnpm run build"
   },
   "peerDependencies": {
@@ -53,14 +53,8 @@
     "@silver-formily/shared": "workspace:*",
     "vue": "^3.3.0"
   },
-  "config": {
-    "commitizen": {
-      "path": "./node_modules/cz-git"
-    }
-  },
   "devDependencies": {
     "@antfu/eslint-config": "catalog:",
-    "@commitlint/config-conventional": "catalog:",
     "@silver-formily/core": "workspace:*",
     "@silver-formily/json-schema": "workspace:*",
     "@silver-formily/path": "workspace:*",
@@ -76,9 +70,6 @@
     "@vitest/coverage-istanbul": "catalog:",
     "@vue/language-core": "catalog:",
     "@vue/shared": "catalog:",
-    "commitlint": "catalog:",
-    "cz-git": "catalog:",
-    "czg": "catalog:",
     "eslint": "catalog:",
     "eslint-plugin-format": "catalog:",
     "playwright": "catalog:",
