@@ -22,10 +22,14 @@ registerValidateRules({
 })
 ```
 
-After registration, the rule can be referenced by key on any rule object:
+After registration, both of the following trigger the rule:
 
 ```ts
 await validate('formily', { custom: true })
+
+await validate('formily', {
+  custom: 'Any truthy value works — the real logic lives inside the custom rule function',
+})
 ```
 
 ## Register formats
@@ -67,6 +71,35 @@ setValidateLanguage('en-US')
 
 Language matching is fuzzy on purpose. Values such as `en`, `en-US`, `zh`, and `zh-CN` can resolve to the nearest registered locale key.
 
+## Built-in locales {#built-in-locales}
+
+A set of locale messages is registered by default when the module is loaded. The following language tags are available out of the box:
+
+- `en`
+- `en-US`
+- `zh`
+- `zh-CN`
+- `zh-TW`
+- `ja`
+
+These locales include error messages for common rule and format keys such as `required`, `min`, `max`, `email`, `url`, `phone`, and more.
+
+To inspect the exact messages, the safest approach is to query the registry:
+
+```ts
+import {
+  getValidateLocale,
+  setValidateLanguage,
+} from '@silver-formily/validator'
+
+setValidateLanguage('zh-CN')
+
+getValidateLocale('required')
+getValidateLocale('email')
+```
+
+If the built-in locales are not sufficient, use `registerValidateLocale` to extend or override messages per language.
+
 ## Read current registry state
 
 ```ts
@@ -85,7 +118,7 @@ getValidateRules('required')
 
 ## Message template engine
 
-By default, messages only apply built-in `&#123;&#123;path.to.value&#125;&#125;` interpolation. You can plug in a custom engine first:
+By default, messages only apply built-in <code v-pre>{{path.to.value}}</code> interpolation. You can plug in a custom engine first:
 
 ```ts
 import { registerValidateMessageTemplateEngine } from '@silver-formily/validator'
@@ -95,4 +128,4 @@ registerValidateMessageTemplateEngine((message, context) => {
 })
 ```
 
-The custom engine runs before built-in path interpolation, so both mechanisms can be combined.
+The custom engine runs before built-in <code v-pre>{{...}}</code> path interpolation, so both mechanisms can be combined.
