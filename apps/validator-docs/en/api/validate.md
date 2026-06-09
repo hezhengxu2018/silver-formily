@@ -6,7 +6,7 @@ Built-in rules, formats, and locale messages are registered when the module is l
 import { validate } from '@silver-formily/validator'
 ```
 
-## Built-in rules
+## Built-in rules {#built-in-rules}
 
 Rule objects implement `IValidatorRules`:
 
@@ -58,7 +58,7 @@ Common rules fall into a few groups:
 | `whitespace`                            | Rejects whitespace-only strings                                   |
 | `validator`                             | Runs a custom sync or async rule                                  |
 
-## format
+## Built-in formats {#built-in-formats}
 
 When the description is a string, or a rule contains `format`, the package resolves a matcher from the format registry:
 

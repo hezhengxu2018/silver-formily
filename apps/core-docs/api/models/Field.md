@@ -712,9 +712,7 @@ interface invoke {
 
 ## 类型
 
-<Alert>
 注意：如果要手动消费类型，直接从包模块中导出即可
-</Alert>
 
 ### FieldValidator
 

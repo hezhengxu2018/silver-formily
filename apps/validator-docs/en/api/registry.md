@@ -1,6 +1,6 @@
 # Registry
 
-The registry stores five kinds of global validation behavior:
+The registry stores these global validation capabilities:
 
 - locale messages
 - active language
@@ -22,13 +22,13 @@ registerValidateRules({
 })
 ```
 
-After registration, both of the following trigger the rule:
+After registration, both of the following trigger it:
 
 ```ts
 await validate('formily', { custom: true })
 
 await validate('formily', {
-  custom: 'Any truthy value works — the real logic lives inside the custom rule function',
+  custom: 'Any truthy value works - the real logic lives inside the custom rule function',
 })
 ```
 
@@ -45,14 +45,14 @@ registerValidateFormats({
 })
 ```
 
-Then use them directly:
+You can then use them directly:
 
 ```ts
 await validate('silver-formily', 'slug')
 await validate('SF-001', { format: 'internalCode' })
 ```
 
-## Register locales and switch language
+## Locales and language switching
 
 ```ts
 import {
@@ -61,12 +61,12 @@ import {
 } from '@silver-formily/validator'
 
 registerValidateLocale({
-  'en-US': {
+  'zh-CN': {
     slug: 'Slug can only contain lowercase letters, numbers, and hyphens',
   },
 })
 
-setValidateLanguage('en-US')
+setValidateLanguage('zh-CN')
 ```
 
 Language matching is fuzzy on purpose. Values such as `en`, `en-US`, `zh`, and `zh-CN` can resolve to the nearest registered locale key.
@@ -102,6 +102,8 @@ If the built-in locales are not sufficient, use `registerValidateLocale` to exte
 
 ## Read current registry state
 
+You can also treat the registry as a query entry:
+
 ```ts
 import {
   getValidateFormats,
@@ -118,7 +120,7 @@ getValidateRules('required')
 
 ## Message template engine
 
-By default, messages only apply built-in <code v-pre>{{path.to.value}}</code> interpolation. You can plug in a custom engine first:
+By default, messages only apply built-in <code v-pre>{{path.to.value}}</code> interpolation. You can also plug in your own template engine:
 
 ```ts
 import { registerValidateMessageTemplateEngine } from '@silver-formily/validator'

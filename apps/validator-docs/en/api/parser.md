@@ -46,6 +46,8 @@ Rule objects are expanded into ordered executable validators. Two ordering guara
 1. `required` always runs first.
 2. `validator` always runs last.
 
+This ensures that basic empty-value checks happen first, while custom logic can extend validation at the end.
+
 ```ts
 const validators = parseValidatorRules({
   required: true,

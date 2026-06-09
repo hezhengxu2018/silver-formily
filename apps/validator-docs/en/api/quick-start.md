@@ -67,6 +67,12 @@ validate(value, {
 })
 ```
 
+That means:
+
+- strings are treated as `format`
+- functions are treated as `validator`
+- objects are parsed directly as rule objects
+
 ## validateFirst
 
 Use `validateFirst` when you only want the first failing message:
@@ -100,12 +106,13 @@ await validate('ab', [
 
 The default trigger is `onInput`.
 
-## Context
+## Custom context
 
 `options.context` is passed to custom validators and merged into template rendering:
 
 ```ts
 await validate('', {
+  required: true,
   validator(value, rule, ctx, render) {
     return render('Field {{title}} is required', {
       title: ctx.title,

@@ -712,7 +712,7 @@ interface invoke {
 
 ## Types
 
-When consuming types manually, simply export them from the package module.
+Note: if you want to consume these types manually, export them directly from the package module.
 
 ### FieldValidator
 
@@ -799,7 +799,7 @@ type FieldValidator<Context = any>
 type FeedbackMessage = any[]
 ```
 
-The feedback message collection in the current source code is defined directly as `any[]`. This means the message content itself is not restricted to strings by the core layer; the specific consumption method is determined by the upper UI adapter.
+The feedback message collection in the current source code is defined directly as `any[]`. This means the core layer does not restrict message content to strings; the exact rendering strategy is determined by the upper UI adapter.
 
 ### FieldDataSource
 

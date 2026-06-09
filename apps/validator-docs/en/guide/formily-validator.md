@@ -18,8 +18,6 @@ From the validator package perspective, it mainly does two jobs:
 - normalize field rule declarations into executable validators
 - normalize outputs into feedback messages that Formily can consume
 
-## How Formily wires it in
-
 Inside `@silver-formily/core`, field validation eventually looks like this:
 
 ```ts
@@ -76,9 +74,9 @@ This is the most direct option and works well for local field rules.
 />
 ```
 
-This is the same validation capability exposed through a schema entry point.
+This is essentially the same capability as `validator` on a Field, only exposed through a different declaration entry.
 
-### 3. At runtime through field methods
+### 3. Dynamically update `Field.validator` at runtime
 
 ```ts
 field.setValidator({
@@ -150,17 +148,13 @@ field.setValidator([
 ])
 ```
 
-Arrays are usually the most practical shape because they let you separate base rules, triggers, and custom logic.
-
-For the full rule surface, see the [Validation Rules](/en/api/validate) section.
+Arrays are usually the most practical shape in Formily because they let you separate base rules, trigger timing, and complex business logic. For the full rule surface, see the [Validation Rules](/en/api/validate) section.
 
 :::tip Tip
 `setValidator` is only one of the [three ways to add validation rules](/en/guide/formily-validator#how-to-add-validation-rules). These three approaches are equivalent. In real business code, rules are usually declared directly on `Field` or inside `x-validator` in Markup Schema. This guide uses `field.setValidator(...)` in a few examples mainly because it highlights more cleanly in code blocks.
 :::
 
 ## When rules run
-
-This part is often scattered across official docs, but the actual model is simple:
 
 - if `triggerType` is omitted, the rule defaults to `onInput`
 - `triggerType: 'onBlur'` means the rule only runs on blur
@@ -338,7 +332,7 @@ return {
 }
 ```
 
-This directly decides which feedback type the message goes into, so in practice it also depends on whether your component layer handles warning and success feedback correctly.
+This directly decides which feedback type the message goes into and depends on whether your wrapped component layer handles warning and success feedback correctly.
 
 ## Where to read validation results
 
@@ -364,7 +358,7 @@ So in practice, a validator is not only a predicate. It is also a producer of fi
 
 ## Best practices for global and local rules
 
-In practice, this split works well.
+In practice, this split works well:
 
 ### Local rules
 
@@ -376,7 +370,7 @@ Keep them on the field when they are:
 
 ### Global rules
 
-Register them once through `@silver-formily/core`:
+Register them once through the functions re-exported from `@silver-formily/core`:
 
 ```ts
 import { registerValidateRules } from '@silver-formily/core'
@@ -402,9 +396,7 @@ const fieldProps = {
 
 This keeps field declarations concise while centralizing reusable validation logic.
 
-## Recommended structure
-
-If you are using this package through Formily, this is a good default strategy:
+If you are using this package through Formily, this is a good default structure:
 
 1. Prefer objects or arrays for field rules before writing large custom functions.
 2. Put instant feedback on `onInput` and more expensive checks on `onBlur`.

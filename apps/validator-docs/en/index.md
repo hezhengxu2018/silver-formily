@@ -9,6 +9,10 @@ The package is built around four pieces:
 3. A registry layer for custom rules, formats, locales, and template engines.
 4. A parser layer that normalizes strings, functions, and rule objects into runnable validators.
 
+:::tip Tip
+Most users consume these capabilities indirectly through `@silver-formily/core`. If you are working in a Formily app, start with [Using with Formily](/en/guide/formily-validator). In the API section, the most commonly referenced pages are [Validation Rules](/en/api/validate) and sometimes [Registry](/en/api/registry). The parser APIs are mainly exposed for `@silver-formily/core`, so business apps rarely need them directly.
+:::
+
 ## Installation
 
 ::: code-group

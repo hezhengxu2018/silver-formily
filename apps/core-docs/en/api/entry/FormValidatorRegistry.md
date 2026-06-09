@@ -2,7 +2,7 @@
 outline: 2
 ---
 
-# FormValidatorRegistry
+# Form Validator Registry
 
 `@silver-formily/core` re-exports the core registry APIs from `@silver-formily/validator`, providing a unified entry point for validation configuration in Formily scenarios.
 
@@ -99,7 +99,7 @@ import {
 registerValidateLocale({
   'zh-CN': {
     required: 'This field is required',
-    maxLength: 'Max length is {{maxLength}}',
+    maxLength: 'Length must not exceed {{maxLength}}',
   },
 })
 
@@ -195,5 +195,5 @@ interface getValidateLocaleIOSCode {
 import { getValidateLocaleIOSCode } from '@silver-formily/core'
 
 getValidateLocaleIOSCode('en')
-// ==> 'en-US'
+// ==> en
 ```
