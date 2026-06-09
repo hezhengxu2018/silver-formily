@@ -51,19 +51,8 @@ export default createDocsConfig({
       __VUE_PROD_HYDRATION_MISMATCH_DETAILS__: true,
     },
     plugins: [vueJsx() as unknown as DocsPluginOption],
-    ssr: {
-      noExternal: ['@silver-formily/vue'],
-    },
     optimizeDeps: {
       include: [
-        '@formily/core',
-        '@formily/reactive',
-        '@formily/shared',
-        '@silver-formily/grid',
-        '@silver-formily/reactive-vue',
-        '@silver-formily/vue',
-        'dayjs',
-        'dayjs/plugin/customParseFormat',
         'vant',
       ],
     },

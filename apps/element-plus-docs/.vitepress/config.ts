@@ -98,18 +98,8 @@ export default createDocsConfig({
     resolve: {
       dedupe: ['vue', 'element-plus'],
     },
-    ssr: {
-      noExternal: ['@silver-formily/vue'],
-    },
     optimizeDeps: {
       include: [
-        '@silver-formily/core',
-        '@silver-formily/reactive',
-        '@silver-formily/shared',
-        '@silver-formily/json-schema',
-        '@silver-formily/reactive-vue',
-        '@silver-formily/vue',
-        '@silver-formily/grid',
         '@element-plus/icons-vue',
         'element-plus',
         'lodash-es',

@@ -93,12 +93,6 @@ export default createDocsConfig({
   vite: {
     optimizeDeps: {
       include: [
-        '@silver-formily/core',
-        '@silver-formily/reactive',
-        '@silver-formily/shared',
-        '@silver-formily/json-schema',
-        '@silver-formily/reactive-vue',
-        '@silver-formily/vue',
         'vue',
       ],
     },

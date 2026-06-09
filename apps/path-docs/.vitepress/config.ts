@@ -109,11 +109,6 @@ export default createDocsConfig({
     logo: '/logo.svg',
     outline: [2, 4],
   },
-  vite: {
-    optimizeDeps: {
-      include: ['@silver-formily/path'],
-    },
-  },
   extra: {
     appearance: true,
   },

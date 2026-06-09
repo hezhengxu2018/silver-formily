@@ -71,11 +71,6 @@ export default createDocsConfig({
   socialLinks: [
     { icon: 'github', link: 'https://github.com/hezhengxu2018/silver-formily' },
   ],
-  vite: {
-    optimizeDeps: {
-      include: ['@silver-formily/grid'],
-    },
-  },
   extra: {
     appearance: true,
   },

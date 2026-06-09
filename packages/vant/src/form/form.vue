@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { VantFormProps } from './types'
+import { formilyComputed } from '@silver-formily/reactive-vue'
 import { FormProvider, useForm } from '@silver-formily/vue'
 import { isNil } from 'es-toolkit'
 import { computed, nextTick, provide, ref } from 'vue'
@@ -28,7 +29,7 @@ const { scrollToFirstError } = useVantFormScroll({
 })
 const hasExplicitFormProp = useHasExplicitVNodeProp()
 
-const inheritedProps = computed(() => {
+const inheritedProps = formilyComputed(() => {
   const form = currentForm.value
   return Object.fromEntries(
     vantFormInheritedPropKeys.flatMap((key) => {

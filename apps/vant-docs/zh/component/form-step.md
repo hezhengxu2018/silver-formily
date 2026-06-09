@@ -20,7 +20,7 @@ mobileDemo: form-step/index.vue
 
 ## JSON Schema
 
-<<< @/zh/demos/form-step-formily/json-schema.vue
+<<< @/zh/demos/form-step/json-schema.vue
 
 ## 内部创建实例
 

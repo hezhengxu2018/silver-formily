@@ -235,6 +235,45 @@ describe('form', () => {
     expect(container.querySelector('input')).toHaveAttribute('readonly')
   })
 
+  it('应该在运行时响应 Formily form pattern 切换', async () => {
+    const form = createForm({
+      values: {
+        username: 'silver-formily',
+      },
+    })
+
+    const { container } = render(() => (
+      <Form form={form}>
+        <Field
+          name="username"
+          title="用户名"
+          decorator={[FormItem]}
+          component={[Input]}
+        />
+      </Form>
+    ))
+
+    const input = container.querySelector('input')
+    expect(input).not.toBeDisabled()
+    expect(input).not.toHaveAttribute('readonly')
+
+    form.setPattern('readOnly')
+    await vi.waitFor(() => {
+      expect(input).toHaveAttribute('readonly')
+    })
+
+    form.setPattern('disabled')
+    await vi.waitFor(() => {
+      expect(input).toBeDisabled()
+    })
+
+    form.setPattern('editable')
+    await vi.waitFor(() => {
+      expect(input).not.toBeDisabled()
+      expect(input).not.toHaveAttribute('readonly')
+    })
+  })
+
   it('应该在提交失败时滚动到第一个错误项，并透传滚动位置', async () => {
     const onAutoSubmitFailed = vi.fn()
     const form = createForm({

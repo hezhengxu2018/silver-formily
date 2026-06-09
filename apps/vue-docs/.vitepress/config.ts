@@ -83,11 +83,6 @@ export default createDocsConfig({
     ],
     optimizeDeps: {
       include: [
-        '@formily/core',
-        '@formily/reactive',
-        '@formily/shared',
-        '@formily/json-schema',
-        '@silver-formily/reactive-vue',
         'element-plus',
       ],
     },
