@@ -138,6 +138,6 @@ export function deleteInByDestructor(source: any, rules: DestructorRules, mutato
 
 export function existInByDestructor(source: any, rules: DestructorRules, start: number, mutators: Mutators) {
   return rules.every(({ key }) => {
-    return mutators.existIn([key], source, start)
+    return mutators.existIn([key], source, 0)
   })
 }

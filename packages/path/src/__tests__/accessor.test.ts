@@ -262,6 +262,7 @@ it('existIn with a.b.c', () => {
   expect(Path.existIn({ a: { b: { c: 123123 } } }, 'a.b.c')).toEqual(true)
   expect(Path.existIn({ a: { b: { c: 123123 } } }, 'a.b.c.d')).toEqual(false)
   expect(Path.existIn({ a: 123 }, 'a.b.c.d')).toEqual(false)
+  expect(Path.existIn({ a: null }, 'a.b')).toEqual(false)
   expect(
     Path.existIn(
       { a: { b: { c: { ooo: 123, ccc: 123, ddd: 321, kkk: 'ddd' } } } },
@@ -280,6 +281,10 @@ it('existIn with a.b.c', () => {
 it('existIn with start Path', () => {
   expect(Path.existIn({ a: [{}] }, 'a.0', Path.parse('a'))).toEqual(false)
   expect(Path.existIn({ a: [{}] }, 'b.a.0', Path.parse('b'))).toEqual(true)
+  expect(Path.existIn({ b: 1, c: 2 }, 'a.{b,c}', Path.parse('a'))).toEqual(
+    true,
+  )
+  expect(Path.existIn({ a: 1 }, 'a', 1)).toEqual(false)
 })
 
 it('deleteIn', () => {

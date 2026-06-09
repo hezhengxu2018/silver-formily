@@ -118,19 +118,22 @@ function existIn(segments: Segments, source: any, start: number | Path) {
   if (start instanceof Path) {
     start = start.length
   }
+  if (start >= segments.length) {
+    return false
+  }
   for (let i = start; i < segments.length; i++) {
     const index = segments[i]
     const rules = getDestructor(index as string)
     if (!rules) {
       if (i === segments.length - 1) {
-        return hasOwnProperty.call(source, index)
+        return isValid(source) && hasOwnProperty.call(source, index)
       }
 
       if (!isValid(source) || !isAssignable(source))
         return false
       source = source[index]
 
-      if (!isObj(source)) {
+      if (!isValid(source) || !isObj(source)) {
         return false
       }
     }
@@ -617,4 +620,4 @@ export class Path {
   }
 }
 
-export { Pattern }
+export type { Pattern }
