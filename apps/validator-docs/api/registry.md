@@ -71,6 +71,35 @@ setValidateLanguage('zh-CN')
 
 语言匹配并不要求完全等值。内部会做 ISO code 近似匹配，所以 `zh`、`zh-CN`、`en-US` 这类值都能回退到最接近的语言包。
 
+## 内置语言包 {#built-in-locales}
+
+模块初始化时会默认注册一组语言包，当前可直接使用的语言标识包括：
+
+- `en`
+- `en-US`
+- `zh`
+- `zh-CN`
+- `zh-TW`
+- `ja`
+
+这些语言包内置了常见规则名和格式名对应的错误消息，例如 `required`、`min`、`max`、`email`、`url`、`phone` 等。
+
+如果你需要查看具体消息文案，最稳妥的方式是通过注册中心 API 读取：
+
+```ts
+import {
+  getValidateLocale,
+  setValidateLanguage,
+} from '@silver-formily/validator'
+
+setValidateLanguage('zh-CN')
+
+getValidateLocale('required')
+getValidateLocale('email')
+```
+
+如果默认语言包不满足业务需求，可以通过 `registerValidateLocale` 按语言增量扩展或覆盖。
+
 ## 读取当前配置
 
 你也可以把注册中心当成查询入口：
@@ -91,7 +120,7 @@ getValidateRules('required')
 
 ## 模板引擎
 
-默认情况下，消息只会做 `&#123;&#123;path.to.value&#125;&#125;` 这种占位符替换。你也可以接入自己的模板引擎：
+默认情况下，消息只会做 `{{path.to.value}}` 这种占位符替换。你也可以接入自己的模板引擎：
 
 ```ts
 import { registerValidateMessageTemplateEngine } from '@silver-formily/validator'
@@ -101,4 +130,4 @@ registerValidateMessageTemplateEngine((message, context) => {
 })
 ```
 
-模板引擎会先执行，然后再执行内置的 `&#123;&#123; ... &#125;&#125;` 路径替换，因此两者可以组合使用。
+模板引擎会先执行，然后再执行内置的 `{{...}}` 路径替换，因此两者可以组合使用。

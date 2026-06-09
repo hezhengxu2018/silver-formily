@@ -6,7 +6,7 @@
 import { validate } from '@silver-formily/validator'
 ```
 
-## 内置规则
+## 内置规则 {#built-in-rules}
 
 规则对象本质上是 `IValidatorRules`：
 
@@ -58,7 +58,7 @@ interface IValidatorRules<Context = any> {
 | `whitespace`                            | 禁止纯空白字符串                              |
 | `validator`                             | 自定义同步或异步规则                          |
 
-## format
+## 内置格式 {#built-in-formats}
 
 当描述是字符串，或者规则对象中包含 `format` 时，会从格式注册表中取对应 matcher：
 
