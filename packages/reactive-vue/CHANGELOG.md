@@ -1,5 +1,16 @@
 # 更新日志
 
+## 2.0.0
+
+### Major Changes
+
+- eba5161: 底层依赖完全迁移至silver-formily
+
+### Patch Changes
+
+- Updated dependencies [eba5161]
+  - @silver-formily/reactive@1.0.0
+
 ## 1.1.1
 
 ### Patch Changes

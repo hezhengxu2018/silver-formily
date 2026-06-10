@@ -1,5 +1,22 @@
 # 更新日志
 
+## 3.0.0
+
+### Major Changes
+
+- eba5161: 底层依赖完全迁移至silver-formily
+
+### Patch Changes
+
+- Updated dependencies [eba5161]
+  - @silver-formily/core@1.0.0
+  - @silver-formily/json-schema@1.0.0
+  - @silver-formily/path@1.0.0
+  - @silver-formily/reactive@1.0.0
+  - @silver-formily/reactive-vue@2.0.0
+  - @silver-formily/shared@1.0.0
+  - @silver-formily/validator@1.0.0
+
 ## 2.3.4
 
 ### Patch Changes

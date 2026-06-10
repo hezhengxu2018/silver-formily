@@ -1,7 +1,7 @@
 {
   "name": "@silver-formily/path",
   "type": "module",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "Silver Formily fork of @formily/path",
   "author": "hezhengxu",
   "license": "MIT",

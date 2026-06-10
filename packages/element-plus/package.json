@@ -1,7 +1,7 @@
 {
   "name": "@silver-formily/element-plus",
   "type": "module",
-  "version": "4.0.3",
+  "version": "5.0.0",
   "description": "Element Plus bindings for Silver Formily",
   "author": "hezhengxu",
   "license": "MIT",
