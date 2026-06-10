@@ -4,13 +4,12 @@ import type {
   Field,
   FieldDisplayTypes,
   Form,
-  FormPathPattern,
   FormPatternTypes,
   GeneralField,
   IVoidFieldFactoryProps,
 } from '@silver-formily/core'
 import type { ISchema, Schema, SchemaKey } from '@silver-formily/json-schema'
-import type { Component } from 'vue'
+import type { Pattern as FormPathPattern } from '@silver-formily/path'
 import type {
   MultiValidator as FormilyMultiValidator,
   IValidateResult as FormilyValidateResult,
@@ -18,7 +17,8 @@ import type {
   ValidatorFunction as FormilyValidatorFunction,
   ValidatorFunctionResponse as FormilyValidatorResponse,
   IValidatorRules as FormilyValidatorRules,
-} from './validator'
+} from '@silver-formily/validator'
+import type { Component } from 'vue'
 
 export type SchemaFieldValidator = FormilyValidator
 export type SchemaValidatorFunction = FormilyValidatorFunction<any>

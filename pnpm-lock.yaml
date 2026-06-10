@@ -1144,6 +1144,10 @@ importers:
         version: 3.2.6(typescript@6.0.2)
 
   packages/vue:
+    dependencies:
+      '@silver-formily/validator':
+        specifier: workspace:*
+        version: link:../validator
     devDependencies:
       '@antfu/eslint-config':
         specifier: 'catalog:'
@@ -1169,9 +1173,6 @@ importers:
       '@silver-formily/typescript-config':
         specifier: workspace:*
         version: link:../typescript-config
-      '@silver-formily/validator':
-        specifier: workspace:*
-        version: link:../validator
       '@types/node':
         specifier: 'catalog:'
         version: 24.10.13
@@ -4301,7 +4302,7 @@ packages:
 
   glob@7.2.3:
     resolution: {integrity: sha512-nFR0zLpU2YCaRxwoCJvL6UvCH2JFyFVIvwTLsIf21AuHlMskA1hhTdk+LlYJtOlYt9v6dvszD2BGRqBL+iQK9Q==}
-    deprecated: Glob versions prior to v9 are no longer supported
+    deprecated: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
 
   global-directory@4.0.1:
     resolution: {integrity: sha512-wHTUcDUoZ1H5/0iVqEudYW4/kAlN5cZ3j/bXn0Dpbizl9iaUVeWSHqiOjsgk6OW2bkLclbBjzewBz6weQ1zA2Q==}
