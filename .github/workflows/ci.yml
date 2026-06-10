@@ -66,10 +66,18 @@ jobs:
           flags: reactive-vue
           fail_ci_if_error: true
 
-      - name: Build internal test dependencies
+      - name: Build publishable workspace packages
         run: |
+          pnpm --filter @silver-formily/core build
+          pnpm --filter @silver-formily/element-plus build
           pnpm --filter @silver-formily/grid build
+          pnpm --filter @silver-formily/json-schema build
+          pnpm --filter @silver-formily/path build
+          pnpm --filter @silver-formily/reactive build
           pnpm --filter @silver-formily/reactive-vue build
+          pnpm --filter @silver-formily/shared build
+          pnpm --filter @silver-formily/validator build
+          pnpm --filter @silver-formily/vant build
           pnpm --filter @silver-formily/vue build
 
       - name: Run element-plus tests with coverage
