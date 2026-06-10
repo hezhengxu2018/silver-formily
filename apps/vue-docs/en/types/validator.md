@@ -1,151 +1,37 @@
-# Validator Types
+# Validator
 
-Read this section from bottom to top; the basic building blocks live near the end, and the composite aliases appear first.
+The Vue package still exports a set of validator-related type aliases mostly for backward compatibility. Their actual source is `@silver-formily/validator`.
 
-## String Formats
+For new code, prefer importing validator contracts from `@silver-formily/validator` directly. Keep the Vue aliases only when you want your public component props to mirror `@silver-formily/vue` exactly.
 
-### ValidatorFormats
+## Validator aliases exported by the Vue package
 
-String-based format validators. Register custom formats via `registerValidateFormats` when needed.
+| Vue export                | Source type                     |
+| ------------------------- | ------------------------------- |
+| `SchemaFieldValidator`    | `Validator`                     |
+| `SchemaValidatorFunction` | `ValidatorFunction<any>`        |
+| `SchemaValidatorRules`    | `IValidatorRules<any>`          |
+| `SchemaMultiValidator`    | `MultiValidator<any>`           |
+| `SchemaValidateResult`    | `IValidateResult`               |
+| `SchemaValidatorResponse` | `ValidatorFunctionResponse`     |
+| `FormilyValidator`        | direct re-export of `Validator` |
 
-```ts twoslash include ValidatorFormats
-/** Built-in string-based format validators. Register extras via registerValidateFormats. */
-// ---cut---
-export type ValidatorFormats
-  = | 'url'
-    | 'email'
-    | 'ipv6'
-    | 'ipv4'
-    | 'number'
-    | 'integer'
-    | 'idcard'
-    | 'qq'
-    | 'phone'
-    | 'money'
-    | 'zh'
-    | 'date'
-    | 'zip'
-    | (string & {})
+## Where these aliases appear in the Vue package
+
+- `IFieldProps` and `IFieldFactoryProps` use `SchemaFieldValidator` for their `validator` prop.
+- `ISchemaMarkupFieldProps` reaches the validator contract through `SchemaMarkupValidator`.
+- `SchemaField` and `RecursionField` still follow the validator package's rule model under the hood.
+
+## Recommended links
+
+- Validation rules and the main `Validator` entry: [Validator API](https://validator.silver-formily.org/api/validate)
+- Registry APIs for rules, formats, and locales: [Registry API](https://validator.silver-formily.org/api/registry)
+- How validator integrates with Formily: [Using in Formily](https://validator.silver-formily.org/guide/formily-validator)
+
+## Recommended import style
+
+```ts
+import type { IValidatorRules, Validator } from '@silver-formily/validator'
 ```
 
-## Object Validators
-
-### IValidateResult
-
-```ts twoslash include IValidateResult
-/** Validation result structure for object-style validators. */
-// ---cut---
-export interface IValidateResult {
-  type: 'error' | 'warning' | 'success' | (string & {})
-  message: string
-}
-```
-
-### IValidatorRules
-
-```ts twoslash include IValidatorRules
-// @include: ValidatorFormats
-// @include: IValidateResult
-export type ValidatorFunctionResponse
-  = | null
-    | string
-    | boolean
-    | IValidateResult
-export type ValidatorFunction<Context = any> = (
-  value: any,
-  rule: IValidatorRules<Context>,
-  ctx: Context,
-  render: (message: string, scope?: any) => string,
-) => ValidatorFunctionResponse | Promise<ValidatorFunctionResponse> | null
-/** Object-style validator rules. Extend via registerValidateRules for extra properties. */
-// ---cut---
-export interface IValidatorRules<Context = any> {
-  triggerType?: 'onInput' | 'onFocus' | 'onBlur' | (string & {})
-  format?: ValidatorFormats
-  validator?: ValidatorFunction<Context>
-  required?: boolean
-  pattern?: RegExp | string
-  max?: number
-  maximum?: number
-  maxItems?: number
-  minItems?: number
-  maxLength?: number
-  minLength?: number
-  exclusiveMaximum?: number
-  exclusiveMinimum?: number
-  minimum?: number
-  min?: number
-  len?: number
-  whitespace?: boolean
-  enum?: any[]
-  const?: any
-  multipleOf?: number
-  uniqueItems?: boolean
-  maxProperties?: number
-  minProperties?: number
-  message?: string
-  [key: string]: any
-}
-```
-
-## Function Validators
-
-### ValidatorFunctionResponse
-
-```ts twoslash include ValidatorFunctionResponse
-// @include: IValidateResult
-/** Return type for function validators. */
-// ---cut---
-export type ValidatorFunctionResponse
-  = | null
-    | string
-    | boolean
-    | IValidateResult
-```
-
-### ValidatorFunction
-
-```ts twoslash include ValidatorFunction
-// @include: ValidatorFunctionResponse
-export interface IValidatorRules<Context = any> {}
-/** Function validator definition. */
-// ---cut---
-export type ValidatorFunction<Context = any> = (
-  value: any,
-  rule: IValidatorRules<Context>,
-  ctx: Context,
-  render: (message: string, scope?: any) => string,
-) => ValidatorFunctionResponse | Promise<ValidatorFunctionResponse> | null
-```
-
-## ValidatorDescription
-
-```ts twoslash include ValidatorDescription
-// @include: IValidatorRules
-/** Non-array validator descriptor. */
-// ---cut---
-export type ValidatorDescription<Context = any>
-  = | ValidatorFormats
-    | ValidatorFunction<Context>
-    | IValidatorRules<Context>
-```
-
-## MultiValidator
-
-```ts twoslash include MultiValidator
-// @include: ValidatorDescription
-/** Array form of validator descriptors. */
-// ---cut---
-export type MultiValidator<Context = any> = ValidatorDescription<Context>[]
-```
-
-## FieldValidator
-
-```ts twoslash include Validator
-// @include: MultiValidator
-/** Field-level validator that accepts single or multiple descriptors. */
-// ---cut---
-export type FieldValidator<Context = any>
-  = | ValidatorDescription<Context>
-    | MultiValidator<Context>
-```
+Use the Vue aliases only when you intentionally want to follow the Vue package's public surface.

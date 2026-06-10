@@ -51,9 +51,10 @@ export const zhSidebar: DocsThemeConfig['sidebar'] = {
     {
       text: '类型声明',
       items: [
+        { text: '总览', link: '/types/' },
         { text: 'Field', link: '/types/field' },
         { text: 'Path', link: '/types/path' },
-        { text: 'FieldValidator', link: '/types/validator#fieldvalidator' },
+        { text: 'Validator', link: '/types/validator' },
       ],
     },
   ],
