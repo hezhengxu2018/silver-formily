@@ -23,7 +23,6 @@ const schema = schemaRef.value
 const prefixCls = `${stylePrefix}-array-items`
 const { getKey, keyMap } = useKey(schemaRef.value)
 const dataSource = ref(isArr(field.value) ? field.value : [])
-const triggerUpdateKey = ref(0)
 
 autorunEffect(() => {
   dataSource.value = isArr(field.value) ? [...field.value] : []
@@ -35,14 +34,13 @@ async function handleDragEnd(evt: { oldIndex: number, newIndex: number }) {
     keyMap.splice(newIndex, 0, keyMap.splice(oldIndex, 1)[0])
   }
   await field.move(oldIndex, newIndex)
-  triggerUpdateKey.value++
 }
 const { props: arrayItemsProps } = useCleanAttrs(['value', 'modelValue', 'onUpdate:modelValue'])
 </script>
 
 <template>
   <div :class="prefixCls" v-bind="arrayItemsProps">
-    <ArrayBase :key="triggerUpdateKey" :key-map="keyMap">
+    <ArrayBase :key-map="keyMap">
       <VueDraggable
         :class="`${prefixCls}-list`"
         :model-value="dataSource"

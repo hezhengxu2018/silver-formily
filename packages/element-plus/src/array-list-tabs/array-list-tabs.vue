@@ -5,7 +5,7 @@ import { autorunEffect, formilyComputed } from '@silver-formily/reactive-vue'
 import { isArr } from '@silver-formily/shared'
 import { RecursionField, useField, useFieldSchema } from '@silver-formily/vue'
 import { ElBadge, ElEmpty, ElScrollbar } from 'element-plus'
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import { ArrayBase } from '../array-base'
 import { getArrayItemSchema, isAdditionComponent, isRemoveComponent } from '../array-base/utils'
 import { isTabTitleComponent, prefixCls } from './utils'
@@ -37,58 +37,51 @@ const schema = schemaRef.value
 
 const activeIndex = ref(0)
 const { getKey, keyMap } = ArrayBase.useKey(schemaRef.value)
+const dataSource = ref<Array<{ key: string, record: any, title: string }>>([])
+
+autorunEffect(() => {
+  dataSource.value = isArr(field.value)
+    ? field.value.map((item, index) => ({
+        key: getKey(item, index),
+        record: item,
+        title: getTabTitle(item),
+      }))
+    : []
+})
 
 const errorCountList = formilyComputed(() => {
+  if (!isArr(field.value))
+    return []
   if (props.showTitleFieldInTab) {
-    return field.value.map((item, index) => {
-      const path = field.path.concat(index)
+    return field.value.map((_, index) => {
+      const address = field.address.concat(index).toString()
       return field.form.queryFeedbacks({
         type: 'error',
-        path: `${path}.*(!${props.tabTitleField})`,
+        address: `${address}.**`,
+      }).filter((feedback) => {
+        return feedback.address !== `${address}.${props.tabTitleField}`
+          && feedback.path !== `${address}.${props.tabTitleField}`
       }).length
     })
   }
-  return field.value.map((item, index) => {
-    const path = field.path.concat(index)
+  return field.value.map((_, index) => {
+    const address = field.address.concat(index).toString()
     return field.form.queryFeedbacks({
       type: 'error',
-      path: `${path}.**`,
+      address: `${address}.**`,
     }).length
   })
 })
 
-// 保证arrayBase在必要时重新渲染
-const arrayBaseKey = ref()
-
-autorunEffect(() => {
-  if (props.showTitleFieldInTab) {
-    const key = field.value.map((item, index) => {
-      const keyParts = [
-        index,
-        errorCountList.value[index],
-      ]
-      return keyParts.join('|')
-    }).join(',')
-    arrayBaseKey.value = key
+watch(() => dataSource.value.length, (length) => {
+  if (length === 0) {
+    activeIndex.value = 0
+    return
   }
-  else {
-    const key = field.value.map((item, index) => {
-      const keyParts = [
-        index,
-        item?.[props.tabTitleField],
-        errorCountList.value[index],
-      ]
-      return keyParts.join('|')
-    }).join(',')
-    arrayBaseKey.value = key
+  if (activeIndex.value >= length) {
+    activeIndex.value = length - 1
   }
-})
-
-autorunEffect(() => {
-  if (field.value.length > 0 && activeIndex.value >= field.value.length) {
-    activeIndex.value = field.value.length - 1
-  }
-})
+}, { flush: 'sync' })
 
 function getTabTitle(item) {
   return `${item?.[props.tabTitleField] || '未命名条目'}`
@@ -97,18 +90,17 @@ function getTabTitle(item) {
 
 <template>
   <div :class="prefixCls">
-    <ArrayBase :key="props.modelValue.length" :key-map="keyMap">
+    <ArrayBase :key-map="keyMap">
       <ul :class="`${prefixCls}_list`">
         <ElScrollbar :class="`${prefixCls}_list--scroll-wrapper`">
           <ArrayBase.Item
-            v-for="(item, index) in props.modelValue"
-            :key="index"
+            v-for="(item, index) in dataSource"
+            :key="item.key"
             :index="index"
-            :record="item"
+            :record="item.record"
           >
             <li
               :id="`${field.props.name}-tab-${index}`"
-              :key="arrayBaseKey"
               :class="[
                 `${prefixCls}_list-item`,
                 activeIndex === index && 'is-active',
@@ -119,13 +111,13 @@ function getTabTitle(item) {
             >
               <div :class="`${prefixCls}_list-item--content`">
                 <ElBadge
+                  v-if="errorCountList[index] !== 0"
                   :class="[`${prefixCls}-errors-badge`]"
                   :value="errorCountList[index]"
                   :offset="[5, 0]"
-                  :hidden="errorCountList[index] === 0"
                 >
                   <template v-if="!props.showTitleFieldInTab">
-                    <span :class="`${prefixCls}_list-item--title`">{{ getTabTitle(item) }}</span>
+                    <span :class="`${prefixCls}_list-item--title`">{{ item.title }}</span>
                   </template>
                   <template v-else>
                     <RecursionField
@@ -137,6 +129,20 @@ function getTabTitle(item) {
                     />
                   </template>
                 </ElBadge>
+                <template v-else>
+                  <template v-if="!props.showTitleFieldInTab">
+                    <span :class="`${prefixCls}_list-item--title`">{{ item.title }}</span>
+                  </template>
+                  <template v-else>
+                    <RecursionField
+                      v-if="!isArr(schema.items)"
+                      :schema="schema.items"
+                      :name="index"
+                      :filter-properties="(schema: ISchema) => isTabTitleComponent(schema, props.tabTitleField)"
+                      only-render-properties
+                    />
+                  </template>
+                </template>
               </div>
               <!-- remove icon -->
               <RecursionField
@@ -157,19 +163,18 @@ function getTabTitle(item) {
           />
         </template>
       </ul>
-      <div v-if="props.modelValue.length === 0" :class="`${prefixCls}-tabpane`">
+      <div v-if="dataSource.length === 0" :class="`${prefixCls}-tabpane`">
         <ElEmpty :image-size="100" />
       </div>
       <ArrayBase.Item
-        v-for="(item, index) in props.modelValue"
-        :key="getKey(item, index)"
+        v-for="(item, index) in dataSource"
+        :key="item.key"
         :index="index"
-        :record="item"
+        :record="item.record"
       >
         <!-- tab-panel -->
         <div
           :id="`${field.props.name}-tab-panel-${index}`"
-          :key="getKey(item, index)"
           :class="`${prefixCls}-tabpane`"
           :style="{ display: activeIndex === index ? undefined : 'none' }"
           role="tabpanel"

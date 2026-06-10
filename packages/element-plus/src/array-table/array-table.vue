@@ -3,8 +3,8 @@ import type { ArrayField } from '@silver-formily/core'
 import type { Schema } from '@silver-formily/json-schema'
 import type { TableInstance } from 'element-plus'
 import type { IArrayTableProps } from './types'
-import { autorunEffect, formilyComputed, reactionWatch } from '@silver-formily/reactive-vue'
-import { isArr, isEqual } from '@silver-formily/shared'
+import { autorunEffect, formilyComputed } from '@silver-formily/reactive-vue'
+import { isArr } from '@silver-formily/shared'
 import { RecursionField, useField, useFieldSchema } from '@silver-formily/vue'
 import { ElTable, ElTableColumn, vLoading } from 'element-plus'
 import { omit } from 'lodash-es'
@@ -62,19 +62,6 @@ function createTableSource(schema: Schema): any[] {
     columnProps: (field?.component as any[])?.[1] || schema['x-component-props'] || {},
   }]
 }
-
-const triggerUpdateKey = ref(0)
-reactionWatch(() => {
-  const path = field.path.entire
-  return field.query(`${path}.*`).map((item) => {
-    return {
-      name: item.component[0],
-      visible: item.visible,
-    }
-  }).filter(item => item.name.includes('Column'))
-}, async () => {
-  triggerUpdateKey.value++
-}, { equals: isEqual })
 
 const dataSource = ref([])
 const pageSize = ref(props.paginationProps?.pageSize ?? 10)
@@ -158,13 +145,12 @@ async function onAddItemClick() {
 async function handleDragEnd(evt: { oldIndex: number, newIndex: number }) {
   const { oldIndex, newIndex } = evt
   await field.move(oldIndex, newIndex)
-  triggerUpdateKey.value++
 }
 </script>
 
 <template>
   <div :class="prefixCls">
-    <ArrayBase :key="triggerUpdateKey" :key-map="keyMap" :add="onAddItemClick">
+    <ArrayBase :key-map="keyMap" :add="onAddItemClick">
       <VueDraggable
         :model-value="dataSource" target="tbody" :handle="`.${stylePrefix}-array-base-sort-handle`"
         :animation="150" @end="handleDragEnd"

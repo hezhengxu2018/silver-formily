@@ -91,7 +91,6 @@ function handleCollapseChange(keys: number[] | number) {
 <template>
   <div :class="prefixCls">
     <ArrayBase
-      :key="dataSource.length"
       :key-map="keyMap"
       :add="(index: number) => {
         activeKeys = insertActiveKeys(
