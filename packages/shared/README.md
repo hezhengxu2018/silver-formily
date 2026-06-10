@@ -1,3 +1,3 @@
-# @formily/shared
+# @silver-formily/shared
 
-> Formily 工具函数集
+> 工具函数集
