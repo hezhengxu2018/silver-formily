@@ -2,36 +2,40 @@
 
 [English README](./README.en.md)
 
-`@silver-formily/shared` 是 Silver Formily 各个运行时包共享的一组基础工具与类型辅助。它包含数组、字符串、对象合并、订阅器、中间件、唯一 ID、判空、类型判断等低层能力，主要用于减少跨包重复实现。
+## Overview
 
-## 这个包适合谁
+`@silver-formily/shared` 提供 Silver Formily 各运行时包共享的低层工具集合。它聚合数组与对象操作、默认值合并、订阅器、中间件、字符串转换、判空与类型检查等基础设施能力。
 
-这个包更偏底层，通常适合以下场景：
+## Runtime Positioning
 
-- 正在开发 Silver Formily 的配套包
-- 需要复用与核心包一致的工具函数和数据处理行为
-- 正在把旧的 `@formily/shared` 迁移到 `@silver-formily/shared`
+该包不直接承载表单语义，而是作为多个 runtime 包的公共依赖：
 
-如果你只是业务侧普通表单使用者，通常不会单独直接安装它，而是由 `@silver-formily/core`、`@silver-formily/reactive` 等包间接依赖。
+- 为 `@silver-formily/core`、`@silver-formily/reactive`、`@silver-formily/validator` 等包消除重复实现
+- 统一基础工具行为，降低跨包语义漂移
 
-## 包含的能力方向
+## Public Surface
 
-- 数组与对象处理
-- 默认值与深合并
-- 订阅器与中间件工具
-- 字符串、命名转换与判空工具
-- 类型检查与运行时辅助
+- 数组、对象与 merge/defaults 工具
+- subscribable / middleware 基元
+- string / case conversion helpers
+- emptiness checks 与 runtime guards
 - `uid` 等通用基础能力
 
-## 安装
+## Use Cases
+
+- 构建 Silver Formily 配套包
+- 复用与核心 runtime 一致的辅助工具
+- 替换 `@formily/shared`
+
+## Installation
 
 ```bash
 pnpm add @silver-formily/shared
 ```
 
-## 仓库
+## Documentation
 
-- 仓库主页：<https://github.com/hezhengxu2018/silver-formily>
+- Repository: <https://github.com/hezhengxu2018/silver-formily>
 
 ## License
 

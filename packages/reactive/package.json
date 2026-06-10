@@ -2,7 +2,7 @@
   "name": "@silver-formily/reactive",
   "type": "module",
   "version": "1.0.0",
-  "description": "Silver Formily fork of @formily/reactive",
+  "description": "Reactive state engine for Silver Formily with observable models, reactions, and effect tracking",
   "author": "hezhengxu",
   "license": "MIT",
   "homepage": "https://github.com/hezhengxu2018/silver-formily",

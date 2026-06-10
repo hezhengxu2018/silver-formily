@@ -2,26 +2,30 @@
 
 [简体中文](./README.md)
 
-`@silver-formily/shared` is the shared utility layer used across Silver Formily runtime packages. It bundles low-level helpers for arrays, strings, object merging, subscriptions, middleware, unique IDs, emptiness checks, and runtime type guards so the rest of the monorepo can stay consistent and avoid duplicated implementations.
+## Overview
 
-## Who This Package Is For
+`@silver-formily/shared` provides the low-level utility surface shared by Silver Formily runtime packages. It aggregates array and object helpers, defaults/merge primitives, subscribables, middleware helpers, string transforms, emptiness checks, and runtime type guards.
 
-This is mostly a low-level package and is most useful when you are:
+## Runtime Positioning
 
-- building companion packages for Silver Formily
-- reusing the same utility behavior as the core packages
-- migrating from `@formily/shared` to `@silver-formily/shared`
+This package does not implement form semantics directly. Instead, it acts as a common dependency for the runtime stack:
 
-If you are a normal application-level form user, you typically consume it transitively through packages like `@silver-formily/core` or `@silver-formily/reactive`.
+- it removes duplicated helper logic from packages such as `@silver-formily/core`, `@silver-formily/reactive`, and `@silver-formily/validator`
+- it keeps low-level utility behavior consistent across package boundaries
 
-## What It Includes
+## Public Surface
 
-- array and object helpers
-- defaults and deep merge utilities
+- array, object, merge, and defaults utilities
 - subscribable and middleware primitives
-- string and naming helpers
-- runtime checkers and guard utilities
-- generic helpers such as `uid`
+- string and case-conversion helpers
+- emptiness checks and runtime guards
+- generic utilities such as `uid`
+
+## Use Cases
+
+- companion packages built around Silver Formily
+- reuse of helper semantics aligned with the core runtime
+- replacement for `@formily/shared`
 
 ## Installation
 
@@ -29,7 +33,7 @@ If you are a normal application-level form user, you typically consume it transi
 pnpm add @silver-formily/shared
 ```
 
-## Repository
+## Documentation
 
 - Repository: <https://github.com/hezhengxu2018/silver-formily>
 

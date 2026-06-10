@@ -2,7 +2,7 @@
   "name": "@silver-formily/reactive-vue",
   "type": "module",
   "version": "2.0.0",
-  "description": "Vue reactive bindings for Silver Formily",
+  "description": "Vue 3 integration layer for Silver Formily reactive state, observers, and lifecycle-bound effects",
   "author": "Hezhengxu",
   "license": "MIT",
   "homepage": "https://reactive-vue.silver-formily.org",

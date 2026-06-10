@@ -2,29 +2,31 @@
 
 [简体中文](./README.md)
 
-`@silver-formily/vant` is the mobile-focused Vant integration layer for Silver Formily. It connects the form runtime, schema descriptions, and Vant component model so you can build touch-friendly forms, step-based flows, popup forms, and other mobile-first experiences.
+## Overview
 
-## What Kind Of Projects Is It For
+`@silver-formily/vant` is the mobile-oriented Vant binding layer for Silver Formily. It connects field-runtime semantics and schema protocols to the Vant interaction model for H5, mobile, and touch-first form systems.
 
-- mobile or H5 form flows
-- business input pages built on Vant
-- step forms, popup forms, wheel pickers, and other mobile interaction patterns
-- migrations from the `@formily/*` stack to `@silver-formily/*`
+## Runtime Positioning
 
-## What It Provides
+This package sits between the Vue rendering layer and a mobile UI framework:
 
-- Basic fields: `Input`, `Checkbox`, `Radio`, `Switch`, `Stepper`, `Slider`, `Signature`
-- Picker-style components: `Picker`, `PickerGroup`, `DatePicker`, `TimePicker`, `Area`, `TreeSelect`
-- Form structure components: `FormItem`, `Form`, `FormStep`, `FormPopup`, `FormButtonGroup`
-- Preview components: `PreviewText.*`
-- Action components: `Submit` and `Reset`
+- it uses `@silver-formily/vue` for rendering semantics
+- it consumes field and schema semantics from `@silver-formily/core` and `@silver-formily/json-schema`
+- it emits mobile-friendly form primitives through Vant components
 
-## How It Fits Into Silver Formily
+## Public Surface
 
-- `@silver-formily/core` provides field and form runtime state
-- `@silver-formily/vue` provides Vue 3 bindings
-- `@silver-formily/json-schema` provides schema descriptions
-- this package maps those capabilities to Vant components
+- base field components: `Input`, `Checkbox`, `Radio`, `Switch`, `Stepper`, `Slider`, `Signature`
+- picker-style components: `Picker`, `PickerGroup`, `DatePicker`, `TimePicker`, `Area`, `TreeSelect`
+- structure components: `FormItem`, `Form`, `FormStep`, `FormPopup`, `FormButtonGroup`
+- action components: `Submit`, `Reset`
+- preview components: `PreviewText.*`
+
+## Design Characteristics
+
+- optimized for mobile data-entry and touch interactions
+- suitable for step forms, popup forms, and wheel-picker workflows
+- serves as the Silver Formily replacement for the mobile-side `@formily/*` bindings
 
 ## Installation
 
@@ -34,7 +36,7 @@ pnpm add @silver-formily/vant @silver-formily/vue @silver-formily/core @silver-f
 
 ## Documentation
 
-- Docs site: <https://vant.silver-formily.org>
+- Docs: <https://vant.silver-formily.org>
 - Repository: <https://github.com/hezhengxu2018/silver-formily>
 
 ## License

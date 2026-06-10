@@ -2,35 +2,32 @@
 
 [简体中文](./README.md)
 
-`@silver-formily/element-plus` is the official Element Plus integration layer for Silver Formily. It connects form field models and schema-driven descriptions to Element Plus components, and it ships ready-made building blocks ranging from basic inputs to array-field widgets, layout components, and preview components.
+## Overview
 
-## When To Use This Package
+`@silver-formily/element-plus` is the Element Plus binding layer and scene-component set for Silver Formily. It aligns field runtime semantics and schema protocols with Element Plus component contracts, and provides higher-level primitives for array fields, form layout, popup-style forms, and preview rendering.
 
-If your project already uses Vue 3 + Element Plus and you want to organize complex forms with schema or field models, this is the most direct UI solution. It is a strong fit for:
+## Runtime Positioning
 
-- admin panels and internal tools
-- config-driven or low-code form builders
-- workflows with array fields, multi-step forms, drawer forms, or dialog forms
-- migrations from `@formily/element-plus` to `@silver-formily/element-plus`
+This package sits at the intersection of the Vue rendering layer and a concrete UI framework:
 
-## What You Get
+- it builds on top of `@silver-formily/vue`
+- it consumes field semantics from `@silver-formily/core` and `@silver-formily/json-schema`
+- it emits business-ready form primitives through the Element Plus component model
 
-- Basic field components: `Input`, `Select`, `Checkbox`, `Radio`, `Switch`, `DatePicker`, `Upload`, and more
-- Array-oriented components: `ArrayTable`, `ArrayCards`, `ArrayTabs`, `ArrayCollapse`, `ArrayItems`, and more
-- Form structure components: `FormItem`, `FormLayout`, `FormGrid`, `FormStep`, `FormTab`
-- Scenario components: `FormDialog`, `FormDrawer`, `QueryForm`, `SelectTable`
-- Preview components: `PreviewText.*`
+## Public Surface
 
-## Typical Dependencies
+- base field components: `Input`, `Select`, `Checkbox`, `Radio`, `Switch`, `DatePicker`, `Upload`, and more
+- array-field components: `ArrayTable`, `ArrayCards`, `ArrayTabs`, `ArrayCollapse`, `ArrayItems`
+- layout and structure components: `FormItem`, `FormLayout`, `FormGrid`, `FormStep`, `FormTab`
+- scene components: `FormDialog`, `FormDrawer`, `QueryForm`, `SelectTable`
+- preview components: `PreviewText.*`
 
-This package is usually used together with:
+## Design Characteristics
 
-- `vue`
-- `element-plus`
-- `@silver-formily/vue`
-- `@silver-formily/core`
-- `@silver-formily/json-schema`
-- `@silver-formily/reactive-vue`
+- aligns Silver Formily field contracts with Element Plus props and events
+- optimized for complex admin-facing forms
+- ships reusable primitives for array fields and scenario-level form composition
+- acts as the Silver Formily namespace implementation for `@formily/element-plus`
 
 ## Installation
 
@@ -38,13 +35,9 @@ This package is usually used together with:
 pnpm add @silver-formily/element-plus @silver-formily/vue @silver-formily/core @silver-formily/json-schema @silver-formily/reactive @silver-formily/reactive-vue @silver-formily/shared @silver-formily/grid element-plus vue
 ```
 
-## Why This README Matters On npm
-
-This package is not just a thin wrapper around Element Plus. It wires Silver Formily's field model, validation state, decorators, and schema runtime into Element Plus conventions so application teams can reuse advanced form patterns without writing their own integration layer from scratch.
-
 ## Documentation
 
-- Docs site: <https://element-plus.silver-formily.org>
+- Docs: <https://element-plus.silver-formily.org>
 - Repository: <https://github.com/hezhengxu2018/silver-formily>
 
 ## License

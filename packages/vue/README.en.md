@@ -2,37 +2,32 @@
 
 [简体中文](./README.md)
 
-`@silver-formily/vue` is the Vue 3 runtime binding layer for Silver Formily. It connects the form model, field state, and effect system from `@silver-formily/core` to the Vue component tree, and it exposes form-rendering primitives such as `Field`, `SchemaField`, `FormProvider`, `connect`, and `mapProps`.
+## Overview
 
-## What This Package Does
+`@silver-formily/vue` is the Vue 3 form rendering layer of Silver Formily. It connects the core runtime, schema protocol, and Vue component system, and exposes field components, schema-rendering components, composables, and adapter helpers.
 
-If `@silver-formily/core` is the brain of the form system, `@silver-formily/vue` is the rendering and integration layer for Vue 3. It is responsible for:
+## Runtime Positioning
 
-- providing form context to the component tree
-- mapping field models to Vue components
-- powering schema-driven rendering at runtime
-- standardizing on Vue 3-style `modelValue` / `onUpdate:modelValue` contracts
+This package sits between the runtime kernel and concrete UI libraries:
 
-## Why Use It
+- it depends on `@silver-formily/core` for form and field semantics
+- it depends on `@silver-formily/reactive-vue` for Vue lifecycle integration
+- it acts as the upstream rendering layer consumed by `@silver-formily/element-plus` and `@silver-formily/vant`
 
-- built specifically for Vue 3 without Vue 2 compatibility baggage
-- aligned with `@silver-formily/core`, `@silver-formily/json-schema`, and `@silver-formily/reactive-vue`
-- a better fit for modern Vue UI libraries such as Element Plus and Vant
-- a clear migration target from `@formily/vue` into the `@silver-formily/*` namespace
+## Public Surface
 
-## Key Capabilities
+- field components: `Field`, `ArrayField`, `ObjectField`, `VoidField`
+- form-context components: `FormProvider`, `FormConsumer`
+- schema components: `SchemaField`, `RecursionField`, `ReactiveField`, `ExpressionScope`
+- composables: `useForm`, `useField`, `useFieldSchema`, `useFormEffects`
+- adapter helpers: `connect`, `mapProps`
 
-- Components: `FormProvider`, `FormConsumer`, `Field`, `ArrayField`, `ObjectField`, `VoidField`
-- Schema rendering: `SchemaField`, `RecursionField`, `ReactiveField`, `ExpressionScope`
-- Composables: `useForm`, `useField`, `useFieldSchema`, `useFormEffects`
-- Adapter helpers: `connect`, `mapProps`
+## Design Characteristics
 
-## Recommended Pairings
-
-- `@silver-formily/core` for the form runtime
-- `@silver-formily/json-schema` for schema-driven descriptions
-- `@silver-formily/reactive-vue` for Vue reactivity bridging
-- `@silver-formily/element-plus` or `@silver-formily/vant` for ready-made UI integrations
+- pure Vue 3 runtime path
+- aligned with `modelValue` / `onUpdate:modelValue`
+- intended for schema-driven forms and component-level field modeling
+- serves as the Silver Formily namespace replacement for `@formily/vue`
 
 ## Installation
 
@@ -40,9 +35,17 @@ If `@silver-formily/core` is the brain of the form system, `@silver-formily/vue`
 pnpm add @silver-formily/vue @silver-formily/core @silver-formily/json-schema @silver-formily/path @silver-formily/reactive @silver-formily/reactive-vue @silver-formily/shared @silver-formily/validator vue
 ```
 
+## Related Packages
+
+- `@silver-formily/core`
+- `@silver-formily/json-schema`
+- `@silver-formily/reactive-vue`
+- `@silver-formily/element-plus`
+- `@silver-formily/vant`
+
 ## Documentation
 
-- Docs site: <https://vue.silver-formily.org>
+- Docs: <https://vue.silver-formily.org>
 - Repository: <https://github.com/hezhengxu2018/silver-formily>
 
 ## License

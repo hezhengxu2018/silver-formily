@@ -2,23 +2,29 @@
 
 [简体中文](./README.md)
 
-`@silver-formily/grid` is the responsive grid runtime used by Silver Formily. It is not just a static CSS grid helper. Instead, it calculates columns and layout state dynamically from container width, breakpoints, and child spans, which makes it especially useful for form layouts.
+## Overview
 
-## What Problem It Solves
+`@silver-formily/grid` is the responsive grid-layout runtime of Silver Formily. It computes columns and layout output from container metrics, breakpoints, and child span metadata, and is intended as the runtime substrate for form layout systems rather than as a thin static CSS grid wrapper.
 
-Complex forms rarely have fixed layouts. Field count, field span, container width, and breakpoint changes all affect the final arrangement. This package provides:
+## Runtime Positioning
 
-- automatic column and breakpoint calculation
-- container-width-aware layout adaptation
-- child-span, wrap, and gap management
-- a stable runtime grid model for higher-level form layout components
+This package is typically consumed as a layout subsystem:
 
-## Typical Use Cases
+- it provides the grid computation model used by UI packages such as `@silver-formily/element-plus`
+- it depends on `@silver-formily/reactive` for layout-state derivation
+- it targets container-driven form layout rather than page-level responsive styling
 
-- responsive form layouts
-- automatic column distribution for schema-driven forms
-- layouts that must react to container size rather than viewport size alone
-- the grid foundation used by packages such as `@silver-formily/element-plus`
+## Public Surface
+
+- `createGrid`
+- the `Grid` instance and layout state
+- breakpoint, column, gap, span, and wrapping calculations
+
+## Use Cases
+
+- responsive form layout
+- automatic column distribution in schema-driven forms
+- container-metric-driven field arrangement
 
 ## Installation
 
@@ -26,13 +32,9 @@ Complex forms rarely have fixed layouts. Field count, field span, container widt
 pnpm add @silver-formily/grid @silver-formily/reactive
 ```
 
-## Mental Model
-
-Create a grid instance with `createGrid`, connect it to a container element, and let the runtime keep track of size changes and child layout metadata. Higher-level components can then consume computed columns, gaps, breakpoints, and wrapping behavior.
-
 ## Documentation
 
-- Docs site: <https://grid.silver-formily.org>
+- Docs: <https://grid.silver-formily.org>
 - Repository: <https://github.com/hezhengxu2018/silver-formily>
 
 ## License

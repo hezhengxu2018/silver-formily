@@ -2,40 +2,42 @@
 
 [English README](./README.en.md)
 
-`@silver-formily/reactive-vue` 是 Silver Formily 响应式系统与 Vue 3 之间的桥接层。它让 `@silver-formily/reactive` 的依赖追踪、副作用和派生计算可以自然地运行在 Vue 组件与 effect scope 生命周期里。
+## Overview
 
-## 这个包有什么用
+`@silver-formily/reactive-vue` 实现 Silver Formily 响应式引擎与 Vue 3 生命周期之间的桥接层。它将 observer、依赖追踪与 reaction 语义绑定到组件渲染与 effect scope 中。
 
-如果你已经在使用 `@silver-formily/reactive`，但希望把它无缝接进 Vue 3 的组件系统，那么这个包提供了最核心的一层胶水代码。它适合：
+## Runtime Positioning
 
-- 在 Vue 组件中消费 Silver Formily 响应式状态
-- 用 Vue 生命周期托管 `autorun` / `reaction`
-- 为表单渲染层或业务组件提供更细粒度更新
+该包位于响应式引擎与 Vue 渲染层之间：
 
-## 主要能力
+- 以下层 `@silver-formily/reactive` 为状态和依赖模型
+- 以上层 `@silver-formily/vue` 为典型消费方
+- 也可直接服务于自定义 Vue 组件或 renderer
 
-- `observer`：让组件按依赖收集结果精准更新
-- `useObserver`：在 `setup` 中显式启用观察渲染
-- `formilyComputed`：把 Formily 响应式表达式包装成 Vue `computed`
-- `autorunEffect`：在 Vue 生命周期中托管 `autorun`
-- `reactionWatch`：在 Vue 生命周期中托管 `reaction`
+## Public Surface
 
-## 典型使用方式
+- `observer`
+- `useObserver`
+- `formilyComputed`
+- `autorunEffect`
+- `reactionWatch`
 
-- 配合 `@silver-formily/vue`：作为 Vue 表单渲染层的底座依赖
-- 配合业务组件：在组件里直接读取 observable 状态并自动刷新
-- 配合自定义 renderer：实现更细粒度的响应式订阅控制
+## Use Cases
 
-## 安装
+- 在 Vue 3 中消费 Silver Formily observable 状态
+- 将 reaction 生命周期绑定到组件作用域
+- 为自定义 renderer 提供细粒度订阅能力
+
+## Installation
 
 ```bash
 pnpm add @silver-formily/reactive-vue @silver-formily/reactive vue
 ```
 
-## 文档
+## Documentation
 
-- 文档站点：<https://reactive-vue.silver-formily.org>
-- 仓库主页：<https://github.com/hezhengxu2018/silver-formily>
+- Docs: <https://reactive-vue.silver-formily.org>
+- Repository: <https://github.com/hezhengxu2018/silver-formily>
 
 ## License
 

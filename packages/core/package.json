@@ -2,7 +2,7 @@
   "name": "@silver-formily/core",
   "type": "module",
   "version": "1.0.1",
-  "description": "Silver Formily fork of @formily/core",
+  "description": "Core form runtime for Silver Formily, including form state, field lifecycle, effects, and validation orchestration",
   "author": "hezhengxu",
   "license": "MIT",
   "homepage": "https://github.com/hezhengxu2018/silver-formily",

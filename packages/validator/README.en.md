@@ -2,29 +2,30 @@
 
 [简体中文](./README.md)
 
-`@silver-formily/validator` is the validation engine for Silver Formily. It parses declarative validators, runs sync or async validation, groups results by severity, and exposes registries for rules, formats, and localized messages.
+## Overview
 
-## What This Package Is For
+`@silver-formily/validator` is the declarative validation engine of Silver Formily. It parses rule definitions into executable validator pipelines and supports async execution, severity-based result aggregation, format registration, and locale extension.
 
-If you need more than lightweight component-level checks, this package provides a composable, extensible, and i18n-friendly validation runtime. It is commonly used for:
+## Runtime Positioning
 
-- field-level and form-level validation
-- custom rule registration
-- format validation and message template overrides
-- validation workflows inside `@silver-formily/core`
+This package acts as the validation subsystem of the form runtime:
 
-## Key Capabilities
+- it provides field-level and form-level validation execution for `@silver-formily/core`
+- it powers validation in schema-driven form flows
+- it centralizes registration for rules, formats, and message templates
 
-- `validate` for running validators and collecting `error`, `warning`, and `success`
-- validator parsing and execution
-- built-in rule, format, and locale registries
-- async validation support and `validateFirst`
+## Public Surface
 
-## Good Fit For
+- `validate` for executing validator pipelines and returning `error`, `warning`, and `success`
+- validator parsing infrastructure
+- rule, format, locale, and message-template registries
+- execution strategies such as `validateFirst`
 
-- custom form engines and field systems
-- shared business validation rules
-- migrations from `@formily/validator` to `@silver-formily/validator`
+## Use Cases
+
+- complex form validation flows
+- configurable validation systems
+- replacement for `@formily/validator`
 
 ## Installation
 
@@ -34,7 +35,7 @@ pnpm add @silver-formily/validator @silver-formily/path @silver-formily/shared
 
 ## Documentation
 
-- Docs site: <https://validator.silver-formily.org>
+- Docs: <https://validator.silver-formily.org>
 - Repository: <https://github.com/hezhengxu2018/silver-formily>
 
 ## License

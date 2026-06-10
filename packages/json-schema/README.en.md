@@ -2,29 +2,29 @@
 
 [简体中文](./README.md)
 
-`@silver-formily/json-schema` provides the schema description layer for Silver Formily. It connects JSON Schema-style structures with form components, decorators, reactions, display state, and other runtime behavior, making it a key package for schema-driven forms.
+## Overview
 
-## What This Package Does
+`@silver-formily/json-schema` provides the schema description layer of Silver Formily. It maps JSON Schema-style structures into field semantics, decorators, components, display state, and reaction metadata, and serves as the core input protocol for schema-driven forms.
 
-If your form is generated from a schema rather than handwritten field-by-field, this package is the bridge. It is responsible for:
+## Runtime Positioning
 
-- the `Schema` class and schema-related types
-- describing components, decorators, and component props
-- supporting extensions such as `x-component`, `x-decorator`, and `x-reactions`
-- schema compilation, patches, polyfills, and default type mappings
+Within the package stack, this package acts as the description layer:
 
-## Typical Use Cases
+- above `@silver-formily/core`, mapping static schema into runtime semantics
+- below `@silver-formily/vue` and UI bindings, acting as their rendering input contract
+- as a stable abstraction for low-code and config-driven form systems
 
-- dynamic forms generated from JSON or DSL definitions
-- low-code or config-driven form systems
-- schema input for `@silver-formily/vue` and UI adapter packages
-- migrations from `@formily/json-schema` to `@silver-formily/json-schema`
+## Public Surface
 
-## Works With
+- the `Schema` class and schema-related type definitions
+- extension protocols such as `x-component`, `x-decorator`, and `x-reactions`
+- schema compiler, patch, polyfill, and default-type mapping facilities
 
-- `@silver-formily/core` for the runtime field model
-- `@silver-formily/vue` for Vue rendering
-- `@silver-formily/element-plus` and `@silver-formily/vant` for UI-specific schema declarations
+## Use Cases
+
+- dynamic form generation
+- low-code and configuration-driven form systems
+- replacement for `@formily/json-schema`
 
 ## Installation
 
@@ -32,9 +32,16 @@ If your form is generated from a schema rather than handwritten field-by-field, 
 pnpm add @silver-formily/json-schema @silver-formily/core @silver-formily/path @silver-formily/reactive @silver-formily/shared
 ```
 
+## Related Packages
+
+- `@silver-formily/core`
+- `@silver-formily/vue`
+- `@silver-formily/element-plus`
+- `@silver-formily/vant`
+
 ## Documentation
 
-- Docs site: <https://json-schema.silver-formily.org>
+- Docs: <https://json-schema.silver-formily.org>
 - Repository: <https://github.com/hezhengxu2018/silver-formily>
 
 ## License

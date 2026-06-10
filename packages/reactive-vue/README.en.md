@@ -2,29 +2,31 @@
 
 [简体中文](./README.md)
 
-`@silver-formily/reactive-vue` is the bridge between Silver Formily's reactive engine and Vue 3. It lets dependency tracking, effects, and derived computations from `@silver-formily/reactive` run naturally inside Vue components and effect scopes.
+## Overview
 
-## What This Package Is For
+`@silver-formily/reactive-vue` implements the bridge between the Silver Formily reactive engine and Vue 3 lifecycle semantics. It binds observer behavior, dependency tracking, and reaction execution to component rendering and effect scopes.
 
-If you already use `@silver-formily/reactive` and want to wire it cleanly into Vue 3, this package provides the missing glue. It is useful for:
+## Runtime Positioning
 
-- consuming Silver Formily observable state inside Vue components
-- binding `autorun` and `reaction` to Vue lifecycle
-- enabling fine-grained updates in renderers and business components
+This package sits between the reactive engine and the Vue rendering layer:
 
-## Key Capabilities
+- it uses `@silver-formily/reactive` as its state and dependency model
+- it is typically consumed by `@silver-formily/vue`
+- it can also be used directly in custom Vue components or renderers
 
-- `observer` for dependency-aware component updates
-- `useObserver` for setup-level observation wiring
-- `formilyComputed` for wrapping Formily expressions as Vue `computed`
-- `autorunEffect` for lifecycle-managed `autorun`
-- `reactionWatch` for lifecycle-managed `reaction`
+## Public Surface
 
-## Common Pairings
+- `observer`
+- `useObserver`
+- `formilyComputed`
+- `autorunEffect`
+- `reactionWatch`
 
-- `@silver-formily/vue` as the Vue form rendering layer
-- business components that read observable state directly
-- custom renderers that need fine-grained subscriptions
+## Use Cases
+
+- consuming Silver Formily observables in Vue 3
+- binding reaction lifetime to component scopes
+- implementing fine-grained subscriptions in custom renderers
 
 ## Installation
 
@@ -34,7 +36,7 @@ pnpm add @silver-formily/reactive-vue @silver-formily/reactive vue
 
 ## Documentation
 
-- Docs site: <https://reactive-vue.silver-formily.org>
+- Docs: <https://reactive-vue.silver-formily.org>
 - Repository: <https://github.com/hezhengxu2018/silver-formily>
 
 ## License

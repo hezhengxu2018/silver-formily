@@ -2,48 +2,51 @@
 
 [English README](./README.en.md)
 
-`@silver-formily/vue` 是 Silver Formily 面向 Vue 3 的运行时绑定层。它把 `@silver-formily/core` 的表单模型、字段状态和副作用系统接到 Vue 组件树中，提供 `Field`、`SchemaField`、`FormProvider`、`connect`、`mapProps` 等表单渲染能力。
+## Overview
 
-## 这个包在做什么
+`@silver-formily/vue` 是 Silver Formily 面向 Vue 3 的表单渲染层。它将核心 runtime、schema 协议与 Vue 组件系统连接起来，暴露字段组件、schema 渲染组件、组合式 API 与组件适配工具。
 
-如果说 `@silver-formily/core` 是表单的大脑，那么 `@silver-formily/vue` 就是 Vue 3 世界里的渲染与连接层。它负责：
+## Runtime Positioning
 
-- 把表单实例注入到组件树中
-- 把字段模型映射成 Vue 组件
-- 提供 schema 驱动表单的运行时组件
-- 统一 `modelValue` / `onUpdate:modelValue` 风格的 Vue 3 事件契约
+该包处于运行时与 UI 组件库之间：
 
-## 为什么选择它
+- 依赖 `@silver-formily/core` 提供表单与字段语义
+- 依赖 `@silver-formily/reactive-vue` 适配 Vue 生命周期
+- 作为 `@silver-formily/element-plus` 与 `@silver-formily/vant` 的上游渲染层
 
-- 完全面向 Vue 3，不再保留 Vue 2 兼容分支
-- 与 `@silver-formily/core`、`@silver-formily/json-schema`、`@silver-formily/reactive-vue` 同命名空间协作
-- 更适合 Element Plus、Vant 等 Vue 3 组件库
-- 适合从 `@formily/vue` 迁移到统一的 `@silver-formily/*` 体系
+## Public Surface
 
-## 主要能力
+- 字段组件：`Field`、`ArrayField`、`ObjectField`、`VoidField`
+- 表单上下文组件：`FormProvider`、`FormConsumer`
+- schema 组件：`SchemaField`、`RecursionField`、`ReactiveField`、`ExpressionScope`
+- composables：`useForm`、`useField`、`useFieldSchema`、`useFormEffects`
+- adapter helpers：`connect`、`mapProps`
 
-- 组件：`FormProvider`、`FormConsumer`、`Field`、`ArrayField`、`ObjectField`、`VoidField`
-- Schema 渲染：`SchemaField`、`RecursionField`、`ReactiveField`、`ExpressionScope`
-- 组合式 API：`useForm`、`useField`、`useFieldSchema`、`useFormEffects`
-- 适配工具：`connect`、`mapProps`
+## Design Characteristics
 
-## 推荐搭配
+- 纯 Vue 3 运行时路径
+- 对齐 `modelValue` / `onUpdate:modelValue` 契约
+- 面向 schema-driven forms 和组件级字段建模
+- 作为 `@formily/vue` 的 Silver Formily 命名空间替代实现
 
-- `@silver-formily/core`：表单运行时内核
-- `@silver-formily/json-schema`：schema 驱动描述层
-- `@silver-formily/reactive-vue`：Vue 响应式桥接
-- `@silver-formily/element-plus` / `@silver-formily/vant`：开箱即用 UI 方案
-
-## 安装
+## Installation
 
 ```bash
 pnpm add @silver-formily/vue @silver-formily/core @silver-formily/json-schema @silver-formily/path @silver-formily/reactive @silver-formily/reactive-vue @silver-formily/shared @silver-formily/validator vue
 ```
 
-## 文档
+## Related Packages
 
-- 文档站点：<https://vue.silver-formily.org>
-- 仓库主页：<https://github.com/hezhengxu2018/silver-formily>
+- `@silver-formily/core`
+- `@silver-formily/json-schema`
+- `@silver-formily/reactive-vue`
+- `@silver-formily/element-plus`
+- `@silver-formily/vant`
+
+## Documentation
+
+- Docs: <https://vue.silver-formily.org>
+- Repository: <https://github.com/hezhengxu2018/silver-formily>
 
 ## License
 

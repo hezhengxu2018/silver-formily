@@ -2,51 +2,57 @@
 
 [English README](./README.en.md)
 
-`@silver-formily/core` 是 Silver Formily 的表单运行时内核。它负责管理表单实例、字段状态、联动副作用、校验调度、提交流程以及表单上下文，是 `@silver-formily/vue`、`@silver-formily/json-schema` 和各类 UI 适配层共同依赖的基础包。
+## Overview
 
-## 这个包解决什么问题
+`@silver-formily/core` 是 Silver Formily 的核心表单运行时。它定义表单实例、字段树、状态流转、校验调度、提交流程与副作用执行模型，是上层渲染层和 UI 适配层的统一语义基础。
 
-当你需要一套与 UI 框架无关的表单领域模型时，`@silver-formily/core` 提供了真正的“表单大脑”：
+## Runtime Positioning
 
-- 创建表单实例并维护全局状态
-- 管理字段树、字段生命周期和路径访问
-- 协调校验、提交、重置、联动、副作用
-- 提供类型守卫、effect hook 和运行时工具
+在包分层上，`@silver-formily/core` 位于：
 
-如果你只是想在 Vue 里直接写表单组件，通常会配合 `@silver-formily/vue` 使用；如果你想做自定义渲染层、跨框架集成或更底层的状态控制，这个包就是核心入口。
+- `@silver-formily/reactive` 之上，复用响应式模型与 effect 调度
+- `@silver-formily/vue`、`@silver-formily/json-schema` 之下，为它们提供领域运行时
+- `@silver-formily/element-plus`、`@silver-formily/vant` 之下，作为所有表单 UI 绑定的状态来源
 
-## 主要能力
+## Public Surface
 
-- `createForm`：创建表单实例
-- `createEffectHook` / `createEffectContext`：组织表单副作用和联动逻辑
-- `useEffectForm`：在 effect 作用域内访问当前表单
-- `FormPath`：复用 `@silver-formily/path` 的路径能力
-- 一组 `isForm`、`isField`、`isArrayField` 等类型守卫与状态判断工具
-- 校验规则、校验格式、国际化消息的注册入口
+公开 API 主要围绕以下能力展开：
 
-## 适合谁使用
+- `createForm`：构造表单实例
+- `createEffectHook` / `createEffectContext`：组织表单级副作用和 reaction pipeline
+- `useEffectForm`：在 effect 上下文中访问活动表单
+- `FormPath`：复用 `@silver-formily/path` 的路径系统
+- `isForm`、`isField`、`isArrayField` 等类型守卫
+- 校验规则、格式、locale 与模板引擎的注册入口
 
-- 正在构建自己的 Silver Formily 渲染层或组件库
-- 需要脱离 UI 框架直接管理表单状态
-- 需要在业务侧编排复杂联动、提交和副作用逻辑
-- 正在把旧的 `@formily/core` 依赖迁移到 `@silver-formily/core`
+## Use Cases
 
-## 安装
+推荐在以下场景直接使用该包：
+
+- 构建自定义渲染器或组件绑定层
+- 直接编排字段状态、联动逻辑和提交流程
+- 在迁移过程中替换 `@formily/core`
+
+如果只是消费现成的 Vue 表单能力，通常应优先从 `@silver-formily/vue` 或对应 UI 包接入，而不是直接操作底层 runtime。
+
+## Installation
 
 ```bash
 pnpm add @silver-formily/core @silver-formily/path @silver-formily/reactive @silver-formily/shared @silver-formily/validator
 ```
 
-## 通常如何配合其它包
+## Related Packages
 
-- 配合 `@silver-formily/vue`：把表单运行时接到 Vue 组件树
-- 配合 `@silver-formily/json-schema`：把 Schema 描述转成字段与组件树
-- 配合 `@silver-formily/element-plus` / `@silver-formily/vant`：接入现成 UI 组件方案
+- `@silver-formily/reactive`
+- `@silver-formily/path`
+- `@silver-formily/validator`
+- `@silver-formily/json-schema`
+- `@silver-formily/vue`
 
-## 文档
+## Documentation
 
-- 文档站点：<https://core.silver-formily.org>
-- 仓库主页：<https://github.com/hezhengxu2018/silver-formily>
+- Docs: <https://core.silver-formily.org>
+- Repository: <https://github.com/hezhengxu2018/silver-formily>
 
 ## License
 

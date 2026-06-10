@@ -2,34 +2,38 @@
 
 [简体中文](./README.md)
 
-`@silver-formily/core` is the runtime kernel of Silver Formily. It manages form instances, field state, side effects, validation scheduling, submission flow, and shared form context. Packages such as `@silver-formily/vue`, `@silver-formily/json-schema`, and the UI adapter layers are all built on top of it.
+## Overview
 
-## What This Package Is For
+`@silver-formily/core` is the canonical form runtime for Silver Formily. It defines form instances, field trees, state transitions, validation scheduling, submission flow, and effect execution semantics, and serves as the semantic foundation for upper rendering layers and UI bindings.
 
-When you need a UI-agnostic form domain model, `@silver-formily/core` provides the actual "brain" of the form system:
+## Runtime Positioning
 
-- create and manage form instances
-- maintain field trees and field lifecycle
-- coordinate validation, submission, reset, and reactions
-- expose effect hooks, runtime guards, and shared utilities
+Within the package graph, `@silver-formily/core` sits:
 
-If you only want to render forms in Vue, you will usually consume this through `@silver-formily/vue`. If you are building a custom renderer, integrating with another view layer, or working at the runtime level, this is the package you want.
+- above `@silver-formily/reactive`, reusing its reactive model and effect scheduler
+- below `@silver-formily/vue` and `@silver-formily/json-schema`, which consume it as their domain runtime
+- below UI bindings such as `@silver-formily/element-plus` and `@silver-formily/vant`
 
-## Key Capabilities
+## Public Surface
 
-- `createForm` for creating form instances
-- `createEffectHook` and `createEffectContext` for reaction orchestration
-- `useEffectForm` for accessing the active form inside effects
-- `FormPath` re-exported around `@silver-formily/path`
+The public API is centered around the following capabilities:
+
+- `createForm` for form construction
+- `createEffectHook` and `createEffectContext` for effect orchestration
+- `useEffectForm` for accessing the active form inside an effect context
+- `FormPath` as the path-system bridge from `@silver-formily/path`
 - guards such as `isForm`, `isField`, and `isArrayField`
-- registries for validation rules, formats, and i18n messages
+- registries for validation rules, formats, locales, and message templates
 
-## Who Should Use It
+## Use Cases
 
-- library authors building on top of Silver Formily
-- teams that want runtime-level form state control
-- applications with complex reaction, submission, and validation flows
-- projects migrating from `@formily/core` to `@silver-formily/core`
+Direct usage is most appropriate when you are:
+
+- building a custom rendering layer
+- orchestrating field state, reactions, and submission flow at runtime
+- replacing `@formily/core` during migration
+
+If you only need Vue-facing form primitives, prefer consuming `@silver-formily/vue` or a UI integration package instead of using the runtime directly.
 
 ## Installation
 
@@ -37,15 +41,17 @@ If you only want to render forms in Vue, you will usually consume this through `
 pnpm add @silver-formily/core @silver-formily/path @silver-formily/reactive @silver-formily/shared @silver-formily/validator
 ```
 
-## Works Well With
+## Related Packages
 
-- `@silver-formily/vue` for Vue rendering
-- `@silver-formily/json-schema` for schema-driven forms
-- `@silver-formily/element-plus` and `@silver-formily/vant` for ready-made UI bindings
+- `@silver-formily/reactive`
+- `@silver-formily/path`
+- `@silver-formily/validator`
+- `@silver-formily/json-schema`
+- `@silver-formily/vue`
 
 ## Documentation
 
-- Docs site: <https://core.silver-formily.org>
+- Docs: <https://core.silver-formily.org>
 - Repository: <https://github.com/hezhengxu2018/silver-formily>
 
 ## License
