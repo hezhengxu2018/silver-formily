@@ -25,23 +25,31 @@ const DEFAULT_NO_EXTERNAL = [
 const DEFAULT_OPTIMIZE_EXCLUDE = ['vitepress-theme-element-plus']
 const INTERNAL_WORKSPACE_PREFIX = '@silver-formily/'
 
+function createLocalizedLink(text, baseUrl, localizedLinks = {}) {
+  return {
+    text,
+    link: baseUrl,
+    localizedLinks,
+  }
+}
+
 export const silverFormilyFoundationFooterLinks = [
-  { text: 'Reactive', link: 'https://reactive.silver-formily.org/' },
-  { text: 'Core', link: 'https://core.silver-formily.org/' },
-  { text: 'Path', link: 'https://path.silver-formily.org/' },
-  { text: 'Validator', link: 'https://validator.silver-formily.org/' },
-  { text: 'JSON Schema', link: 'https://json-schema.silver-formily.org/' },
+  createLocalizedLink('Reactive', 'https://reactive.silver-formily.org/', { en: 'https://reactive.silver-formily.org/en/' }),
+  createLocalizedLink('Core', 'https://core.silver-formily.org/', { en: 'https://core.silver-formily.org/en/' }),
+  createLocalizedLink('Path', 'https://path.silver-formily.org/', { en: 'https://path.silver-formily.org/en/' }),
+  createLocalizedLink('Validator', 'https://validator.silver-formily.org/', { en: 'https://validator.silver-formily.org/en/' }),
+  createLocalizedLink('JSON Schema', 'https://json-schema.silver-formily.org/', { en: 'https://json-schema.silver-formily.org/en/' }),
 ]
 
 export const silverFormilyFrameworkFooterLinks = [
-  { text: 'Vue', link: 'https://vue.silver-formily.org/' },
-  { text: 'Reactive Vue', link: 'https://reactive-vue.silver-formily.org/' },
+  createLocalizedLink('Vue', 'https://vue.silver-formily.org/', { en: 'https://vue.silver-formily.org/en/' }),
+  createLocalizedLink('Reactive Vue', 'https://reactive-vue.silver-formily.org/', { en: 'https://reactive-vue.silver-formily.org/en/' }),
 ]
 
 export const silverFormilyUiFooterLinks = [
-  { text: 'Grid', link: 'https://grid.silver-formily.org/' },
-  { text: 'Element Plus', link: 'https://element-plus.silver-formily.org/' },
-  { text: 'Vant', link: 'https://vant.silver-formily.org/' },
+  createLocalizedLink('Grid', 'https://grid.silver-formily.org/', { en: 'https://grid.silver-formily.org/en/' }),
+  createLocalizedLink('Element Plus', 'https://element-plus.silver-formily.org/', { en: 'https://element-plus.silver-formily.org/en/' }),
+  createLocalizedLink('Vant', 'https://vant.silver-formily.org/', { en: 'https://vant.silver-formily.org/en/' }),
 ]
 
 export const silverFormilyFooterLinks = [
@@ -51,10 +59,10 @@ export const silverFormilyFooterLinks = [
 ]
 
 export const formilyFooterLinks = [
-  { text: 'Core', link: 'https://core.formilyjs.org/' },
-  { text: 'Reactive', link: 'https://reactive.formilyjs.org/' },
-  { text: 'Vue', link: 'https://vue.formilyjs.org/' },
-  { text: 'React', link: 'https://react.formilyjs.org/' },
+  createLocalizedLink('Core', 'https://core.formilyjs.org/', { en: 'https://core.formilyjs.org/en-US/' }),
+  createLocalizedLink('Reactive', 'https://reactive.formilyjs.org/', { en: 'https://reactive.formilyjs.org/en-US/' }),
+  createLocalizedLink('Vue', 'https://vue.formilyjs.org/', { en: 'https://vue.formilyjs.org/en-US/' }),
+  createLocalizedLink('React', 'https://react.formilyjs.org/', { en: 'https://react.formilyjs.org/en-US/' }),
 ]
 
 export const zhDefaultFooterBlogroll = [
@@ -101,6 +109,22 @@ function normalizeUrl(url) {
   return url?.replace(/\/+$/, '')
 }
 
+function resolveLocalizedLink(link, lang) {
+  if (!link) {
+    return link
+  }
+
+  const normalizedLang = lang?.toLowerCase() ?? ''
+  const localizedLink = normalizedLang.startsWith('en')
+    ? link.localizedLinks?.en
+    : undefined
+
+  return {
+    ...link,
+    link: localizedLink ?? link.link,
+  }
+}
+
 function resolveCurrentSiteUrl(pkg) {
   if (!pkg?.name?.startsWith(INTERNAL_WORKSPACE_PREFIX)) {
     return undefined
@@ -116,10 +140,15 @@ function filterBlogrollLinks(blogroll, pkg) {
     return blogroll
   }
 
+  const currentSiteUrls = new Set([
+    normalizeUrl(currentSiteUrl),
+    normalizeUrl(`${currentSiteUrl}/en`),
+  ])
+
   return blogroll
     .map(column => ({
       ...column,
-      children: column.children?.filter(link => normalizeUrl(link.link) !== currentSiteUrl),
+      children: column.children?.filter(link => !currentSiteUrls.has(normalizeUrl(link.link))),
     }))
     .filter(column => column.children?.length)
 }
@@ -129,7 +158,12 @@ function resolveDefaultFooterBlogroll(lang, pkg) {
     ? zhDefaultFooterBlogroll
     : enDefaultFooterBlogroll
 
-  return filterBlogrollLinks(baseBlogroll, pkg)
+  const localizedBlogroll = baseBlogroll.map(column => ({
+    ...column,
+    children: column.children?.map(link => resolveLocalizedLink(link, lang)),
+  }))
+
+  return filterBlogrollLinks(localizedBlogroll, pkg)
 }
 
 function resolveFooterConfig(baseFooter, localeFooter, lang, pkg) {

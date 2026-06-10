@@ -11,6 +11,7 @@ export type DocsSidebar = Record<string, DocsSidebarItem[]>
 export interface DocsFooterLink {
   text: string
   link: string
+  localizedLinks?: Partial<Record<'en', string>>
 }
 
 export interface DocsFooterColumn {
