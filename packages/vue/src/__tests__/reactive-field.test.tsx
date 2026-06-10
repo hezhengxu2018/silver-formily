@@ -1,5 +1,5 @@
 import { createForm } from '@silver-formily/core'
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import { render } from 'vitest-browser-vue'
 import { defineComponent, ref } from 'vue'
 import ArrayField from '../components/ArrayField'
@@ -283,5 +283,36 @@ describe('reactive field branches', () => {
 
     const field = form.query('loadingField').take()
     expect(field && 'loading' in field && field.loading).toBeTruthy()
+  })
+
+  it('应该在父级普通重渲染时避免重复创建同一字段实例', async () => {
+    const form = createForm()
+    const createFieldSpy = vi.spyOn(form, 'createField')
+
+    const screen = await render(defineComponent({
+      setup() {
+        const tick = ref(0)
+        return () => (
+          <FormProvider form={form}>
+            <button
+              data-testid="rerender-parent"
+              onClick={() => {
+                tick.value += 1
+              }}
+            >
+              rerender
+            </button>
+            <div data-testid="tick">{tick.value}</div>
+            <Field name="stable" component={[SwitchProbe]} />
+          </FormProvider>
+        )
+      },
+    }))
+
+    expect(createFieldSpy).toHaveBeenCalledTimes(1)
+
+    await screen.getByTestId('rerender-parent').click()
+
+    expect(createFieldSpy).toHaveBeenCalledTimes(1)
   })
 })

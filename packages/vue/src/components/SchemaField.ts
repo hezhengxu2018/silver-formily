@@ -78,6 +78,7 @@ export function createSchemaField<Components extends SchemaVueComponents = Schem
     },
     setup(props: MarkupSchemaProps, { slots }) {
       const parentRef = inject(SchemaMarkupSymbol, null)
+      const resolvedSchemaPropsRef = computed(() => resolveSchemaProps(props))
       let render: () => VNode | null = () => null
 
       if (parentRef?.value) {
@@ -94,13 +95,13 @@ export function createSchemaField<Components extends SchemaVueComponents = Schem
         const schemaRef = shallowRef<Schema>(parentRef.value)
 
         watch(
-          parentRef,
+          [parentRef, resolvedSchemaPropsRef],
           () => {
             if (parentRef.value.type === 'object' || parentRef.value.type === 'void') {
-              schemaRef.value = parentRef.value.addProperty(name, resolveSchemaProps(props))
+              schemaRef.value = parentRef.value.addProperty(name, resolvedSchemaPropsRef.value)
             }
             else if (parentRef.value.type === 'array') {
-              const schema = appendArraySchema(resolveSchemaProps(props))
+              const schema = appendArraySchema(resolvedSchemaPropsRef.value)
               schemaRef.value = Array.isArray(schema) ? schema[0] : schema
             }
           },

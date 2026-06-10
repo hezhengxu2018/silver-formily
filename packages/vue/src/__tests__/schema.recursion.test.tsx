@@ -198,6 +198,41 @@ describe('schema and recursion combinations', () => {
     expect(schema.properties?.[generatedKey!]?.type).toBe('string')
   })
 
+  it('应该在 markup props 变化时同步更新 schema', async () => {
+    const form = createForm()
+    const schema = new Schema({
+      type: 'object',
+    })
+    const { SchemaField, SchemaStringField } = createSchemaField()
+
+    const screen = await render(defineComponent({
+      setup() {
+        const title = ref('first title')
+        return () => (
+          <FormProvider form={form}>
+            <button
+              data-testid="update-markup-title"
+              onClick={() => {
+                title.value = 'second title'
+              }}
+            >
+              update
+            </button>
+            <SchemaField schema={schema}>
+              <SchemaStringField name="username" title={title.value} />
+            </SchemaField>
+          </FormProvider>
+        )
+      },
+    }))
+
+    expect(schema.properties?.username?.title).toBe('first title')
+
+    await screen.getByTestId('update-markup-title').click()
+
+    expect(schema.properties?.username?.title).toBe('second title')
+  })
+
   it('应该在父级重渲染后为新增未命名字段保持唯一名称', async () => {
     const form = createForm()
     const schema = new Schema({

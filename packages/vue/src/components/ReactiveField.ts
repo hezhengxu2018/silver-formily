@@ -5,7 +5,7 @@ import { isVoidField } from '@silver-formily/core'
 import { Path as FormPath } from '@silver-formily/path'
 import { toJS } from '@silver-formily/reactive'
 import { useObserver } from '@silver-formily/reactive-vue'
-import { defineComponent, h, inject, provide, ref, shallowRef, watch } from 'vue'
+import { computed, defineComponent, h, inject, provide, ref, shallowRef, watch } from 'vue'
 import { useField, useForm } from '../hooks'
 import { useAttach } from '../hooks/useAttach'
 
@@ -42,9 +42,14 @@ export default defineComponent({
       })
 
     const fieldRef = shallowRef(createField()) as Ref<GeneralField>
+    const fieldIdentifierRef = computed(() => {
+      const basePath = props.fieldProps?.basePath ?? parentRef.value?.address
+      const path = FormPath.parse(basePath).concat(props.fieldProps?.name)
+      return `${props.fieldType}:${path.toString()}`
+    })
 
     watch(
-      () => props.fieldProps,
+      fieldIdentifierRef,
       () => {
         const nextField = createField()
         if (nextField) {
