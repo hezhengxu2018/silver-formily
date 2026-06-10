@@ -539,12 +539,22 @@ describe('arrayTable', async () => {
       expect(rows).toHaveLength(5)
     })
 
-    // 验证页面切换后仍有数据
-    await vi.waitFor(async () => {
-      const pageSizeSelecter = queryElement(screen.container, '.el-select')
-      await userEvent.click(pageSizeSelecter)
-      const lastLabel = queryElement(document, '.el-select-dropdown__item:last-child')
-      await userEvent.click(lastLabel)
+    // 切换分页大小后应同步刷新表格数据
+    await vi.waitFor(() => {
+      expect(screen.container.querySelector('.el-select')).toBeInTheDocument()
+    })
+
+    const pageSizeSelecter = queryElement(screen.container, '.el-select')
+    await userEvent.click(pageSizeSelecter)
+
+    await vi.waitFor(() => {
+      expect(document.querySelector('.el-select-dropdown__item:last-child')).toBeInTheDocument()
+    })
+
+    const lastLabel = queryElement(document, '.el-select-dropdown__item:last-child')
+    await userEvent.click(lastLabel)
+
+    await vi.waitFor(() => {
       const rows = screen.container.querySelectorAll('.el-table__row')
       expect(rows).toHaveLength(15)
       expect(document.querySelectorAll('.el-pager li')).toHaveLength(1)
