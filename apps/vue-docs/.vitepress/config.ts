@@ -17,31 +17,6 @@ type DocsPluginOption = NonNullable<NonNullable<UserConfig['vite']>['plugins']>[
 
 const footer = {
   message: 'Released under the MIT License.',
-  blogroll: [
-    {
-      title: 'Formily',
-      children: [
-        { text: 'Core', link: 'https://core.formilyjs.org/' },
-        { text: 'Reactive', link: 'https://reactive.formilyjs.org/' },
-        { text: 'Vue', link: 'https://vue.formilyjs.org/' },
-      ],
-    },
-    {
-      title: 'Silver Formily',
-      children: [
-        { text: 'Reactive', link: 'https://reactive.silver-formily.org/' },
-        { text: 'Element Plus', link: 'https://element-plus.silver-formily.org/' },
-        { text: 'Reactive Vue', link: 'https://reactive-vue.silver-formily.org/' },
-        { text: 'Grid', link: 'https://grid.silver-formily.org/' },
-      ],
-    },
-    {
-      title: 'Rebuilt Formily Docs',
-      children: [
-        { text: 'JSON Schema', link: 'https://json-schema.silver-formily.org/' },
-      ],
-    },
-  ],
 }
 
 const sidebar = {

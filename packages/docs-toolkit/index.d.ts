@@ -8,6 +8,18 @@ export interface DocsSidebarItem {
 
 export type DocsSidebar = Record<string, DocsSidebarItem[]>
 
+export interface DocsFooterLink {
+  text: string
+  link: string
+}
+
+export interface DocsFooterColumn {
+  title?: string
+  children?: DocsFooterLink[]
+}
+
+export type DocsFooterLinks = DocsFooterLink[]
+
 export interface DocsThemeConfig {
   nav?: Array<{
     text: string
@@ -17,10 +29,7 @@ export interface DocsThemeConfig {
   sidebar?: DocsSidebar
   footer?: {
     message?: string
-    blogroll?: Array<{
-      title?: string
-      children?: Array<{ text: string, link: string }>
-    }>
+    blogroll?: DocsFooterColumn[]
   }
   socialLinks?: Array<{ icon: string, link: string }>
   [key: string]: unknown
@@ -43,4 +52,12 @@ export interface DocsConfigOptions extends Omit<UserConfig<DocsThemeConfig>, 'vi
 }
 
 export function createDocsConfig(options?: DocsConfigOptions): UserConfig<DocsThemeConfig>
+export const silverFormilyFoundationFooterLinks: DocsFooterLinks
+export const silverFormilyFrameworkFooterLinks: DocsFooterLinks
+export const silverFormilyUiFooterLinks: DocsFooterLinks
+export const silverFormilyFooterLinks: DocsFooterLinks
+export const formilyFooterLinks: DocsFooterLinks
+export const zhDefaultFooterBlogroll: DocsFooterColumn[]
+export const enDefaultFooterBlogroll: DocsFooterColumn[]
+export const defaultFooterBlogroll: DocsFooterColumn[]
 export type { DocsThemeConfig as ThemeConfig }

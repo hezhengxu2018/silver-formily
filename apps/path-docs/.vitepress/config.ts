@@ -78,29 +78,6 @@ export default createDocsConfig({
   },
   footer: {
     message: 'Released under the MIT License.',
-    blogroll: [
-      {
-        title: 'Formily',
-        children: [
-          { text: 'FormPath 官方页面', link: 'https://core.formilyjs.org/zh-CN/api/entry/form-path' },
-        ],
-      },
-      {
-        title: 'Silver Formily',
-        children: [
-          { text: 'Reactive', link: 'https://reactive.silver-formily.org/' },
-          { text: 'Vue', link: 'https://vue.silver-formily.org/' },
-          { text: 'Reactive Vue', link: 'https://reactive-vue.silver-formily.org/' },
-          { text: 'Grid', link: 'https://grid.silver-formily.org/' },
-        ],
-      },
-      {
-        title: 'Rebuilt Formily Docs',
-        children: [
-          { text: 'JSON Schema', link: 'https://json-schema.silver-formily.org/' },
-        ],
-      },
-    ],
   },
   socialLinks: [
     { icon: 'github', link: 'https://github.com/hezhengxu2018/silver-formily' },

@@ -25,6 +25,144 @@ const DEFAULT_NO_EXTERNAL = [
 const DEFAULT_OPTIMIZE_EXCLUDE = ['vitepress-theme-element-plus']
 const INTERNAL_WORKSPACE_PREFIX = '@silver-formily/'
 
+export const silverFormilyFoundationFooterLinks = [
+  { text: 'Reactive', link: 'https://reactive.silver-formily.org/' },
+  { text: 'Core', link: 'https://core.silver-formily.org/' },
+  { text: 'Path', link: 'https://path.silver-formily.org/' },
+  { text: 'Validator', link: 'https://validator.silver-formily.org/' },
+  { text: 'JSON Schema', link: 'https://json-schema.silver-formily.org/' },
+]
+
+export const silverFormilyFrameworkFooterLinks = [
+  { text: 'Vue', link: 'https://vue.silver-formily.org/' },
+  { text: 'Reactive Vue', link: 'https://reactive-vue.silver-formily.org/' },
+]
+
+export const silverFormilyUiFooterLinks = [
+  { text: 'Grid', link: 'https://grid.silver-formily.org/' },
+  { text: 'Element Plus', link: 'https://element-plus.silver-formily.org/' },
+  { text: 'Vant', link: 'https://vant.silver-formily.org/' },
+]
+
+export const silverFormilyFooterLinks = [
+  ...silverFormilyFoundationFooterLinks,
+  ...silverFormilyFrameworkFooterLinks,
+  ...silverFormilyUiFooterLinks,
+]
+
+export const formilyFooterLinks = [
+  { text: 'Core', link: 'https://core.formilyjs.org/' },
+  { text: 'Reactive', link: 'https://reactive.formilyjs.org/' },
+  { text: 'Vue', link: 'https://vue.formilyjs.org/' },
+  { text: 'React', link: 'https://react.formilyjs.org/' },
+]
+
+export const zhDefaultFooterBlogroll = [
+  {
+    title: 'Silver Formily 底层库',
+    children: silverFormilyFoundationFooterLinks,
+  },
+  {
+    title: '前端框架绑定库',
+    children: silverFormilyFrameworkFooterLinks,
+  },
+  {
+    title: '组件库绑定库',
+    children: silverFormilyUiFooterLinks,
+  },
+  {
+    title: 'Formily 官方文档',
+    children: formilyFooterLinks,
+  },
+]
+
+export const enDefaultFooterBlogroll = [
+  {
+    title: 'Silver Formily Foundations',
+    children: silverFormilyFoundationFooterLinks,
+  },
+  {
+    title: 'Framework Bindings',
+    children: silverFormilyFrameworkFooterLinks,
+  },
+  {
+    title: 'UI Bindings',
+    children: silverFormilyUiFooterLinks,
+  },
+  {
+    title: 'Formily',
+    children: formilyFooterLinks,
+  },
+]
+
+export const defaultFooterBlogroll = zhDefaultFooterBlogroll
+
+function normalizeUrl(url) {
+  return url?.replace(/\/+$/, '')
+}
+
+function resolveCurrentSiteUrl(pkg) {
+  if (!pkg?.name?.startsWith(INTERNAL_WORKSPACE_PREFIX)) {
+    return undefined
+  }
+
+  const siteName = pkg.name.slice(INTERNAL_WORKSPACE_PREFIX.length)
+  return `https://${siteName}.silver-formily.org`
+}
+
+function filterBlogrollLinks(blogroll, pkg) {
+  const currentSiteUrl = resolveCurrentSiteUrl(pkg)
+  if (!currentSiteUrl) {
+    return blogroll
+  }
+
+  return blogroll
+    .map(column => ({
+      ...column,
+      children: column.children?.filter(link => normalizeUrl(link.link) !== currentSiteUrl),
+    }))
+    .filter(column => column.children?.length)
+}
+
+function resolveDefaultFooterBlogroll(lang, pkg) {
+  const baseBlogroll = lang?.toLowerCase().startsWith('zh')
+    ? zhDefaultFooterBlogroll
+    : enDefaultFooterBlogroll
+
+  return filterBlogrollLinks(baseBlogroll, pkg)
+}
+
+function resolveFooterConfig(baseFooter, localeFooter, lang, pkg) {
+  if (!baseFooter && !localeFooter) {
+    return undefined
+  }
+
+  return {
+    ...baseFooter,
+    blogroll: resolveDefaultFooterBlogroll(lang, pkg),
+    ...localeFooter,
+  }
+}
+
+function resolveLocales(locales, footer, pkg) {
+  if (!locales) {
+    return locales
+  }
+
+  return Object.fromEntries(
+    Object.entries(locales).map(([key, locale]) => [
+      key,
+      {
+        ...locale,
+        themeConfig: {
+          ...(locale.themeConfig ?? {}),
+          footer: resolveFooterConfig(footer, locale.themeConfig?.footer, locale.lang, pkg),
+        },
+      },
+    ]),
+  )
+}
+
 function getWorkspacePackageDependencies() {
   const packageJsonPath = path.join(process.cwd(), 'package.json')
   if (!existsSync(packageJsonPath)) {
@@ -67,10 +205,12 @@ export function createDocsConfig(options = {}) {
   const mergedHead = [...DEFAULT_HEAD, ...head]
   const markdownOptions = markdown ?? {}
   const workspacePackageDependencies = getWorkspacePackageDependencies()
+  const resolvedFooter = resolveFooterConfig(footer, undefined, locales?.root?.lang, pkg)
+  const resolvedLocales = resolveLocales(locales, footer, pkg)
 
   return defineConfig({
     ...extra,
-    locales,
+    locales: resolvedLocales,
     head: mergedHead,
     vite: {
       ...vite,
@@ -135,7 +275,7 @@ export function createDocsConfig(options = {}) {
       search: { provider: 'local' },
       externalLinkIcon: true,
       sidebar,
-      footer,
+      footer: resolvedFooter,
       socialLinks,
       version: themeConfig.version ?? pkg?.version,
       ...themeConfig,
