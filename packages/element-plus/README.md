@@ -1,34 +1,52 @@
-# Silver Formily Element Plus
+# @silver-formily/element-plus
 
-[![codecov](https://codecov.io/gh/hezhengxu2018/silver-formily-element-plus/graph/badge.svg?token=LZF15NPLJU)](https://codecov.io/gh/hezhengxu2018/silver-formily-element-plus)
+[English README](./README.en.md)
 
-简体中文 | [English](README.en-US.md)
+`@silver-formily/element-plus` 是 Silver Formily 在 Element Plus 生态中的官方适配层。它把表单字段模型、schema 描述和 Element Plus 组件连接起来，提供从基础输入组件到数组场景组件、表单布局组件、预览态组件的一整套现成能力。
 
-基于 Element Plus 的 Formily 组件库封装，提供一致的组件风格、灵活的配置能力以及更丰富的表单场景。
+## 这个包适合什么场景
 
-## 文档
+如果你的项目已经使用 Vue 3 + Element Plus，并希望用 schema 或字段模型来组织复杂表单，这个包就是最直接的 UI 方案。它适合：
 
-https://element-plus.silver-formily.org/
+- 后台管理系统和中后台表单
+- 配置驱动或低代码场景
+- 需要复杂数组字段、分步表单、抽屉/弹窗表单的业务
+- 从 `@formily/element-plus` 迁移到 `@silver-formily/element-plus`
 
-## 特性
+## 你能得到什么
 
-- 💡 统一的组件风格
-- 🔌 灵活的依赖策略（Formily 与 Element Plus 作为 peerDependencies）
-- 🔑 完整的表单组件与扩展场景组件
-- ♿️ 更好的无障碍支持与 FormItem 体验
-- ✅ 新组件具备完善测试保障
-- 📝 基于 Vue 模板语法，易读且性能友好
+- 基础字段组件：`Input`、`Select`、`Checkbox`、`Radio`、`Switch`、`DatePicker`、`Upload` 等
+- 数组类组件：`ArrayTable`、`ArrayCards`、`ArrayTabs`、`ArrayCollapse`、`ArrayItems` 等
+- 表单结构组件：`FormItem`、`FormLayout`、`FormGrid`、`FormStep`、`FormTab`
+- 场景增强组件：`FormDialog`、`FormDrawer`、`QueryForm`、`SelectTable`
+- 预览态组件：`PreviewText.*`
+
+## 依赖关系
+
+这个包通常和以下依赖一起使用：
+
+- `vue`
+- `element-plus`
+- `@silver-formily/vue`
+- `@silver-formily/core`
+- `@silver-formily/json-schema`
+- `@silver-formily/reactive-vue`
 
 ## 安装
 
 ```bash
-pnpm add @silver-formily/element-plus
+pnpm add @silver-formily/element-plus @silver-formily/vue @silver-formily/core @silver-formily/json-schema @silver-formily/reactive @silver-formily/reactive-vue @silver-formily/shared @silver-formily/grid element-plus vue
 ```
 
-本包依赖 Formily、Element Plus、Vue、@silver-formily/vue、@silver-formily/reactive-vue 等 peerDependencies。
+## 为什么它在 npm 页面上值得单独看
 
-当前要求 `element-plus >= 2.11.0`。请查看文档或 package.json 获取完整兼容版本与配置说明。
+因为它不是简单把 Element Plus 包了一层，而是把 Silver Formily 的字段模型、校验状态、decorator、schema 和 Element Plus 的组件契约真正打通。你可以直接在业务里复用它的表单场景组件，而不必从零搭建整套 glue code。
 
-## 开源协议
+## 文档
+
+- 文档站点：<https://element-plus.silver-formily.org>
+- 仓库主页：<https://github.com/hezhengxu2018/silver-formily>
+
+## License
 
 MIT

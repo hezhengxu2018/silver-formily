@@ -1,114 +1,50 @@
-# Silver Formily Vue
+# @silver-formily/vue
 
-[文档网站](https://vue.silver-formily.org/) · [本地文档首页](../../apps/vue-docs/index.md) · [English README](./README.en.md)
+[English README](./README.en.md)
 
-@silver-formily/vue 是一个专注于 Vue 3 生态的 Formily 运行时封装。它保留了 `@formily/vue` 的编排能力，同时去除了 Vue 2 兼容层、冗余 DOM 包裹以及不一致的事件契约。源码位于 `src/`，文档应用位于 `apps/vue-docs/`，构建产物存放在 `esm/`。
+`@silver-formily/vue` 是 Silver Formily 面向 Vue 3 的运行时绑定层。它把 `@silver-formily/core` 的表单模型、字段状态和副作用系统接到 Vue 组件树中，提供 `Field`、`SchemaField`、`FormProvider`、`connect`、`mapProps` 等表单渲染能力。
 
-## ✨ 特性
+## 这个包在做什么
 
-- **纯粹的 Vue 3 代码路径**：完全抛弃 `vue-demi`、`vue-frag` 等兼容依赖，渲染树贴近原生组件库。
-- **原生 DOM 与事件语义**：统一使用 `modelValue` / `onUpdate:modelValue`，Element Plus 等组件可直接对接。
-- **完善的 TypeScript 类型**：在运行时附近维护显式泛型与公共接口，确保生成的 `.d.ts` 与实现同步。
-- **Formily 生态对齐**：与 `@silver-formily/core`、`@silver-formily/json-schema` 等仓库内配套包协同工作，迁移路径清晰。
-- **Decorator 插槽支持**：通过 `:decorator-content` 与 `x-decorator-content` 将 `FormItem` 等装饰器的 `default`、`label`、`extra` 插槽与 schema 数据解耦，详见[常见问题](../../apps/vue-docs/questions/index.md#如何向装饰器传递插槽)。
-- **配套文档与示例**：内置 VitePress 文档应用，包含 API、迁移提示以及 Element Plus 示例，可在仓库根目录执行 `pnpm dev -- vue-docs` 本地查看。
+如果说 `@silver-formily/core` 是表单的大脑，那么 `@silver-formily/vue` 就是 Vue 3 世界里的渲染与连接层。它负责：
 
-## 🔄 与 `@formily/vue` 的差异
+- 把表单实例注入到组件树中
+- 把字段模型映射成 Vue 组件
+- 提供 schema 驱动表单的运行时组件
+- 统一 `modelValue` / `onUpdate:modelValue` 风格的 Vue 3 事件契约
 
-| 项目        | `@silver-formily/vue` 2.x                                          | 官方 `@formily/vue`              |
-| ----------- | ------------------------------------------------------------------ | -------------------------------- |
-| 事件契约    | `modelValue` / `onUpdate:modelValue`                               | `value` / `onChange`             |
-| DOM 结构    | 无额外 `template` / `display: contents` 包裹                       | 含 Vue 2 兼容容器                |
-| 依赖        | 仅依赖 Vue 3 生态                                                  | 借助 `vue-demi` 同时支持 Vue 2/3 |
-| Schema 导出 | 不再 re-export `Schema`（请从 `@silver-formily/json-schema` 引入） | 仍导出                           |
-| 兼容策略    | 需要与官方保持完全一致时可使用 `@silver-formily/vue@1.x`           | 官方包                           |
+## 为什么选择它
 
-## 📦 Peer Dependencies
+- 完全面向 Vue 3，不再保留 Vue 2 兼容分支
+- 与 `@silver-formily/core`、`@silver-formily/json-schema`、`@silver-formily/reactive-vue` 同命名空间协作
+- 更适合 Element Plus、Vant 等 Vue 3 组件库
+- 适合从 `@formily/vue` 迁移到统一的 `@silver-formily/*` 体系
 
-在宿主应用中需要同时安装：
+## 主要能力
 
-```
-@silver-formily/core workspace:*
-@silver-formily/json-schema workspace:*
-@silver-formily/path workspace:*
-@silver-formily/reactive workspace:*
-@silver-formily/reactive-vue ^1
-@silver-formily/shared workspace:*
-vue ^3.3.0+
-```
+- 组件：`FormProvider`、`FormConsumer`、`Field`、`ArrayField`、`ObjectField`、`VoidField`
+- Schema 渲染：`SchemaField`、`RecursionField`、`ReactiveField`、`ExpressionScope`
+- 组合式 API：`useForm`、`useField`、`useFieldSchema`、`useFormEffects`
+- 适配工具：`connect`、`mapProps`
 
-## 🚀 安装
+## 推荐搭配
 
-推荐使用 pnpm：
+- `@silver-formily/core`：表单运行时内核
+- `@silver-formily/json-schema`：schema 驱动描述层
+- `@silver-formily/reactive-vue`：Vue 响应式桥接
+- `@silver-formily/element-plus` / `@silver-formily/vant`：开箱即用 UI 方案
+
+## 安装
 
 ```bash
-pnpm add @silver-formily/vue @silver-formily/core @silver-formily/json-schema @silver-formily/path @silver-formily/reactive @silver-formily/reactive-vue @silver-formily/shared
+pnpm add @silver-formily/vue @silver-formily/core @silver-formily/json-schema @silver-formily/path @silver-formily/reactive @silver-formily/reactive-vue @silver-formily/shared @silver-formily/validator vue
 ```
 
-## ⚡️ 快速开始
+## 文档
 
-以下示例演示如何结合 Element Plus 构建最小表单：
+- 文档站点：<https://vue.silver-formily.org>
+- 仓库主页：<https://github.com/hezhengxu2018/silver-formily>
 
-```vue
-<script setup lang="ts">
-import { createForm } from '@silver-formily/core'
-import { connect, Field, FormProvider, mapProps } from '@silver-formily/vue'
-import { ElFormItem, ElInput } from 'element-plus'
+## License
 
-const form = createForm({ validateFirst: true })
-
-const FormItem = connect(
-  ElFormItem,
-  mapProps({ title: 'label', required: true }, (_, field) => ({
-    error: field.selfErrors[0] || undefined,
-  })),
-)
-</script>
-
-<template>
-  <FormProvider :form="form">
-    <Field
-      name="email"
-      title="Email"
-      required
-      :decorator="[FormItem]"
-      :component="[ElInput, { placeholder: 'hello@formily.dev' }]"
-    />
-  </FormProvider>
-</template>
-```
-
-更多组件（`SchemaField`、`RecursionField`、`ArrayField` 等）与组合式 API 请参阅 [`apps/vue-docs/api`](../../apps/vue-docs/api)。
-
-## 🧱 API 速览
-
-- **组件**：`FormProvider`、`FormConsumer`、`Field`、`ArrayField`、`ObjectField`、`VoidField`、`SchemaField`、`RecursionField`、`ReactiveField`、`ExpressionScope`。
-- **组合式函数**：`useForm`、`useField`、`useFieldSchema`、`useFormEffects`、`useParentForm`、`useAttach`、`useInjectionCleaner`。
-- **共享工具**：`connect`、`mapProps` 以及位于 `src/shared`、`src/utils` 的渲染辅助。
-
-所有公共符号均通过 `src/index.ts` 输出，构建后的 JS 与 `.d.ts` 保存在 `esm/`。
-
-## 🛠️ 本地开发
-
-```bash
-pnpm install       # 安装依赖
-pnpm lint          # 运行 Antfu ESLint 规则
-pnpm build         # 基于 Vite 生成库与类型
-pnpm dev -- vue-docs # 从仓库根目录启动文档应用
-pnpm --filter vue-docs docs:build # 构建文档站点
-pnpm commit        # 使用 czg 编写 Conventional Commit
-pnpm release       # Changeset 发布流程（需要干净工作区）
-```
-
-- 构建输出位于 `esm/`，请勿手动修改。
-- 目前没有自动化测试，请在 PR 中记录手动验证（Vue/Formily 版本、使用的 schema、浏览器等）。
-- 代码风格遵循 `@antfu/eslint-config`：2 空格、单引号、允许尾随逗号、无分号。
-
-## 📚 文档与示例
-
-- 在线站点：<https://vue.silver-formily.org/>
-- `apps/vue-docs/demos` 提供 Element Plus 示例，可作为封装自定义组件的起点。
-
-## 📄 License
-
-MIT © hezhengxu
+MIT

@@ -2,55 +2,84 @@
 
 English | [简体中文](./README.md)
 
-Silver Formily is a Formily ecosystem rebuilt on top of Vite and Turborepo. It is currently focused on the Vue 3 ecosystem, with reworked Element Plus and Vant integrations. Most foundational packages, including Grid, have already been migrated. A few base libraries still depend on the upstream official wrappers, but those wrappers are effectively no longer maintained, so the remaining libraries will be migrated as well.
+Silver Formily is a Vue 3 form infrastructure monorepo. The core reactive system, path utilities, validation, schema layer, runtime bindings, and UI adapters in this repository have all been migrated from the original Formily dependencies into first-party `@silver-formily/*` implementations. The repository is no longer just a wrapper around Formily; it is now an independently evolving implementation with its own packages, docs, and tooling.
+
+The workspace is organized with `pnpm`, `Turborepo`, `Vite`, and `VitePress`, covering core runtime packages, Vue bindings, Element Plus / Vant integrations, documentation sites, and shared internal tooling.
+
+## What Is Included
+
+- Core foundations: `@silver-formily/reactive`, `@silver-formily/path`, `@silver-formily/shared`, `@silver-formily/validator`
+- Form runtime stack: `@silver-formily/core`, `@silver-formily/json-schema`, `@silver-formily/vue`, `@silver-formily/reactive-vue`
+- UI adapters: `@silver-formily/element-plus`, `@silver-formily/vant`
+- Supporting packages: `@silver-formily/grid`, `@silver-formily/docs-toolkit`, `@silver-formily/typescript-config`
 
 ## Documentation Sites
 
-- Reactive: docs and interactive demos for `@silver-formily/reactive` <https://reactive.silver-formily.org>
+- Reactive: <https://reactive.silver-formily.org>
+- Path: <https://path.silver-formily.org>
+- Validator: <https://validator.silver-formily.org>
+- Core: <https://core.silver-formily.org>
 - Vue: <https://vue.silver-formily.org>
 - Reactive Vue: <https://reactive-vue.silver-formily.org>
 - Element Plus: <https://element-plus.silver-formily.org>
 - Vant: <https://vant.silver-formily.org>
 - Grid: <https://grid.silver-formily.org>
-- JSON Schema: rebuilt Formily JSON Schema docs <https://json-schema.silver-formily.org>
+- JSON Schema: <https://json-schema.silver-formily.org>
 
 ## Workspace Packages
 
-| Package                             | Purpose                                               |
-| ----------------------------------- | ----------------------------------------------------- |
-| `@silver-formily/reactive-vue`      | Vue 3 adapter layer around `@silver-formily/reactive` |
-| `@silver-formily/vue`               | Vue 3 Formily runtime binding                         |
-| `@silver-formily/element-plus`      | Formily + Element Plus bindings and scenario widgets  |
-| `@silver-formily/vant`              | Formily + Vant mobile component scaffold              |
-| `@silver-formily/grid`              | Grid runtime package for the Formily ecosystem        |
-| `@silver-formily/docs-toolkit`      | Shared VitePress theme, plugins, and site config      |
-| `@silver-formily/typescript-config` | Shared TypeScript presets for the workspace           |
-
-The eight apps under `apps/*` are private VitePress sites. They all use the standard `vitepress dev/build/preview` scripts and share theme configuration through `@silver-formily/docs-toolkit`.
+| Package                             | Purpose                                           |
+| ----------------------------------- | ------------------------------------------------- |
+| `@silver-formily/reactive`          | Reactive core implementation                      |
+| `@silver-formily/path`              | Path parsing and access utilities                 |
+| `@silver-formily/shared`            | Shared cross-package utilities and types          |
+| `@silver-formily/validator`         | Form validation primitives                        |
+| `@silver-formily/core`              | Form domain model and runtime kernel              |
+| `@silver-formily/json-schema`       | JSON Schema conversion and form description layer |
+| `@silver-formily/reactive-vue`      | Vue reactive bridge                               |
+| `@silver-formily/vue`               | Vue 3 runtime bindings                            |
+| `@silver-formily/element-plus`      | Element Plus adapters and scene components        |
+| `@silver-formily/vant`              | Vant adapters and mobile-oriented components      |
+| `@silver-formily/grid`              | Responsive layout and grid primitives             |
+| `@silver-formily/docs-toolkit`      | Shared VitePress theme, plugins, and site config  |
+| `@silver-formily/typescript-config` | Shared TypeScript presets for the workspace       |
 
 ## Repository Layout
 
 ```text
 .
-|- apps/                   # VitePress documentation sites
-|  |- reactive-docs
-|  |- vue-docs
-|  |- reactive-vue-docs
+|- apps/                         # VitePress documentation sites
+|  |- core-docs
 |  |- element-plus-docs
-|  |- vant-docs
 |  |- grid-docs
 |  |- json-schema-docs
-|  `- validator-docs
-|- packages/               # Publishable or internal reusable packages
-|  |- vue
-|  |- reactive-vue
-|  |- element-plus
-|  |- vant
-|  |- grid
+|  |- path-docs
+|  |- reactive-docs
+|  |- reactive-vue-docs
+|  |- validator-docs
+|  |- vant-docs
+|  `- vue-docs
+|- packages/                     # Publishable packages and internal tooling
+|  |- core
 |  |- docs-toolkit
-|  `- typescript-config
-`- scripts/                # Repository-level scripts such as changeset-aware builds
+|  |- element-plus
+|  |- grid
+|  |- json-schema
+|  |- path
+|  |- reactive
+|  |- reactive-vue
+|  |- shared
+|  |- typescript-config
+|  |- validator
+|  |- vant
+|  `- vue
+`- scripts/                      # Repository-level scripts
 ```
+
+## Requirements
+
+- Node.js `>= 24`
+- `pnpm@11`
 
 ## Installation
 
@@ -58,92 +87,63 @@ The eight apps under `apps/*` are private VitePress sites. They all use the stan
 pnpm install
 ```
 
-## Root Scripts
+## Common Commands
 
-| Command                 | What it does                                                         |
-| ----------------------- | -------------------------------------------------------------------- |
-| `pnpm dev`              | Opens a searchable picker and shows docs/apps `dev` tasks by default |
-| `pnpm dev:all`          | Runs `turbo run dev` and starts every workspace that exposes `dev`   |
-| `pnpm build`            | Filters workspaces that expose `build`, then runs Turbo              |
-| `pnpm docs:build`       | Filters workspaces that expose `docs:build`, then runs Turbo         |
-| `pnpm lint`             | Lints repository-level files first, then runs `turbo run lint`       |
-| `pnpm format`           | Formats repository-level files first, then runs `turbo run format`   |
-| `pnpm check-types`      | Runs `turbo run check-types`                                         |
-| `pnpm test`             | Opens a searchable picker and runs `test` for the selected package   |
-| `pnpm test:all`         | Runs `turbo run test` for every available test task                  |
-| `pnpm build:changed`    | Reads Changesets status and builds publishable packages only         |
-| `pnpm changeset`        | Creates a changeset                                                  |
-| `pnpm version-packages` | Runs `changeset version`                                             |
-| `pnpm release`          | Runs `build:changed` and then `changeset publish`                    |
-| `pnpm commit`           | Starts `czg` for Conventional Commit messages                        |
+| Command                 | Purpose                                                          |
+| ----------------------- | ---------------------------------------------------------------- |
+| `pnpm dev`              | Open the searchable workspace picker, focused on docs by default |
+| `pnpm dev:all`          | Start every workspace that exposes `dev`                         |
+| `pnpm build`            | Build every workspace that exposes `build`                       |
+| `pnpm docs:build`       | Build every docs app that exposes `docs:build`                   |
+| `pnpm lint`             | Lint root-level files first, then run `turbo run lint`           |
+| `pnpm format`           | Format root-level files first, then run `turbo run format`       |
+| `pnpm check-types`      | Run `turbo run check-types`                                      |
+| `pnpm test`             | Open the test picker and run the selected workspace tests        |
+| `pnpm test:all`         | Run every test task                                              |
+| `pnpm build:changed`    | Build only packages pending release                              |
+| `pnpm changeset`        | Create a changeset                                               |
+| `pnpm version-packages` | Run `changeset version`                                          |
+| `pnpm release`          | Build changed packages and publish with Changesets               |
 
-## Package-Level Development
+## Development Examples
 
 ```bash
-# Open the interactive picker and filter by typing
+# Open the docs/app picker
 pnpm dev
 
-# Start one workspace directly (package name / path / folder name)
+# Start one docs site directly
 pnpm dev -- vue-docs
 
-# Start one package-level dev/watch task directly
+# Watch one package directly
 pnpm dev -- @silver-formily/grid
 
-# Start every dev workspace
-pnpm dev:all
-
-# Open the test picker; Turbo still builds required dependency artifacts first
-pnpm test
-
-# Run tests for one package directly
+# Run tests for one package
 pnpm test -- @silver-formily/element-plus
-
-# Run every test task
-pnpm test:all
-
-# Start one docs site
-pnpm --filter vue-docs dev
-
-# Build one docs site
-pnpm --filter vue-docs docs:build
 
 # Build one runtime package
 pnpm --filter @silver-formily/vue build
 
-# Run coverage for one package
-pnpm --filter @silver-formily/element-plus test:coverage
-
-# Build packages that are pending release
-pnpm run build:changed
+# Build one docs site
+pnpm --filter element-plus-docs docs:build
 ```
 
-## Docs Dev Strategy
+## Docs Workflow Conventions
 
-- All docs sites go through the root `pnpm dev` picker, and the picker starts only the docs app itself by default. Each docs app is responsible for its own dependency strategy.
-- If a docs site documents one internal package directly, prefer a VitePress `alias` to that package source, as in `element-plus-docs`, `vue-docs`, `grid-docs`, and `reactive-vue-docs`.
-- If a docs site only uses other internal packages inside demos, do not pull those packages into `dev/watch`; use `docs:deps` to build their artifacts first, as `json-schema-docs` does for `@silver-formily/reactive-vue` and `@silver-formily/vue`.
-- Docs apps no longer expose a regular `build`; use `docs:build` consistently. Whenever a docs app defines `docs:deps`, both `dev` and `docs:build` should reuse it so direct docs builds do not fail on missing package artifacts.
-- Do not hardcode Turbo commands inside `docs:deps`. Put the prebuilt internal packages in `silverFormily.docs.buildDependencies`, then let the shared script translate that metadata into Turbo `build` filters.
-- If a dependency is neither the subject of the docs nor something that needs source-level hot updates, keep it on built artifacts and do not add an `alias`.
-- For new docs apps, apply the same rule: the primary package gets `alias`, supporting internal packages go through `docs:deps`, unrelated packages stay out of the `dev` chain.
+- Root `pnpm dev` is the default entry point for docs work.
+- Docs apps use `docs:build` instead of a regular `build`.
+- When a docs app documents one internal package directly, prefer a VitePress `alias` to source.
+- When internal dependencies are only needed for demos, prefer `docs:deps` to build artifacts instead of pulling them into `dev/watch`.
+- Prebuilt internal dependencies should be declared in `silverFormily.docs.buildDependencies`, then translated into Turbo filters by the shared script.
 
 ## Engineering Conventions
 
 - Code style is enforced through `@antfu/eslint-config`: 2 spaces, single quotes, no semicolons.
-- Root `pnpm format` formats repository-level files first, then delegates to `turbo run format`; Husky `pre-commit` uses `lint-staged` to format only staged files and automatically re-stage formatter changes into the same commit.
-- The Turbo `build` task caches `dist/**`, `.vitepress/dist/**`, and `esm/**`.
-- Publishable packages under `packages/*` now build with tsdown, while pure TypeScript packages and Vue component libraries can keep package-specific configs.
-- Documentation sites are standardized on VitePress `2.0.0-alpha.16` with shared theme and plugin wiring from `@silver-formily/docs-toolkit`.
-- Conventional Commits are enforced through the Husky `commit-msg` hook with `commitlint`, and `pnpm commit` invokes `czg` for guided commit messages.
+- Root `pnpm format` handles repository-level files first, then delegates to `turbo run format`.
+- Husky `pre-commit` uses `lint-staged` to format only staged files and automatically restage the result.
+- Publishable packages are built with `tsdown`, and documentation sites are standardized on VitePress.
+- Conventional Commits are enforced, and `pnpm commit` launches `czg` for guided commit messages.
 
-## CI and Release
-
-- CI runs on `main` pushes and pull requests, executes `pnpm lint`, and runs coverage for `reactive-vue` and `element-plus`.
-- CI also builds `@silver-formily/grid`, `@silver-formily/reactive-vue`, and `@silver-formily/vue` before the `element-plus` browser test flow.
-- The release workflow is manually triggered on `main` and includes internal package builds, `pnpm check-types`, `pnpm test:all`, coverage for `grid` / `reactive-vue` / `element-plus`, and Changesets publishing.
-- When you change a publishable package, add the matching `.changeset/*` entry.
-
-## Before Opening a PR
+## Suggested Checks Before Opening a PR
 
 ```bash
 pnpm install
@@ -153,4 +153,4 @@ pnpm check-types
 pnpm build
 ```
 
-If you change package behavior, test baselines, or documentation examples, document the manual verification steps in the PR.
+If your changes affect package behavior, test baselines, or documentation examples, include manual verification steps in the PR.

@@ -1,36 +1,42 @@
-# Silver Formily Vant
+# @silver-formily/vant
 
-`@silver-formily/vant` 当前提供一版最小可扩展骨架，先落基础表单项能力。
+[English README](./README.en.md)
 
-## 当前状态
+`@silver-formily/vant` 是 Silver Formily 面向 Vant 生态的移动端 UI 适配层。它把表单运行时、schema 描述和 Vant 组件体系连接起来，适合构建移动端表单、步骤表单、弹层表单以及一系列触控友好的录入场景。
 
-- 已接入 `pnpm workspace` / `Turborepo`
-- 已提供 `FormItem` 装饰器封装
-- 已提供 `Form` 轻量表单容器封装
-- 已提供 `FormButtonGroup` / `FormButtonGroup.Sticky` 表单按钮组布局封装
-- 已提供 `FormStep` / `FormStep.StepPane` 分步表单封装，支持 Schema 场景下的步骤切换与提交控制
-- 已提供 `Reset` 表单重置按钮封装
-- 已提供 `Submit` 表单提交按钮封装
-- 已提供 `Input` / `Input.TextArea` 基础输入组件
-- 已提供 `Checkbox` / `Checkbox.Group` 复选组件
-- 已提供 `Radio.Group` 单选框组组件
-- 已提供 `Rate` 评分组件
-- 已提供 `Slider` 滑块组件
-- 已提供 `Signature` 签名组件
-- 已提供 `Cascader` 级联选择组件
-- 已提供 `Picker` 选择器组件
-- 已提供 `DatePicker` 日期滚轮选择组件
-- 已提供 `TimePicker` 时间滚轮选择组件
-- 已提供 `PickerGroup` 分步选择器字段组件，支持 `dataSource` 默认模式和 `Picker / Area / DatePicker / TimePicker` 默认插槽模式
-- 已提供 `Calendar` 弹层日期选择组件
-- 已提供 `PreviewText.Input` / `PreviewText.Select` / `PreviewText.Picker` / `PreviewText.DatePicker` / `PreviewText.TimePicker` / `PreviewText.Calendar` / `PreviewText.Rate` / `PreviewText.Signature` / `PreviewText.Slider` 预览态组件
-- 已提供 VitePress 文档站骨架：`apps/vant-docs`
+## 这个包适合什么项目
+
+- 移动端表单或 H5 表单
+- 基于 Vant 的业务录入页面
+- 需要分步、弹层、滚轮选择器等移动端交互形态
+- 想把 `@formily/*` 体系迁移到 `@silver-formily/*`
+
+## 当前提供的能力方向
+
+- 基础字段组件：`Input`、`Checkbox`、`Radio`、`Switch`、`Stepper`、`Slider`、`Signature`
+- 选择类组件：`Picker`、`PickerGroup`、`DatePicker`、`TimePicker`、`Area`、`TreeSelect`
+- 表单结构组件：`FormItem`、`Form`、`FormStep`、`FormPopup`、`FormButtonGroup`
+- 预览态组件：`PreviewText.*`
+- 常用动作组件：`Submit`、`Reset`
+
+## 与其它 Silver Formily 包的关系
+
+- `@silver-formily/core` 提供字段与表单运行时
+- `@silver-formily/vue` 提供 Vue 3 绑定
+- `@silver-formily/json-schema` 提供 schema 描述能力
+- 当前包负责把这些能力落到 Vant 组件上
+
+## 安装
+
+```bash
+pnpm add @silver-formily/vant @silver-formily/vue @silver-formily/core @silver-formily/json-schema @silver-formily/path @silver-formily/reactive @silver-formily/reactive-vue @silver-formily/shared vant vue dayjs
+```
 
 ## 文档
 
-- 文档源码：`apps/vant-docs`
-- 本地启动：`pnpm dev -- vant-docs`
+- 文档站点：<https://vant.silver-formily.org>
+- 仓库主页：<https://github.com/hezhengxu2018/silver-formily>
 
-## 许可证
+## License
 
 MIT

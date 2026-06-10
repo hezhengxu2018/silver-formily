@@ -1,114 +1,50 @@
-# Silver Formily Vue
+# @silver-formily/vue
 
-[Documentation](https://vue.silver-formily.org/) · [中文 README](./README.md)
+[简体中文](./README.md)
 
-@silver-formily/vue is a Vue 3–first Formily runtime wrapper. It keeps the orchestration power of `@formily/vue` while removing Vue 2 compatibility layers, redundant DOM wrappers, and inconsistent event contracts. The source lives in `src/`, the docs app lives in `apps/vue-docs/`, and build artifacts live in `esm/`.
+`@silver-formily/vue` is the Vue 3 runtime binding layer for Silver Formily. It connects the form model, field state, and effect system from `@silver-formily/core` to the Vue component tree, and it exposes form-rendering primitives such as `Field`, `SchemaField`, `FormProvider`, `connect`, and `mapProps`.
 
-## ✨ Features
+## What This Package Does
 
-- **Pure Vue 3 runtime** – no `vue-demi`, `vue-frag`, or compatibility shims; the render tree mirrors native Vue component libraries.
-- **Native DOM & events** – relies on `modelValue` / `onUpdate:modelValue`, so Element Plus and most Vue 3 UI kits work without extra adapters.
-- **Richer TypeScript hints** – explicit generics and shared interfaces sit beside the runtime to keep emitted `.d.ts` files in sync.
-- **Formily ecosystem alignment** – works with the in-repo `@silver-formily/core`, `@silver-formily/json-schema`, and companion packages for a clearer migration path.
-- **Decorator slots** – wire `FormItem` and other wrappers to the form schema via `:decorator-content` / `x-decorator-content`, covering `default`, `label`, `extra`, or any named slot. See the [FAQ entry](../../apps/vue-docs/en/questions/index.md#how-do-i-pass-slots-to-a-decorator).
-- **Docs & demos included** – the VitePress docs app covers APIs, migration notes, and Element Plus demos; run `pnpm dev -- vue-docs` from the repo root to browse locally.
+If `@silver-formily/core` is the brain of the form system, `@silver-formily/vue` is the rendering and integration layer for Vue 3. It is responsible for:
 
-## 🔄 Differences vs `@formily/vue`
+- providing form context to the component tree
+- mapping field models to Vue components
+- powering schema-driven rendering at runtime
+- standardizing on Vue 3-style `modelValue` / `onUpdate:modelValue` contracts
 
-| Aspect         | `@silver-formily/vue` 2.x                                                 | Official `@formily/vue`                  |
-| -------------- | ------------------------------------------------------------------------- | ---------------------------------------- |
-| Event contract | `modelValue` / `onUpdate:modelValue`                                      | `value` / `onChange`                     |
-| DOM structure  | No extra `template` / `display: contents` wrappers                        | Extra containers for Vue 2 compatibility |
-| Dependencies   | Vue 3–only runtime deps                                                   | Uses `vue-demi` to target Vue 2 + 3      |
-| Schema export  | Schema is **not** re-exported (import from `@silver-formily/json-schema`) | Schema is re-exported                    |
-| Compatibility  | Use `@silver-formily/vue@1.x` for strict parity                           | Official package                         |
+## Why Use It
 
-## 📦 Peer Dependencies
+- built specifically for Vue 3 without Vue 2 compatibility baggage
+- aligned with `@silver-formily/core`, `@silver-formily/json-schema`, and `@silver-formily/reactive-vue`
+- a better fit for modern Vue UI libraries such as Element Plus and Vant
+- a clear migration target from `@formily/vue` into the `@silver-formily/*` namespace
 
-Install these alongside the library in your host app:
+## Key Capabilities
 
-```
-@silver-formily/core workspace:*
-@silver-formily/json-schema workspace:*
-@silver-formily/path workspace:*
-@silver-formily/reactive workspace:*
-@silver-formily/reactive-vue ^1
-@silver-formily/shared workspace:*
-vue ^3.3.0+
-```
+- Components: `FormProvider`, `FormConsumer`, `Field`, `ArrayField`, `ObjectField`, `VoidField`
+- Schema rendering: `SchemaField`, `RecursionField`, `ReactiveField`, `ExpressionScope`
+- Composables: `useForm`, `useField`, `useFieldSchema`, `useFormEffects`
+- Adapter helpers: `connect`, `mapProps`
 
-## 🚀 Installation
+## Recommended Pairings
 
-Recommended pnpm command:
+- `@silver-formily/core` for the form runtime
+- `@silver-formily/json-schema` for schema-driven descriptions
+- `@silver-formily/reactive-vue` for Vue reactivity bridging
+- `@silver-formily/element-plus` or `@silver-formily/vant` for ready-made UI integrations
+
+## Installation
 
 ```bash
-pnpm add @silver-formily/vue @silver-formily/core @silver-formily/json-schema @silver-formily/path @silver-formily/reactive @silver-formily/reactive-vue @silver-formily/shared
+pnpm add @silver-formily/vue @silver-formily/core @silver-formily/json-schema @silver-formily/path @silver-formily/reactive @silver-formily/reactive-vue @silver-formily/shared @silver-formily/validator vue
 ```
 
-## ⚡️ Quick Start
+## Documentation
 
-The snippet below wires Element Plus inputs into Formily:
+- Docs site: <https://vue.silver-formily.org>
+- Repository: <https://github.com/hezhengxu2018/silver-formily>
 
-```vue
-<script setup lang="ts">
-import { createForm } from '@silver-formily/core'
-import { connect, Field, FormProvider, mapProps } from '@silver-formily/vue'
-import { ElFormItem, ElInput } from 'element-plus'
+## License
 
-const form = createForm({ validateFirst: true })
-
-const FormItem = connect(
-  ElFormItem,
-  mapProps({ title: 'label', required: true }, (_, field) => ({
-    error: field.selfErrors[0] || undefined,
-  })),
-)
-</script>
-
-<template>
-  <FormProvider :form="form">
-    <Field
-      name="email"
-      title="Email"
-      required
-      :decorator="[FormItem]"
-      :component="[ElInput, { placeholder: 'hello@formily.dev' }]"
-    />
-  </FormProvider>
-</template>
-```
-
-Explore more components (`SchemaField`, `RecursionField`, `ArrayField`, etc.) and composables in [`apps/vue-docs/api`](../../apps/vue-docs/api).
-
-## 🧱 API Overview
-
-- **Components**: `FormProvider`, `FormConsumer`, `Field`, `ArrayField`, `ObjectField`, `VoidField`, `SchemaField`, `RecursionField`, `ReactiveField`, `ExpressionScope`.
-- **Composables**: `useForm`, `useField`, `useFieldSchema`, `useFormEffects`, `useParentForm`, `useAttach`, `useInjectionCleaner`.
-- **Shared helpers**: `connect`, `mapProps`, plus factories in `src/shared` and `src/utils`.
-
-All public symbols are re-exported from `src/index.ts`, and the published bundle (JS + declarations) lives in `esm/`.
-
-## 🛠️ Local Development
-
-```bash
-pnpm install       # Install dependencies
-pnpm lint          # Run Antfu ESLint rules
-pnpm build         # Build the library + types via Vite
-pnpm dev -- vue-docs # Launch the docs app from the repo root
-pnpm --filter vue-docs docs:build # Build the docs site
-pnpm commit        # Conventional Commit helper (czg)
-pnpm release       # Changeset-driven release (requires clean tree)
-```
-
-- Build output is generated into `esm/`; do not hand-edit this directory.
-- Automated tests are not wired yet—document manual verification (Vue + Formily versions, schema, browser) in every PR.
-- Follow `@antfu/eslint-config` style: 2 spaces, single quotes, dangling commas where allowed, no semicolons.
-
-## 📚 Docs & Examples
-
-- Visit the published site: <https://vue.silver-formily.org/>.
-- `apps/vue-docs/demos` contains Element Plus playgrounds that double as regression samples.
-
-## 📄 License
-
-MIT © hezhengxu
+MIT
