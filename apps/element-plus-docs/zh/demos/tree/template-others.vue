@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { createForm } from '@silver-formily/core'
+import { createForm, isField } from '@silver-formily/core'
 import { FormItem, FormLayout, Input, Tree } from '@silver-formily/element-plus'
 import { Field, FormProvider } from '@silver-formily/vue'
 import { omit } from 'lodash-es'
@@ -84,6 +84,7 @@ const data = [
         }]"
         :data-source="data"
         :reactions="(field) => {
+          if (!isField(field)) return
           field.loading = true
         }"
       />
@@ -95,6 +96,7 @@ const data = [
           placeholder: '请输入节点名称',
         }]"
         :reactions="(field) => {
+          if (!isField(field)) return
           const tree3 = field.query('tree3').take()
           const inputValue = field.value
           if (!tree3)

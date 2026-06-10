@@ -29,7 +29,7 @@ const form2 = createForm({
     <ElButton
       @click="() => {
         form.submit(() => {
-          return Promise.reject(new Error('Runtime Error'))
+          throw new Error('Runtime Error')
         })
       }"
     >

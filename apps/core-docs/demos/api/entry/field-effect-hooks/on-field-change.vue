@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { createForm, onFieldChange } from '@silver-formily/core'
+import { createForm, isField, onFieldChange } from '@silver-formily/core'
 import { ElButton } from 'element-plus'
 import { ref } from 'vue'
 import ActionResponse from '../shared/ActionResponse.vue'
@@ -11,7 +11,7 @@ function setResponse(value: string) {
 const form = createForm({
   effects() {
     onFieldChange('target', (field) => {
-      setResponse(`target值变化：${field.value}`)
+      isField(field) && setResponse(`target值变化：${field.value}`)
     })
     onFieldChange('target', ['component'], () => {
       setResponse('target组件变化')

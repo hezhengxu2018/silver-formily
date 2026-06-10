@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { createForm } from '@silver-formily/core'
+import { createForm, isField } from '@silver-formily/core'
 import { FormItem, FormLayout, Select, Switch, Tree } from '@silver-formily/element-plus'
 import { autorun, toJS } from '@silver-formily/reactive'
 import { isPlainObj } from '@silver-formily/shared'
@@ -116,7 +116,7 @@ const data = [
           ]"
         :reactions="field => {
           const tree = field.query('tree').take();
-          if (tree) {
+          if (tree && isField(field)) {
             tree.setComponentProps({ ...tree.componentProps, valueType: field.value })
           }
         }"
@@ -129,7 +129,7 @@ const data = [
         :initial-value="false"
         :reactions="field => {
           const tree = field.query('tree').take();
-          if (tree) {
+          if (tree && isField(field)) {
             tree.setComponentProps({ ...tree.componentProps, optionAsValue: field.value })
           }
         }"
@@ -142,7 +142,7 @@ const data = [
         :initial-value="false"
         :reactions="field => {
           const tree = field.query('tree').take();
-          if (tree) {
+          if (tree && isField(field)) {
             tree.setComponentProps({ ...tree.componentProps, includeHalfChecked: field.value })
           }
         }"
@@ -172,7 +172,7 @@ const data = [
         :initial-value="true"
         :reactions="field => {
           const tree = field.query('tree2').take();
-          if (tree) {
+          if (tree && isField(field)) {
             tree.setComponentProps({ ...tree.componentProps, optionAsValue: field.value })
           }
         }"

@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { createForm } from '@silver-formily/core'
+import { createForm, isField } from '@silver-formily/core'
 import {
   DatePicker,
   Editable,
@@ -56,7 +56,8 @@ async function log(values: Record<string, any>) {
       :component="[Editable.Popover]"
       :reactions="
         (field) => {
-          field.title = (field.value && field.value.date) || field.title
+          isField(field)
+            && (field.title = (field.value && field.value.date) || field.title)
         }
       "
     >
