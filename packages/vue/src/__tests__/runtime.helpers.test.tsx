@@ -7,6 +7,7 @@ import { createSchemaField, Field, FormProvider } from '../components'
 import { useFieldSchema, useFormEffects } from '../hooks'
 import { connect, mapProps, mapReadPretty } from '../shared/connect'
 import { FormSymbol } from '../shared/context'
+import { extractAttrsAndEvents } from '../utils/reactiveFieldHelpers'
 
 const SchemaProbe = defineComponent({
   name: 'SchemaProbe',
@@ -130,6 +131,21 @@ const EffectsConsumer = defineComponent({
 })
 
 describe('runtime helpers', () => {
+  it('应该保留普通 on* 属性而只提取真实事件', () => {
+    const handleClick = vi.fn()
+    const { attrs, events } = extractAttrsAndEvents({
+      'online': true,
+      'onboard': 'plain-text-prop',
+      'onClick': handleClick,
+      '@focus': handleClick,
+    })
+
+    expect(attrs.online).toBe(true)
+    expect(attrs.onboard).toBe('plain-text-prop')
+    expect(events.click).toBe(handleClick)
+    expect(events.focus).toBe(handleClick)
+  })
+
   it('应该让 useFieldSchema 读取当前字段 schema', async () => {
     const form = createForm()
 

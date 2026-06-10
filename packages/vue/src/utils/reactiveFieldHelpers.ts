@@ -177,7 +177,7 @@ export function extractAttrsAndEvents(rawAttrs: Attrs = {}): { attrs: Attrs, eve
 
   Object.keys(rawAttrs).forEach((eventKey) => {
     const value = rawAttrs[eventKey]
-    const onEvent = eventKey.startsWith('on')
+    const onEvent = /^on[^a-z]/.test(eventKey)
     const atEvent = eventKey.startsWith('@')
     if (!onEvent && !atEvent)
       return

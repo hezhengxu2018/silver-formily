@@ -1,5 +1,5 @@
 import type { Ref } from 'vue'
-import { nextTick, onMounted, onUnmounted, watch } from 'vue'
+import { onMounted, onUnmounted, watch } from 'vue'
 
 interface IRecycleTarget {
   onMount: () => void
@@ -7,18 +7,24 @@ interface IRecycleTarget {
 }
 
 export function useAttach<T extends IRecycleTarget>(target: Ref<T>): Ref<T> {
-  watch(target, (v, old, onInvalidate) => {
-    if (v && v !== old) {
-      old?.onUnmount()
-      nextTick(() => v.onMount())
-      onInvalidate(() => v.onUnmount())
-    }
-  })
+  let mounted = false
+
+  watch(target, (v, old) => {
+    if (!mounted || v === old)
+      return
+    old?.onUnmount()
+    v?.onMount()
+  }, { flush: 'sync' })
+
   onMounted(() => {
+    mounted = true
     target.value?.onMount()
   })
+
   onUnmounted(() => {
+    mounted = false
     target.value?.onUnmount()
   })
+
   return target
 }

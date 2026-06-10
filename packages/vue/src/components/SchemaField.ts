@@ -58,8 +58,6 @@ export function createSchemaField<Components extends SchemaVueComponents = Schem
       provide(SchemaExpressionScopeSymbol, scopeRef)
 
       return () => {
-        env.nonameId = 0
-
         const normalizedSlots = slots.default?.() ?? []
 
         const recursionNode = h(RecursionField, {

@@ -198,6 +198,44 @@ describe('schema and recursion combinations', () => {
     expect(schema.properties?.[generatedKey!]?.type).toBe('string')
   })
 
+  it('应该在父级重渲染后为新增未命名字段保持唯一名称', async () => {
+    const form = createForm()
+    const schema = new Schema({
+      type: 'object',
+    })
+    const { SchemaField, SchemaStringField } = createSchemaField()
+
+    const screen = await render(defineComponent({
+      setup() {
+        const showExtra = ref(false)
+        return () => (
+          <FormProvider form={form}>
+            <button
+              data-testid="toggle-anonymous"
+              onClick={() => {
+                showExtra.value = true
+              }}
+            >
+              toggle
+            </button>
+            <SchemaField schema={schema}>
+              <SchemaStringField />
+              {showExtra.value ? <SchemaStringField /> : null}
+            </SchemaField>
+          </FormProvider>
+        )
+      },
+    }))
+
+    expect(Object.keys(schema.properties ?? {})).toHaveLength(1)
+
+    await screen.getByTestId('toggle-anonymous').click()
+
+    const generatedKeys = Object.keys(schema.properties ?? {})
+    expect(generatedKeys).toHaveLength(2)
+    expect(new Set(generatedKeys).size).toBe(2)
+  })
+
   it('应该允许独立的 markup 字段在没有父 schema 时静默返回空', async () => {
     const { SchemaStringField } = createSchemaField()
 
