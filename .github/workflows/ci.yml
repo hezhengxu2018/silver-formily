@@ -68,6 +68,12 @@ jobs:
 
       - name: Build internal test dependencies
         run: |
+          pnpm --filter @silver-formily/path build
+          pnpm --filter @silver-formily/shared build
+          pnpm --filter @silver-formily/reactive build
+          pnpm --filter @silver-formily/validator build
+          pnpm --filter @silver-formily/core build
+          pnpm --filter @silver-formily/json-schema build
           pnpm --filter @silver-formily/grid build
           pnpm --filter @silver-formily/reactive-vue build
           pnpm --filter @silver-formily/vue build
