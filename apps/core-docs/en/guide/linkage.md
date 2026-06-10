@@ -1,7 +1,7 @@
 # Linkage System
 
 :::tip
-The entire reactive system of Formily is based on `@silver-formily/reactive`. If you are not familiar with concepts such as `autorun`, `reaction`, or `observer`, you can read its [documentation](https://reactive.silver-formily.org/) first.
+The entire reactive system of Formily is based on `@silver-formily/reactive`. If you are not familiar with concepts such as `autorun`, `reaction`, or `observer`, you can read its [documentation](https://reactive.silver-formily.org/en/) first.
 :::
 
 The linkage system describes "what should happen after state changes." Formily provides two common entry points: `effects` and `reactions`.

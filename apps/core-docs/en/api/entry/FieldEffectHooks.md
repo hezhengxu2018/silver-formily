@@ -18,7 +18,7 @@ interface onFieldInit {
 }
 ```
 
-For the syntax of `FormPathPattern`, see [FormPath](https://path.silver-formily.org/api/patterns).
+For the syntax of `FormPathPattern`, see [FormPath](https://path.silver-formily.org/en/guide/patterns).
 
 ### Usage
 

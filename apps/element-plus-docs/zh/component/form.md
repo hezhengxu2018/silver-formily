@@ -20,9 +20,9 @@ form/form
 
 属性主要继承自 [FormLayout](./form-layout) ，下面是 Form 组件额外的 API 属性
 
-| 属性名                 | 类型                                               | 描述                     | 默认值 |
-| ---------------------- | -------------------------------------------------- | ------------------------ | ------ |
-| form                   | [Form](https://core.formilyjs.org/api/models/form) | Form 实例                | -      |
-| previewTextPlaceholder | string                                             | 预览态占位符             | `N/A`  |
-| onAutoSubmit           | `(values:any)=>any`                                | 回车提交事件回调         | -      |
-| onAutoSubmitFailed     | (feedbacks) => void                                | 回车提交校验失败事件回调 | -      |
+| 属性名                 | 类型                                                    | 描述                     | 默认值 |
+| ---------------------- | ------------------------------------------------------- | ------------------------ | ------ |
+| form                   | [Form](https://core.silver-formily.org/api/models/Form) | Form 实例                | -      |
+| previewTextPlaceholder | string                                                  | 预览态占位符             | `N/A`  |
+| onAutoSubmit           | `(values:any)=>any`                                     | 回车提交事件回调         | -      |
+| onAutoSubmitFailed     | (feedbacks) => void                                     | 回车提交校验失败事件回调 | -      |

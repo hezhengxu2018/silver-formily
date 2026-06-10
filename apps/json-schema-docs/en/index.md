@@ -46,4 +46,4 @@ Key points from the example:
 
 ## References
 
-- [Upstream Reference: Formily Core Concepts / JSON Schema Development Mode](https://vue.formilyjs.org/guide/concept#json-schema-%E5%BC%80%E5%8F%91%E6%A8%A1%E5%BC%8F)
+- [Silver Formily Vue Guide](https://vue.silver-formily.org/en/guide/index)

@@ -56,7 +56,7 @@
 
 ## 不在这里展开的类型
 
-- 字段模型、表单模型、`Field`、`GeneralField`、`Form`：请查看 [Formily Core 文档](https://core.formilyjs.org/api/models/field) 与 [Form](https://core.formilyjs.org/api/models/form)。
+- 字段模型、表单模型、`Field`、`GeneralField`、`Form`：请查看 [Formily Core 文档](https://core.silver-formily.org/api/models/Field) 与 [Form](https://core.silver-formily.org/api/models/Form)。
 - 路径系统、`FormPathPattern`：请查看 [Path 文档](https://path.silver-formily.org/)。
 - 校验规则、`Validator`、`MultiValidator`、`IValidatorRules`：请查看 [Validator 文档](https://validator.silver-formily.org/api/validate)。
 - Schema 协议、`Schema`、`ISchema`、`SchemaKey`：请查看 [JSON Schema 文档](https://json-schema.silver-formily.org/api/types)。

@@ -16,6 +16,6 @@ api/components/form-provider
 
 ## API
 
-| 属性 | 说明                                 | 类型                                               | 默认值 |
-| ---- | ------------------------------------ | -------------------------------------------------- | ------ |
-| form | Form 实例, `createForm` 函数的返回值 | [Form](https://core.formilyjs.org/api/models/form) | -      |
+| 属性 | 说明                                 | 类型                                                    | 默认值 |
+| ---- | ------------------------------------ | ------------------------------------------------------- | ------ |
+| form | Form 实例, `createForm` 函数的返回值 | [Form](https://core.silver-formily.org/api/models/Form) | -      |

@@ -4,7 +4,7 @@
 
 Reactive consumer that listens to Formily form state changes via a scoped slot. Whenever the data accessed inside the slot changes, the slot re-renders.
 
-Refer to [Form](https://core.formilyjs.org/api/models/form) for the exposed API surface.
+Refer to [Form](https://core.silver-formily.org/en/api/models/Form) for the exposed API surface.
 
 ## Usage
 

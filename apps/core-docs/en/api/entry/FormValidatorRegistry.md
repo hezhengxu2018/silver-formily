@@ -37,7 +37,7 @@ setValidateLanguage('zh-CN')
 
 Registers global format validators. Formats support `string`, `RegExp`, and function matchers.
 
-For built-in formats, see the [Built-in Formats](https://validator.silver-formily.org/api/validate#built-in-formats) documentation.
+For built-in formats, see the [Built-in Formats](https://validator.silver-formily.org/en/api/validate#built-in-formats) documentation.
 
 ### Signature
 
@@ -74,7 +74,7 @@ field.setValidator({
 
 Registers global validation locale messages. The language key typically uses values like `zh-CN` or `en-US`.
 
-For built-in locales, see the [Built-in Locales](https://validator.silver-formily.org/api/registry#built-in-locales) documentation.
+For built-in locales, see the [Built-in Locales](https://validator.silver-formily.org/en/api/registry#built-in-locales) documentation.
 
 ### Signature
 
@@ -136,7 +136,7 @@ registerValidateMessageTemplateEngine((message, context) => {
 
 Registers global validation rules, useful for reusable business rules.
 
-For built-in rules, see the [Built-in Rules](https://validator.silver-formily.org/api/validate#built-in-rules) documentation.
+For built-in rules, see the [Built-in Rules](https://validator.silver-formily.org/en/api/validate#built-in-rules) documentation.
 
 ### Signature
 

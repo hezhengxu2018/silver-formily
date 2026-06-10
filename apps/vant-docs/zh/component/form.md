@@ -69,7 +69,7 @@ mobileDemo: form/index.vue
 | `scrollToErrorPosition` | ^[enum]`'start' \| 'center' \| 'end' \| 'nearest'` | 自动滚动时传给 `scrollIntoView` 的 `block` 位置 | `-`     |
 | `submitOnEnter`         | `boolean`                                          | 是否允许输入框 Enter 触发表单提交               | `true`  |
 
-> Formily 校验失败时的 feedbacks 类型参考 [IFormFeedback](https://core.formilyjs.org/api/models/form#iformfeedback)；如果 `onAutoSubmit` 自身抛错，则会原样传给 `onAutoSubmitFailed`。
+> Formily 校验失败时的 feedbacks 类型参考 [IFormFeedback](https://core.silver-formily.org/api/models/Form#iformfeedback)；如果 `onAutoSubmit` 自身抛错，则会原样传给 `onAutoSubmitFailed`。
 
 ### 继承给 FormItem 的布局属性
 

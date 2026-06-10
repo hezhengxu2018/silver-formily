@@ -2,7 +2,7 @@
 
 ## 描述
 
-作为 `@silver-formily/core` 中 [createField](https://core.formilyjs.org/api/models/form#createfield) 的 Vue 实现，它是专门用于将 ViewModel 与输入控件做绑定的桥接组件，Field 组件属性参考 [IFieldFactoryProps](https://core.formilyjs.org/api/models/form#ifieldfactoryprops)
+作为 `@silver-formily/core` 中 [createField](https://core.silver-formily.org/api/models/Form#createfield) 的 Vue 实现，它是专门用于将 ViewModel 与输入控件做绑定的桥接组件，Field 组件属性参考 [IFieldFactoryProps](https://core.silver-formily.org/api/models/Form#ifieldfactoryprops)
 
 name 属性必填。
 

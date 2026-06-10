@@ -24,9 +24,9 @@ For new code, prefer importing validator contracts from `@silver-formily/validat
 
 ## Recommended links
 
-- Validation rules and the main `Validator` entry: [Validator API](https://validator.silver-formily.org/api/validate)
-- Registry APIs for rules, formats, and locales: [Registry API](https://validator.silver-formily.org/api/registry)
-- How validator integrates with Formily: [Using in Formily](https://validator.silver-formily.org/guide/formily-validator)
+- Validation rules and the main `Validator` entry: [Validator API](https://validator.silver-formily.org/en/api/validate)
+- Registry APIs for rules, formats, and locales: [Registry API](https://validator.silver-formily.org/en/api/registry)
+- How validator integrates with Formily: [Using in Formily](https://validator.silver-formily.org/en/guide/formily-validator)
 
 ## Recommended import style
 

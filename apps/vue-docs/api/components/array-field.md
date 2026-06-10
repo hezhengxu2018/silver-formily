@@ -2,7 +2,7 @@
 
 ## 描述
 
-作为 `@silver-formily/core` 中 [createArrayField](https://core.formilyjs.org/api/models/form#createarrayfield) 的 Vue 实现，它是专门用于将 ViewModel 与输入控件做绑定的桥接组件，ArrayField 组件属性参考 [IFieldFactoryProps](https://core.formilyjs.org/api/models/form#ifieldfactoryprops)
+作为 `@silver-formily/core` 中 [createArrayField](https://core.silver-formily.org/api/models/Form#createarrayfield) 的 Vue 实现，它是专门用于将 ViewModel 与输入控件做绑定的桥接组件，ArrayField 组件属性参考 [IFieldFactoryProps](https://core.silver-formily.org/api/models/Form#ifieldfactoryprops)
 
 name 属性必填。需要使用 scoped slot 形式来使用
 

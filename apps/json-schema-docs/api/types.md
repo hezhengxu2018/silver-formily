@@ -74,7 +74,7 @@ type SchemaEnum<Message> = Array<
 
 Schema 联动协议，如果 reaction 对象里包含 target，则代表主动联动模式，否则代表被动联动模式
 如果想实现更复杂的联动，可以通过作用域传入 reaction 响应器函数进行处理
-FormPathPattern 路径语法文档看[这里](https://core.formilyjs.org/zh-CN/api/entry/form-path#formpathpattern)
+FormPathPattern 路径语法文档看[这里](https://core.silver-formily.org/api/entry/form-path#formpathpattern)
 
 `SchemaReactions` 的详细联动写法与示例已拆分至 [联动示例](/api/linkages)。
 

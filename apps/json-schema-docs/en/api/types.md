@@ -76,7 +76,7 @@ Schema linkage protocol. If a reaction object contains `target`, it works in act
 
 If you need more complex linkage, you can pass a reaction handler function through scope.
 
-For FormPathPattern syntax, see the [FormPathPattern documentation](https://core.formilyjs.org/api/entry/form-path#formpathpattern).
+For FormPathPattern syntax, see the [FormPathPattern documentation](https://core.silver-formily.org/en/api/entry/FormPath#formpathpattern).
 
 Detailed linkage patterns and runnable examples are documented in [Linkage Examples](/en/api/linkages).
 

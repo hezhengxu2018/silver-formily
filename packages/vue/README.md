@@ -2,7 +2,7 @@
 
 [文档网站](https://vue.silver-formily.org/) · [本地文档首页](../../apps/vue-docs/index.md) · [English README](./README.en.md)
 
-@silver-formily/vue 是一个专注于 Vue 3 生态的 [Formily](https://formilyjs.org/) 运行时封装。它保留了 `@formily/vue` 的编排能力，同时去除了 Vue 2 兼容层、冗余 DOM 包裹以及不一致的事件契约。源码位于 `src/`，文档应用位于 `apps/vue-docs/`，构建产物存放在 `esm/`。
+@silver-formily/vue 是一个专注于 Vue 3 生态的 Formily 运行时封装。它保留了 `@formily/vue` 的编排能力，同时去除了 Vue 2 兼容层、冗余 DOM 包裹以及不一致的事件契约。源码位于 `src/`，文档应用位于 `apps/vue-docs/`，构建产物存放在 `esm/`。
 
 ## ✨ 特性
 

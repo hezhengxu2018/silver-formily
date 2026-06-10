@@ -99,7 +99,7 @@ interface get {
 
 #### Description
 
-Finds the first result from the query result set and reads its property, supporting [FormPathPattern](https://path.silver-formily.org/api/path-class#formpathpattern) path syntax.
+Finds the first result from the query result set and reads its property, supporting [FormPathPattern](https://path.silver-formily.org/en/api/path-class#formpathpattern) path syntax.
 
 Note: the corresponding node must exist in order to read.
 

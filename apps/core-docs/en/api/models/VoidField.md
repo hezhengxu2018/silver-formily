@@ -10,30 +10,30 @@ All model properties are listed below. If a property is writable, assigning to i
 
 ## Properties
 
-| Property    | Description                              | Type                                                       | Readonly | Default      |
-| ----------- | ---------------------------------------- | ---------------------------------------------------------- | -------- | ------------ |
-| initialized | Whether the field has been initialized   | Boolean                                                    | No       | `false`      |
-| mounted     | Whether the field has been mounted       | Boolean                                                    | No       | `false`      |
-| unmounted   | Whether the field has been unmounted     | Boolean                                                    | No       | `false`      |
-| address     | Field node path                          | [FormPath](https://path.silver-formily.org/api/path-class) | Yes      |              |
-| path        | Field data path                          | [FormPath](https://path.silver-formily.org/api/path-class) | Yes      |              |
-| title       | Field title                              | Any (determined by the generic `TextType`)                 | No       | `""`         |
-| description | Field description                        | Any (determined by the generic `TextType`)                 | No       | `""`         |
-| data        | Extended field data                      | Object                                                     | No       | `null`       |
-| content     | Field content                            | any                                                        | No       | `null`       |
-| decorator   | Field decorator                          | Any[]                                                      | No       | `null`       |
-| component   | Field component                          | Any[]                                                      | No       | `null`       |
-| parent      | Parent field                             | [GeneralField](#generalfield)                              | Yes      | `null`       |
-| display     | Field display state                      | [FieldDisplayTypes](#fielddisplaytypes)                    | No       | `"visible"`  |
-| pattern     | Field interaction mode                   | [FieldPatternTypes](#fieldpatterntypes)                    | No       | `"editable"` |
-| hidden      | Whether the field is hidden              | Boolean                                                    | No       | `false`      |
-| visible     | Whether the field is visible             | Boolean                                                    | No       | `true`       |
-| disabled    | Whether the field is disabled            | Boolean                                                    | No       | `false`      |
-| readOnly    | Whether the field is read-only           | Boolean                                                    | No       | `false`      |
-| readPretty  | Whether the field is in read-pretty mode | Boolean                                                    | No       | `false`      |
-| editable    | Whether the field is editable            | Boolean                                                    | No       | `true`       |
-| indexes     | Numeric index collection                 | Number[]                                                   | Yes      | `-`          |
-| index       | Numeric index                            | Number                                                     | Yes      | `-`          |
+| Property    | Description                              | Type                                                          | Readonly | Default      |
+| ----------- | ---------------------------------------- | ------------------------------------------------------------- | -------- | ------------ |
+| initialized | Whether the field has been initialized   | Boolean                                                       | No       | `false`      |
+| mounted     | Whether the field has been mounted       | Boolean                                                       | No       | `false`      |
+| unmounted   | Whether the field has been unmounted     | Boolean                                                       | No       | `false`      |
+| address     | Field node path                          | [FormPath](https://path.silver-formily.org/en/api/path-class) | Yes      |              |
+| path        | Field data path                          | [FormPath](https://path.silver-formily.org/en/api/path-class) | Yes      |              |
+| title       | Field title                              | Any (determined by the generic `TextType`)                    | No       | `""`         |
+| description | Field description                        | Any (determined by the generic `TextType`)                    | No       | `""`         |
+| data        | Extended field data                      | Object                                                        | No       | `null`       |
+| content     | Field content                            | any                                                           | No       | `null`       |
+| decorator   | Field decorator                          | Any[]                                                         | No       | `null`       |
+| component   | Field component                          | Any[]                                                         | No       | `null`       |
+| parent      | Parent field                             | [GeneralField](#generalfield)                                 | Yes      | `null`       |
+| display     | Field display state                      | [FieldDisplayTypes](#fielddisplaytypes)                       | No       | `"visible"`  |
+| pattern     | Field interaction mode                   | [FieldPatternTypes](#fieldpatterntypes)                       | No       | `"editable"` |
+| hidden      | Whether the field is hidden              | Boolean                                                       | No       | `false`      |
+| visible     | Whether the field is visible             | Boolean                                                       | No       | `true`       |
+| disabled    | Whether the field is disabled            | Boolean                                                       | No       | `false`      |
+| readOnly    | Whether the field is read-only           | Boolean                                                       | No       | `false`      |
+| readPretty  | Whether the field is in read-pretty mode | Boolean                                                       | No       | `false`      |
+| editable    | Whether the field is editable            | Boolean                                                       | No       | `true`       |
+| indexes     | Numeric index collection                 | Number[]                                                      | Yes      | `-`          |
+| index       | Numeric index                            | Number                                                        | Yes      | `-`          |
 
 ### Detailed Explanations
 
@@ -285,7 +285,7 @@ interface query {
 }
 ```
 
-For the `FormPathPattern` API, see [FormPath](https://path.silver-formily.org/api/patterns).
+For the `FormPathPattern` API, see [FormPath](https://path.silver-formily.org/en/guide/patterns).
 
 For the `Query` object API, see [Query](/en/api/models/Query).
 
@@ -331,7 +331,7 @@ interface match {
 }
 ```
 
-For the `FormPathPattern` API, see [FormPath](https://path.silver-formily.org/api/patterns).
+For the `FormPathPattern` API, see [FormPath](https://path.silver-formily.org/en/guide/patterns).
 
 ### inject
 

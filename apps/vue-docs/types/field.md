@@ -2,7 +2,7 @@
 
 本页只说明 `@silver-formily/vue` 在字段组件这一层新增或收敛过的类型。
 
-`Field`、`ArrayField`、`ObjectField`、`VoidField`、`GeneralField`、`Form` 等核心模型都属于 `@silver-formily/core`，请直接查看 [Field 模型文档](https://core.formilyjs.org/api/models/field) 与 [Form 模型文档](https://core.formilyjs.org/api/models/form)。
+`Field`、`ArrayField`、`ObjectField`、`VoidField`、`GeneralField`、`Form` 等核心模型都属于 `@silver-formily/core`，请直接查看 [Field 模型文档](https://core.silver-formily.org/api/models/Field) 与 [Form 模型文档](https://core.silver-formily.org/api/models/Form)。
 
 ## `IProviderProps`
 
@@ -96,4 +96,4 @@ type IStateMapper<Props>
   | ((props: Props, field: GeneralField) => Props)
 ```
 
-如果你需要理解 `Field` 或 `GeneralField` 的完整属性，请回到 [Core Field 文档](https://core.formilyjs.org/api/models/field)。本页只保留 Vue 侧如何消费这些模型的信息。
+如果你需要理解 `Field` 或 `GeneralField` 的完整属性，请回到 [Core Field 文档](https://core.silver-formily.org/api/models/Field)。本页只保留 Vue 侧如何消费这些模型的信息。

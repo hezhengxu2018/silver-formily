@@ -18,7 +18,7 @@ interface IRecursionFieldProps {
 
 `FormPathPattern` here is just the imported path contract. The Vue package does not extend or reinterpret it.
 
-Go straight to the [Path docs](https://path.silver-formily.org/) for:
+Go straight to the [Path docs](https://path.silver-formily.org/en/) for:
 
 - path strings versus array paths
 - wildcard and alias-group matching

@@ -2,7 +2,7 @@
 
 This page only covers the field-related types that `@silver-formily/vue` adds or reshapes on top of Core.
 
-The actual field and form models such as `Field`, `ArrayField`, `ObjectField`, `VoidField`, `GeneralField`, and `Form` belong to `@silver-formily/core`. Read the source docs directly in the [Field model docs](https://core.formilyjs.org/api/models/field) and the [Form model docs](https://core.formilyjs.org/api/models/form).
+The actual field and form models such as `Field`, `ArrayField`, `ObjectField`, `VoidField`, `GeneralField`, and `Form` belong to `@silver-formily/core`. Read the source docs directly in the [Field model docs](https://core.silver-formily.org/en/api/models/Field) and the [Form model docs](https://core.silver-formily.org/en/api/models/Form).
 
 ## `IProviderProps`
 
@@ -96,4 +96,4 @@ type IStateMapper<Props>
   | ((props: Props, field: GeneralField) => Props)
 ```
 
-If you need the full shape of `Field` or `GeneralField`, return to the [Core Field docs](https://core.formilyjs.org/api/models/field). This page only keeps the Vue-side integration surface.
+If you need the full shape of `Field` or `GeneralField`, return to the [Core Field docs](https://core.silver-formily.org/en/api/models/Field). This page only keeps the Vue-side integration surface.

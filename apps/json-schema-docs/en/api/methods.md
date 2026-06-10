@@ -292,4 +292,4 @@ interface toFieldProps {
 }
 ```
 
-For `IFieldFactoryProps`, see [IFieldFactoryProps](https://core.formilyjs.org/api/models/form#ifieldfactoryprops).
+For `IFieldFactoryProps`, see [IFieldFactoryProps](https://core.silver-formily.org/en/api/models/Form#ifieldfactoryprops).

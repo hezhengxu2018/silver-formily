@@ -56,9 +56,9 @@ When a type really comes from `@silver-formily/core`, `@silver-formily/path`, `@
 
 ## Types that are intentionally not duplicated here
 
-- Field and form models such as `Field`, `GeneralField`, and `Form`: see [Core Field docs](https://core.formilyjs.org/api/models/field) and [Core Form docs](https://core.formilyjs.org/api/models/form).
-- Path contracts such as `FormPathPattern`: see the [Path docs](https://path.silver-formily.org/).
-- Validator contracts such as `Validator`, `MultiValidator`, and `IValidatorRules`: see the [Validator docs](https://validator.silver-formily.org/api/validate).
+- Field and form models such as `Field`, `GeneralField`, and `Form`: see [Core Field docs](https://core.silver-formily.org/en/api/models/Field) and [Core Form docs](https://core.silver-formily.org/en/api/models/Form).
+- Path contracts such as `FormPathPattern`: see the [Path docs](https://path.silver-formily.org/en/).
+- Validator contracts such as `Validator`, `MultiValidator`, and `IValidatorRules`: see the [Validator docs](https://validator.silver-formily.org/en/api/validate).
 - Schema contracts such as `Schema`, `ISchema`, and `SchemaKey`: see the [JSON Schema docs](https://json-schema.silver-formily.org/en/api/types).
 
 ## Import guidance

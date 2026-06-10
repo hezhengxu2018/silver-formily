@@ -42,4 +42,4 @@ guide/quick-start
 
 ## 参考
 
-- [上游参考：Formily 核心概念 / JSON Schema 开发模式](https://vue.formilyjs.org/guide/concept#json-schema-%E5%BC%80%E5%8F%91%E6%A8%A1%E5%BC%8F)
+- [上游参考：Formily 核心概念 / JSON Schema 开发模式](https://vue.silver-formily.org/guide/concept#json-schema-%E5%BC%80%E5%8F%91%E6%A8%A1%E5%BC%8F)

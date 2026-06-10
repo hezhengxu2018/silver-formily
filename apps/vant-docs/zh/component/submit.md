@@ -32,4 +32,4 @@ mobileDemo: submit/index.vue
 | `onSubmitFailed`  | ^[Function]`(feedbacks: IFormFeedback[]) => void`   | `onSubmit` 校验或提交流程失败后的回调                | `-`     |
 | `submit`          | `boolean`                                           | 是否强制切换为手动提交模式；开启后会渲染成普通按钮态 | `false` |
 
-> feedbacks类型参考[IFormFeedback](https://core.formilyjs.org/api/models/form#iformfeedback)
+> feedbacks类型参考[IFormFeedback](https://core.silver-formily.org/api/models/Form#iformfeedback)

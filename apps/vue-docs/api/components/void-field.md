@@ -2,7 +2,7 @@
 
 ## 描述
 
-作为 `@silver-formily/core` 中 [createVoidField](https://core.formilyjs.org/api/models/form#createvoidfield) 的 Vue 实现，它是专门用于将 ViewModel 与虚拟布局控件做绑定的桥接组件，可以用来控制数据型字段的显示隐藏、交互模式等，VoidField 组件属性参考 [IVoidFieldFactoryProps](https://core.formilyjs.org/api/models/form#ivoidfieldfactoryprops)
+作为 `@silver-formily/core` 中 [createVoidField](https://core.silver-formily.org/api/models/Form#createvoidfield) 的 Vue 实现，它是专门用于将 ViewModel 与虚拟布局控件做绑定的桥接组件，可以用来控制数据型字段的显示隐藏、交互模式等，VoidField 组件属性参考 [IVoidFieldFactoryProps](https://core.silver-formily.org/api/models/Form#ivoidfieldfactoryprops)
 
 ## 用例
 
@@ -17,7 +17,7 @@ api/components/void-field
 ## 属性
 
 ::: tip 提示
-本章节文档拷贝自[官方定义](https://core.formilyjs.org/zh-CN/api/models/form#ivoidfieldfactoryprops)，实际上由于 VoidField 并不承载表单值，因此不会跟踪内部field值的变化， `reaction` 中定义的函数应该永远不会触发。
+本章节文档拷贝自[官方定义](https://core.silver-formily.org/api/models/Form#ivoidfieldfactoryprops)，实际上由于 VoidField 并不承载表单值，因此不会跟踪内部field值的变化， `reaction` 中定义的函数应该永远不会触发。
 :::
 
 | 属性                     | 说明                                                       | 类型                                                                                                 | 默认值         |

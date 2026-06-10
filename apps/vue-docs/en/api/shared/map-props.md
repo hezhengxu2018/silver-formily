@@ -2,7 +2,7 @@
 
 ## Description
 
-Adaptor that maps [Field](https://core.formilyjs.org/api/models/field) properties to component props—usually paired with `connect`.
+Adaptor that maps [Field](https://core.silver-formily.org/en/api/models/Field) properties to component props—usually paired with `connect`.
 
 ## Signature
 

@@ -3,7 +3,7 @@
 The path system is the key connection between the Formily field tree and form data. Form field creation, Query field lookup, Field parent-child relationships, and deep read/write on `values` all rely on the same set of path semantics.
 
 :::tip
-Most of the capabilities in this chapter depend on [`@silver-formily/path`](https://path.silver-formily.org). This page mainly explains how `@silver-formily/core` works together with `@silver-formily/path`. For the complete feature set, please refer to the path documentation.
+Most of the capabilities in this chapter depend on [`@silver-formily/path`](https://path.silver-formily.org/en/). This page mainly explains how `@silver-formily/core` works together with `@silver-formily/path`. For the complete feature set, please refer to the path documentation.
 :::
 
 ## address and path
@@ -65,7 +65,7 @@ Common wildcard semantics:
 | `a.b`          | Exactly match the specified path                              |
 | `users.*.name` | Match `name` fields inside array items or dynamic child nodes |
 
-For the full matching capability, refer to the [Pattern Syntax](https://path.silver-formily.org/guide/patterns) chapter in the `@silver-formily/path` documentation.
+For the full matching capability, refer to the [Pattern Syntax](https://path.silver-formily.org/en/guide/patterns) chapter in the `@silver-formily/path` documentation.
 
 ### Alias Group Matching
 
@@ -84,7 +84,7 @@ form.query('layout.username').take()
 form.query('username').take()
 ```
 
-Therefore, in structures containing `VoidField`, you can look up a field either by its full field tree position or by its final data path. For lower-level behavior, refer to [`matchAliasGroup`](https://path.silver-formily.org/api/path-class.html#matchaliasgroup).
+Therefore, in structures containing `VoidField`, you can look up a field either by its full field tree position or by its final data path. For lower-level behavior, refer to [`matchAliasGroup`](https://path.silver-formily.org/en/api/path-class#matchaliasgroup).
 
 ## Field Relationships
 

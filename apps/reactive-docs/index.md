@@ -20,6 +20,6 @@
 
 ## 删减章节
 
-这里不再展开前端框架绑定库的文档，最核心的原因是前端框架绑定本身就是独立包，应该有各自独立的文档。如果你想找 `@formily/reactive-vue` 或者 `@formily/reactive-react`，可以去 [Formily 官方文档](https://reactive.formilyjs.org/) 查看。
+这里不再展开前端框架绑定库的文档，最核心的原因是前端框架绑定本身就是独立包，应该有各自独立的文档。如果你想找 Vue 侧绑定，请直接查看 [`@silver-formily/reactive-vue` 文档站](https://reactive-vue.silver-formily.org/)。
 
 如果你已经在使用 `silver-formily`，还可以继续查看 `@silver-formily/reactive-vue` 的[官方文档](https://reactive-vue.silver-formily.org/)，它在响应式基础能力之上补充了更贴近 Vue 的工具函数。

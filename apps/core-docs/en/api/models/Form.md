@@ -147,7 +147,7 @@ interface setValuesIn {
 }
 ```
 
-FormPathPattern API reference: [FormPath](https://path.silver-formily.org/api/patterns)
+FormPathPattern API reference: [FormPath](https://path.silver-formily.org/en/guide/patterns)
 
 ### setInitialValuesIn
 
@@ -163,7 +163,7 @@ interface setInitialValuesIn {
 }
 ```
 
-FormPathPattern API reference: [FormPath](https://path.silver-formily.org/api/patterns)
+FormPathPattern API reference: [FormPath](https://path.silver-formily.org/en/guide/patterns)
 
 ### existValuesIn
 
@@ -179,7 +179,7 @@ interface existValuesIn {
 }
 ```
 
-FormPathPattern API reference: [FormPath](https://path.silver-formily.org/api/patterns)
+FormPathPattern API reference: [FormPath](https://path.silver-formily.org/en/guide/patterns)
 
 ### existInitialValuesIn
 
@@ -195,7 +195,7 @@ interface existInitialValuesIn {
 }
 ```
 
-FormPathPattern API reference: [FormPath](https://path.silver-formily.org/api/patterns)
+FormPathPattern API reference: [FormPath](https://path.silver-formily.org/en/guide/patterns)
 
 ### getValuesIn
 
@@ -211,7 +211,7 @@ interface getValuesIn {
 }
 ```
 
-FormPathPattern API reference: [FormPath](https://path.silver-formily.org/api/patterns)
+FormPathPattern API reference: [FormPath](https://path.silver-formily.org/en/guide/patterns)
 
 ### getInitialValuesIn
 
@@ -227,7 +227,7 @@ interface getInitialValuesIn {
 }
 ```
 
-FormPathPattern API reference: [FormPath](https://path.silver-formily.org/api/patterns)
+FormPathPattern API reference: [FormPath](https://path.silver-formily.org/en/guide/patterns)
 
 ### deleteValuesIn
 
@@ -243,7 +243,7 @@ interface deleteValuesIn {
 }
 ```
 
-FormPathPattern API reference: [FormPath](https://path.silver-formily.org/api/patterns)
+FormPathPattern API reference: [FormPath](https://path.silver-formily.org/en/guide/patterns)
 
 ### deleteInitialValuesIn
 
@@ -259,7 +259,7 @@ interface deleteInitialValuesIn {
 }
 ```
 
-FormPathPattern API reference: [FormPath](https://path.silver-formily.org/api/patterns)
+FormPathPattern API reference: [FormPath](https://path.silver-formily.org/en/guide/patterns)
 
 ### setSubmitting
 
@@ -391,7 +391,7 @@ interface clearErrors {
 }
 ```
 
-FormPathPattern API reference: [FormPath](https://path.silver-formily.org/api/patterns)
+FormPathPattern API reference: [FormPath](https://path.silver-formily.org/en/guide/patterns)
 
 ### clearWarnings
 
@@ -407,7 +407,7 @@ interface clearWarnings {
 }
 ```
 
-FormPathPattern API reference: [FormPath](https://path.silver-formily.org/api/patterns)
+FormPathPattern API reference: [FormPath](https://path.silver-formily.org/en/guide/patterns)
 
 ### clearSuccesses
 
@@ -423,7 +423,7 @@ interface clearSuccesses {
 }
 ```
 
-FormPathPattern API reference: [FormPath](https://path.silver-formily.org/api/patterns)
+FormPathPattern API reference: [FormPath](https://path.silver-formily.org/en/guide/patterns)
 
 ### query
 
@@ -439,7 +439,7 @@ interface query {
 }
 ```
 
-FormPathPattern API reference: [FormPath](https://path.silver-formily.org/api/patterns)
+FormPathPattern API reference: [FormPath](https://path.silver-formily.org/en/guide/patterns)
 
 Query object API reference: [Query](/en/api/models/Query)
 
@@ -714,7 +714,7 @@ interface reset {
 }
 ```
 
-FormPathPattern API reference: [FormPath](https://path.silver-formily.org/api/patterns)
+FormPathPattern API reference: [FormPath](https://path.silver-formily.org/en/guide/patterns)
 
 IFieldResetOptions reference: [IFieldResetOptions](/en/api/models/Field#ifieldresetoptions)
 
@@ -833,7 +833,7 @@ interface IFieldFactoryProps {
 }
 ```
 
-FormPathPattern API reference: [FormPath](https://path.silver-formily.org/api/patterns)
+FormPathPattern API reference: [FormPath](https://path.silver-formily.org/en/guide/patterns)
 
 FieldValidator reference: [FieldValidator](/en/api/models/Field#fieldvalidator)
 
@@ -869,7 +869,7 @@ interface IVoidFieldFactoryProps {
 }
 ```
 
-FormPathPattern API reference: [FormPath](https://path.silver-formily.org/api/patterns)
+FormPathPattern API reference: [FormPath](https://path.silver-formily.org/en/guide/patterns)
 
 FieldDecorator reference: [FieldDecorator](/en/api/models/Field#fielddecorator)
 
