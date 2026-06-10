@@ -1,5 +1,14 @@
 # 更新日志
 
+## 1.0.1
+
+### Patch Changes
+
+- Updated dependencies [67a6be2]
+  - @silver-formily/vue@3.0.1
+  - @silver-formily/core@1.0.1
+  - @silver-formily/json-schema@1.0.1
+
 ## 1.0.0
 
 ### Major Changes

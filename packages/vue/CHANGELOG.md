@@ -1,5 +1,15 @@
 # 更新日志
 
+## 3.0.1
+
+### Patch Changes
+
+- 67a6be2: fix release version
+- Updated dependencies [67a6be2]
+  - @silver-formily/validator@1.0.1
+  - @silver-formily/core@1.0.1
+  - @silver-formily/json-schema@1.0.1
+
 ## 3.0.0
 
 ### Major Changes

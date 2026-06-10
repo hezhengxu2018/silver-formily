@@ -1,5 +1,11 @@
 # @silver-formily/validator
 
+## 1.0.1
+
+### Patch Changes
+
+- 67a6be2: fix release version
+
 ## 1.0.0
 
 ### Major Changes
