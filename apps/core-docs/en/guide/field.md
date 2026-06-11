@@ -24,8 +24,8 @@ There are three concrete data field types:
 > Field can store any data type, including arrays and objects. Use ArrayField only when you need item-level array operations (push/pop/insert/remove/move). Use ObjectField only when you need dynamic property operations (addProperty/removeProperty). Otherwise, a normal Field is enough.
 
 <ThemeImage
-  light="/architecture/field.png"
-  dark="/architecture/field.dark.png"
+  light="/architecture/field.en.png"
+  dark="/architecture/field.en.dark.png"
   alt="Formily Field"
 />
 
