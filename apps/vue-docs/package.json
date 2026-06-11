@@ -16,6 +16,8 @@
     "docs": {
       "buildDependencies": [
         "@silver-formily/core",
+        "@silver-formily/json-schema",
+        "@silver-formily/path",
         "@silver-formily/reactive-vue"
       ]
     },
