@@ -15,6 +15,7 @@
   "silverFormily": {
     "docs": {
       "buildDependencies": [
+        "@silver-formily/core",
         "@silver-formily/reactive-vue"
       ]
     },
