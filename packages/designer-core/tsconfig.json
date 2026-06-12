@@ -1,0 +1,17 @@
+{
+  "extends": "../typescript-config/base.json",
+  "compilerOptions": {
+    "useDefineForClassFields": false,
+    "paths": {
+      "@silver-formily/designer-core": ["./src/index.ts"],
+      "@silver-formily/path": ["../path/src/index.ts"],
+      "@silver-formily/shared": ["../shared/src/index.ts"]
+    },
+    "strict": false,
+    "noUnusedLocals": false,
+    "noEmit": true,
+    "verbatimModuleSyntax": false
+  },
+  "include": ["src/**/*.ts"],
+  "exclude": ["node_modules", "esm", "src/__tests__"]
+}
