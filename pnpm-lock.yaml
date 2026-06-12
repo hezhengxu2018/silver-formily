@@ -141,6 +141,9 @@ catalogs:
     shiki:
       specifier: ^3.22.0
       version: 3.22.0
+    three:
+      specifier: ^0.181.1
+      version: 0.181.2
     tsdown:
       specifier: ^0.21.7
       version: 0.21.8
@@ -485,6 +488,31 @@ importers:
       '@silver-formily/reactive-vue':
         specifier: workspace:*
         version: link:../../packages/reactive-vue
+      vue:
+        specifier: 'catalog:'
+        version: 3.5.32(typescript@6.0.2)
+    devDependencies:
+      '@silver-formily/typescript-config':
+        specifier: workspace:*
+        version: link:../../packages/typescript-config
+      typescript:
+        specifier: 'catalog:'
+        version: 6.0.2
+      vitepress:
+        specifier: 'catalog:'
+        version: 2.0.0-alpha.16(@types/node@24.10.13)(async-validator@4.2.5)(change-case@5.4.4)(jiti@2.6.1)(lightningcss@1.32.0)(nprogress@0.2.0)(postcss@8.5.9)(sass-embedded@1.97.3)(sass@1.97.3)(tsx@4.22.3)(typescript@6.0.2)(yaml@2.8.2)
+      vue-tsc:
+        specifier: 'catalog:'
+        version: 3.2.6(typescript@6.0.2)
+
+  apps/silver-formily-docs:
+    dependencies:
+      '@silver-formily/docs-toolkit':
+        specifier: workspace:*
+        version: link:../../packages/docs-toolkit
+      three:
+        specifier: 'catalog:'
+        version: 0.181.2
       vue:
         specifier: 'catalog:'
         version: 3.5.32(typescript@6.0.2)
@@ -4302,7 +4330,7 @@ packages:
 
   glob@7.2.3:
     resolution: {integrity: sha512-nFR0zLpU2YCaRxwoCJvL6UvCH2JFyFVIvwTLsIf21AuHlMskA1hhTdk+LlYJtOlYt9v6dvszD2BGRqBL+iQK9Q==}
-    deprecated: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
+    deprecated: Glob versions prior to v9 are no longer supported
 
   global-directory@4.0.1:
     resolution: {integrity: sha512-wHTUcDUoZ1H5/0iVqEudYW4/kAlN5cZ3j/bXn0Dpbizl9iaUVeWSHqiOjsgk6OW2bkLclbBjzewBz6weQ1zA2Q==}
@@ -6160,6 +6188,9 @@ packages:
   textextensions@2.6.0:
     resolution: {integrity: sha512-49WtAWS+tcsy93dRt6P0P3AMD2m5PvXRhuEA0kaXos5ZLlujtYmpmFsB+QvWUSxE1ZsstmYXfQ7L40+EcQgpAQ==}
     engines: {node: '>=0.8'}
+
+  three@0.181.2:
+    resolution: {integrity: sha512-k/CjiZ80bYss6Qs7/ex1TBlPD11whT9oKfT8oTGiHa34W4JRd1NiH/Tr1DbHWQ2/vMUypxksLnF2CfmlmM5XFQ==}
 
   through2@2.0.5:
     resolution: {integrity: sha512-/mrRod8xqpA+IHSLyGCQ2s8SPHiCDEeQJSep1jqLYeEUClOFG2Qsh+4FU6G9VeqpZnGW/Su8LQGc4YKni5rYSQ==}
@@ -12079,6 +12110,8 @@ snapshots:
   text-extensions@2.4.0: {}
 
   textextensions@2.6.0: {}
+
+  three@0.181.2: {}
 
   through2@2.0.5:
     dependencies:

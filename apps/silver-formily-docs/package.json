@@ -1,0 +1,36 @@
+{
+  "name": "silver-formily-docs",
+  "type": "module",
+  "private": true,
+  "description": "Documentation site for Silver Formily",
+  "scripts": {
+    "dev": "pnpm run docs:deps && vitepress dev .",
+    "docs:deps": "node ../../scripts/docs-deps.mjs",
+    "preview": "vitepress preview .",
+    "lint": "eslint .",
+    "format": "eslint . --fix",
+    "check-types": "vue-tsc --noEmit",
+    "docs:build": "pnpm run docs:deps && vitepress build ."
+  },
+  "silverFormily": {
+    "docs": {
+      "buildDependencies": []
+    },
+    "tasks": {
+      "dev": {
+        "filterMode": "workspace-only"
+      }
+    }
+  },
+  "dependencies": {
+    "@silver-formily/docs-toolkit": "workspace:*",
+    "three": "catalog:",
+    "vue": "catalog:"
+  },
+  "devDependencies": {
+    "@silver-formily/typescript-config": "workspace:*",
+    "typescript": "catalog:",
+    "vitepress": "catalog:",
+    "vue-tsc": "catalog:"
+  }
+}

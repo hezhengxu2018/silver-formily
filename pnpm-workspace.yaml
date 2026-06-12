@@ -59,6 +59,7 @@ catalog:
   prompts: ^2.4.2
   sass-embedded: ^1.97.3
   shiki: ^3.22.0
+  three: ^0.181.1
   tsdown: ^0.21.7
   tsx: ^4.22.3
   turbo: ^2.8.5
