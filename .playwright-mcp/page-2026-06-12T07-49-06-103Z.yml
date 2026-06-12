@@ -1,0 +1,112 @@
+- main [ref=e3]:
+  - generic [ref=e5]:
+    - generic [ref=e6]:
+      - generic [ref=e7]:
+        - paragraph [ref=e8]: Designer
+        - heading "Silver Formily Designer Playground" [level=1] [ref=e9]
+      - generic [ref=e10]:
+        - button "Undo" [disabled] [ref=e11]: Undo
+        - button "Redo" [disabled] [ref=e13]: Redo
+        - button "Duplicate" [disabled] [ref=e15]
+        - button "Delete" [disabled] [ref=e16]
+    - generic [ref=e17]:
+      - complementary [ref=e18]:
+        - generic [ref=e19]:
+          - generic [ref=e21]:
+            - heading "Materials" [level=2] [ref=e22]
+            - paragraph [ref=e23]: Registered from the current designer instance
+          - generic [ref=e25]:
+            - generic [ref=e26]:
+              - heading "Fields" [level=3] [ref=e27]
+              - generic [ref=e28]: "2"
+            - generic [ref=e29]:
+              - button "Input Input" [ref=e30] [cursor=pointer]:
+                - strong [ref=e31]: Input
+                - generic [ref=e32]: Input
+              - button "Select Select" [ref=e33] [cursor=pointer]:
+                - strong [ref=e34]: Select
+                - generic [ref=e35]: Select
+      - main [ref=e36]:
+        - generic [ref=e37]:
+          - generic [ref=e39]:
+            - heading "Structure" [level=2] [ref=e40]
+            - paragraph [ref=e41]: Current node tree and slot hierarchy
+          - list [ref=e42]:
+            - listitem [ref=e43]:
+              - button "Customer Profile Form" [ref=e44] [cursor=pointer]:
+                - generic [ref=e45]: Customer Profile
+                - generic [ref=e46]: Form
+              - list [ref=e47]:
+                - listitem [ref=e48]:
+                  - button "Full Name Input" [ref=e49] [cursor=pointer]:
+                    - generic [ref=e50]: Full Name
+                    - generic [ref=e51]: Input
+                - listitem [ref=e52]:
+                  - button "Status Select" [ref=e53] [cursor=pointer]:
+                    - generic [ref=e54]: Status
+                    - generic [ref=e55]: Select
+        - generic [ref=e56]:
+          - generic [ref=e58]:
+            - heading "Canvas" [level=2] [ref=e59]
+            - paragraph [ref=e60]: A minimal preview shell backed by designer-core
+          - article [ref=e62] [cursor=pointer]:
+            - generic [ref=e63]:
+              - strong [ref=e64]: Customer Profile
+              - generic [ref=e65]: Form
+            - generic [ref=e66]:
+              - article [ref=e67]:
+                - generic [ref=e68]:
+                  - strong [ref=e69]: Full Name
+                  - generic [ref=e70]: Input
+                - textbox "Please enter full name" [ref=e74]
+              - article [ref=e75]:
+                - generic [ref=e76]:
+                  - strong [ref=e77]: Status
+                  - generic [ref=e78]: Select
+                - generic [ref=e81]:
+                  - generic:
+                    - combobox [ref=e83]
+                    - generic [ref=e84]: Select customer status
+                  - img [ref=e87]
+      - complementary [ref=e89]:
+        - generic [ref=e90]:
+          - generic [ref=e92]:
+            - heading "Properties" [level=2] [ref=e93]
+            - paragraph [ref=e94]: Selected node fields plus whole-schema import and export
+          - paragraph [ref=e95]: Select a node from the tree or canvas to edit it.
+          - generic [ref=e96]:
+            - generic [ref=e97]: Schema JSON
+            - textbox "Schema JSON" [ref=e98]: "{ \"id\": \"dn_pg6hoilf\", \"componentName\": \"Form\", \"title\": \"Customer Profile\", \"props\": {}, \"children\": [ { \"id\": \"dn_fbwc4vu4\", \"componentName\": \"Input\", \"title\": \"Full Name\", \"props\": { \"placeholder\": \"Please enter full name\", \"clearable\": true }, \"children\": [], \"slots\": {}, \"metadata\": {} }, { \"id\": \"dn_o9o06w15\", \"componentName\": \"Select\", \"title\": \"Status\", \"props\": { \"placeholder\": \"Select customer status\", \"clearable\": true, \"options\": [ { \"label\": \"Lead\", \"value\": \"lead\" }, { \"label\": \"Qualified\", \"value\": \"qualified\" }, { \"label\": \"Customer\", \"value\": \"customer\" } ] }, \"children\": [], \"slots\": {}, \"metadata\": {} } ], \"slots\": {}, \"metadata\": { \"designer\": { \"container\": true } } }"
+          - generic [ref=e99]:
+            - button "Reset From State" [ref=e100] [cursor=pointer]
+            - button "Import Schema" [ref=e101] [cursor=pointer]
+  - complementary [ref=e102]:
+    - generic [ref=e103]:
+      - generic [ref=e105]:
+        - paragraph [ref=e106]: Runtime Preview
+        - heading "Formily + Element Plus" [level=2] [ref=e107]
+      - generic [ref=e109]:
+        - generic [ref=e110]:
+          - generic [ref=e111]:
+            - generic [ref=e113]:
+              - generic [ref=e115]: Full Name
+              - generic [ref=e116]: ":"
+            - textbox "Full Name :" [ref=e121]:
+              - /placeholder: Please enter full name
+          - generic [ref=e122]:
+            - generic [ref=e124]:
+              - generic [ref=e126]: Status
+              - generic [ref=e127]: ":"
+            - generic [ref=e131] [cursor=pointer]:
+              - generic:
+                - combobox "Status :" [ref=e133]
+                - generic [ref=e134]: Select customer status
+              - img [ref=e137]
+        - group [ref=e139]:
+          - button "Submit" [ref=e148] [cursor=pointer]:
+            - generic [ref=e149]: Submit
+    - generic [ref=e150]:
+      - generic [ref=e152]:
+        - paragraph [ref=e153]: Generated Schema
+        - heading "Runtime JSON Schema" [level=2] [ref=e154]
+      - generic [ref=e155]: "{ \"type\": \"object\", \"properties\": { \"fbwc4vu4\": { \"type\": \"string\", \"title\": \"Full Name\", \"x-decorator\": \"FormItem\", \"x-component\": \"Input\", \"x-component-props\": { \"placeholder\": \"Please enter full name\", \"clearable\": true } }, \"o9o06w15\": { \"type\": \"string\", \"title\": \"Status\", \"x-decorator\": \"FormItem\", \"x-component\": \"Select\", \"x-component-props\": { \"placeholder\": \"Select customer status\", \"clearable\": true, \"options\": [ { \"label\": \"Lead\", \"value\": \"lead\" }, { \"label\": \"Qualified\", \"value\": \"qualified\" }, { \"label\": \"Customer\", \"value\": \"customer\" } ] } } } }"

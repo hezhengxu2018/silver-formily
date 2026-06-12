@@ -1,0 +1,7 @@
+[    1054ms] [WARNING] Invalid prop: type check failed for prop "labelWidth". Expected Number with value NaN, got String with value "112px". null at <FFormLayout>
+at <FPreviewTextProvider>
+at <FormProvider>
+at <FForm>
+at <FormProvider>
+at <App> [Object, Object, Object, Object, Object, Object] @ http://127.0.0.1:4177/@vite/client:509
+[    1192ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://127.0.0.1:4177/favicon.ico:0
