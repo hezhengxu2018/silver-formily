@@ -4,6 +4,8 @@ import { fileURLToPath } from 'node:url'
 import { createDocsConfig } from '@silver-formily/docs-toolkit'
 import pkg from '@silver-formily/element-plus/package.json' with { type: 'json' }
 import vueJsx from '@vitejs/plugin-vue-jsx'
+import enComponent from './i18n/en/pages/component.json'
+import enNav from './i18n/en/pages/nav.json'
 import zhComponent from './i18n/zh/pages/component.json'
 import zhNav from './i18n/zh/pages/nav.json'
 
@@ -42,6 +44,30 @@ export default createDocsConfig({
         },
         footer: {
           message: '本项目基于 MIT 协议开源',
+        },
+      },
+    },
+    en: {
+      label: 'English',
+      lang: 'en-US',
+      title: 'Silver Formily Element Plus',
+      description: 'Formily bindings for Element Plus',
+      themeConfig: {
+        nav: enNav,
+        sidebar: {
+          '/en/guide/': [
+            {
+              text: 'Guide',
+              items: [
+                { text: 'Introduction', link: '/en/guide/introduction' },
+                { text: 'Breaking Changes', link: '/en/guide/breaking-changes' },
+              ],
+            },
+          ],
+          '/en/component/': enComponent,
+        },
+        footer: {
+          message: 'Released under the MIT License.',
         },
       },
     },

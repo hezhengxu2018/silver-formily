@@ -22,6 +22,10 @@ function toImportPath(fromFile: string, toFile: string) {
   return normalized.startsWith('.') ? normalized : `./${normalized}`
 }
 
+function normalizePath(path: string) {
+  return path.split('\\').join('/')
+}
+
 async function shortenBundledEsToolkitPaths(outDir: string) {
   const pnpmDir = resolve(outDir, 'node_modules/.pnpm')
   const packages = await readdir(pnpmDir, { withFileTypes: true }).catch(() => [])
@@ -54,10 +58,11 @@ async function shortenBundledEsToolkitPaths(outDir: string) {
 
     const source = await readFile(filePath, 'utf8')
     const rewritten = source.replace(/(['"])(\.{1,2}\/node_modules\/\.pnpm\/es-toolkit@[^'"]+?\/node_modules\/es-toolkit\/[^'"]+)(['"])/g, (_, quoteStart, specifier, quoteEnd) => {
-      const absoluteOldPath = resolve(dirname(filePath), specifier)
-      const absoluteNewPath = absoluteOldPath
-        .replace(`${bundledRoot}/dist/`, `${flattenedRoot}/`)
-        .replace(`${bundledRoot}/`, `${flattenedRoot}/`)
+      const normalizedSpecifier = normalizePath(specifier)
+      const relativeVendorPath = normalizedSpecifier
+        .replace(/^\.{1,2}\/node_modules\/\.pnpm\/es-toolkit@[^/]+\/node_modules\/es-toolkit\//, '')
+        .replace(/^dist\//, '')
+      const absoluteNewPath = resolve(flattenedRoot, relativeVendorPath)
       return `${quoteStart}${toImportPath(filePath, absoluteNewPath)}${quoteEnd}`
     })
 

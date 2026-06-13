@@ -1,0 +1,232 @@
+[
+  {
+    "text": "Overview",
+    "items": [
+      {
+        "link": "/en/component/quick-start",
+        "text": "Quick Start"
+      }
+    ]
+  },
+  {
+    "text": "Layout",
+    "items": [
+      {
+        "link": "/en/component/form",
+        "text": "Form"
+      },
+      {
+        "link": "/en/component/form-item",
+        "text": "FormItem"
+      },
+      {
+        "link": "/en/component/form-layout",
+        "text": "FormLayout"
+      },
+      {
+        "link": "/en/component/form-grid",
+        "text": "FormGrid"
+      },
+      {
+        "link": "/en/component/query-form",
+        "text": "QueryForm"
+      },
+      {
+        "link": "/en/component/query-form-item",
+        "text": "QueryFormItem"
+      },
+      {
+        "link": "/en/component/space",
+        "text": "Space"
+      },
+      {
+        "link": "/en/component/form-button-group",
+        "text": "FormButtonGroup"
+      },
+      {
+        "link": "/en/component/submit",
+        "text": "Submit"
+      },
+      {
+        "link": "/en/component/reset",
+        "text": "Reset"
+      }
+    ]
+  },
+  {
+    "text": "Input",
+    "items": [
+      {
+        "link": "/en/component/input",
+        "text": "Input"
+      },
+      {
+        "link": "/en/component/autocomplete",
+        "text": "Autocomplete"
+      },
+      {
+        "link": "/en/component/input-tag",
+        "text": "InputTag"
+      },
+      {
+        "link": "/en/component/mention",
+        "text": "Mention"
+      },
+      {
+        "link": "/en/component/input-number",
+        "text": "InputNumber"
+      },
+      {
+        "link": "/en/component/password",
+        "text": "Password"
+      },
+      {
+        "link": "/en/component/checkbox",
+        "text": "Checkbox"
+      },
+      {
+        "link": "/en/component/radio",
+        "text": "Radio"
+      },
+      {
+        "link": "/en/component/segmented",
+        "text": "Segmented"
+      },
+      {
+        "link": "/en/component/select",
+        "text": "Select"
+      },
+      {
+        "link": "/en/component/picker-select",
+        "text": "PickerSelect",
+        "promotion": "4.0.1"
+      },
+      {
+        "link": "/en/component/tree-select",
+        "text": "TreeSelect"
+      },
+      {
+        "link": "/en/component/select-table",
+        "text": "SelectTable"
+      },
+      {
+        "link": "/en/component/cascader",
+        "text": "Cascader"
+      },
+      {
+        "link": "/en/component/tree",
+        "text": "Tree"
+      },
+      {
+        "link": "/en/component/transfer",
+        "text": "Transfer"
+      },
+      {
+        "link": "/en/component/switch",
+        "text": "Switch"
+      },
+      {
+        "link": "/en/component/rate",
+        "text": "Rate"
+      },
+      {
+        "link": "/en/component/slider",
+        "text": "Slider"
+      },
+      {
+        "link": "/en/component/color-picker",
+        "text": "ColorPicker"
+      },
+      {
+        "link": "/en/component/color-picker-panel",
+        "text": "ColorPickerPanel"
+      },
+      {
+        "link": "/en/component/date-picker",
+        "text": "DatePicker"
+      },
+      {
+        "link": "/en/component/time-picker",
+        "text": "TimePicker"
+      },
+      {
+        "link": "/en/component/date-picker-panel",
+        "text": "DatePickerPanel"
+      },
+      {
+        "link": "/en/component/time-select",
+        "text": "TimeSelect"
+      },
+      {
+        "link": "/en/component/upload",
+        "text": "Upload"
+      }
+    ]
+  },
+  {
+    "text": "Scenario",
+    "items": [
+      {
+        "link": "/en/component/array-base",
+        "text": "ArrayBase"
+      },
+      {
+        "link": "/en/component/array-cards",
+        "text": "ArrayCards"
+      },
+      {
+        "link": "/en/component/array-items",
+        "text": "ArrayItems"
+      },
+      {
+        "link": "/en/component/array-collapse",
+        "text": "ArrayCollapse"
+      },
+      {
+        "link": "/en/component/array-table",
+        "text": "ArrayTable"
+      },
+      {
+        "link": "/en/component/array-tabs",
+        "text": "ArrayTabs"
+      },
+      {
+        "link": "/en/component/array-list-tabs",
+        "text": "ArrayListTabs"
+      },
+      {
+        "link": "/en/component/editable",
+        "text": "Editable"
+      },
+      {
+        "link": "/en/component/form-collapse",
+        "text": "FormCollapse"
+      },
+      {
+        "link": "/en/component/form-dialog",
+        "text": "FormDialog"
+      },
+      {
+        "link": "/en/component/form-drawer",
+        "text": "FormDrawer"
+      },
+      {
+        "link": "/en/component/form-step",
+        "text": "FormStep"
+      },
+      {
+        "link": "/en/component/form-tab",
+        "text": "FormTab"
+      }
+    ]
+  },
+  {
+    "text": "Read Pretty",
+    "items": [
+      {
+        "link": "/en/component/preview-text",
+        "text": "PreviewText"
+      }
+    ]
+  }
+]

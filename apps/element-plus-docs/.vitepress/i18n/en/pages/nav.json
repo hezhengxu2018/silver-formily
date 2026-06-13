@@ -1,0 +1,12 @@
+[
+  {
+    "text": "Guide",
+    "link": "/en/guide/introduction",
+    "activeMatch": "/en/guide/"
+  },
+  {
+    "text": "Components",
+    "link": "/en/component/quick-start",
+    "activeMatch": "/en/component/"
+  }
+]
