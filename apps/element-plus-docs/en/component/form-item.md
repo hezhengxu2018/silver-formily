@@ -21,7 +21,7 @@ Starting from `2.1.0`, the Vue wrapper has been upgraded to `@silver-formily/vue
 
 :::demo
 
-form-item/common
+../../en/demos/form-item/common
 
 :::
 
@@ -29,7 +29,7 @@ form-item/common
 
 :::demo
 
-form-item/size
+../../en/demos/form-item/size
 
 :::
 

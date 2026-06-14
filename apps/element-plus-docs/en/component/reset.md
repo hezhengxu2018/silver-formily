@@ -8,7 +8,7 @@
 
 :::demo
 
-reset/base
+../../en/demos/reset/base
 
 :::
 
@@ -16,7 +16,7 @@ reset/base
 
 :::demo
 
-reset/force
+../../en/demos/reset/force
 
 :::
 
@@ -24,7 +24,7 @@ reset/force
 
 :::demo
 
-reset/validate
+../../en/demos/reset/validate
 
 :::
 

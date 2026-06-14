@@ -6,7 +6,7 @@
 
 :::demo
 
-date-picker/markup-schema
+../../en/demos/date-picker/markup-schema
 
 :::
 
@@ -14,7 +14,7 @@ date-picker/markup-schema
 
 :::demo
 
-date-picker/json-schema
+../../en/demos/date-picker/json-schema
 
 :::
 
@@ -22,7 +22,7 @@ date-picker/json-schema
 
 :::demo
 
-date-picker/template
+../../en/demos/date-picker/template
 
 :::
 

@@ -6,7 +6,7 @@
 
 :::demo
 
-input-tag/markup-schema-basic
+../../en/demos/input-tag/markup-schema-basic
 
 :::
 
@@ -14,7 +14,7 @@ input-tag/markup-schema-basic
 
 :::demo
 
-input-tag/markup-schema-limit
+../../en/demos/input-tag/markup-schema-limit
 
 :::
 
@@ -22,7 +22,7 @@ input-tag/markup-schema-limit
 
 :::demo
 
-input-tag/template-slots
+../../en/demos/input-tag/template-slots
 
 :::
 

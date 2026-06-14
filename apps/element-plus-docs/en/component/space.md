@@ -10,7 +10,7 @@ This project does not wrap `Space` in any custom way. It simply re-exports `ElSp
 
 :::demo
 
-space/markup-schema
+../../en/demos/space/markup-schema
 
 :::
 
@@ -18,7 +18,7 @@ space/markup-schema
 
 :::demo
 
-space/json-schema
+../../en/demos/space/json-schema
 
 :::
 
@@ -26,7 +26,7 @@ space/json-schema
 
 :::demo
 
-space/template
+../../en/demos/space/template
 
 :::
 

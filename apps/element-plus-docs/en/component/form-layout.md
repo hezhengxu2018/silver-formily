@@ -20,7 +20,7 @@ Functionally, FormLayout now replaces the Element Plus Form component in many ca
 
 :::demo
 
-form-layout/markup-schema
+../../en/demos/form-layout/markup-schema
 
 :::
 
@@ -28,7 +28,7 @@ form-layout/markup-schema
 
 :::demo
 
-form-layout/json-schema
+../../en/demos/form-layout/json-schema
 
 :::
 
@@ -36,7 +36,7 @@ form-layout/json-schema
 
 :::demo
 
-form-layout/template
+../../en/demos/form-layout/template
 
 :::
 
@@ -44,7 +44,7 @@ form-layout/template
 
 :::demo
 
-form-layout/template-grid
+../../en/demos/form-layout/template-grid
 
 :::
 

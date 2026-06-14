@@ -21,7 +21,7 @@ To span columns, you can use the `data-grid-span` prop from `@silver-formily/gri
 
 :::demo
 
-query-form/markup-schema
+../../en/demos/query-form/markup-schema
 
 :::
 
@@ -29,7 +29,7 @@ query-form/markup-schema
 
 :::demo
 
-query-form/json-schema
+../../en/demos/query-form/json-schema
 
 :::
 
@@ -37,7 +37,7 @@ query-form/json-schema
 
 :::demo
 
-query-form/external-form-initial-values
+../../en/demos/query-form/external-form-initial-values
 
 :::
 
@@ -45,7 +45,7 @@ query-form/external-form-initial-values
 
 :::demo
 
-query-form/vertical-layout
+../../en/demos/query-form/vertical-layout
 
 :::
 
@@ -53,7 +53,7 @@ query-form/vertical-layout
 
 :::demo
 
-query-form/default-expanded
+../../en/demos/query-form/default-expanded
 
 :::
 
@@ -61,7 +61,7 @@ query-form/default-expanded
 
 :::demo
 
-query-form/hide-toggle-show-all
+../../en/demos/query-form/hide-toggle-show-all
 
 :::
 
@@ -69,7 +69,7 @@ query-form/hide-toggle-show-all
 
 :::demo
 
-query-form/light
+../../en/demos/query-form/light
 
 :::
 
@@ -87,7 +87,7 @@ query-form/light
 
 :::demo
 
-query-form/light-immediate
+../../en/demos/query-form/light-immediate
 
 :::
 
@@ -95,7 +95,7 @@ query-form/light-immediate
 
 :::demo
 
-query-form/actions-at-row-end
+../../en/demos/query-form/actions-at-row-end
 
 :::
 
@@ -109,7 +109,7 @@ The action area currently occupies only one grid cell. If the content is too wid
 
 :::demo
 
-query-form/actions-slot-export
+../../en/demos/query-form/actions-slot-export
 
 :::
 
@@ -117,7 +117,7 @@ query-form/actions-slot-export
 
 :::demo
 
-query-form/visible-when
+../../en/demos/query-form/visible-when
 
 :::
 
@@ -125,7 +125,7 @@ query-form/visible-when
 
 :::demo
 
-query-form/visible-when-two-rows
+../../en/demos/query-form/visible-when-two-rows
 
 :::
 
@@ -133,7 +133,7 @@ query-form/visible-when-two-rows
 
 :::demo
 
-query-form/visible-when-top-n
+../../en/demos/query-form/visible-when-top-n
 
 :::
 

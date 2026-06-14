@@ -14,7 +14,7 @@ When `mode` is `single`, `value` is a single value. When `mode` is `multiple`, `
 
 :::demo
 
-select-table/markup-schema-multiple
+../../en/demos/select-table/markup-schema-multiple
 
 :::
 
@@ -24,7 +24,7 @@ select-table/markup-schema-multiple
 
 :::demo
 
-select-table/markup-schema-multiple-slot
+../../en/demos/select-table/markup-schema-multiple-slot
 
 :::
 
@@ -32,7 +32,7 @@ select-table/markup-schema-multiple-slot
 
 :::demo
 
-select-table/json-schema-multiple
+../../en/demos/select-table/json-schema-multiple
 
 :::
 
@@ -42,7 +42,7 @@ select-table/json-schema-multiple
 
 :::demo
 
-select-table/json-schema-single
+../../en/demos/select-table/json-schema-single
 
 :::
 
@@ -52,7 +52,7 @@ select-table/json-schema-single
 
 :::demo
 
-select-table/template-single
+../../en/demos/select-table/template-single
 
 :::
 
@@ -62,7 +62,7 @@ select-table/template-single
 
 :::demo
 
-select-table/template-multiple-slot
+../../en/demos/select-table/template-multiple-slot
 
 :::
 
@@ -74,7 +74,7 @@ In real-world projects, you may still choose to hide the select-all checkbox wit
 
 :::demo
 
-select-table/template-multiple-selectable
+../../en/demos/select-table/template-multiple-selectable
 
 :::
 

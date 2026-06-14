@@ -10,7 +10,7 @@ This component is intended for Schema-based scenarios only.
 
 :::demo
 
-form-tab/markup-schema
+../../en/demos/form-tab/markup-schema
 
 :::
 
@@ -18,7 +18,7 @@ form-tab/markup-schema
 
 :::demo
 
-form-tab/json-schema
+../../en/demos/form-tab/json-schema
 
 :::
 

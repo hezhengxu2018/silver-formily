@@ -6,7 +6,7 @@
 
 :::demo
 
-picker-select/template-dialog-table
+../../en/demos/picker-select/template-dialog-table
 
 :::
 

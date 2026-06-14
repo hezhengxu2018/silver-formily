@@ -13,7 +13,7 @@
 
 :::demo
 
-preview-text/base
+../../en/demos/preview-text/base
 
 :::
 
@@ -25,7 +25,7 @@ As long as a component's PreviewText uses Input internally, you can use the `for
 
 :::demo
 
-preview-text/extend
+../../en/demos/preview-text/extend
 
 :::
 
@@ -33,7 +33,7 @@ preview-text/extend
 
 :::demo
 
-preview-text/preview-config
+../../en/demos/preview-text/preview-config
 
 :::
 
@@ -45,7 +45,7 @@ You can also add custom `class` or `style` attributes. They are inherited normal
 
 :::demo
 
-preview-text/preview-config-template-direct
+../../en/demos/preview-text/preview-config-template-direct
 
 :::
 
@@ -53,7 +53,7 @@ preview-text/preview-config-template-direct
 
 :::demo
 
-preview-text/preview-config-template
+../../en/demos/preview-text/preview-config-template
 
 :::
 

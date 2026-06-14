@@ -6,7 +6,7 @@
 
 :::demo
 
-select/markup-schema-sync
+../../en/demos/select/markup-schema-sync
 
 :::
 
@@ -14,7 +14,7 @@ select/markup-schema-sync
 
 :::demo
 
-select/markup-schema-async-search
+../../en/demos/select/markup-schema-async-search
 
 :::
 
@@ -22,7 +22,7 @@ select/markup-schema-async-search
 
 :::demo
 
-select/markup-schema-async
+../../en/demos/select/markup-schema-async
 
 :::
 
@@ -30,7 +30,7 @@ select/markup-schema-async
 
 :::demo
 
-select/markup-schema-option-group
+../../en/demos/select/markup-schema-option-group
 
 :::
 
@@ -38,7 +38,7 @@ select/markup-schema-option-group
 
 :::demo
 
-select/json-schema-sync
+../../en/demos/select/json-schema-sync
 
 :::
 
@@ -46,7 +46,7 @@ select/json-schema-sync
 
 :::demo
 
-select/json-schema-async
+../../en/demos/select/json-schema-async
 
 :::
 
@@ -54,7 +54,7 @@ select/json-schema-async
 
 :::demo
 
-select/template-sync
+../../en/demos/select/template-sync
 
 :::
 
@@ -62,7 +62,7 @@ select/template-sync
 
 :::demo
 
-select/template-async
+../../en/demos/select/template-async
 
 :::
 
@@ -70,7 +70,7 @@ select/template-async
 
 :::demo
 
-select/scope-slot
+../../en/demos/select/scope-slot
 
 :::
 
@@ -78,7 +78,7 @@ select/scope-slot
 
 :::demo
 
-select/template-slot-header
+../../en/demos/select/template-slot-header
 
 :::
 

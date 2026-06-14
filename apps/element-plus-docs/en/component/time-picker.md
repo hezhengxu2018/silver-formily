@@ -6,7 +6,7 @@
 
 :::demo
 
-time-picker/markup-schema
+../../en/demos/time-picker/markup-schema
 
 :::
 
@@ -14,7 +14,7 @@ time-picker/markup-schema
 
 :::demo
 
-time-picker/json-schema
+../../en/demos/time-picker/json-schema
 
 :::
 
@@ -22,7 +22,7 @@ time-picker/json-schema
 
 :::demo
 
-time-picker/template
+../../en/demos/time-picker/template
 
 :::
 

@@ -6,7 +6,7 @@
 
 :::demo
 
-rate/markup-schema
+../../en/demos/rate/markup-schema
 
 :::
 
@@ -14,7 +14,7 @@ rate/markup-schema
 
 :::demo
 
-rate/json-schema
+../../en/demos/rate/json-schema
 
 :::
 
@@ -22,7 +22,7 @@ rate/json-schema
 
 :::demo
 
-rate/template
+../../en/demos/rate/template
 
 :::
 

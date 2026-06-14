@@ -14,7 +14,7 @@ When using function components, you can quickly access `form` through destructur
 
 :::demo
 
-form-drawer/markup-schema
+../../en/demos/form-drawer/markup-schema
 
 :::
 
@@ -22,7 +22,7 @@ form-drawer/markup-schema
 
 :::demo
 
-form-drawer/json-schema
+../../en/demos/form-drawer/json-schema
 
 :::
 
@@ -30,7 +30,7 @@ form-drawer/json-schema
 
 :::demo
 
-form-drawer/template
+../../en/demos/form-drawer/template
 
 :::
 
@@ -38,7 +38,7 @@ form-drawer/template
 
 :::demo
 
-form-drawer/template-slot
+../../en/demos/form-drawer/template-slot
 
 :::
 
@@ -91,7 +91,7 @@ FormDrawer also closes automatically when the browser URL changes, including Bac
 
 :::demo
 
-form-drawer/enter-submit
+../../en/demos/form-drawer/enter-submit
 
 :::
 

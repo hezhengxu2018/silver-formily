@@ -20,7 +20,7 @@ The main exception is form rehydration. When restoring existing data, setting `F
 
 :::demo
 
-upload/markup-schema
+../../en/demos/upload/markup-schema
 
 :::
 
@@ -28,7 +28,7 @@ upload/markup-schema
 
 :::demo
 
-upload/json-schema
+../../en/demos/upload/json-schema
 
 :::
 
@@ -36,7 +36,7 @@ upload/json-schema
 
 :::demo
 
-upload/template
+../../en/demos/upload/template
 
 :::
 

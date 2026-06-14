@@ -10,7 +10,7 @@ This component includes compatibility handling for older `element-plus` versions
 
 :::demo
 
-checkbox/markup-schema
+../../en/demos/checkbox/markup-schema
 
 :::
 
@@ -18,7 +18,7 @@ checkbox/markup-schema
 
 :::demo
 
-checkbox/markup-schema-slot
+../../en/demos/checkbox/markup-schema-slot
 
 :::
 
@@ -26,7 +26,7 @@ checkbox/markup-schema-slot
 
 :::demo
 
-checkbox/json-schema
+../../en/demos/checkbox/json-schema
 
 :::
 
@@ -34,7 +34,7 @@ checkbox/json-schema
 
 :::demo
 
-checkbox/template
+../../en/demos/checkbox/template
 
 :::
 

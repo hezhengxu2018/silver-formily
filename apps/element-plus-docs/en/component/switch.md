@@ -6,7 +6,7 @@
 
 :::demo
 
-switch/markup-schema
+../../en/demos/switch/markup-schema
 
 :::
 
@@ -14,7 +14,7 @@ switch/markup-schema
 
 :::demo
 
-switch/json-schema
+../../en/demos/switch/json-schema
 
 :::
 
@@ -22,7 +22,7 @@ switch/json-schema
 
 :::demo
 
-switch/template
+../../en/demos/switch/template
 
 :::
 

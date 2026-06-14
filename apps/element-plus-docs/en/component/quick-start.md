@@ -43,6 +43,6 @@ npm install --save @silver-formily/element-plus
 
 :::demo
 
-overview/index
+../../en/demos/overview/index
 
 :::

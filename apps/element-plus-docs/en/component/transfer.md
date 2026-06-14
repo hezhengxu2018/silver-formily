@@ -6,7 +6,7 @@
 
 :::demo
 
-transfer/markup-schema
+../../en/demos/transfer/markup-schema
 
 :::
 
@@ -14,7 +14,7 @@ transfer/markup-schema
 
 :::demo
 
-transfer/json-schema
+../../en/demos/transfer/json-schema
 
 :::
 
@@ -22,7 +22,7 @@ transfer/json-schema
 
 :::demo
 
-transfer/template
+../../en/demos/transfer/template
 
 :::
 

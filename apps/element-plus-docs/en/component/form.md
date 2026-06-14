@@ -10,7 +10,7 @@ The `component` prop has been renamed to `tag` and moved to the FormLayout compo
 
 :::demo
 
-form/form
+../../en/demos/form/form
 
 :::
 

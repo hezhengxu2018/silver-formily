@@ -6,7 +6,7 @@
 
 :::demo
 
-slider/markup-schema
+../../en/demos/slider/markup-schema
 
 :::
 
@@ -14,7 +14,7 @@ slider/markup-schema
 
 :::demo
 
-slider/json-schema
+../../en/demos/slider/json-schema
 
 :::
 
@@ -22,7 +22,7 @@ slider/json-schema
 
 :::demo
 
-slider/template
+../../en/demos/slider/template
 
 :::
 

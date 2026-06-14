@@ -6,7 +6,7 @@
 
 :::demo
 
-autocomplete/markup-schema-basic
+../../en/demos/autocomplete/markup-schema-basic
 
 :::
 
@@ -14,7 +14,7 @@ autocomplete/markup-schema-basic
 
 :::demo
 
-autocomplete/markup-schema-remote
+../../en/demos/autocomplete/markup-schema-remote
 
 :::
 
@@ -22,7 +22,7 @@ autocomplete/markup-schema-remote
 
 :::demo
 
-autocomplete/template-scope
+../../en/demos/autocomplete/template-scope
 
 :::
 
@@ -30,7 +30,7 @@ autocomplete/template-scope
 
 :::demo
 
-autocomplete/template-slots
+../../en/demos/autocomplete/template-slots
 
 :::
 

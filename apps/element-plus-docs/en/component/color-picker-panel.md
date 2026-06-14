@@ -8,7 +8,7 @@ Useful when embedding a pure color-picking panel or custom popup content inside 
 
 :::demo
 
-color-picker-panel/markup-schema
+../../en/demos/color-picker-panel/markup-schema
 
 :::
 
@@ -16,7 +16,7 @@ color-picker-panel/markup-schema
 
 :::demo
 
-color-picker-panel/template
+../../en/demos/color-picker-panel/template
 
 :::
 

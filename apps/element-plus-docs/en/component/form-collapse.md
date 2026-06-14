@@ -10,7 +10,7 @@ This component is intended for Schema-based scenarios only.
 
 :::demo
 
-form-collapse/markup-schema
+../../en/demos/form-collapse/markup-schema
 
 :::
 
@@ -18,7 +18,7 @@ form-collapse/markup-schema
 
 :::demo
 
-form-collapse/json-schema
+../../en/demos/form-collapse/json-schema
 
 :::
 

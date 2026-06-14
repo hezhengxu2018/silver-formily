@@ -8,7 +8,7 @@ Suitable for embedding an inline panel or custom popup layout inside a form. It 
 
 :::demo
 
-date-picker-panel/markup-schema
+../../en/demos/date-picker-panel/markup-schema
 
 :::
 
@@ -16,7 +16,7 @@ date-picker-panel/markup-schema
 
 :::demo
 
-date-picker-panel/template
+../../en/demos/date-picker-panel/template
 
 :::
 

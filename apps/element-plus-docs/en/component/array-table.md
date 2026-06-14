@@ -16,7 +16,7 @@ One known limitation remains: validation does not run for rows that have not bee
 
 :::demo
 
-array-table/markup-schema
+../../en/demos/array-table/markup-schema
 
 :::
 
@@ -24,7 +24,7 @@ array-table/markup-schema
 
 :::demo
 
-array-table/markup-schema-pagination-false
+../../en/demos/array-table/markup-schema-pagination-false
 
 :::
 
@@ -32,7 +32,7 @@ array-table/markup-schema-pagination-false
 
 :::demo
 
-array-table/markup-schema-draggable
+../../en/demos/array-table/markup-schema-draggable
 
 :::
 
@@ -40,7 +40,7 @@ array-table/markup-schema-draggable
 
 :::demo
 
-array-table/json-schema
+../../en/demos/array-table/json-schema
 
 :::
 
@@ -48,7 +48,7 @@ array-table/json-schema
 
 :::demo
 
-array-table/json-schema-pagination
+../../en/demos/array-table/json-schema-pagination
 
 :::
 
@@ -56,7 +56,7 @@ array-table/json-schema-pagination
 
 :::demo
 
-array-table/effects-markup-schema
+../../en/demos/array-table/effects-markup-schema
 
 :::
 
@@ -64,7 +64,7 @@ array-table/effects-markup-schema
 
 :::demo
 
-array-table/effects-json-schema
+../../en/demos/array-table/effects-json-schema
 
 :::
 

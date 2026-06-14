@@ -1,0 +1,45 @@
+<script lang="ts" setup>
+import { createForm } from '@silver-formily/core'
+import { DatePickerPanel, Form, FormItem, Submit } from '@silver-formily/element-plus'
+import { ArrayField, Field } from '@silver-formily/vue'
+
+const form = createForm()
+
+async function onSubmit(value: Record<string, any>) {
+  console.log(value)
+}
+</script>
+
+<template>
+  <Form :form="form" layout="vertical">
+    <Field
+      name="inlineDate"
+      title="Inline Date"
+      :decorator="[FormItem]"
+      :component="[
+        DatePickerPanel,
+        {
+          style: 'width: 340px',
+        },
+      ]"
+    />
+    <ArrayField
+      name="inlineRange"
+      title="Inline Range"
+      :decorator="[FormItem]"
+      :component="[
+        DatePickerPanel,
+        {
+          type: 'daterange',
+          style: 'width: 540px',
+        },
+      ]"
+    />
+    <Submit style="margin-top: 12px" @submit="onSubmit">
+      Submit
+    </Submit>
+  </Form>
+</template>
+
+
+

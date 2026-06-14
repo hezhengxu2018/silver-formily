@@ -6,7 +6,7 @@
 
 :::demo
 
-password/markup-schema
+../../en/demos/password/markup-schema
 
 :::
 
@@ -14,7 +14,7 @@ password/markup-schema
 
 :::demo
 
-password/json-schema
+../../en/demos/password/json-schema
 
 :::
 
@@ -22,7 +22,7 @@ password/json-schema
 
 :::demo
 
-password/template
+../../en/demos/password/template
 
 :::
 

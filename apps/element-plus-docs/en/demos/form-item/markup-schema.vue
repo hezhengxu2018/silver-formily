@@ -1,0 +1,37 @@
+<script setup lang="ts">
+import { createForm } from '@silver-formily/core'
+import { Form, FormItem, Input, Submit } from '@silver-formily/element-plus'
+import { createSchemaField } from '@silver-formily/vue'
+
+const form = createForm()
+const { SchemaField, SchemaStringField } = createSchemaField({
+  components: {
+    FormItem,
+    Input,
+  },
+})
+
+async function onSubmit(value: Record<string, any>) {
+  console.log(value)
+}
+</script>
+
+<template>
+  <Form :form="form">
+    <SchemaField>
+      <SchemaStringField
+        name="input"
+        title="Input"
+        x-decorator="FormItem"
+        x-component="Input"
+        required
+      />
+    </SchemaField>
+    <Submit @submit="onSubmit">
+      Submit
+    </Submit>
+  </Form>
+</template>
+
+
+

@@ -14,7 +14,7 @@ When using function components, you can access `form` conveniently through destr
 
 :::demo
 
-form-dialog/markup-schema
+../../en/demos/form-dialog/markup-schema
 
 :::
 
@@ -22,7 +22,7 @@ form-dialog/markup-schema
 
 :::demo
 
-form-dialog/json-schema
+../../en/demos/form-dialog/json-schema
 
 :::
 
@@ -30,7 +30,7 @@ form-dialog/json-schema
 
 :::demo
 
-form-dialog/template
+../../en/demos/form-dialog/template
 
 :::
 
@@ -38,7 +38,7 @@ form-dialog/template
 
 :::demo
 
-form-dialog/template-slot
+../../en/demos/form-dialog/template-slot
 
 :::
 
@@ -91,7 +91,7 @@ FormDialog also closes automatically when the browser URL changes, including Bac
 
 :::demo
 
-form-dialog/enter-submit
+../../en/demos/form-dialog/enter-submit
 
 :::
 
@@ -101,7 +101,7 @@ You can call `FormDialog` again from inside an existing FormDialog to open a nes
 
 :::demo
 
-form-dialog/nested
+../../en/demos/form-dialog/nested
 
 :::
 

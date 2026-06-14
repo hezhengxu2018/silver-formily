@@ -6,7 +6,7 @@
 
 :::demo
 
-input/markup-schema
+../../en/demos/input/markup-schema
 
 :::
 
@@ -14,7 +14,7 @@ input/markup-schema
 
 :::demo
 
-input/json-schema
+../../en/demos/input/json-schema
 
 :::
 
@@ -22,7 +22,7 @@ input/json-schema
 
 :::demo
 
-input/template
+../../en/demos/input/template
 
 :::
 

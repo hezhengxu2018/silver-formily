@@ -1,0 +1,41 @@
+<script lang="ts" setup>
+import { createForm } from '@silver-formily/core'
+import { FormItem, Password, Submit } from '@silver-formily/element-plus'
+import { createSchemaField, FormProvider } from '@silver-formily/vue'
+
+const schema = {
+  type: 'object',
+  properties: {
+    password: {
+      'type': 'string',
+      'title': 'Password Input',
+      'x-decorator': 'FormItem',
+      'x-component': 'Password',
+    },
+  },
+}
+
+const form = createForm()
+const { SchemaField } = createSchemaField({
+  components: {
+    FormItem,
+    Password,
+  },
+})
+
+async function onSubmit(value: Record<string, any>) {
+  console.log(value)
+}
+</script>
+
+<template>
+  <FormProvider :form="form">
+    <SchemaField :schema="schema" />
+    <Submit @submit="onSubmit">
+      Submit
+    </Submit>
+  </FormProvider>
+</template>
+
+
+

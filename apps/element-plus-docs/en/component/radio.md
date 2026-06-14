@@ -14,7 +14,7 @@ This component includes compatibility handling for older `element-plus` versions
 
 :::demo
 
-radio/markup-schema
+../../en/demos/radio/markup-schema
 
 :::
 
@@ -22,7 +22,7 @@ radio/markup-schema
 
 :::demo
 
-radio/json-schema
+../../en/demos/radio/json-schema
 
 :::
 
@@ -30,7 +30,7 @@ radio/json-schema
 
 :::demo
 
-radio/template
+../../en/demos/radio/template
 
 :::
 

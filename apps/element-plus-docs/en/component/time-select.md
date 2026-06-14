@@ -6,7 +6,7 @@
 
 :::demo
 
-time-select/markup-schema
+../../en/demos/time-select/markup-schema
 
 :::
 
@@ -14,7 +14,7 @@ time-select/markup-schema
 
 :::demo
 
-time-select/json-schema
+../../en/demos/time-select/json-schema
 
 :::
 
@@ -22,7 +22,7 @@ time-select/json-schema
 
 :::demo
 
-time-select/template
+../../en/demos/time-select/template
 
 :::
 

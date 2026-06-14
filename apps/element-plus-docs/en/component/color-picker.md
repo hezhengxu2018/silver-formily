@@ -6,7 +6,7 @@
 
 :::demo
 
-color-picker/markup-schema
+../../en/demos/color-picker/markup-schema
 
 :::
 
@@ -14,7 +14,7 @@ color-picker/markup-schema
 
 :::demo
 
-color-picker/json-schema
+../../en/demos/color-picker/json-schema
 
 :::
 
@@ -22,7 +22,7 @@ color-picker/json-schema
 
 :::demo
 
-color-picker/template
+../../en/demos/color-picker/template
 
 :::
 

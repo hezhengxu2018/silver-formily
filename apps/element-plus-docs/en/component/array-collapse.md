@@ -10,7 +10,7 @@ This component is intended for Schema-based scenarios only.
 
 :::demo
 
-array-collapse/markup-schema
+../../en/demos/array-collapse/markup-schema
 
 :::
 
@@ -18,7 +18,7 @@ array-collapse/markup-schema
 
 :::demo
 
-array-collapse/json-schema
+../../en/demos/array-collapse/json-schema
 
 :::
 
@@ -26,7 +26,7 @@ array-collapse/json-schema
 
 :::demo
 
-array-collapse/effects-markup-schema
+../../en/demos/array-collapse/effects-markup-schema
 
 :::
 
@@ -34,7 +34,7 @@ array-collapse/effects-markup-schema
 
 :::demo
 
-array-collapse/effects-json-schema
+../../en/demos/array-collapse/effects-json-schema
 
 :::
 

@@ -6,7 +6,7 @@
 
 :::demo
 
-form-button-group/markup-schema
+../../en/demos/form-button-group/markup-schema
 
 :::
 
@@ -14,7 +14,7 @@ form-button-group/markup-schema
 
 :::demo
 
-form-button-group/markup-schema-sticky
+../../en/demos/form-button-group/markup-schema-sticky
 
 :::
 
@@ -22,7 +22,7 @@ form-button-group/markup-schema-sticky
 
 :::demo
 
-form-button-group/template-sticky-center
+../../en/demos/form-button-group/template-sticky-center
 
 :::
 

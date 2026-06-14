@@ -1,0 +1,41 @@
+<script lang="ts" setup>
+import { createForm } from '@silver-formily/core'
+import { FormItem, Submit, TimeSelect } from '@silver-formily/element-plus'
+import { Field, FormProvider } from '@silver-formily/vue'
+
+const form = createForm()
+
+function log(value: Record<string, any>) {
+  console.log(value)
+}
+</script>
+
+<template>
+  <FormProvider :form="form">
+    <Field
+      name="time"
+      title="Time"
+      initial-value="12:00 PM"
+      :decorator="[FormItem]"
+      :component="[
+        TimeSelect,
+        {
+          style: {
+            width: '240px',
+          },
+          start: '00:00',
+          step: '00:30',
+          end: '23:59',
+          placeholder: 'Select time',
+          format: 'hh:mm A',
+        },
+      ]"
+    />
+    <Submit @submit="log">
+      Submit
+    </Submit>
+  </FormProvider>
+</template>
+
+
+

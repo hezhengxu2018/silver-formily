@@ -1,0 +1,102 @@
+<script lang="ts" setup>
+import type { DataField } from '@silver-formily/core'
+import { createForm, onFieldInit, onFieldReact } from '@silver-formily/core'
+import { FormItem, Select, Submit } from '@silver-formily/element-plus'
+import { action, observable } from '@silver-formily/reactive'
+import { createSchemaField, FormProvider } from '@silver-formily/vue'
+
+let timeout
+
+function fetchData(value, callback) {
+  if (timeout) {
+    clearTimeout(timeout)
+    timeout = null
+  }
+
+  function fake() {
+    callback([
+      {
+        label: 'AAA',
+        value: 'aaa',
+      },
+      {
+        label: 'BBB',
+        value: 'ccc',
+      },
+    ])
+  }
+
+  timeout = setTimeout(fake, 300)
+}
+
+function useAsyncDataSource(pattern, service) {
+  const keyword = observable.ref('')
+
+  onFieldInit(pattern, (field) => {
+    field.setComponentProps({
+      remoteMethod: (value) => {
+        keyword.value = value
+      },
+    })
+  })
+
+  onFieldReact(pattern, (field: DataField) => {
+    field.loading = true
+    service({ field, keyword: keyword.value }).then(
+      action.bound((data) => {
+        field.dataSource = data
+        field.loading = false
+      }),
+    )
+  })
+}
+
+const form = createForm({
+  effects: () => {
+    useAsyncDataSource('select', async ({ keyword }) => {
+      if (!keyword) {
+        return []
+      }
+      return new Promise((resolve) => {
+        fetchData(keyword, resolve)
+      })
+    })
+  },
+})
+const { SchemaField, SchemaStringField } = createSchemaField({
+  components: {
+    FormItem,
+    Select,
+  },
+})
+
+function log(value: Record<string, any>) {
+  console.log(value)
+}
+</script>
+
+<template>
+  <FormProvider :form="form">
+    <SchemaField>
+      <SchemaStringField
+        name="select"
+        title="Async Search Select"
+        x-decorator="FormItem"
+        x-component="Select"
+        :x-component-props="{
+          filterable: true,
+          remote: true,
+          style: {
+            width: '240px',
+          },
+        }"
+      />
+    </SchemaField>
+    <Submit @submit="log">
+      Submit
+    </Submit>
+  </FormProvider>
+</template>
+
+
+

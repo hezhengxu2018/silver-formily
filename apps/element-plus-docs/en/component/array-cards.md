@@ -10,7 +10,7 @@ This component is intended for Schema-based scenarios only.
 
 :::demo
 
-array-cards/markup-schema
+../../en/demos/array-cards/markup-schema
 
 :::
 
@@ -18,7 +18,7 @@ array-cards/markup-schema
 
 :::demo
 
-array-cards/json-schema
+../../en/demos/array-cards/json-schema
 
 :::
 
@@ -26,7 +26,7 @@ array-cards/json-schema
 
 :::demo
 
-array-cards/json-schema-array-items
+../../en/demos/array-cards/json-schema-array-items
 
 :::
 
@@ -34,7 +34,7 @@ array-cards/json-schema-array-items
 
 :::demo
 
-array-cards/effects-markup-schema
+../../en/demos/array-cards/effects-markup-schema
 
 :::
 
@@ -42,7 +42,7 @@ array-cards/effects-markup-schema
 
 :::demo
 
-array-cards/effects-json-schema
+../../en/demos/array-cards/effects-json-schema
 
 :::
 

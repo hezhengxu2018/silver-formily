@@ -6,7 +6,7 @@
 
 :::demo
 
-mention/markup-schema-basic
+../../en/demos/mention/markup-schema-basic
 
 :::
 
@@ -14,7 +14,7 @@ mention/markup-schema-basic
 
 :::demo
 
-mention/markup-schema-advanced
+../../en/demos/mention/markup-schema-advanced
 
 :::
 
@@ -22,7 +22,7 @@ mention/markup-schema-advanced
 
 :::demo
 
-mention/template-slots
+../../en/demos/mention/template-slots
 
 :::
 

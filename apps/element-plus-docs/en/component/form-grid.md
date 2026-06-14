@@ -10,7 +10,7 @@ When using this component in Vue, import `createGrid` from `@silver-formily/grid
 
 :::demo
 
-form-grid/markup-schema
+../../en/demos/form-grid/markup-schema
 
 :::
 
@@ -18,7 +18,7 @@ form-grid/markup-schema
 
 :::demo
 
-form-grid/json-schema
+../../en/demos/form-grid/json-schema
 
 :::
 
@@ -26,7 +26,7 @@ form-grid/json-schema
 
 :::demo
 
-form-grid/native
+../../en/demos/form-grid/native
 
 :::
 
@@ -34,7 +34,7 @@ form-grid/native
 
 :::demo This is a simple example. For a higher-level abstraction, prefer the `QueryForm` component now.
 
-form-grid/form
+../../en/demos/form-grid/form
 
 :::
 

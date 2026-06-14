@@ -6,7 +6,7 @@
 
 :::demo
 
-segmented/markup-schema
+../../en/demos/segmented/markup-schema
 
 :::
 
@@ -14,7 +14,7 @@ segmented/markup-schema
 
 :::demo
 
-segmented/json-schema
+../../en/demos/segmented/json-schema
 
 :::
 
@@ -22,7 +22,7 @@ segmented/json-schema
 
 :::demo
 
-segmented/template
+../../en/demos/segmented/template
 
 :::
 

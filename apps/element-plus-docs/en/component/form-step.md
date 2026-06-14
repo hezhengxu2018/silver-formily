@@ -14,7 +14,7 @@ Objects created by `createFormStep` are reactive values from `@silver-formily/re
 
 :::demo
 
-form-step/markup-schema
+../../en/demos/form-step/markup-schema
 
 :::
 
@@ -22,7 +22,7 @@ form-step/markup-schema
 
 :::demo
 
-form-step/json-schema
+../../en/demos/form-step/json-schema
 
 :::
 

@@ -20,7 +20,7 @@ When Editable switches modes, it no longer changes `Field.pattern`. Instead, it 
 
 :::demo
 
-editable/markup-schema
+../../en/demos/editable/markup-schema
 
 :::
 
@@ -30,7 +30,7 @@ editable/markup-schema
 
 :::demo
 
-editable/json-schema
+../../en/demos/editable/json-schema
 
 :::
 
@@ -38,7 +38,7 @@ editable/json-schema
 
 :::demo
 
-editable/template
+../../en/demos/editable/template
 
 :::
 
@@ -46,7 +46,7 @@ editable/template
 
 :::demo
 
-editable/template-validator
+../../en/demos/editable/template-validator
 
 :::
 

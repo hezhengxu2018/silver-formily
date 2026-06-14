@@ -10,7 +10,7 @@ This component is intended for Schema-based scenarios only.
 
 :::demo
 
-array-tabs/markup-schema
+../../en/demos/array-tabs/markup-schema
 
 :::
 
@@ -18,7 +18,7 @@ array-tabs/markup-schema
 
 :::demo
 
-array-tabs/json-schema
+../../en/demos/array-tabs/json-schema
 
 :::
 
@@ -26,7 +26,7 @@ array-tabs/json-schema
 
 :::demo
 
-array-tabs/json-schema-array-items
+../../en/demos/array-tabs/json-schema-array-items
 
 :::
 

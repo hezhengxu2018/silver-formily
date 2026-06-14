@@ -6,7 +6,7 @@
 
 :::demo
 
-cascader/markup-schema
+../../en/demos/cascader/markup-schema
 
 :::
 
@@ -14,7 +14,7 @@ cascader/markup-schema
 
 :::demo
 
-cascader/json-schema
+../../en/demos/cascader/json-schema
 
 :::
 
@@ -22,7 +22,7 @@ cascader/json-schema
 
 :::demo
 
-cascader/template
+../../en/demos/cascader/template
 
 :::
 
