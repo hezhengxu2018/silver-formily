@@ -3,15 +3,16 @@ import { createForm } from '@silver-formily/core'
 import { DesignerWorkbench } from '@silver-formily/designer-vue'
 import { Form, FormButtonGroup, FormItem, FormLayout, Input, Select, Submit } from '@silver-formily/element-plus'
 import { createSchemaField, FormProvider } from '@silver-formily/vue'
-import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
+import { computed, onBeforeUnmount, onMounted, ref, shallowRef, watch } from 'vue'
 
 import { designer, previewComponents } from './designer'
 import { transformDesignerSchemaToFormilySchema } from './transformers/designerToFormily'
 
 const version = ref(0)
+const previewVersion = ref(0)
 let unsubscribe: (() => void) | undefined
 
-const form = createForm()
+const previewForm = shallowRef(createForm())
 
 const { SchemaField } = createSchemaField({
   components: {
@@ -45,6 +46,13 @@ const runtimeSchema = computed(() => {
 const runtimeSchemaText = computed(() => {
   return JSON.stringify(runtimeSchema.value, null, 2)
 })
+
+watch(runtimeSchemaText, () => {
+  previewVersion.value += 1
+  previewForm.value = createForm()
+}, {
+  immediate: true,
+})
 </script>
 
 <template>
@@ -69,10 +77,10 @@ const runtimeSchemaText = computed(() => {
         </header>
 
         <div class="preview-band__surface">
-          <FormProvider :form="form">
-            <Form :form="form" :label-width="112">
+          <FormProvider :key="previewVersion" :form="previewForm">
+            <Form :form="previewForm" :label-width="112">
               <FormLayout layout="vertical">
-                <SchemaField :schema="runtimeSchema" />
+                <SchemaField :key="previewVersion" :schema="runtimeSchema" />
               </FormLayout>
               <FormButtonGroup align-form-item>
                 <Submit>Submit</Submit>
