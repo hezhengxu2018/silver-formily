@@ -3,6 +3,7 @@ import { computed } from 'vue'
 
 import { useDesigner } from '../../composables/useDesigner'
 import { resolveInsertionTarget } from '../../shared/resolveInsertion'
+import DesignerMaterialCard from './DesignerMaterialCard.vue'
 import './shared.css'
 
 const context = useDesigner()
@@ -11,7 +12,7 @@ const groups = computed(() => context.materialGroups.value)
 function handleAddMaterial(name: string) {
   const designer = context.designer.value
   const schema = designer.createNodeFromMaterial(name)
-  designer.insertNode(schema, resolveInsertionTarget(designer))
+  designer.insertNode(schema, resolveInsertionTarget(designer, schema.componentName))
 }
 </script>
 
@@ -35,17 +36,12 @@ function handleAddMaterial(name: string) {
           <span>{{ group.materials.length }}</span>
         </header>
         <div class="sf-material-grid">
-          <button
+          <DesignerMaterialCard
             v-for="material in group.materials"
             :key="material.name"
-            class="sf-material-card"
-            :data-testid="`material-${material.name}`"
-            type="button"
-            @click="handleAddMaterial(material.name)"
-          >
-            <strong>{{ material.title }}</strong>
-            <span>{{ material.name }}</span>
-          </button>
+            :material="material"
+            @add="handleAddMaterial(material.name)"
+          />
         </div>
       </section>
     </div>
@@ -85,35 +81,5 @@ function handleAddMaterial(name: string) {
 .sf-material-grid {
   display: grid;
   gap: 8px;
-}
-
-.sf-material-card {
-  display: grid;
-  gap: 4px;
-  align-items: start;
-  justify-items: start;
-  min-height: 68px;
-  padding: 12px;
-  border: 1px solid var(--sf-border);
-  border-radius: 6px;
-  background: rgba(255, 255, 255, 0.76);
-  color: var(--sf-text);
-  font: inherit;
-  text-align: left;
-  cursor: pointer;
-}
-
-.sf-material-card:hover {
-  border-color: var(--sf-accent);
-  background: var(--sf-accent-soft);
-}
-
-.sf-material-card strong {
-  font-size: 13px;
-}
-
-.sf-material-card span {
-  font-size: 12px;
-  color: var(--sf-text-muted);
 }
 </style>

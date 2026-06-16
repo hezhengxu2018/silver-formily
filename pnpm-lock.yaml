@@ -63,6 +63,9 @@ catalogs:
     '@vitest/coverage-istanbul':
       specifier: ^4.1.4
       version: 4.1.4
+    '@vue-dnd-kit/core':
+      specifier: ^2.4.6
+      version: 2.4.6
     '@vue/language-core':
       specifier: ~3.0.1
       version: 3.0.10
@@ -858,6 +861,10 @@ importers:
         version: 3.2.6(typescript@6.0.2)
 
   packages/designer-vue:
+    dependencies:
+      '@vue-dnd-kit/core':
+        specifier: 'catalog:'
+        version: 2.4.6(vue@3.5.32(typescript@6.0.2))
     devDependencies:
       '@silver-formily/designer-core':
         specifier: workspace:*
@@ -933,7 +940,7 @@ importers:
         version: 0.6.2(element-plus@2.13.2(vue@3.5.32(typescript@6.0.2)))(vitepress@2.0.0-alpha.16(@types/node@24.10.13)(async-validator@4.2.5)(change-case@5.4.4)(jiti@2.6.1)(lightningcss@1.32.0)(nprogress@0.2.0)(postcss@8.5.9)(sass-embedded@1.97.3)(sass@1.97.3)(tsx@4.22.3)(typescript@6.0.2)(yaml@2.8.2))(vue@3.5.32(typescript@6.0.2))
       vitepress-plugin-group-icons:
         specifier: 'catalog:'
-        version: 1.7.1(vite@8.0.8(@types/node@24.10.13)(esbuild@0.28.0)(jiti@2.6.1)(sass-embedded@1.97.3)(sass@1.97.3)(tsx@4.22.3)(yaml@2.8.2))
+        version: 1.7.1(vite@7.3.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.32.0)(sass-embedded@1.97.3)(sass@1.97.3)(tsx@4.22.3)(yaml@2.8.2))
       vitepress-plugin-nprogress:
         specifier: 'catalog:'
         version: 0.1.1
@@ -3192,6 +3199,11 @@ packages:
 
   '@volar/typescript@2.4.28':
     resolution: {integrity: sha512-Ja6yvWrbis2QtN4ClAKreeUZPVYMARDYZl9LMEv1iQ1QdepB6wn0jTRxA9MftYmYa4DQ4k/DaSZpFPUfxl8giw==}
+
+  '@vue-dnd-kit/core@2.4.6':
+    resolution: {integrity: sha512-MnfO05RTGyhxq0d0VmkPHoBbwa7U1Yt8MtE1s8ngnu9uyI3RC1t0IIi4/ULABDuTr6957IueYWHSdAt9hRZXqQ==}
+    peerDependencies:
+      vue: ^3.5.13
 
   '@vue/babel-helper-vue-transform-on@2.0.1':
     resolution: {integrity: sha512-uZ66EaFbnnZSYqYEyplWvn46GhZ1KuYSThdT68p+am7MgBNbQ3hphTL9L+xSIsWkdktwhPYLwPgVWqo96jDdRA==}
@@ -8754,6 +8766,10 @@ snapshots:
       path-browserify: 1.0.1
       vscode-uri: 3.1.0
 
+  '@vue-dnd-kit/core@2.4.6(vue@3.5.32(typescript@6.0.2))':
+    dependencies:
+      vue: 3.5.32(typescript@6.0.2)
+
   '@vue/babel-helper-vue-transform-on@2.0.1': {}
 
   '@vue/babel-plugin-jsx@2.0.1(@babel/core@7.29.0)':
@@ -12676,13 +12692,13 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  vitepress-plugin-group-icons@1.7.1(vite@8.0.8(@types/node@24.10.13)(esbuild@0.28.0)(jiti@2.6.1)(sass-embedded@1.97.3)(sass@1.97.3)(tsx@4.22.3)(yaml@2.8.2)):
+  vitepress-plugin-group-icons@1.7.1(vite@7.3.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.32.0)(sass-embedded@1.97.3)(sass@1.97.3)(tsx@4.22.3)(yaml@2.8.2)):
     dependencies:
       '@iconify-json/logos': 1.2.10
       '@iconify-json/vscode-icons': 1.2.41
       '@iconify/utils': 3.1.0
     optionalDependencies:
-      vite: 8.0.8(@types/node@24.10.13)(esbuild@0.28.0)(jiti@2.6.1)(sass-embedded@1.97.3)(sass@1.97.3)(tsx@4.22.3)(yaml@2.8.2)
+      vite: 7.3.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.32.0)(sass-embedded@1.97.3)(sass@1.97.3)(tsx@4.22.3)(yaml@2.8.2)
 
   vitepress-plugin-nprogress@0.1.1:
     dependencies:

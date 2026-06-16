@@ -18,6 +18,7 @@ export default defineComponent({
   setup(props, { slots }) {
     const designer = shallowRef(props.designer)
     const version = shallowRef(0)
+    const dragSession = shallowRef()
     let unsubscribe: (() => void) | undefined
 
     const bindDesigner = (nextDesigner: DesignerProviderProps['designer']) => {
@@ -75,6 +76,26 @@ export default defineComponent({
       return designer.value.history.state.canRedo
     })
 
+    const startMaterialDrag = (materialName: string, componentName: string) => {
+      dragSession.value = {
+        type: 'material',
+        materialName,
+        componentName,
+      }
+    }
+
+    const startNodeDrag = (nodeId: string, componentName: string) => {
+      dragSession.value = {
+        type: 'node',
+        nodeId,
+        componentName,
+      }
+    }
+
+    const clearDragSession = () => {
+      dragSession.value = undefined
+    }
+
     provide(DesignerContextSymbol, {
       designer,
       previewComponents: props.previewComponents || {},
@@ -86,6 +107,10 @@ export default defineComponent({
       schemaText,
       canUndo,
       canRedo,
+      dragSession,
+      startMaterialDrag,
+      startNodeDrag,
+      clearDragSession,
     })
 
     return () => slots.default?.()

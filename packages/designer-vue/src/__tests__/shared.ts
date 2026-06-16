@@ -1,4 +1,5 @@
 import { DesignerCore } from '@silver-formily/designer-core'
+import { DnDProvider } from '@vue-dnd-kit/core'
 import { defineComponent, h } from 'vue'
 
 import DesignerProvider from '../components/DesignerProvider'
@@ -82,14 +83,17 @@ export function createDesigner() {
         name: 'Section',
         title: 'Section',
         group: 'Layout',
+        designer: {
+          container: true,
+          defaultContainer: 'children',
+          containers: [
+            { name: 'children', title: 'Body' },
+            { name: 'header', title: 'Header' },
+          ],
+        },
         defaultNode: {
           componentName: 'Section',
           title: 'Section',
-          metadata: {
-            designer: {
-              container: true,
-            },
-          },
           slots: {
             header: [],
           },
@@ -104,7 +108,9 @@ export function withDesignerProvider(component: any, designer: DesignerCore) {
     name: 'DesignerTestHarness',
     setup() {
       return () => h(DesignerProvider, { designer }, {
-        default: () => h(component),
+        default: () => h(DnDProvider, undefined, {
+          default: () => h(component),
+        }),
       })
     },
   })

@@ -63,6 +63,25 @@ export class DesignerMaterialRegistry {
       ? material.defaultNode()
       : (material.defaultNode || {})
 
+    const materialMetadata = clone(material.metadata) || {}
+    const defaultMetadata = clone(defaultNode.metadata) || {}
+    const overrideMetadata = clone(overrides.metadata) || {}
+    const designerMetadata = {
+      ...(clone(material.designer) || {}),
+      ...(clone(materialMetadata.designer) || {}),
+      ...(clone(defaultMetadata.designer) || {}),
+      ...(clone(overrideMetadata.designer) || {}),
+    }
+
+    const metadata = {
+      ...materialMetadata,
+      ...defaultMetadata,
+      ...overrideMetadata,
+    }
+
+    if (Object.keys(designerMetadata).length)
+      metadata.designer = designerMetadata
+
     return ensureNodeSchema({
       ...clone(defaultNode),
       ...clone(overrides),
@@ -73,9 +92,7 @@ export class DesignerMaterialRegistry {
         ...(clone(overrides.props) || {}),
       },
       metadata: {
-        ...(clone(material.metadata) || {}),
-        ...(clone(defaultNode.metadata) || {}),
-        ...(clone(overrides.metadata) || {}),
+        ...metadata,
       },
       children: clone(overrides.children || defaultNode.children || []),
       slots: clone(overrides.slots || defaultNode.slots || {}),

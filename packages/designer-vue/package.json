@@ -47,6 +47,9 @@
     "@silver-formily/designer-core": "workspace:*",
     "vue": "^3.3.0"
   },
+  "dependencies": {
+    "@vue-dnd-kit/core": "catalog:"
+  },
   "devDependencies": {
     "@silver-formily/designer-core": "workspace:*",
     "@silver-formily/typescript-config": "workspace:*",

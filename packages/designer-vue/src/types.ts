@@ -1,6 +1,20 @@
 import type { DesignerCore, DesignerMaterialGroup, DesignerNode, DesignerSnapshot } from '@silver-formily/designer-core'
 import type { Component, ComputedRef, InjectionKey, Ref, ShallowRef } from 'vue'
 
+export interface DesignerMaterialDragSession {
+  type: 'material'
+  materialName: string
+  componentName: string
+}
+
+export interface DesignerNodeDragSession {
+  type: 'node'
+  nodeId: string
+  componentName: string
+}
+
+export type DesignerDragSession = DesignerMaterialDragSession | DesignerNodeDragSession
+
 export interface DesignerContextValue {
   designer: ShallowRef<DesignerCore>
   previewComponents: Record<string, Component>
@@ -12,6 +26,10 @@ export interface DesignerContextValue {
   schemaText: ComputedRef<string>
   canUndo: ComputedRef<boolean>
   canRedo: ComputedRef<boolean>
+  dragSession: ShallowRef<DesignerDragSession | undefined>
+  startMaterialDrag: (materialName: string, componentName: string) => void
+  startNodeDrag: (nodeId: string, componentName: string) => void
+  clearDragSession: () => void
 }
 
 export interface DesignerWorkbenchProps {

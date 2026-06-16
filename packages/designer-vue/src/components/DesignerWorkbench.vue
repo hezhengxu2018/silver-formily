@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import type { DesignerWorkbenchProps } from '../types'
 
+import { DnDProvider } from '@vue-dnd-kit/core'
+
 import DesignerProvider from './DesignerProvider'
 import DesignerCanvas from './panels/DesignerCanvas.vue'
 import DesignerMaterialsPanel from './panels/DesignerMaterialsPanel.vue'
@@ -15,31 +17,33 @@ withDefaults(defineProps<DesignerWorkbenchProps>(), {
 
 <template>
   <DesignerProvider :designer="designer" :preview-components="previewComponents">
-    <section class="sf-designer">
-      <header class="sf-designer__header">
-        <div>
-          <p class="sf-designer__eyebrow">
-            Designer
-          </p>
-          <h1 class="sf-designer__title">
-            {{ title }}
-          </h1>
+    <DnDProvider>
+      <section class="sf-designer">
+        <header class="sf-designer__header">
+          <div>
+            <p class="sf-designer__eyebrow">
+              Designer
+            </p>
+            <h1 class="sf-designer__title">
+              {{ title }}
+            </h1>
+          </div>
+          <DesignerToolbar />
+        </header>
+        <div class="sf-designer__body">
+          <aside class="sf-designer__sidebar">
+            <DesignerMaterialsPanel />
+          </aside>
+          <main class="sf-designer__canvas-shell">
+            <DesignerStructurePanel />
+            <DesignerCanvas />
+          </main>
+          <aside class="sf-designer__sidebar">
+            <DesignerPropertiesPanel />
+          </aside>
         </div>
-        <DesignerToolbar />
-      </header>
-      <div class="sf-designer__body">
-        <aside class="sf-designer__sidebar">
-          <DesignerMaterialsPanel />
-        </aside>
-        <main class="sf-designer__canvas-shell">
-          <DesignerStructurePanel />
-          <DesignerCanvas />
-        </main>
-        <aside class="sf-designer__sidebar">
-          <DesignerPropertiesPanel />
-        </aside>
-      </div>
-    </section>
+      </section>
+    </DnDProvider>
   </DesignerProvider>
 </template>
 
@@ -55,6 +59,7 @@ withDefaults(defineProps<DesignerWorkbenchProps>(), {
   --sf-accent-soft: rgba(15, 118, 110, 0.12);
   --sf-shadow: 0 16px 40px rgba(79, 55, 22, 0.08);
   display: grid;
+  container-type: inline-size;
   gap: 16px;
   min-height: 720px;
   padding: 20px;
@@ -108,7 +113,7 @@ withDefaults(defineProps<DesignerWorkbenchProps>(), {
   gap: 16px;
 }
 
-@media (max-width: 1160px) {
+@container (max-width: 1160px) {
   .sf-designer__body {
     grid-template-columns: minmax(220px, 260px) minmax(0, 1fr);
   }
@@ -118,7 +123,7 @@ withDefaults(defineProps<DesignerWorkbenchProps>(), {
   }
 }
 
-@media (max-width: 840px) {
+@container (max-width: 840px) {
   .sf-designer {
     padding: 14px;
   }

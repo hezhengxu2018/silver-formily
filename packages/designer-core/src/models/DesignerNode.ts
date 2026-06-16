@@ -1,4 +1,4 @@
-import type { DesignerContainerName, DesignerNodeQuery, DesignerSchemaNode, DesignerTreeTraversal } from '../types'
+import type { DesignerContainerDefinition, DesignerContainerName, DesignerNodeDesignerMetadata, DesignerNodeQuery, DesignerSchemaNode, DesignerTreeTraversal } from '../types'
 
 import { clone } from '@silver-formily/shared'
 import { ensureNodeSchema, normalizeContainer } from '../shared'
@@ -38,6 +38,26 @@ export class DesignerNode {
     return !this.parent
   }
 
+  get designer(): DesignerNodeDesignerMetadata {
+    return this.metadata?.designer || {}
+  }
+
+  get isContainer() {
+    if (this.isRoot)
+      return true
+
+    if (this.designer.container === true)
+      return true
+
+    if (this.children.length > 0)
+      return true
+
+    if (Object.keys(this.slots).length > 0)
+      return true
+
+    return this.availableContainers.length > 0
+  }
+
   get depth() {
     let depth = 0
     let current = this.parent
@@ -55,8 +75,33 @@ export class DesignerNode {
     }
   }
 
+  get availableContainers(): DesignerContainerDefinition[] {
+    const configured = this.designer.containers || []
+    if (configured.length)
+      return configured
+
+    const names = new Set<DesignerContainerName>()
+    if (this.isRoot || this.children.length > 0)
+      names.add('children')
+    for (const key of Object.keys(this.slots))
+      names.add(key)
+
+    return Array.from(names).map(name => ({ name }))
+  }
+
+  get defaultContainer() {
+    if (this.designer.defaultContainer)
+      return normalizeContainer(this.designer.defaultContainer)
+
+    const firstConfigured = this.availableContainers[0]?.name
+    if (firstConfigured)
+      return normalizeContainer(firstConfigured)
+
+    return 'children'
+  }
+
   getContainer(container?: DesignerContainerName) {
-    const key = normalizeContainer(container)
+    const key = normalizeContainer(container || this.defaultContainer)
     if (key === 'children')
       return this.children
 
@@ -71,6 +116,23 @@ export class DesignerNode {
       return false
     if (query.componentName && this.componentName !== query.componentName)
       return false
+    return true
+  }
+
+  canAcceptChild(componentName?: string, container?: DesignerContainerName) {
+    const targetContainer = normalizeContainer(container || this.defaultContainer)
+    const config = this.availableContainers.find(item => item.name === targetContainer)
+
+    if (!config)
+      return false
+
+    const nodes = this.getContainer(targetContainer)
+    if (typeof config.maxItems === 'number' && nodes.length >= config.maxItems)
+      return false
+
+    if (componentName && config.accepts?.length && !config.accepts.includes(componentName))
+      return false
+
     return true
   }
 

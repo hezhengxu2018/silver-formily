@@ -14,6 +14,10 @@ export const designer = markRaw(new DesignerCore({
     metadata: {
       designer: {
         container: true,
+        defaultContainer: 'children',
+        containers: [
+          { name: 'children', title: 'Body' },
+        ],
       },
     },
     children: [
