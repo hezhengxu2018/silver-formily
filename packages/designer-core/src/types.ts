@@ -7,6 +7,23 @@ import type { DesignerTree } from './models/DesignerTree'
 
 export type DesignerContainerName = string
 
+export interface DesignerContainerDefinition {
+  name: DesignerContainerName
+  title?: string
+  accepts?: string[]
+  maxItems?: number
+}
+
+export interface DesignerNodeDesignerMetadata {
+  container?: boolean
+  defaultContainer?: DesignerContainerName
+  containers?: DesignerContainerDefinition[]
+}
+
+export interface DesignerNodeMetadata extends Record<string, any> {
+  designer?: DesignerNodeDesignerMetadata
+}
+
 export interface DesignerSchemaNode {
   id?: string
   componentName: string
@@ -14,7 +31,7 @@ export interface DesignerSchemaNode {
   props?: Record<string, any>
   children?: DesignerSchemaNode[]
   slots?: Record<string, DesignerSchemaNode[]>
-  metadata?: Record<string, any>
+  metadata?: DesignerNodeMetadata
 }
 
 export interface DesignerSnapshot {
@@ -36,11 +53,12 @@ export interface DesignerMaterialDefinition {
   title: string
   group?: string
   defaultNode?: Partial<DesignerSchemaNode> | (() => Partial<DesignerSchemaNode>)
+  designer?: DesignerNodeDesignerMetadata
   propsSchema?: Record<string, any>
   previewComponent?: string
   runtimeComponent?: string
   setters?: unknown
-  metadata?: Record<string, any>
+  metadata?: DesignerNodeMetadata
 }
 
 export interface DesignerCommandContext {
@@ -151,7 +169,7 @@ export interface DesignerCreateNodeOptions {
   componentName?: string
   title?: string
   props?: Record<string, any>
-  metadata?: Record<string, any>
+  metadata?: DesignerNodeMetadata
   children?: DesignerSchemaNode[]
   slots?: Record<string, DesignerSchemaNode[]>
 }

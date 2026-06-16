@@ -2,6 +2,7 @@
   display: grid;
   align-content: start;
   gap: 14px;
+  min-width: 0;
   min-height: 100%;
   padding: 16px;
   border: 1px solid var(--sf-border, rgba(82, 66, 46, 0.18));
@@ -61,6 +62,8 @@
 
 .sf-input,
 .sf-textarea {
+  box-sizing: border-box;
+  max-width: 100%;
   width: 100%;
   border: 1px solid var(--sf-border, rgba(82, 66, 46, 0.18));
   border-radius: 6px;
@@ -86,6 +89,7 @@
 .sf-label {
   display: grid;
   gap: 8px;
+  min-width: 0;
   font-size: 12px;
   color: var(--sf-text-muted, #74624e);
 }

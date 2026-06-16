@@ -26,3 +26,14 @@ export function useDesignerCommands() {
     removeNode: (nodeId: string) => designer.value.removeNode(nodeId),
   }
 }
+
+export function useDesignerDrag() {
+  const context = useDesigner()
+
+  return {
+    dragSession: context.dragSession,
+    startMaterialDrag: context.startMaterialDrag,
+    startNodeDrag: context.startNodeDrag,
+    clearDragSession: context.clearDragSession,
+  }
+}

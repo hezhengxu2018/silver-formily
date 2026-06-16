@@ -32,11 +32,16 @@ function createDesigner() {
         name: 'Section',
         title: 'Section',
         group: 'Layout',
+        designer: {
+          container: true,
+          defaultContainer: 'children',
+          containers: [
+            { name: 'children', title: 'Body' },
+            { name: 'header', title: 'Header' },
+          ],
+        },
         defaultNode: {
           children: [],
-          slots: {
-            header: [],
-          },
         },
       },
     ],
@@ -141,6 +146,20 @@ describe('designer core', () => {
     expect(schema.props).toEqual({
       placeholder: 'input value',
       clearable: true,
+    })
+  })
+
+  it('should project material designer metadata onto created nodes', () => {
+    const designer = createDesigner()
+    const section = designer.createNodeFromMaterial('Section')
+
+    expect(section.metadata?.designer).toEqual({
+      container: true,
+      defaultContainer: 'children',
+      containers: [
+        { name: 'children', title: 'Body' },
+        { name: 'header', title: 'Header' },
+      ],
     })
   })
 
