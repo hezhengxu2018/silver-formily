@@ -1,0 +1,39 @@
+{
+  "name": "element-plus-designable",
+  "type": "module",
+  "private": true,
+  "description": "Silver Formily Element Plus designable editor",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "lint": "eslint .",
+    "format": "eslint . --fix",
+    "check-types": "vue-tsc --noEmit"
+  },
+  "silverFormily": {
+    "tasks": {
+      "dev": {
+        "filterMode": "workspace-only"
+      }
+    }
+  },
+  "dependencies": {
+    "@lucide/vue": "catalog:",
+    "class-variance-authority": "catalog:",
+    "clsx": "catalog:",
+    "reka-ui": "catalog:",
+    "tailwind-merge": "catalog:",
+    "tw-animate-css": "catalog:",
+    "vue": "catalog:"
+  },
+  "devDependencies": {
+    "@silver-formily/typescript-config": "workspace:*",
+    "@tailwindcss/vite": "catalog:",
+    "@vitejs/plugin-vue": "catalog:",
+    "tailwindcss": "catalog:",
+    "typescript": "catalog:",
+    "vite": "catalog:",
+    "vue-tsc": "catalog:"
+  }
+}

@@ -1,0 +1,102 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+:root {
+  --editor-header-height: 4rem;
+  --editor-left-panel-width: 22rem;
+  --editor-left-panel-peek: 3.5rem;
+  --editor-right-panel-width: 22rem;
+  --editor-right-panel-peek: 3.5rem;
+  --radius: 0.5rem;
+  --background: oklch(0.985 0.004 106);
+  --foreground: oklch(0.18 0.018 96);
+  --card: oklch(1 0 0);
+  --card-foreground: var(--foreground);
+  --popover: oklch(1 0 0);
+  --popover-foreground: var(--foreground);
+  --primary: #4d1db5;
+  --primary-foreground: oklch(0.985 0.01 285);
+  --secondary: oklch(0.955 0.012 105);
+  --secondary-foreground: oklch(0.24 0.02 96);
+  --muted: oklch(0.94 0.008 105);
+  --muted-foreground: oklch(0.49 0.018 96);
+  --accent: color-mix(in oklab, #4d1db5 12%, white);
+  --accent-foreground: #2a1062;
+  --destructive: oklch(0.58 0.22 27);
+  --border: oklch(0.88 0.012 105);
+  --input: oklch(0.88 0.012 105);
+  --ring: #4d1db5;
+  --editor-canvas: rgb(241 245 249 / var(--tw-bg-opacity, 1));
+  --editor-canvas-grid: color-mix(in oklab, var(--border) 55%, transparent);
+  --editor-sidebar: color-mix(in oklab, white 94%, #f6f4ff);
+  --editor-sidebar-foreground: oklch(0.22 0.02 96);
+  --editor-sidebar-muted: color-mix(in oklab, var(--foreground) 44%, white);
+  --editor-sidebar-divider: color-mix(in oklab, var(--border) 78%, white);
+  --editor-sidebar-search: color-mix(in oklab, white 18%, var(--editor-canvas));
+  --editor-sidebar-icon-bg: color-mix(in oklab, var(--editor-canvas) 62%, white);
+  --editor-sidebar-icon-fg: color-mix(in oklab, var(--foreground) 60%, #4d1db5);
+  --editor-sidebar-shadow: 0 22px 48px rgba(15, 23, 42, 0.08);
+  --editor-sidebar-item-shadow: 0 16px 32px rgba(77, 29, 181, 0.12);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  html {
+    min-width: 320px;
+    background: var(--background);
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    min-width: 320px;
+    margin: 0;
+    font-family:
+      Inter,
+      ui-sans-serif,
+      system-ui,
+      -apple-system,
+      BlinkMacSystemFont,
+      'Segoe UI',
+      sans-serif;
+  }
+
+  button,
+  input,
+  textarea {
+    letter-spacing: 0;
+  }
+
+  #app {
+    min-height: 100vh;
+  }
+}
