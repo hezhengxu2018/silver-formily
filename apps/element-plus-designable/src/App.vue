@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { ref } from 'vue'
 
 import { TooltipProvider } from '@/components/ui/tooltip'
 import ComponentPalette from '@/features/editor/components/ComponentPalette.vue'
@@ -12,34 +12,25 @@ const isLeftPanelOpen = ref(true)
 const isRightPanelOpen = ref(true)
 
 const { prefixCls, b } = createNamespace('app-shell')
-
-const workspaceSideOffset = computed(() =>
-  isLeftPanelOpen.value || isRightPanelOpen.value
-    ? 'calc(var(--editor-left-panel-width) + 1rem)'
-    : 'calc(var(--editor-left-panel-peek) + 1rem)',
-)
 </script>
 
 <template>
   <TooltipProvider :delay-duration="180">
     <main :class="prefixCls">
       <EditorHeader />
-      <ComponentPalette
-        :expanded="isLeftPanelOpen"
-        @toggle="isLeftPanelOpen = !isLeftPanelOpen"
-      />
-      <EditorInspector
-        :expanded="isRightPanelOpen"
-        @toggle="isRightPanelOpen = !isRightPanelOpen"
-      />
 
-      <section
-        :class="b('workspace')"
-        :style="{
-          '--editor-workspace-side-offset': workspaceSideOffset,
-        }"
-      >
-        <EditorCanvas />
+      <section :class="b('workspace')">
+        <ComponentPalette
+          :expanded="isLeftPanelOpen"
+          @toggle="isLeftPanelOpen = !isLeftPanelOpen"
+        />
+        <div :class="b('center')">
+          <EditorCanvas />
+        </div>
+        <EditorInspector
+          :expanded="isRightPanelOpen"
+          @toggle="isRightPanelOpen = !isRightPanelOpen"
+        />
       </section>
     </main>
   </TooltipProvider>
@@ -53,14 +44,11 @@ const workspaceSideOffset = computed(() =>
   background: var(--editor-canvas);
 
   &__workspace {
-    @apply flex min-h-[calc(100vh-var(--editor-header-height))] items-center justify-center p-4 xl:p-5;
+    @apply relative flex min-h-[calc(100vh-var(--editor-header-height))] overflow-hidden;
   }
-}
 
-@media (min-width: 1024px) {
-  .epd-app-shell__workspace {
-    padding-right: var(--editor-workspace-side-offset);
-    padding-left: var(--editor-workspace-side-offset);
+  &__center {
+    @apply relative min-w-[30rem] flex-1;
   }
 }
 </style>

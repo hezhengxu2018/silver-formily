@@ -30,10 +30,10 @@
 
 :root {
   --editor-header-height: 4rem;
-  --editor-left-panel-width: 22rem;
-  --editor-left-panel-peek: 3.5rem;
-  --editor-right-panel-width: 22rem;
-  --editor-right-panel-peek: 3.5rem;
+  --editor-left-panel-width: 19rem;
+  --editor-left-panel-peek: 0rem;
+  --editor-right-panel-width: 19rem;
+  --editor-right-panel-peek: 0rem;
   --radius: 0.5rem;
   --background: oklch(0.985 0.004 106);
   --foreground: oklch(0.18 0.018 96);
