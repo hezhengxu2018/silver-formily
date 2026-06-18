@@ -48,46 +48,32 @@ const { prefixCls, b } = createNamespace('editor-inspector')
     </Tooltip>
 
     <div :class="b('shell')">
-      <div :class="b('header')">
-        <div :class="b('heading')">
-          <div>
-            <p :class="b('eyebrow')">
-              Inspector
-            </p>
-            <h2 :class="b('title')">
-              Node Details
-            </h2>
-            <p :class="b('description')">
-              静态节点信息面板，后续承接选中组件属性与 schema 编辑
-            </p>
-          </div>
-        </div>
-      </div>
-
       <Tabs default-value="properties" :class="b('tabs')">
         <TabsList :class="b('tabs-list')">
-          <TabsTrigger value="properties">
+          <TabsTrigger value="properties" :class="b('tabs-trigger')">
             Properties
           </TabsTrigger>
-          <TabsTrigger value="structure">
+          <TabsTrigger value="structure" :class="b('tabs-trigger')">
             Structure
           </TabsTrigger>
-          <TabsTrigger value="schema">
+          <TabsTrigger value="schema" :class="b('tabs-trigger')">
             Schema
           </TabsTrigger>
         </TabsList>
 
-        <TabsContent value="properties" :class="b('tabs-content')">
-          <InspectorProperties />
-        </TabsContent>
+        <div :class="b('panel-wrapper')">
+          <TabsContent value="properties" :class="b('tabs-content')">
+            <InspectorProperties />
+          </TabsContent>
 
-        <TabsContent value="structure" :class="b('tabs-content')">
-          <InspectorStructure />
-        </TabsContent>
+          <TabsContent value="structure" :class="b('tabs-content')">
+            <InspectorStructure />
+          </TabsContent>
 
-        <TabsContent value="schema" :class="b('tabs-content')">
-          <InspectorSchema />
-        </TabsContent>
+          <TabsContent value="schema" :class="b('tabs-content')">
+            <InspectorSchema />
+          </TabsContent>
+        </div>
       </Tabs>
     </div>
   </aside>
@@ -97,21 +83,17 @@ const { prefixCls, b } = createNamespace('editor-inspector')
 @reference "../../../styles/globals.css";
 
 .epd-editor-inspector {
-  @apply fixed bottom-0 right-0 z-30 overflow-visible border-l transition-transform duration-500 ease-out;
-  top: var(--editor-header-height);
+  @apply relative z-10 shrink-0 grow-0 overflow-visible transition-all duration-500 ease-out;
   width: var(--editor-right-panel-width);
-  color: var(--editor-sidebar-foreground);
-  background: var(--editor-sidebar);
-  border-color: var(--editor-sidebar-divider);
-  box-shadow: var(--editor-sidebar-shadow);
-  transform: translateX(0);
+  color: rgb(31 41 55);
+  background: rgb(255 255 255);
 
   &--collapsed {
-    transform: translateX(calc(100% - var(--editor-right-panel-peek)));
+    margin-right: calc(var(--editor-right-panel-width) * -1);
   }
 
   &__toggle {
-    @apply absolute left-0 top-4 z-60 flex size-10 items-center justify-center rounded-full border shadow-lg backdrop-blur-md transition-all;
+    @apply absolute left-0 top-4 z-20 flex size-10 items-center justify-center rounded-full border shadow-lg backdrop-blur-md transition-all;
     transform: translateX(-50%);
     color: var(--editor-sidebar-muted);
     background: rgba(255, 255, 255, 0.96);
@@ -128,43 +110,38 @@ const { prefixCls, b } = createNamespace('editor-inspector')
   }
 
   &__shell {
-    @apply absolute inset-0 flex min-w-0 flex-col overflow-hidden rounded-l-[1.25rem];
-    background: var(--editor-sidebar);
-  }
-
-  &__header {
-    @apply border-b px-5 pb-4 pt-4;
-    border-color: var(--editor-sidebar-divider);
-  }
-
-  &__heading {
-    @apply flex items-start justify-between gap-3;
-  }
-
-  &__eyebrow {
-    @apply text-xs font-semibold uppercase tracking-[0.18em];
-    color: var(--editor-sidebar-muted);
-  }
-
-  &__title {
-    @apply mt-1 text-base font-semibold;
-  }
-
-  &__description {
-    @apply mt-1 text-xs;
-    color: var(--editor-sidebar-muted);
+    @apply absolute inset-0 overflow-hidden bg-white;
   }
 
   &__tabs {
-    @apply flex min-h-0 flex-1 flex-col p-3;
+    @apply relative h-full;
   }
 
   &__tabs-list {
-    @apply grid w-full grid-cols-3;
+    @apply flex w-full items-center rounded-none bg-transparent p-0 text-[13px];
+  }
+
+  &__tabs-trigger {
+    @apply h-auto flex-1 rounded-none border-b border-r border-transparent bg-slate-100 px-2 py-2.5 text-center font-medium text-slate-500 shadow-none transition-colors;
+    border-bottom-color: rgb(226 232 240);
+    border-right-color: rgb(226 232 240);
+  }
+
+  &__tabs-trigger:last-child {
+    border-right-color: transparent;
+  }
+
+  &__tabs-trigger[data-state='active'] {
+    @apply bg-white text-slate-900 shadow-none;
+    border-bottom-color: rgb(255 255 255);
+  }
+
+  &__panel-wrapper {
+    @apply absolute inset-x-0 bottom-0 top-[2.75rem] overflow-y-auto overflow-x-hidden;
   }
 
   &__tabs-content {
-    @apply min-h-0 flex-1;
+    @apply px-5 pb-6 pt-0;
   }
 }
 </style>

@@ -6,7 +6,9 @@ const { prefixCls, b } = createNamespace('editor-canvas')
 
 <template>
   <section :class="prefixCls">
-    <div :class="b('form')" />
+    <div :class="b('container')">
+      <div :class="b('wrapper')" />
+    </div>
   </section>
 </template>
 
@@ -14,10 +16,14 @@ const { prefixCls, b } = createNamespace('editor-canvas')
 @reference "../../../styles/globals.css";
 
 .epd-editor-canvas {
-  @apply flex w-full items-center justify-center;
+  @apply absolute inset-0 overflow-y-auto px-16;
 
-  &__form {
-    @apply relative mx-auto w-full rounded-lg border bg-white;
+  &__container {
+    @apply mx-auto my-8 flex w-full flex-col items-center transition-all duration-300;
+  }
+
+  &__wrapper {
+    @apply relative mx-auto w-full rounded-lg bg-white p-10 text-gray-900 transition-all;
     width: min(100%, 42rem);
     min-height: 40rem;
     box-shadow: 0 24px 60px rgba(15, 23, 42, 0.08);
