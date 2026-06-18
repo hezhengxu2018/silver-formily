@@ -6,9 +6,12 @@ import ComponentPalette from '@/features/editor/components/ComponentPalette.vue'
 import EditorCanvas from '@/features/editor/components/EditorCanvas.vue'
 import EditorHeader from '@/features/editor/components/EditorHeader.vue'
 import EditorInspector from '@/features/editor/components/EditorInspector.vue'
+import { createNamespace } from '@/lib/utils'
 
 const isLeftPanelOpen = ref(true)
 const isRightPanelOpen = ref(true)
+
+const { prefixCls, b } = createNamespace('app-shell')
 
 const workspaceSideOffset = computed(() =>
   isLeftPanelOpen.value || isRightPanelOpen.value
@@ -19,7 +22,7 @@ const workspaceSideOffset = computed(() =>
 
 <template>
   <TooltipProvider :delay-duration="180">
-    <main class="app-shell">
+    <main :class="prefixCls">
       <EditorHeader />
       <ComponentPalette
         :expanded="isLeftPanelOpen"
@@ -31,7 +34,7 @@ const workspaceSideOffset = computed(() =>
       />
 
       <section
-        class="app-shell__workspace"
+        :class="b('workspace')"
         :style="{
           '--editor-workspace-side-offset': workspaceSideOffset,
         }"
@@ -45,17 +48,17 @@ const workspaceSideOffset = computed(() =>
 <style scoped>
 @reference "./styles/globals.css";
 
-.app-shell {
+.epd-app-shell {
   @apply min-h-screen pt-[var(--editor-header-height)] text-foreground;
   background: var(--editor-canvas);
-}
 
-.app-shell__workspace {
-  @apply flex min-h-[calc(100vh-var(--editor-header-height))] items-center justify-center p-4 xl:p-5;
+  &__workspace {
+    @apply flex min-h-[calc(100vh-var(--editor-header-height))] items-center justify-center p-4 xl:p-5;
+  }
 }
 
 @media (min-width: 1024px) {
-  .app-shell__workspace {
+  .epd-app-shell__workspace {
     padding-right: var(--editor-workspace-side-offset);
     padding-left: var(--editor-workspace-side-offset);
   }
