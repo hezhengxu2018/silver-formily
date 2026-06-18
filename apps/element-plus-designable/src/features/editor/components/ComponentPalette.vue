@@ -253,7 +253,7 @@ const materialCount = computed(() =>
 }
 
 .component-palette__item {
-  @apply relative mx-[-0.625rem] flex items-center gap-3 rounded-xl border border-transparent px-2.5 py-2.5 transition-all duration-300;
+  @apply relative -mx-2.5 flex items-center gap-3 rounded-xl border border-transparent px-2.5 py-2.5 transition-all duration-300;
 }
 
 .component-palette__item:hover {
