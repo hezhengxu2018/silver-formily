@@ -9,7 +9,6 @@
     "paths": {
       "@silver-formily/core": ["../../packages/core/src/index.ts"],
       "@silver-formily/designer-core": ["../../packages/designer-core/src/index.ts"],
-      "@silver-formily/designer-materials-element-plus": ["../../packages/designer-materials-element-plus/src/index.ts"],
       "@silver-formily/designer-vue": ["../../packages/designer-vue/src/index.ts"],
       "@silver-formily/element-plus": ["../../packages/element-plus/src/index.ts"],
       "@silver-formily/grid": ["../../packages/grid/src/index.ts"],

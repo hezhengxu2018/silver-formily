@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { ChevronLeft, ChevronRight, GripVertical, Search } from '@lucide/vue'
+import { ChevronLeft, ChevronRight, Search } from '@lucide/vue'
 
 import { Input } from '@/components/ui/input'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 import { createNamespace } from '@/lib/utils'
-import { materialGroups } from '../mockData'
+import { materialGroups } from '../materials'
 
 defineProps<{
   expanded: boolean
@@ -79,19 +79,15 @@ const { prefixCls, b } = createNamespace('component-palette')
                   :class="b('item')"
                 >
                   <div :class="b('item-icon')">
-                    <component :is="item.icon" :class="b('item-icon-svg')" />
+                    <span
+                      :class="b('item-icon-svg')"
+                      v-html="item.iconSvg"
+                    />
                   </div>
                   <div :class="b('item-copy')">
                     <p :class="b('item-name')">
-                      {{ item.name }}
+                      {{ item.displayTitle }}
                     </p>
-                    <p :class="b('item-description')">
-                      {{ item.description }}
-                    </p>
-                  </div>
-
-                  <div :class="b('item-actions')">
-                    <GripVertical :class="b('item-action-icon')" />
                   </div>
                 </article>
               </div>
@@ -134,7 +130,7 @@ const { prefixCls, b } = createNamespace('component-palette')
   }
 
   &__shell {
-    @apply absolute inset-0 overflow-hidden bg-white;
+    @apply absolute inset-0 overflow-hidden bg-white flex flex-col;
   }
 
   &__top {
@@ -154,11 +150,11 @@ const { prefixCls, b } = createNamespace('component-palette')
   }
 
   &__body {
-    @apply absolute inset-0;
+    @apply flex-1 overflow-hidden;
   }
 
   &__scroll {
-    @apply absolute inset-x-0 bottom-0 top-[6.5625rem];
+    @apply h-full;
   }
 
   &__content {
@@ -166,7 +162,7 @@ const { prefixCls, b } = createNamespace('component-palette')
   }
 
   &__group {
-    @apply mt-4;
+    @apply mt-3;
   }
 
   &__group-header {
@@ -174,53 +170,51 @@ const { prefixCls, b } = createNamespace('component-palette')
   }
 
   &__group-title {
-    @apply text-xs font-semibold tracking-normal text-gray-500;
+    @apply text-[11px] font-semibold tracking-normal text-gray-500;
   }
 
   &__items {
-    @apply mt-2;
+    @apply mt-4 grid grid-cols-3 gap-x-3 gap-y-5;
   }
 
   &__item {
-    @apply relative -mx-2.5 my-2 flex items-center rounded-lg border border-transparent px-2.5 py-2.5 shadow-none transition-shadow duration-300;
+    @apply relative flex min-w-0 cursor-pointer flex-col items-center text-center;
+    background: #fff;
+    color: #000;
+    line-height: 1;
+    padding-bottom: 10px;
+    transition: all 0.2s ease;
 
     &:hover {
-      border-color: color-mix(in oklab, var(--primary) 18%, transparent);
-      box-shadow: var(--editor-sidebar-item-shadow);
+      background: #2e73ff;
+      color: #fff;
     }
   }
 
   &__item-icon {
-    @apply mr-3 flex size-8 shrink-0 items-center justify-center rounded bg-gray-100 text-gray-500;
+    @apply flex shrink-0 items-center justify-center;
+    padding: 10px 5px 12px;
   }
 
   &__item-icon-svg {
-    @apply size-4;
+    @apply block size-[21px];
+  }
+
+  &__item-icon-svg :deep(svg) {
+    @apply block size-[21px];
   }
 
   &__item-copy {
-    @apply min-w-0 flex-1;
+    @apply w-full min-w-0;
   }
 
   &__item-name {
-    @apply truncate text-sm font-semibold leading-tight text-gray-800;
+    @apply line-clamp-2 text-[12px] leading-normal;
   }
 
-  &__item-description {
-    @apply truncate text-[12px] leading-snug text-gray-500;
-  }
-
-  &__item-actions {
-    @apply pointer-events-none absolute right-2 top-1/2 flex -translate-y-1/2 items-center justify-center gap-4 rounded bg-white px-3 py-2 opacity-0 transition-opacity duration-300;
-    color: rgb(209 213 219);
-  }
-
-  &__item:hover &__item-actions {
-    @apply opacity-100;
-  }
-
-  &__item-action-icon {
-    @apply size-4;
+  &__item:hover &__item-icon-svg,
+  &__item:hover &__item-name {
+    color: #fff;
   }
 }
 </style>

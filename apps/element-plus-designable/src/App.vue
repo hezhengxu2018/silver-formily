@@ -44,7 +44,7 @@ const { prefixCls, b } = createNamespace('app-shell')
   background: var(--editor-canvas);
 
   &__workspace {
-    @apply relative flex min-h-[calc(100vh-var(--editor-header-height))] overflow-hidden;
+    @apply relative flex h-[calc(100vh-var(--editor-header-height))] overflow-hidden;
   }
 
   &__center {

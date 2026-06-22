@@ -21,7 +21,6 @@
   "dependencies": {
     "@silver-formily/core": "workspace:*",
     "@silver-formily/designer-core": "workspace:*",
-    "@silver-formily/designer-materials-element-plus": "workspace:*",
     "@silver-formily/designer-vue": "workspace:*",
     "@silver-formily/element-plus": "workspace:*",
     "@silver-formily/grid": "workspace:*",
