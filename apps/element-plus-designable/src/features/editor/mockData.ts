@@ -1,24 +1,3 @@
-import { CalendarDays, CheckSquare, Layers3, ListChecks, TextCursorInput, Type } from '@lucide/vue'
-
-export const materialGroups = [
-  {
-    name: 'Basic fields',
-    items: [
-      { name: 'Input', icon: Type, description: 'Single line text field' },
-      { name: 'Select', icon: ListChecks, description: 'Dropdown options' },
-      { name: 'Checkbox', icon: CheckSquare, description: 'Boolean choice' },
-      { name: 'DatePicker', icon: CalendarDays, description: 'Date selection' },
-    ],
-  },
-  {
-    name: 'Layout',
-    items: [
-      { name: 'Section', icon: Layers3, description: 'Grouped field block' },
-      { name: 'Text', icon: TextCursorInput, description: 'Static content' },
-    ],
-  },
-]
-
 export const canvasFields = [
   { label: 'Full name', type: 'Input', placeholder: 'Please enter full name' },
   { label: 'Status', type: 'Select', placeholder: 'Lead, Qualified, Customer' },

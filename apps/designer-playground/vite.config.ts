@@ -14,7 +14,6 @@ export default defineConfig({
     alias: {
       '@silver-formily/core': workspacePath('../../packages/core/src/index.ts'),
       '@silver-formily/designer-core': workspacePath('../../packages/designer-core/src/index.ts'),
-      '@silver-formily/designer-materials-element-plus': workspacePath('../../packages/designer-materials-element-plus/src/index.ts'),
       '@silver-formily/designer-vue': workspacePath('../../packages/designer-vue/src/index.ts'),
       '@silver-formily/element-plus': workspacePath('../../packages/element-plus/src/index.ts'),
       '@silver-formily/grid': workspacePath('../../packages/grid/src/index.ts'),
