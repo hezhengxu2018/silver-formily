@@ -1,6 +1,6 @@
 import type { Component } from 'vue'
 import { defineComponent, h } from 'vue'
-import { elementPlusDesignerMaterials } from './materials'
+import { materials } from './materials'
 
 function createPreviewComponent(title: string): Component {
   return defineComponent({
@@ -19,8 +19,8 @@ function createPreviewComponent(title: string): Component {
   })
 }
 
-export const elementPlusPreviewComponents: Record<string, Component> = Object.fromEntries(
-  elementPlusDesignerMaterials.map(material => [
+export const previewComponents: Record<string, Component> = Object.fromEntries(
+  materials.map(material => [
     material.name,
     createPreviewComponent(material.title),
   ]),
