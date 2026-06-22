@@ -1,6 +1,6 @@
 import type { PaletteMaterialGroup, PaletteMaterialItem } from './types'
 import { resolvePaletteIconSvg } from './icon-registry'
-import { elementPlusDesignerMaterials } from './materials'
+import { materials } from './materials'
 
 const groupDisplayNameMap: Record<string, string> = {
   Layout: 'Layout 布局组件',
@@ -22,7 +22,6 @@ const materialMetaMap: Record<string, { displayTitle: string, group: keyof typeo
   FormButtonGroup: { displayTitle: '按钮布局', group: 'Layout', order: 9 },
   Submit: { displayTitle: '提交按钮', group: 'Layout', order: 10 },
   Reset: { displayTitle: '重置按钮', group: 'Layout', order: 11 },
-
   Input: { displayTitle: '输入框', group: 'Input', order: 1 },
   TextArea: { displayTitle: '多行输入框', group: 'Input', order: 2 },
   Autocomplete: { displayTitle: '自动补全输入框', group: 'Input', order: 3 },
@@ -52,7 +51,6 @@ const materialMetaMap: Record<string, { displayTitle: string, group: keyof typeo
   DatePickerPanel: { displayTitle: '日期选择器面板', group: 'Input', order: 27 },
   TimeSelect: { displayTitle: '时间选择', group: 'Input', order: 28 },
   Upload: { displayTitle: '上传', group: 'Input', order: 29 },
-
   ArrayCards: { displayTitle: '卡片列表', group: 'Scenario', order: 1 },
   ArrayItems: { displayTitle: '自增列表', group: 'Scenario', order: 2 },
   ArrayCollapse: { displayTitle: '自增折叠面板', group: 'Scenario', order: 3 },
@@ -66,7 +64,7 @@ const materialMetaMap: Record<string, { displayTitle: string, group: keyof typeo
   FormTab: { displayTitle: '选项卡表单', group: 'Scenario', order: 11 },
 }
 
-function toPaletteMaterial(material: typeof elementPlusDesignerMaterials[number]): PaletteMaterialItem {
+function toPaletteMaterial(material: typeof materials[number]): PaletteMaterialItem {
   const metadata = material.metadata ?? {}
   const meta = materialMetaMap[material.name]
 
@@ -85,7 +83,7 @@ function toPaletteMaterial(material: typeof elementPlusDesignerMaterials[number]
 
 export const materialGroups: PaletteMaterialGroup[] = groupOrder
   .map((groupKey) => {
-    const items = elementPlusDesignerMaterials
+    const items = materials
       .filter(material => materialMetaMap[material.name]?.group === groupKey)
       .sort((left, right) => (materialMetaMap[left.name]?.order ?? 999) - (materialMetaMap[right.name]?.order ?? 999))
       .map(toPaletteMaterial)

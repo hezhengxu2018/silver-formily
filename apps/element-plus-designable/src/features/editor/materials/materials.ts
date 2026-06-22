@@ -129,7 +129,7 @@ function containerMaterial(options: Omit<MaterialOptions, 'designer' | 'group'> 
   })
 }
 
-export const elementPlusFieldMaterials: DesignerMaterialDefinition[] = [
+export const fieldMaterials: DesignerMaterialDefinition[] = [
   defineMaterial({
     name: 'Input',
     group: 'Fields',
@@ -449,7 +449,7 @@ export const elementPlusFieldMaterials: DesignerMaterialDefinition[] = [
   }),
 ]
 
-export const elementPlusLayoutMaterials: DesignerMaterialDefinition[] = [
+export const layoutMaterials: DesignerMaterialDefinition[] = [
   containerMaterial({
     name: 'Form',
     group: 'Layouts',
@@ -566,7 +566,7 @@ export const elementPlusLayoutMaterials: DesignerMaterialDefinition[] = [
   }),
 ]
 
-export const elementPlusArrayMaterials: DesignerMaterialDefinition[] = [
+export const arrayMaterials: DesignerMaterialDefinition[] = [
   containerMaterial({
     name: 'ArrayItems',
     title: 'Array Items',
@@ -616,7 +616,7 @@ export const elementPlusArrayMaterials: DesignerMaterialDefinition[] = [
   }),
 ]
 
-export const elementPlusActionMaterials: DesignerMaterialDefinition[] = [
+export const actionMaterials: DesignerMaterialDefinition[] = [
   defineMaterial({
     name: 'Submit',
     group: 'Actions',
@@ -646,9 +646,9 @@ export const elementPlusActionMaterials: DesignerMaterialDefinition[] = [
   }),
 ]
 
-export const elementPlusDesignerMaterials: DesignerMaterialDefinition[] = [
-  ...elementPlusFieldMaterials,
-  ...elementPlusLayoutMaterials,
-  ...elementPlusArrayMaterials,
-  ...elementPlusActionMaterials,
+export const materials: DesignerMaterialDefinition[] = [
+  ...fieldMaterials,
+  ...layoutMaterials,
+  ...arrayMaterials,
+  ...actionMaterials,
 ].filter(material => !material.runtimeComponent?.includes('.'))
