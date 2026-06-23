@@ -2,21 +2,23 @@ import { EventDriver } from '@silver-formily/designer-shared'
 import { KeyDownEvent, KeyUpEvent } from '../events'
 
 function filter(event: KeyboardEvent) {
-  const target: any = event.target
+  const target = event.target
+  if (!(target instanceof HTMLElement))
+    return true
   const { tagName } = target
-  let flag = true
+  const isMutableFormControl = target instanceof HTMLInputElement
+    || target instanceof HTMLTextAreaElement
+    ? !target.readOnly
+    : tagName === 'SELECT'
   // ignore: isContentEditable === 'true', <input> and <textarea> when readOnly state is false, <select>、Web Components
-  if (
+  return !(
     target.isContentEditable
     || ((tagName === 'INPUT'
       || tagName === 'TEXTAREA'
       || tagName === 'SELECT'
       || customElements.get(tagName.toLocaleLowerCase()))
-    && !target.readOnly)
-  ) {
-    flag = false
-  }
-  return flag
+    && isMutableFormControl)
+  )
 }
 
 export class KeyboardDriver extends EventDriver {

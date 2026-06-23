@@ -21,9 +21,9 @@ export class Keyboard {
   engine: Engine
   shortcuts: Shortcut[] = []
   sequence: KeyCodeValue[] = []
-  keyDown: KeyCodeValue = null
-  modifiers = {}
-  requestTimer = null
+  keyDown: KeyCodeValue | null = null
+  modifiers: Record<string, boolean> = {}
+  requestTimer: ReturnType<typeof setTimeout> | null = null
 
   constructor(engine?: Engine) {
     this.engine = engine
@@ -112,6 +112,7 @@ export class Keyboard {
       this.keyDown = null
       this.sequence = []
       clearTimeout(this.requestTimer)
+      this.requestTimer = null
     }, 4000)
   }
 

@@ -2,18 +2,19 @@ import type { Engine } from '../models/Engine'
 import { EventDriver } from '@silver-formily/designer-shared'
 import { DragMoveEvent, DragStartEvent, DragStopEvent } from '../events'
 
-const GlobalState = {
+const GlobalState: {
+  dragging: boolean
+  onMouseDownAt: number | null
+  startEvent: MouseEvent | DragEvent | null
+  moveEvent: MouseEvent | DragEvent | null
+} = {
   dragging: false,
-  onMouseDownAt: 0,
+  onMouseDownAt: null,
   startEvent: null,
   moveEvent: null,
 }
 
 export class DragDropDriver extends EventDriver<Engine> {
-  mouseDownTimer = null
-
-  startEvent: MouseEvent
-
   onMouseDown = (e: MouseEvent) => {
     const target = e.target as HTMLElement | null
     if (e.button !== 0 || e.ctrlKey || e.metaKey) {
@@ -23,7 +24,7 @@ export class DragDropDriver extends EventDriver<Engine> {
       target?.isContentEditable
       || target?.contentEditable === 'true'
     ) {
-      return true
+      return
     }
     if (target?.closest?.('.monaco-editor'))
       return
@@ -55,11 +56,14 @@ export class DragDropDriver extends EventDriver<Engine> {
       true,
     )
     this.batchRemoveEventListener('mouseup', this.onMouseUp)
-    this.batchRemoveEventListener('mousedown', this.onMouseDown)
+    this.batchRemoveEventListener('mousedown', this.onMouseDown, true)
     this.batchRemoveEventListener('dragover', this.onMouseMove)
     this.batchRemoveEventListener('mousemove', this.onMouseMove)
     this.batchRemoveEventListener('mousemove', this.onDistanceChange)
     GlobalState.dragging = false
+    GlobalState.moveEvent = null
+    GlobalState.startEvent = null
+    GlobalState.onMouseDownAt = null
   }
 
   onMouseMove = (e: MouseEvent | DragEvent) => {
@@ -111,6 +115,8 @@ export class DragDropDriver extends EventDriver<Engine> {
   }
 
   onDistanceChange = (e: MouseEvent) => {
+    if (!GlobalState.startEvent || GlobalState.onMouseDownAt === null)
+      return
     const distance = Math.sqrt(
       (e.pageX - GlobalState.startEvent.pageX) ** 2
       + (e.pageY - GlobalState.startEvent.pageY) ** 2,

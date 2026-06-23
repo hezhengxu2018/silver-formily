@@ -3,11 +3,11 @@ import { EventDriver } from '@silver-formily/designer-shared'
 import { MouseMoveEvent } from '../events'
 
 export class MouseMoveDriver extends EventDriver<Engine> {
-  request = null
+  request: number | null = null
 
   onMouseMove = (e: MouseEvent) => {
-    this.request = requestAnimationFrame(() => {
-      cancelAnimationFrame(this.request)
+    this.request = this.contentWindow.requestAnimationFrame(() => {
+      this.contentWindow.cancelAnimationFrame(this.request!)
       this.dispatch(
         new MouseMoveEvent({
           clientX: e.clientX,
@@ -28,7 +28,7 @@ export class MouseMoveDriver extends EventDriver<Engine> {
   }
 
   detach() {
-    this.removeEventListener('mouseover', this.onMouseMove, {
+    this.removeEventListener('mousemove', this.onMouseMove, {
       mode: 'onlyOne',
     })
   }

@@ -1,4 +1,5 @@
 import type {
+  ICustomEvent,
   IPoint,
 } from '@silver-formily/designer-shared'
 import type { Operation } from './Operation'
@@ -51,23 +52,23 @@ export class Dragon {
 
   dragNodes: TreeNode[] = []
 
-  touchNode: TreeNode = null
+  touchNode: TreeNode | null = null
 
-  dropNode: TreeNode = null
+  dropNode: TreeNode | null = null
 
-  closestNode: TreeNode = null
+  closestNode: TreeNode | null = null
 
-  closestRect: DOMRect = null
+  closestRect: DOMRect | null = null
 
-  closestOffsetRect: DOMRect = null
+  closestOffsetRect: DOMRect | null = null
 
-  closestDirection: ClosestPosition = null
+  closestDirection: ClosestPosition | null = null
 
   sensitive = true
 
   forceBlock = false
 
-  viewport: Viewport = null
+  viewport: Viewport | null = null
 
   constructor(props: IDragonProps) {
     this.operation = props.operation
@@ -334,7 +335,7 @@ export class Dragon {
     )
   }
 
-  trigger(event: any) {
+  trigger(event: ICustomEvent) {
     if (this.operation) {
       return this.operation.dispatch(event)
     }

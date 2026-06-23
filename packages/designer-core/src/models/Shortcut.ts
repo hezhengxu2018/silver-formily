@@ -12,15 +12,15 @@ export interface IShortcutProps {
 
 export class Shortcut {
   codes: KeyCodeValue[][]
-  handler: (context: IEngineContext) => void
-  matcher: (codes: KeyCodeValue[]) => boolean
+  handler?: (context: IEngineContext) => void
+  matcher?: (codes: KeyCodeValue[]) => boolean
   constructor(props: IShortcutProps) {
     this.codes = this.parseCodes(props.codes)
     this.handler = props.handler
     this.matcher = props.matcher
   }
 
-  parseCodes(codes: Array<KeyCodeValue | KeyCodeValue[]>) {
+  parseCodes(codes: Array<KeyCodeValue | KeyCodeValue[]> = []) {
     const results: KeyCodeValue[][] = []
     codes.forEach((code) => {
       if (Array.isArray(code)) {
@@ -78,6 +78,8 @@ export class Shortcut {
   }
 
   static sortCodes = (codes: KeyCodeValue[]): KeyCodeValue[] => {
-    return codes.map(code => code.toLocaleLowerCase()).sort() as any
+    return [...codes].sort((code1, code2) =>
+      code1.toLocaleLowerCase().localeCompare(code2.toLocaleLowerCase()),
+    )
   }
 }

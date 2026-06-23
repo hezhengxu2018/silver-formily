@@ -4,8 +4,8 @@ import { Path } from '@silver-formily/path'
 import { MouseClickEvent, MouseDoubleClickEvent } from '../events'
 
 type GlobalState = {
-  activeElements: Map<HTMLInputElement, TreeNode>
-  requestTimer: any
+  activeElements: Map<HTMLElement, TreeNode>
+  requestTimer: ReturnType<typeof setTimeout> | null
   isComposition: boolean
   queue: (() => void)[]
 }
@@ -28,17 +28,23 @@ function setEndOfContenteditable(contentEditableElement: Element) {
   range.selectNodeContents(contentEditableElement)
   range.collapse(false)
   const selection = window.getSelection()
+  if (!selection)
+    return
   selection.removeAllRanges()
   selection.addRange(range)
 }
 
 function createCaretCache(el: Element) {
   const currentSelection = window.getSelection()
+  if (!currentSelection)
+    return
   if (currentSelection.containsNode(el))
     return
   const ranges = getAllRanges(currentSelection)
   return () => {
     const sel = window.getSelection()
+    if (!sel)
+      return
     const firstNode = el.childNodes[0]
     if (!firstNode)
       return
@@ -68,7 +74,7 @@ export function useContentEditableEffect(engine: Engine) {
     }
   }
 
-  function onInputHandler(event: InputEvent) {
+  function onInputHandler(this: HTMLElement, event: InputEvent | CompositionEvent) {
     const node = globalState.activeElements.get(this)
     event.stopPropagation()
     event.preventDefault()
@@ -86,7 +92,7 @@ export function useContentEditableEffect(engine: Engine) {
         )
         requestIdle(() => {
           node.takeSnapshot('update:node:props')
-          restore()
+          restore?.()
         })
       }
       globalState.queue.push(handler)
@@ -97,16 +103,16 @@ export function useContentEditableEffect(engine: Engine) {
 
   function onSelectionChangeHandler() {
     clearTimeout(globalState.requestTimer)
-    globalState.requestTimer = setTimeout(
-      globalState.queue[globalState.queue.length - 1],
-      600,
-    )
+    const handler = globalState.queue[globalState.queue.length - 1]
+    if (handler) {
+      globalState.requestTimer = setTimeout(handler, 600)
+    }
   }
 
   function onCompositionHandler(event: CompositionEvent) {
     if (event.type === 'compositionend') {
       globalState.isComposition = false
-      onInputHandler(event as any)
+      onInputHandler.call(this, event)
     }
     else {
       clearTimeout(globalState.requestTimer)
@@ -114,9 +120,9 @@ export function useContentEditableEffect(engine: Engine) {
     }
   }
 
-  function onPastHandler(event: ClipboardEvent) {
+  function onPasteHandler(this: HTMLElement, event: ClipboardEvent) {
     event.preventDefault()
-    const text = event.clipboardData.getData('text')
+    const text = event.clipboardData?.getData('text') || ''
     this.textContent = text
   }
 
@@ -152,7 +158,8 @@ export function useContentEditableEffect(engine: Engine) {
       element.removeEventListener('compositionstart', onCompositionHandler)
       element.removeEventListener('compositionupdate', onCompositionHandler)
       element.removeEventListener('compositionend', onCompositionHandler)
-      element.removeEventListener('past', onPastHandler)
+      element.removeEventListener('paste', onPasteHandler)
+      element.removeEventListener('keydown', onKeyDownHandler)
       document.removeEventListener('selectionchange', onSelectionChangeHandler)
     })
   })
@@ -161,7 +168,7 @@ export function useContentEditableEffect(engine: Engine) {
     const target = event.data.target as Element
     const editableElement = target?.closest?.(
       `*[${engine.props.contentEditableAttrName}]`,
-    ) as HTMLInputElement
+    ) as HTMLElement | null
     const workspace = engine.workbench.activeWorkspace
     const tree = workspace.operation.tree
     if (editableElement) {
@@ -189,7 +196,7 @@ export function useContentEditableEffect(engine: Engine) {
               onCompositionHandler,
             )
             editableElement.addEventListener('keydown', onKeyDownHandler)
-            editableElement.addEventListener('paste', onPastHandler)
+            editableElement.addEventListener('paste', onPasteHandler)
             document.addEventListener(
               'selectionchange',
               onSelectionChangeHandler,
