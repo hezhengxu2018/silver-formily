@@ -160,12 +160,12 @@ UI 层不应该自己维护另一套 selected node truth。正确做法是读取
 
 `designer-core` 不应该直接依赖 Pinia 或 mitt。推荐分层是：
 
-| 层                        | 状态管理方式                                                          |
-| ------------------------- | --------------------------------------------------------------------- |
-| `designer-core`           | class 领域模型 + snapshot + typed events。                            |
-| `designer-vue`            | Provider/composables，把 core event 转成 Vue 响应式读模型。           |
-| `element-plus-designable` | Pinia 可用于应用级 UI 状态，例如面板尺寸、保存状态、当前文档信息。    |
-| 瞬时通知                  | 必要时可用 typed event bus，例如 toast、scroll-to-node、focus-field。 |
+| 层                        | 状态管理方式                                                           |
+| ------------------------- | ---------------------------------------------------------------------- |
+| `designer-core`           | class 领域模型 + snapshot + typed events。                             |
+| `element-plus-designable` | 当前承载编辑器 UI 实验；后续围绕新的 designable core 重新组织 Vue 层。 |
+| `element-plus-designable` | Pinia 可用于应用级 UI 状态，例如面板尺寸、保存状态、当前文档信息。     |
+| 瞬时通知                  | 必要时可用 typed event bus，例如 toast、scroll-to-node、focus-field。  |
 
 不要用 Pinia 替代 `DesignerCore` 的 tree/history/commands，也不要用 mitt 承载 schema 主状态。
 

@@ -1,4 +1,4 @@
-import type { DesignerMaterialDefinition, DesignerSchemaNode } from '@silver-formily/designer-core'
+import type { DesignerMaterialDefinition, DesignerSchemaNode } from './types'
 
 type PropTypeName = 'array' | 'boolean' | 'number' | 'object' | 'string'
 

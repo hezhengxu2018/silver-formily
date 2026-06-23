@@ -53,7 +53,7 @@ Designable 的维护风险需要正视：
 | ------------------------------------------------------------ | ------------------------------------------------------------------------------------------------ |
 | `@silver-formily/designer-core`                              | 框架无关的设计器核心，负责设计树、选择、移动、复制、删除、撤销重做、导入导出、物料注册。         |
 | `@silver-formily/designer-schema`                            | 定义编辑器内部 schema、Silver Formily Schema、Formily JSON Schema 之间的转换规则。               |
-| `@silver-formily/designer-vue`                               | Vue 3 版编辑器 UI，包含画布、面板、工具栏、节点渲染、快捷操作。                                  |
+| `apps/element-plus-designable`                               | 当前设计器实验场，后续在新 designable 基座之上逐步重建编辑器 UI。                                |
 | `apps/element-plus-designable/src/features/editor/materials` | Element Plus designable app 内置物料模块，声明组件、默认 schema、属性面板 schema、预览组件映射。 |
 | `@silver-formily/designer-materials-vant`                    | Vant 物料包，服务移动端表单编辑场景。                                                            |
 | `@silver-formily/designer-react`                             | 未来可选的 React 编辑器外壳，复用 core、schema 和物料元数据。                                    |
