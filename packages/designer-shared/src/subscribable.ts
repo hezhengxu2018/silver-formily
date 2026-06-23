@@ -1,16 +1,12 @@
 import { isFn } from './types'
 
-const UNSUBSCRIBE_ID_SYMBOL: symbol = Symbol('UNSUBSCRIBE_ID_SYMBOL')
-
-type Unsubscribe = (() => void) & {
-  [UNSUBSCRIBE_ID_SYMBOL]?: number
-}
-
 export interface ISubscriber<Payload = any> {
   (payload: Payload): void | boolean
 }
 
 export class Subscribable<ExtendsType = any> {
+  private unsubscribeIds = new WeakMap<() => void, number>()
+
   private subscribers: {
     index?: number
     [key: number]: ISubscriber
@@ -39,16 +35,15 @@ export class Subscribable<ExtendsType = any> {
       this.subscribers.index++
     }
 
-    const unsubscribe = (() => {
+    const unsubscribe = () => {
       this.unsubscribe(id)
-    }) as Unsubscribe
-
-    unsubscribe[UNSUBSCRIBE_ID_SYMBOL] = id
+    }
+    this.unsubscribeIds.set(unsubscribe, id)
 
     return unsubscribe
   }
 
-  unsubscribe = (id?: number | string | Unsubscribe) => {
+  unsubscribe = (id?: number | string | (() => void)) => {
     if (id === undefined || id === null) {
       for (const key in this.subscribers) {
         this.unsubscribe(key)
@@ -59,7 +54,11 @@ export class Subscribable<ExtendsType = any> {
       delete this.subscribers[id]
     }
     else {
-      delete this.subscribers[id[UNSUBSCRIBE_ID_SYMBOL]]
+      const unsubscribeId = this.unsubscribeIds.get(id)
+      if (unsubscribeId !== undefined) {
+        delete this.subscribers[unsubscribeId]
+        this.unsubscribeIds.delete(id)
+      }
     }
   }
 }
