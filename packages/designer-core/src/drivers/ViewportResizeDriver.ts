@@ -3,19 +3,19 @@ import { EventDriver } from '@silver-formily/designer-shared'
 import { ViewportResizeEvent } from '../events'
 
 export class ViewportResizeDriver extends EventDriver<Engine> {
-  request = null
+  request: number | null = null
 
   resizeObserver: ResizeObserver | null = null
 
-  get ResizeObserver() {
+  get ResizeObserver(): typeof ResizeObserver | undefined {
     return globalThis.ResizeObserver
   }
 
-  onResize = (e: any) => {
-    if (e.preventDefault)
+  onResize = (e: UIEvent | ResizeObserverEntry[]) => {
+    if ('preventDefault' in e && e.preventDefault)
       e.preventDefault()
     this.request = this.contentWindow.requestAnimationFrame(() => {
-      this.contentWindow.cancelAnimationFrame(this.request)
+      this.contentWindow.cancelAnimationFrame(this.request!)
       this.dispatch(
         new ViewportResizeEvent({
           scrollX: this.contentWindow.scrollX,
@@ -25,9 +25,10 @@ export class ViewportResizeDriver extends EventDriver<Engine> {
           innerHeight: this.contentWindow.innerHeight,
           innerWidth: this.contentWindow.innerWidth,
           view: this.contentWindow,
-          target: e.target || this.container,
+          target: ('target' in e && e.target) || this.container,
         }),
       )
+      this.request = null
     })
   }
 

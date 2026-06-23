@@ -9,8 +9,10 @@ export interface ISelection {
   operation?: Operation
 }
 
+type SelectableNode = string | TreeNode | null | undefined
+
 export class Selection {
-  operation: Operation
+  operation?: Operation
   selected: string[] = []
 
   constructor(props?: ISelection) {
@@ -64,10 +66,12 @@ export class Selection {
     this.select(id)
   }
 
-  mapIds(ids: any) {
-    return isArr(ids)
-      ? ids.map((node: any) => (isStr(node) ? node : node?.id))
-      : []
+  mapIds(ids: SelectableNode[]): string[] {
+    if (!isArr(ids))
+      return []
+    return ids.filter((node): node is string | TreeNode => !!node).map((node) => {
+      return isStr(node) ? node : node.id
+    })
   }
 
   batchSelect(ids: string[] | TreeNode[]) {
@@ -95,15 +99,10 @@ export class Selection {
     return this.selected.length
   }
 
-  add(...ids: string[] | TreeNode[]) {
+  add(...ids: SelectableNode[]) {
     this.mapIds(ids).forEach((id) => {
-      if (isStr(id)) {
-        if (!this.selected.includes(id)) {
-          this.selected.push(id)
-        }
-      }
-      else {
-        this.add(id?.id)
+      if (!this.selected.includes(id)) {
+        this.selected.push(id)
       }
     })
     this.trigger()
@@ -139,28 +138,16 @@ export class Selection {
     }
   }
 
-  remove(...ids: string[] | TreeNode[]) {
+  remove(...ids: SelectableNode[]) {
     this.mapIds(ids).forEach((id) => {
-      if (isStr(id)) {
-        this.selected = this.selected.filter(item => item !== id)
-      }
-      else {
-        this.remove(id?.id)
-      }
+      this.selected = this.selected.filter(item => item !== id)
     })
     this.trigger(UnSelectNodeEvent)
   }
 
-  has(...ids: string[] | TreeNode[]) {
+  has(...ids: SelectableNode[]) {
     return this.mapIds(ids).some((id) => {
-      if (isStr(id)) {
-        return this.selected.includes(id)
-      }
-      else {
-        if (!id?.id)
-          return false
-        return this.has(id?.id)
-      }
+      return this.selected.includes(id)
     })
   }
 

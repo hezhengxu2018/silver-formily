@@ -1,3 +1,4 @@
+import type { ICustomEvent } from '@silver-formily/designer-shared'
 import type {
   IDesignerControllerProps,
   IDesignerLocales,
@@ -309,7 +310,7 @@ export class TreeNode {
     }
   }
 
-  triggerMutation<T>(event: any, callback?: () => T, defaults?: T): T {
+  triggerMutation<T>(event: ICustomEvent, callback?: () => T, defaults?: T): T {
     if (this.root?.operation) {
       const result = this.root.operation.dispatch(event, callback)
       this.takeSnapshot(event?.type)
@@ -476,7 +477,7 @@ export class TreeNode {
     )
   }
 
-  setProps(props?: any) {
+  setProps(props?: Partial<IDesignerProps>) {
     return this.triggerMutation(
       new UpdateNodePropsEvent({
         target: this,
