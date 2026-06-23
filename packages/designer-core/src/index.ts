@@ -1,8 +1,12 @@
-export * from './models/DesignerCommands'
-export * from './models/DesignerCore'
-export * from './models/DesignerHistory'
-export * from './models/DesignerMaterialRegistry'
-export * from './models/DesignerNode'
-export * from './models/DesignerSelection'
-export * from './models/DesignerTree'
-export * from './types'
+import * as Core from './exports'
+
+export * from './exports'
+
+const designableGlobal = globalThis as typeof globalThis & {
+  Designable?: {
+    Core?: typeof Core
+  }
+}
+
+designableGlobal.Designable = designableGlobal.Designable || {}
+designableGlobal.Designable.Core = designableGlobal.Designable.Core || Core
