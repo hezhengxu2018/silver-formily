@@ -2,6 +2,7 @@ import type { IEngineProps } from '../types'
 import type { ITreeNode } from './TreeNode'
 import { Event, uid } from '@silver-formily/designer-shared'
 import { Cursor } from './Cursor'
+import { DragController } from './Drag'
 import { Keyboard } from './Keyboard'
 import { Screen, ScreenType } from './Screen'
 import { TreeNode } from './TreeNode'
@@ -17,6 +18,8 @@ export class Engine extends Event {
   props: IEngineProps<Engine>
 
   cursor: Cursor
+
+  drag: DragController
 
   workbench: Workbench
 
@@ -38,6 +41,7 @@ export class Engine extends Event {
     this.workbench = new Workbench(this)
     this.screen = new Screen(this)
     this.cursor = new Cursor(this)
+    this.drag = new DragController(this)
     this.keyboard = new Keyboard(this)
   }
 
@@ -81,7 +85,13 @@ export class Engine extends Event {
   }
 
   mount() {
-    this.attachEvents(window)
+    const mountTarget = this.props.mountTarget === undefined
+      ? globalThis.window
+      : this.props.mountTarget
+
+    if (mountTarget) {
+      this.attachEvents(mountTarget)
+    }
   }
 
   unmount() {

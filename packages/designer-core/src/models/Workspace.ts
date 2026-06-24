@@ -65,6 +65,7 @@ export class Workspace {
       viewportElement: props.viewportElement,
       contentWindow: props.contentWindow,
       nodeIdAttrName: this.engine.props.nodeIdAttrName,
+      autoAttachEvents: this.engine.props.autoAttachEvents,
     })
     this.outline = new Viewport({
       engine: this.engine,
@@ -72,6 +73,7 @@ export class Workspace {
       viewportElement: props.viewportElement,
       contentWindow: props.contentWindow,
       nodeIdAttrName: this.engine.props.outlineNodeIdAttrName,
+      autoAttachEvents: this.engine.props.autoAttachEvents,
     })
     this.operation = new Operation(this)
     this.history = new History(this, {

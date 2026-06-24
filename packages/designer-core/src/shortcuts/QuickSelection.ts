@@ -1,5 +1,6 @@
-import type { TreeNode } from '../models'
-import { KeyCode, Shortcut } from '../models'
+import type { TreeNode } from '../models/TreeNode'
+import { KeyCode } from '@silver-formily/designer-shared'
+import { Shortcut } from '../models/Shortcut'
 
 function findBottomLastChild(node: TreeNode) {
   if (!node)
