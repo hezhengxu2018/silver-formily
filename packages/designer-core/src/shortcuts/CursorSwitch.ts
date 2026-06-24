@@ -1,4 +1,6 @@
-import { CursorType, KeyCode, Shortcut } from '../models'
+import { KeyCode } from '@silver-formily/designer-shared'
+import { CursorType } from '../models/Cursor'
+import { Shortcut } from '../models/Shortcut'
 
 export const CursorSwitchSelection = new Shortcut({
   codes: [KeyCode.Shift, KeyCode.S],

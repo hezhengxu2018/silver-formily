@@ -1,4 +1,4 @@
-import type { Event, IEventProps } from '@silver-formily/designer-shared'
+import type { Event, EventContainer, IEventProps } from '@silver-formily/designer-shared'
 import type { ISchema } from '@silver-formily/json-schema'
 import type {
   Engine,
@@ -13,6 +13,11 @@ import type {
 
 export type IEngineProps<T = Event> = IEventProps<T> & {
   shortcuts?: Shortcut[]
+  useDefaultDrivers?: boolean
+  useDefaultEffects?: boolean
+  useDefaultShortcuts?: boolean
+  mountTarget?: EventContainer | false
+  autoAttachEvents?: boolean
   sourceIdAttrName?: string // 拖拽源Id的dom属性名
   nodeIdAttrName?: string // 节点Id的dom属性名
   contentEditableAttrName?: string // 原地编辑属性名

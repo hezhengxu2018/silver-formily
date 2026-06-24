@@ -65,7 +65,7 @@ const DEFAULT_SCROLL_OFFSET = {
 }
 
 function setCursorStyle(contentWindow: Window, style: string) {
-  const currentRoot = document?.getElementsByTagName?.('html')?.[0]
+  const currentRoot = globalThis.document?.getElementsByTagName?.('html')?.[0]
   const root = contentWindow?.document?.getElementsByTagName('html')?.[0]
   if (root && root.style.cursor !== style) {
     root.style.cursor = style
@@ -92,7 +92,7 @@ export class Cursor {
 
   dragEndScrollOffset: IScrollOffset = DEFAULT_SCROLL_OFFSET
 
-  view: Window = window
+  view: Window | undefined = globalThis.window
 
   constructor(engine: Engine) {
     this.engine = engine

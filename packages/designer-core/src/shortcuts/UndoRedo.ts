@@ -1,4 +1,5 @@
-import { KeyCode, Shortcut } from '../models'
+import { KeyCode } from '@silver-formily/designer-shared'
+import { Shortcut } from '../models/Shortcut'
 
 export const UndoMutation = new Shortcut({
   codes: [

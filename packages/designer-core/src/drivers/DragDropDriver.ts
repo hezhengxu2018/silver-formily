@@ -1,6 +1,5 @@
 import type { Engine } from '../models/Engine'
 import { EventDriver } from '@silver-formily/designer-shared'
-import { DragMoveEvent, DragStartEvent, DragStopEvent } from '../events'
 
 const GlobalState: {
   dragging: boolean
@@ -39,15 +38,16 @@ export class DragDropDriver extends EventDriver<Engine> {
 
   onMouseUp = (e: MouseEvent) => {
     if (GlobalState.dragging) {
-      this.dispatch(
-        new DragStopEvent({
+      this.engine.drag.stop(
+        {
           clientX: e.clientX,
           clientY: e.clientY,
           pageX: e.pageX,
           pageY: e.pageY,
           target: e.target,
           view: e.view,
-        }),
+        },
+        this.context,
       )
     }
     this.batchRemoveEventListener(
@@ -73,15 +73,16 @@ export class DragDropDriver extends EventDriver<Engine> {
     ) {
       return
     }
-    this.dispatch(
-      new DragMoveEvent({
+    this.engine.drag.move(
+      {
         clientX: e.clientX,
         clientY: e.clientY,
         pageX: e.pageX,
         pageY: e.pageY,
         target: e.target,
         view: e.view,
-      }),
+      },
+      this.context,
     )
     GlobalState.moveEvent = e
   }
@@ -101,15 +102,16 @@ export class DragDropDriver extends EventDriver<Engine> {
       this.onContextMenuWhileDragging,
       true,
     )
-    this.dispatch(
-      new DragStartEvent({
+    this.engine.drag.start(
+      {
         clientX: GlobalState.startEvent.clientX,
         clientY: GlobalState.startEvent.clientY,
         pageX: GlobalState.startEvent.pageX,
         pageY: GlobalState.startEvent.pageY,
         target: GlobalState.startEvent.target,
         view: GlobalState.startEvent.view,
-      }),
+      },
+      this.context,
     )
     GlobalState.dragging = true
   }

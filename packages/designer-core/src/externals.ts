@@ -81,13 +81,18 @@ export function createDesigner(props: IEngineProps<Engine> = {}) {
   const drivers = props.drivers || []
   const effects = props.effects || []
   const shortcuts = props.shortcuts || []
+  const useDefaultDrivers = props.useDefaultDrivers !== false
+  const useDefaultEffects = props.useDefaultEffects !== false
+  const useDefaultShortcuts = props.useDefaultShortcuts !== false
   return untracked(
     () =>
       new Engine({
         ...props,
-        effects: [...effects, ...DEFAULT_EFFECTS],
-        drivers: [...drivers, ...DEFAULT_DRIVERS],
-        shortcuts: [...shortcuts, ...DEFAULT_SHORTCUTS],
+        effects: useDefaultEffects ? [...effects, ...DEFAULT_EFFECTS] : effects,
+        drivers: useDefaultDrivers ? [...drivers, ...DEFAULT_DRIVERS] : drivers,
+        shortcuts: useDefaultShortcuts
+          ? [...shortcuts, ...DEFAULT_SHORTCUTS]
+          : shortcuts,
       }),
   )
 }

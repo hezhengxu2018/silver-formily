@@ -12,24 +12,28 @@ export function useDragDropEffect(engine: Engine) {
   engine.subscribeTo(DragStartEvent, (event) => {
     if (engine.cursor.type !== CursorType.Move)
       return
-    const target = event.data.target as HTMLElement
-    const el = target?.closest(`
+    const target = event.data.target as HTMLElement | null
+    const el = target?.closest?.(`
        *[${engine.props.nodeIdAttrName}],
        *[${engine.props.sourceIdAttrName}],
        *[${engine.props.outlineNodeIdAttrName}]
       `)
-    const handler = target?.closest(
+    const handler = target?.closest?.(
       `*[${engine.props.nodeDragHandlerAttrName}]`,
     )
     const helper = handler?.closest(
       `*[${engine.props.nodeSelectionIdAttrName}]`,
     )
-    if (!el?.getAttribute && !handler)
+    const sourceId = event.data.sourceId
+      || el?.getAttribute?.(engine.props.sourceIdAttrName)
+    const outlineId = event.data.outlineId
+      || el?.getAttribute?.(engine.props.outlineNodeIdAttrName)
+    const handlerId = event.data.handlerId
+      || helper?.getAttribute?.(engine.props.nodeSelectionIdAttrName)
+    const nodeId = event.data.nodeId
+      || el?.getAttribute?.(engine.props.nodeIdAttrName)
+    if (!nodeId && !outlineId && !handlerId && !sourceId)
       return
-    const sourceId = el?.getAttribute(engine.props.sourceIdAttrName)
-    const outlineId = el?.getAttribute(engine.props.outlineNodeIdAttrName)
-    const handlerId = helper?.getAttribute(engine.props.nodeSelectionIdAttrName)
-    const nodeId = el?.getAttribute(engine.props.nodeIdAttrName)
     engine.workbench.eachWorkspace((currentWorkspace) => {
       const operation = currentWorkspace.operation
 
@@ -66,13 +70,16 @@ export function useDragDropEffect(engine: Engine) {
   engine.subscribeTo(DragMoveEvent, (event) => {
     if (engine.cursor.type !== CursorType.Move)
       return
-    const target = event.data.target as HTMLElement
-    const el = target?.closest(`
+    const target = event.data.target as HTMLElement | null
+    const el = target?.closest?.(`
       *[${engine.props.nodeIdAttrName}],
       *[${engine.props.outlineNodeIdAttrName}]
     `)
-    const nodeId = el?.getAttribute(engine.props.nodeIdAttrName)
-    const outlineId = el?.getAttribute(engine.props.outlineNodeIdAttrName)
+    const nodeId = event.data.touchNodeId
+      || event.data.nodeId
+      || el?.getAttribute?.(engine.props.nodeIdAttrName)
+    const outlineId = event.data.outlineId
+      || el?.getAttribute?.(engine.props.outlineNodeIdAttrName)
     engine.workbench.eachWorkspace((currentWorkspace) => {
       const operation = currentWorkspace.operation
       const tree = operation.tree

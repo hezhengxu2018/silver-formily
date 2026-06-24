@@ -21,6 +21,7 @@ export interface IViewportProps {
   viewportElement: HTMLElement
   contentWindow: Window
   nodeIdAttrName: string
+  autoAttachEvents?: boolean
 }
 
 /**
@@ -49,16 +50,21 @@ export class Viewport {
 
   nodeIdAttrName: string
 
+  autoAttachEvents = true
+
   constructor(props: IViewportProps) {
     this.workspace = props.workspace
     this.engine = props.engine
     this.viewportElement = props.viewportElement
     this.contentWindow = props.contentWindow
     this.nodeIdAttrName = props.nodeIdAttrName
+    this.autoAttachEvents = props.autoAttachEvents !== false
     this.selector = new Selector()
     this.digestViewport()
     this.makeObservable()
-    this.attachEvents()
+    if (this.autoAttachEvents) {
+      this.attachEvents()
+    }
   }
 
   get isScrollLeft() {
@@ -211,7 +217,9 @@ export class Viewport {
   onMount(element: HTMLElement, contentWindow: Window) {
     this.viewportElement = element
     this.contentWindow = contentWindow
-    this.attachEvents()
+    if (this.autoAttachEvents) {
+      this.attachEvents()
+    }
     this.digestViewport()
   }
 
@@ -247,6 +255,7 @@ export class Viewport {
       scrollY: observable.ref,
       width: observable.ref,
       height: observable.ref,
+      autoAttachEvents: observable.ref,
       digestViewport: action,
       viewportElement: observable.ref,
       contentWindow: observable.ref,
