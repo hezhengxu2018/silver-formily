@@ -5,6 +5,7 @@ import { makeDroppable } from '@vue-dnd-kit/core'
 import { computed, useTemplateRef } from 'vue'
 import { createNamespace } from '@/lib/utils'
 import { useEditorDesigner } from '../designer/useEditorDesigner'
+import DesignerNodePreview from './DesignerNodePreview.vue'
 
 const props = defineProps<{
   node: TreeNode
@@ -19,18 +20,13 @@ const {
   endPaletteDrag,
   getClosestNode,
   getClosestPosition,
-  getNodeDisplayTitle,
-  getNodePlaceholder,
-  movePaletteDrag,
-  getSelectedNode,
   isContainerNode,
+  movePaletteDrag,
   selectNode,
 } = useEditorDesigner()
 
-const selected = computed(() => getSelectedNode()?.id === props.node.id)
 const closest = computed(() => getClosestNode()?.id === props.node.id)
 const isContainer = computed(() => isContainerNode(props.node))
-const placeholder = computed(() => getNodePlaceholder(props.node))
 const closestPosition = computed(() => getClosestPosition())
 
 const { isDragOver } = makeDroppable(
@@ -67,55 +63,31 @@ function handleClick() {
         container: isContainer,
         dragOver: !!isDragOver,
         root,
-        selected,
       }),
     ]"
     :data-designer-node-id="node.id"
-    @click.stop="handleClick"
+    @click="handleClick"
   >
-    <header
-      v-if="!root"
-      :class="b('header')"
+    <p
+      v-if="isContainer && node.children.length === 0"
+      :class="b('empty')"
     >
-      <span :class="b('title')">
-        {{ getNodeDisplayTitle(node) }}
-      </span>
-      <span :class="b('type')">
-        {{ node.componentName }}
-      </span>
-    </header>
+      Drop components here
+    </p>
 
-    <div
-      v-if="isContainer"
-      :class="b('children', { empty: node.children.length === 0 })"
-    >
-      <p
-        v-if="node.children.length === 0"
-        :class="b('empty')"
-      >
-        Drop components here
-      </p>
+    <template v-if="isContainer">
       <DesignerCanvasNode
         v-for="child in node.children"
         :key="child.id"
         :node="child"
       />
-    </div>
+    </template>
 
-    <div
+    <DesignerNodePreview
       v-else
-      :class="b('field')"
-    >
-      <strong :class="b('field-title')">
-        {{ getNodeDisplayTitle(node) }}
-      </strong>
-      <span
-        v-if="placeholder"
-        :class="b('field-placeholder')"
-      >
-        {{ placeholder }}
-      </span>
-    </div>
+      :node="node"
+      :class="b('preview')"
+    />
 
     <span
       v-if="closest && closestPosition"
@@ -128,62 +100,36 @@ function handleClick() {
 @reference "../../../styles/globals.css";
 
 .epd-designer-canvas-node {
-  @apply relative;
+  @apply relative border border-transparent transition-all duration-150;
 
   &--root {
-    @apply min-h-full;
-  }
-
-  &--selected:not(&--root) {
-    @apply ring-2 ring-blue-500/50;
+    @apply min-h-full border-transparent bg-transparent;
   }
 
   &--closest:not(&--selected) {
-    @apply ring-2 ring-blue-300/60;
+    @apply border-transparent;
+    box-shadow: none;
   }
 
   &--drag-over:not(&--selected) {
-    @apply ring-2 ring-blue-300/60;
+    @apply border-transparent bg-blue-50/25;
+    box-shadow: none;
   }
 
   &--container:not(&--root) {
-    @apply rounded-xl border border-slate-200 bg-slate-50/70 p-4;
-  }
-
-  &__header {
-    @apply mb-3 flex items-center justify-between gap-3;
-  }
-
-  &__title {
-    @apply text-sm font-semibold text-slate-900;
-  }
-
-  &__type {
-    @apply text-[11px] uppercase tracking-[0.08em] text-slate-400;
-  }
-
-  &__children {
-    @apply grid gap-3;
+    @apply py-0.5;
   }
 
   &__children--empty {
-    @apply min-h-28 rounded-lg border border-dashed border-slate-300 bg-white/85 p-4;
+    @apply min-h-28 border border-dashed border-slate-300 bg-white/80 px-4 py-3;
   }
 
   &__empty {
-    @apply text-sm text-slate-400;
+    @apply min-h-28 border border-dashed border-slate-300 bg-white/80 px-4 py-3 text-sm text-slate-400;
   }
 
-  &__field {
-    @apply rounded-xl border border-slate-200 bg-white px-4 py-3 shadow-sm transition-colors;
-  }
-
-  &__field-title {
-    @apply block text-sm font-semibold text-slate-900;
-  }
-
-  &__field-placeholder {
-    @apply mt-1 block text-xs text-slate-400;
+  &__preview {
+    @apply pointer-events-none;
   }
 
   &__drop-indicator {
