@@ -1,7 +1,9 @@
 import { describe, expect, it, vi } from 'vitest'
 import { useDragDropEffect } from '../effects/useDragDropEffect'
 import { DragMoveEvent, DragStartEvent, DragStopEvent } from '../events'
+import { createBehavior } from '../externals'
 import { Engine } from '../models'
+import { GlobalRegistry } from '../registry'
 
 describe('designer drag controller', () => {
   it('dispatches semantic drag events', () => {
@@ -57,7 +59,7 @@ describe('designer drag controller', () => {
     )
   })
 
-  it('treats the root node as droppable by default when behaviors are missing', () => {
+  it('requires root containers to declare droppable behavior before appending nodes', () => {
     const engine = new Engine({
       autoAttachEvents: false,
       defaultComponentTree: {
@@ -77,6 +79,22 @@ describe('designer drag controller', () => {
 
     workspace.operation.setDragNodes([source])
 
-    expect(root.allowAppend(workspace.operation.getDragNodes())).toBe(true)
+    expect(root.allowAppend(workspace.operation.getDragNodes())).toBe(false)
+
+    try {
+      GlobalRegistry.setDesignerBehaviors([
+        createBehavior({
+          selector: 'Form',
+          designerProps: {
+            droppable: true,
+          },
+        }),
+      ])
+
+      expect(root.allowAppend(workspace.operation.getDragNodes())).toBe(true)
+    }
+    finally {
+      GlobalRegistry.setDesignerBehaviors([])
+    }
   })
 })

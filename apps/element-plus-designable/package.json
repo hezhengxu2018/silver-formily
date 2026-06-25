@@ -1,8 +1,8 @@
 {
-  "name": "element-plus-form-builder",
+  "name": "element-plus-designable",
   "type": "module",
   "private": true,
-  "description": "Silver Formily Element Plus designable editor",
+  "description": "Element Plus designable editor aligned with the official designable structure",
   "scripts": {
     "dev": "pnpm run dev:deps && vite",
     "dev:deps": "node ../../scripts/dev-deps.mjs",
@@ -45,7 +45,6 @@
     "@silver-formily/shared": "workspace:*",
     "@silver-formily/validator": "workspace:*",
     "@silver-formily/vue": "workspace:*",
-    "@vue-dnd-kit/core": "catalog:",
     "@vueuse/core": "catalog:",
     "class-variance-authority": "catalog:",
     "clsx": "catalog:",

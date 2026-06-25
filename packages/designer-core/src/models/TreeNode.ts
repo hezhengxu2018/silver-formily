@@ -385,12 +385,7 @@ export class TreeNode {
   }
 
   allowAppend(nodes: TreeNode[]) {
-    const { droppable } = this.designerProps
-    // The workspace root should remain a valid drop target unless it is
-    // explicitly marked as non-droppable by designer behaviors.
-    if (droppable === false)
-      return false
-    if (droppable == null && this.root !== this)
+    if (!this.designerProps?.droppable)
       return false
     if (this.designerProps?.allowAppend?.(this, nodes) === false)
       return false
