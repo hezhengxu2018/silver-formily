@@ -2,6 +2,7 @@ import type { TreeNode, Workspace } from '@silver-formily/designer-core'
 import type { ICoordinates } from '@vue-dnd-kit/core'
 import type { DesignerMaterialDefinition, PaletteMaterialGroup, PaletteMaterialItem } from '../materials'
 import { createBehavior, createDesigner, createResource, GlobalRegistry } from '@silver-formily/designer-core'
+import { autorun } from '@silver-formily/reactive'
 import { shallowRef } from 'vue'
 import { materialGroups, materials } from '../materials'
 
@@ -96,7 +97,6 @@ const engine = createDesigner({
     children: [],
   },
   mountTarget: false,
-  useDefaultDrivers: false,
 } as any) as any
 
 const workspace = shallowRef<Workspace | null>(null)
@@ -203,16 +203,42 @@ function getRootNode() {
   return ensureWorkspace().operation.tree
 }
 
+function getSelection() {
+  return ensureWorkspace().operation.selection
+}
+
+function getSelectedIds() {
+  return [...getSelection().selected]
+}
+
 function getSelectedNode() {
   const currentWorkspace = ensureWorkspace()
-  const selectedId = currentWorkspace.operation.selection.first
+  const selectedId = getSelection().last || getSelection().first
   return selectedId
     ? currentWorkspace.operation.tree.findById(selectedId)
     : currentWorkspace.operation.tree
 }
 
+function isNodeSelected(node: TreeNode) {
+  return getSelectedIds().includes(node.id)
+}
+
 function selectNode(node: TreeNode) {
-  ensureWorkspace().operation.selection.select(node)
+  getSelection().select(node)
+}
+
+function duplicateNode(node: TreeNode) {
+  if (!node.allowClone() || !node.parent)
+    return
+  const cloned = node.clone()
+  if (!cloned)
+    return
+  node.insertAfter(cloned)
+  selectNode(cloned)
+}
+
+function removeNode(node: TreeNode) {
+  ensureWorkspace().operation.removeNodes([node])
 }
 
 function getNodeMaterial(node: TreeNode) {
@@ -276,6 +302,15 @@ function getClosestPosition() {
 
 ensureWorkspace()
 
+autorun(() => {
+  const selection = getSelection()
+  const selected = [...selection.selected]
+  if (!selected.length)
+    return
+  if (selected.length > 1)
+    selection.batchSelect([selected[selected.length - 1]])
+})
+
 export function useEditorDesigner() {
   return {
     engine,
@@ -287,8 +322,12 @@ export function useEditorDesigner() {
     movePaletteDrag,
     endPaletteDrag,
     getRootNode,
+    getSelectedIds,
     getSelectedNode,
+    isNodeSelected,
     selectNode,
+    duplicateNode,
+    removeNode,
     getNodeDisplayTitle,
     getNodeMaterial,
     getNodePlaceholder,
