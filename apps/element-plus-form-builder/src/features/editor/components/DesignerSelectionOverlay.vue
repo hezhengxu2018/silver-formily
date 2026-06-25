@@ -6,6 +6,14 @@ import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { createNamespace } from '@/lib/utils'
 import { useEditorDesigner } from '../designer/useEditorDesigner'
 
+interface OverlayItem {
+  height: number
+  left: number
+  node: TreeNode
+  top: number
+  width: number
+}
+
 const props = defineProps<{
   viewport: HTMLElement | null
 }>()
@@ -17,51 +25,59 @@ const {
   duplicateNode,
   engine,
   getNodeDisplayTitle,
+  getSelectedIds,
   getSelectedNode,
   removeNode,
 } = useEditorDesigner()
 
 const helperAttrName = computed(() => engine.props.nodeSelectionIdAttrName)
 const dragHandlerAttrName = computed(() => engine.props.nodeDragHandlerAttrName)
-const selectedNode = computed(() => {
+const selectedIds = computed(() => getSelectedIds().filter(id => id !== 'form-root'))
+const singleSelectedNode = computed(() => {
   const node = getSelectedNode()
-  return node?.id === 'form-root' ? null : node
+  return selectedIds.value.length === 1 && node?.id !== 'form-root' ? node : null
 })
-const visible = ref(false)
-const rect = ref({ height: 0, left: 0, top: 0, width: 0 })
+const overlayItems = ref<OverlayItem[]>([])
 
 let frameId = 0
 let resizeObserver: ResizeObserver | null = null
 
-const nodeType = computed(() => selectedNode.value?.componentName.replace(/\./g, ' ').toUpperCase() ?? '')
-const canClone = computed(() => selectedNode.value?.allowClone() ?? false)
-const canDelete = computed(() => selectedNode.value?.allowDelete() ?? false)
-const canDrag = computed(() => selectedNode.value?.allowDrag() ?? false)
+const nodeType = computed(() => singleSelectedNode.value?.componentName.replace(/\./g, ' ').toUpperCase() ?? '')
+const canClone = computed(() => singleSelectedNode.value?.allowClone() ?? false)
+const canDelete = computed(() => singleSelectedNode.value?.allowDelete() ?? false)
+const canDrag = computed(() => singleSelectedNode.value?.allowDrag() ?? false)
 
-function getTargetElement(node: TreeNode | null) {
-  if (!node || !props.viewport)
+function getTargetElement(node: TreeNode) {
+  if (!props.viewport)
     return null
   return props.viewport.querySelector<HTMLElement>(`[data-designer-node-id="${node.id}"]`)
 }
 
 function updatePosition() {
-  const node = selectedNode.value
   const viewport = props.viewport
-  const target = getTargetElement(node)
-  if (!node || !viewport || !target) {
-    visible.value = false
+  if (!viewport) {
+    overlayItems.value = []
     return
   }
 
   const viewportRect = viewport.getBoundingClientRect()
-  const targetRect = target.getBoundingClientRect()
-  rect.value = {
-    height: targetRect.height,
-    left: targetRect.left - viewportRect.left + viewport.scrollLeft,
-    top: targetRect.top - viewportRect.top + viewport.scrollTop,
-    width: targetRect.width,
-  }
-  visible.value = true
+  const nodes = selectedIds.value
+    .map(id => engine.findNodeById(id))
+    .filter((node): node is TreeNode => !!node)
+
+  overlayItems.value = nodes.flatMap((node) => {
+    const target = getTargetElement(node)
+    if (!target)
+      return []
+    const targetRect = target.getBoundingClientRect()
+    return [{
+      node,
+      height: targetRect.height,
+      left: targetRect.left - viewportRect.left + viewport.scrollLeft,
+      top: targetRect.top - viewportRect.top + viewport.scrollTop,
+      width: targetRect.width,
+    }]
+  })
 }
 
 function scheduleUpdate() {
@@ -70,17 +86,17 @@ function scheduleUpdate() {
 }
 
 function handleDuplicate() {
-  if (selectedNode.value)
-    duplicateNode(selectedNode.value)
+  if (singleSelectedNode.value)
+    duplicateNode(singleSelectedNode.value)
 }
 
 function handleDelete() {
-  if (selectedNode.value)
-    removeNode(selectedNode.value)
+  if (singleSelectedNode.value)
+    removeNode(singleSelectedNode.value)
 }
 
 onMounted(() => {
-  watch(() => [props.viewport, selectedNode.value?.id], async () => {
+  watch(() => [props.viewport, selectedIds.value.join(','), singleSelectedNode.value?.id], async () => {
     await nextTick()
     scheduleUpdate()
   }, { immediate: true })
@@ -106,59 +122,63 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <div
-    v-if="visible && selectedNode"
-    :class="prefixCls"
-    :style="{
-      height: `${rect.height}px`,
-      left: `${rect.left}px`,
-      top: `${rect.top}px`,
-      width: `${rect.width}px`,
-    }"
-    v-bind="helperAttrName ? { [helperAttrName]: selectedNode.id } : {}"
-  >
-    <div :class="b('outline')" />
+  <template v-for="item in overlayItems" :key="item.node.id">
+    <div
+      :class="prefixCls"
+      :style="{
+        height: `${item.height}px`,
+        left: `${item.left}px`,
+        top: `${item.top}px`,
+        width: `${item.width}px`,
+      }"
+      v-bind="helperAttrName ? { [helperAttrName]: item.node.id } : {}"
+    >
+      <div :class="b('outline')" />
 
-    <div :class="b('toolbar')">
-      <div :class="b('toolbar-copy')">
-        <span :class="b('toolbar-title')">
-          {{ getNodeDisplayTitle(selectedNode) }}
-        </span>
-        <span :class="b('toolbar-type')">
-          {{ nodeType }}
-        </span>
-      </div>
-      <div :class="b('toolbar-actions')">
-        <button
-          v-if="canClone"
-          type="button"
-          :class="b('toolbar-button')"
-          title="Duplicate node"
-          @click.stop="handleDuplicate"
-        >
-          <Copy :size="14" />
-        </button>
-        <button
-          v-if="canDrag"
-          type="button"
-          :class="b('toolbar-button', { drag: true })"
-          :title="`Drag ${getNodeDisplayTitle(selectedNode)}`"
-          v-bind="dragHandlerAttrName ? { [dragHandlerAttrName]: 'true' } : {}"
-        >
-          <Grip :size="14" />
-        </button>
-        <button
-          v-if="canDelete"
-          type="button"
-          :class="b('toolbar-button', { danger: true })"
-          title="Delete node"
-          @click.stop="handleDelete"
-        >
-          <Trash2 :size="14" />
-        </button>
+      <div
+        v-if="singleSelectedNode && singleSelectedNode.id === item.node.id"
+        :class="b('toolbar')"
+      >
+        <div :class="b('toolbar-copy')">
+          <span :class="b('toolbar-title')">
+            {{ getNodeDisplayTitle(singleSelectedNode) }}
+          </span>
+          <span :class="b('toolbar-type')">
+            {{ nodeType }}
+          </span>
+        </div>
+        <div :class="b('toolbar-actions')">
+          <button
+            v-if="canClone"
+            type="button"
+            :class="b('toolbar-button')"
+            title="Duplicate node"
+            @click.stop="handleDuplicate"
+          >
+            <Copy :size="14" />
+          </button>
+          <button
+            v-if="canDrag"
+            type="button"
+            :class="b('toolbar-button', { drag: true })"
+            :title="`Drag ${getNodeDisplayTitle(singleSelectedNode)}`"
+            v-bind="dragHandlerAttrName ? { [dragHandlerAttrName]: 'true' } : {}"
+          >
+            <Grip :size="14" />
+          </button>
+          <button
+            v-if="canDelete"
+            type="button"
+            :class="b('toolbar-button', { danger: true })"
+            title="Delete node"
+            @click.stop="handleDelete"
+          >
+            <Trash2 :size="14" />
+          </button>
+        </div>
       </div>
     </div>
-  </div>
+  </template>
 </template>
 
 <style scoped>
