@@ -1,9 +1,11 @@
+import { KeyCode } from '@silver-formily/designer-shared'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { DragDropDriver } from '../drivers/DragDropDriver'
 import { MouseMoveDriver } from '../drivers/MouseMoveDriver'
 import { useContentEditableEffect } from '../effects/useContentEditableEffect'
+import { useSelectionEffect } from '../effects/useSelectionEffect'
 import { MouseClickEvent, MouseDoubleClickEvent } from '../events'
-import { Engine, Viewport } from '../models'
+import { CursorStatus, Engine, Viewport } from '../models'
 
 function createCursorEvent<T extends MouseClickEvent | MouseDoubleClickEvent>(
   EventType: new (data: ConstructorParameters<typeof MouseClickEvent>[0]) => T,
@@ -106,6 +108,114 @@ describe('designer-core regression coverage', () => {
 
     expect(removeSpy).toHaveBeenCalledWith('paste', expect.any(Function))
     expect(removeSpy).toHaveBeenCalledWith('keydown', expect.any(Function))
+  })
+
+  it('useSelectionEffect selects the clicked node by default', () => {
+    const subscribeMap = new Map<any, (event: MouseClickEvent) => void>()
+    const selection = {
+      add: vi.fn(),
+      crossAddTo: vi.fn(),
+      has: vi.fn(() => false),
+      remove: vi.fn(),
+      select: vi.fn(),
+      selected: [],
+    }
+    const node = { id: 'node-1' }
+    const engine = {
+      cursor: { status: CursorStatus.Normal },
+      keyboard: {
+        isKeyDown: vi.fn(() => false),
+        requestClean: vi.fn(),
+      },
+      props: {
+        nodeIdAttrName: 'data-node-id',
+        nodeSelectionIdAttrName: 'data-helper-id',
+        outlineNodeIdAttrName: 'data-outline-id',
+      },
+      subscribeTo: vi.fn((EventType, handler) => {
+        subscribeMap.set(EventType, handler)
+      }),
+      workbench: {
+        activeWorkspace: {
+          operation: {
+            selection,
+            tree: {
+              findById: vi.fn(() => node),
+            },
+          },
+        },
+      },
+    } as any
+
+    useSelectionEffect(engine)
+
+    const element = document.createElement('div')
+    element.setAttribute('data-node-id', 'node-1')
+    document.body.appendChild(element)
+
+    subscribeMap
+      .get(MouseClickEvent)
+      ?.(
+        createCursorEvent(MouseClickEvent, element),
+      )
+
+    expect(selection.select).toHaveBeenCalledWith(node)
+    expect(selection.add).not.toHaveBeenCalled()
+    expect(selection.crossAddTo).not.toHaveBeenCalled()
+  })
+
+  it('useSelectionEffect delegates shift-click to crossAddTo', () => {
+    const subscribeMap = new Map<any, (event: MouseClickEvent) => void>()
+    const selection = {
+      add: vi.fn(),
+      crossAddTo: vi.fn(),
+      has: vi.fn(() => false),
+      remove: vi.fn(),
+      select: vi.fn(),
+      selected: ['node-0'],
+    }
+    const node = { id: 'node-2' }
+    const engine = {
+      cursor: { status: CursorStatus.Normal },
+      keyboard: {
+        isKeyDown: vi.fn((code: string) => code === KeyCode.Shift),
+        requestClean: vi.fn(),
+      },
+      props: {
+        nodeIdAttrName: 'data-node-id',
+        nodeSelectionIdAttrName: 'data-helper-id',
+        outlineNodeIdAttrName: 'data-outline-id',
+      },
+      subscribeTo: vi.fn((EventType, handler) => {
+        subscribeMap.set(EventType, handler)
+      }),
+      workbench: {
+        activeWorkspace: {
+          operation: {
+            selection,
+            tree: {
+              findById: vi.fn(() => node),
+            },
+          },
+        },
+      },
+    } as any
+
+    useSelectionEffect(engine)
+
+    const element = document.createElement('div')
+    element.setAttribute('data-node-id', 'node-2')
+    document.body.appendChild(element)
+
+    subscribeMap
+      .get(MouseClickEvent)
+      ?.(
+        createCursorEvent(MouseClickEvent, element),
+      )
+
+    expect(selection.crossAddTo).toHaveBeenCalledWith(node)
+    expect(selection.select).not.toHaveBeenCalled()
+    expect(selection.add).not.toHaveBeenCalled()
   })
 
   it('engine mount attaches to window by default', () => {

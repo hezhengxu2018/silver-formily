@@ -22,7 +22,7 @@ const {
   getClosestPosition,
   isContainerNode,
   movePaletteDrag,
-  selectNode,
+  selectNodeWithEvent,
 } = useEditorDesigner()
 
 const closest = computed(() => getClosestNode()?.id === props.node.id)
@@ -48,8 +48,8 @@ const { isDragOver } = makeDroppable(
   () => props.node.children,
 )
 
-function handleClick() {
-  selectNode(props.node)
+function handleClick(event: MouseEvent) {
+  selectNodeWithEvent(props.node, event)
 }
 </script>
 
@@ -66,7 +66,7 @@ function handleClick() {
       }),
     ]"
     :data-designer-node-id="node.id"
-    @click="handleClick"
+    @click.stop="handleClick"
   >
     <p
       v-if="isContainer && node.children.length === 0"

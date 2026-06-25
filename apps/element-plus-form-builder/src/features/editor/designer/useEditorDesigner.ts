@@ -100,7 +100,10 @@ const engine = createDesigner({
 } as any) as any
 
 const workspace = shallowRef<Workspace | null>(null)
+const selectedNodeIds = shallowRef<string[]>([])
 let activePaletteSourceId: string | null = null
+let paletteDragBaselineNodeIds: Set<string> | null = null
+let rootEventsAttached = false
 
 function ensureWorkspace(): Workspace {
   if (!workspace.value) {
@@ -147,9 +150,19 @@ function resolveTouchNodeId(point?: ICoordinates) {
 
 function mountViewport(element: HTMLElement) {
   const currentWorkspace = ensureWorkspace()
+  if (!rootEventsAttached && typeof window !== 'undefined') {
+    engine.attachEvents(window)
+    rootEventsAttached = true
+  }
   currentWorkspace.viewport.onMount(element, window)
   engine.workbench.setActiveWorkspace(currentWorkspace)
   return currentWorkspace
+}
+
+function collectNodeIds(node: TreeNode = getRootNode(), bucket = new Set<string>()) {
+  bucket.add(node.id)
+  node.children.forEach(child => collectNodeIds(child, bucket))
+  return bucket
 }
 
 function startPaletteDrag(sourceId: string, point?: ICoordinates) {
@@ -158,6 +171,7 @@ function startPaletteDrag(sourceId: string, point?: ICoordinates) {
   if (!drag)
     return
 
+  paletteDragBaselineNodeIds = collectNodeIds()
   drag.start({
     sourceId,
     ...pointToDragInput(point),
@@ -196,6 +210,12 @@ function endPaletteDrag(point?: ICoordinates) {
     movePaletteDrag(point)
   }
   drag.stop(pointToDragInput(point))
+  if (paletteDragBaselineNodeIds) {
+    const insertedNodeIds = [...collectNodeIds()].filter(id => !paletteDragBaselineNodeIds?.has(id))
+    if (insertedNodeIds.length)
+      getSelection().batchSafeSelect(insertedNodeIds)
+  }
+  paletteDragBaselineNodeIds = null
   activePaletteSourceId = null
 }
 
@@ -208,12 +228,14 @@ function getSelection() {
 }
 
 function getSelectedIds() {
-  return [...getSelection().selected]
+  return [...selectedNodeIds.value]
 }
 
 function getSelectedNode() {
   const currentWorkspace = ensureWorkspace()
-  const selectedId = getSelection().last || getSelection().first
+  const selectedId = selectedNodeIds.value[selectedNodeIds.value.length - 1]
+    || getSelection().last
+    || getSelection().first
   return selectedId
     ? currentWorkspace.operation.tree.findById(selectedId)
     : currentWorkspace.operation.tree
@@ -225,6 +247,33 @@ function isNodeSelected(node: TreeNode) {
 
 function selectNode(node: TreeNode) {
   getSelection().select(node)
+}
+
+function selectNodeWithEvent(node: TreeNode, event?: MouseEvent) {
+  const selection = getSelection()
+  if (event?.metaKey || event?.ctrlKey) {
+    if (selection.has(node)) {
+      if (selection.selected.length > 1)
+        selection.remove(node)
+    }
+    else {
+      selection.add(node)
+    }
+    return
+  }
+
+  if (event?.shiftKey) {
+    if (selection.has(node)) {
+      if (selection.selected.length > 1)
+        selection.remove(node)
+    }
+    else {
+      selection.crossAddTo(node)
+    }
+    return
+  }
+
+  selection.select(node)
 }
 
 function duplicateNode(node: TreeNode) {
@@ -303,12 +352,7 @@ function getClosestPosition() {
 ensureWorkspace()
 
 autorun(() => {
-  const selection = getSelection()
-  const selected = [...selection.selected]
-  if (!selected.length)
-    return
-  if (selected.length > 1)
-    selection.batchSelect([selected[selected.length - 1]])
+  selectedNodeIds.value = [...getSelection().selected]
 })
 
 export function useEditorDesigner() {
@@ -326,6 +370,7 @@ export function useEditorDesigner() {
     getSelectedNode,
     isNodeSelected,
     selectNode,
+    selectNodeWithEvent,
     duplicateNode,
     removeNode,
     getNodeDisplayTitle,
