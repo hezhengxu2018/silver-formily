@@ -13,6 +13,7 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': workspacePath('./src'),
+      '@silver-formily/designer-core': workspacePath('../../packages/designer-core/src/index.ts'),
     },
   },
   server: {

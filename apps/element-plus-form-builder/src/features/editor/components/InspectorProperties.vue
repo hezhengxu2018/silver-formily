@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { Settings2 } from '@lucide/vue'
+import { useObserver } from '@silver-formily/reactive-vue'
+import { computed } from 'vue'
 
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -7,8 +9,33 @@ import { ScrollArea } from '@/components/ui/scroll-area'
 import { Separator } from '@/components/ui/separator'
 import { Textarea } from '@/components/ui/textarea'
 import { createNamespace } from '@/lib/utils'
+import { useEditorDesigner } from '../designer/useEditorDesigner'
+
+useObserver()
 
 const { prefixCls, b } = createNamespace('inspector-properties')
+const { getNodeDisplayTitle, getNodePlaceholder, getSelectedNode } = useEditorDesigner()
+
+const selectedNode = computed(() => getSelectedNode())
+const selectedTitle = computed(() => {
+  if (!selectedNode.value)
+    return 'No selection'
+  return getNodeDisplayTitle(selectedNode.value)
+})
+const selectedPlaceholder = computed(() => {
+  if (!selectedNode.value)
+    return ''
+  return getNodePlaceholder(selectedNode.value)
+})
+const selectedHelpText = computed(() => {
+  if (!selectedNode.value)
+    return 'Select a field or container from the canvas.'
+  if (selectedNode.value.componentName === 'Form')
+    return 'Root form container accepts dropped materials.'
+  return selectedNode.value.designerProps?.droppable
+    ? 'Container component that can host child nodes.'
+    : 'Field preview is currently read-only in the baseline integration.'
+})
 </script>
 
 <template>
@@ -23,16 +50,16 @@ const { prefixCls, b } = createNamespace('inspector-properties')
         </div>
         <label :class="b('field')">
           Label
-          <Input model-value="Full name" readonly :class="b('field-control')" />
+          <Input :model-value="selectedTitle" readonly :class="b('field-control')" />
         </label>
         <label :class="b('field')">
           Placeholder
-          <Input model-value="Please enter full name" readonly :class="b('field-control')" />
+          <Input :model-value="selectedPlaceholder" readonly :class="b('field-control')" />
         </label>
         <label :class="b('field')">
           Help text
           <Textarea
-            model-value="Shown as static content for the visual pass."
+            :model-value="selectedHelpText"
             readonly
             :class="b('field-control')"
           />
@@ -47,10 +74,10 @@ const { prefixCls, b } = createNamespace('inspector-properties')
         </h3>
         <div :class="b('actions')">
           <Button variant="outline" type="button" :class="b('action')">
-            Label left
+            {{ selectedNode?.designerProps?.droppable ? 'Can contain children' : 'Field preview' }}
           </Button>
           <Button variant="secondary" type="button" :class="b('action')">
-            Full width
+            {{ selectedNode?.componentName ?? 'No node' }}
           </Button>
         </div>
       </section>

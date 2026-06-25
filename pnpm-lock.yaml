@@ -69,6 +69,9 @@ catalogs:
     '@vitest/coverage-istanbul':
       specifier: ^4.1.4
       version: 4.1.4
+    '@vue-dnd-kit/core':
+      specifier: ^2.4.6
+      version: 2.4.6
     '@vue/language-core':
       specifier: ~3.0.1
       version: 3.0.10
@@ -433,6 +436,9 @@ importers:
       '@silver-formily/vue':
         specifier: workspace:*
         version: link:../../packages/vue
+      '@vue-dnd-kit/core':
+        specifier: 'catalog:'
+        version: 2.4.6(vue@3.5.32(typescript@6.0.2))
       '@vueuse/core':
         specifier: 'catalog:'
         version: 14.2.1(vue@3.5.32(typescript@6.0.2))
@@ -3299,6 +3305,11 @@ packages:
 
   '@volar/typescript@2.4.28':
     resolution: {integrity: sha512-Ja6yvWrbis2QtN4ClAKreeUZPVYMARDYZl9LMEv1iQ1QdepB6wn0jTRxA9MftYmYa4DQ4k/DaSZpFPUfxl8giw==}
+
+  '@vue-dnd-kit/core@2.4.6':
+    resolution: {integrity: sha512-MnfO05RTGyhxq0d0VmkPHoBbwa7U1Yt8MtE1s8ngnu9uyI3RC1t0IIi4/ULABDuTr6957IueYWHSdAt9hRZXqQ==}
+    peerDependencies:
+      vue: ^3.5.13
 
   '@vue/babel-helper-vue-transform-on@2.0.1':
     resolution: {integrity: sha512-uZ66EaFbnnZSYqYEyplWvn46GhZ1KuYSThdT68p+am7MgBNbQ3hphTL9L+xSIsWkdktwhPYLwPgVWqo96jDdRA==}
@@ -9009,6 +9020,10 @@ snapshots:
       '@volar/language-core': 2.4.28
       path-browserify: 1.0.1
       vscode-uri: 3.1.0
+
+  '@vue-dnd-kit/core@2.4.6(vue@3.5.32(typescript@6.0.2))':
+    dependencies:
+      vue: 3.5.32(typescript@6.0.2)
 
   '@vue/babel-helper-vue-transform-on@2.0.1': {}
 

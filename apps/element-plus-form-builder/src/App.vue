@@ -1,8 +1,10 @@
 <script setup lang="ts">
+import { DnDProvider } from '@vue-dnd-kit/core'
 import { ref } from 'vue'
 
 import { TooltipProvider } from '@/components/ui/tooltip'
 import ComponentPalette from '@/features/editor/components/ComponentPalette.vue'
+import DesignerDndBridge from '@/features/editor/components/DesignerDndBridge.vue'
 import EditorCanvas from '@/features/editor/components/EditorCanvas.vue'
 import EditorHeader from '@/features/editor/components/EditorHeader.vue'
 import EditorInspector from '@/features/editor/components/EditorInspector.vue'
@@ -20,17 +22,20 @@ const { prefixCls, b } = createNamespace('app-shell')
       <EditorHeader />
 
       <section :class="b('workspace')">
-        <ComponentPalette
-          :expanded="isLeftPanelOpen"
-          @toggle="isLeftPanelOpen = !isLeftPanelOpen"
-        />
-        <div :class="b('center')">
-          <EditorCanvas />
-        </div>
-        <EditorInspector
-          :expanded="isRightPanelOpen"
-          @toggle="isRightPanelOpen = !isRightPanelOpen"
-        />
+        <DnDProvider>
+          <DesignerDndBridge />
+          <ComponentPalette
+            :expanded="isLeftPanelOpen"
+            @toggle="isLeftPanelOpen = !isLeftPanelOpen"
+          />
+          <div :class="b('center')">
+            <EditorCanvas />
+          </div>
+          <EditorInspector
+            :expanded="isRightPanelOpen"
+            @toggle="isRightPanelOpen = !isRightPanelOpen"
+          />
+        </DnDProvider>
       </section>
     </main>
   </TooltipProvider>

@@ -4,7 +4,8 @@
   "private": true,
   "description": "Silver Formily Element Plus designable editor",
   "scripts": {
-    "dev": "vite",
+    "dev": "pnpm run dev:deps && vite",
+    "dev:deps": "node ../../scripts/dev-deps.mjs",
     "build": "vite build",
     "preview": "vite preview",
     "lint": "eslint .",
@@ -14,7 +15,20 @@
   "silverFormily": {
     "tasks": {
       "dev": {
-        "filterMode": "workspace-only"
+        "filterMode": "workspace-only",
+        "buildDependencies": [
+          "@silver-formily/core",
+          "@silver-formily/designer-core",
+          "@silver-formily/element-plus",
+          "@silver-formily/grid",
+          "@silver-formily/json-schema",
+          "@silver-formily/path",
+          "@silver-formily/reactive",
+          "@silver-formily/reactive-vue",
+          "@silver-formily/shared",
+          "@silver-formily/validator",
+          "@silver-formily/vue"
+        ]
       }
     }
   },
@@ -31,6 +45,7 @@
     "@silver-formily/shared": "workspace:*",
     "@silver-formily/validator": "workspace:*",
     "@silver-formily/vue": "workspace:*",
+    "@vue-dnd-kit/core": "catalog:",
     "@vueuse/core": "catalog:",
     "class-variance-authority": "catalog:",
     "clsx": "catalog:",
