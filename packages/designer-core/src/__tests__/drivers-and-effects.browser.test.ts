@@ -43,11 +43,20 @@ describe('designer-core regression coverage', () => {
     })
   })
 
-  it('dragDropDriver clears captured mousedown listener with capture=true on mouseup', () => {
+  it('dragDropDriver keeps the mousedown listener after mouseup for subsequent drags', () => {
     const driver = new DragDropDriver({} as any)
     const removeSpy = vi.spyOn(driver, 'batchRemoveEventListener')
 
     driver.onMouseUp(new MouseEvent('mouseup', { view: window }))
+
+    expect(removeSpy).not.toHaveBeenCalledWith('mousedown', driver.onMouseDown, true)
+  })
+
+  it('dragDropDriver removes the captured mousedown listener on detach', () => {
+    const driver = new DragDropDriver({} as any)
+    const removeSpy = vi.spyOn(driver, 'batchRemoveEventListener')
+
+    driver.detach()
 
     expect(removeSpy).toHaveBeenCalledWith('mousedown', driver.onMouseDown, true)
   })
