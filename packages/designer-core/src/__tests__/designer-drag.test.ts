@@ -56,4 +56,27 @@ describe('designer drag controller', () => {
       node,
     )
   })
+
+  it('treats the root node as droppable by default when behaviors are missing', () => {
+    const engine = new Engine({
+      autoAttachEvents: false,
+      defaultComponentTree: {
+        id: 'form-root',
+        componentName: 'Form',
+        children: [],
+      },
+      mountTarget: false,
+    })
+    const workspace = engine.workbench.ensureWorkspace()
+    const root = workspace.operation.tree
+    const source = engine.createNode({
+      id: 'source-1',
+      componentName: 'Field',
+      isSourceNode: true,
+    })
+
+    workspace.operation.setDragNodes([source])
+
+    expect(root.allowAppend(workspace.operation.getDragNodes())).toBe(true)
+  })
 })

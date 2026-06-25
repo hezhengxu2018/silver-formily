@@ -1,11 +1,17 @@
 <script setup lang="ts">
 import { FileJson } from '@lucide/vue'
+import { useObserver } from '@silver-formily/reactive-vue'
+import { computed } from 'vue'
 
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { createNamespace } from '@/lib/utils'
-import { schemaPreview } from '../mockData'
+import { useEditorDesigner } from '../designer/useEditorDesigner'
+
+useObserver()
 
 const { prefixCls, b } = createNamespace('inspector-schema')
+const { serializeTree } = useEditorDesigner()
+const schemaPreview = computed(() => JSON.stringify(serializeTree(), null, 2))
 </script>
 
 <template>
@@ -14,7 +20,7 @@ const { prefixCls, b } = createNamespace('inspector-schema')
   </ScrollArea>
   <div :class="b('hint')">
     <FileJson :class="b('hint-icon')" />
-    Static schema sample only
+    Live schema from designer-core
   </div>
 </template>
 

@@ -5,7 +5,8 @@ import { Input } from '@/components/ui/input'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 import { createNamespace } from '@/lib/utils'
-import { materialGroups } from '../materials'
+import { useEditorDesigner } from '../designer/useEditorDesigner'
+import ComponentPaletteItem from './ComponentPaletteItem.vue'
 
 defineProps<{
   expanded: boolean
@@ -16,6 +17,7 @@ const emit = defineEmits<{
 }>()
 
 const { prefixCls, b } = createNamespace('component-palette')
+const { paletteResourceGroups } = useEditorDesigner()
 </script>
 
 <template>
@@ -62,7 +64,7 @@ const { prefixCls, b } = createNamespace('component-palette')
         <ScrollArea :class="b('scroll')">
           <div :class="b('content')">
             <section
-              v-for="group in materialGroups"
+              v-for="group in paletteResourceGroups"
               :key="group.name"
               :class="b('group')"
             >
@@ -73,23 +75,16 @@ const { prefixCls, b } = createNamespace('component-palette')
               </div>
 
               <div :class="b('items')">
-                <article
+                <ComponentPaletteItem
                   v-for="item in group.items"
-                  :key="item.name"
-                  :class="b('item')"
-                >
-                  <div :class="b('item-icon')">
-                    <span
-                      :class="b('item-icon-svg')"
-                      v-html="item.iconSvg"
-                    />
-                  </div>
-                  <div :class="b('item-copy')">
-                    <p :class="b('item-name')">
-                      {{ item.displayTitle }}
-                    </p>
-                  </div>
-                </article>
+                  :key="item.sourceId"
+                  :item="item"
+                  :item-class="b('item')"
+                  :icon-class="b('item-icon')"
+                  :icon-svg-class="b('item-icon-svg')"
+                  :copy-class="b('item-copy')"
+                  :name-class="b('item-name')"
+                />
               </div>
             </section>
           </div>
@@ -177,7 +172,7 @@ const { prefixCls, b } = createNamespace('component-palette')
     @apply mt-4 grid grid-cols-3 gap-x-3 gap-y-5;
   }
 
-  &__item {
+  :deep(.epd-component-palette__item) {
     @apply relative flex min-w-0 cursor-pointer flex-col items-center text-center;
     background: #fff;
     color: #000;
@@ -191,29 +186,29 @@ const { prefixCls, b } = createNamespace('component-palette')
     }
   }
 
-  &__item-icon {
+  :deep(.epd-component-palette__item-icon) {
     @apply flex shrink-0 items-center justify-center;
     padding: 10px 5px 12px;
   }
 
-  &__item-icon-svg {
+  :deep(.epd-component-palette__item-icon-svg) {
     @apply block size-[21px];
   }
 
-  &__item-icon-svg :deep(svg) {
+  :deep(.epd-component-palette__item-icon-svg svg) {
     @apply block size-[21px];
   }
 
-  &__item-copy {
+  :deep(.epd-component-palette__item-copy) {
     @apply w-full min-w-0;
   }
 
-  &__item-name {
+  :deep(.epd-component-palette__item-name) {
     @apply line-clamp-2 text-[12px] leading-normal;
   }
 
-  &__item:hover &__item-icon-svg,
-  &__item:hover &__item-name {
+  :deep(.epd-component-palette__item:hover .epd-component-palette__item-icon-svg),
+  :deep(.epd-component-palette__item:hover .epd-component-palette__item-name) {
     color: #fff;
   }
 }

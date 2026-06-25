@@ -1,20 +1,25 @@
 <script setup lang="ts">
 import { ChevronRight, GripVertical } from '@lucide/vue'
+import { useObserver } from '@silver-formily/reactive-vue'
 
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { createNamespace } from '@/lib/utils'
-import { structureNodes } from '../mockData'
+import { useEditorDesigner } from '../designer/useEditorDesigner'
+
+useObserver()
 
 const { prefixCls, b } = createNamespace('inspector-structure')
+const { flattenTree } = useEditorDesigner()
 </script>
 
 <template>
   <ScrollArea :class="prefixCls">
     <ol :class="b('list')">
       <li
-        v-for="(node, index) in structureNodes"
-        :key="node.name"
-        :class="b('item', { active: index === 0 })"
+        v-for="node in flattenTree()"
+        :key="node.id"
+        :class="b('item', { active: node.selected })"
+        :style="{ paddingLeft: `${node.depth * 14 + 12}px` }"
       >
         <ChevronRight :class="b('item-icon')" />
         <div :class="b('item-copy')">
