@@ -34,11 +34,11 @@ function createLocalizedLink(text, baseUrl, localizedLinks = {}) {
 }
 
 export const silverFormilyFoundationFooterLinks = [
-  createLocalizedLink('Reactive', 'https://reactive.silver-formily.org/', { en: 'https://reactive.silver-formily.org/en/' }),
   createLocalizedLink('Core', 'https://core.silver-formily.org/', { en: 'https://core.silver-formily.org/en/' }),
+  createLocalizedLink('JSON Schema', 'https://json-schema.silver-formily.org/', { en: 'https://json-schema.silver-formily.org/en/' }),
   createLocalizedLink('Path', 'https://path.silver-formily.org/', { en: 'https://path.silver-formily.org/en/' }),
   createLocalizedLink('Validator', 'https://validator.silver-formily.org/', { en: 'https://validator.silver-formily.org/en/' }),
-  createLocalizedLink('JSON Schema', 'https://json-schema.silver-formily.org/', { en: 'https://json-schema.silver-formily.org/en/' }),
+  createLocalizedLink('Reactive', 'https://reactive.silver-formily.org/', { en: 'https://reactive.silver-formily.org/en/' }),
 ]
 
 export const silverFormilyFrameworkFooterLinks = [
