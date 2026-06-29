@@ -2,6 +2,8 @@ import { KeyCode } from '@silver-formily/designer-shared'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { DragDropDriver } from '../drivers/DragDropDriver'
 import { MouseMoveDriver } from '../drivers/MouseMoveDriver'
+import { ViewportResizeDriver } from '../drivers/ViewportResizeDriver'
+import { ViewportScrollDriver } from '../drivers/ViewportScrollDriver'
 import { useContentEditableEffect } from '../effects/useContentEditableEffect'
 import { useSelectionEffect } from '../effects/useSelectionEffect'
 import { MouseClickEvent, MouseDoubleClickEvent } from '../events'
@@ -23,6 +25,7 @@ function createCursorEvent<T extends MouseClickEvent | MouseDoubleClickEvent>(
 
 describe('designer-core regression coverage', () => {
   afterEach(() => {
+    vi.useRealTimers()
     document.body.innerHTML = ''
     vi.restoreAllMocks()
   })
@@ -41,6 +44,28 @@ describe('designer-core regression coverage', () => {
     expect(detachSpy).toHaveBeenCalledWith('mousemove', driver.onMouseMove, {
       mode: 'onlyOne',
     })
+  })
+
+  it('event drivers cancel pending animation frames when detached', () => {
+    vi.useFakeTimers()
+    const engine = { dispatch: vi.fn() } as any
+    const mouseMoveDriver = new MouseMoveDriver(engine)
+    const scrollDriver = new ViewportScrollDriver(engine)
+    const resizeDriver = new ViewportResizeDriver(engine)
+
+    mouseMoveDriver.onMouseMove(new MouseEvent('mousemove', { view: window }))
+    scrollDriver.onScroll(new UIEvent('scroll'))
+    resizeDriver.onResize(new UIEvent('resize'))
+
+    mouseMoveDriver.detach()
+    scrollDriver.detach()
+    resizeDriver.detach()
+    vi.runAllTimers()
+
+    expect(engine.dispatch).not.toHaveBeenCalled()
+    expect(mouseMoveDriver.request).toBeNull()
+    expect(scrollDriver.request).toBeNull()
+    expect(resizeDriver.request).toBeNull()
   })
 
   it('dragDropDriver keeps the mousedown listener after mouseup for subsequent drags', () => {

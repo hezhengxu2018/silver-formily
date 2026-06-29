@@ -2,11 +2,17 @@ import * as Core from './exports'
 
 export * from './exports'
 
-const globalDesignable = globalThis as unknown as Window & {
-  Designable?: { Core?: typeof Core }
+export interface IDesignerCoreGlobal {
+  Designable?: {
+    Core?: typeof Core
+  }
 }
 
-if (!globalDesignable.Designable?.Core) {
+export function registerGlobal(target: typeof globalThis = globalThis) {
+  const globalDesignable = target as typeof globalThis & IDesignerCoreGlobal
   globalDesignable.Designable = globalDesignable.Designable || {}
-  globalDesignable.Designable.Core = Core
+  if (!globalDesignable.Designable.Core) {
+    globalDesignable.Designable.Core = Core
+  }
+  return globalDesignable.Designable.Core
 }

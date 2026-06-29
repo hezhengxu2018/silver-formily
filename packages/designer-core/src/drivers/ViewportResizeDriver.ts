@@ -9,11 +9,19 @@ export class ViewportResizeDriver extends EventDriver<Engine> {
 
   resizeObserver: ResizeObserver | null = null
 
+  cancelRequest() {
+    if (this.request != null) {
+      cancelAnimationFrame(this.request)
+      this.request = null
+    }
+  }
+
   onResize = (e: any) => {
     if (e.preventDefault)
       e.preventDefault()
+    this.cancelRequest()
     this.request = requestAnimationFrame(() => {
-      cancelAnimationFrame(this.request)
+      this.request = null
       this.dispatch(
         new ViewportResizeEvent({
           scrollX: this.contentWindow.scrollX,
@@ -50,6 +58,8 @@ export class ViewportResizeDriver extends EventDriver<Engine> {
         this.resizeObserver.unobserve(this.container as HTMLElement)
         this.resizeObserver.disconnect()
       }
+      this.resizeObserver = null
     }
+    this.cancelRequest()
   }
 }
