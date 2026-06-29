@@ -21,6 +21,7 @@ import {
 } from '../events'
 import { mergeLocales } from '../internals'
 import { GlobalRegistry } from '../registry'
+import { TreeNodeRegistry } from './TreeNodeRegistry'
 
 export interface ITreeNode {
   componentName?: string
@@ -48,12 +49,18 @@ function removeNode(node: TreeNode) {
 }
 
 function registerTreeNode(node: TreeNode) {
-  node.root?.nodeRegistry?.set(node.id, node)
+  node.root?.nodeRegistry?.register(node)
 }
 
 function unregisterTreeNode(node: TreeNode) {
-  node.children.forEach(unregisterTreeNode)
-  node.root?.nodeRegistry?.delete(node.id)
+  node.root?.nodeRegistry?.unregister(node)
+}
+
+function unregisterChildren(
+  node: TreeNode,
+  retainedChildren: TreeNode[] = [],
+) {
+  node.root?.nodeRegistry?.unregisterChildren(node, retainedChildren)
 }
 
 function resetNodesParent(nodes: TreeNode[], parent: TreeNode) {
@@ -63,12 +70,8 @@ function resetNodesParent(nodes: TreeNode[], parent: TreeNode) {
   }
 
   const shallowReset = (node: TreeNode) => {
-    if (node.root && node.root !== parent.root) {
-      unregisterTreeNode(node)
-    }
     node.parent = parent
-    node.root = parent.root
-    registerTreeNode(node)
+    parent.root.nodeRegistry.rebindTree(node, parent.root)
     resetDepth(node)
   }
 
@@ -116,7 +119,7 @@ function resolveDesignerProps(node: TreeNode, props: IDesignerControllerProps) {
 }
 
 export class TreeNode {
-  nodeRegistry: Map<string, TreeNode>
+  nodeRegistry: TreeNodeRegistry
 
   parent: TreeNode
 
@@ -154,7 +157,7 @@ export class TreeNode {
     else {
       this.root = this
       this.rootOperation = node.operation
-      this.nodeRegistry = node.operation?.treeNodes || new Map()
+      this.nodeRegistry = node.operation?.treeNodes || new TreeNodeRegistry()
       this.isSelfSourceNode = node.isSourceNode || false
       registerTreeNode(this)
     }
@@ -712,6 +715,7 @@ export class TreeNode {
 
   setChildren(...nodes: TreeNode[]) {
     const originSourceParents = nodes.map(node => node.parent)
+    unregisterChildren(this, nodes)
     const newNodes = this.resetNodesParent(nodes, this)
     return this.triggerMutation(
       new UpdateChildrenEvent({
@@ -784,9 +788,7 @@ export class TreeNode {
       }),
       () => {
         if (node.id && node.id !== this.id) {
-          this.root?.nodeRegistry?.delete(this.id)
-          this.id = node.id
-          registerTreeNode(this)
+          this.root?.nodeRegistry?.rename(this, node.id)
         }
         if (node.componentName) {
           this.componentName = node.componentName
@@ -796,7 +798,7 @@ export class TreeNode {
           this.hidden = node.hidden
         }
         if (node.children) {
-          this.children.forEach(unregisterTreeNode)
+          unregisterChildren(this)
           this.children
             = node.children?.map?.((node) => {
               return new TreeNode(node, this)

@@ -8,6 +8,7 @@ import { MoveHelper } from './MoveHelper'
 import { Selection } from './Selection'
 import { TransformHelper } from './TransformHelper'
 import { TreeNode } from './TreeNode'
+import { TreeNodeRegistry } from './TreeNodeRegistry'
 
 export interface IOperation {
   tree?: ITreeNode
@@ -21,7 +22,7 @@ export class Operation {
 
   tree: TreeNode
 
-  treeNodes = new Map<string, TreeNode>()
+  treeNodes = new TreeNodeRegistry()
 
   selection: Selection
 
