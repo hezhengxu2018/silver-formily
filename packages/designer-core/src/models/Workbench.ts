@@ -85,6 +85,7 @@ export class Workbench {
     if (findIndex > -1 && findIndex < this.workspaces.length) {
       const findedWorkspace = this.workspaces[findIndex]
       findedWorkspace.viewport.detachEvents()
+      findedWorkspace.outline.detachEvents()
       this.workspaces.splice(findIndex, 1)
       if (findedWorkspace === this.currentWorkspace) {
         if (this.workspaces.length && this.workspaces[findIndex]) {

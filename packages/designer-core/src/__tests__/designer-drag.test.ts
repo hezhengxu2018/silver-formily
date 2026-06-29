@@ -64,6 +64,75 @@ describe('designer drag behavior', () => {
     expect(dragNodeSpy.mock.calls[0][0].data.source).toEqual([node])
   })
 
+  it('unregisters removed node descendants from global lookup', () => {
+    const engine = new Engine({
+      defaultComponentTree: {
+        id: 'registry-root-remove',
+        componentName: 'Root',
+        children: [
+          {
+            id: 'registry-parent-remove',
+            componentName: 'Container',
+            children: [
+              {
+                id: 'registry-child-remove',
+                componentName: 'Field',
+              },
+            ],
+          },
+        ],
+      },
+    })
+    const root = engine.workbench.ensureWorkspace().operation.tree
+    const parent = root.findById('registry-parent-remove')
+
+    expect(engine.findNodeById('registry-parent-remove')).toBe(parent)
+    expect(engine.findNodeById('registry-child-remove')?.id).toBe(
+      'registry-child-remove',
+    )
+
+    parent.remove()
+
+    expect(engine.findNodeById('registry-parent-remove')).toBeUndefined()
+    expect(engine.findNodeById('registry-child-remove')).toBeUndefined()
+  })
+
+  it('unregisters stale children when replacing a tree from schema', () => {
+    const engine = new Engine({
+      defaultComponentTree: {
+        id: 'registry-root-from',
+        componentName: 'Root',
+        children: [
+          {
+            id: 'registry-old-child-from',
+            componentName: 'Field',
+          },
+        ],
+      },
+    })
+    const root = engine.workbench.ensureWorkspace().operation.tree
+
+    expect(engine.findNodeById('registry-old-child-from')?.id).toBe(
+      'registry-old-child-from',
+    )
+
+    root.from({
+      id: 'registry-root-from',
+      componentName: 'Root',
+      children: [
+        {
+          id: 'registry-new-child-from',
+          componentName: 'Field',
+        },
+      ],
+    })
+
+    expect(engine.findNodeById('registry-old-child-from')).toBeUndefined()
+    expect(engine.findNodeById('registry-new-child-from')?.id).toBe(
+      'registry-new-child-from',
+    )
+  })
+
   it('requires root containers to declare droppable behavior before appending nodes', () => {
     const blockedEngine = new Engine({
       defaultComponentTree: {

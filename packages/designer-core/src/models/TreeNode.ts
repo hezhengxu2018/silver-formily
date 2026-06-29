@@ -49,6 +49,11 @@ function removeNode(node: TreeNode) {
   }
 }
 
+function unregisterTreeNode(node: TreeNode) {
+  node.children.forEach(unregisterTreeNode)
+  TreeNodes.delete(node.id)
+}
+
 function resetNodesParent(nodes: TreeNode[], parent: TreeNode) {
   const resetDepth = (node: TreeNode) => {
     node.depth = node.parent ? node.parent.depth + 1 : 0
@@ -729,7 +734,7 @@ export class TreeNode {
       }),
       () => {
         removeNode(this)
-        TreeNodes.delete(this.id)
+        unregisterTreeNode(this)
       },
     )
   }
@@ -782,6 +787,7 @@ export class TreeNode {
           this.hidden = node.hidden
         }
         if (node.children) {
+          this.children.forEach(unregisterTreeNode)
           this.children
             = node.children?.map?.((node) => {
               return new TreeNode(node, this)
