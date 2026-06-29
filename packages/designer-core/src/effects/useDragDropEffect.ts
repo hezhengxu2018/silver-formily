@@ -14,34 +14,42 @@ import {
   CursorType,
   TreeNode,
 } from '../models'
+import { DOMNodeResolver } from '../resolvers/DOMNodeResolver'
 
 export function useDragDropEffect(engine: Engine) {
+  const resolver = new DOMNodeResolver(engine)
+  const getEventWorkspaces = (event: DragStartEvent | DragMoveEvent) => {
+    return event.context?.workspace
+      ? [event.context.workspace]
+      : engine.workbench.workspaces
+  }
+
   engine.subscribeTo(DragStartEvent, (event) => {
     if (engine.cursor.type !== CursorType.Normal)
       return
     const target = event.data.target as HTMLElement
-    const el = target?.closest(`
-       *[${engine.props.nodeIdAttrName}],
-       *[${engine.props.sourceIdAttrName}],
-       *[${engine.props.outlineNodeIdAttrName}]
-      `)
     const handler = target?.closest(
       `*[${engine.props.nodeDragHandlerAttrName}]`,
     )
-    const helper = handler?.closest(
-      `*[${engine.props.nodeSelectionIdAttrName}]`,
-    )
-    if (!el?.getAttribute && !handler)
+    const targetInfo = resolver.parseTarget(target)
+    if (
+      !targetInfo.nodeId
+      && !targetInfo.outlineId
+      && !targetInfo.sourceId
+      && !targetInfo.helperId
+      && !handler
+    ) {
       return
-    const sourceId = el?.getAttribute(engine.props.sourceIdAttrName)
-    const outlineId = el?.getAttribute(engine.props.outlineNodeIdAttrName)
-    const handlerId = helper?.getAttribute(engine.props.nodeSelectionIdAttrName)
-    const nodeId = el?.getAttribute(engine.props.nodeIdAttrName)
-    engine.workbench.eachWorkspace((currentWorkspace) => {
+    }
+    getEventWorkspaces(event).forEach((currentWorkspace) => {
       const operation = currentWorkspace.operation
       const moveHelper = operation.moveHelper
-      if (nodeId || outlineId || handlerId) {
-        const node = operation.tree.findById(outlineId || nodeId || handlerId)
+      if (
+        targetInfo.nodeId
+        || targetInfo.outlineId
+        || targetInfo.helperId
+      ) {
+        const node = resolver.resolveDesignNode(target, currentWorkspace)
         if (node) {
           if (!node.allowDrag())
             return
@@ -58,8 +66,8 @@ export function useDragDropEffect(engine: Engine) {
           }
         }
       }
-      else if (sourceId) {
-        const sourceNode = engine.findNodeById(sourceId, currentWorkspace)
+      else if (targetInfo.sourceId) {
+        const sourceNode = resolver.resolveSourceNode(target, currentWorkspace)
         if (sourceNode) {
           moveHelper.dragStart({ dragNodes: [sourceNode] })
         }
@@ -74,21 +82,14 @@ export function useDragDropEffect(engine: Engine) {
     if (engine.cursor.dragType !== CursorDragType.Move)
       return
     const target = event.data.target as HTMLElement
-    const el = target?.closest(`
-      *[${engine.props.nodeIdAttrName}],
-      *[${engine.props.outlineNodeIdAttrName}]
-    `)
     const point = new Point(event.data.topClientX, event.data.topClientY)
-    const nodeId = el?.getAttribute(engine.props.nodeIdAttrName)
-    const outlineId = el?.getAttribute(engine.props.outlineNodeIdAttrName)
-    engine.workbench.eachWorkspace((currentWorkspace) => {
+    getEventWorkspaces(event).forEach((currentWorkspace) => {
       const operation = currentWorkspace.operation
       const moveHelper = operation.moveHelper
       const dragNodes = moveHelper.dragNodes
-      const tree = operation.tree
       if (!dragNodes.length)
         return
-      const touchNode = tree.findById(outlineId || nodeId)
+      const touchNode = resolver.resolveDesignNode(target, currentWorkspace)
       moveHelper.dragMove({
         point,
         touchNode,
@@ -113,26 +114,14 @@ export function useDragDropEffect(engine: Engine) {
     const moveHelper = operation.moveHelper
     if (!moveHelper.dragNodes.length)
       return
-    const tree = operation.tree
     const viewport = currentWorkspace.viewport
     const outline = currentWorkspace.outline
     const viewportTarget = viewport.elementFromPoint(point)
     const outlineTarget = outline.elementFromPoint(point)
-    const viewportNodeElement = viewportTarget?.closest(`
-      *[${engine.props.nodeIdAttrName}],
-      *[${engine.props.outlineNodeIdAttrName}]
-    `)
-    const outlineNodeElement = outlineTarget?.closest(`
-    *[${engine.props.nodeIdAttrName}],
-    *[${engine.props.outlineNodeIdAttrName}]
-  `)
-    const nodeId = viewportNodeElement?.getAttribute(
-      engine.props.nodeIdAttrName,
+    const touchNode = resolver.resolveDesignNode(
+      outlineTarget || viewportTarget,
+      currentWorkspace,
     )
-    const outlineNodeId = outlineNodeElement?.getAttribute(
-      engine.props.outlineNodeIdAttrName,
-    )
-    const touchNode = tree.findById(outlineNodeId || nodeId)
     moveHelper.dragMove({ point, touchNode })
   })
 

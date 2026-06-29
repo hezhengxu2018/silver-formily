@@ -5,8 +5,9 @@ import { MouseMoveDriver } from '../drivers/MouseMoveDriver'
 import { ViewportResizeDriver } from '../drivers/ViewportResizeDriver'
 import { ViewportScrollDriver } from '../drivers/ViewportScrollDriver'
 import { useContentEditableEffect } from '../effects/useContentEditableEffect'
+import { useDragDropEffect } from '../effects/useDragDropEffect'
 import { useSelectionEffect } from '../effects/useSelectionEffect'
-import { MouseClickEvent, MouseDoubleClickEvent } from '../events'
+import { DragStartEvent, MouseClickEvent, MouseDoubleClickEvent } from '../events'
 import { CursorStatus, Engine, Viewport } from '../models'
 
 function createCursorEvent<T extends MouseClickEvent | MouseDoubleClickEvent>(
@@ -14,6 +15,17 @@ function createCursorEvent<T extends MouseClickEvent | MouseDoubleClickEvent>(
   target: EventTarget,
 ) {
   return new EventType({
+    clientX: 0,
+    clientY: 0,
+    pageX: 0,
+    pageY: 0,
+    target,
+    view: window,
+  })
+}
+
+function createDragStartEvent(target: EventTarget) {
+  return new DragStartEvent({
     clientX: 0,
     clientY: 0,
     pageX: 0,
@@ -198,6 +210,60 @@ describe('designer-core regression coverage', () => {
     expect(selection.crossAddTo).not.toHaveBeenCalled()
   })
 
+  it('useSelectionEffect resolves outline nodes through DOMNodeResolver', () => {
+    const subscribeMap = new Map<any, (event: MouseClickEvent) => void>()
+    const selection = {
+      add: vi.fn(),
+      crossAddTo: vi.fn(),
+      has: vi.fn(() => false),
+      remove: vi.fn(),
+      select: vi.fn(),
+      selected: [],
+    }
+    const node = { id: 'outline-node-1' }
+    const findById = vi.fn(() => node)
+    const engine = {
+      cursor: { status: CursorStatus.Normal },
+      keyboard: {
+        isKeyDown: vi.fn(() => false),
+        requestClean: vi.fn(),
+      },
+      props: {
+        nodeIdAttrName: 'data-node-id',
+        nodeSelectionIdAttrName: 'data-helper-id',
+        outlineNodeIdAttrName: 'data-outline-id',
+      },
+      subscribeTo: vi.fn((EventType, handler) => {
+        subscribeMap.set(EventType, handler)
+      }),
+      workbench: {
+        activeWorkspace: {
+          operation: {
+            selection,
+            tree: {
+              findById,
+            },
+          },
+        },
+      },
+    } as any
+
+    useSelectionEffect(engine)
+
+    const element = document.createElement('div')
+    element.setAttribute('data-outline-id', 'outline-node-1')
+    document.body.appendChild(element)
+
+    subscribeMap
+      .get(MouseClickEvent)
+      ?.(
+        createCursorEvent(MouseClickEvent, element),
+      )
+
+    expect(findById).toHaveBeenCalledWith('outline-node-1')
+    expect(selection.select).toHaveBeenCalledWith(node)
+  })
+
   it('useSelectionEffect delegates shift-click to crossAddTo', () => {
     const subscribeMap = new Map<any, (event: MouseClickEvent) => void>()
     const selection = {
@@ -330,5 +396,79 @@ describe('designer-core regression coverage', () => {
 
     expect(viewportDetachSpy).toHaveBeenCalledTimes(1)
     expect(outlineDetachSpy).toHaveBeenCalledTimes(1)
+  })
+
+  it('useDragDropEffect resolves drag helpers within the event workspace', () => {
+    const engine = new Engine({
+      effects: [useDragDropEffect],
+      defaultComponentTree: {
+        id: 'drag-helper-root',
+        componentName: 'Root',
+        children: [
+          {
+            id: 'drag-helper-shared-id',
+            componentName: 'OriginalField',
+          },
+        ],
+      },
+    })
+    const firstWorkspace = engine.workbench.ensureWorkspace({ id: 'first' })
+    const secondWorkspace = engine.workbench.ensureWorkspace({ id: 'second' })
+    const firstNode = firstWorkspace.operation.tree.findById(
+      'drag-helper-shared-id',
+    )
+    const secondNode = secondWorkspace.operation.tree.findById(
+      'drag-helper-shared-id',
+    )
+    firstWorkspace.viewport.cacheElements = vi.fn()
+    secondWorkspace.viewport.cacheElements = vi.fn()
+
+    const helper = document.createElement('div')
+    helper.setAttribute(
+      engine.props.nodeSelectionIdAttrName,
+      'drag-helper-shared-id',
+    )
+    const handler = document.createElement('button')
+    handler.setAttribute(engine.props.nodeDragHandlerAttrName, 'true')
+    helper.appendChild(handler)
+    document.body.appendChild(helper)
+
+    engine.dispatch(
+      createDragStartEvent(handler),
+      secondWorkspace.getEventContext(),
+    )
+
+    expect(firstWorkspace.operation.moveHelper.dragNodes).toEqual([])
+    expect(secondWorkspace.operation.moveHelper.dragNodes).toEqual([secondNode])
+    expect(secondWorkspace.operation.moveHelper.dragNodes).not.toEqual([
+      firstNode,
+    ])
+  })
+
+  it('useDragDropEffect resolves source nodes through the owning engine', () => {
+    const engine = new Engine({
+      effects: [useDragDropEffect],
+      defaultComponentTree: {
+        id: 'source-drag-root',
+        componentName: 'Root',
+      },
+    })
+    const workspace = engine.workbench.ensureWorkspace()
+    workspace.viewport.cacheElements = vi.fn()
+    const source = engine.createNode({
+      id: 'source-drag-node',
+      componentName: 'Field',
+      isSourceNode: true,
+    })
+    const sourceElement = document.createElement('div')
+    sourceElement.setAttribute(engine.props.sourceIdAttrName, 'source-drag-node')
+    document.body.appendChild(sourceElement)
+
+    engine.dispatch(
+      createDragStartEvent(sourceElement),
+      workspace.getEventContext(),
+    )
+
+    expect(workspace.operation.moveHelper.dragNodes).toEqual([source])
   })
 })
