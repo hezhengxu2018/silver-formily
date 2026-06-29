@@ -1,9 +1,9 @@
-import type { KeyCodeValue } from '@silver-formily/designer-shared'
+import type { KeyCode } from '@silver-formily/designer-shared'
 import type { IEngineContext } from '../../types'
 import { getKeyCodeFromEvent } from '@silver-formily/designer-shared'
 
 export class AbstractKeyboardEvent {
-  data: KeyCodeValue
+  data: KeyCode
   context: IEngineContext
   originEvent: KeyboardEvent
   constructor(e: KeyboardEvent) {

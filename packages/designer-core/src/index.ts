@@ -2,11 +2,11 @@ import * as Core from './exports'
 
 export * from './exports'
 
-const designableGlobal = globalThis as typeof globalThis & {
-  Designable?: {
-    Core?: typeof Core
-  }
+const globalDesignable = globalThis as unknown as Window & {
+  Designable?: { Core?: typeof Core }
 }
 
-designableGlobal.Designable = designableGlobal.Designable || {}
-designableGlobal.Designable.Core = designableGlobal.Designable.Core || Core
+if (!globalDesignable.Designable?.Core) {
+  globalDesignable.Designable = globalDesignable.Designable || {}
+  globalDesignable.Designable.Core = Core
+}

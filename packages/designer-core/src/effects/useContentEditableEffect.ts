@@ -3,9 +3,11 @@ import { requestIdle } from '@silver-formily/designer-shared'
 import { Path } from '@silver-formily/path'
 import { MouseClickEvent, MouseDoubleClickEvent } from '../events'
 
+const globalWindow = globalThis as unknown as Window
+
 type GlobalState = {
-  activeElements: Map<HTMLElement, TreeNode>
-  requestTimer: ReturnType<typeof setTimeout> | null
+  activeElements: Map<HTMLInputElement, TreeNode>
+  requestTimer: any
   isComposition: boolean
   queue: (() => void)[]
 }
@@ -27,24 +29,18 @@ function setEndOfContenteditable(contentEditableElement: Element) {
   const range = document.createRange()
   range.selectNodeContents(contentEditableElement)
   range.collapse(false)
-  const selection = window.getSelection()
-  if (!selection)
-    return
+  const selection = globalWindow.getSelection()
   selection.removeAllRanges()
   selection.addRange(range)
 }
 
 function createCaretCache(el: Element) {
-  const currentSelection = window.getSelection()
-  if (!currentSelection)
-    return
+  const currentSelection = globalWindow.getSelection()
   if (currentSelection.containsNode(el))
     return
   const ranges = getAllRanges(currentSelection)
-  return () => {
-    const sel = window.getSelection()
-    if (!sel)
-      return
+  return (offset = 0) => {
+    const sel = globalWindow.getSelection()
     const firstNode = el.childNodes[0]
     if (!firstNode)
       return
@@ -52,8 +48,8 @@ function createCaretCache(el: Element) {
     ranges.forEach((item) => {
       const range = document.createRange()
       range.collapse(item.collapsed)
-      range.setStart(firstNode, item.startOffset)
-      range.setEnd(firstNode, item.endOffset)
+      range.setStart(firstNode, item.startOffset + offset)
+      range.setEnd(firstNode, item.endOffset + offset)
       sel.addRange(range)
     })
   }
@@ -74,7 +70,7 @@ export function useContentEditableEffect(engine: Engine) {
     }
   }
 
-  function onInputHandler(this: HTMLElement, event: InputEvent | CompositionEvent) {
+  function onInputHandler(event: InputEvent) {
     const node = globalState.activeElements.get(this)
     event.stopPropagation()
     event.preventDefault()
@@ -92,7 +88,7 @@ export function useContentEditableEffect(engine: Engine) {
         )
         requestIdle(() => {
           node.takeSnapshot('update:node:props')
-          restore?.()
+          restore()
         })
       }
       globalState.queue.push(handler)
@@ -103,16 +99,16 @@ export function useContentEditableEffect(engine: Engine) {
 
   function onSelectionChangeHandler() {
     clearTimeout(globalState.requestTimer)
-    const handler = globalState.queue[globalState.queue.length - 1]
-    if (handler) {
-      globalState.requestTimer = setTimeout(handler, 600)
-    }
+    globalState.requestTimer = setTimeout(
+      globalState.queue[globalState.queue.length - 1],
+      600,
+    )
   }
 
   function onCompositionHandler(event: CompositionEvent) {
     if (event.type === 'compositionend') {
       globalState.isComposition = false
-      onInputHandler.call(this, event)
+      onInputHandler(event as any)
     }
     else {
       clearTimeout(globalState.requestTimer)
@@ -120,10 +116,22 @@ export function useContentEditableEffect(engine: Engine) {
     }
   }
 
-  function onPasteHandler(this: HTMLElement, event: ClipboardEvent) {
+  function onPastHandler(event: ClipboardEvent) {
     event.preventDefault()
-    const text = event.clipboardData?.getData('text') || ''
-    this.textContent = text
+    const node = globalState.activeElements.get(this)
+    const text = event.clipboardData.getData('text')
+    const selObj = globalWindow.getSelection()
+    const target = event.target as Element
+    const selRange = selObj.getRangeAt(0)
+    const restore = createCaretCache(target)
+    selRange.deleteContents()
+    selRange.insertNode(document.createTextNode(text))
+    Path.setIn(
+      node.props,
+      this.getAttribute(engine.props.contentEditableAttrName),
+      target.textContent,
+    )
+    restore(text.length)
   }
 
   function findTargetNodeId(element: Element) {
@@ -158,8 +166,7 @@ export function useContentEditableEffect(engine: Engine) {
       element.removeEventListener('compositionstart', onCompositionHandler)
       element.removeEventListener('compositionupdate', onCompositionHandler)
       element.removeEventListener('compositionend', onCompositionHandler)
-      element.removeEventListener('paste', onPasteHandler)
-      element.removeEventListener('keydown', onKeyDownHandler)
+      element.removeEventListener('past', onPastHandler)
       document.removeEventListener('selectionchange', onSelectionChangeHandler)
     })
   })
@@ -168,7 +175,7 @@ export function useContentEditableEffect(engine: Engine) {
     const target = event.data.target as Element
     const editableElement = target?.closest?.(
       `*[${engine.props.contentEditableAttrName}]`,
-    ) as HTMLElement | null
+    ) as HTMLInputElement
     const workspace = engine.workbench.activeWorkspace
     const tree = workspace.operation.tree
     if (editableElement) {
@@ -196,7 +203,7 @@ export function useContentEditableEffect(engine: Engine) {
               onCompositionHandler,
             )
             editableElement.addEventListener('keydown', onKeyDownHandler)
-            editableElement.addEventListener('paste', onPasteHandler)
+            editableElement.addEventListener('paste', onPastHandler)
             document.addEventListener(
               'selectionchange',
               onSelectionChangeHandler,

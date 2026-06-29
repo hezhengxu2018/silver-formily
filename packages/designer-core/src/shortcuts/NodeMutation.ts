@@ -1,6 +1,4 @@
-import type { TreeNode } from '../models/TreeNode'
-import { KeyCode } from '@silver-formily/designer-shared'
-import { Shortcut } from '../models/Shortcut'
+import { KeyCode, Shortcut, TreeNode } from '../models'
 
 /**
  * 快捷删除，快捷复制粘贴
@@ -11,7 +9,7 @@ export const DeleteNodes = new Shortcut({
   handler(context) {
     const operation = context?.workspace.operation
     if (operation) {
-      operation.removeNodes(operation.getSelectedNodes())
+      TreeNode.remove(operation.selection.selectedNodes)
     }
   },
 })
@@ -32,7 +30,7 @@ export const CopyNodes = new Shortcut({
   handler(context) {
     const operation = context?.workspace.operation
     if (operation) {
-      Clipboard.nodes = operation.getSelectedNodes()
+      Clipboard.nodes = operation.selection.selectedNodes
     }
   },
 })
@@ -45,7 +43,7 @@ export const PasteNodes = new Shortcut({
   handler(context) {
     const operation = context?.workspace.operation
     if (operation) {
-      operation.cloneNodes(Clipboard.nodes)
+      TreeNode.clone(Clipboard.nodes)
     }
   },
 })

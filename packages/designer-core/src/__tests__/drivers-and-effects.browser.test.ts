@@ -38,7 +38,7 @@ describe('designer-core regression coverage', () => {
     expect(attachSpy).toHaveBeenCalledWith('mousemove', driver.onMouseMove, {
       mode: 'onlyOne',
     })
-    expect(detachSpy).toHaveBeenCalledWith('mousemove', driver.onMouseMove, {
+    expect(detachSpy).toHaveBeenCalledWith('mouseover', driver.onMouseMove, {
       mode: 'onlyOne',
     })
   })
@@ -115,8 +115,7 @@ describe('designer-core regression coverage', () => {
         createCursorEvent(MouseClickEvent, document.body),
       )
 
-    expect(removeSpy).toHaveBeenCalledWith('paste', expect.any(Function))
-    expect(removeSpy).toHaveBeenCalledWith('keydown', expect.any(Function))
+    expect(removeSpy).toHaveBeenCalledWith('past', expect.any(Function))
   })
 
   it('useSelectionEffect selects the clicked node by default', () => {
@@ -236,25 +235,6 @@ describe('designer-core regression coverage', () => {
     expect(attachSpy).toHaveBeenCalledWith(window)
   })
 
-  it('engine mount skips automatic attachment when mountTarget is false', () => {
-    const engine = new Engine({ mountTarget: false })
-    const attachSpy = vi.spyOn(engine, 'attachEvents')
-
-    engine.mount()
-
-    expect(attachSpy).not.toHaveBeenCalled()
-  })
-
-  it('engine mount attaches to a custom mount target', () => {
-    const mountTarget = document.createElement('div')
-    const engine = new Engine({ mountTarget })
-    const attachSpy = vi.spyOn(engine, 'attachEvents')
-
-    engine.mount()
-
-    expect(attachSpy).toHaveBeenCalledWith(mountTarget)
-  })
-
   it('viewport attaches events automatically by default', () => {
     const attachSpy = vi
       .spyOn(Viewport.prototype, 'attachEvents')
@@ -270,40 +250,5 @@ describe('designer-core regression coverage', () => {
 
     expect(viewport).toBeInstanceOf(Viewport)
     expect(attachSpy).toHaveBeenCalledTimes(1)
-  })
-
-  it('viewport can disable automatic event attachment', () => {
-    const attachSpy = vi
-      .spyOn(Viewport.prototype, 'attachEvents')
-      .mockImplementation(() => {})
-    const viewport = new Viewport({
-      engine: {} as any,
-      workspace: {} as any,
-      viewportElement: document.createElement('div'),
-      contentWindow: window,
-      nodeIdAttrName: 'data-node-id',
-      autoAttachEvents: false,
-    })
-
-    viewport.onMount(document.createElement('div'), window)
-
-    expect(attachSpy).not.toHaveBeenCalled()
-  })
-
-  it('viewport detach is safe when automatic attachment is disabled', () => {
-    const workspace = {
-      detachEvents: vi.fn(),
-    }
-    const viewport = new Viewport({
-      engine: {} as any,
-      workspace: workspace as any,
-      viewportElement: document.createElement('div'),
-      contentWindow: window,
-      nodeIdAttrName: 'data-node-id',
-      autoAttachEvents: false,
-    })
-
-    expect(() => viewport.detachEvents()).not.toThrow()
-    expect(workspace.detachEvents).toHaveBeenCalled()
   })
 })

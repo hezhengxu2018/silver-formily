@@ -1,83 +1,64 @@
-import type { Engine, TreeNode } from '../models'
-import { Point } from '@silver-formily/designer-shared'
+import type { Engine } from '../models'
 import { DragMoveEvent, DragStartEvent, DragStopEvent } from '../events'
-import { CursorType } from '../models'
-
-type TranslateData = {
-  element?: HTMLElement
-  node?: TreeNode
-  point?: Point
-}
-
-type TranslateStore = {
-  value?: TranslateData
-}
+import { CursorDragType } from '../models'
 
 export function useTranslateEffect(engine: Engine) {
-  const findStartNodeHandler = (target: HTMLElement): TranslateData => {
+  engine.subscribeTo(DragStartEvent, (event) => {
+    const target = event.data.target as HTMLElement
+    const currentWorkspace
+      = event.context?.workspace ?? engine.workbench.activeWorkspace
     const handler = target?.closest(`*[${engine.props.nodeTranslateAttrName}]`)
+    if (!currentWorkspace)
+      return
+    const helper = currentWorkspace.operation.transformHelper
     if (handler) {
       const type = handler.getAttribute(engine.props.nodeTranslateAttrName)
       if (type) {
-        const element = handler.closest(
+        const selectionElement = handler.closest(
           `*[${engine.props.nodeSelectionIdAttrName}]`,
         ) as HTMLElement
-        if (element) {
-          const nodeId = element.getAttribute(
+        if (selectionElement) {
+          const nodeId = selectionElement.getAttribute(
             engine.props.nodeSelectionIdAttrName,
           )
           if (nodeId) {
             const node = engine.findNodeById(nodeId)
             if (node) {
-              return { node, element }
+              helper.dragStart({ dragNodes: [node], type: 'translate' })
             }
           }
         }
       }
     }
-  }
-
-  const store: TranslateStore = {}
-
-  engine.subscribeTo(DragStartEvent, (event) => {
-    if (engine.cursor.type !== CursorType.Move)
-      return
-    const target = event.data.target as HTMLElement
-    const data = findStartNodeHandler(target)
-    if (data) {
-      const point = new Point(event.data.clientX, event.data.clientY)
-      store.value = {
-        ...data,
-        point,
-      }
-    }
   })
-
   engine.subscribeTo(DragMoveEvent, (event) => {
-    if (engine.cursor.type !== CursorType.Move)
+    if (engine.cursor.dragType !== CursorDragType.Translate)
       return
-    if (store.value) {
-      const { node, element, point } = store.value
-      const allowTranslate = node.allowTranslate()
-      if (!allowTranslate)
-        return
-      const translatable = node.designerProps.translatable
-      const current = new Point(event.data.clientX, event.data.clientY)
-      const diffX = current.x - point?.x
-      const diffY = current.y - point?.y
-      const horizontal = translatable.x?.(node, element, diffX)
-      const vertical = translatable.y?.(node, element, diffY)
-      horizontal.translate()
-      vertical.translate()
-      store.value.point = current
-    }
+    const currentWorkspace
+      = event.context?.workspace ?? engine.workbench.activeWorkspace
+    const helper = currentWorkspace?.operation.transformHelper
+    const dragNodes = helper.dragNodes
+    if (!dragNodes.length)
+      return
+    helper.dragMove()
+    dragNodes.forEach((node) => {
+      const element = node.getElement()
+      helper.translate(node, (translate) => {
+        element.style.position = 'absolute'
+        element.style.left = '0px'
+        element.style.top = '0px'
+        element.style.transform = `translate3d(${translate.x}px,${translate.y}px,0)`
+      })
+    })
   })
-
-  engine.subscribeTo(DragStopEvent, () => {
-    if (engine.cursor.type !== CursorType.Move)
+  engine.subscribeTo(DragStopEvent, (event) => {
+    if (engine.cursor.dragType !== CursorDragType.Translate)
       return
-    if (store.value) {
-      store.value = null
+    const currentWorkspace
+      = event.context?.workspace ?? engine.workbench.activeWorkspace
+    const helper = currentWorkspace?.operation.transformHelper
+    if (helper) {
+      helper.dragEnd()
     }
   })
 }

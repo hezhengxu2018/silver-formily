@@ -1,5 +1,7 @@
 import type { IEngineContext } from '../../types'
 
+const globalWindow = globalThis as unknown as Window
+
 export interface IViewportEventData {
   scrollX: number
   scrollY: number
@@ -16,14 +18,14 @@ export class AbstractViewportEvent {
   context: IEngineContext
   constructor(data: IViewportEventData) {
     this.data = data || {
-      scrollX: window.scrollX,
-      scrollY: window.scrollY,
-      width: window.innerWidth,
-      height: window.innerHeight,
-      innerWidth: window.innerWidth,
-      innerHeight: window.innerHeight,
-      view: window,
-      target: window,
+      scrollX: globalWindow.scrollX,
+      scrollY: globalWindow.scrollY,
+      width: globalWindow.innerWidth,
+      height: globalWindow.innerHeight,
+      innerWidth: globalWindow.innerWidth,
+      innerHeight: globalWindow.innerHeight,
+      view: globalWindow,
+      target: globalWindow,
     }
   }
 }

@@ -19,10 +19,11 @@ export interface ISerializable {
 }
 
 export class History<T extends ISerializable = any> {
-  context: T
-  props?: IHistoryProps<HistoryItem<T>>
+  context: ISerializable
+  props: IHistoryProps<HistoryItem<T>>
   current = 0
   history: HistoryItem<T>[] = []
+  updateTimer = null
   maxSize = 100
   locking = false
   constructor(context: T, props?: IHistoryProps<HistoryItem<T>>) {

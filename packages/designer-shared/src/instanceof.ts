@@ -4,9 +4,9 @@ export function instOf(value: any, cls: any) {
   if (isFn(cls))
     return value instanceof cls
   if (isStr(cls)) {
-    const Constructor = (globalThis as Record<string, any>)[cls]
-    return Constructor
-      ? value instanceof Constructor
+    const GlobalConstructor = globalThis[cls]
+    return GlobalConstructor
+      ? value instanceof GlobalConstructor
       : false
   }
   return false

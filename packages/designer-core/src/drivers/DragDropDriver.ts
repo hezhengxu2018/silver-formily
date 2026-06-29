@@ -1,29 +1,29 @@
 import type { Engine } from '../models/Engine'
 import { EventDriver } from '@silver-formily/designer-shared'
+import { DragMoveEvent, DragStartEvent, DragStopEvent } from '../events'
 
-const GlobalState: {
-  dragging: boolean
-  onMouseDownAt: number | null
-  startEvent: MouseEvent | DragEvent | null
-  moveEvent: MouseEvent | DragEvent | null
-} = {
+const GlobalState = {
   dragging: false,
-  onMouseDownAt: null,
+  onMouseDownAt: 0,
   startEvent: null,
   moveEvent: null,
 }
 
 export class DragDropDriver extends EventDriver<Engine> {
+  mouseDownTimer = null
+
+  startEvent: MouseEvent
+
   onMouseDown = (e: MouseEvent) => {
-    const target = e.target as HTMLElement | null
+    const target = e.target as HTMLElement
     if (e.button !== 0 || e.ctrlKey || e.metaKey) {
       return
     }
     if (
-      target?.isContentEditable
-      || target?.contentEditable === 'true'
+      target.isContentEditable
+      || target.contentEditable === 'true'
     ) {
-      return
+      return true
     }
     if (target?.closest?.('.monaco-editor'))
       return
@@ -38,16 +38,15 @@ export class DragDropDriver extends EventDriver<Engine> {
 
   onMouseUp = (e: MouseEvent) => {
     if (GlobalState.dragging) {
-      this.engine.drag.stop(
-        {
+      this.dispatch(
+        new DragStopEvent({
           clientX: e.clientX,
           clientY: e.clientY,
           pageX: e.pageX,
           pageY: e.pageY,
           target: e.target,
           view: e.view,
-        },
-        this.context,
+        }),
       )
     }
     this.batchRemoveEventListener(
@@ -56,13 +55,11 @@ export class DragDropDriver extends EventDriver<Engine> {
       true,
     )
     this.batchRemoveEventListener('mouseup', this.onMouseUp)
+    this.batchRemoveEventListener('mousedown', this.onMouseDown)
     this.batchRemoveEventListener('dragover', this.onMouseMove)
     this.batchRemoveEventListener('mousemove', this.onMouseMove)
     this.batchRemoveEventListener('mousemove', this.onDistanceChange)
     GlobalState.dragging = false
-    GlobalState.moveEvent = null
-    GlobalState.startEvent = null
-    GlobalState.onMouseDownAt = null
   }
 
   onMouseMove = (e: MouseEvent | DragEvent) => {
@@ -72,16 +69,15 @@ export class DragDropDriver extends EventDriver<Engine> {
     ) {
       return
     }
-    this.engine.drag.move(
-      {
+    this.dispatch(
+      new DragMoveEvent({
         clientX: e.clientX,
         clientY: e.clientY,
         pageX: e.pageX,
         pageY: e.pageY,
         target: e.target,
         view: e.view,
-      },
-      this.context,
+      }),
     )
     GlobalState.moveEvent = e
   }
@@ -101,23 +97,20 @@ export class DragDropDriver extends EventDriver<Engine> {
       this.onContextMenuWhileDragging,
       true,
     )
-    this.engine.drag.start(
-      {
+    this.dispatch(
+      new DragStartEvent({
         clientX: GlobalState.startEvent.clientX,
         clientY: GlobalState.startEvent.clientY,
         pageX: GlobalState.startEvent.pageX,
         pageY: GlobalState.startEvent.pageY,
         target: GlobalState.startEvent.target,
         view: GlobalState.startEvent.view,
-      },
-      this.context,
+      }),
     )
     GlobalState.dragging = true
   }
 
   onDistanceChange = (e: MouseEvent) => {
-    if (!GlobalState.startEvent || GlobalState.onMouseDownAt === null)
-      return
     const distance = Math.sqrt(
       (e.pageX - GlobalState.startEvent.pageX) ** 2
       + (e.pageY - GlobalState.startEvent.pageY) ** 2,

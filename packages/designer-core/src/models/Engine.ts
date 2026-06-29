@@ -2,7 +2,6 @@ import type { IEngineProps } from '../types'
 import type { ITreeNode } from './TreeNode'
 import { Event, uid } from '@silver-formily/designer-shared'
 import { Cursor } from './Cursor'
-import { DragController } from './Drag'
 import { Keyboard } from './Keyboard'
 import { Screen, ScreenType } from './Screen'
 import { TreeNode } from './TreeNode'
@@ -18,8 +17,6 @@ export class Engine extends Event {
   props: IEngineProps<Engine>
 
   cursor: Cursor
-
-  drag: DragController
 
   workbench: Workbench
 
@@ -41,7 +38,6 @@ export class Engine extends Event {
     this.workbench = new Workbench(this)
     this.screen = new Screen(this)
     this.cursor = new Cursor(this)
-    this.drag = new DragController(this)
     this.keyboard = new Keyboard(this)
   }
 
@@ -59,7 +55,7 @@ export class Engine extends Event {
     let results: TreeNode[] = []
     for (let i = 0; i < this.workbench.workspaces.length; i++) {
       const workspace = this.workbench.workspaces[i]
-      results = results.concat(workspace.operation.getSelectedNodes())
+      results = results.concat(workspace.operation.selection.selectedNodes)
     }
     return results
   }
@@ -68,10 +64,10 @@ export class Engine extends Event {
     return TreeNode.findById(id)
   }
 
-  findDraggingNodes(): TreeNode[] {
+  findMovingNodes(): TreeNode[] {
     const results = []
     this.workbench.eachWorkspace((workspace) => {
-      workspace.operation.viewportDragon.dragNodes?.forEach((node) => {
+      workspace.operation.moveHelper.dragNodes?.forEach((node) => {
         if (!results.includes(node)) {
           results.push(node)
         }
@@ -85,13 +81,7 @@ export class Engine extends Event {
   }
 
   mount() {
-    const mountTarget = this.props.mountTarget === undefined
-      ? globalThis.window
-      : this.props.mountTarget
-
-    if (mountTarget) {
-      this.attachEvents(mountTarget)
-    }
+    this.attachEvents(globalThis as unknown as Window)
   }
 
   unmount() {
@@ -109,7 +99,8 @@ export class Engine extends Event {
     contentEditableNodeIdAttrName: 'data-content-editable-node-id',
     clickStopPropagationAttrName: 'data-click-stop-propagation',
     nodeSelectionIdAttrName: 'data-designer-node-helpers-id',
-    nodeDragHandlerAttrName: 'data-designer-node-handler',
+    nodeDragHandlerAttrName: 'data-designer-node-drag-handler',
+    screenResizeHandlerAttrName: 'data-designer-screen-resize-handler',
     nodeResizeHandlerAttrName: 'data-designer-node-resize-handler',
     outlineNodeIdAttrName: 'data-designer-outline-node-id',
     nodeTranslateAttrName: 'data-designer-node-translate-handler',

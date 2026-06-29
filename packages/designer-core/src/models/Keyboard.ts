@@ -1,4 +1,3 @@
-import type { KeyCodeValue } from '@silver-formily/designer-shared'
 import type { AbstractKeyboardEvent } from '../events/keyboard/AbstractKeyboardEvent'
 import type { IEngineContext } from '../types'
 import type { Engine } from './Engine'
@@ -6,7 +5,7 @@ import { KeyCode } from '@silver-formily/designer-shared'
 import { action, define, observable } from '@silver-formily/reactive'
 import { Shortcut } from './Shortcut'
 
-const Modifiers: [string, KeyCodeValue][] = [
+const Modifiers: [string, KeyCode][] = [
   ['metaKey', KeyCode.Meta],
   ['shiftKey', KeyCode.Shift],
   ['ctrlKey', KeyCode.Control],
@@ -20,10 +19,10 @@ export interface IKeyboard {
 export class Keyboard {
   engine: Engine
   shortcuts: Shortcut[] = []
-  sequence: KeyCodeValue[] = []
-  keyDown: KeyCodeValue | null = null
-  modifiers: Record<string, boolean> = {}
-  requestTimer: ReturnType<typeof setTimeout> | null = null
+  sequence: KeyCode[] = []
+  keyDown: KeyCode = null
+  modifiers = {}
+  requestTimer = null
 
   constructor(engine?: Engine) {
     this.engine = engine
@@ -47,29 +46,29 @@ export class Keyboard {
     })
   }
 
-  includes(key: KeyCodeValue) {
+  includes(key: KeyCode) {
     return this.sequence.some(code => Shortcut.matchCode(code, key))
   }
 
-  excludes(key: KeyCodeValue) {
+  excludes(key: KeyCode) {
     this.sequence = this.sequence.filter(
       code => !Shortcut.matchCode(key, code),
     )
   }
 
-  addKeyCode(key: KeyCodeValue) {
+  addKeyCode(key: KeyCode) {
     if (!this.includes(key)) {
       this.sequence.push(key)
     }
   }
 
-  removeKeyCode(key: KeyCodeValue) {
+  removeKeyCode(key: KeyCode) {
     if (this.includes(key)) {
       this.excludes(key)
     }
   }
 
-  isModifier(code: KeyCodeValue) {
+  isModifier(code: KeyCode) {
     return Modifiers.some(modifier => Shortcut.matchCode(modifier[1], code))
   }
 
@@ -91,29 +90,31 @@ export class Keyboard {
       if (this.matchCodes(context)) {
         this.sequence = []
       }
-      this.requestClean()
+      this.requestClean(4000)
       if (this.preventCodes()) {
         event.preventDefault()
         event.stopPropagation()
       }
     }
     else {
+      if (this.isModifier(event.data)) {
+        this.sequence = []
+      }
       this.keyDown = null
     }
   }
 
-  isKeyDown(code: KeyCodeValue) {
+  isKeyDown(code: KeyCode) {
     return this.keyDown === code
   }
 
-  requestClean() {
+  requestClean(duration = 320) {
     clearTimeout(this.requestTimer)
     this.requestTimer = setTimeout(() => {
       this.keyDown = null
       this.sequence = []
       clearTimeout(this.requestTimer)
-      this.requestTimer = null
-    }, 4000)
+    }, duration)
   }
 
   makeObservable() {

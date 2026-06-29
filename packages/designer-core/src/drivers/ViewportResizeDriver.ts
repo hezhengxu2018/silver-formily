@@ -2,20 +2,18 @@ import type { Engine } from '../models/Engine'
 import { EventDriver } from '@silver-formily/designer-shared'
 import { ViewportResizeEvent } from '../events'
 
+const globalWindow = globalThis as unknown as Window
+
 export class ViewportResizeDriver extends EventDriver<Engine> {
-  request: number | null = null
+  request = null
 
   resizeObserver: ResizeObserver | null = null
 
-  get ResizeObserver(): typeof ResizeObserver | undefined {
-    return globalThis.ResizeObserver
-  }
-
-  onResize = (e: UIEvent | ResizeObserverEntry[]) => {
-    if ('preventDefault' in e && e.preventDefault)
+  onResize = (e: any) => {
+    if (e.preventDefault)
       e.preventDefault()
-    this.request = this.contentWindow.requestAnimationFrame(() => {
-      this.contentWindow.cancelAnimationFrame(this.request!)
+    this.request = requestAnimationFrame(() => {
+      cancelAnimationFrame(this.request)
       this.dispatch(
         new ViewportResizeEvent({
           scrollX: this.contentWindow.scrollX,
@@ -25,27 +23,26 @@ export class ViewportResizeDriver extends EventDriver<Engine> {
           innerHeight: this.contentWindow.innerHeight,
           innerWidth: this.contentWindow.innerWidth,
           view: this.contentWindow,
-          target: ('target' in e && e.target) || this.container,
+          target: e.target || this.container,
         }),
       )
-      this.request = null
     })
   }
 
   attach() {
-    if (this.contentWindow && this.contentWindow !== window) {
+    if (this.contentWindow && this.contentWindow !== globalWindow) {
       this.addEventListener('resize', this.onResize)
     }
     else {
-      if (this.container && this.container !== document && this.ResizeObserver) {
-        this.resizeObserver = new this.ResizeObserver(this.onResize)
+      if (this.container && this.container !== document) {
+        this.resizeObserver = new ResizeObserver(this.onResize)
         this.resizeObserver.observe(this.container as HTMLElement)
       }
     }
   }
 
   detach() {
-    if (this.contentWindow && this.contentWindow !== window) {
+    if (this.contentWindow && this.contentWindow !== globalWindow) {
       this.removeEventListener('resize', this.onResize)
     }
     else if (this.resizeObserver) {

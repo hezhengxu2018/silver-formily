@@ -6,17 +6,18 @@ import {
   Point,
 } from '@silver-formily/designer-shared'
 import { DragStopEvent } from '../events'
-import { CursorType } from '../models'
+import { CursorDragType, CursorType } from '../models'
 
 export function useFreeSelectionEffect(engine: Engine) {
-  engine.subscribeTo(DragStopEvent, (_event) => {
-    if (engine.cursor.type !== CursorType.Selection)
+  engine.subscribeTo(DragStopEvent, (event) => {
+    if (engine.cursor.dragType !== CursorDragType.Move) {
       return
+    }
     engine.workbench.eachWorkspace((workspace) => {
       const viewport = workspace.viewport
-      const dragStartPoint = new Point(
-        engine.cursor.dragStartPosition.topClientX,
-        engine.cursor.dragStartPosition.topClientY,
+      const dragEndPoint = new Point(
+        event.data.topClientX,
+        event.data.topClientY,
       )
       const dragStartOffsetPoint = viewport.getOffsetPoint(
         new Point(
@@ -30,16 +31,16 @@ export function useFreeSelectionEffect(engine: Engine) {
           engine.cursor.position.topClientY,
         ),
       )
-      if (!viewport.isPointInViewport(dragStartPoint, false))
+      if (!viewport.isPointInViewport(dragEndPoint, false))
         return
       const tree = workspace.operation.tree
       const selectionRect = calcRectByStartEndPoint(
         dragStartOffsetPoint,
         dragEndOffsetPoint,
-        viewport.scrollX - engine.cursor.dragStartScrollOffset.scrollX,
-        viewport.scrollY - engine.cursor.dragStartScrollOffset.scrollY,
+        viewport.dragScrollXDelta,
+        viewport.dragScrollYDelta,
       )
-      const selected: [TreeNode, DOMRect][] = []
+      const selected: [TreeNode, ReturnType<typeof viewport.getValidNodeOffsetRect>][] = []
       tree.eachChildren((node) => {
         const nodeRect = viewport.getValidNodeOffsetRect(node)
         if (nodeRect && isCrossRectInRect(selectionRect, nodeRect)) {
@@ -59,6 +60,8 @@ export function useFreeSelectionEffect(engine: Engine) {
       )
       workspace.operation.selection.batchSafeSelect(selectedNodes)
     })
-    engine.cursor.setType(CursorType.Move)
+    if (engine.cursor.type === CursorType.Selection) {
+      engine.cursor.setType(CursorType.Normal)
+    }
   })
 }

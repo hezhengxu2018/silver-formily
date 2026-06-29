@@ -1,12 +1,12 @@
 import { isFn } from './types'
 
+const UNSUBSCRIBE_ID_SYMBOL: symbol = Symbol('UNSUBSCRIBE_ID_SYMBOL')
+
 export interface ISubscriber<Payload = any> {
   (payload: Payload): void | boolean
 }
 
 export class Subscribable<ExtendsType = any> {
-  private unsubscribeIds = new WeakMap<() => void, number>()
-
   private subscribers: {
     index?: number
     [key: number]: ISubscriber
@@ -14,11 +14,11 @@ export class Subscribable<ExtendsType = any> {
     index: 0,
   }
 
-  dispatch<T extends ExtendsType = any>(event: T, context?: any) {
+  dispatch<T extends ExtendsType & { context?: any } = any>(event: T, context?: any) {
     let interrupted = false
     for (const key in this.subscribers) {
       if (isFn(this.subscribers[key])) {
-        ;(event as T & { context?: any }).context = context
+        event.context = context
         if (this.subscribers[key](event) === false) {
           interrupted = true
         }
@@ -27,7 +27,7 @@ export class Subscribable<ExtendsType = any> {
     return !interrupted
   }
 
-  subscribe(subscriber: ISubscriber): () => void {
+  subscribe(subscriber: ISubscriber) {
     let id: number
     if (isFn(subscriber)) {
       id = this.subscribers.index + 1
@@ -38,7 +38,8 @@ export class Subscribable<ExtendsType = any> {
     const unsubscribe = () => {
       this.unsubscribe(id)
     }
-    this.unsubscribeIds.set(unsubscribe, id)
+
+    unsubscribe[UNSUBSCRIBE_ID_SYMBOL] = id
 
     return unsubscribe
   }
@@ -54,11 +55,7 @@ export class Subscribable<ExtendsType = any> {
       delete this.subscribers[id]
     }
     else {
-      const unsubscribeId = this.unsubscribeIds.get(id)
-      if (unsubscribeId !== undefined) {
-        delete this.subscribers[unsubscribeId]
-        this.unsubscribeIds.delete(id)
-      }
+      delete this.subscribers[id[UNSUBSCRIBE_ID_SYMBOL]]
     }
   }
 }

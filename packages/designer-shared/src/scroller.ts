@@ -2,7 +2,7 @@ import type { IPoint } from './coordinate'
 import { calcSpeedFactor, createUniformSpeedAnimation } from './animation'
 import { isFn, isWindow } from './types'
 
-const MAX_SPEED = 50 // px/s
+const MAX_SPEED = 80 // px/s
 
 export type ScrollDirection = 'begin' | 'end'
 
@@ -74,10 +74,16 @@ export function updateScrollValue(element: HTMLElement | Window, axis: 'x' | 'y'
     }
     else {
       if (axis === 'x') {
-        element.scrollBy(value, 0)
+        element.scrollBy({
+          left: value,
+          behavior: 'smooth',
+        })
       }
       else {
-        element.scrollBy(0, value)
+        element.scrollBy({
+          top: value,
+          behavior: 'smooth',
+        })
       }
       if (isFn(callback)) {
         callback(value)

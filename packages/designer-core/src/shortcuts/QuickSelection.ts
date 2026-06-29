@@ -1,6 +1,5 @@
-import type { TreeNode } from '../models/TreeNode'
-import { KeyCode } from '@silver-formily/designer-shared'
-import { Shortcut } from '../models/Shortcut'
+import type { TreeNode } from '../models'
+import { KeyCode, Shortcut } from '../models'
 
 function findBottomLastChild(node: TreeNode) {
   if (!node)
@@ -45,8 +44,14 @@ export const SelectPrevNode = new Shortcut({
             selection.select(previousNode)
           }
         }
-        else {
+        else if (selectedNode.parent) {
           selection.select(selectedNode.parent)
+        }
+        else {
+          const bottom = findBottomLastChild(selectedNode.lastChild)
+          if (bottom) {
+            selection.select(bottom)
+          }
         }
       }
     }

@@ -9,11 +9,10 @@ export interface ISelection {
   operation?: Operation
 }
 
-type SelectableNode = string | TreeNode | null | undefined
-
 export class Selection {
-  operation?: Operation
+  operation: Operation
   selected: string[] = []
+  indexes: Record<string, boolean> = {}
 
   constructor(props?: ISelection) {
     if (props.selected) {
@@ -41,7 +40,7 @@ export class Selection {
     return this.operation.dispatch(
       new EventType({
         target: this.operation.tree,
-        source: this.operation.getSelectedNodes(),
+        source: this.selectedNodes,
       }),
     )
   }
@@ -53,6 +52,7 @@ export class Selection {
         return
       }
       this.selected = [id]
+      this.indexes = { [id]: true }
       this.trigger(SelectNodeEvent)
     }
     else {
@@ -66,16 +66,18 @@ export class Selection {
     this.select(id)
   }
 
-  mapIds(ids: SelectableNode[]): string[] {
-    if (!isArr(ids))
-      return []
-    return ids.filter((node): node is string | TreeNode => !!node).map((node) => {
-      return isStr(node) ? node : node.id
-    })
+  mapIds(ids: any) {
+    return isArr(ids)
+      ? ids.map((node: any) => (isStr(node) ? node : node?.id))
+      : []
   }
 
   batchSelect(ids: string[] | TreeNode[]) {
     this.selected = this.mapIds(ids)
+    this.indexes = this.selected.reduce((buf, id) => {
+      buf[id] = true
+      return buf
+    }, {})
     this.trigger(SelectNodeEvent)
   }
 
@@ -83,6 +85,10 @@ export class Selection {
     if (!ids?.length)
       return
     this.batchSelect(ids)
+  }
+
+  get selectedNodes() {
+    return this.selected.map(id => this.operation.tree.findById(id))
   }
 
   get first() {
@@ -99,10 +105,16 @@ export class Selection {
     return this.selected.length
   }
 
-  add(...ids: SelectableNode[]) {
+  add(...ids: string[] | TreeNode[]) {
     this.mapIds(ids).forEach((id) => {
-      if (!this.selected.includes(id)) {
-        this.selected.push(id)
+      if (isStr(id)) {
+        if (!this.selected.includes(id)) {
+          this.selected.push(id)
+          this.indexes[id] = true
+        }
+      }
+      else {
+        this.add(id?.id)
       }
     })
     this.trigger()
@@ -110,7 +122,7 @@ export class Selection {
 
   crossAddTo(node: TreeNode) {
     if (node.parent) {
-      const selectedNodes = this.operation.getSelectedNodes()
+      const selectedNodes = this.selectedNodes
       if (this.has(node)) {
         this.remove(node)
       }
@@ -126,33 +138,49 @@ export class Selection {
         if (minDistanceNode) {
           const crossNodes = node.crossSiblings(minDistanceNode)
           crossNodes.forEach((node) => {
-            if (!this.selected.includes(node.id)) {
+            if (!this.has(node.id)) {
               this.selected.push(node.id)
+              this.indexes[node.id] = true
             }
           })
         }
-        if (!this.selected.includes(node.id)) {
+        if (!this.has(node.id)) {
           this.selected.push(node.id)
+          this.indexes[node.id] = true
         }
       }
     }
   }
 
-  remove(...ids: SelectableNode[]) {
+  remove(...ids: string[] | TreeNode[]) {
     this.mapIds(ids).forEach((id) => {
-      this.selected = this.selected.filter(item => item !== id)
+      if (isStr(id)) {
+        this.selected = this.selected.filter(item => item !== id)
+        delete this.indexes[id]
+      }
+      else {
+        this.remove(id?.id)
+      }
     })
     this.trigger(UnSelectNodeEvent)
   }
 
-  has(...ids: SelectableNode[]) {
+  has(...ids: string[] | TreeNode[]) {
     return this.mapIds(ids).some((id) => {
-      return this.selected.includes(id)
+      if (isStr(id)) {
+        return this.indexes[id]
+      }
+      else {
+        if (!id?.id)
+          return false
+        return this.has(id?.id)
+      }
     })
   }
 
   clear() {
     this.selected = []
+    this.indexes = {}
     this.trigger(UnSelectNodeEvent)
   }
 }
