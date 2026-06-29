@@ -35,10 +35,8 @@ defineProps<{
             v-for="item in group.items"
             :key="item.sourceId"
             class="epd-resource-widget__item"
-            draggable="false"
+            draggable="true"
             :data-designer-source-id="item.sourceId"
-            @dragstart.prevent
-            @selectstart.prevent
           >
             <span
               class="epd-resource-widget__item-icon"

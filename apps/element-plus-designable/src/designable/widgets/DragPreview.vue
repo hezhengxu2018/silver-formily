@@ -1,21 +1,21 @@
 <script setup lang="ts">
 import { CursorStatus } from '@silver-formily/designer-core'
 import { useObserver } from '@silver-formily/reactive-vue'
-import { useDesigner, useOperation, useViewport } from '../hooks'
+import { useCursor, useMoveHelper, useViewport } from '../hooks'
 import { getNodeTitle } from './node-title'
 
 useObserver()
 
-const designerRef = useDesigner()
-const operationRef = useOperation()
+const cursorRef = useCursor()
+const moveHelperRef = useMoveHelper()
 const viewportRef = useViewport()
 
 function getDragNodes() {
-  return operationRef.value?.getDragNodes() ?? []
+  return moveHelperRef.value?.dragNodes ?? []
 }
 
 function isVisible() {
-  const status = designerRef.value?.cursor.status
+  const status = cursorRef.value?.status
   return !!getDragNodes().length && (
     status === CursorStatus.DragStart
     || status === CursorStatus.Dragging
@@ -33,7 +33,7 @@ function getPreviewTitle() {
 }
 
 function getPreviewStyle() {
-  const cursor = designerRef.value?.cursor.position
+  const cursor = cursorRef.value?.position
   const viewport = viewportRef.value
   if (!cursor || !viewport)
     return {}

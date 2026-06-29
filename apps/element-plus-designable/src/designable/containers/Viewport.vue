@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useObserver } from '@silver-formily/reactive-vue'
-import { onBeforeUnmount, ref, shallowRef, watch } from 'vue'
+import { onBeforeUnmount, onMounted, ref, shallowRef } from 'vue'
 import { useWorkspace } from '../hooks'
 import AuxToolWidget from '../widgets/AuxToolWidget.vue'
 
@@ -10,21 +10,18 @@ const workspaceRef = useWorkspace()
 const viewportElementRef = ref<HTMLElement | null>(null)
 const mountedWorkspaceRef = shallowRef<typeof workspaceRef.value>(null)
 
-watch(
-  [workspaceRef, viewportElementRef],
-  ([workspace, viewportElement]) => {
-    if (!workspace || !viewportElement)
-      return
+onMounted(() => {
+  const workspace = workspaceRef.value
+  const viewportElement = viewportElementRef.value
+  if (!workspace || !viewportElement)
+    return
 
-    if (mountedWorkspaceRef.value === workspace)
-      return
+  if (mountedWorkspaceRef.value && mountedWorkspaceRef.value !== workspace)
+    mountedWorkspaceRef.value.viewport.onUnmount()
 
-    mountedWorkspaceRef.value?.viewport.onUnmount()
-    workspace.viewport.onMount(viewportElement, window)
-    mountedWorkspaceRef.value = workspace
-  },
-  { flush: 'post', immediate: true },
-)
+  workspace.viewport.onMount(viewportElement, window)
+  mountedWorkspaceRef.value = workspace
+})
 
 onBeforeUnmount(() => {
   mountedWorkspaceRef.value?.viewport.onUnmount()

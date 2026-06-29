@@ -1,38 +1,61 @@
 <script setup lang="ts">
+import { ClosestPosition } from '@silver-formily/designer-core'
 import { useObserver } from '@silver-formily/reactive-vue'
-import { useOperation, useViewport } from '../hooks'
+import { useMoveHelper } from '../hooks'
 
 useObserver()
 
-const operationRef = useOperation()
-const viewportRef = useViewport()
+const moveHelperRef = useMoveHelper()
 
-function getClosestNode() {
-  return operationRef.value?.getClosestNode() ?? null
+function getClosestDirection() {
+  return moveHelperRef.value?.closestDirection ?? null
 }
 
-function getClosestPosition() {
-  return operationRef.value?.getClosestPosition() ?? null
-}
-
-function getRect() {
-  const closestNode = getClosestNode()
-  if (!closestNode || !viewportRef.value)
+function getClosestOffsetRect() {
+  const moveHelper = moveHelperRef.value
+  if (!moveHelper)
     return null
-  return viewportRef.value.getValidNodeOffsetRect(closestNode)
+  return moveHelper.activeViewport === moveHelper.outline
+    ? moveHelper.outlineClosestOffsetRect
+    : moveHelper.viewportClosestOffsetRect
 }
 
 function isVisible() {
-  return !!getRect() && !!getClosestPosition()
+  return !!getClosestOffsetRect() && !!getClosestDirection()
+}
+
+function isVerticalInsertion() {
+  const closestDirection = getClosestDirection()
+  return closestDirection === ClosestPosition.Before
+    || closestDirection === ClosestPosition.After
+    || closestDirection === ClosestPosition.ForbidBefore
+    || closestDirection === ClosestPosition.ForbidAfter
 }
 
 function getLineStyle() {
-  const currentRect = getRect()
-  const position = String(getClosestPosition() ?? '').toLowerCase()
+  const currentRect = getClosestOffsetRect()
+  const closestDirection = getClosestDirection()
   if (!currentRect)
     return {}
 
-  const top = position.includes('after') || position.includes('under') || position.includes('inner_after')
+  if (isVerticalInsertion()) {
+    const left = closestDirection === ClosestPosition.After || closestDirection === ClosestPosition.ForbidAfter
+      ? currentRect.x + currentRect.width
+      : currentRect.x
+
+    return {
+      height: `${currentRect.height + 8}px`,
+      left: `${left}px`,
+      top: `${currentRect.y - 4}px`,
+      width: '0px',
+    }
+  }
+
+  const top = closestDirection === ClosestPosition.After
+    || closestDirection === ClosestPosition.Under
+    || closestDirection === ClosestPosition.InnerAfter
+    || closestDirection === ClosestPosition.ForbidUnder
+    || closestDirection === ClosestPosition.ForbidInnerAfter
     ? currentRect.y + currentRect.height
     : currentRect.y
 
@@ -48,6 +71,7 @@ function getLineStyle() {
   <div
     v-if="isVisible()"
     class="dn-aux-insertion"
+    :class="{ 'dn-aux-insertion--vertical': isVerticalInsertion() }"
     :style="getLineStyle()"
   >
     <span class="dn-aux-insertion__handle dn-aux-insertion__handle--start" />
@@ -68,6 +92,15 @@ function getLineStyle() {
 
   &__handle {
     @apply size-2 shrink-0 rounded-full border-2 border-blue-500 bg-white shadow-[0_0_0_3px_rgba(59,130,246,0.14)];
+  }
+
+  &--vertical {
+    @apply h-auto w-0 -translate-x-1/2 translate-y-0 flex-col;
+  }
+
+  &--vertical &__line {
+    @apply h-full w-1;
+    min-height: 100%;
   }
 }
 </style>

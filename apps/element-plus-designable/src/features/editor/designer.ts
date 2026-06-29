@@ -98,4 +98,9 @@ export const engine = createDesigner({
   rootComponentName: 'Form',
 })
 
+resources.forEach((resource) => {
+  if (resource.node)
+    engine.sourceNodes.registerTree(resource.node)
+})
+
 export const selectedNodes = computed(() => engine.getAllSelectedNodes().filter(Boolean) as TreeNode[])

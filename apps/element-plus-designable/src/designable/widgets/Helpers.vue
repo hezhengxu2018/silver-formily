@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import type { TreeNode } from '@silver-formily/designer-core'
 import { Copy, Grip, Layers, Trash2 } from '@lucide/vue'
+import { TreeNode as TreeNodeModel } from '@silver-formily/designer-core'
 import { computed } from 'vue'
-import { useDesigner, useOperation, useSelection } from '../hooks'
+import { useDesigner, useSelection } from '../hooks'
 import { getNodeTitle } from './node-title'
 
 const props = defineProps<{
@@ -10,7 +11,6 @@ const props = defineProps<{
 }>()
 
 const designerRef = useDesigner()
-const operationRef = useOperation()
 const selectionRef = useSelection()
 
 const dragHandlerAttrs = computed(() => {
@@ -22,11 +22,11 @@ const parentNodes = computed(() => props.node.getParents().filter(node => node !
 const nodeType = computed(() => props.node.componentName.replace(/\./g, ' ').toUpperCase())
 
 function handleCopy() {
-  operationRef.value?.cloneNodes([props.node])
+  TreeNodeModel.clone([props.node])
 }
 
 function handleDelete() {
-  operationRef.value?.removeNodes([props.node])
+  TreeNodeModel.remove([props.node])
 }
 
 function selectNode(node: TreeNode) {
