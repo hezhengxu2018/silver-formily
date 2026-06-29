@@ -171,12 +171,40 @@ function toEventPropKey(eventName: string) {
   return `on${eventName.charAt(0).toUpperCase()}${eventName.slice(1)}`
 }
 
+function normalizeLegacyEventName(eventKey: string) {
+  return eventKey.startsWith('@') ? eventKey.slice(1) : eventKey
+}
+
+function mergeLegacyAttrs(rawAttrs: Attrs) {
+  const legacyAttrs = rawAttrs.attrs
+  if (legacyAttrs && typeof legacyAttrs === 'object' && !Array.isArray(legacyAttrs)) {
+    return {
+      ...rawAttrs,
+      ...(legacyAttrs as Attrs),
+    }
+  }
+  return { ...rawAttrs }
+}
+
 export function extractAttrsAndEvents(rawAttrs: Attrs = {}): { attrs: Attrs, events: EventMap } {
-  const normalizedAttrs: Attrs = { ...rawAttrs }
+  const normalizedAttrs = mergeLegacyAttrs(rawAttrs)
   const events: EventMap = {}
 
-  Object.keys(rawAttrs).forEach((eventKey) => {
-    const value = rawAttrs[eventKey]
+  delete normalizedAttrs.attrs
+  delete normalizedAttrs.on
+
+  const legacyOn = rawAttrs.on
+  if (legacyOn && typeof legacyOn === 'object' && !Array.isArray(legacyOn)) {
+    Object.entries(legacyOn as Attrs).forEach(([eventKey, value]) => {
+      const eventName = normalizeLegacyEventName(eventKey)
+      if (!events[eventName] && typeof value === 'function') {
+        events[eventName] = value as EventHandler
+      }
+    })
+  }
+
+  Object.keys(normalizedAttrs).forEach((eventKey) => {
+    const value = normalizedAttrs[eventKey]
     const onEvent = /^on[^a-z]/.test(eventKey)
     const atEvent = eventKey.startsWith('@')
     if (!onEvent && !atEvent)

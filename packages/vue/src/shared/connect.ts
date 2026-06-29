@@ -4,11 +4,54 @@ import type { IComponentMapper, IStateMapper, VueComponentProps } from '../types
 import { isVoidField } from '@silver-formily/core'
 import { Path as FormPath } from '@silver-formily/path'
 import { observer } from '@silver-formily/reactive-vue'
-import { each, isFn, isStr, isValid } from '@silver-formily/shared'
+import { camelCase, each, isFn, isStr, isValid, paramCase } from '@silver-formily/shared'
 import { defineComponent, h, markRaw } from 'vue'
 import { useField } from '../hooks/useField'
 
 import { createVNodeProps, extractAttrsAndEvents } from '../utils/reactiveFieldHelpers'
+
+type ComponentWithProps = Component & {
+  props?: unknown
+  __vccOpts?: {
+    props?: unknown
+  }
+}
+
+function normalizePropKeys(propsDef: unknown): Set<string> | null {
+  if (!propsDef)
+    return null
+  const keys = Array.isArray(propsDef)
+    ? propsDef.map(key => String(key))
+    : typeof propsDef === 'object'
+      ? Object.keys(propsDef as Record<string, unknown>)
+      : []
+  if (!keys.length)
+    return null
+  return new Set(keys.flatMap(key => [key, camelCase(key), paramCase(key)]))
+}
+
+function extractTargetPropKeys(target: Component): Set<string> | null {
+  const component = target as ComponentWithProps
+  return normalizePropKeys(component.props ?? component.__vccOpts?.props)
+}
+
+function pickMappableProps<T extends Component>(
+  target: T,
+  baseAttrKeys: Set<string>,
+  mappedAttrs: VueComponentProps<T>,
+) {
+  const propKeys = extractTargetPropKeys(target)
+  if (!propKeys)
+    return mappedAttrs
+
+  const picked = Object.keys(mappedAttrs).reduce<Record<string, unknown>>((buf, key) => {
+    if (baseAttrKeys.has(key) || propKeys.has(key) || propKeys.has(camelCase(key))) {
+      buf[key] = mappedAttrs[key]
+    }
+    return buf
+  }, {})
+  return picked as VueComponentProps<T>
+}
 
 export function mapProps<T extends Component = Component>(
   ...args: IStateMapper<VueComponentProps<T>>[]
@@ -45,7 +88,9 @@ export function mapProps<T extends Component = Component>(
           return () => {
             const { attrs: normalizedAttrs, events } = extractAttrsAndEvents(attrs)
             const baseAttrs = { ...normalizedAttrs } as VueComponentProps<T>
-            const newAttrs = fieldRef.value ? transform(baseAttrs, fieldRef.value) : baseAttrs
+            const baseAttrKeys = new Set(Object.keys(baseAttrs))
+            const mappedAttrs = fieldRef.value ? transform(baseAttrs, fieldRef.value) : baseAttrs
+            const newAttrs = pickMappableProps(target, baseAttrKeys, mappedAttrs)
             return h(target, createVNodeProps(newAttrs, events), slots)
           }
         },

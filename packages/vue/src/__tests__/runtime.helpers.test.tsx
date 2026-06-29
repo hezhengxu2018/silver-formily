@@ -110,6 +110,32 @@ const AnonymousConnected = connect(
   }),
 )
 
+const AttrProbe = defineComponent({
+  name: 'AttrProbe',
+  props: {
+    label: {
+      type: String,
+      default: '',
+    },
+  },
+  setup(props, { attrs }) {
+    return () => (
+      <button data-testid="attr-probe" {...attrs}>
+        {props.label}
+      </button>
+    )
+  },
+})
+
+const ConnectedAttrProbe = connect(
+  AttrProbe,
+  mapProps({
+    title: 'label',
+    required: true,
+    validateStatus: true,
+  }),
+)
+
 const { SchemaField, SchemaStringField } = createSchemaField({
   components: {
     SchemaProbe,
@@ -144,6 +170,28 @@ describe('runtime helpers', () => {
     expect(attrs.onboard).toBe('plain-text-prop')
     expect(events.click).toBe(handleClick)
     expect(events.focus).toBe(handleClick)
+  })
+
+  it('应该展开旧式 attrs/on 并避免 attrs 或 on 作为 DOM 属性透传', () => {
+    const handleClick = vi.fn()
+    const handleFocus = vi.fn()
+    const { attrs, events } = extractAttrsAndEvents({
+      attrs: {
+        'id': 'legacy-id',
+        'data-testid': 'legacy-probe',
+      },
+      on: {
+        'click': handleClick,
+        '@focus': handleFocus,
+      },
+    })
+
+    expect(attrs).toEqual({
+      'id': 'legacy-id',
+      'data-testid': 'legacy-probe',
+    })
+    expect(events.click).toBe(handleClick)
+    expect(events.focus).toBe(handleFocus)
   })
 
   it('应该让 useFieldSchema 读取当前字段 schema', async () => {
@@ -276,5 +324,38 @@ describe('runtime helpers', () => {
     await expect
       .element(screen.getByTestId('connected-meta'))
       .toHaveTextContent('value only|manual label|')
+  })
+
+  it('应该过滤 mapProps 新增但目标组件未声明的 props，同时保留原始 attrs', async () => {
+    const form = createForm()
+
+    const screen = await render(
+      defineComponent({
+        setup() {
+          return () => (
+            <FormProvider form={form}>
+              <Field
+                name="probe"
+                title="Mapped Label"
+                required
+                component={[ConnectedAttrProbe, {
+                  'class': 'kept-class',
+                  'data-custom': 'kept',
+                }]}
+              />
+            </FormProvider>
+          )
+        },
+      }),
+    )
+
+    const probe = screen.getByTestId('attr-probe').element()
+
+    await expect.element(screen.getByTestId('attr-probe')).toHaveTextContent('Mapped Label')
+    expect(probe.classList.contains('kept-class')).toBe(true)
+    expect(probe.getAttribute('data-custom')).toBe('kept')
+    expect(probe.hasAttribute('required')).toBe(false)
+    expect(probe.hasAttribute('validateStatus')).toBe(false)
+    expect(probe.hasAttribute('validate-status')).toBe(false)
   })
 })
