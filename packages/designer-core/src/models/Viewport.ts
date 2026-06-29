@@ -290,7 +290,7 @@ export class Viewport {
   isPointInViewport(point: IPoint, sensitive?: boolean) {
     if (!this.rect)
       return false
-    if (!this.containsElement(document.elementFromPoint(point.x, point.y))) {
+    if (!this.containsElement(this.elementFromPoint(point))) {
       return false
     }
     return isPointInRect(point, this.rect, sensitive)
@@ -299,7 +299,7 @@ export class Viewport {
   isRectInViewport(rect: IRect) {
     if (!this.rect)
       return false
-    if (!this.containsElement(document.elementFromPoint(rect.x, rect.y))) {
+    if (!this.containsElement(this.elementFromPoint(rect))) {
       return false
     }
     return isRectInRect(rect, this.rect)
@@ -314,7 +314,7 @@ export class Viewport {
   isOffsetPointInViewport(point: IPoint, sensitive?: boolean) {
     if (!this.innerRect)
       return false
-    if (!this.containsElement(document.elementFromPoint(point.x, point.y)))
+    if (!this.containsElement(this.elementFromPoint(point)))
       return false
     return isPointInRect(point, this.innerRect, sensitive)
   }
@@ -322,7 +322,7 @@ export class Viewport {
   isOffsetRectInViewport(rect: IRect) {
     if (!this.innerRect)
       return false
-    if (!this.containsElement(document.elementFromPoint(rect.x, rect.y))) {
+    if (!this.containsElement(this.elementFromPoint(rect))) {
       return false
     }
     return isRectInRect(rect, this.innerRect)

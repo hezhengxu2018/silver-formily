@@ -38,7 +38,7 @@ describe('designer-core regression coverage', () => {
     expect(attachSpy).toHaveBeenCalledWith('mousemove', driver.onMouseMove, {
       mode: 'onlyOne',
     })
-    expect(detachSpy).toHaveBeenCalledWith('mouseover', driver.onMouseMove, {
+    expect(detachSpy).toHaveBeenCalledWith('mousemove', driver.onMouseMove, {
       mode: 'onlyOne',
     })
   })
@@ -115,7 +115,8 @@ describe('designer-core regression coverage', () => {
         createCursorEvent(MouseClickEvent, document.body),
       )
 
-    expect(removeSpy).toHaveBeenCalledWith('past', expect.any(Function))
+    expect(removeSpy).toHaveBeenCalledWith('keydown', expect.any(Function))
+    expect(removeSpy).toHaveBeenCalledWith('paste', expect.any(Function))
   })
 
   it('useSelectionEffect selects the clicked node by default', () => {
@@ -250,5 +251,59 @@ describe('designer-core regression coverage', () => {
 
     expect(viewport).toBeInstanceOf(Viewport)
     expect(attachSpy).toHaveBeenCalledTimes(1)
+  })
+
+  it('viewport hit testing uses the viewport document instead of the global document', () => {
+    vi
+      .spyOn(Viewport.prototype, 'attachEvents')
+      .mockImplementation(() => {})
+
+    const viewportElement = document.createElement('div')
+    document.body.appendChild(viewportElement)
+    vi.spyOn(viewportElement, 'getBoundingClientRect').mockReturnValue({
+      x: 0,
+      y: 0,
+      width: 100,
+      height: 100,
+      left: 0,
+      top: 0,
+      right: 100,
+      bottom: 100,
+      toJSON: () => ({}),
+    })
+
+    const viewport = new Viewport({
+      engine: {} as any,
+      workspace: {} as any,
+      viewportElement,
+      contentWindow: window,
+      nodeIdAttrName: 'data-node-id',
+    })
+    const globalElementFromPointSpy = vi
+      .spyOn(document, 'elementFromPoint')
+      .mockReturnValue(null)
+    const viewportElementFromPointSpy = vi
+      .spyOn(viewport, 'elementFromPoint')
+      .mockReturnValue(viewportElement)
+
+    expect(viewport.isPointInViewport({ x: 10, y: 10 })).toBe(true)
+    expect(viewportElementFromPointSpy).toHaveBeenCalledWith({ x: 10, y: 10 })
+    expect(globalElementFromPointSpy).not.toHaveBeenCalled()
+  })
+
+  it('workbench removeWorkspace detaches viewport and outline events', () => {
+    const engine = new Engine({})
+    const workspace = engine.workbench.ensureWorkspace({ id: 'workspace-cleanup' })
+    const viewportDetachSpy = vi
+      .spyOn(workspace.viewport, 'detachEvents')
+      .mockImplementation(() => {})
+    const outlineDetachSpy = vi
+      .spyOn(workspace.outline, 'detachEvents')
+      .mockImplementation(() => {})
+
+    engine.workbench.removeWorkspace('workspace-cleanup')
+
+    expect(viewportDetachSpy).toHaveBeenCalledTimes(1)
+    expect(outlineDetachSpy).toHaveBeenCalledTimes(1)
   })
 })
