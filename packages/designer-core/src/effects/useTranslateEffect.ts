@@ -22,7 +22,7 @@ export function useTranslateEffect(engine: Engine) {
             engine.props.nodeSelectionIdAttrName,
           )
           if (nodeId) {
-            const node = engine.findNodeById(nodeId)
+            const node = engine.findNodeById(nodeId, currentWorkspace)
             if (node) {
               helper.dragStart({ dragNodes: [node], type: 'translate' })
             }

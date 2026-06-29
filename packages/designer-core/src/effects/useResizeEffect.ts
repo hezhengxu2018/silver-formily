@@ -3,7 +3,10 @@ import { DragMoveEvent, DragStartEvent, DragStopEvent } from '../events'
 import { CursorDragType } from '../models'
 
 export function useResizeEffect(engine: Engine) {
-  const findStartNodeHandler = (target: HTMLElement) => {
+  const findStartNodeHandler = (
+    target: HTMLElement,
+    currentWorkspace: Engine['workbench']['currentWorkspace'],
+  ) => {
     const handler = target?.closest(
       `*[${engine.props.nodeResizeHandlerAttrName}]`,
     )
@@ -20,7 +23,7 @@ export function useResizeEffect(engine: Engine) {
             engine.props.nodeSelectionIdAttrName,
           )
           if (nodeId) {
-            const node = engine.findNodeById(nodeId)
+            const node = engine.findNodeById(nodeId, currentWorkspace)
             if (node) {
               return { direction, node, element }
             }
@@ -36,7 +39,7 @@ export function useResizeEffect(engine: Engine) {
       = event.context?.workspace ?? engine.workbench.activeWorkspace
     if (!currentWorkspace)
       return
-    const handler = findStartNodeHandler(target)
+    const handler = findStartNodeHandler(target, currentWorkspace)
     const helper = currentWorkspace.operation.transformHelper
     if (handler) {
       const selectionElement = handler.element.closest(
@@ -47,7 +50,7 @@ export function useResizeEffect(engine: Engine) {
           engine.props.nodeSelectionIdAttrName,
         )
         if (nodeId) {
-          const node = engine.findNodeById(nodeId)
+          const node = engine.findNodeById(nodeId, currentWorkspace)
           if (node) {
             helper.dragStart({
               dragNodes: [node],

@@ -133,6 +133,94 @@ describe('designer drag behavior', () => {
     )
   })
 
+  it('keeps node lookup scoped to each engine instance', () => {
+    const firstEngine = new Engine({
+      defaultComponentTree: {
+        id: 'scoped-root',
+        componentName: 'FirstRoot',
+        children: [
+          {
+            id: 'scoped-shared-id',
+            componentName: 'FirstField',
+          },
+        ],
+      },
+    })
+    const secondEngine = new Engine({
+      defaultComponentTree: {
+        id: 'scoped-root',
+        componentName: 'SecondRoot',
+        children: [
+          {
+            id: 'scoped-shared-id',
+            componentName: 'SecondField',
+          },
+        ],
+      },
+    })
+
+    firstEngine.workbench.ensureWorkspace()
+    secondEngine.workbench.ensureWorkspace()
+
+    expect(firstEngine.findNodeById('scoped-shared-id')?.componentName).toBe(
+      'FirstField',
+    )
+    expect(secondEngine.findNodeById('scoped-shared-id')?.componentName).toBe(
+      'SecondField',
+    )
+  })
+
+  it('can scope node lookup to a specific workspace', () => {
+    const engine = new Engine({
+      defaultComponentTree: {
+        id: 'workspace-scoped-root',
+        componentName: 'Root',
+        children: [
+          {
+            id: 'workspace-scoped-shared-id',
+            componentName: 'OriginalField',
+          },
+        ],
+      },
+    })
+    const firstWorkspace = engine.workbench.ensureWorkspace({ id: 'first' })
+    const secondWorkspace = engine.workbench.ensureWorkspace({ id: 'second' })
+
+    firstWorkspace.operation.tree
+      .findById('workspace-scoped-shared-id')
+      ?.setComponentName('FirstField')
+    secondWorkspace.operation.tree
+      .findById('workspace-scoped-shared-id')
+      ?.setComponentName('SecondField')
+
+    expect(
+      engine.findNodeById(
+        'workspace-scoped-shared-id',
+        firstWorkspace,
+      )?.componentName,
+    ).toBe('FirstField')
+    expect(
+      engine.findNodeById(
+        'workspace-scoped-shared-id',
+        secondWorkspace,
+      )?.componentName,
+    ).toBe('SecondField')
+  })
+
+  it('keeps source node lookup scoped to its owning engine', () => {
+    const firstEngine = new Engine({})
+    const secondEngine = new Engine({})
+
+    const source = firstEngine.createNode({
+      id: 'scoped-source-id',
+      componentName: 'Field',
+      isSourceNode: true,
+    })
+
+    expect(firstEngine.findNodeById('scoped-source-id')).toBe(source)
+    expect(secondEngine.findNodeById('scoped-source-id')).toBeUndefined()
+  })
+
   it('ignores stale selected ids when resolving selected nodes', () => {
     const engine = new Engine({
       defaultComponentTree: {
