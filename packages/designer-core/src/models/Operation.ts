@@ -80,6 +80,15 @@ export class Operation {
     })
   }
 
+  dispose() {
+    cancelIdle(this.requests.snapshot)
+    this.requests.snapshot = null
+    this.hover.clear()
+    this.moveHelper.dragEnd()
+    this.transformHelper.dragEnd()
+    this.selection.setSelected([])
+  }
+
   from(operation?: IOperation) {
     if (!operation)
       return

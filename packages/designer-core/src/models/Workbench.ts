@@ -84,9 +84,11 @@ export class Workbench {
     const findIndex = this.findWorkspaceIndexById(id)
     if (findIndex > -1 && findIndex < this.workspaces.length) {
       const findedWorkspace = this.workspaces[findIndex]
-      findedWorkspace.viewport.detachEvents()
-      findedWorkspace.outline.detachEvents()
+      findedWorkspace.dispose()
       this.workspaces.splice(findIndex, 1)
+      if (findedWorkspace === this.activeWorkspace) {
+        this.activeWorkspace = null
+      }
       if (findedWorkspace === this.currentWorkspace) {
         if (this.workspaces.length && this.workspaces[findIndex]) {
           this.currentWorkspace = this.workspaces[findIndex]
@@ -94,6 +96,9 @@ export class Workbench {
         else {
           this.currentWorkspace = this.workspaces[this.workspaces.length - 1]
         }
+      }
+      if (!this.workspaces.length) {
+        this.currentWorkspace = null
       }
       this.engine.dispatch(new RemoveWorkspaceEvent(findedWorkspace))
     }

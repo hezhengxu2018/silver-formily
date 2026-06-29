@@ -382,7 +382,7 @@ describe('designer-core regression coverage', () => {
     expect(globalElementFromPointSpy).not.toHaveBeenCalled()
   })
 
-  it('workbench removeWorkspace detaches viewport and outline events', () => {
+  it('workbench removeWorkspace disposes workspace resources', () => {
     const engine = new Engine({})
     const workspace = engine.workbench.ensureWorkspace({ id: 'workspace-cleanup' })
     const viewportDetachSpy = vi
@@ -391,11 +391,29 @@ describe('designer-core regression coverage', () => {
     const outlineDetachSpy = vi
       .spyOn(workspace.outline, 'detachEvents')
       .mockImplementation(() => {})
+    const operationDisposeSpy = vi.spyOn(workspace.operation, 'dispose')
+    const historyClearSpy = vi.spyOn(workspace.history, 'clear')
 
     engine.workbench.removeWorkspace('workspace-cleanup')
 
     expect(viewportDetachSpy).toHaveBeenCalledTimes(1)
     expect(outlineDetachSpy).toHaveBeenCalledTimes(1)
+    expect(operationDisposeSpy).toHaveBeenCalledTimes(1)
+    expect(historyClearSpy).toHaveBeenCalledTimes(1)
+    expect(engine.workbench.currentWorkspace).toBeNull()
+  })
+
+  it('workbench removeWorkspace clears active workspace references', () => {
+    const engine = new Engine({})
+    const firstWorkspace = engine.workbench.ensureWorkspace({ id: 'first' })
+    const secondWorkspace = engine.workbench.ensureWorkspace({ id: 'second' })
+
+    engine.workbench.switchWorkspace('first')
+    engine.workbench.setActiveWorkspace(firstWorkspace)
+    engine.workbench.removeWorkspace('first')
+
+    expect(engine.workbench.activeWorkspace).toBeNull()
+    expect(engine.workbench.currentWorkspace).toBe(secondWorkspace)
   })
 
   it('useDragDropEffect resolves drag helpers within the event workspace', () => {
