@@ -14,7 +14,10 @@ const props = defineProps({
   onSubmit: Function as PropType<(values: any) => Promise<any>>,
   onSubmitSuccess: Function as PropType<(payload: any) => void>,
   onSubmitFailed: Function as PropType<(feedbacks: IFormFeedback[]) => void>,
-  submit: Boolean,
+  submit: {
+    type: Boolean,
+    default: true,
+  },
   loading: Boolean,
 })
 
@@ -34,7 +37,7 @@ function handleClick(e: MouseEvent) {
 
 <template>
   <ElButton
-    :native-type="props.submit ? 'button' : 'submit'"
+    :native-type="props.submit ? 'submit' : 'button'"
     type="primary"
     v-bind="$attrs"
     :loading="formRef?.submitting ?? props.loading"

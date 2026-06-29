@@ -28,3 +28,4 @@ submit/loading
 | onSubmit        | `(values: any) => Promise<any> \| any`                                                                  | 提交事件回调                          | -      |
 | onSubmitSuccess | `(payload: any) => void`                                                                                | 提交成功响应事件                      | -      |
 | onSubmitFailed  | `(feedbacks: [IFormFeedback](https://core.silver-formily.org/api/models/Form#iformfeedback)[]) => void` | 提交校验失败事件回调                  | -      |
+| submit          | `boolean`                                                                                               | 是否作为原生提交按钮                  | `true` |

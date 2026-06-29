@@ -104,6 +104,22 @@ describe('submit', () => {
   })
 
   describe('属性传递', async () => {
+    it('应该默认作为原生提交按钮', async () => {
+      const { getByRole } = render(() => (
+        <Submit>提交</Submit>
+      ))
+
+      expect(getByRole('button', { name: '提交' }).element().getAttribute('type')).toBe('submit')
+    })
+
+    it('应该支持关闭原生提交行为', async () => {
+      const { getByRole } = render(() => (
+        <Submit submit={false}>提交</Submit>
+      ))
+
+      expect(getByRole('button', { name: '提交' }).element().getAttribute('type')).toBe('button')
+    })
+
     it('应该支持自定义按钮类型', async () => {
       const { getByRole } = render(() => (
         <Submit type="danger">删除</Submit>

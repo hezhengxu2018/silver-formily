@@ -39,6 +39,7 @@ function formilyWrapperFactory(fieldProps = {}, selectTableProps = {}) {
                   { prop: 'name', label: 'Title' },
                   { prop: 'description', label: 'Description' },
                 ],
+                rowKey: 'key',
                 ...selectTableProps,
               },
             ]}
@@ -69,7 +70,7 @@ function formilyWrapperWithSlotFactory(fieldProps = {}, selectTableProps = {}) {
               { key: '3', name: 'title-3', description: 'description-3' },
             ]}
             {...fieldProps}
-            component={[SelectTable, { ...selectTableProps }]}
+            component={[SelectTable, { rowKey: 'key', ...selectTableProps }]}
           >
             <ElTableColumn prop="name" label="Title" />
             <ElTableColumn
@@ -112,6 +113,7 @@ function formilyWrapperWithSlotBySchemaFactory(
             ]}
             x-component="SelectTable"
             x-component-props={{
+              rowKey: 'key',
               ...selectTableProps,
             }}
             x-content={(
@@ -136,7 +138,7 @@ function formilyWrapperWithSlotBySchemaFactory(
               { key: '3', name: 'title-3', description: 'description-3' },
             ]}
             {...fieldProps}
-            component={[SelectTable, { ...selectTableProps }]}
+            component={[SelectTable, { rowKey: 'key', ...selectTableProps }]}
           >
             <ElTableColumn prop="name" label="Title" />
             <ElTableColumn prop="description" label="Description">
@@ -155,7 +157,7 @@ function formilyWrapperWithSlotBySchemaFactory(
 
 describe('基础数据展示', async () => {
   it('应该显示为空数据', async () => {
-    const screen = render(SelectTable)
+    const screen = render(() => <SelectTable rowKey="key" />)
     await expect.element(screen.getByText('No Data')).toBeInTheDocument()
     await expect.element(screen.getByText('已选择')).not.toBeInTheDocument()
   })
@@ -796,8 +798,8 @@ describe('单选框交互', async () => {
               { key: '2', name: 'title-2', description: 'description-2' },
             ],
             'columns': [
-              { prop: 'name', label: 'Title' },
-              { prop: 'description', label: 'Description' },
+              { prop: 'name', label: 'Title', width: 100 },
+              { prop: 'description', label: 'Description', width: 100 },
             ],
             'onUpdate:modelValue': onUpdateModelValue,
           })

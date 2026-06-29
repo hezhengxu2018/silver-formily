@@ -28,3 +28,4 @@ Most props are inherited from the [Button component](https://element-plus.org/en
 | `onSubmit`        | `(values: any) => Promise<any> \| any`                                                                  | Submit callback                                    | -       |
 | `onSubmitSuccess` | `(payload: any) => void`                                                                                | Submit success callback                            | -       |
 | `onSubmitFailed`  | `(feedbacks: [IFormFeedback](https://core.silver-formily.org/api/models/Form#iformfeedback)[]) => void` | Submit validation failure callback                 | -       |
+| `submit`          | `boolean`                                                                                               | Whether to render as a native submit button        | `true`  |
