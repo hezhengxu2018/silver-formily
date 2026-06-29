@@ -7,8 +7,11 @@ import {
   MouseMoveEvent,
 } from '../events'
 import { CursorStatus } from '../models'
+import { DOMNodeResolver } from '../resolvers/DOMNodeResolver'
 
 export function useCursorEffect(engine: Engine) {
+  const resolver = new DOMNodeResolver(engine)
+
   engine.subscribeTo(MouseMoveEvent, (event) => {
     engine.cursor.setStatus(
       engine.cursor.status === CursorStatus.Dragging
@@ -46,16 +49,11 @@ export function useCursorEffect(engine: Engine) {
       return
     }
     const target = event.data.target as HTMLElement
-    const el = target?.closest?.(`
-      *[${engine.props.nodeIdAttrName}],
-      *[${engine.props.outlineNodeIdAttrName}]
-    `)
-    if (!el?.getAttribute) {
+    const targetInfo = resolver.parseTarget(target)
+    if (!targetInfo.nodeId && !targetInfo.outlineId) {
       return
     }
-    const nodeId = el.getAttribute(engine.props.nodeIdAttrName)
-    const outlineNodeId = el.getAttribute(engine.props.outlineNodeIdAttrName)
-    const node = operation.tree.findById(nodeId || outlineNodeId)
+    const node = resolver.resolveDesignNode(target, currentWorkspace)
     if (node) {
       operation.hover.setHover(node)
     }

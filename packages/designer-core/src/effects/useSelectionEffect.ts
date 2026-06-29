@@ -2,16 +2,16 @@ import type { Engine } from '../models'
 import { KeyCode, Point } from '@silver-formily/designer-shared'
 import { MouseClickEvent } from '../events'
 import { CursorStatus } from '../models'
+import { DOMNodeResolver } from '../resolvers/DOMNodeResolver'
 
 export function useSelectionEffect(engine: Engine) {
+  const resolver = new DOMNodeResolver(engine)
+
   engine.subscribeTo(MouseClickEvent, (event) => {
     if (engine.cursor.status !== CursorStatus.Normal)
       return
     const target: HTMLElement = event.data.target as any
-    const el = target?.closest?.(`
-      *[${engine.props.nodeIdAttrName}],
-      *[${engine.props.outlineNodeIdAttrName}]
-    `)
+    const targetInfo = resolver.parseTarget(target)
     const isHelpers = target?.closest?.(
       `*[${engine.props.nodeSelectionIdAttrName}]`,
     )
@@ -19,7 +19,7 @@ export function useSelectionEffect(engine: Engine) {
       = event.context?.workspace ?? engine.workbench.activeWorkspace
     if (!currentWorkspace)
       return
-    if (!el?.getAttribute) {
+    if (!targetInfo.nodeId && !targetInfo.outlineId) {
       const point = new Point(event.data.topClientX, event.data.topClientY)
       const operation = currentWorkspace.operation
       const viewport = currentWorkspace.viewport
@@ -35,12 +35,10 @@ export function useSelectionEffect(engine: Engine) {
       }
       return
     }
-    const nodeId = el.getAttribute(engine.props.nodeIdAttrName)
-    const structNodeId = el.getAttribute(engine.props.outlineNodeIdAttrName)
     const operation = currentWorkspace.operation
     const selection = operation.selection
     const tree = operation.tree
-    const node = tree.findById(nodeId || structNodeId)
+    const node = resolver.resolveDesignNode(target, currentWorkspace)
     if (node) {
       engine.keyboard.requestClean()
       if (

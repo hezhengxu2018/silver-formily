@@ -1,8 +1,11 @@
 import type { Engine } from '../models'
 import { DragMoveEvent, DragStartEvent, DragStopEvent } from '../events'
 import { CursorDragType } from '../models'
+import { DOMNodeResolver } from '../resolvers/DOMNodeResolver'
 
 export function useTranslateEffect(engine: Engine) {
+  const resolver = new DOMNodeResolver(engine)
+
   engine.subscribeTo(DragStartEvent, (event) => {
     const target = event.data.target as HTMLElement
     const currentWorkspace
@@ -14,19 +17,9 @@ export function useTranslateEffect(engine: Engine) {
     if (handler) {
       const type = handler.getAttribute(engine.props.nodeTranslateAttrName)
       if (type) {
-        const selectionElement = handler.closest(
-          `*[${engine.props.nodeSelectionIdAttrName}]`,
-        ) as HTMLElement
-        if (selectionElement) {
-          const nodeId = selectionElement.getAttribute(
-            engine.props.nodeSelectionIdAttrName,
-          )
-          if (nodeId) {
-            const node = engine.findNodeById(nodeId, currentWorkspace)
-            if (node) {
-              helper.dragStart({ dragNodes: [node], type: 'translate' })
-            }
-          }
+        const node = resolver.resolveSelectionHelper(target, currentWorkspace)
+        if (node) {
+          helper.dragStart({ dragNodes: [node], type: 'translate' })
         }
       }
     }

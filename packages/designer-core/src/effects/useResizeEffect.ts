@@ -1,8 +1,11 @@
 import type { Engine } from '../models'
 import { DragMoveEvent, DragStartEvent, DragStopEvent } from '../events'
 import { CursorDragType } from '../models'
+import { DOMNodeResolver } from '../resolvers/DOMNodeResolver'
 
 export function useResizeEffect(engine: Engine) {
+  const resolver = new DOMNodeResolver(engine)
+
   const findStartNodeHandler = (
     target: HTMLElement,
     currentWorkspace: Engine['workbench']['currentWorkspace'],
@@ -15,19 +18,9 @@ export function useResizeEffect(engine: Engine) {
         engine.props.nodeResizeHandlerAttrName,
       )
       if (direction) {
-        const element = handler.closest(
-          `*[${engine.props.nodeSelectionIdAttrName}]`,
-        )
-        if (element) {
-          const nodeId = element.getAttribute(
-            engine.props.nodeSelectionIdAttrName,
-          )
-          if (nodeId) {
-            const node = engine.findNodeById(nodeId, currentWorkspace)
-            if (node) {
-              return { direction, node, element }
-            }
-          }
+        const node = resolver.resolveSelectionHelper(target, currentWorkspace)
+        if (node) {
+          return { direction, node }
         }
       }
     }
@@ -42,24 +35,11 @@ export function useResizeEffect(engine: Engine) {
     const handler = findStartNodeHandler(target, currentWorkspace)
     const helper = currentWorkspace.operation.transformHelper
     if (handler) {
-      const selectionElement = handler.element.closest(
-        `*[${engine.props.nodeSelectionIdAttrName}]`,
-      ) as HTMLElement
-      if (selectionElement) {
-        const nodeId = selectionElement.getAttribute(
-          engine.props.nodeSelectionIdAttrName,
-        )
-        if (nodeId) {
-          const node = engine.findNodeById(nodeId, currentWorkspace)
-          if (node) {
-            helper.dragStart({
-              dragNodes: [node],
-              type: 'resize',
-              direction: handler.direction,
-            })
-          }
-        }
-      }
+      helper.dragStart({
+        dragNodes: [handler.node],
+        type: 'resize',
+        direction: handler.direction,
+      })
     }
   })
 
