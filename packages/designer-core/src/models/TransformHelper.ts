@@ -1,26 +1,33 @@
 import type {
-  ILineSegment,
   IPoint,
   IRect,
   ISize,
+  Rect,
 } from '@silver-formily/designer-shared'
+import type {
+  ResizeDirection,
+  TransformHelperType,
+} from '../internals/TransformGeometry'
 import type { Operation } from './Operation'
 import type { ISnapLine } from './SnapLine'
 import type { AroundSpaceBlock } from './SpaceBlock'
 import {
   calcBoundingRect,
-  calcClosestEdges,
-  calcCombineSnapLineSegment,
   calcDistanceOfSnapLineToEdges,
   calcEdgeLinesOfRect,
   calcElementTranslate,
-  calcSpaceBlockOfRect,
-  isEqualRect,
   isLineSegment,
   Point,
-  Rect,
 } from '@silver-formily/designer-shared'
 import { action, define, observable } from '@silver-formily/reactive'
+import {
+  calcAroundSnapLines,
+  calcAroundSpaceBlocks,
+  calcBaseResize,
+  calcBaseTranslate,
+  calcCursorDragNodesRect,
+  calcRulerSnapLines,
+} from '../internals/TransformGeometry'
 import { CursorDragType } from './Cursor'
 import { SnapLine } from './SnapLine'
 import { SpaceBlock } from './SpaceBlock'
@@ -30,23 +37,10 @@ export interface ITransformHelperProps {
   operation: Operation
 }
 
-export type TransformHelperType
-  = | 'translate'
-    | 'resize'
-    | 'rotate'
-    | 'scale'
-    | 'round'
-
-export type ResizeDirection
-  = | 'left-top'
-    | 'left-center'
-    | 'left-bottom'
-    | 'center-top'
-    | 'center-bottom'
-    | 'right-top'
-    | 'right-bottom'
-    | 'right-center'
-    | (string & {})
+export type {
+  ResizeDirection,
+  TransformHelperType,
+} from '../internals/TransformGeometry'
 
 export interface ITransformHelperDragStartProps {
   type: TransformHelperType
@@ -120,77 +114,16 @@ export class TransformHelper {
   }
 
   get cursorDragNodesRect() {
-    if (this.type === 'translate') {
-      return new Rect(
-        this.cursorPosition.x - this.dragStartCursorOffset.x,
-        this.cursorPosition.y - this.dragStartCursorOffset.y,
-        this.dragNodesRect.width,
-        this.dragNodesRect.height,
-      )
-    }
-    else if (this.type === 'resize') {
-      const dragNodesRect = this.dragStartNodesRect
-      const deltaX = this.cursor.dragStartToCurrentDelta.clientX
-      const deltaY = this.cursor.dragStartToCurrentDelta.clientY
-      switch (this.direction) {
-        case 'left-top':
-          return new Rect(
-            this.cursorPosition.x - this.dragStartCursorOffset.x,
-            this.cursorPosition.y - this.dragStartCursorOffset.y,
-            dragNodesRect.width - deltaX,
-            dragNodesRect.height - deltaY,
-          )
-        case 'left-center':
-          return new Rect(
-            this.cursorPosition.x - this.dragStartCursorOffset.x,
-            dragNodesRect.y,
-            dragNodesRect.width - deltaX,
-            dragNodesRect.height,
-          )
-        case 'left-bottom':
-          return new Rect(
-            this.cursorPosition.x - this.dragStartCursorOffset.x,
-            dragNodesRect.y,
-            dragNodesRect.width - deltaX,
-            dragNodesRect.height - deltaY,
-          )
-        case 'center-top':
-          return new Rect(
-            dragNodesRect.x,
-            this.cursorPosition.y - this.dragStartCursorOffset.y,
-            dragNodesRect.width,
-            dragNodesRect.height - deltaY,
-          )
-        case 'center-bottom':
-          return new Rect(
-            dragNodesRect.x,
-            dragNodesRect.y,
-            dragNodesRect.width,
-            dragNodesRect.height + deltaY,
-          )
-        case 'right-top':
-          return new Rect(
-            dragNodesRect.x,
-            this.cursorPosition.y - this.dragStartCursorOffset.y,
-            dragNodesRect.width + deltaX,
-            dragNodesRect.height - deltaY,
-          )
-        case 'right-center':
-          return new Rect(
-            dragNodesRect.x,
-            dragNodesRect.y,
-            dragNodesRect.width + deltaX,
-            dragNodesRect.height,
-          )
-        case 'right-bottom':
-          return new Rect(
-            dragNodesRect.x,
-            dragNodesRect.y,
-            dragNodesRect.width + deltaX,
-            dragNodesRect.height - deltaY,
-          )
-      }
-    }
+    return calcCursorDragNodesRect({
+      type: this.type,
+      direction: this.direction,
+      cursorPosition: this.cursorPosition,
+      dragStartCursorOffset: this.dragStartCursorOffset,
+      dragNodesRect: this.dragNodesRect,
+      dragStartNodesRect: this.dragStartNodesRect,
+      deltaX: this.deltaX,
+      deltaY: this.deltaY,
+    })
   }
 
   get cursorDragNodesEdgeLines() {
@@ -327,14 +260,10 @@ export class TransformHelper {
       x: 0,
       y: 0,
     }
-    const x = dragStartTranslate.x + this.deltaX
-    const y = dragStartTranslate.y + this.deltaY
-    return { x, y }
+    return calcBaseTranslate(dragStartTranslate, this.deltaX, this.deltaY)
   }
 
   calcBaseResize(node: TreeNode) {
-    const deltaX = this.deltaX
-    const deltaY = this.deltaY
     const dragStartTranslate = this.dragStartTranslateStore[node.id] ?? {
       x: 0,
       y: 0,
@@ -343,64 +272,13 @@ export class TransformHelper {
       width: 0,
       height: 0,
     }
-    switch (this.direction) {
-      case 'left-top':
-        return new Rect(
-          dragStartTranslate.x + deltaX,
-          dragStartTranslate.y + deltaY,
-          dragStartSize.width - deltaX,
-          dragStartSize.height - deltaY,
-        )
-      case 'left-center':
-        return new Rect(
-          dragStartTranslate.x + deltaX,
-          dragStartTranslate.y,
-          dragStartSize.width - deltaX,
-          dragStartSize.height,
-        )
-      case 'left-bottom':
-        return new Rect(
-          dragStartTranslate.x + deltaX,
-          dragStartTranslate.y,
-          dragStartSize.width - deltaX,
-          dragStartSize.height + deltaY,
-        )
-      case 'center-bottom':
-        return new Rect(
-          dragStartTranslate.x,
-          dragStartTranslate.y,
-          dragStartSize.width,
-          dragStartSize.height + deltaY,
-        )
-      case 'center-top':
-        return new Rect(
-          dragStartTranslate.x,
-          dragStartTranslate.y + deltaY,
-          dragStartSize.width,
-          dragStartSize.height - deltaY,
-        )
-      case 'right-top':
-        return new Rect(
-          dragStartTranslate.x,
-          dragStartTranslate.y + deltaY,
-          dragStartSize.width + deltaX,
-          dragStartSize.height - deltaY,
-        )
-      case 'right-bottom':
-        return new Rect(
-          dragStartTranslate.x,
-          dragStartTranslate.y,
-          dragStartSize.width + deltaX,
-          dragStartSize.height + deltaY,
-        )
-      case 'right-center':
-        return new Rect(
-          dragStartTranslate.x,
-          dragStartTranslate.y,
-          dragStartSize.width + deltaX,
-          dragStartSize.height,
-        )
-    }
+    return calcBaseResize({
+      direction: this.direction,
+      dragStartTranslate,
+      dragStartSize,
+      deltaX: this.deltaX,
+      deltaY: this.deltaY,
+    })
   }
 
   calcDragStartStore(nodes: TreeNode[] = []) {
@@ -417,67 +295,40 @@ export class TransformHelper {
   }
 
   calcRulerSnapLines(dragNodesRect: IRect): SnapLine[] {
-    const edgeLines = calcEdgeLinesOfRect(dragNodesRect)
-    return this.rulerSnapLines.map((line) => {
-      line.distance = calcDistanceOfSnapLineToEdges(line, edgeLines)
+    const results = calcRulerSnapLines(this.rulerSnapLines, dragNodesRect)
+    return this.rulerSnapLines.map((line, index) => {
+      line.distance = results[index].distance
       return line
     })
   }
 
   calcAroundSnapLines(dragNodesRect: Rect): SnapLine[] {
-    const results = []
-    const edgeLines = calcEdgeLinesOfRect(dragNodesRect)
-    this.eachViewportNodes((refer, referRect) => {
-      if (this.dragNodes.includes(refer))
-        return
-      const referLines = calcEdgeLinesOfRect(referRect)
-      const add = (line: ILineSegment) => {
-        const [distance, edge] = calcClosestEdges(line, edgeLines)
-        const combined = calcCombineSnapLineSegment(line, edge)
-        if (distance < TransformHelper.threshold) {
-          if (this.snapping && distance !== 0)
-            return
-          const snapLine = new SnapLine(this, {
-            ...combined,
-            distance,
-          })
-          const edge = snapLine.snapEdge(dragNodesRect)
-          if (this.type === 'translate') {
-            results.push(snapLine)
-          }
-          else if (edge !== 'hc' && edge !== 'vc') {
-            results.push(snapLine)
-          }
-        }
-      }
-      referLines.h.forEach(add)
-      referLines.v.forEach(add)
-    })
-    return results
+    return calcAroundSnapLines(dragNodesRect, this.getViewportNodeRects(), {
+      threshold: TransformHelper.threshold,
+      snapping: this.snapping,
+      type: this.type,
+    }).map(line => new SnapLine(this, line))
   }
 
   calcAroundSpaceBlocks(dragNodesRect: IRect): AroundSpaceBlock {
-    const closestSpaces = {}
-    this.eachViewportNodes((refer, referRect) => {
-      if (isEqualRect(dragNodesRect, referRect))
-        return
+    const spaces = calcAroundSpaceBlocks(
+      dragNodesRect,
+      this.getViewportNodeRects(),
+    )
+    const results = {}
+    for (const type in spaces) {
+      results[type] = new SpaceBlock(this, spaces[type])
+    }
+    return results as AroundSpaceBlock
+  }
 
-      const origin = calcSpaceBlockOfRect(dragNodesRect, referRect)
-
-      if (origin) {
-        const spaceBlock = new SpaceBlock(this, {
-          refer,
-          ...origin,
-        })
-        if (!closestSpaces[origin.type]) {
-          closestSpaces[origin.type] = spaceBlock
-        }
-        else if (spaceBlock.distance < closestSpaces[origin.type].distance) {
-          closestSpaces[origin.type] = spaceBlock
-        }
-      }
+  getViewportNodeRects() {
+    const results: Array<{ refer: TreeNode, rect: Rect }> = []
+    this.eachViewportNodes((refer, rect) => {
+      if (refer && !this.dragNodes.includes(refer))
+        results.push({ refer, rect })
     })
-    return closestSpaces as any
+    return results
   }
 
   calcViewportNodes() {
