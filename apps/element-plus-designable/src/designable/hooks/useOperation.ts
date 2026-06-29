@@ -1,7 +1,9 @@
-import { computed } from 'vue'
+import type { Operation } from '@silver-formily/designer-core'
+import type { Ref } from 'vue'
+import { reactiveComputed } from '../shared/reactive'
 import { useWorkspace } from './useWorkspace'
 
-export function useOperation() {
+export function useOperation(): Ref<Operation | null> {
   const workspaceRef = useWorkspace()
-  return computed(() => workspaceRef.value?.operation ?? null)
+  return reactiveComputed(() => workspaceRef.value?.operation ?? null)
 }

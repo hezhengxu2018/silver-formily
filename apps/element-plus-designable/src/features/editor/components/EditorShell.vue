@@ -1,63 +1,8 @@
 <script setup lang="ts">
 import { Designer, Viewport, Workspace } from '@/designable/containers'
-import { ComponentTreeWidget, ResourceWidget, RuntimeNode } from '@/designable/widgets'
+import { ComponentTreeWidget, ResourceWidget } from '@/designable/widgets'
+import { componentRegistry } from '../componentRegistry'
 import { engine, paletteResourceGroups } from '../designer'
-
-const componentNames = [
-  'ArrayCards',
-  'ArrayCollapse',
-  'ArrayItems',
-  'ArrayListTabs',
-  'ArrayTable',
-  'ArrayTabs',
-  'Autocomplete',
-  'Cascader',
-  'Checkbox',
-  'Checkbox.Group',
-  'ColorPicker',
-  'ColorPickerPanel',
-  'DatePicker',
-  'DatePickerPanel',
-  'Editable',
-  'EditablePopover',
-  'Form',
-  'FormButtonGroup',
-  'FormCollapse',
-  'FormGrid',
-  'FormGridColumn',
-  'FormItem',
-  'FormLayout',
-  'FormStep',
-  'FormTab',
-  'Input',
-  'Input.TextArea',
-  'InputNumber',
-  'InputTag',
-  'Mention',
-  'Password',
-  'PickerSelect',
-  'QueryForm',
-  'QueryFormItem',
-  'Radio',
-  'Radio.Group',
-  'Rate',
-  'Reset',
-  'Segmented',
-  'Select',
-  'SelectTable',
-  'Slider',
-  'Space',
-  'Submit',
-  'Switch',
-  'TimePicker',
-  'TimeSelect',
-  'Transfer',
-  'Tree',
-  'TreeSelect',
-  'Upload',
-]
-
-const components = Object.fromEntries(componentNames.map(name => [name, RuntimeNode]))
 </script>
 
 <template>
@@ -76,9 +21,7 @@ const components = Object.fromEntries(componentNames.map(name => [name, RuntimeN
         <div class="epd-designable-shell__center">
           <Workspace id="element-plus-designable">
             <Viewport>
-              <div class="epd-designable-shell__canvas">
-                <ComponentTreeWidget :components="components" />
-              </div>
+              <ComponentTreeWidget :components="componentRegistry" />
             </Viewport>
           </Workspace>
         </div>
@@ -110,11 +53,7 @@ const components = Object.fromEntries(componentNames.map(name => [name, RuntimeN
   }
 
   &__center {
-    @apply relative min-w-[30rem] flex-1;
-  }
-
-  &__canvas {
-    @apply mx-auto my-8 min-h-[42rem] w-[min(100%,50rem)] rounded-[1.25rem] bg-white/90 p-6 shadow-[0_24px_60px_rgba(15,23,42,0.08)];
+    @apply relative min-w-[30rem] flex-1 px-6;
   }
 }
 </style>

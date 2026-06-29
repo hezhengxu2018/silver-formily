@@ -1,7 +1,9 @@
-import { computed } from 'vue'
+import type { Viewport } from '@silver-formily/designer-core'
+import type { Ref } from 'vue'
+import { reactiveComputed } from '../shared/reactive'
 import { useWorkspace } from './useWorkspace'
 
-export function useViewport() {
+export function useViewport(): Ref<Viewport | null> {
   const workspaceRef = useWorkspace()
-  return computed(() => workspaceRef.value?.viewport ?? null)
+  return reactiveComputed(() => workspaceRef.value?.viewport ?? null)
 }

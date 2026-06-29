@@ -59,6 +59,7 @@
     "@silver-formily/typescript-config": "workspace:*",
     "@tailwindcss/postcss": "catalog:",
     "@vitejs/plugin-vue": "catalog:",
+    "@vitejs/plugin-vue-jsx": "catalog:",
     "postcss": "catalog:",
     "postcss-nested": "catalog:",
     "tailwindcss": "catalog:",

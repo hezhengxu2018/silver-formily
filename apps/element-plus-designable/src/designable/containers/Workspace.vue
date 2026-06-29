@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import type { Workspace } from '@silver-formily/designer-core'
-import { computed, provide, shallowRef, watchEffect } from 'vue'
+import { computed, provide } from 'vue'
 import { WorkspaceSymbol } from '../context'
 import { useDesigner } from '../hooks'
+import { reactiveWatchEffect } from '../shared/reactive'
 
 const props = withDefaults(defineProps<{
   description?: string
@@ -13,7 +13,6 @@ const props = withDefaults(defineProps<{
 })
 
 const designerRef = useDesigner()
-const workspaceRef = shallowRef<Workspace | null>(null)
 
 const workspaceProps = computed(() => ({
   description: props.description,
@@ -21,14 +20,15 @@ const workspaceProps = computed(() => ({
   title: props.title,
 }))
 
-provide(WorkspaceSymbol, workspaceRef)
+provide(WorkspaceSymbol, workspaceProps)
 
-watchEffect(() => {
+reactiveWatchEffect(() => {
   const designer = designerRef.value
   if (!designer)
     return
-  workspaceRef.value = designer.workbench.ensureWorkspace(workspaceProps.value)
-  designer.workbench.setActiveWorkspace(workspaceRef.value)
+
+  const workspace = designer.workbench.ensureWorkspace(workspaceProps.value)
+  designer.workbench.setActiveWorkspace(workspace)
 })
 </script>
 

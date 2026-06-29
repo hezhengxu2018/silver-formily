@@ -1,7 +1,9 @@
-import { computed } from 'vue'
+import type { TreeNode } from '@silver-formily/designer-core'
+import type { Ref } from 'vue'
+import { reactiveComputed } from '../shared/reactive'
 import { useOperation } from './useOperation'
 
-export function useTree() {
+export function useTree(): Ref<TreeNode | null> {
   const operationRef = useOperation()
-  return computed(() => operationRef.value?.tree ?? null)
+  return reactiveComputed(() => operationRef.value?.tree ?? null)
 }

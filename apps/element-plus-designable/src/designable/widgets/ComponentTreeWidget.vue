@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import type { Component } from 'vue'
 import { useObserver } from '@silver-formily/reactive-vue'
-import { onBeforeUnmount, provide, ref, toRef, watch } from 'vue'
+import { provide, toRef } from 'vue'
 import { DesignerComponentsSymbol } from '../context'
 import { useDesigner, useTree } from '../hooks'
-import TreeNodeWidget from './TreeNodeWidget.vue'
+import TreeNodeWidget from './TreeNodeWidget'
 
 const props = withDefaults(defineProps<{
   components?: Record<string, Component>
@@ -16,51 +16,28 @@ useObserver()
 
 const designerRef = useDesigner()
 const treeRef = useTree()
-const renderTick = ref(0)
 
 provide(DesignerComponentsSymbol, toRef(props, 'components'))
 
-const refreshEvents = new Set([
-  'append:node',
-  'insert:after',
-  'insert:before',
-  'insert:children',
-  'prepend:node',
-  'remove:node',
-  'update:children',
-  'update:node:props',
-  'wrap:node',
-])
-
-let disposeEngineEvents: (() => void) | undefined
-
-watch(
-  designerRef,
-  (designer) => {
-    disposeEngineEvents?.()
-    disposeEngineEvents = undefined
-
-    if (!designer)
-      return
-
-    disposeEngineEvents = designer.subscribe((event) => {
-      if (refreshEvents.has(event.type))
-        renderTick.value += 1
-    })
-  },
-  { immediate: true },
-)
-
-onBeforeUnmount(() => {
-  disposeEngineEvents?.()
-})
+function getRootNodeAttrs() {
+  const tree = treeRef.value
+  const designer = designerRef.value
+  const nodeIdAttrName = designer?.props.nodeIdAttrName
+  if (!tree || !nodeIdAttrName)
+    return {}
+  return {
+    [nodeIdAttrName]: tree.id,
+  }
+}
 </script>
 
 <template>
-  <div class="dn-component-tree">
+  <div
+    class="dn-component-tree"
+    v-bind="getRootNodeAttrs()"
+  >
     <TreeNodeWidget
       v-if="treeRef"
-      :key="`${treeRef.id}-${renderTick}`"
       :node="treeRef"
     />
   </div>
@@ -70,6 +47,10 @@ onBeforeUnmount(() => {
 @reference "../../styles/globals.css";
 
 .dn-component-tree {
-  @apply min-h-full;
+  @apply mx-auto my-8 flex min-h-[42rem] min-w-full w-[min(100%,50rem)] rounded-[1.25rem] bg-white/90 shadow-[0_24px_60px_rgba(15,23,42,0.08)];
+
+  > * {
+    @apply min-h-full min-w-full;
+  }
 }
 </style>
