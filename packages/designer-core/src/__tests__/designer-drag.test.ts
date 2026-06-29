@@ -293,6 +293,38 @@ describe('designer drag behavior', () => {
     expect(secondEngine.findNodeById('scoped-source-id')).toBeUndefined()
   })
 
+  it('does not register detached non-source nodes in source lookup', () => {
+    const engine = new Engine({})
+
+    engine.createNode({
+      id: 'detached-non-source-node',
+      componentName: 'Field',
+    })
+
+    expect(engine.findNodeById('detached-non-source-node')).toBeUndefined()
+  })
+
+  it('disposes workspaces and source nodes on unmount', () => {
+    const engine = new Engine({})
+    const workspace = engine.workbench.ensureWorkspace()
+    const disposeSpy = vi.spyOn(workspace, 'dispose')
+    engine.createNode({
+      id: 'source-node-before-unmount',
+      componentName: 'Field',
+      isSourceNode: true,
+    })
+
+    expect(engine.findNodeById('source-node-before-unmount')).toBeTruthy()
+
+    engine.unmount()
+
+    expect(disposeSpy).toHaveBeenCalledTimes(1)
+    expect(engine.workbench.workspaces).toEqual([])
+    expect(engine.workbench.currentWorkspace).toBeNull()
+    expect(engine.workbench.activeWorkspace).toBeNull()
+    expect(engine.findNodeById('source-node-before-unmount')).toBeUndefined()
+  })
+
   it('refreshes source node lookup after replacing source children', () => {
     const engine = new Engine({})
     const source = engine.createNode({

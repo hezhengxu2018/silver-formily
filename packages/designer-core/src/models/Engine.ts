@@ -100,7 +100,7 @@ export class Engine extends Event {
 
   createNode(node: ITreeNode, parent?: TreeNode) {
     const treeNode = new TreeNode(node, parent)
-    if (!parent || treeNode.isSourceNode)
+    if (treeNode.isSourceNode)
       this.sourceNodes.registerTree(treeNode)
     return treeNode
   }
@@ -110,7 +110,13 @@ export class Engine extends Event {
   }
 
   unmount() {
+    this.dispose()
+  }
+
+  dispose() {
     this.detachEvents()
+    this.workbench.dispose()
+    this.sourceNodes.clear()
   }
 
   static defaultProps: IEngineProps<Engine> = {

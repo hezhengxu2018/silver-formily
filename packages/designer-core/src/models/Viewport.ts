@@ -4,6 +4,7 @@ import type {
 
   Rect,
 } from '@silver-formily/designer-shared'
+import type { IViewportData } from '../internals/ViewportDOMAdapter'
 import type { Engine } from './Engine'
 import type { TreeNode } from './TreeNode'
 import type { Workspace } from './Workspace'
@@ -18,6 +19,8 @@ import {
 import { action, define, observable } from '@silver-formily/reactive'
 import { ViewportDOMAdapter } from '../internals/ViewportDOMAdapter'
 
+export type { IViewportData } from '../internals/ViewportDOMAdapter'
+
 export interface IViewportProps {
   engine: Engine
   workspace: Workspace
@@ -26,13 +29,6 @@ export interface IViewportProps {
   nodeIdAttrName: string
   moveSensitive?: boolean
   moveInsertionType?: IViewportMoveInsertionType
-}
-
-export interface IViewportData {
-  scrollX?: number
-  scrollY?: number
-  width?: number
-  height?: number
 }
 
 export type IViewportMoveInsertionType = 'all' | 'inline' | 'block'

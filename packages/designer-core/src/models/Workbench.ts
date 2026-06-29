@@ -39,6 +39,7 @@ export class Workbench {
       removeWorkspace: action,
       setActiveWorkspace: action,
       setWorkbenchType: action,
+      dispose: action,
     })
   }
 
@@ -126,5 +127,12 @@ export class Workbench {
 
   eachWorkspace<T>(callbackFn: (value: Workspace, index: number) => T) {
     this.workspaces.forEach(callbackFn)
+  }
+
+  dispose() {
+    this.workspaces.forEach(workspace => workspace.dispose())
+    this.workspaces = []
+    this.currentWorkspace = null
+    this.activeWorkspace = null
   }
 }

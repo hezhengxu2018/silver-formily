@@ -8,6 +8,7 @@ import {
   calcSpaceBlockSnapLine,
   calcSpaceBlockSnapLineDistance,
   isEqualSpaceBlockDistance,
+  shouldExtendSpaceBlock,
   TRANSFORM_HELPER_THRESHOLD,
 } from '../internals/TransformGeometry'
 import { SnapLine } from './SnapLine'
@@ -67,7 +68,12 @@ export class SpaceBlock {
   }
 
   get needExtendsLine() {
-    return !!this.extendsLine
+    return shouldExtendSpaceBlock(
+      this.type,
+      this.rect,
+      this.referRect,
+      this.helper.dragNodesRect,
+    )
   }
 
   get crossReferRect() {

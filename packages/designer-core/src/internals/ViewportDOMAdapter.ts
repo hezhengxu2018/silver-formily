@@ -2,7 +2,6 @@ import type {
   IPoint,
   IRect,
 } from '@silver-formily/designer-shared'
-import type { IViewportData } from '../models/Viewport'
 import {
   calcBoundingRect,
   isHTMLElement,
@@ -14,6 +13,13 @@ const globalWindow = globalThis as unknown as Window
 export interface IViewportDOMAdapterProps {
   getContentWindow: () => Window
   getViewportElement: () => HTMLElement
+}
+
+export interface IViewportData {
+  scrollX?: number
+  scrollY?: number
+  width?: number
+  height?: number
 }
 
 export class ViewportDOMAdapter {
