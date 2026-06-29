@@ -5,9 +5,17 @@ import { MouseMoveEvent } from '../events'
 export class MouseMoveDriver extends EventDriver<Engine> {
   request = null
 
-  onMouseMove = (e: MouseEvent) => {
-    this.request = requestAnimationFrame(() => {
+  cancelRequest() {
+    if (this.request != null) {
       cancelAnimationFrame(this.request)
+      this.request = null
+    }
+  }
+
+  onMouseMove = (e: MouseEvent) => {
+    this.cancelRequest()
+    this.request = requestAnimationFrame(() => {
+      this.request = null
       this.dispatch(
         new MouseMoveEvent({
           clientX: e.clientX,
@@ -31,5 +39,6 @@ export class MouseMoveDriver extends EventDriver<Engine> {
     this.removeEventListener('mousemove', this.onMouseMove, {
       mode: 'onlyOne',
     })
+    this.cancelRequest()
   }
 }

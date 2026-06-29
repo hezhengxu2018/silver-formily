@@ -5,8 +5,16 @@ import { ViewportScrollEvent } from '../events'
 export class ViewportScrollDriver extends EventDriver<Engine> {
   request = null
 
+  cancelRequest() {
+    if (this.request != null) {
+      cancelAnimationFrame(this.request)
+      this.request = null
+    }
+  }
+
   onScroll = (e: UIEvent) => {
     e.preventDefault()
+    this.cancelRequest()
     this.request = requestAnimationFrame(() => {
       this.dispatch(
         new ViewportScrollEvent({
@@ -20,7 +28,7 @@ export class ViewportScrollDriver extends EventDriver<Engine> {
           target: e.target,
         }),
       )
-      cancelAnimationFrame(this.request)
+      this.request = null
     })
   }
 
@@ -30,5 +38,6 @@ export class ViewportScrollDriver extends EventDriver<Engine> {
 
   detach() {
     this.removeEventListener('scroll', this.onScroll)
+    this.cancelRequest()
   }
 }

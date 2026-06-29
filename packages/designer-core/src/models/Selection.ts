@@ -29,6 +29,7 @@ export class Selection {
       selected: observable,
       select: action,
       batchSelect: action,
+      setSelected: action,
       add: action,
       remove: action,
       clear: action,
@@ -73,11 +74,7 @@ export class Selection {
   }
 
   batchSelect(ids: string[] | TreeNode[]) {
-    this.selected = this.mapIds(ids)
-    this.indexes = this.selected.reduce((buf, id) => {
-      buf[id] = true
-      return buf
-    }, {})
+    this.setSelected(ids)
     this.trigger(SelectNodeEvent)
   }
 
@@ -87,8 +84,18 @@ export class Selection {
     this.batchSelect(ids)
   }
 
+  setSelected(ids: string[] | TreeNode[]) {
+    this.selected = this.mapIds(ids)
+    this.indexes = this.selected.reduce((buf, id) => {
+      buf[id] = true
+      return buf
+    }, {})
+  }
+
   get selectedNodes() {
-    return this.selected.map(id => this.operation.tree.findById(id))
+    return this.selected
+      .map(id => this.operation.tree.findById(id))
+      .filter((node): node is TreeNode => !!node)
   }
 
   get first() {

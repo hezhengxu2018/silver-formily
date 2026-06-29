@@ -133,6 +133,65 @@ describe('designer drag behavior', () => {
     )
   })
 
+  it('ignores stale selected ids when resolving selected nodes', () => {
+    const engine = new Engine({
+      defaultComponentTree: {
+        id: 'selection-root-stale',
+        componentName: 'Root',
+        children: [
+          {
+            id: 'selection-a-stale',
+            componentName: 'Field',
+          },
+          {
+            id: 'selection-b-stale',
+            componentName: 'Field',
+          },
+        ],
+      },
+    })
+    const selection = engine.workbench.ensureWorkspace().operation.selection
+    const node = engine.findNodeById('selection-b-stale')
+
+    selection.batchSelect(['selection-missing-stale', 'selection-a-stale'])
+
+    expect(selection.selectedNodes.map(node => node.id)).toEqual([
+      'selection-a-stale',
+    ])
+    expect(() => selection.crossAddTo(node)).not.toThrow()
+  })
+
+  it('keeps selection indexes in sync when restoring operation state', () => {
+    const engine = new Engine({
+      defaultComponentTree: {
+        id: 'selection-root-from',
+        componentName: 'Root',
+        children: [
+          {
+            id: 'selection-a-from',
+            componentName: 'Field',
+          },
+          {
+            id: 'selection-b-from',
+            componentName: 'Field',
+          },
+        ],
+      },
+    })
+    const operation = engine.workbench.ensureWorkspace().operation
+
+    operation.selection.select('selection-a-from')
+    expect(operation.selection.has('selection-a-from')).toBe(true)
+
+    operation.from({
+      selected: ['selection-b-from'],
+    })
+
+    expect(operation.selection.selected).toEqual(['selection-b-from'])
+    expect(operation.selection.has('selection-a-from')).toBe(false)
+    expect(operation.selection.has('selection-b-from')).toBe(true)
+  })
+
   it('requires root containers to declare droppable behavior before appending nodes', () => {
     const blockedEngine = new Engine({
       defaultComponentTree: {

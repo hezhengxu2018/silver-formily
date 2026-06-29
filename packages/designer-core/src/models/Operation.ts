@@ -84,7 +84,7 @@ export class Operation {
       this.tree.from(operation.tree)
     }
     if (operation.selected) {
-      this.selection.selected = operation.selected
+      this.selection.setSelected(operation.selected)
     }
   }
 
