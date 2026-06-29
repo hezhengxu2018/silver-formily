@@ -37,8 +37,6 @@ export interface INodeFinder {
   (node: TreeNode): boolean
 }
 
-const TreeNodes = new Map<string, TreeNode>()
-
 const CommonDesignerPropsMap = new Map<string, IDesignerControllerProps>()
 
 function removeNode(node: TreeNode) {
@@ -49,9 +47,13 @@ function removeNode(node: TreeNode) {
   }
 }
 
+function registerTreeNode(node: TreeNode) {
+  node.root?.nodeRegistry?.set(node.id, node)
+}
+
 function unregisterTreeNode(node: TreeNode) {
   node.children.forEach(unregisterTreeNode)
-  TreeNodes.delete(node.id)
+  node.root?.nodeRegistry?.delete(node.id)
 }
 
 function resetNodesParent(nodes: TreeNode[], parent: TreeNode) {
@@ -61,8 +63,12 @@ function resetNodesParent(nodes: TreeNode[], parent: TreeNode) {
   }
 
   const shallowReset = (node: TreeNode) => {
+    if (node.root && node.root !== parent.root) {
+      unregisterTreeNode(node)
+    }
     node.parent = parent
     node.root = parent.root
+    registerTreeNode(node)
     resetDepth(node)
   }
 
@@ -82,7 +88,7 @@ function resetNodesParent(nodes: TreeNode[], parent: TreeNode) {
       else if (!node.isRoot && node.isInOperation) {
         node.operation?.selection.remove(node)
         removeNode(node)
-        shallowReset(node)
+        deepReset(node)
       }
       else {
         deepReset(node)
@@ -91,8 +97,8 @@ function resetNodesParent(nodes: TreeNode[], parent: TreeNode) {
     else {
       deepReset(node)
     }
-    if (!TreeNodes.has(node.id)) {
-      TreeNodes.set(node.id, node)
+    if (!node.root?.nodeRegistry?.has(node.id)) {
+      registerTreeNode(node)
       CommonDesignerPropsMap.set(node.componentName, node.designerProps)
     }
     return node
@@ -110,6 +116,8 @@ function resolveDesignerProps(node: TreeNode, props: IDesignerControllerProps) {
 }
 
 export class TreeNode {
+  nodeRegistry: Map<string, TreeNode>
+
   parent: TreeNode
 
   root: TreeNode
@@ -141,13 +149,14 @@ export class TreeNode {
       this.parent = parent
       this.depth = parent.depth + 1
       this.root = parent.root
-      TreeNodes.set(this.id, this)
+      registerTreeNode(this)
     }
     else {
       this.root = this
       this.rootOperation = node.operation
+      this.nodeRegistry = node.operation?.treeNodes || new Map()
       this.isSelfSourceNode = node.isSourceNode || false
-      TreeNodes.set(this.id, this)
+      registerTreeNode(this)
     }
     if (node) {
       this.from(node)
@@ -490,7 +499,7 @@ export class TreeNode {
     if (this.id === id)
       return this
     if (this.children?.length > 0) {
-      return TreeNodes.get(id)
+      return this.root?.nodeRegistry?.get(id)
     }
   }
 
@@ -775,9 +784,9 @@ export class TreeNode {
       }),
       () => {
         if (node.id && node.id !== this.id) {
-          TreeNodes.delete(this.id)
-          TreeNodes.set(node.id, this)
+          this.root?.nodeRegistry?.delete(this.id)
           this.id = node.id
+          registerTreeNode(this)
         }
         if (node.componentName) {
           this.componentName = node.componentName
@@ -814,8 +823,8 @@ export class TreeNode {
     return new TreeNode(node, parent)
   }
 
-  static findById(id: string) {
-    return TreeNodes.get(id)
+  static findById(_id: string) {
+    return undefined
   }
 
   static remove(nodes: TreeNode[] = []) {

@@ -1,5 +1,6 @@
 import type { IEngineProps } from '../types'
 import type { ITreeNode } from './TreeNode'
+import type { Workspace } from './Workspace'
 import { Event, uid } from '@silver-formily/designer-shared'
 import { Cursor } from './Cursor'
 import { Keyboard } from './Keyboard'
@@ -23,6 +24,8 @@ export class Engine extends Event {
   keyboard: Keyboard
 
   screen: Screen
+
+  sourceNodes = new Map<string, TreeNode>()
 
   constructor(props: IEngineProps<Engine>) {
     super(props)
@@ -60,8 +63,26 @@ export class Engine extends Event {
     return results
   }
 
-  findNodeById(id: string) {
-    return TreeNode.findById(id)
+  findNodeById(id: string, workspace?: Workspace) {
+    if (!id)
+      return
+    if (workspace)
+      return workspace.operation.tree.findById(id) || this.sourceNodes.get(id)
+    const activeWorkspace
+      = this.workbench.activeWorkspace || this.workbench.currentWorkspace
+    if (activeWorkspace) {
+      const node = activeWorkspace.operation.tree.findById(id)
+      if (node)
+        return node
+    }
+    for (let i = 0; i < this.workbench.workspaces.length; i++) {
+      if (this.workbench.workspaces[i] === activeWorkspace)
+        continue
+      const node = this.workbench.workspaces[i].operation.tree.findById(id)
+      if (node)
+        return node
+    }
+    return this.sourceNodes.get(id)
   }
 
   findMovingNodes(): TreeNode[] {
@@ -77,7 +98,13 @@ export class Engine extends Event {
   }
 
   createNode(node: ITreeNode, parent?: TreeNode) {
-    return new TreeNode(node, parent)
+    const treeNode = new TreeNode(node, parent)
+    if (!parent) {
+      treeNode.eachTree((node) => {
+        this.sourceNodes.set(node.id, node)
+      })
+    }
+    return treeNode
   }
 
   mount() {
