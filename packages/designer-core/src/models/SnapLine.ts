@@ -3,12 +3,17 @@ import type {
   IPoint,
   Rect,
 } from '@silver-formily/designer-shared'
+import type { TransformHelper } from './TransformHelper'
 import type { TreeNode } from './TreeNode'
 import {
-  calcOffsetOfSnapLineSegmentToEdge,
   calcRectOfAxisLineSegment,
 } from '@silver-formily/designer-shared'
-import { TransformHelper } from './TransformHelper'
+import {
+  calcSnapEdge,
+  calcSnapLineResize,
+  calcSnapLineTranslate,
+  TRANSFORM_HELPER_THRESHOLD,
+} from '../internals/TransformGeometry'
 
 export type ISnapLineType = 'ruler' | 'space-block' | 'normal'
 
@@ -50,7 +55,7 @@ export class SnapLine {
   }
 
   get closest() {
-    return this.distance < TransformHelper.threshold
+    return this.distance < TRANSFORM_HELPER_THRESHOLD
   }
 
   get rect() {
@@ -63,13 +68,10 @@ export class SnapLine {
     const parent = node.parent
     const dragNodeRect = node.getValidElementOffsetRect()
     const parentRect = parent.getValidElementOffsetRect()
-    const edgeOffset = calcOffsetOfSnapLineSegmentToEdge(this, dragNodeRect)
-    if (this.direction === 'h') {
-      translate.y = this.start.y - parentRect.y - edgeOffset.y
-    }
-    else {
-      translate.x = this.start.x - parentRect.x - edgeOffset.x
-    }
+    Object.assign(
+      translate,
+      calcSnapLineTranslate(this, translate, dragNodeRect, parentRect),
+    )
   }
 
   resize(node: TreeNode, rect: Rect) {
@@ -78,68 +80,21 @@ export class SnapLine {
     const parent = node.parent
     const dragNodeRect = node.getValidElementOffsetRect()
     const parentRect = parent.getValidElementOffsetRect()
-    const edgeOffset = calcOffsetOfSnapLineSegmentToEdge(this, dragNodeRect)
     const cursorRect = this.helper.cursorDragNodesRect
-    const snapEdge = this.snapEdge(rect)
-    if (this.direction === 'h') {
-      const y = this.start.y - parentRect.y - edgeOffset.y
-      switch (this.helper.direction) {
-        case 'left-top':
-        case 'center-top':
-        case 'right-top':
-          if (snapEdge !== 'ht')
-            return
-          rect.y = y
-          rect.height = cursorRect.bottom - y
-          break
-        case 'left-bottom':
-        case 'center-bottom':
-        case 'right-bottom':
-          if (snapEdge !== 'hb')
-            return
-          rect.height = this.start.y - cursorRect.top
-          break
-      }
-    }
-    else {
-      const x = this.start.x - parentRect.x - edgeOffset.x
-      switch (this.helper.direction) {
-        case 'left-top':
-        case 'left-bottom':
-        case 'left-center':
-          if (snapEdge !== 'vl')
-            return
-          rect.x = x
-          rect.width = cursorRect.right - x
-          break
-        case 'right-center':
-        case 'right-top':
-        case 'right-bottom':
-          if (snapEdge !== 'vr')
-            return
-          rect.width = this.start.x - cursorRect.left
-          break
-      }
-    }
+    const nextRect = calcSnapLineResize({
+      line: this,
+      direction: this.helper.direction,
+      rect,
+      cursorRect,
+      dragNodeRect,
+      parentRect,
+      threshold: TRANSFORM_HELPER_THRESHOLD,
+    })
+    if (nextRect)
+      Object.assign(rect, nextRect)
   }
 
   snapEdge(rect: Rect) {
-    const threshold = TransformHelper.threshold
-    if (this.direction === 'h') {
-      if (Math.abs(this.start.y - rect.top) < threshold)
-        return 'ht'
-      if (Math.abs(this.start.y - (rect.top + rect.height / 2)) < threshold)
-        return 'hc'
-      if (Math.abs(this.start.y - rect.bottom) < threshold)
-        return 'hb'
-    }
-    else {
-      if (Math.abs(this.start.x - rect.left) < threshold)
-        return 'vl'
-      if (Math.abs(this.start.x - (rect.left + rect.width / 2)) < threshold)
-        return 'vc'
-      if (Math.abs(this.start.x - rect.right) < threshold)
-        return 'vr'
-    }
+    return calcSnapEdge(this, rect, TRANSFORM_HELPER_THRESHOLD)
   }
 }

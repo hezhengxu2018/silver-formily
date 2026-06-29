@@ -2,36 +2,21 @@ import type {
   IPoint,
   Rect,
 } from '@silver-formily/designer-shared'
+import type { ClosestPosition } from '../internals/MoveGeometry'
 import type { Operation } from './Operation'
 import type { Viewport } from './Viewport'
-import {
-  calcDistanceOfPointToRect,
-  calcDistancePointToEdge,
-  isNearAfter,
-  isPointInRect,
-} from '@silver-formily/designer-shared'
 import { action, define, observable } from '@silver-formily/reactive'
 import { DragNodeEvent, DropNodeEvent } from '../events'
+import {
+  calcClosestPosition,
+  calcClosestRectByPosition,
+  ClosestPosition as ClosestPositionValue,
+  findClosestNodeByRectDistance,
+} from '../internals/MoveGeometry'
 import { CursorDragType } from './Cursor'
 import { TreeNode } from './TreeNode'
 
-export enum ClosestPosition {
-  Before = 'BEFORE',
-  ForbidBefore = 'FORBID_BEFORE',
-  After = 'After',
-  ForbidAfter = 'FORBID_AFTER',
-  Upper = 'UPPER',
-  ForbidUpper = 'FORBID_UPPER',
-  Under = 'UNDER',
-  ForbidUnder = 'FORBID_UNDER',
-  Inner = 'INNER',
-  ForbidInner = 'FORBID_INNER',
-  InnerAfter = 'INNER_AFTER',
-  ForbidInnerAfter = 'FORBID_INNER_AFTER',
-  InnerBefore = 'INNER_BEFORE',
-  ForbidInnerBefore = 'FORBID_INNER_BEFORE',
-  Forbid = 'FORBID',
-}
+export { ClosestPosition } from '../internals/MoveGeometry'
 
 export interface IMoveHelperProps {
   operation: Operation
@@ -112,114 +97,28 @@ export class MoveHelper {
   calcClosestPosition(point: IPoint, viewport: Viewport): ClosestPosition {
     const closestNode = this.closestNode
     if (!closestNode || !viewport.isPointInViewport(point))
-      return ClosestPosition.Forbid
+      return ClosestPositionValue.Forbid
     const closestRect = viewport.getValidNodeRect(closestNode)
-    const isInline = this.getClosestLayout(viewport) === 'horizontal'
     if (!closestRect) {
       return
     }
-    const isAfter = isNearAfter(
+    const parentClosestNode = this.getValidParentSiblingNode(closestNode)
+    const result = calcClosestPosition({
       point,
-      closestRect,
-      viewport.moveInsertionType === 'block' ? false : isInline,
-    )
-    const getValidParent = (node: TreeNode) => {
-      if (!node)
-        return
-      if (node.parent?.allowSibling(this.dragNodes))
-        return node.parent
-      return getValidParent(node.parent)
+      rect: closestRect,
+      moveSensitive: viewport.moveSensitive,
+      moveInsertionType: viewport.moveInsertionType,
+      layout: this.getClosestLayout(viewport),
+      canAppend: closestNode.allowAppend(this.dragNodes),
+      canSibling: closestNode.allowSibling(this.dragNodes),
+      canUseParentSibling: !!parentClosestNode,
+      containsDragNodes: closestNode.contains(...this.dragNodes),
+      isRoot: closestNode === closestNode.root,
+    })
+    if (result.useParentClosestNode) {
+      this.closestNode = parentClosestNode
     }
-    if (isPointInRect(point, closestRect, viewport.moveSensitive)) {
-      if (!closestNode.allowAppend(this.dragNodes)) {
-        if (!closestNode.allowSibling(this.dragNodes)) {
-          const parentClosestNode = getValidParent(closestNode)
-          if (parentClosestNode) {
-            this.closestNode = parentClosestNode
-          }
-          if (isInline) {
-            if (parentClosestNode) {
-              if (isAfter) {
-                return ClosestPosition.After
-              }
-              return ClosestPosition.Before
-            }
-            if (isAfter) {
-              return ClosestPosition.ForbidAfter
-            }
-            return ClosestPosition.ForbidBefore
-          }
-          else {
-            if (parentClosestNode) {
-              if (isAfter) {
-                return ClosestPosition.Under
-              }
-              return ClosestPosition.Upper
-            }
-            if (isAfter) {
-              return ClosestPosition.ForbidUnder
-            }
-            return ClosestPosition.ForbidUpper
-          }
-        }
-        else {
-          if (isInline) {
-            return isAfter ? ClosestPosition.After : ClosestPosition.Before
-          }
-          else {
-            return isAfter ? ClosestPosition.Under : ClosestPosition.Upper
-          }
-        }
-      }
-      if (closestNode.contains(...this.dragNodes)) {
-        if (isAfter) {
-          return ClosestPosition.InnerAfter
-        }
-        return ClosestPosition.InnerBefore
-      }
-      else {
-        return ClosestPosition.Inner
-      }
-    }
-    else if (closestNode === closestNode.root) {
-      return isAfter ? ClosestPosition.InnerAfter : ClosestPosition.InnerBefore
-    }
-    else {
-      if (!closestNode.allowSibling(this.dragNodes)) {
-        const parentClosestNode = getValidParent(closestNode)
-        if (parentClosestNode) {
-          this.closestNode = parentClosestNode
-        }
-        if (isInline) {
-          if (parentClosestNode) {
-            if (isAfter) {
-              return ClosestPosition.After
-            }
-            return ClosestPosition.Before
-          }
-          return isAfter
-            ? ClosestPosition.ForbidAfter
-            : ClosestPosition.ForbidBefore
-        }
-        else {
-          if (parentClosestNode) {
-            if (isAfter) {
-              return ClosestPosition.Under
-            }
-            return ClosestPosition.Upper
-          }
-          return isAfter
-            ? ClosestPosition.ForbidUnder
-            : ClosestPosition.ForbidUpper
-        }
-      }
-      if (isInline) {
-        return isAfter ? ClosestPosition.After : ClosestPosition.Before
-      }
-      else {
-        return isAfter ? ClosestPosition.Under : ClosestPosition.Upper
-      }
-    }
+    return result.position
   }
 
   calcClosestNode(point: IPoint, viewport: Viewport): TreeNode {
@@ -228,22 +127,22 @@ export class MoveHelper {
       if (!touchNodeRect)
         return
       if (this.touchNode?.children?.length) {
-        const touchDistance = calcDistancePointToEdge(point, touchNodeRect)
-        let minDistance = touchDistance
-        let minDistanceNode = this.touchNode
+        const candidates: Array<{ node: TreeNode, rect: Rect }> = []
         this.touchNode.eachChildren((node) => {
           const rect = viewport.getElementRectById(node.id)
           if (!rect)
             return
-          const distance = isPointInRect(point, rect, viewport.moveSensitive)
-            ? 0
-            : calcDistanceOfPointToRect(point, rect)
-          if (distance <= minDistance) {
-            minDistance = distance
-            minDistanceNode = node
-          }
+          candidates.push({ node, rect })
         })
-        return minDistanceNode
+        return findClosestNodeByRectDistance(
+          point,
+          {
+            node: this.touchNode,
+            rect: touchNodeRect,
+          },
+          candidates,
+          viewport.moveSensitive,
+        )
       }
       else {
         return this.touchNode
@@ -257,15 +156,11 @@ export class MoveHelper {
     if (!closestNode || !closestDirection)
       return
     const closestRect = viewport.getValidNodeRect(closestNode)
-    if (
-      closestDirection === ClosestPosition.InnerAfter
-      || closestDirection === ClosestPosition.InnerBefore
-    ) {
-      return viewport.getChildrenRect(closestNode)
-    }
-    else {
-      return closestRect
-    }
+    return calcClosestRectByPosition(
+      closestDirection,
+      closestRect,
+      viewport.getChildrenRect(closestNode),
+    )
   }
 
   calcClosestOffsetRect(
@@ -276,15 +171,19 @@ export class MoveHelper {
     if (!closestNode || !closestDirection)
       return
     const closestRect = viewport.getValidNodeOffsetRect(closestNode)
-    if (
-      closestDirection === ClosestPosition.InnerAfter
-      || closestDirection === ClosestPosition.InnerBefore
-    ) {
-      return viewport.getChildrenOffsetRect(closestNode)
-    }
-    else {
-      return closestRect
-    }
+    return calcClosestRectByPosition(
+      closestDirection,
+      closestRect,
+      viewport.getChildrenOffsetRect(closestNode),
+    )
+  }
+
+  getValidParentSiblingNode(node: TreeNode) {
+    if (!node)
+      return
+    if (node.parent?.allowSibling(this.dragNodes))
+      return node.parent
+    return this.getValidParentSiblingNode(node.parent)
   }
 
   dragStart(props: IMoveHelperDragStartProps) {

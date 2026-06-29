@@ -293,6 +293,58 @@ describe('designer drag behavior', () => {
     expect(secondEngine.findNodeById('scoped-source-id')).toBeUndefined()
   })
 
+  it('refreshes source node lookup after replacing source children', () => {
+    const engine = new Engine({})
+    const source = engine.createNode({
+      id: 'source-registry-root',
+      componentName: 'SourceRoot',
+      isSourceNode: true,
+      children: [
+        {
+          id: 'source-registry-old-child',
+          componentName: 'Field',
+        },
+      ],
+    })
+
+    expect(engine.findNodeById('source-registry-old-child')?.id).toBe(
+      'source-registry-old-child',
+    )
+
+    source.from({
+      id: 'source-registry-root',
+      componentName: 'SourceRoot',
+      children: [
+        {
+          id: 'source-registry-new-child',
+          componentName: 'Field',
+        },
+      ],
+    })
+
+    expect(engine.findNodeById('source-registry-old-child')).toBeUndefined()
+    expect(engine.findNodeById('source-registry-new-child')?.id).toBe(
+      'source-registry-new-child',
+    )
+  })
+
+  it('refreshes source node lookup after source root id changes', () => {
+    const engine = new Engine({})
+    const source = engine.createNode({
+      id: 'source-registry-before-rename',
+      componentName: 'SourceRoot',
+      isSourceNode: true,
+    })
+
+    source.from({
+      id: 'source-registry-after-rename',
+      componentName: 'SourceRoot',
+    })
+
+    expect(engine.findNodeById('source-registry-before-rename')).toBeUndefined()
+    expect(engine.findNodeById('source-registry-after-rename')).toBe(source)
+  })
+
   it('ignores stale selected ids when resolving selected nodes', () => {
     const engine = new Engine({
       defaultComponentTree: {

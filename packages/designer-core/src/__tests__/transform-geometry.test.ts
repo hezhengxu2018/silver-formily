@@ -4,8 +4,13 @@ import {
   calcAroundSnapLines,
   calcAroundSpaceBlocks,
   calcBaseResize,
+  calcCrossSpaceBlockRect,
   calcCursorDragNodesRect,
   calcSnapEdge,
+  calcSnapLineResize,
+  calcSnapLineTranslate,
+  calcSpaceBlockSnapLine,
+  isEqualSpaceBlockDistance,
 } from '../internals/TransformGeometry'
 
 describe('transform geometry', () => {
@@ -103,5 +108,60 @@ describe('transform geometry', () => {
     )
 
     expect(edge).toBe('vr')
+  })
+
+  it('calculates snap line translate offsets', () => {
+    const translate = calcSnapLineTranslate(
+      new LineSegment({ x: 30, y: 0 }, { x: 30, y: 40 }),
+      { x: 0, y: 0 },
+      new Rect(10, 10, 20, 20),
+      new Rect(5, 5, 100, 100),
+    )
+
+    expect(translate).toEqual({
+      x: 5,
+      y: 0,
+    })
+  })
+
+  it('calculates snap line resize patches', () => {
+    const rect = calcSnapLineResize({
+      line: new LineSegment({ x: 30, y: 0 }, { x: 30, y: 40 }),
+      direction: 'right-center',
+      rect: new Rect(10, 10, 20, 20),
+      cursorRect: new Rect(10, 10, 20, 20),
+      dragNodeRect: new Rect(10, 10, 20, 20),
+      parentRect: new Rect(5, 5, 100, 100),
+      threshold: 6,
+    })
+
+    expect(rect).toMatchObject({
+      x: 10,
+      y: 10,
+      width: 20,
+      height: 20,
+    })
+  })
+
+  it('calculates space block cross rects and snap lines', () => {
+    const spaceRect = new Rect(20, 0, 10, 10)
+    const referRect = new Rect(30, 0, 10, 10)
+    const dragRect = new Rect(0, 0, 10, 10)
+
+    expect(
+      calcCrossSpaceBlockRect(spaceRect, referRect, dragRect, 'right', 'drag'),
+    ).toMatchObject({
+      x: 20,
+      y: 0,
+      width: 10,
+      height: 10,
+    })
+    expect(
+      calcSpaceBlockSnapLine('right', spaceRect, referRect),
+    ).toMatchObject({
+      start: { x: 20, y: 0 },
+      end: { x: 20, y: 10 },
+    })
+    expect(isEqualSpaceBlockDistance(10, 14, 6)).toBe(true)
   })
 })
