@@ -1,4 +1,4 @@
-import type { Event, EventContainer, IEventProps } from '@silver-formily/designer-shared'
+import type { Event, IEventProps } from '@silver-formily/designer-shared'
 import type { ISchema } from '@silver-formily/json-schema'
 import type {
   Engine,
@@ -13,11 +13,6 @@ import type {
 
 export type IEngineProps<T = Event> = IEventProps<T> & {
   shortcuts?: Shortcut[]
-  useDefaultDrivers?: boolean
-  useDefaultEffects?: boolean
-  useDefaultShortcuts?: boolean
-  mountTarget?: EventContainer | false
-  autoAttachEvents?: boolean
   sourceIdAttrName?: string // 拖拽源Id的dom属性名
   nodeIdAttrName?: string // 节点Id的dom属性名
   contentEditableAttrName?: string // 原地编辑属性名
@@ -26,6 +21,7 @@ export type IEngineProps<T = Event> = IEventProps<T> & {
   outlineNodeIdAttrName?: string // 大纲树节点ID的dom属性名
   nodeSelectionIdAttrName?: string // 节点工具栏属性名
   nodeDragHandlerAttrName?: string // 节点拖拽手柄属性名
+  screenResizeHandlerAttrName?: string
   nodeResizeHandlerAttrName?: string // 节点尺寸拖拽手柄属性名
   nodeTranslateAttrName?: string // 节点自由布局的属性名
   defaultComponentTree?: ITreeNode // 默认组件树

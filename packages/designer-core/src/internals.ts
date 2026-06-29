@@ -29,9 +29,12 @@ export function getBrowserLanguage() {
   if (!globalThis.navigator) {
     return 'en'
   }
+  const navigator = globalThis.navigator as Navigator & {
+    browserlanguage?: string
+  }
   return (
-    (globalThis.navigator as Navigator & { browserlanguage?: string }).browserlanguage
-    || globalThis.navigator?.language
+    navigator.browserlanguage
+    || navigator.language
     || 'en'
   )
 }

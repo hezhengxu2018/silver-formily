@@ -1,22 +1,29 @@
 import { describe, expect, it, vi } from 'vitest'
-import { useDragDropEffect } from '../effects/useDragDropEffect'
-import { DragMoveEvent, DragStartEvent, DragStopEvent } from '../events'
+import { DragMoveEvent, DragNodeEvent, DragStartEvent, DragStopEvent } from '../events'
 import { createBehavior } from '../externals'
 import { Engine } from '../models'
 import { GlobalRegistry } from '../registry'
 
-describe('designer drag controller', () => {
-  it('dispatches semantic drag events', () => {
-    const engine = new Engine({ mountTarget: false })
+describe('designer drag behavior', () => {
+  const createDragEventData = (clientX: number, clientY: number) => ({
+    clientX,
+    clientY,
+    pageX: clientX,
+    pageY: clientY,
+    target: null,
+    view: globalThis as any,
+  })
+
+  it('dispatches semantic drag events from the official drag drop driver', () => {
+    const engine = new Engine({})
     const received: string[] = []
+
     engine.subscribeTo(DragStartEvent, (event) => {
       received.push(event.type)
-      expect(event.data.nodeId).toBe('field-1')
       expect(event.data.clientX).toBe(10)
     })
     engine.subscribeTo(DragMoveEvent, (event) => {
       received.push(event.type)
-      expect(event.data.touchNodeId).toBe('field-2')
       expect(event.data.clientY).toBe(20)
     })
     engine.subscribeTo(DragStopEvent, (event) => {
@@ -24,16 +31,15 @@ describe('designer drag controller', () => {
       expect(event.data.clientX).toBe(30)
     })
 
-    engine.drag.start({ clientX: 10, clientY: 0, nodeId: 'field-1' })
-    engine.drag.move({ clientX: 0, clientY: 20, touchNodeId: 'field-2' })
-    engine.drag.stop({ clientX: 30, clientY: 0 })
+    engine.dispatch(new DragStartEvent(createDragEventData(10, 0)))
+    engine.dispatch(new DragMoveEvent(createDragEventData(0, 20)))
+    engine.dispatch(new DragStopEvent(createDragEventData(30, 0)))
 
     expect(received).toEqual(['drag:start', 'drag:move', 'drag:stop'])
   })
 
-  it('lets drag drop effect consume explicit node ids without DOM targets', () => {
+  it('tracks moving nodes through moveHelper', () => {
     const engine = new Engine({
-      autoAttachEvents: false,
       defaultComponentTree: {
         children: [
           {
@@ -42,56 +48,67 @@ describe('designer drag controller', () => {
           },
         ],
       },
-      mountTarget: false,
     })
-    useDragDropEffect(engine)
     const workspace = engine.workbench.ensureWorkspace()
     const node = workspace.operation.tree.findById('field-1')
-    const dragWithSpy = vi.spyOn(workspace.operation, 'dragWith')
+    const dragNodeSpy = vi.fn()
 
-    engine.drag.start({ clientX: 0, clientY: 0, nodeId: 'field-1' })
-    engine.drag.move({ clientX: 5, clientY: 6, touchNodeId: 'field-1' })
+    workspace.operation.workspace.viewport.cacheElements = vi.fn()
+    engine.subscribeTo(DragNodeEvent, dragNodeSpy)
 
-    expect(workspace.operation.getDragNodes()).toEqual([node])
-    expect(dragWithSpy).toHaveBeenCalledWith(
-      expect.objectContaining({ x: 5, y: 6 }),
-      node,
-    )
+    workspace.operation.moveHelper.dragStart({ dragNodes: [node] })
+
+    expect(workspace.operation.moveHelper.dragNodes).toEqual([node])
+    expect(engine.findMovingNodes()).toEqual([node])
+    expect(dragNodeSpy).toHaveBeenCalledTimes(1)
+    expect(dragNodeSpy.mock.calls[0][0].data.source).toEqual([node])
   })
 
   it('requires root containers to declare droppable behavior before appending nodes', () => {
-    const engine = new Engine({
-      autoAttachEvents: false,
+    const blockedEngine = new Engine({
       defaultComponentTree: {
         id: 'form-root',
         componentName: 'Form',
         children: [],
       },
-      mountTarget: false,
     })
-    const workspace = engine.workbench.ensureWorkspace()
-    const root = workspace.operation.tree
-    const source = engine.createNode({
+    const blockedRoot = blockedEngine.workbench.ensureWorkspace().operation.tree
+    const blockedSource = blockedEngine.createNode({
       id: 'source-1',
       componentName: 'Field',
       isSourceNode: true,
     })
 
-    workspace.operation.setDragNodes([source])
-
-    expect(root.allowAppend(workspace.operation.getDragNodes())).toBe(false)
+    expect(blockedRoot.allowAppend([blockedSource])).toBe(false)
 
     try {
-      GlobalRegistry.setDesignerBehaviors([
-        createBehavior({
-          selector: 'Form',
-          designerProps: {
-            droppable: true,
-          },
-        }),
-      ])
+      GlobalRegistry.setDesignerBehaviors(
+        [
+          createBehavior({
+            name: 'Form',
+            selector: 'Form',
+            designerProps: {
+              droppable: true,
+            },
+          }),
+        ] as any,
+      )
+      const engine = new Engine({
+        defaultComponentTree: {
+          id: 'form-root',
+          componentName: 'Form',
+          children: [],
+        },
+      })
+      const workspace = engine.workbench.ensureWorkspace()
+      const root = workspace.operation.tree
+      const source = engine.createNode({
+        id: 'source-2',
+        componentName: 'Field',
+        isSourceNode: true,
+      })
 
-      expect(root.allowAppend(workspace.operation.getDragNodes())).toBe(true)
+      expect(root.allowAppend([source])).toBe(true)
     }
     finally {
       GlobalRegistry.setDesignerBehaviors([])

@@ -8,6 +8,8 @@ const EVENTS_ONCE_SYMBOL = Symbol('EVENTS_ONCE_SYMBOL')
 const EVENTS_BATCH_SYMBOL = Symbol('EVENTS_BATCH_SYMBOL')
 const DRIVER_INSTANCES_SYMBOL = Symbol('DRIVER_INSTANCES_SYMBOL')
 
+const globalWindow = globalThis as unknown as Window
+
 export type EventOptions
   = | boolean
     | (AddEventListenerOptions
@@ -99,7 +101,7 @@ implements IEventDriver {
 
   container: EventDriverContainer = document
 
-  contentWindow: Window = window
+  contentWindow: Window = globalWindow
 
   context: Context
 
@@ -321,7 +323,7 @@ export class Event extends Subscribable<ICustomEvent<any>> {
 
   attachEvents(
     container: EventContainer,
-    contentWindow: Window = window,
+    contentWindow: Window = globalWindow,
     context?: any,
   ) {
     if (!container)

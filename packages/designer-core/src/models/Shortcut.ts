@@ -1,27 +1,26 @@
-import type { KeyCodeValue } from '@silver-formily/designer-shared'
 import type { IEngineContext } from '../types'
 import { isFn, KeyCode } from '@silver-formily/designer-shared'
 
 export { KeyCode }
 
 export interface IShortcutProps {
-  codes?: KeyCodeValue[] | KeyCodeValue[][]
-  matcher?: (codes: KeyCodeValue[]) => boolean
+  codes?: KeyCode[] | KeyCode[][]
+  matcher?: (codes: KeyCode[]) => boolean
   handler?: (context: IEngineContext) => void
 }
 
 export class Shortcut {
-  codes: KeyCodeValue[][]
-  handler?: (context: IEngineContext) => void
-  matcher?: (codes: KeyCodeValue[]) => boolean
+  codes: KeyCode[][]
+  handler: (context: IEngineContext) => void
+  matcher: (codes: KeyCode[]) => boolean
   constructor(props: IShortcutProps) {
     this.codes = this.parseCodes(props.codes)
     this.handler = props.handler
     this.matcher = props.matcher
   }
 
-  parseCodes(codes: Array<KeyCodeValue | KeyCodeValue[]> = []) {
-    const results: KeyCodeValue[][] = []
+  parseCodes(codes: Array<KeyCode | KeyCode[]>) {
+    const results: KeyCode[][] = []
     codes.forEach((code) => {
       if (Array.isArray(code)) {
         results.push(code)
@@ -33,10 +32,10 @@ export class Shortcut {
     return results
   }
 
-  preventCodes(codes: KeyCodeValue[]) {
+  preventCodes(codes: KeyCode[]) {
     if (this.codes.length) {
       for (let i = 0; i < codes.length; i++) {
-        const sequence = this.codes[i]
+        const sequence = this.codes[i] ?? []
         for (let j = 0; j < sequence.length; j++) {
           if (!Shortcut.matchCode(codes[j], sequence[j])) {
             return false
@@ -55,10 +54,10 @@ export class Shortcut {
     return matched
   }
 
-  match(codes: KeyCodeValue[], context: IEngineContext) {
+  match(codes: KeyCode[], context: IEngineContext) {
     return this.codes.some((sequence) => {
       const sortedSelf = Shortcut.sortCodes(sequence)
-      const sortedTarget: KeyCodeValue[] = Shortcut.sortCodes(codes)
+      const sortedTarget: KeyCode[] = Shortcut.sortCodes(codes)
       if (isFn(this.matcher)) {
         return this.matched(this.matcher(sortedTarget), context)
       }
@@ -73,13 +72,11 @@ export class Shortcut {
     })
   }
 
-  static matchCode = (code1: KeyCodeValue, code2: KeyCodeValue) => {
+  static matchCode = (code1: KeyCode, code2: KeyCode) => {
     return code1?.toLocaleLowerCase?.() === code2?.toLocaleLowerCase?.()
   }
 
-  static sortCodes = (codes: KeyCodeValue[]): KeyCodeValue[] => {
-    return [...codes].sort((code1, code2) =>
-      code1.toLocaleLowerCase().localeCompare(code2.toLocaleLowerCase()),
-    )
+  static sortCodes = (codes: KeyCode[]): KeyCode[] => {
+    return codes.map(code => code.toLocaleLowerCase()).sort() as any
   }
 }

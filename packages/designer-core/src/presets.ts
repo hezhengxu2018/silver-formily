@@ -35,23 +35,23 @@ import {
 } from './shortcuts'
 
 export const DEFAULT_EFFECTS = [
+  useFreeSelectionEffect,
   useCursorEffect,
   useViewportEffect,
   useDragDropEffect,
-  useResizeEffect,
   useSelectionEffect,
   useKeyboardEffect,
   useAutoScrollEffect,
   useWorkspaceEffect,
-  useFreeSelectionEffect,
   useContentEditableEffect,
   useTranslateEffect,
+  useResizeEffect,
 ]
 
 export const DEFAULT_DRIVERS = [
+  MouseMoveDriver,
   DragDropDriver,
   MouseClickDriver,
-  MouseMoveDriver,
   ViewportResizeDriver,
   ViewportScrollDriver,
   KeyboardDriver,

@@ -1,11 +1,10 @@
-import type { ICustomEvent } from '@silver-formily/designer-shared'
 import type {
   IDesignerControllerProps,
   IDesignerLocales,
   IDesignerProps,
 } from '../types'
 import type { Operation } from './Operation'
-import { isFn, uid } from '@silver-formily/designer-shared'
+import { each, isFn, uid } from '@silver-formily/designer-shared'
 import { action, define, observable, toJS } from '@silver-formily/reactive'
 import {
   AppendNodeEvent,
@@ -76,7 +75,7 @@ function resetNodesParent(nodes: TreeNode[], parent: TreeNode) {
         resetDepth(node)
       }
       else if (!node.isRoot && node.isInOperation) {
-        node.root.operation.selection.remove(node)
+        node.operation?.selection.remove(node)
         removeNode(node)
         shallowReset(node)
       }
@@ -110,7 +109,7 @@ export class TreeNode {
 
   root: TreeNode
 
-  operation: Operation
+  rootOperation: Operation
 
   id: string
 
@@ -141,7 +140,7 @@ export class TreeNode {
     }
     else {
       this.root = this
-      this.operation = node.operation
+      this.rootOperation = node.operation
       this.isSelfSourceNode = node.isSourceNode || false
       TreeNodes.set(this.id, this)
     }
@@ -232,7 +231,7 @@ export class TreeNode {
   }
 
   get isInOperation() {
-    return !!this.root?.operation
+    return !!this.operation
   }
 
   get lastChild() {
@@ -245,6 +244,46 @@ export class TreeNode {
 
   get isSourceNode() {
     return this.root.isSelfSourceNode
+  }
+
+  get operation() {
+    return this.root?.rootOperation
+  }
+
+  get viewport() {
+    return this.operation?.workspace?.viewport
+  }
+
+  get outline() {
+    return this.operation?.workspace?.outline
+  }
+
+  get moveLayout() {
+    return this.viewport?.getValidNodeLayout(this)
+  }
+
+  getElement(area: 'viewport' | 'outline' = 'viewport') {
+    return this[area]?.findElementById(this.id)
+  }
+
+  getValidElement(area: 'viewport' | 'outline' = 'viewport') {
+    return this[area]?.getValidNodeElement(this)
+  }
+
+  getElementRect(area: 'viewport' | 'outline' = 'viewport') {
+    return this[area]?.getElementRect(this.getElement(area))
+  }
+
+  getValidElementRect(area: 'viewport' | 'outline' = 'viewport') {
+    return this[area]?.getValidNodeRect(this)
+  }
+
+  getElementOffsetRect(area: 'viewport' | 'outline' = 'viewport') {
+    return this[area]?.getElementOffsetRect(this.getElement(area))
+  }
+
+  getValidElementOffsetRect(area: 'viewport' | 'outline' = 'viewport') {
+    return this[area]?.getValidNodeOffsetRect(this)
   }
 
   getPrevious(step = 1) {
@@ -305,16 +344,14 @@ export class TreeNode {
   }
 
   takeSnapshot(type?: string) {
-    if (this.root?.operation) {
-      this.root.operation.snapshot(type)
-    }
+    this.operation?.snapshot(type)
   }
 
-  triggerMutation<T>(event: ICustomEvent, callback?: () => T, defaults?: T): T {
-    if (this.root?.operation) {
-      const result = this.root.operation.dispatch(event, callback)
+  triggerMutation<T>(event: any, callback?: () => T, defaults?: T): T {
+    if (this.operation) {
+      const result = (this.operation.dispatch as any)(event, callback) || defaults
       this.takeSnapshot(event?.type)
-      return (result ?? defaults) as T
+      return result
     }
     else if (isFn(callback)) {
       return callback()
@@ -326,14 +363,14 @@ export class TreeNode {
       return this
     }
     else {
-      let finded
+      let result
       this.eachChildren((node) => {
         if (finder(node)) {
-          finded = node
+          result = node
           return false
         }
       })
-      return finded
+      return result
     }
   }
 
@@ -421,6 +458,12 @@ export class TreeNode {
     return ['y']
   }
 
+  allowRotate() {}
+
+  allowRound() {}
+
+  allowScale() {}
+
   allowTranslate(): boolean {
     if (this === this.root && !this.isSourceNode)
       return false
@@ -459,6 +502,13 @@ export class TreeNode {
     })
   }
 
+  eachTree(callback?: (node: TreeNode) => void | boolean) {
+    if (isFn(callback)) {
+      callback(this.root)
+      this.root?.eachChildren(callback)
+    }
+  }
+
   eachChildren(callback?: (node: TreeNode) => void | boolean) {
     if (isFn(callback)) {
       for (let i = 0; i < this.children.length; i++) {
@@ -477,7 +527,7 @@ export class TreeNode {
     )
   }
 
-  setProps(props?: Partial<IDesignerProps>) {
+  setProps(props?: any) {
     return this.triggerMutation(
       new UpdateNodePropsEvent({
         target: this,
@@ -760,5 +810,140 @@ export class TreeNode {
 
   static findById(id: string) {
     return TreeNodes.get(id)
+  }
+
+  static remove(nodes: TreeNode[] = []) {
+    for (let i = nodes.length - 1; i >= 0; i--) {
+      const node = nodes[i]
+      if (node.allowDelete()) {
+        const previous = node.previous
+        const next = node.next
+        node.remove()
+        node.operation?.selection.select(
+          previous || (next || node.parent),
+        )
+        node.operation?.hover.clear()
+      }
+    }
+  }
+
+  static sort(nodes: TreeNode[] = []) {
+    return nodes.sort((before, after) => {
+      if (before.depth !== after.depth)
+        return 0
+      return before.index - after.index >= 0 ? 1 : -1
+    })
+  }
+
+  static clone(nodes: TreeNode[] = []) {
+    const groups: { [parentId: string]: TreeNode[] } = {}
+    const lastGroupNode: { [parentId: string]: TreeNode } = {}
+    const filterNestedNode = TreeNode.sort(nodes).filter((node) => {
+      return !nodes.some((parent) => {
+        return node.isMyParents(parent)
+      })
+    })
+    each(filterNestedNode, (node) => {
+      if (node === node.root)
+        return
+      if (!node.allowClone())
+        return
+      if (!node?.operation)
+        return
+      groups[node?.parent?.id] = groups[node?.parent?.id] || []
+      groups[node?.parent?.id].push(node)
+      if (lastGroupNode[node?.parent?.id]) {
+        if (node.index > lastGroupNode[node?.parent?.id].index) {
+          lastGroupNode[node?.parent?.id] = node
+        }
+      }
+      else {
+        lastGroupNode[node?.parent?.id] = node
+      }
+    })
+    const parents = new Map<TreeNode, TreeNode[]>()
+    each(groups, (nodes, parentId) => {
+      const lastNode = lastGroupNode[parentId]
+      let insertPoint = lastNode
+      each(nodes, (node) => {
+        const cloned = node.clone()
+        if (!cloned)
+          return
+        if (
+          node.operation?.selection.has(node)
+          && insertPoint.parent.allowAppend([cloned])
+        ) {
+          insertPoint.insertAfter(cloned)
+          insertPoint = insertPoint.next
+        }
+        else if (node.operation.selection.length === 1) {
+          const targetNode = node.operation?.tree.findById(
+            node.operation.selection.first,
+          )
+          let cloneNodes = parents.get(targetNode)
+          if (!cloneNodes) {
+            cloneNodes = []
+            parents.set(targetNode, cloneNodes)
+          }
+          if (targetNode && targetNode.allowAppend([cloned])) {
+            cloneNodes.push(cloned)
+          }
+        }
+      })
+    })
+    parents.forEach((nodes, target) => {
+      if (!nodes.length)
+        return
+      target.append(...nodes)
+    })
+  }
+
+  static filterResizable(nodes: TreeNode[] = []) {
+    return nodes.filter(node => node.allowResize())
+  }
+
+  static filterRotatable(nodes: TreeNode[] = []) {
+    return nodes.filter(node => node.allowRotate())
+  }
+
+  static filterScalable(nodes: TreeNode[] = []) {
+    return nodes.filter(node => node.allowScale())
+  }
+
+  static filterRoundable(nodes: TreeNode[] = []) {
+    return nodes.filter(node => node.allowRound())
+  }
+
+  static filterTranslatable(nodes: TreeNode[] = []) {
+    return nodes.filter(node => node.allowTranslate())
+  }
+
+  static filterDraggable(nodes: TreeNode[] = []) {
+    return nodes.reduce((buf, node) => {
+      if (!node.allowDrag())
+        return buf
+      if (isFn(node?.designerProps?.getDragNodes)) {
+        const transformed = node.designerProps.getDragNodes(node)
+        return transformed ? buf.concat(transformed) : buf
+      }
+      if (node.componentName === '$$ResourceNode$$')
+        return buf.concat(node.children)
+      return buf.concat([node])
+    }, [])
+  }
+
+  static filterDroppable(nodes: TreeNode[] = [], parent: TreeNode) {
+    return nodes.reduce((buf, node) => {
+      if (!node.allowDrop(parent))
+        return buf
+      if (isFn(node.designerProps?.getDropNodes)) {
+        const cloned = node.isSourceNode ? node.clone(node.parent) : node
+        const transformed = node.designerProps.getDropNodes(cloned, parent)
+        return transformed ? buf.concat(transformed) : buf
+      }
+      if (node.componentName === '$$ResourceNode$$')
+        return buf.concat(node.children)
+      return buf.concat([node])
+    }, [])
   }
 }
