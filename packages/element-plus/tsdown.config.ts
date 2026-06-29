@@ -12,9 +12,6 @@ export default defineConfig({
   dts: {
     vue: true,
   },
-  css: {
-    inject: true,
-  },
   deps: {
     neverBundle: [
       'lodash-es',
