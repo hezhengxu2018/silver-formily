@@ -1,6 +1,8 @@
 import type {
   IPoint,
   IRect,
+
+  Rect,
 } from '@silver-formily/designer-shared'
 import type { Engine } from './Engine'
 import type { TreeNode } from './TreeNode'
@@ -9,15 +11,12 @@ import {
   calcBoundingRect,
   calcElementLayout,
   cancelIdle,
-  isHTMLElement,
   isPointInRect,
   isRectInRect,
-  Rect,
   requestIdle,
 } from '@silver-formily/designer-shared'
 import { action, define, observable } from '@silver-formily/reactive'
-
-const globalWindow = globalThis as unknown as Window
+import { ViewportDOMAdapter } from '../internals/ViewportDOMAdapter'
 
 export interface IViewportProps {
   engine: Engine
@@ -72,6 +71,8 @@ export class Viewport {
 
   nodeElementsStore: Record<string, HTMLElement[]> = {}
 
+  dom: ViewportDOMAdapter
+
   constructor(props: IViewportProps) {
     this.workspace = props.workspace
     this.engine = props.engine
@@ -80,6 +81,10 @@ export class Viewport {
     this.viewportElement = props.viewportElement
     this.contentWindow = props.contentWindow
     this.nodeIdAttrName = props.nodeIdAttrName
+    this.dom = new ViewportDOMAdapter({
+      getContentWindow: () => this.contentWindow,
+      getViewportElement: () => this.viewportElement,
+    })
     this.digestViewport()
     this.makeObservable()
     this.attachEvents()
@@ -94,90 +99,47 @@ export class Viewport {
   }
 
   get isScrollRight() {
-    if (this.isIframe) {
-      return (
-        this.width + this.contentWindow.scrollX
-        >= this.contentWindow?.document?.body?.scrollWidth
-      )
-    }
-    else if (this.viewportElement) {
-      return (
-        this.viewportElement.offsetWidth + this.scrollX
-        >= this.viewportElement.scrollWidth
-      )
-    }
+    return this.dom.isScrollRight(this)
   }
 
   get isScrollBottom() {
-    if (this.isIframe) {
-      if (!this.contentWindow?.document?.body)
-        return false
-      return (
-        this.height + this.contentWindow.scrollY
-        >= this.contentWindow.document.body.scrollHeight
-      )
-    }
-    else if (this.viewportElement) {
-      if (!this.viewportElement)
-        return false
-      return (
-        this.viewportElement.offsetHeight + this.viewportElement.scrollTop
-        >= this.viewportElement.scrollHeight
-      )
-    }
+    return this.dom.isScrollBottom(this)
   }
 
   get viewportRoot() {
-    return this.isIframe
-      ? this.contentWindow?.document?.body
-      : this.viewportElement
+    return this.dom.viewportRoot
   }
 
   get isMaster() {
-    return this.contentWindow === globalWindow
+    return this.dom.isMaster
   }
 
   get isIframe() {
-    return !!this.contentWindow?.frameElement && !this.isMaster
+    return this.dom.isIframe
   }
 
   get scrollContainer() {
-    return this.isIframe ? this.contentWindow : this.viewportElement
+    return this.dom.scrollContainer
   }
 
   get rect() {
-    const viewportElement = this.viewportElement
-    if (viewportElement)
-      return viewportElement.getBoundingClientRect()
+    return this.dom.rect
   }
 
   get innerRect() {
-    const rect = this.rect
-    return new Rect(0, 0, rect?.width, rect?.height)
+    return this.dom.innerRect
   }
 
   get offsetX() {
-    const rect = this.rect
-    if (!rect)
-      return 0
-    return rect.x
+    return this.dom.offsetX
   }
 
   get offsetY() {
-    const rect = this.rect
-    if (!rect)
-      return 0
-    return rect.y
+    return this.dom.offsetY
   }
 
   get scale() {
-    if (!this.viewportElement)
-      return 1
-    const clientRect = this.viewportElement.getBoundingClientRect()
-    const offsetWidth = this.viewportElement.offsetWidth
-    if (!clientRect.width || !offsetWidth)
-      return 1
-    return Math.round(clientRect.width / offsetWidth)
+    return this.dom.scale
   }
 
   get dragScrollXDelta() {
@@ -189,14 +151,7 @@ export class Viewport {
   }
 
   cacheElements() {
-    this.nodeElementsStore = {}
-    this.viewportRoot
-      ?.querySelectorAll(`*[${this.nodeIdAttrName}]`)
-      .forEach((element: HTMLElement) => {
-        const id = element.getAttribute(this.nodeIdAttrName)
-        this.nodeElementsStore[id] = this.nodeElementsStore[id] || []
-        this.nodeElementsStore[id].push(element)
-      })
+    this.nodeElementsStore = this.dom.collectNodeElements(this.nodeIdAttrName)
   }
 
   clearCache() {
@@ -204,20 +159,7 @@ export class Viewport {
   }
 
   getCurrentData() {
-    const data: IViewportData = {}
-    if (this.isIframe) {
-      data.scrollX = this.contentWindow?.scrollX || 0
-      data.scrollY = this.contentWindow?.scrollY || 0
-      data.width = this.contentWindow?.innerWidth || 0
-      data.height = this.contentWindow?.innerHeight || 0
-    }
-    else if (this.viewportElement) {
-      data.scrollX = this.viewportElement?.scrollLeft || 0
-      data.scrollY = this.viewportElement?.scrollTop || 0
-      data.width = this.viewportElement?.clientWidth || 0
-      data.height = this.viewportElement?.clientHeight || 0
-    }
-    return data
+    return this.dom.getCurrentData()
   }
 
   takeDragStartSnapshot() {
@@ -229,24 +171,13 @@ export class Viewport {
   }
 
   elementFromPoint(point: IPoint) {
-    if (this.contentWindow?.document) {
-      return this.contentWindow.document.elementFromPoint(point.x, point.y)
-    }
+    return this.dom.elementFromPoint(point)
   }
 
   matchViewport(
     target: HTMLElement | Element | Window | Document | EventTarget,
   ) {
-    if (this.isIframe) {
-      return (
-        target === this.viewportElement
-        || target === this.contentWindow
-        || target === this.contentWindow?.document
-      )
-    }
-    else {
-      return target === this.viewportElement
-    }
+    return this.dom.matchViewport(target)
   }
 
   attachEvents() {
@@ -255,24 +186,17 @@ export class Viewport {
     this.attachRequest = requestIdle(() => {
       if (!engine)
         return
-      if (this.isIframe) {
-        this.workspace.attachEvents(this.contentWindow, this.contentWindow)
-      }
-      else if (isHTMLElement(this.viewportElement)) {
-        this.workspace.attachEvents(this.viewportElement, this.contentWindow)
-      }
+      this.dom.getAttachTargets().forEach(({ container, contentWindow }) => {
+        this.workspace.attachEvents(container, contentWindow)
+      })
     })
   }
 
   detachEvents() {
     cancelIdle(this.attachRequest)
-    if (this.isIframe) {
-      this.workspace.detachEvents(this.contentWindow)
-      this.workspace.detachEvents(this.viewportElement)
-    }
-    else if (this.viewportElement) {
-      this.workspace.detachEvents(this.viewportElement)
-    }
+    this.dom.getDetachContainers().forEach((container) => {
+      this.workspace.detachEvents(container)
+    })
   }
 
   onMount(element: HTMLElement, contentWindow: Window) {
@@ -349,134 +273,55 @@ export class Viewport {
   }
 
   findElementById(id: string): HTMLElement {
-    if (!id)
-      return
-    if (this.nodeElementsStore[id])
-      return this.nodeElementsStore[id][0]
-    return this.viewportRoot?.querySelector(
-      `*[${this.nodeIdAttrName}='${id}']`,
-    ) as HTMLElement
+    return this.dom.findElementById(
+      this.nodeIdAttrName,
+      id,
+      this.nodeElementsStore,
+    )
   }
 
   findElementsById(id: string): HTMLElement[] {
-    if (!id)
-      return []
-    if (this.nodeElementsStore[id])
-      return this.nodeElementsStore[id]
-    return Array.from(
-      this.viewportRoot?.querySelectorAll(
-        `*[${this.nodeIdAttrName}='${id}']`,
-      ) ?? [],
+    return this.dom.findElementsById(
+      this.nodeIdAttrName,
+      id,
+      this.nodeElementsStore,
     )
   }
 
   containsElement(element: HTMLElement | Element | EventTarget) {
-    const root: Element | HTMLDocument = this.viewportElement
-    if (root === element)
-      return true
-    return root?.contains(element as any)
+    return this.dom.containsElement(element)
   }
 
   getOffsetPoint(topPoint: IPoint) {
-    const data = this.getCurrentData()
-    return {
-      x: topPoint.x - this.offsetX + data.scrollX,
-      y: topPoint.y - this.offsetY + data.scrollY,
-    }
+    return this.dom.getOffsetPoint(topPoint)
   }
 
   // 相对于页面
   getElementRect(element: HTMLElement | Element) {
-    const rect = element.getBoundingClientRect()
-    const htmlElement = element as HTMLElement
-    const offsetWidth = htmlElement.offsetWidth
-      ? htmlElement.offsetWidth
-      : rect.width
-    const offsetHeight = htmlElement.offsetHeight
-      ? htmlElement.offsetHeight
-      : rect.height
-    return new Rect(
-      rect.x,
-      rect.y,
-      this.scale !== 1 ? offsetWidth : rect.width,
-      this.scale !== 1 ? offsetHeight : rect.height,
-    )
+    return this.dom.getElementRect(element)
   }
 
   // 相对于页面
   getElementRectById(id: string) {
-    const elements = this.findElementsById(id)
-    const rect = calcBoundingRect(
-      elements.map(element => this.getElementRect(element)),
+    return this.dom.getElementRectById(
+      this.nodeIdAttrName,
+      id,
+      this.nodeElementsStore,
     )
-    if (rect) {
-      if (this.isIframe) {
-        return new Rect(
-          rect.x + this.offsetX,
-          rect.y + this.offsetY,
-          rect.width,
-          rect.height,
-        )
-      }
-      else {
-        return new Rect(rect.x, rect.y, rect.width, rect.height)
-      }
-    }
   }
 
   // 相对于视口
   getElementOffsetRect(element: HTMLElement | Element) {
-    const elementRect = element.getBoundingClientRect()
-    if (elementRect) {
-      if (this.isIframe) {
-        return new Rect(
-          elementRect.x + this.contentWindow.scrollX,
-          elementRect.y + this.contentWindow.scrollY,
-          elementRect.width,
-          elementRect.height,
-        )
-      }
-      else {
-        return new Rect(
-          (elementRect.x - this.offsetX + this.viewportElement.scrollLeft)
-          / this.scale,
-          (elementRect.y - this.offsetY + this.viewportElement.scrollTop)
-          / this.scale,
-          elementRect.width,
-          elementRect.height,
-        )
-      }
-    }
+    return this.dom.getElementOffsetRect(element)
   }
 
   // 相对于视口
   getElementOffsetRectById(id: string) {
-    const elements = this.findElementsById(id)
-    if (!elements.length)
-      return
-    const elementRect = calcBoundingRect(
-      elements.map(element => this.getElementRect(element)),
+    return this.dom.getElementOffsetRectById(
+      this.nodeIdAttrName,
+      id,
+      this.nodeElementsStore,
     )
-    if (elementRect) {
-      if (this.isIframe) {
-        return new Rect(
-          elementRect.x + this.contentWindow.scrollX,
-          elementRect.y + this.contentWindow.scrollY,
-          elementRect.width,
-          elementRect.height,
-        )
-      }
-      else {
-        return new Rect(
-          (elementRect.x - this.offsetX + this.viewportElement.scrollLeft)
-          / this.scale,
-          (elementRect.y - this.offsetY + this.viewportElement.scrollTop)
-          / this.scale,
-          elementRect.width,
-          elementRect.height,
-        )
-      }
-    }
   }
 
   getValidNodeElement(node: TreeNode): Element {

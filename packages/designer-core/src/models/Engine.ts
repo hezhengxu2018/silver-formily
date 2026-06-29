@@ -5,6 +5,7 @@ import { Event, uid } from '@silver-formily/designer-shared'
 import { Cursor } from './Cursor'
 import { Keyboard } from './Keyboard'
 import { Screen, ScreenType } from './Screen'
+import { SourceNodeRegistry } from './SourceNodeRegistry'
 import { TreeNode } from './TreeNode'
 import { Workbench } from './Workbench'
 
@@ -25,7 +26,7 @@ export class Engine extends Event {
 
   screen: Screen
 
-  sourceNodes = new Map<string, TreeNode>()
+  sourceNodes = new SourceNodeRegistry()
 
   constructor(props: IEngineProps<Engine>) {
     super(props)
@@ -99,11 +100,8 @@ export class Engine extends Event {
 
   createNode(node: ITreeNode, parent?: TreeNode) {
     const treeNode = new TreeNode(node, parent)
-    if (!parent) {
-      treeNode.eachTree((node) => {
-        this.sourceNodes.set(node.id, node)
-      })
-    }
+    if (!parent || treeNode.isSourceNode)
+      this.sourceNodes.registerTree(treeNode)
     return treeNode
   }
 

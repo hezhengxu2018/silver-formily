@@ -365,7 +365,10 @@ describe('designer-core regression coverage', () => {
 
     const viewport = new Viewport({
       engine: {} as any,
-      workspace: {} as any,
+      workspace: {
+        attachEvents: vi.fn(),
+        detachEvents: vi.fn(),
+      } as any,
       viewportElement,
       contentWindow: window,
       nodeIdAttrName: 'data-node-id',
@@ -380,6 +383,77 @@ describe('designer-core regression coverage', () => {
     expect(viewport.isPointInViewport({ x: 10, y: 10 })).toBe(true)
     expect(viewportElementFromPointSpy).toHaveBeenCalledWith({ x: 10, y: 10 })
     expect(globalElementFromPointSpy).not.toHaveBeenCalled()
+  })
+
+  it('viewport DOM adapter resolves cached node elements and offset rects', () => {
+    const viewportElement = document.createElement('div')
+    const nodeElement = document.createElement('div')
+    nodeElement.setAttribute('data-node-id', 'adapter-node')
+    viewportElement.appendChild(nodeElement)
+    document.body.appendChild(viewportElement)
+    vi.spyOn(viewportElement, 'getBoundingClientRect').mockReturnValue({
+      x: 10,
+      y: 20,
+      width: 200,
+      height: 100,
+      left: 10,
+      top: 20,
+      right: 210,
+      bottom: 120,
+      toJSON: () => ({}),
+    })
+    vi.spyOn(nodeElement, 'getBoundingClientRect').mockReturnValue({
+      x: 40,
+      y: 70,
+      width: 30,
+      height: 20,
+      left: 40,
+      top: 70,
+      right: 70,
+      bottom: 90,
+      toJSON: () => ({}),
+    })
+    Object.defineProperty(viewportElement, 'scrollLeft', {
+      configurable: true,
+      value: 5,
+    })
+    Object.defineProperty(viewportElement, 'scrollTop', {
+      configurable: true,
+      value: 7,
+    })
+    Object.defineProperty(viewportElement, 'offsetWidth', {
+      configurable: true,
+      value: 200,
+    })
+    Object.defineProperty(nodeElement, 'offsetWidth', {
+      configurable: true,
+      value: 30,
+    })
+    Object.defineProperty(nodeElement, 'offsetHeight', {
+      configurable: true,
+      value: 20,
+    })
+
+    const viewport = new Viewport({
+      engine: {} as any,
+      workspace: {
+        attachEvents: vi.fn(),
+        detachEvents: vi.fn(),
+      } as any,
+      viewportElement,
+      contentWindow: window,
+      nodeIdAttrName: 'data-node-id',
+    })
+
+    viewport.cacheElements()
+
+    expect(viewport.findElementById('adapter-node')).toBe(nodeElement)
+    expect(viewport.getElementOffsetRectById('adapter-node')).toMatchObject({
+      x: 35,
+      y: 57,
+      width: 30,
+      height: 20,
+    })
   })
 
   it('workbench removeWorkspace disposes workspace resources', () => {

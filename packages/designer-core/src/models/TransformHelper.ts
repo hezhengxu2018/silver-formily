@@ -27,6 +27,7 @@ import {
   calcBaseTranslate,
   calcCursorDragNodesRect,
   calcRulerSnapLines,
+  TRANSFORM_HELPER_THRESHOLD,
 } from '../internals/TransformGeometry'
 import { CursorDragType } from './Cursor'
 import { SnapLine } from './SnapLine'
@@ -523,5 +524,5 @@ export class TransformHelper {
     })
   }
 
-  static threshold = 6
+  static threshold = TRANSFORM_HELPER_THRESHOLD
 }
