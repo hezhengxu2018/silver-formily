@@ -265,6 +265,7 @@ export class Viewport {
   }
 
   detachEvents() {
+    cancelIdle(this.attachRequest)
     if (this.isIframe) {
       this.workspace.detachEvents(this.contentWindow)
       this.workspace.detachEvents(this.viewportElement)
@@ -285,6 +286,13 @@ export class Viewport {
   onUnmount() {
     this.mounted = false
     this.detachEvents()
+  }
+
+  dispose() {
+    this.detachEvents()
+    this.clearCache()
+    this.dragStartSnapshot = null
+    this.mounted = false
   }
 
   isPointInViewport(point: IPoint, sensitive?: boolean) {

@@ -114,6 +114,13 @@ export class Workspace {
     this.engine.detachEvents(container)
   }
 
+  dispose() {
+    this.viewport.dispose()
+    this.outline.dispose()
+    this.operation.dispose()
+    this.history.clear()
+  }
+
   dispatch(event: ICustomEvent) {
     return this.engine.dispatch(event, this.getEventContext())
   }
