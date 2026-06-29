@@ -11,6 +11,7 @@ import {
   calcSnapLineTranslate,
   calcSpaceBlockSnapLine,
   isEqualSpaceBlockDistance,
+  shouldExtendSpaceBlock,
 } from '../internals/TransformGeometry'
 
 describe('transform geometry', () => {
@@ -163,5 +164,25 @@ describe('transform geometry', () => {
       end: { x: 20, y: 10 },
     })
     expect(isEqualSpaceBlockDistance(10, 14, 6)).toBe(true)
+  })
+
+  it('checks space block line extension without creating a line segment', () => {
+    expect(
+      shouldExtendSpaceBlock(
+        'right',
+        new Rect(20, 0, 10, 10),
+        new Rect(30, 0, 10, 10),
+        new Rect(0, 0, 10, 10),
+      ),
+    ).toBe(false)
+
+    expect(
+      shouldExtendSpaceBlock(
+        'right',
+        new Rect(20, 0, 10, 10),
+        new Rect(30, 20, 10, 10),
+        new Rect(0, 0, 10, 10),
+      ),
+    ).toBe(true)
   })
 })

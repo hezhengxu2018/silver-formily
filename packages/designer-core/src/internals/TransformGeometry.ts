@@ -393,6 +393,36 @@ export function shouldExtendSpaceBlockLine(
   )
 }
 
+export function shouldExtendSpaceBlock(
+  type: ISpaceBlockType,
+  spaceRect: IRect,
+  referRect: IRect,
+  dragNodesRect: IRect,
+) {
+  const refer = new Rect(referRect.x, referRect.y, referRect.width, referRect.height)
+  const dragNodes = new Rect(
+    dragNodesRect.x,
+    dragNodesRect.y,
+    dragNodesRect.width,
+    dragNodesRect.height,
+  )
+  const crossReferRect = calcCrossSpaceBlockRect(
+    spaceRect,
+    refer,
+    dragNodes,
+    type,
+    'refer',
+  )
+  const crossDragNodesRect = calcCrossSpaceBlockRect(
+    spaceRect,
+    refer,
+    dragNodes,
+    type,
+    'drag',
+  )
+  return shouldExtendSpaceBlockLine(type, crossDragNodesRect, crossReferRect)
+}
+
 export function calcSpaceBlockExtendsLine(
   type: ISpaceBlockType,
   spaceRect: IRect,
