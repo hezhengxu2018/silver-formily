@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from 'vitest'
 import { DragMoveEvent, DragNodeEvent, DragStartEvent, DragStopEvent } from '../events'
 import { createBehavior } from '../externals'
-import { Engine } from '../models'
+import { Engine, TreeNode } from '../models'
 import { GlobalRegistry } from '../registry'
 
 describe('designer drag behavior', () => {
@@ -131,6 +131,78 @@ describe('designer drag behavior', () => {
     expect(engine.findNodeById('registry-new-child-from')?.id).toBe(
       'registry-new-child-from',
     )
+  })
+
+  it('unregisters stale children when replacing children directly', () => {
+    const engine = new Engine({
+      defaultComponentTree: {
+        id: 'registry-root-set-children',
+        componentName: 'Root',
+        children: [
+          {
+            id: 'registry-old-child-set-children',
+            componentName: 'Field',
+          },
+        ],
+      },
+    })
+    const root = engine.workbench.ensureWorkspace().operation.tree
+    const nextChild = new TreeNode({
+      id: 'registry-new-child-set-children',
+      componentName: 'Field',
+    })
+
+    root.setChildren(nextChild)
+
+    expect(
+      engine.findNodeById('registry-old-child-set-children'),
+    ).toBeUndefined()
+    expect(engine.findNodeById('registry-new-child-set-children')).toBe(
+      nextChild,
+    )
+  })
+
+  it('rebinds moved subtrees to the target workspace registry', () => {
+    const engine = new Engine({
+      defaultComponentTree: {
+        id: 'registry-root-rebind',
+        componentName: 'Root',
+        children: [
+          {
+            id: 'registry-parent-rebind',
+            componentName: 'Container',
+            children: [
+              {
+                id: 'registry-child-rebind',
+                componentName: 'Field',
+              },
+            ],
+          },
+        ],
+      },
+    })
+    const sourceWorkspace = engine.workbench.ensureWorkspace({ id: 'source' })
+    const targetWorkspace = engine.workbench.ensureWorkspace({ id: 'target' })
+    const parent = sourceWorkspace.operation.tree.findById(
+      'registry-parent-rebind',
+    )
+    if (!parent)
+      throw new Error('Expected source workspace parent node to exist')
+
+    targetWorkspace.operation.tree.append(parent)
+
+    expect(
+      sourceWorkspace.operation.tree.findById('registry-parent-rebind'),
+    ).toBeUndefined()
+    expect(
+      sourceWorkspace.operation.tree.findById('registry-child-rebind'),
+    ).toBeUndefined()
+    expect(
+      targetWorkspace.operation.tree.findById('registry-parent-rebind'),
+    ).toBe(parent)
+    expect(
+      targetWorkspace.operation.tree.findById('registry-child-rebind')?.root,
+    ).toBe(targetWorkspace.operation.tree)
   })
 
   it('keeps node lookup scoped to each engine instance', () => {
