@@ -29,6 +29,35 @@ describe('formItem', () => {
       await expect.element(queryElement(container, '.el-form-item__label')).toHaveTextContent('测试标签')
     })
 
+    it('应该继承 root attrs 且不泄漏 Formily 映射字段', async () => {
+      const { container } = render(() => (
+        <FormProvider form={createForm()}>
+          <FormLayout>
+            <Field
+              name="test"
+              title="测试标签"
+              required={true}
+              validateStatus="error"
+              decorator={[FormItem, {
+                'class': 'form-item-root',
+                'data-testid': 'form-item-root',
+              }]}
+              component={[Input]}
+            />
+          </FormLayout>
+        </FormProvider>
+      ))
+
+      const root = queryElement(container, '[data-testid="form-item-root"]')
+      expect(root).toHaveClass('formily-element-plus-form-item')
+      expect(root).toHaveClass('form-item-root')
+      expect(root).not.toHaveAttribute('required')
+      expect(root).not.toHaveAttribute('validate-status')
+      expect(root).not.toHaveAttribute('validateStatus')
+      expect(root).not.toHaveAttribute('attrs')
+      expect(root).not.toHaveAttribute('on')
+    })
+
     it('应该支持内部隔离根类名', async () => {
       const { container } = render(() => (
         <FormProvider form={createForm()}>

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { dayjs, ElSpace, ElTag, ElText } from 'element-plus'
-import { computed } from 'vue'
-import { stylePrefix, useCleanAttrs } from '../__builtins__'
+import { computed, useAttrs } from 'vue'
+import { stylePrefix, useExcludedAttrs } from '../__builtins__'
 import { usePreviewConfig } from './utils'
 
 defineOptions({
@@ -12,7 +12,8 @@ defineOptions({
 const props = defineProps<{
   modelValue?: any
 }>()
-const { props: attrs } = useCleanAttrs()
+const attrs = useAttrs()
+const rootAttrs = useExcludedAttrs(['type', 'format', 'rangeSeparator'])
 const prefixCls = `${stylePrefix}-preview-text`
 const { spaceProps, textProps, tagProps, placeholder } = usePreviewConfig()
 
@@ -59,12 +60,12 @@ function getFormatByType(type: string): string {
     }
   }
 }
-const type = computed(() => attrs.value.type || 'date')
-const format = computed(() => attrs.value.format || getFormatByType(type.value))
+const type = computed(() => (attrs.type as string) || 'date')
+const format = computed(() => (attrs.format as string) || getFormatByType(type.value))
 </script>
 
 <template>
-  <div :class="prefixCls">
+  <div v-bind="rootAttrs" :class="prefixCls">
     <template v-if="props.modelValue">
       <template v-if="type.endsWith('range')">
         <ElText v-bind="textProps">

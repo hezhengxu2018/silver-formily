@@ -4,11 +4,12 @@ import { describe, expect, it, vi } from 'vitest'
 import { render } from 'vitest-browser-vue'
 import { userEvent } from 'vitest/browser'
 import { defineComponent } from 'vue'
+import { queryElement } from '../../../test-utils/dom'
 import { ArrayCollapse, FormItem, Input, Submit } from '../../index'
 import 'element-plus/theme-chalk/index.css'
 
 // 字符串数组测试组件
-export function ArrayCollapseStringTestFactory(form = createForm()) {
+export function ArrayCollapseStringTestFactory(form = createForm(), arrayCollapseProps = {}) {
   return defineComponent({
     name: 'ArrayCollapseStringTest',
     setup() {
@@ -28,6 +29,7 @@ export function ArrayCollapseStringTestFactory(form = createForm()) {
             'x-component': 'ArrayCollapse',
             'maxItems': 3,
             'x-decorator': 'FormItem',
+            'x-component-props': arrayCollapseProps,
             'items': {
               'type': 'object',
               'x-component': 'ArrayCollapse.Item',
@@ -301,6 +303,24 @@ describe('arrayCollapse', async () => {
     await expect.element(screen.getByText('添加条目')).toBeInTheDocument()
     await screen.getByText('添加条目').click()
     await expect.element(screen.getByText('字符串数组')).toBeInTheDocument()
+  })
+
+  it('应该在空数据和有数据状态下稳定继承 root attrs', async () => {
+    const screen = render(ArrayCollapseStringTestFactory(createForm(), {
+      'class': 'array-collapse-root',
+      'data-testid': 'array-collapse-root',
+      'accordion': true,
+    }))
+
+    const root = queryElement(screen.container, '[data-testid="array-collapse-root"]')
+    expect(root).toHaveClass('formily-element-plus-array-collapse')
+    expect(root).toHaveClass('array-collapse-root')
+    expect(root).not.toHaveAttribute('accordion')
+    expect(screen.container.querySelector('.el-card')).toBeInTheDocument()
+
+    await userEvent.click(queryElement(screen.container, '.formily-element-plus-array-base-addition'))
+    expect(queryElement(screen.container, '[data-testid="array-collapse-root"]')).toBe(root)
+    expect(screen.container.querySelector('.el-collapse')).toBeInTheDocument()
   })
 
   it('应该对象数组渲染', async () => {

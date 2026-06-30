@@ -59,6 +59,32 @@ describe('previewText.Input', () => {
     expect(container.textContent).toContain('¥ 1,000')
   })
 
+  it('应该在 readPretty 模式稳定继承 root attrs 且不泄漏显示 props', async () => {
+    const form = createForm()
+    const { container } = render(
+      () => (
+        <FormProvider form={form}>
+          <Field
+            name="input"
+            initialValue={1000}
+            readPretty={true}
+            component={[Input, {
+              'class': 'preview-input-root',
+              'data-testid': 'preview-input-root',
+              'formatter': (value: number) => `¥ ${value.toLocaleString()}`,
+            }]}
+          />
+        </FormProvider>
+      ),
+    )
+
+    const root = container.querySelector('[data-testid="preview-input-root"]')
+    expect(root).toHaveClass('formily-element-plus-preview-text')
+    expect(root).toHaveClass('preview-input-root')
+    expect(root).not.toHaveAttribute('formatter')
+    expect(container.textContent).toContain('¥ 1,000')
+  })
+
   it('应该支持渲染前置插槽', async () => {
     const form = createForm()
     const { container } = render(

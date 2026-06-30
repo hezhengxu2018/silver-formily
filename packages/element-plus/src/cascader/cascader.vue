@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { CascaderOption } from 'element-plus'
 import { ElCascader } from 'element-plus'
-import { useCleanAttrs } from '../__builtins__'
+import { useAttrs } from 'vue'
 
 defineOptions({
   name: 'FCascader',
@@ -12,7 +12,7 @@ const props = defineProps<{
   options?: CascaderOption[]
 }>()
 
-const { props: cascaderProps } = useCleanAttrs()
+const cascaderProps = useAttrs()
 </script>
 
 <template>

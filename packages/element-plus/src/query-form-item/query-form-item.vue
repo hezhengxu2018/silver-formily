@@ -14,8 +14,8 @@ import { createForm } from '@silver-formily/core'
 import { isNum } from '@silver-formily/shared'
 import { useField } from '@silver-formily/vue'
 import { ElPagination } from 'element-plus'
-import { computed, onMounted, ref, watch } from 'vue'
-import { stylePrefix, useCleanAttrs } from '../__builtins__'
+import { computed, onMounted, ref, useAttrs, watch } from 'vue'
+import { stylePrefix } from '../__builtins__'
 import { FormBaseItem } from '../form-item'
 import { QueryForm } from '../query-form'
 import { useQueryFormForm } from '../query-form/hooks'
@@ -79,7 +79,7 @@ const fieldRef = useField<Field>()
 const internalQueryForm = createForm()
 const prefixCls = `${stylePrefix}-query-form-item`
 const formItemInternalClass = `${stylePrefix}-form-item--isolated`
-const { props: formItemProps } = useCleanAttrs()
+const formItemProps = useAttrs()
 
 const paginationBindings = computed(() => {
   const {

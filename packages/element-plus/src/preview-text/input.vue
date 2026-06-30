@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { isFn, isValid } from '@silver-formily/shared'
 import { ElSpace, ElText } from 'element-plus'
-import { stylePrefix, useCleanAttrs } from '../__builtins__'
+import { useAttrs } from 'vue'
+import { stylePrefix, useExcludedAttrs } from '../__builtins__'
 import { usePreviewConfig } from './utils'
 
 defineOptions({
@@ -19,13 +20,14 @@ const slots = defineSlots<{
   suffix?: () => any
   append?: () => any
 }>()
-const { props: attrs } = useCleanAttrs()
+const attrs = useAttrs()
+const rootAttrs = useExcludedAttrs(['formatter'])
 const prefixCls = `${stylePrefix}-preview-text`
 const { spaceProps, textProps, placeholder } = usePreviewConfig()
 </script>
 
 <template>
-  <ElSpace :class="prefixCls" v-bind="spaceProps">
+  <ElSpace v-bind="{ ...spaceProps, ...rootAttrs }" :class="prefixCls">
     <slot v-if="slots.prepend" name="prepend" />
     <slot v-if="slots.prefix" name="prefix" />
     <ElText v-bind="textProps">

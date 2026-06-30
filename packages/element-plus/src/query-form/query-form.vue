@@ -9,7 +9,7 @@ import { autorunEffect } from '@silver-formily/reactive-vue'
 import { useFieldSchema, useForm } from '@silver-formily/vue'
 import { ElIcon, ElLink } from 'element-plus'
 import { computed, ref, useSlots } from 'vue'
-import { compatibleUnderlineProp, stylePrefix, useCleanAttrs } from '../__builtins__'
+import { compatibleUnderlineProp, stylePrefix, useExcludedAttrs } from '../__builtins__'
 import { Form } from '../form'
 import { FormButtonGroup } from '../form-button-group'
 import { FormGrid } from '../form-grid'
@@ -36,7 +36,7 @@ const props = withDefaults(defineProps<IQueryFormProps>(), {
   showReset: true,
 })
 
-const { props: formProps } = useCleanAttrs(['modelValue', 'onUpdate:modelValue'])
+const formProps = useExcludedAttrs(['modelValue', 'onUpdate:modelValue'])
 const slots = useSlots()
 const prefixCls = `${stylePrefix}-query-form`
 const FormGridColumn = FormGrid.GridColumn

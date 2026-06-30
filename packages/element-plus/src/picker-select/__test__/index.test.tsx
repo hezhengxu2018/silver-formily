@@ -3,6 +3,7 @@ import { Field, FormProvider } from '@silver-formily/vue'
 import { describe, expect, it, vi } from 'vitest'
 import { render } from 'vitest-browser-vue'
 import { userEvent } from 'vitest/browser'
+import { nextTick, ref } from 'vue'
 import PickerSelect from '../index'
 import 'element-plus/theme-chalk/index.css'
 
@@ -35,6 +36,21 @@ describe('pickerSelect', () => {
     ))
 
     await expect.element(page.getByText('missing-value').first()).toBeInTheDocument()
+  })
+
+  it('应该响应外部 modelValue 更新并刷新回退展示', async () => {
+    const modelValue = ref('first-missing-value')
+
+    const page = render(() => (
+      <PickerSelect options={[]} modelValue={modelValue.value} />
+    ))
+
+    await expect.element(page.getByText('first-missing-value').first()).toBeInTheDocument()
+
+    modelValue.value = 'second-missing-value'
+    await nextTick()
+
+    await expect.element(page.getByText('second-missing-value').first()).toBeInTheDocument()
   })
 
   it('单选时点击应触发 openPicker 并只写入 value', async () => {

@@ -6,7 +6,7 @@ import { isFn } from '@silver-formily/shared'
 import { RecursionField, useField, useFieldSchema } from '@silver-formily/vue'
 import { ElBadge, ElCollapse, ElCollapseItem } from 'element-plus'
 import { computed } from 'vue'
-import { stylePrefix, useCleanAttrs } from '../__builtins__'
+import { stylePrefix, useExcludedAttrs } from '../__builtins__'
 import { createFormCollapse, usePanels } from './utils'
 
 defineOptions({
@@ -20,7 +20,7 @@ const props = defineProps({
   },
 })
 const prefixCls = `${stylePrefix}-form-collapse`
-const { props: collapseAttrs } = useCleanAttrs(['modelValue', 'onUpdate:modelValue'])
+const collapseAttrs = useExcludedAttrs(['modelValue', 'onUpdate:modelValue'])
 
 const field = useField()
 const schema = useFieldSchema()

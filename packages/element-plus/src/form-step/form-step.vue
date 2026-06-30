@@ -6,7 +6,7 @@ import { isObj } from '@silver-formily/shared'
 import { RecursionField, useField, useFieldSchema } from '@silver-formily/vue'
 import { ElStep, ElSteps } from 'element-plus'
 import { computed } from 'vue'
-import { stylePrefix } from '../__builtins__'
+import { stylePrefix, useSplitAttrsByComponent } from '../__builtins__'
 import { createFormStep, parseSteps } from './utils'
 
 defineOptions({
@@ -29,19 +29,20 @@ const steps = parseSteps(fieldSchemaRef.value)
 props.formStep.connect?.(steps, field)
 
 const current = computed(() => props.active ?? props.formStep?.current ?? 0)
+const { rootAttrs, componentProps: stepProps } = useSplitAttrsByComponent(ElSteps)
 </script>
 
 <template>
-  <div :class="prefixCls">
+  <div v-bind="rootAttrs" :class="prefixCls">
     <ElSteps
-      v-bind="$attrs"
+      v-bind="stepProps"
       :active="current"
       :style="[{ marginBottom: '10px' }]"
     >
       <ElStep
-        v-for="({ props: stepProps, slots: stepSlots }, key) of steps"
+        v-for="({ props: itemStepProps, slots: stepSlots }, key) of steps"
         :key="key"
-        v-bind="stepProps"
+        v-bind="itemStepProps"
       >
         <template v-if="stepSlots?.title" #title>
           <template v-if="isObj(stepSlots.title)">

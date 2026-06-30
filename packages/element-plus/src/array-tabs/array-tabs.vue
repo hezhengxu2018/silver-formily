@@ -6,7 +6,7 @@ import { isEqual, isFn } from '@silver-formily/shared'
 import { RecursionField, useField, useFieldSchema } from '@silver-formily/vue'
 import { ElBadge, ElTabPane, ElTabs } from 'element-plus'
 import { ref } from 'vue'
-import { useCleanAttrs } from '../__builtins__'
+import { useExcludedAttrs } from '../__builtins__'
 import { stylePrefix } from '../__builtins__/configs'
 import { getArrayItemSchema } from '../array-base/utils'
 
@@ -45,7 +45,7 @@ reactionWatch<number[]>(() => {
 }, {
   equals: isEqual,
 })
-const { props: elTabProps } = useCleanAttrs(['value', 'modelValue', 'onUpdate:modelValue'])
+const elTabProps = useExcludedAttrs(['value', 'modelValue', 'onUpdate:modelValue'])
 </script>
 
 <template>

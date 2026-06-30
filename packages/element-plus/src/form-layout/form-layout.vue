@@ -5,7 +5,7 @@ import { isEmpty, isValid } from '@silver-formily/shared'
 import { useThrottleFn } from '@vueuse/core'
 import { formContextKey, useId } from 'element-plus'
 import { computed, provide, reactive, ref, toRef, watch } from 'vue'
-import { stylePrefix, useCleanAttrs } from '../__builtins__'
+import { stylePrefix, useExcludedAttrs } from '../__builtins__'
 import { filterValidFormLayoutProps, formLayoutDeepContext, formLayoutIdContext, formLayoutShallowContext, useFormDeepLayout, useResponsiveFormLayout } from './utils'
 
 defineOptions({
@@ -25,12 +25,12 @@ const props = withDefaults(defineProps<IFormLayoutProps>(), {
   asterisk: undefined,
 })
 const formPrefixCls = `${stylePrefix}-form`
-const { props: attrs } = useCleanAttrs()
+const attrs = useExcludedAttrs()
 const rootHTMLRef = ref<HTMLElement>()
 const isFormTag = props.tag === 'form'
 const formLayoutBaseId = useId()
-const formLayoutId = computed(() => attrs.value.id ?? `formily-${formLayoutBaseId.value}`)
-const formLayoutDomId = computed(() => (isFormTag ? formLayoutId.value : attrs.value.id))
+const formLayoutId = computed(() => String(attrs.value.id ?? `formily-${formLayoutBaseId.value}`))
+const formLayoutDomId = computed(() => (isFormTag ? formLayoutId.value : attrs.value.id as string | undefined))
 if (isFormTag) {
   provide(formLayoutIdContext, formLayoutId)
 }

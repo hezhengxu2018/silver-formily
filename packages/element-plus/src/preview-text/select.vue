@@ -4,7 +4,8 @@ import { formilyComputed } from '@silver-formily/reactive-vue'
 import { isValid } from '@silver-formily/shared'
 import { useField } from '@silver-formily/vue'
 import { ElSpace, ElTag, ElText } from 'element-plus'
-import { stylePrefix, useCleanAttrs } from '../__builtins__'
+import { useAttrs } from 'vue'
+import { stylePrefix, useExcludedAttrs } from '../__builtins__'
 import { usePreviewConfig } from './utils'
 
 defineOptions({
@@ -19,7 +20,8 @@ const props = defineProps<{
 const prefixCls = `${stylePrefix}-preview-text`
 
 const fieldRef = useField<Field>()
-const { props: attrs } = useCleanAttrs()
+const attrs = useAttrs()
+const rootAttrs = useExcludedAttrs(['multiple'])
 const { spaceProps, textProps, tagProps, placeholder } = usePreviewConfig()
 const dataSource = formilyComputed(() => fieldRef.value?.dataSource ?? [])
 
@@ -29,7 +31,7 @@ function getOptionLabel(value: any) {
 </script>
 
 <template>
-  <div :class="prefixCls">
+  <div v-bind="rootAttrs" :class="prefixCls">
     <template v-if="!isValid(props.modelValue)">
       <ElText v-bind="textProps">
         {{ placeholder }}

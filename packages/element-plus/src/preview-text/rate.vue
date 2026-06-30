@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { isValid } from '@silver-formily/shared'
 import { ElRate, ElText } from 'element-plus'
-import { stylePrefix, useCleanAttrs } from '../__builtins__'
+import { stylePrefix, useSplitAttrsByComponent } from '../__builtins__'
 import { usePreviewConfig } from './utils'
 
 defineOptions({
@@ -13,19 +13,19 @@ const props = defineProps<{
   modelValue?: any
 }>()
 
-const { props: attrs } = useCleanAttrs()
+const { rootAttrs, componentProps: rateProps } = useSplitAttrsByComponent(ElRate)
 const prefixCls = `${stylePrefix}-preview-text`
 const { textProps, placeholder } = usePreviewConfig()
 </script>
 
 <template>
-  <div :class="prefixCls">
+  <div v-bind="rootAttrs" :class="prefixCls">
     <ElText v-if="!isValid(props.modelValue)" v-bind="textProps">
       {{ placeholder }}
     </ElText>
     <ElRate
       v-else
-      v-bind="attrs"
+      v-bind="rateProps"
       :model-value="props.modelValue"
       :disabled="true"
     />

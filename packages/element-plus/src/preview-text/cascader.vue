@@ -2,7 +2,8 @@
 import type { Field } from '@silver-formily/core'
 import { useField } from '@silver-formily/vue'
 import { ElSpace, ElTag, ElText } from 'element-plus'
-import { stylePrefix, useCleanAttrs } from '../__builtins__'
+import { computed, useAttrs } from 'vue'
+import { stylePrefix, useExcludedAttrs } from '../__builtins__'
 import { usePreviewConfig } from './utils'
 
 defineOptions({
@@ -16,14 +17,16 @@ const props = defineProps<{
 const prefixCls = `${stylePrefix}-preview-text`
 const fieldRef = useField<Field>()
 const field = fieldRef.value
-const { props: attrs } = useCleanAttrs()
-const isMultiple = !!attrs.value.props?.multiple
-const isShowAllLevels = attrs.value.showAllLevels ?? true
+const attrs = useAttrs()
+const cascaderProps = computed(() => attrs.props as Record<string, any> | undefined)
+const rootAttrs = useExcludedAttrs(['props', 'showAllLevels', 'separator'])
+const isMultiple = !!cascaderProps.value?.multiple
+const isShowAllLevels = attrs.showAllLevels ?? true
 const dataSource: any[] = field?.dataSource ?? []
 const { spaceProps, textProps, tagProps, placeholder } = usePreviewConfig()
 
-const valueKey = attrs.value.props?.value || 'value'
-const labelKey = attrs.value.props?.label || 'label'
+const valueKey = cascaderProps.value?.value || 'value'
+const labelKey = cascaderProps.value?.label || 'label'
 
 function findLabel(value: any, dataSource: any[]): any {
   const foundItem = dataSource.find(item => item?.[valueKey] === value)
@@ -36,7 +39,7 @@ function findLabel(value: any, dataSource: any[]): any {
 </script>
 
 <template>
-  <div :class="prefixCls">
+  <div v-bind="rootAttrs" :class="prefixCls">
     <template v-if="!Array.isArray(props.modelValue)">
       <ElText v-bind="textProps">
         {{ placeholder }}

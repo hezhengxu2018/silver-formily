@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ElInput } from 'element-plus'
-import { useCleanAttrs } from '../__builtins__/index'
+import { useAttrs } from 'vue'
 
 defineOptions({
   name: 'FInput',
@@ -14,7 +14,7 @@ const slots = defineSlots<{
   append?: () => any
 }>()
 
-const { props: inputProps } = useCleanAttrs()
+const inputProps = useAttrs()
 </script>
 
 <template>

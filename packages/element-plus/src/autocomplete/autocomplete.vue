@@ -5,7 +5,7 @@ import type { AutocompleteData, AutocompleteFetchSuggestions } from 'element-plu
 import { useField } from '@silver-formily/vue'
 import { ElAutocomplete } from 'element-plus'
 import { computed, ref } from 'vue'
-import { useCleanAttrs } from '../__builtins__'
+import { useExcludedAttrs } from '../__builtins__'
 
 defineOptions({
   name: 'FAutocomplete',
@@ -27,7 +27,7 @@ const slots = defineSlots<{
   append?: () => any
 }>()
 
-const { props: attrs } = useCleanAttrs()
+const attrs = useExcludedAttrs()
 const fieldRef = useField<Field>()
 const autocompleteRef = ref<AutocompleteInstance>()
 

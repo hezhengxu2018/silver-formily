@@ -5,7 +5,7 @@ import { isArr } from '@silver-formily/shared'
 import { RecursionField, useField, useFieldSchema } from '@silver-formily/vue'
 import { ref } from 'vue'
 import { VueDraggable } from 'vue-draggable-plus'
-import { useCleanAttrs } from '../__builtins__'
+import { useExcludedAttrs } from '../__builtins__'
 import { stylePrefix } from '../__builtins__/configs'
 import { ArrayBase } from '../array-base'
 import { getArrayItemSchema, isAdditionComponent, useKey } from '../array-base/utils'
@@ -35,7 +35,7 @@ async function handleDragEnd(evt: { oldIndex: number, newIndex: number }) {
   }
   await field.move(oldIndex, newIndex)
 }
-const { props: arrayItemsProps } = useCleanAttrs(['value', 'modelValue', 'onUpdate:modelValue'])
+const arrayItemsProps = useExcludedAttrs(['value', 'modelValue', 'onUpdate:modelValue'])
 </script>
 
 <template>

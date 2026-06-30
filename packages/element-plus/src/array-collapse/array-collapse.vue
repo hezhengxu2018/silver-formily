@@ -10,7 +10,7 @@ import {
   ElEmpty,
 } from 'element-plus'
 import { ref, watchEffect } from 'vue'
-import { useCleanAttrs } from '../__builtins__'
+import { useSplitAttrsByComponent } from '../__builtins__'
 import { ArrayBase } from '../array-base'
 import { getArrayItemSchema, isAdditionComponent, isIndexComponent, isOperationComponent } from '../array-base/utils'
 import { prefixCls } from './utils'
@@ -33,7 +33,9 @@ const schemaRef = useFieldSchema()
 const field = fieldRef.value
 const schema = schemaRef.value
 
-const { props: collapseProps } = useCleanAttrs(['modelValue', 'onUpdate:modelValue'])
+const { rootAttrs, componentProps: collapseProps } = useSplitAttrsByComponent(ElCollapse, {
+  removeKeys: ['modelValue', 'onUpdate:modelValue'],
+})
 const activeKeys = ref<number[] | number>([])
 
 const { getKey, keyMap } = ArrayBase.useKey(schemaRef.value)
@@ -89,7 +91,7 @@ function handleCollapseChange(keys: number[] | number) {
 </script>
 
 <template>
-  <div :class="prefixCls">
+  <div v-bind="rootAttrs" :class="prefixCls">
     <ArrayBase
       :key-map="keyMap"
       :add="(index: number) => {

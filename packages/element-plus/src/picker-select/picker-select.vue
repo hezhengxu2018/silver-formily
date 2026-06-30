@@ -5,7 +5,7 @@ import { isArr, isEqual, isValid } from '@silver-formily/shared'
 import { useField } from '@silver-formily/vue'
 import { ElOption, ElSelect } from 'element-plus'
 import { computed, ref } from 'vue'
-import { useCleanAttrs } from '../__builtins__'
+import { useExcludedAttrs } from '../__builtins__'
 
 defineOptions({
   name: 'FPickerSelect',
@@ -31,7 +31,7 @@ const slots = defineSlots<{
 
 const ignoredOpenTriggerSelectors = ['.el-select__clear', '.el-tag__close']
 
-const { props: selectProps } = useCleanAttrs()
+const selectProps = useExcludedAttrs()
 const fieldRef = useField<Field>()
 const selectRef = ref<InstanceType<typeof ElSelect>>()
 const openingPicker = ref(false)

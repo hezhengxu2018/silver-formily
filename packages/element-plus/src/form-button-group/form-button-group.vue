@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { ElSpace } from 'element-plus'
+import { computed, useAttrs } from 'vue'
 import FormItem from '../form-item/index'
 import { prefixCls } from './utils'
 
@@ -26,45 +27,39 @@ const props = defineProps({
     default: false,
   },
 })
+
+const attrs = useAttrs()
+const rootClass = computed(() => [
+  prefixCls,
+  props.inline && `${prefixCls}--inline`,
+  attrs.class,
+])
+const rootStyle = computed(() => [
+  attrs.style,
+  {
+    justifyContent: props.align === 'left'
+      ? 'flex-start'
+      : (props.align === 'right'
+          ? 'flex-end'
+          : 'center'),
+    display: 'flex',
+    ...(props.alignFormItem ? { width: '100%' } : {}),
+  },
+])
 </script>
 
 <template>
-  <FormItem
-    v-if="props.alignFormItem"
-    label="&nbsp;"
-    v-bind="$attrs"
-    :class="[prefixCls, props.inline && `${prefixCls}--inline`]"
-    :style="{
-      width: '100%',
-    }"
-  >
-    <ElSpace
-      :size="props.gutter"
-      :style="props.align === 'left'
-        ? undefined
-        : {
-          justifyContent: props.align === 'right' ? 'flex-end' : 'center',
-          display: 'flex',
-          width: '100%',
-        }"
+  <div v-bind="attrs" :class="rootClass" :style="rootStyle">
+    <FormItem
+      v-if="props.alignFormItem"
+      label="&nbsp;"
     >
+      <ElSpace :size="props.gutter">
+        <slot />
+      </ElSpace>
+    </FormItem>
+    <ElSpace v-else :size="props.gutter">
       <slot />
     </ElSpace>
-  </FormItem>
-  <ElSpace
-    v-else
-    v-bind="$attrs"
-    :class="[prefixCls, props.inline && `${prefixCls}--inline`]"
-    :style="{
-      justifyContent: props.align === 'left'
-        ? 'flex-start'
-        : (props.align === 'right'
-          ? 'flex-end'
-          : 'center'),
-      display: 'flex',
-    }"
-    :size="props.gutter"
-  >
-    <slot />
-  </ElSpace>
+  </div>
 </template>

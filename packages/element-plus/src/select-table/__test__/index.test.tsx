@@ -170,6 +170,32 @@ describe('基础数据展示', async () => {
     await expect.element(screen.getByText('description-2')).toBeInTheDocument()
   })
 
+  it('应该稳定分流 root attrs 和 ElTable props/events', async () => {
+    const onRowClick = vi.fn()
+    const screen = render(formilyWrapperFactory({}, {
+      'class': 'select-table-root',
+      'data-testid': 'select-table-root',
+      'border': true,
+      'stripe': true,
+      'rowClassName': () => 'custom-row',
+      'onRowClick': onRowClick,
+    }))
+
+    const root = screen.container.querySelector('[data-testid="select-table-root"]')
+    expect(root).toHaveClass('formily-element-plus-select-table')
+    expect(root).toHaveClass('select-table-root')
+    expect(root).not.toHaveAttribute('border')
+    expect(root).not.toHaveAttribute('stripe')
+
+    await expect.element(screen.getByText('title-1')).toBeInTheDocument()
+    expect(screen.container.querySelector('.el-table--border')).toBeInTheDocument()
+    expect(screen.container.querySelector('.el-table--striped')).toBeInTheDocument()
+    expect(screen.container.querySelector('.custom-row')).toBeInTheDocument()
+
+    await screen.getByRole('row', { name: 'title-1 description-1' }).click()
+    expect(onRowClick).toHaveBeenCalled()
+  })
+
   it('应该支持反显表单数据', async () => {
     const form = createForm({
       initialValues: {

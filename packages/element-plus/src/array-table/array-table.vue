@@ -10,7 +10,7 @@ import { ElTable, ElTableColumn, vLoading } from 'element-plus'
 import { omit } from 'lodash-es'
 import { computed, nextTick, ref, watch } from 'vue'
 import { VueDraggable } from 'vue-draggable-plus'
-import { stylePrefix, useCleanAttrs } from '../__builtins__'
+import { stylePrefix, useSplitAttrsByComponent } from '../__builtins__'
 import { ArrayBase } from '../array-base'
 import { isAdditionComponent } from '../array-base/utils'
 import ElPagination from '../pagination/pagination'
@@ -25,7 +25,7 @@ const props = withDefaults(defineProps<IArrayTableProps>(), {
   modelValue: () => [],
   pagination: true,
 })
-const { props: elTableProps } = useCleanAttrs()
+const { rootAttrs, componentProps: elTableProps } = useSplitAttrsByComponent(ElTable)
 const paginationProps = computed(() => omit(props.paginationProps, ['pageSize', 'currentPage']))
 const fieldRef = useField<ArrayField>()
 const field = fieldRef.value
@@ -149,7 +149,7 @@ async function handleDragEnd(evt: { oldIndex: number, newIndex: number }) {
 </script>
 
 <template>
-  <div :class="prefixCls">
+  <div v-bind="rootAttrs" :class="prefixCls">
     <ArrayBase :key-map="keyMap" :add="onAddItemClick">
       <VueDraggable
         :model-value="dataSource" target="tbody" :handle="`.${stylePrefix}-array-base-sort-handle`"

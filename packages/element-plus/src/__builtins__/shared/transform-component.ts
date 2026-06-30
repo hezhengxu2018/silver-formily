@@ -14,7 +14,7 @@ export function mapReadPretty(
     return observer(
       defineComponent({
         name: target.name ? `Read${target.name}` : `ReadComponent`,
-        setup(props, { attrs, slots, listeners }: Record<string, any>) {
+        setup(_, { attrs, slots }) {
           const fieldRef = useField()
           return () => {
             const field = fieldRef.value
@@ -24,11 +24,8 @@ export function mapReadPretty(
                 ? component
                 : target,
               {
-                attrs: {
-                  ...readPrettyProps,
-                  ...attrs,
-                },
-                on: listeners,
+                ...readPrettyProps,
+                ...attrs,
               },
               slots,
             )

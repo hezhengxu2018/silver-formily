@@ -1,25 +1,121 @@
 import type { Component, ComputedRef, Slot, VNode } from 'vue'
-import { isPlainObj } from '@silver-formily/shared'
-import { useAttrs, version } from 'element-plus'
-import { omit } from 'lodash-es'
-import { Comment, computed, Fragment, Text } from 'vue'
+import { camelCase, paramCase } from '@silver-formily/shared'
+import { useAttrs as useElementPlusAttrs, version } from 'element-plus'
+import { Comment, computed, Fragment, getCurrentInstance, Text, unref } from 'vue'
 import { lt } from './simple-version-compare'
 
-export function useCleanAttrs(removeAttrsList: string[] = []): {
-  props: ComputedRef<Record<string, any>>
-} {
-  const attrs = useAttrs()
-  const props = computed(() => {
-    const DEFAULT_REMOVE_ATTRS = ['value', 'onChange', 'attrs', 'on', 'readOnly']
-    const baseAttrs = attrs.value as Record<string, any>
-    const nestedAttrs = baseAttrs.attrs
-    if (isPlainObj(nestedAttrs)) {
-      return omit({ ...baseAttrs, ...(nestedAttrs as Record<string, any>) }, DEFAULT_REMOVE_ATTRS.concat(removeAttrsList))
+type ComponentWithOptions = Component & {
+  props?: unknown
+  emits?: unknown
+  __vccOpts?: {
+    props?: unknown
+    emits?: unknown
+  }
+}
+
+export interface SplitAttrsByComponentOptions {
+  extraPropKeys?: string[]
+  extraEventNames?: string[]
+  removeKeys?: string[]
+}
+
+export function useExcludedAttrs(
+  excludeKeys: string[] | ComputedRef<string[]> = [],
+): ComputedRef<Record<string, any>> {
+  const instance = getCurrentInstance()
+  const reactiveAttrs = useElementPlusAttrs({
+    excludeKeys: computed(() => [...unref(excludeKeys)]),
+  })
+
+  return computed(() => {
+    const excludedKeys = new Set(unref(excludeKeys))
+    const rawAttrs = (instance?.proxy?.$attrs ?? {}) as Record<string, any>
+    const attrs = { ...reactiveAttrs.value }
+
+    if (!excludedKeys.has('class') && rawAttrs.class !== undefined) {
+      attrs.class = rawAttrs.class
     }
-    return omit(baseAttrs, DEFAULT_REMOVE_ATTRS.concat(removeAttrsList))
+    if (!excludedKeys.has('style') && rawAttrs.style !== undefined) {
+      attrs.style = rawAttrs.style
+    }
+
+    return attrs
+  })
+}
+
+function normalizeKeys(keys: string[]) {
+  return new Set(keys.flatMap(key => [key, camelCase(key), paramCase(key)]))
+}
+
+function normalizeOptionKeys(options: unknown) {
+  if (!options)
+    return new Set<string>()
+  if (Array.isArray(options))
+    return normalizeKeys(options.map(key => String(key)))
+  if (typeof options === 'object')
+    return normalizeKeys(Object.keys(options as Record<string, unknown>))
+  return new Set<string>()
+}
+
+function normalizeEventPropName(key: string) {
+  if (!/^on[^a-z]/.test(key))
+    return ''
+  const rawName = key.slice(2)
+  return rawName.charAt(0).toLowerCase() + rawName.slice(1)
+}
+
+function isComponentEventKey(key: string, eventNames: Set<string>) {
+  const eventName = normalizeEventPropName(key)
+  return !!eventName && (eventNames.has(eventName) || eventNames.has(camelCase(eventName)) || eventNames.has(paramCase(eventName)))
+}
+
+export function useSplitAttrsByComponent(
+  component: ComponentWithOptions,
+  options: SplitAttrsByComponentOptions = {},
+): {
+  rootAttrs: ComputedRef<Record<string, any>>
+  componentProps: ComputedRef<Record<string, any>>
+} {
+  const attrs = useExcludedAttrs()
+  const componentPropsKeys = computed(() => {
+    const props = component.props ?? component.__vccOpts?.props
+    return new Set([
+      ...normalizeOptionKeys(props),
+      ...normalizeKeys(options.extraPropKeys ?? []),
+    ])
+  })
+  const componentEventNames = computed(() => {
+    const emits = component.emits ?? component.__vccOpts?.emits
+    return new Set([
+      ...normalizeOptionKeys(emits),
+      ...normalizeKeys(options.extraEventNames ?? []),
+    ])
+  })
+  const removeKeys = computed(() => normalizeKeys(options.removeKeys ?? []))
+  const splitAttrs = computed(() => {
+    return Object.entries(attrs.value).reduce<{
+      rootAttrs: Record<string, any>
+      componentProps: Record<string, any>
+    }>((buf, [key, value]) => {
+      const normalizedKey = camelCase(key)
+      if (removeKeys.value.has(key) || removeKeys.value.has(normalizedKey))
+        return buf
+
+      if (componentPropsKeys.value.has(key) || componentPropsKeys.value.has(normalizedKey) || isComponentEventKey(key, componentEventNames.value)) {
+        buf.componentProps[normalizedKey] = value
+      }
+      else {
+        buf.rootAttrs[key] = value
+      }
+      return buf
+    }, {
+      rootAttrs: {},
+      componentProps: {},
+    })
   })
   return {
-    props,
+    rootAttrs: computed(() => splitAttrs.value.rootAttrs),
+    componentProps: computed(() => splitAttrs.value.componentProps),
   }
 }
 

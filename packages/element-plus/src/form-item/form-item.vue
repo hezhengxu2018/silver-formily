@@ -17,11 +17,12 @@ import { ElIcon, ElTooltip, formItemContextKey, useFormSize, useId, useNamespace
 import { addUnit } from 'element-plus/es/utils/index'
 import { pick } from 'lodash-es'
 import { computed, isVNode, provide, reactive, ref, useSlots, watch } from 'vue'
-import { stylePrefix } from '../__builtins__'
+import { stylePrefix, useExcludedAttrs } from '../__builtins__'
 import { FORM_LAYOUT_PROPS_KEYS, formLayoutShallowContext, useFormLayout } from '../form-layout/utils'
 
 defineOptions({
   name: 'FFormItem',
+  inheritAttrs: false,
 })
 const props = withDefaults(defineProps<IFormItemProps>(), {
   asterisk: undefined,
@@ -30,6 +31,13 @@ const props = withDefaults(defineProps<IFormItemProps>(), {
   fullness: undefined,
 })
 const slots = useSlots()
+const rootAttrs = useExcludedAttrs([
+  'attrs',
+  'on',
+  'required',
+  'validateStatus',
+  'validate-status',
+])
 const ns = useNamespace('form-item')
 const prefixCls = `${stylePrefix}-form-item`
 const rootFormItemClass = computed(() => props.internalFormItemClass || ns.b())
@@ -218,6 +226,7 @@ provide(formItemContextKey, context)
 
 <template>
   <div
+    v-bind="rootAttrs"
     ref="formItemRef" :class="[prefixCls, formlayout.labelWrap && 'is-warp', ...formItemClasses]"
     :role="isGroup ? 'group' : undefined" :aria-labelledby="isGroup ? labelId : undefined"
   >

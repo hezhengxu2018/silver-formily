@@ -5,7 +5,7 @@ import { formilyComputed } from '@silver-formily/reactive-vue'
 import { isArr } from '@silver-formily/shared'
 import { RecursionField, useField, useFieldSchema } from '@silver-formily/vue'
 import { ElBadge, ElCollapseItem } from 'element-plus'
-import { useCleanAttrs } from '../__builtins__'
+import { useAttrs } from 'vue'
 import { isIndexComponent, isOperationComponent, useIndex } from '../array-base/utils'
 import { prefixCls } from './utils'
 
@@ -27,7 +27,7 @@ const errorCount = formilyComputed(() => {
   }).length
 })
 
-const { props: collapseItemProps } = useCleanAttrs()
+const collapseItemProps = useAttrs()
 </script>
 
 <template>

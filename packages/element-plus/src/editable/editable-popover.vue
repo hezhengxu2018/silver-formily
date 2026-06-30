@@ -7,6 +7,7 @@ import { isValid } from '@silver-formily/shared'
 import { useField } from '@silver-formily/vue'
 import { ElPopover, ElText, ClickOutside as vClickOutside } from 'element-plus'
 import { ref } from 'vue'
+import { useSplitAttrsByComponent } from '../__builtins__'
 import { stylePrefix } from '../__builtins__/configs'
 import { FormBaseItem } from '../form-item'
 
@@ -22,6 +23,7 @@ const props = withDefaults(defineProps<IFormItemProps>(), {
 
 const fieldRef = useField<Field>()
 const prefixCls = `${stylePrefix}-editable`
+const { rootAttrs, componentProps: popoverProps } = useSplitAttrsByComponent(ElPopover)
 const contentRef = ref<HTMLElement>()
 const visible = ref(false)
 
@@ -61,11 +63,11 @@ reactionWatch(
 </script>
 
 <template>
-  <div :class="prefixCls">
+  <div v-bind="rootAttrs" :class="prefixCls">
     <ElPopover
-      v-bind="$attrs"
+      v-bind="popoverProps"
       :visible="visible"
-      :title="$attrs.title || fieldRef.title" trigger="click" width="auto"
+      :title="popoverProps.title || fieldRef.title" trigger="click" width="auto"
     >
       <template #default>
         <div ref="contentRef" :class="`${prefixCls}-popover-wrapper`">

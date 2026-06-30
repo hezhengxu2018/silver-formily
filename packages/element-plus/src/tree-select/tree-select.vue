@@ -2,8 +2,7 @@
 import type { Field } from '@silver-formily/core'
 import { useField } from '@silver-formily/vue'
 import { ElTreeSelect } from 'element-plus'
-import { ref, useSlots } from 'vue'
-import { useCleanAttrs } from '../__builtins__'
+import { ref, useAttrs, useSlots } from 'vue'
 
 defineOptions({
   name: 'FSelectTree',
@@ -12,7 +11,7 @@ defineOptions({
 
 const slots = useSlots()
 
-const { props: attrs } = useCleanAttrs()
+const attrs = useAttrs()
 
 const treeSelectRef = ref()
 

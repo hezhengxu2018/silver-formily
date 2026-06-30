@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { isFn, isValid } from '@silver-formily/shared'
 import { ElSpace, ElText } from 'element-plus'
-import { stylePrefix, useCleanAttrs } from '../__builtins__'
+import { useAttrs } from 'vue'
+import { stylePrefix, useExcludedAttrs } from '../__builtins__'
 import { usePreviewConfig } from './utils'
 
 defineOptions({
@@ -13,14 +14,15 @@ const props = defineProps<{
   modelValue?: any
 }>()
 
-const { props: attrs } = useCleanAttrs()
+const attrs = useAttrs()
+const rootAttrs = useExcludedAttrs(['formatter'])
 const prefixCls = `${stylePrefix}-preview-text`
 const colorCls = `${prefixCls}__color`
 const { spaceProps, textProps, placeholder } = usePreviewConfig()
 </script>
 
 <template>
-  <ElSpace :class="[prefixCls, colorCls]" v-bind="spaceProps">
+  <ElSpace v-bind="{ ...spaceProps, ...rootAttrs }" :class="[prefixCls, colorCls]">
     <div
       v-if="isValid(props.modelValue)"
       :class="`${colorCls}-swatch`"

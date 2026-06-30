@@ -9,13 +9,12 @@ import {
   ElRadioGroup,
   ElTable,
   ElTableColumn,
-  useAttrs,
   version,
   vLoading,
 } from 'element-plus'
 import { differenceWith, remove, uniq, uniqWith, xor } from 'lodash-es'
 import { computed, nextTick, ref, watch } from 'vue'
-import { lt, stylePrefix } from '../__builtins__'
+import { lt, stylePrefix, useSplitAttrsByComponent } from '../__builtins__'
 
 defineOptions({
   name: 'FSelectTable',
@@ -36,7 +35,7 @@ const props = withDefaults(defineProps<ISelectTableProps>(), {
 
 const emit = defineEmits(['update:modelValue'])
 
-const elTableProps = useAttrs()
+const { rootAttrs, componentProps: elTableProps } = useSplitAttrsByComponent(ElTable)
 const field = useField()
 const elTableRef = ref<TableInstance>()
 const radioSelectedKey = ref()
@@ -277,10 +276,21 @@ function selectable(row: Record<string, any>, index: number) {
   }
   return true
 }
+
+function getRowClassName(params: { row: Record<string, any>, rowIndex: number }) {
+  const userRowClassName = elTableProps.value.rowClassName
+  const userClassName = isFn(userRowClassName)
+    ? userRowClassName(params)
+    : userRowClassName
+  return [
+    props.clickRowToSelect ? '--click-row-select' : '',
+    userClassName,
+  ].filter(Boolean).join(' ')
+}
 </script>
 
 <template>
-  <div :class="`${stylePrefix}-select-table`">
+  <div v-bind="rootAttrs" :class="`${stylePrefix}-select-table`">
     <div
       v-if="currentSelectLength > 0 && props.showAlertToolbar"
       :class="`${stylePrefix}-select-table-alert-container`"
@@ -300,7 +310,7 @@ function selectable(row: Record<string, any>, index: number) {
       v-loading="props.loading"
       v-bind="elTableProps"
       :row-key="rowKey"
-      :row-class-name="props.clickRowToSelect ? `--click-row-select` : ''"
+      :row-class-name="getRowClassName"
       :data="props.dataSource"
       :highlight-current-row="props.mode === 'single'"
       @select="onSelect"

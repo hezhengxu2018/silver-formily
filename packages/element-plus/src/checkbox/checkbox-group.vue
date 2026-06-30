@@ -3,8 +3,8 @@ import type { CheckboxProps } from 'element-plus'
 import type { PropType } from 'vue'
 import { isPlainObj } from '@silver-formily/shared'
 import { ElCheckbox, ElCheckboxButton, ElCheckboxGroup, version } from 'element-plus'
-import { computed, useSlots } from 'vue'
-import { lt, useCleanAttrs } from '../__builtins__'
+import { computed, useAttrs, useSlots } from 'vue'
+import { lt } from '../__builtins__'
 
 defineOptions({
   name: 'FCheckboxGroup',
@@ -46,7 +46,7 @@ const compatiableProps = computed(() => {
 })
 
 const slots = useSlots()
-const { props: checkboxProps } = useCleanAttrs()
+const checkboxProps = useAttrs()
 </script>
 
 <template>

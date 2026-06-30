@@ -163,8 +163,10 @@ export const ArrayTableMarkupSchemaTest = defineComponent({
             x-decorator="FormItem"
             x-component="ArrayTable"
             x-component-props={{
-              stripe: true,
-              paginationProps: { pageSize: 10 },
+              'class': 'array-table-root',
+              'data-testid': 'array-table-root',
+              'stripe': true,
+              'paginationProps': { pageSize: 10 },
             }}
           >
             <SchemaObjectField>
@@ -594,6 +596,11 @@ describe('arrayTable', async () => {
     const screen = render(ArrayTableMarkupSchemaTest)
     await userEvent.click(queryElement(screen.container, '.formily-element-plus-array-base-addition'))
     await userEvent.click(queryElement(screen.container, '.formily-element-plus-array-base-addition'))
+
+    const root = queryElement(screen.container, '[data-testid="array-table-root"]')
+    expect(root).toHaveClass('formily-element-plus-array-table')
+    expect(root).toHaveClass('array-table-root')
+    expect(root).not.toHaveAttribute('stripe')
 
     // 检查表格是否有条纹样式
     await vi.waitFor(() => {

@@ -6,7 +6,7 @@ import { reactionWatch } from '@silver-formily/reactive-vue'
 import { useFieldSchema, useForm } from '@silver-formily/vue'
 import { throttle } from 'lodash-es'
 import { computed, onUnmounted, useSlots } from 'vue'
-import { stylePrefix, useCleanAttrs } from '../__builtins__'
+import { stylePrefix, useExcludedAttrs } from '../__builtins__'
 import { Form as FForm } from '../form'
 import { useQueryFormForm, useQueryFormSchemaField } from './hooks'
 
@@ -24,7 +24,7 @@ const emit = defineEmits<{
   (e: 'autoSubmitFailed', error: any): void
 }>()
 
-const { props: formProps } = useCleanAttrs(['modelValue', 'onUpdate:modelValue'])
+const formProps = useExcludedAttrs(['modelValue', 'onUpdate:modelValue'])
 const slots = useSlots()
 const formRef = useForm()
 const fieldSchemaRef = useFieldSchema()

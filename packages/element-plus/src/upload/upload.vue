@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { Field } from '@silver-formily/core'
 import type { ImageViewerInstance, ImageViewerProps, UploadFile, UploadInstance, UploadProps, UploadRawFile } from 'element-plus'
-import type { PropType } from 'vue'
+import type { ComputedRef, PropType } from 'vue'
 import {
   Plus as PlusIcon,
   UploadFilled as UploadFilledIcon,
@@ -11,9 +11,8 @@ import { reactionWatch } from '@silver-formily/reactive-vue'
 import { isFn } from '@silver-formily/shared'
 import { useField } from '@silver-formily/vue'
 import { ElButton, ElIcon, ElImageViewer, ElUpload, genFileId } from 'element-plus'
-import { omit } from 'lodash-es'
 import { computed, ref, useAttrs } from 'vue'
-import { hasSlotContent } from '../__builtins__'
+import { hasSlotContent, useExcludedAttrs } from '../__builtins__'
 
 defineOptions({
   name: 'FUpload',
@@ -46,18 +45,17 @@ const props = defineProps({
 const emit = defineEmits(['update:modelValue'])
 
 const uploadRef = ref<UploadInstance>()
-const attrs = useAttrs() as UploadProps
-const innerAttrs = computed(() => {
-  return omit(attrs, [
-    'onChange',
-    'onRemove',
-    'onExceed',
-    'onError',
-    'onPreview',
-    'fileList',
-    'onUpdate:fileList',
-  ])
-})
+const attrs = useExcludedAttrs() as ComputedRef<UploadProps>
+const innerAttrs = useExcludedAttrs([
+  'onChange',
+  'onRemove',
+  'onExceed',
+  'onError',
+  'onPreview',
+  'fileList',
+  'onUpdate:fileList',
+])
+const rawAttrs = useAttrs()
 const fieldRef = useField<Field>()
 fieldRef.value?.inject({
   getElUploadRef: () => {
@@ -87,40 +85,40 @@ function handleChange(file: UploadFile, fileList: UploadFile[]) {
 }
 
 function handleRemove(file: UploadFile, fileList: UploadFile[]) {
-  if (isFn(attrs.onRemove)) {
-    attrs.onRemove(file, fileList)
+  if (isFn(attrs.value.onRemove)) {
+    attrs.value.onRemove(file, fileList)
   }
   fieldRef.value.setDataSource([...fileList])
   setFeedBack()
 }
 
 function handleExceed(files: File[], uploadFIles) {
-  if (isFn(attrs.onExceed)) {
-    attrs.onExceed(files, uploadFIles)
+  if (isFn(attrs.value.onExceed)) {
+    attrs.value.onExceed(files, uploadFIles)
   }
-  if (attrs.limit !== 1)
+  if (attrs.value.limit !== 1)
     return
   uploadRef.value!.clearFiles()
   const file = files[0] as UploadRawFile
   file.uid = genFileId()
   uploadRef.value!.handleStart(file)
-  if (attrs.autoUpload ?? true) {
+  if (attrs.value.autoUpload ?? true) {
     uploadRef.value!.submit()
   }
 }
 
 function handleError(error: Error, file: UploadFile, fileList: UploadFile[]) {
-  if (isFn(attrs.onError)) {
-    (attrs.onError)(error, file, fileList)
+  if (isFn(attrs.value.onError)) {
+    attrs.value.onError(error, file, fileList)
   }
 }
 
 function onPreviewClick(uploadFile: UploadFile) {
-  if (isFn(attrs.onPreview)) {
-    (attrs.onPreview)(uploadFile)
+  if (isFn(attrs.value.onPreview)) {
+    attrs.value.onPreview(uploadFile)
     return
   }
-  if (!uploadFile.url && !attrs.accept?.includes('image'))
+  if (!uploadFile.url && !attrs.value.accept?.includes('image'))
     return
   const clickIndex = props.fileList.findIndex((element: UploadFile) => element.uid === uploadFile.uid)
   activeImageIndex.value = clickIndex
@@ -148,7 +146,7 @@ reactionWatch(() => {
   >
     <slot v-if="hasSlotContent($slots?.default)" />
     <template v-else>
-      <template v-if="attrs.drag">
+      <template v-if="rawAttrs.drag">
         <ElIcon style="font-size: 60px; margin: 40px 0 16px;">
           <UploadFilledIcon color="gray" />
         </ElIcon>
@@ -156,7 +154,7 @@ reactionWatch(() => {
           {{ props.textContent }}
         </div>
       </template>
-      <template v-else-if="attrs.listType === 'picture-card'">
+      <template v-else-if="rawAttrs.listType === 'picture-card'">
         <PlusIcon style="width: 28px; height: 28px; color: gray" />
       </template>
       <template v-else>

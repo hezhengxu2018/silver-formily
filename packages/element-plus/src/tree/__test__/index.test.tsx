@@ -83,6 +83,39 @@ describe('tree', () => {
       await expect.element(queryElement(container, '.el-checkbox')).toBeInTheDocument()
     })
 
+    it('应该稳定分流 root attrs 和 ElTree props/events', async () => {
+      const onNodeClick = vi.fn()
+      const { container, getByText } = render(() => (
+        <FormProvider form={createForm()}>
+          <FormLayout>
+            <Field
+              name="tree"
+              title="树形控件"
+              decorator={[FormItem]}
+              component={[Tree, {
+                'class': 'tree-root',
+                'data-testid': 'tree-root',
+                'nodeKey': 'id',
+                'valueType': 'all',
+                'defaultExpandAll': true,
+                'checkStrictly': true,
+                'onNodeClick': onNodeClick,
+              }]}
+              dataSource={mockData}
+            />
+          </FormLayout>
+        </FormProvider>
+      ))
+
+      const root = queryElement(container, '[data-testid="tree-root"]')
+      expect(root).toHaveClass('el-scrollbar')
+      expect(root).toHaveClass('tree-root')
+      expect(root).not.toHaveAttribute('check-strictly')
+
+      await getByText('Level one 1').click()
+      expect(onNodeClick).toHaveBeenCalled()
+    })
+
     it('应该支持点击节点勾选功能', async () => {
       const form = createForm()
       const { getByText } = render(() => (

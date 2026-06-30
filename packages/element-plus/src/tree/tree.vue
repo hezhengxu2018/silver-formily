@@ -5,7 +5,7 @@ import { isFn } from '@silver-formily/shared'
 import { useField } from '@silver-formily/vue'
 import { ElScrollbar, ElTree, vLoading } from 'element-plus'
 import { computed, nextTick, ref, useSlots, watch } from 'vue'
-import { useCleanAttrs } from '../__builtins__'
+import { useSplitAttrsByComponent } from '../__builtins__'
 import { addDisabledToNodes, flattenTree, getInputKeys, getOutputData } from './utils'
 
 defineOptions({
@@ -30,7 +30,9 @@ const emit = defineEmits<{
 
 const slots = useSlots()
 
-const { props: attrs } = useCleanAttrs()
+const { rootAttrs, componentProps: attrs } = useSplitAttrsByComponent(ElTree, {
+  extraPropKeys: ['disabled'],
+})
 const treeRef = ref<InstanceType<typeof ElTree>>()
 const checkedKeys = ref<any[]>([])
 
@@ -100,7 +102,7 @@ fieldRef.value?.inject({
 </script>
 
 <template>
-  <ElScrollbar :height="props.height" :max-height="props.maxHeight">
+  <ElScrollbar v-bind="rootAttrs" :height="props.height" :max-height="props.maxHeight">
     <ElTree
       ref="treeRef"
       v-loading="attrs.loading"

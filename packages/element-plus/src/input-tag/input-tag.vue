@@ -2,7 +2,7 @@
 import type { Field } from '@silver-formily/core'
 import { useField } from '@silver-formily/vue'
 import { ElInputTag } from 'element-plus'
-import { useCleanAttrs } from '../__builtins__'
+import { useAttrs } from 'vue'
 
 defineOptions({
   name: 'FInputTag',
@@ -15,7 +15,7 @@ const slots = defineSlots<{
   suffix?: () => any
 }>()
 
-const { props: inputTagProps } = useCleanAttrs()
+const inputTagProps = useAttrs()
 const fieldRef = useField<Field>()
 </script>
 

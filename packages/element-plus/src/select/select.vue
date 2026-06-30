@@ -2,7 +2,7 @@
 import { useField } from '@silver-formily/vue'
 import { ElOption, ElOptionGroup, ElSelect } from 'element-plus'
 import { omit } from 'lodash-es'
-import { useCleanAttrs } from '../__builtins__'
+import { computed, useAttrs } from 'vue'
 
 defineOptions({
   name: 'FSelect',
@@ -29,7 +29,8 @@ type OptionGroupType = InstanceType<typeof ElOptionGroup>['$props'] & {
   options: OptionType[]
 }
 
-const { props: selectProps } = useCleanAttrs()
+const selectProps = useAttrs()
+const valueKey = computed(() => selectProps.valueKey as string | undefined)
 
 const fieldRef = useField()
 
@@ -43,12 +44,12 @@ function isGroup(option: OptionType | OptionGroupType): option is OptionGroupTyp
     <template v-for="option of props.options">
       <template v-if="isGroup(option)">
         <ElOptionGroup v-bind="omit(option, 'options')" :key="option.label">
-          <ElOption v-for="i of option.options" :key="selectProps.valueKey ? i[selectProps.valueKey] : i.label" v-bind="i">
+          <ElOption v-for="i of option.options" :key="valueKey ? i[valueKey] : i.label" v-bind="i">
             <slot v-if="slots.option" name="option" :option="i" />
           </ElOption>
         </ElOptionGroup>
       </template>
-      <ElOption v-else v-bind="option" :key="selectProps.valueKey ? option[selectProps.valueKey] : option.label">
+      <ElOption v-else v-bind="option" :key="valueKey ? option[valueKey] : option.label">
         <slot v-if="slots.option" name="option" :option="option" />
       </ElOption>
     </template>
