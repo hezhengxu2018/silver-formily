@@ -16,7 +16,7 @@ useObserver()
 </template>
 
 <style scoped>
-@reference "../../styles/globals.css";
+@reference "../styles/globals.css";
 
 .dn-auxtool {
   @apply pointer-events-none absolute left-0 top-0 z-20 h-full w-full;

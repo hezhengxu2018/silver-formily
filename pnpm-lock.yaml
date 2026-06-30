@@ -342,6 +342,9 @@ importers:
       '@silver-formily/designer-core':
         specifier: workspace:*
         version: link:../../packages/designer-core
+      '@silver-formily/designer-vue':
+        specifier: workspace:*
+        version: link:../../packages/designer-vue
       '@silver-formily/element-plus':
         specifier: workspace:*
         version: link:../../packages/element-plus
@@ -1002,6 +1005,63 @@ importers:
       typescript:
         specifier: 'catalog:'
         version: 6.0.2
+
+  packages/designer-vue:
+    devDependencies:
+      '@lucide/vue':
+        specifier: 'catalog:'
+        version: 1.20.0(vue@3.5.32(typescript@6.0.2))
+      '@silver-formily/designer-core':
+        specifier: workspace:*
+        version: link:../designer-core
+      '@silver-formily/reactive':
+        specifier: workspace:*
+        version: link:../reactive
+      '@silver-formily/reactive-vue':
+        specifier: workspace:*
+        version: link:../reactive-vue
+      '@silver-formily/typescript-config':
+        specifier: workspace:*
+        version: link:../typescript-config
+      '@tailwindcss/postcss':
+        specifier: 'catalog:'
+        version: 4.3.1
+      '@types/node':
+        specifier: 'catalog:'
+        version: 24.10.13
+      '@vitejs/plugin-vue':
+        specifier: 'catalog:'
+        version: 6.0.6(vite@8.0.8(@types/node@24.10.13)(esbuild@0.28.0)(jiti@2.7.0)(sass-embedded@1.97.3)(sass@1.97.3)(tsx@4.22.3)(yaml@2.8.2))(vue@3.5.32(typescript@6.0.2))
+      '@vitejs/plugin-vue-jsx':
+        specifier: 'catalog:'
+        version: 5.1.5(vite@8.0.8(@types/node@24.10.13)(esbuild@0.28.0)(jiti@2.7.0)(sass-embedded@1.97.3)(sass@1.97.3)(tsx@4.22.3)(yaml@2.8.2))(vue@3.5.32(typescript@6.0.2))
+      eslint:
+        specifier: 'catalog:'
+        version: 9.39.1(jiti@2.7.0)
+      postcss:
+        specifier: 'catalog:'
+        version: 8.5.15
+      postcss-nested:
+        specifier: 'catalog:'
+        version: 7.0.2(postcss@8.5.15)
+      tailwindcss:
+        specifier: 'catalog:'
+        version: 4.3.1
+      tsdown:
+        specifier: 'catalog:'
+        version: 0.21.8(@tsdown/css@0.21.8)(oxc-resolver@11.19.1(@emnapi/core@1.9.2)(@emnapi/runtime@1.9.2))(synckit@0.11.12)(typescript@6.0.2)(vue-tsc@3.2.6(typescript@6.0.2))
+      typescript:
+        specifier: 'catalog:'
+        version: 6.0.2
+      unplugin-vue:
+        specifier: 'catalog:'
+        version: 7.1.1(@types/node@24.10.13)(esbuild@0.28.0)(jiti@2.7.0)(sass-embedded@1.97.3)(sass@1.97.3)(tsx@4.22.3)(vue@3.5.32(typescript@6.0.2))(yaml@2.8.2)
+      vue:
+        specifier: 'catalog:'
+        version: 3.5.32(typescript@6.0.2)
+      vue-tsc:
+        specifier: 'catalog:'
+        version: 3.2.6(typescript@6.0.2)
 
   packages/docs-toolkit:
     dependencies:
@@ -4772,7 +4832,7 @@ packages:
 
   glob@7.2.3:
     resolution: {integrity: sha512-nFR0zLpU2YCaRxwoCJvL6UvCH2JFyFVIvwTLsIf21AuHlMskA1hhTdk+LlYJtOlYt9v6dvszD2BGRqBL+iQK9Q==}
-    deprecated: Glob versions prior to v9 are no longer supported
+    deprecated: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
 
   global-directory@4.0.1:
     resolution: {integrity: sha512-wHTUcDUoZ1H5/0iVqEudYW4/kAlN5cZ3j/bXn0Dpbizl9iaUVeWSHqiOjsgk6OW2bkLclbBjzewBz6weQ1zA2Q==}

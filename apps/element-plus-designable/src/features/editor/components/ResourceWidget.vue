@@ -53,7 +53,7 @@ defineProps<{
 </template>
 
 <style scoped>
-@reference "../../styles/globals.css";
+@reference "../../../styles/globals.css";
 
 .epd-resource-widget {
   @apply relative z-10 h-full w-[var(--editor-left-panel-width)] shrink-0 select-none overflow-hidden bg-white text-gray-900;

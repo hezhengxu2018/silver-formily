@@ -57,7 +57,7 @@ function getPreviewStyle() {
 </template>
 
 <style scoped>
-@reference "../../styles/globals.css";
+@reference "../styles/globals.css";
 
 .dn-drag-preview {
   @apply pointer-events-none absolute z-50 inline-flex max-w-56 select-none items-center gap-2 rounded-xl border border-blue-200 bg-white/95 px-3 py-2 text-xs font-semibold text-blue-700 shadow-xl shadow-blue-500/20 backdrop-blur;

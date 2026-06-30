@@ -3,27 +3,29 @@
   "compilerOptions": {
     "target": "ES2022",
     "jsx": "preserve",
+    "jsxImportSource": "vue",
     "lib": ["DOM", "ES2022"],
     "baseUrl": ".",
     "ignoreDeprecations": "6.0",
     "module": "ESNext",
     "moduleResolution": "bundler",
     "paths": {
-      "@/*": ["src/*"],
-      "@silver-formily/designer-vue": ["../../packages/designer-vue/src/index.ts"],
-      "@silver-formily/designer-vue/*": ["../../packages/designer-vue/src/*"]
+      "@silver-formily/designer-core": ["../designer-core/src/index.ts"],
+      "@silver-formily/reactive": ["../reactive/src/index.ts"],
+      "@silver-formily/reactive-vue": ["../reactive-vue/src/index.ts"]
     },
     "resolveJsonModule": true,
     "types": ["node"],
     "allowJs": false,
-    "strict": true,
-    "noUnusedLocals": true,
+    "strict": false,
+    "noUnusedLocals": false,
     "declaration": false,
     "emitDeclarationOnly": false,
     "noEmit": true,
     "esModuleInterop": true,
+    "verbatimModuleSyntax": false,
     "skipLibCheck": true
   },
-  "include": ["src", "env.d.ts"],
-  "exclude": ["node_modules", "dist"]
+  "include": ["src"],
+  "exclude": ["node_modules", "esm"]
 }

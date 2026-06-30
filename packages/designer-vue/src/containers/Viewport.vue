@@ -40,7 +40,7 @@ onBeforeUnmount(() => {
 </template>
 
 <style scoped>
-@reference "../../styles/globals.css";
+@reference "../styles/globals.css";
 
 .dn-viewport {
   @apply relative h-full overflow-auto;

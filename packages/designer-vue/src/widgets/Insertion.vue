@@ -81,7 +81,7 @@ function getLineStyle() {
 </template>
 
 <style scoped>
-@reference "../../styles/globals.css";
+@reference "../styles/globals.css";
 
 .dn-aux-insertion {
   @apply pointer-events-none absolute z-30 flex h-0 -translate-y-1/2 items-center;

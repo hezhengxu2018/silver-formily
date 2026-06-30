@@ -11,7 +11,7 @@ const props = defineProps<{
 }>()
 
 const componentName = computed(() => props.node.componentName)
-const isContainer = computed(() => componentName.value === 'Form' || props.node.designerProps?.droppable)
+const isContainer = computed(() => props.node.isRoot || props.node.designerProps?.droppable)
 </script>
 
 <template>
@@ -43,17 +43,10 @@ const isContainer = computed(() => componentName.value === 'Form' || props.node.
 </template>
 
 <style scoped>
-@reference "../../styles/globals.css";
+@reference "../styles/globals.css";
 
 .dn-runtime-node {
   @apply relative my-2 min-h-10 rounded bg-white px-4 py-3;
-
-  :deep(.el-input),
-  :deep(.el-select),
-  :deep(.el-cascader),
-  :deep(.el-date-editor) {
-    @apply w-full;
-  }
 
   &--container {
     @apply min-h-32 border border-slate-200 bg-white/80;

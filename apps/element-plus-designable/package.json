@@ -19,6 +19,7 @@
         "buildDependencies": [
           "@silver-formily/core",
           "@silver-formily/designer-core",
+          "@silver-formily/designer-vue",
           "@silver-formily/element-plus",
           "@silver-formily/grid",
           "@silver-formily/json-schema",
@@ -36,6 +37,7 @@
     "@lucide/vue": "catalog:",
     "@silver-formily/core": "workspace:*",
     "@silver-formily/designer-core": "workspace:*",
+    "@silver-formily/designer-vue": "workspace:*",
     "@silver-formily/element-plus": "workspace:*",
     "@silver-formily/grid": "workspace:*",
     "@silver-formily/json-schema": "workspace:*",
