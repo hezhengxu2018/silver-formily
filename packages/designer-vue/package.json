@@ -61,6 +61,7 @@
   ],
   "scripts": {
     "build": "tsdown --tsconfig tsconfig.build.json",
+    "dev": "vite --config playground/vite.config.ts",
     "lint": "eslint .",
     "format": "eslint . --fix",
     "check-types": "vue-tsc --noEmit --project tsconfig.json",
@@ -90,6 +91,7 @@
     "tsdown": "catalog:",
     "typescript": "catalog:",
     "unplugin-vue": "catalog:",
+    "vite": "catalog:",
     "vue": "catalog:",
     "vue-tsc": "catalog:"
   }

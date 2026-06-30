@@ -60,7 +60,7 @@ function isVisible() {
 @reference "../styles/globals.css";
 
 .dn-aux-selection-box {
-  @apply pointer-events-none absolute z-20 box-border;
+  @apply absolute z-20 box-border;
 
   &__outline {
     @apply absolute inset-0 border border-blue-500;

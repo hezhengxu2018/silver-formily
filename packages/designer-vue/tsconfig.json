@@ -11,6 +11,8 @@
     "moduleResolution": "bundler",
     "paths": {
       "@silver-formily/designer-core": ["../designer-core/src/index.ts"],
+      "@silver-formily/designer-vue": ["./src/index.ts"],
+      "@silver-formily/designer-vue/*": ["./src/*"],
       "@silver-formily/reactive": ["../reactive/src/index.ts"],
       "@silver-formily/reactive-vue": ["../reactive-vue/src/index.ts"]
     },
@@ -26,6 +28,6 @@
     "verbatimModuleSyntax": false,
     "skipLibCheck": true
   },
-  "include": ["src"],
+  "include": ["src", "playground"],
   "exclude": ["node_modules", "esm"]
 }
