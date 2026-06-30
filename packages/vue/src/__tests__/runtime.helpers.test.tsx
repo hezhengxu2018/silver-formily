@@ -136,6 +136,97 @@ const ConnectedAttrProbe = connect(
   }),
 )
 
+const AttrForwardWrapper = defineComponent({
+  name: 'AttrForwardWrapper',
+  inheritAttrs: false,
+  setup(_, { attrs }) {
+    return () => (
+      <button
+        data-testid="attr-forward-wrapper"
+        data-custom={String(attrs['data-custom'] ?? '')}
+        data-feedback-text={String(attrs.feedbackText ?? '')}
+        data-feedback-status={String(attrs.feedbackStatus ?? '')}
+      >
+        {String(attrs.label ?? '')}
+      </button>
+    )
+  },
+})
+
+const ConnectedAttrForwardWrapper = connect(
+  AttrForwardWrapper,
+  mapProps(
+    {
+      title: 'label',
+    },
+    () => ({
+      feedbackText: 'Mapped feedback',
+      feedbackStatus: 'error',
+    }),
+  ),
+)
+
+const AttrBridgeTarget = defineComponent({
+  name: 'AttrBridgeTarget',
+  props: {
+    label: {
+      type: String,
+      default: '',
+    },
+    extra: {
+      type: String,
+      default: '',
+    },
+    feedbackText: {
+      type: String,
+      default: '',
+    },
+    feedbackStatus: {
+      type: String,
+      default: '',
+    },
+  },
+  setup(props) {
+    return () => (
+      <div data-testid="attr-bridge-target">
+        {`${props.label}|${props.extra}|${props.feedbackText}|${props.feedbackStatus}`}
+      </div>
+    )
+  },
+})
+
+const AttrBridgeWrapper = defineComponent({
+  name: 'AttrBridgeWrapper',
+  inheritAttrs: false,
+  props: {
+    mode: {
+      type: String,
+      default: 'default',
+    },
+  },
+  setup(props, { attrs }) {
+    return () => (
+      <div data-testid="attr-bridge-wrapper" data-mode={props.mode}>
+        <AttrBridgeTarget {...attrs} />
+      </div>
+    )
+  },
+})
+
+const ConnectedAttrBridgeWrapper = connect(
+  AttrBridgeWrapper,
+  mapProps(
+    {
+      title: 'label',
+      description: 'extra',
+    },
+    () => ({
+      feedbackText: 'Bridge feedback',
+      feedbackStatus: 'warning',
+    }),
+  ),
+)
+
 const { SchemaField, SchemaStringField } = createSchemaField({
   components: {
     SchemaProbe,
@@ -357,5 +448,62 @@ describe('runtime helpers', () => {
     expect(probe.hasAttribute('required')).toBe(false)
     expect(probe.hasAttribute('validateStatus')).toBe(false)
     expect(probe.hasAttribute('validate-status')).toBe(false)
+  })
+
+  it('应该保留 inheritAttrs false 组件新增的 mapProps attrs 以支持继续透传', async () => {
+    const form = createForm()
+
+    const screen = await render(
+      defineComponent({
+        setup() {
+          return () => (
+            <FormProvider form={form}>
+              <Field
+                name="probe"
+                title="Mapped Label"
+                component={[ConnectedAttrForwardWrapper, {
+                  'data-custom': 'kept',
+                }]}
+              />
+            </FormProvider>
+          )
+        },
+      }),
+    )
+
+    const probe = screen.getByTestId('attr-forward-wrapper').element()
+
+    await expect.element(screen.getByTestId('attr-forward-wrapper')).toHaveTextContent('Mapped Label')
+    expect(probe.getAttribute('data-custom')).toBe('kept')
+    expect(probe.getAttribute('data-feedback-text')).toBe('Mapped feedback')
+    expect(probe.getAttribute('data-feedback-status')).toBe('error')
+  })
+
+  it('应该支持中间包装组件消费自身 props 并继续透传 mapProps 字段', async () => {
+    const form = createForm()
+
+    const screen = await render(
+      defineComponent({
+        setup() {
+          return () => (
+            <FormProvider form={form}>
+              <Field
+                name="bridge"
+                title="Bridge Label"
+                description="Bridge Extra"
+                component={[ConnectedAttrBridgeWrapper, {
+                  mode: 'advanced',
+                }]}
+              />
+            </FormProvider>
+          )
+        },
+      }),
+    )
+
+    await expect.element(screen.getByTestId('attr-bridge-wrapper')).toHaveAttribute('data-mode', 'advanced')
+    await expect.element(screen.getByTestId('attr-bridge-target')).toHaveTextContent(
+      'Bridge Label|Bridge Extra|Bridge feedback|warning',
+    )
   })
 })

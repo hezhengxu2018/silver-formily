@@ -3,6 +3,10 @@ import type { Field } from '@silver-formily/core'
 import type { ISchema } from '@silver-formily/json-schema'
 import type { PropType } from 'vue'
 import type {
+  FormItemContent,
+  IFormItemProps,
+} from '../form-item/types'
+import type {
   QueryFormItemMode,
   QueryFormItemPaginationMap,
   QueryFormItemPaginationProps,
@@ -14,8 +18,8 @@ import { createForm } from '@silver-formily/core'
 import { isNum } from '@silver-formily/shared'
 import { useField } from '@silver-formily/vue'
 import { ElPagination } from 'element-plus'
-import { computed, onMounted, ref, useAttrs, watch } from 'vue'
-import { stylePrefix } from '../__builtins__'
+import { computed, onMounted, ref, watch } from 'vue'
+import { stylePrefix, useExcludedAttrs } from '../__builtins__'
 import { FormBaseItem } from '../form-item'
 import { QueryForm } from '../query-form'
 import { useQueryFormForm } from '../query-form/hooks'
@@ -56,6 +60,14 @@ const props = defineProps({
     type: Boolean,
     default: true,
   },
+  label: [String, Object, Function] as PropType<FormItemContent>,
+  extra: [String, Object, Function] as PropType<FormItemContent>,
+  feedbackText: [String, Object, Function] as PropType<FormItemContent>,
+  feedbackStatus: String as PropType<IFormItemProps['feedbackStatus']>,
+  asterisk: {
+    type: Boolean,
+    default: undefined,
+  },
 })
 
 const emit = defineEmits<{
@@ -79,7 +91,15 @@ const fieldRef = useField<Field>()
 const internalQueryForm = createForm()
 const prefixCls = `${stylePrefix}-query-form-item`
 const formItemInternalClass = `${stylePrefix}-form-item--isolated`
-const formItemProps = useAttrs()
+const formItemProps = useExcludedAttrs()
+const formItemBindings = computed(() => ({
+  ...formItemProps.value,
+  label: props.label,
+  extra: props.extra,
+  feedbackText: props.feedbackText,
+  feedbackStatus: props.feedbackStatus,
+  asterisk: props.asterisk,
+}))
 
 const paginationBindings = computed(() => {
   const {
@@ -225,7 +245,7 @@ watch([currentPageRef, pageSizeRef], ([currentPage, pageSize], [previousPage, pr
 
 <template>
   <FormBaseItem
-    v-bind="formItemProps"
+    v-bind="formItemBindings"
     :internal-form-item-class="formItemInternalClass"
   >
     <div :class="prefixCls">

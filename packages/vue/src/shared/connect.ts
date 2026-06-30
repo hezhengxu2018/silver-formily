@@ -14,7 +14,9 @@ type ComponentWithProps = Component & {
   props?: unknown
   __vccOpts?: {
     props?: unknown
+    inheritAttrs?: boolean
   }
+  inheritAttrs?: boolean
 }
 
 function normalizePropKeys(propsDef: unknown): Set<string> | null {
@@ -35,11 +37,19 @@ function extractTargetPropKeys(target: Component): Set<string> | null {
   return normalizePropKeys(component.props ?? component.__vccOpts?.props)
 }
 
+function shouldPreserveMappedAttrs(target: Component) {
+  const component = target as ComponentWithProps
+  return component.inheritAttrs === false || component.__vccOpts?.inheritAttrs === false
+}
+
 function pickMappableProps<T extends Component>(
   target: T,
   baseAttrKeys: Set<string>,
   mappedAttrs: VueComponentProps<T>,
 ) {
+  if (shouldPreserveMappedAttrs(target))
+    return mappedAttrs
+
   const propKeys = extractTargetPropKeys(target)
   if (!propKeys)
     return mappedAttrs

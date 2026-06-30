@@ -404,6 +404,40 @@ describe('queryFormItem', () => {
     })
   })
 
+  it('should preserve mapped label, extra and feedback attrs through query form item wrapper', async () => {
+    const form = createForm()
+    const request = vi.fn<QueryFormItemRequest>(async () => ({
+      data: [],
+      success: true,
+      total: 0,
+    }))
+
+    const screen = render(formilyWrapperFactory(
+      form,
+      request,
+      {
+        pagination: false,
+        feedbackText: 'Manual feedback',
+        feedbackStatus: 'warning',
+      },
+      {
+        title: 'Selected Rows',
+        description: 'Helper text',
+        required: true,
+      },
+    ))
+
+    await vi.waitFor(() => {
+      expect(request).toHaveBeenCalled()
+    })
+
+    await expect.element(queryElement(screen.container, '.el-form-item__label')).toHaveTextContent('Selected Rows')
+    await expect.element(queryElement(screen.container, '.formily-element-plus-form-item-extra')).toHaveTextContent('Helper text')
+    await expect.element(screen.getByText('Manual feedback')).toBeInTheDocument()
+    await expect.element(queryElement(screen.container, '.formily-element-plus-form-item')).toHaveClass('is-warning')
+    await expect.element(queryElement(screen.container, '.formily-element-plus-form-item')).toHaveClass('is-required')
+  })
+
   it('should not request on mount when immediate is false and should request on submit', async () => {
     const form = createForm()
     const request = vi.fn<QueryFormItemRequest>(async () => ({
