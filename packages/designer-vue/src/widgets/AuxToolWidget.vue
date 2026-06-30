@@ -19,7 +19,7 @@ useObserver()
 @reference "../styles/globals.css";
 
 .dn-auxtool {
-  @apply pointer-events-none absolute left-0 top-0 z-20 h-full w-full;
+  @apply absolute left-0 top-0 z-20 h-full w-full;
   transform: perspective(1px) translate3d(0, 0, 0);
 }
 </style>
