@@ -361,6 +361,40 @@ describe('queryForm', () => {
     expect(onAutoSubmit.mock.calls.at(-1)?.[0]).toMatchObject({ field1: 'hello' })
   })
 
+  it('should call Light mode auto submit listener once and wait for its promise', async () => {
+    vi.useFakeTimers()
+    const form = createForm()
+    const onAutoSubmit = vi.fn(() => new Promise<void>((resolve) => {
+      setTimeout(resolve, 200)
+    }))
+
+    const { getByRole } = render(() => (
+      <QueryForm.Light
+        form={form}
+        schema={createInputSchema(1)}
+        throttleWait={0}
+        onAutoSubmit={onAutoSubmit}
+      />
+    ))
+
+    await getByRole('textbox').fill('hello')
+
+    await vi.waitFor(() => {
+      expect(onAutoSubmit).toHaveBeenCalledTimes(1)
+    })
+
+    vi.advanceTimersByTime(120)
+    await vi.waitFor(() => {
+      expect(form.submitting).toBe(true)
+    })
+
+    vi.advanceTimersByTime(200)
+    await vi.waitFor(() => {
+      expect(form.submitting).toBe(false)
+    })
+    vi.useRealTimers()
+  })
+
   it('should auto submit in Light mode when throttleWait is greater than 0', async () => {
     vi.useFakeTimers()
     const form = createForm()

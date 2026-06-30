@@ -19,7 +19,7 @@ const props = withDefaults(defineProps<IQueryFormLightProps>(), {
   components: () => ({}),
   throttleWait: 300,
 })
-const emit = defineEmits<{
+defineEmits<{
   (e: 'autoSubmit', values: Form['values']): void
   (e: 'autoSubmitFailed', error: any): void
 }>()
@@ -50,11 +50,9 @@ function submitByChange() {
     return
   form
     .submit((values) => {
-      emit('autoSubmit', values)
       return props.onAutoSubmit?.(values)
     })
     .catch((error) => {
-      emit('autoSubmitFailed', error)
       props.onAutoSubmitFailed?.(error)
     })
 }
