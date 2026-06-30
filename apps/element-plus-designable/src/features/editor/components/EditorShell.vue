@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { Designer, Viewport, Workspace } from '@/designable/containers'
-import { ComponentTreeWidget, ResourceWidget } from '@/designable/widgets'
+import { ComponentTreeWidget, Designer, Viewport, Workspace } from '@silver-formily/designer-vue'
 import { componentRegistry } from '../componentRegistry'
 import { engine, paletteResourceGroups } from '../designer'
+import ResourceWidget from './ResourceWidget.vue'
 </script>
 
 <template>

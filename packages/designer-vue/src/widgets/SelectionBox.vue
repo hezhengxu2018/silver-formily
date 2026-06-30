@@ -57,7 +57,7 @@ function isVisible() {
 </template>
 
 <style scoped>
-@reference "../../styles/globals.css";
+@reference "../styles/globals.css";
 
 .dn-aux-selection-box {
   @apply pointer-events-none absolute z-20 box-border;

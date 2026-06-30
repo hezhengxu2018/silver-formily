@@ -16,6 +16,7 @@ export default defineConfig({
     alias: {
       '@': workspacePath('./src'),
       '@silver-formily/designer-core': workspacePath('../../packages/designer-core/src/index.ts'),
+      '@silver-formily/designer-vue': workspacePath('../../packages/designer-vue/src/index.ts'),
     },
   },
   server: {

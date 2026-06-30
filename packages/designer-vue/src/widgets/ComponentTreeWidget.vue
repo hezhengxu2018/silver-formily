@@ -44,7 +44,7 @@ function getRootNodeAttrs() {
 </template>
 
 <style scoped>
-@reference "../../styles/globals.css";
+@reference "../styles/globals.css";
 
 .dn-component-tree {
   @apply mx-auto my-8 flex min-h-[42rem] min-w-full w-[min(100%,50rem)] rounded-[1.25rem] bg-white/90 shadow-[0_24px_60px_rgba(15,23,42,0.08)];

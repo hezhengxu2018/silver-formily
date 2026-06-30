@@ -96,7 +96,7 @@ function selectNode(node: TreeNode) {
 </template>
 
 <style scoped>
-@reference "../../styles/globals.css";
+@reference "../styles/globals.css";
 
 .dn-aux-helpers {
   @apply pointer-events-auto absolute -top-8 right-0 z-40 flex items-center gap-1 rounded-lg bg-blue-500 px-2 py-1 text-white shadow-lg shadow-blue-500/20;

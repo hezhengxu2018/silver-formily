@@ -1,5 +1,4 @@
 export { default as AuxToolWidget } from './AuxToolWidget.vue'
 export { default as ComponentTreeWidget } from './ComponentTreeWidget.vue'
-export { default as ResourceWidget } from './ResourceWidget.vue'
 export { default as RuntimeNode } from './RuntimeNode.vue'
 export { default as TreeNodeWidget } from './TreeNodeWidget'

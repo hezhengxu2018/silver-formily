@@ -1,0 +1,9 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "declaration": true,
+    "emitDeclarationOnly": false,
+    "noEmit": false
+  },
+  "exclude": ["node_modules", "esm", "src/**/*.test.ts", "src/**/*.test.tsx"]
+}
