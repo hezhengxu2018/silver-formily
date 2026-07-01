@@ -53,7 +53,7 @@ import ResourceWidget from './ResourceWidget.vue'
   }
 
   &__center {
-    @apply relative min-w-[30rem] flex-1 px-6;
+    @apply relative min-h-0 min-w-[30rem] flex-1 overflow-hidden px-6;
   }
 }
 </style>

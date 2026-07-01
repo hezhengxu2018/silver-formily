@@ -11,6 +11,10 @@ function getClosestDirection() {
   return moveHelperRef.value?.closestDirection ?? null
 }
 
+function getClosestNode() {
+  return moveHelperRef.value?.closestNode ?? null
+}
+
 function getClosestOffsetRect() {
   const moveHelper = moveHelperRef.value
   if (!moveHelper)
@@ -29,9 +33,22 @@ function getActiveViewport() {
     : moveHelper.viewport
 }
 
-function getSiblingLineRect() {
+function getActualClosestOffsetRect() {
   const anchorRect = getClosestOffsetRect()
-  const closestNode = moveHelperRef.value?.closestNode
+  const closestNode = getClosestNode()
+  const activeViewport = getActiveViewport()
+  if (!anchorRect || !closestNode || !activeViewport)
+    return anchorRect
+
+  if (closestNode.isRoot && isInnerInsertion())
+    return activeViewport.getElementOffsetRectById(closestNode.id) ?? anchorRect
+
+  return anchorRect
+}
+
+function getSiblingLineRect() {
+  const anchorRect = getActualClosestOffsetRect()
+  const closestNode = getClosestNode()
   const activeViewport = getActiveViewport()
   if (!anchorRect || !closestNode || !activeViewport)
     return anchorRect
@@ -54,7 +71,7 @@ function getSiblingLineRect() {
 }
 
 function isVisible() {
-  return !!getClosestOffsetRect() && !!getClosestDirection()
+  return !!getActualClosestOffsetRect() && !!getClosestDirection()
 }
 
 function isVerticalInsertion() {
@@ -93,7 +110,7 @@ function isForbiddenInsertion() {
 }
 
 function getLineStyle() {
-  const currentRect = getClosestOffsetRect()
+  const currentRect = getActualClosestOffsetRect()
   const closestDirection = getClosestDirection()
   if (!currentRect)
     return {}
@@ -121,6 +138,9 @@ function getLineStyle() {
   }
 
   const siblingLineRect = getSiblingLineRect()
+  if (!siblingLineRect)
+    return {}
+
   const top = closestDirection === ClosestPosition.After
     || closestDirection === ClosestPosition.Under
     || closestDirection === ClosestPosition.InnerAfter

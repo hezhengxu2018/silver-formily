@@ -27,7 +27,7 @@ fieldRef.value?.inject({
 <template>
   <ElTreeSelect
     ref="treeSelectRef"
-    :loading="fieldRef.value?.loading"
+    :loading="fieldRef?.loading"
     v-bind="attrs"
   >
     <template v-for="(_, name) of slots" #[name]="slotData">

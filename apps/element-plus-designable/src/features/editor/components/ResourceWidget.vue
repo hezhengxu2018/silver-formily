@@ -39,11 +39,18 @@ defineProps<{
             :data-designer-source-id="item.sourceId"
           >
             <span
-              class="epd-resource-widget__item-icon"
+              v-if="item.iconSvg"
+              class="epd-resource-widget__item-icon epd-resource-widget__item-icon--svg"
               v-html="item.iconSvg"
             />
+            <span
+              v-else
+              class="epd-resource-widget__item-icon"
+            >
+              {{ String(item.icon ?? item.title).slice(0, 2) }}
+            </span>
             <span class="epd-resource-widget__item-name">
-              {{ item.displayTitle }}
+              {{ item.title }}
             </span>
           </article>
         </div>
@@ -106,10 +113,16 @@ defineProps<{
   }
 
   &__item-icon {
-    @apply flex shrink-0 items-center justify-center px-1 py-3;
+    @apply my-3 flex size-8 shrink-0 items-center justify-center rounded bg-gray-100 px-1 text-[10px] font-semibold text-gray-500;
 
+    &--svg {
+      @apply bg-transparent text-current;
+    }
+  }
+
+  &__item-icon--svg {
     :deep(svg) {
-      @apply block size-[21px];
+      @apply block size-[22px];
     }
   }
 
