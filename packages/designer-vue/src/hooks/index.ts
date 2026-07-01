@@ -1,6 +1,7 @@
 export * from './useComponents'
 export * from './useCursor'
 export * from './useDesigner'
+export * from './useHover'
 export * from './useMoveHelper'
 export * from './useNode'
 export * from './useOperation'

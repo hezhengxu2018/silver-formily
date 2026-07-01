@@ -7,11 +7,8 @@ withDefaults(defineProps<{
 </script>
 
 <template>
-  <form class="pd-mock-form" @submit.prevent>
-    <header class="pd-mock-form__header">
-      <h1>{{ title }}</h1>
-    </header>
-    <div class="pd-mock-form__body">
+  <form class="pd-playground-form" @submit.prevent>
+    <div class="pd-playground-form__body">
       <slot />
     </div>
   </form>

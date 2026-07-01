@@ -46,7 +46,7 @@ const isContainer = computed(() => props.node.isRoot || props.node.designerProps
 @reference "../styles/globals.css";
 
 .dn-runtime-node {
-  @apply relative my-2 min-h-10 rounded bg-white px-4 py-3;
+  @apply relative min-h-10 rounded bg-white px-4 py-3;
 
   &--container {
     @apply min-h-32 border border-slate-200 bg-white/80;

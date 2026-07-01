@@ -48,6 +48,7 @@ function isVisible() {
     :style="getBoxStyle()"
     v-bind="getHelperAttrs()"
   >
+    <div class="dn-aux-selection-box__fill" />
     <div class="dn-aux-selection-box__outline" />
     <Helpers
       v-if="showHelpers"
@@ -62,8 +63,12 @@ function isVisible() {
 .dn-aux-selection-box {
   @apply absolute z-20 box-border;
 
+  &__fill {
+    @apply pointer-events-none absolute inset-0 bg-blue-500/10;
+  }
+
   &__outline {
-    @apply absolute inset-0 border border-blue-500;
+    @apply pointer-events-none absolute inset-0 border border-blue-500;
     box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.18);
   }
 }

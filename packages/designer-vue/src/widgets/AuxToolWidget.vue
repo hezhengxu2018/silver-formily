@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useObserver } from '@silver-formily/reactive-vue'
 import DragPreview from './DragPreview.vue'
+import Hover from './Hover.vue'
 import Insertion from './Insertion.vue'
 import Selection from './Selection.vue'
 
@@ -9,6 +10,7 @@ useObserver()
 
 <template>
   <div class="dn-auxtool">
+    <Hover />
     <Insertion />
     <Selection />
     <DragPreview />
@@ -19,7 +21,7 @@ useObserver()
 @reference "../styles/globals.css";
 
 .dn-auxtool {
-  @apply absolute left-0 top-0 z-20 h-full w-full;
+  @apply pointer-events-none absolute left-0 top-0 z-20 h-full w-full;
   transform: perspective(1px) translate3d(0, 0, 0);
 }
 </style>
