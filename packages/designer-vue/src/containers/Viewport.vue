@@ -10,6 +10,32 @@ const workspaceRef = useWorkspace()
 const viewportElementRef = ref<HTMLElement | null>(null)
 const mountedWorkspaceRef = shallowRef<typeof workspaceRef.value>(null)
 
+function shouldAllowNativeInteraction(event: Event) {
+  const target = event.target
+  if (!(target instanceof Element))
+    return false
+
+  const engine = workspaceRef.value?.engine
+  if (!engine)
+    return false
+
+  const helperAttrName = engine.props.nodeSelectionIdAttrName
+  const contentEditableAttrName = engine.props.contentEditableAttrName
+  const clickStopPropagationAttrName = engine.props.clickStopPropagationAttrName
+
+  return !!(
+    target.closest(`[${helperAttrName}]`)
+    || target.closest(`[${contentEditableAttrName}]`)
+    || target.closest(`[${clickStopPropagationAttrName}]`)
+  )
+}
+
+function preventRuntimeInteraction(event: Event) {
+  if (shouldAllowNativeInteraction(event))
+    return
+  event.preventDefault()
+}
+
 onMounted(() => {
   const workspace = workspaceRef.value
   const viewportElement = viewportElementRef.value
@@ -33,6 +59,9 @@ onBeforeUnmount(() => {
   <div
     ref="viewportElementRef"
     class="dn-viewport"
+    @click.capture="preventRuntimeInteraction"
+    @dragstart.capture="preventRuntimeInteraction"
+    @mousedown.capture="preventRuntimeInteraction"
   >
     <slot />
     <AuxToolWidget />
@@ -44,5 +73,16 @@ onBeforeUnmount(() => {
 
 .dn-viewport {
   @apply relative h-full overflow-auto;
+
+  :deep(*) {
+    cursor: default;
+    user-select: none;
+  }
+
+  :deep(input),
+  :deep(textarea),
+  :deep([contenteditable='true']) {
+    caret-color: transparent;
+  }
 }
 </style>

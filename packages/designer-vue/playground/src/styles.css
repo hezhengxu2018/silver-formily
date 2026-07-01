@@ -190,42 +190,41 @@ body {
   line-height: 1.2;
 }
 
-.pd-mock-form,
+.pd-playground-form,
 .pd-mock-section,
 .pd-mock-field,
 .pd-mock-button {
   box-sizing: border-box;
 }
 
-.pd-mock-form {
+.pd-playground-form {
   width: 100%;
   min-height: 42rem;
   border: 1px solid #dbe4ef;
   border-radius: 1rem;
   background: #ffffff;
   padding: 1.5rem;
-  box-shadow: 0 24px 60px rgb(15 23 42 / 8%);
 }
 
-.pd-mock-form__header {
+.pd-playground-form__header {
   border-bottom: 1px solid #e2e8f0;
   padding-bottom: 1rem;
 }
 
-.pd-mock-form__header h1,
+.pd-playground-form__header h1,
 .pd-mock-section h2 {
   margin: 0;
   letter-spacing: 0;
 }
 
-.pd-mock-form__header h1 {
+.pd-playground-form__header h1 {
   font-size: 1.25rem;
 }
 
-.pd-mock-form__body,
+.pd-playground-form__body,
 .pd-mock-section__body {
   display: grid;
-  gap: 1rem;
+  gap: 0;
   margin-top: 1rem;
 }
 

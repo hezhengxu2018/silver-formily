@@ -70,8 +70,8 @@ function cloneDefaultNode(material: PlaygroundMaterial) {
 GlobalRegistry.setDesignerBehaviors([
   createBehavior(
     {
-      name: 'MockForm',
-      selector: 'MockForm',
+      name: 'Form',
+      selector: 'Form',
       designerProps: {
         cloneable: false,
         deletable: false,
@@ -102,7 +102,7 @@ const resources = createResource(
 
 export const resourceGroups: PlaygroundResourceGroup[] = [
   {
-    name: 'Mock Components',
+    name: 'Playground Components',
     items: materials.flatMap((material, index) => {
       const resource = resources[index]
       if (!resource?.node)
@@ -119,10 +119,10 @@ export const resourceGroups: PlaygroundResourceGroup[] = [
 
 export const engine = createDesigner({
   defaultComponentTree: {
-    id: 'mock-form-root',
-    componentName: 'MockForm',
+    id: 'form-root',
+    componentName: 'Form',
     props: {
-      title: 'Mock Form',
+      title: 'Playground Form',
     },
     children: [
       {
@@ -149,7 +149,7 @@ export const engine = createDesigner({
       },
     ],
   },
-  rootComponentName: 'MockForm',
+  rootComponentName: 'Form',
 })
 
 resources.forEach((resource) => {
