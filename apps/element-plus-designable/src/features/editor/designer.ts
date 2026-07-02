@@ -1,5 +1,5 @@
-import type { TreeNode } from '@silver-formily/designer-core'
-import { createDesigner, GlobalRegistry } from '@silver-formily/designer-core'
+import type { IFormilySchemaDocument, TreeNode } from '@silver-formily/designer-core'
+import { createDesigner, GlobalRegistry, transformToSchema, transformToTreeNode } from '@silver-formily/designer-core'
 import { computed } from 'vue'
 import { AllBehaviors, AllResources, paletteResourceGroups } from '../renderer'
 
@@ -27,3 +27,21 @@ AllResources.forEach((resource) => {
 })
 
 export const selectedNodes = computed(() => engine.getAllSelectedNodes().filter(Boolean) as TreeNode[])
+
+export function getSchemaDocument(): IFormilySchemaDocument {
+  const tree = engine.getCurrentTree()
+  if (!tree) {
+    return {
+      form: {},
+      schema: {
+        type: 'object',
+        properties: {},
+      },
+    }
+  }
+  return transformToSchema(tree)
+}
+
+export function setSchemaDocument(document: IFormilySchemaDocument) {
+  engine.setCurrentTree(transformToTreeNode(document))
+}

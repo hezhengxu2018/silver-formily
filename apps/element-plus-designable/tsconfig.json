@@ -3,6 +3,7 @@
   "compilerOptions": {
     "target": "ES2022",
     "jsx": "preserve",
+    "jsxImportSource": "vue",
     "lib": ["DOM", "ES2022"],
     "baseUrl": ".",
     "ignoreDeprecations": "6.0",
@@ -14,7 +15,7 @@
       "@silver-formily/designer-vue/*": ["../../packages/designer-vue/src/*"]
     },
     "resolveJsonModule": true,
-    "types": ["node"],
+    "types": ["node", "vue/jsx"],
     "allowJs": false,
     "strict": true,
     "noUnusedLocals": true,

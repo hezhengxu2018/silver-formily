@@ -94,7 +94,7 @@ const TreeNodeWidgetComponent = defineComponent({
       }, {})
       const children = renderState.children.map(child => <TreeNodeWidgetComponent node={child} key={child.id} />)
 
-      if (renderState.isFallback) {
+      if (renderState.isFallback && renderState.node) {
         return (
           <RuntimeNode node={renderState.node} {...renderState.mergedProps}>
             {children}

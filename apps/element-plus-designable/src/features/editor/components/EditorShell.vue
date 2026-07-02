@@ -3,6 +3,7 @@ import { ComponentTreeWidget, Designer, Viewport, Workspace } from '@silver-form
 import { componentRegistry } from '../componentRegistry'
 import { engine, paletteResourceGroups } from '../designer'
 import ResourceWidget from './ResourceWidget.vue'
+import SchemaPreviewWidget from './SchemaPreviewWidget.vue'
 </script>
 
 <template>
@@ -25,6 +26,8 @@ import ResourceWidget from './ResourceWidget.vue'
             </Viewport>
           </Workspace>
         </div>
+
+        <SchemaPreviewWidget />
       </section>
     </main>
   </Designer>

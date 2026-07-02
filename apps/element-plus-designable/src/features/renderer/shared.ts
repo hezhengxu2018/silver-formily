@@ -21,6 +21,19 @@ export function matchComponent(node: TreeNode, name: ComponentNameMatcher, conte
   return componentName === name
 }
 
+export function queryNodesByComponentPath(node: TreeNode, path: ComponentNameMatcher[]): TreeNode[] {
+  if (!path.length)
+    return []
+  if (path.length === 1)
+    return matchComponent(node, path[0]) ? [node] : []
+  if (!matchComponent(node, path[0]))
+    return []
+  return node.children.reduce<TreeNode[]>((buffer, child) => {
+    buffer.push(...queryNodesByComponentPath(child, path.slice(1)))
+    return buffer
+  }, [])
+}
+
 export function resolveComponentPath(components: Record<string, any>, path?: string) {
   if (!path)
     return null

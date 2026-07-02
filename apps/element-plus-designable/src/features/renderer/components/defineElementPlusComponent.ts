@@ -10,6 +10,7 @@ export interface ElementPlusResourceOptions {
   defaultProps?: Record<string, any>
   description?: string
   icon?: string
+  previewComponent?: Component
   title: string
   type?: string
 }
@@ -39,7 +40,7 @@ function createLocales(options: ElementPlusResourceOptions): IDesignerLocales {
 }
 
 export function defineElementPlusComponent(options: ElementPlusResourceOptions): DesignableComponent {
-  return composeExport(options.component, {
+  return composeExport(options.previewComponent ?? options.component, {
     Behavior: createBehavior({
       name: options.componentName,
       extends: ['Field'],
