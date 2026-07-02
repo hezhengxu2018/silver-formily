@@ -18,7 +18,6 @@ const FormPreview = defineComponent({
       {
         display: 'flex',
         flexDirection: 'column',
-        gap: '16px',
         minHeight: '34rem',
       },
       attrs.style,

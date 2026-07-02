@@ -1,11 +1,99 @@
 import type { DesignableComponent } from '../types'
+import { TreeNodeWidget, useNode } from '@silver-formily/designer-vue'
 import * as ElementPlus from '@silver-formily/element-plus'
-import { ElCard } from 'element-plus'
+import { ElButton, ElCard, ElEmpty, ElTable, ElTableColumn } from 'element-plus'
+import { defineComponent } from 'vue'
+import { queryNodesByComponentPath } from '../shared'
 import { defineElementPlusComponent } from './defineElementPlusComponent'
 import { Field } from './Field'
 import { Form } from './Form'
 
 export { Field, Form }
+
+const DesignableArrayTablePreview = defineComponent({
+  name: 'DnArrayTablePreview',
+  inheritAttrs: false,
+  setup(_, { attrs }) {
+    const nodeRef = useNode()
+    return () => {
+      const node = nodeRef.value
+      const columns = node
+        ? queryNodesByComponentPath(node, ['ArrayTable', '*', 'ArrayTable.Column'])
+        : []
+      const tableColumns = columns.length
+        ? columns.map((column) => {
+            const columnProps = column.props?.['x-component-props'] ?? {}
+            const children = column.children.map(child =>
+              <TreeNodeWidget key={child.id} node={child} />,
+            )
+            const title = columnProps.title ?? columnProps.label ?? 'Title'
+            return (
+              <ElTableColumn {...columnProps} key={column.id} label={title}>
+                {{
+                  default: () => children.length ? children : 'Droppable',
+                  header: () => <span data-designer-node-id={column.id}>{title}</span>,
+                }}
+              </ElTableColumn>
+            )
+          })
+        : [
+            (
+              <ElTableColumn label="Title">
+                {{
+                  default: () => <ElEmpty description="Droppable" imageSize={48} />,
+                }}
+              </ElTableColumn>
+            ),
+          ]
+
+      return (
+        <div class="dn-designable-array-table">
+          <ElTable
+            {...attrs}
+            border
+            data={[{ id: 'preview' }]}
+            rowKey="id"
+            size="small"
+            style={{ marginBottom: '10px', width: '100%' }}
+          >
+            {tableColumns}
+          </ElTable>
+          <div style={{ display: 'flex', justifyContent: 'center' }}>
+            <ElButton disabled size="small">Add Item</ElButton>
+          </div>
+        </div>
+      )
+    }
+  },
+})
+
+const DesignableArrayCardsPreview = defineComponent({
+  name: 'DnArrayCardsPreview',
+  inheritAttrs: false,
+  setup(_, { attrs }) {
+    const nodeRef = useNode()
+    return () => {
+      const node = nodeRef.value
+      const item = node?.children.find(child => child.props?.type !== 'void')
+      const content = item?.children.map(child => <TreeNodeWidget key={child.id} node={child} />)
+      return (
+        <div class="dn-designable-array-cards">
+          <ElCard {...attrs} shadow="never">
+            {{
+              default: () => content?.length
+                ? content
+                : <ElEmpty description="Droppable" imageSize={48} />,
+              header: () => <span>{String(attrs.title ?? 'Array Cards')}</span>,
+            }}
+          </ElCard>
+          <div style={{ display: 'flex', justifyContent: 'center', marginTop: '10px' }}>
+            <ElButton disabled size="small">Add Item</ElButton>
+          </div>
+        </div>
+      )
+    }
+  },
+})
 
 export const Input = defineElementPlusComponent({
   component: ElementPlus.Input,
@@ -220,9 +308,10 @@ export const Space = defineElementPlusComponent({
 export const ArrayCards = defineElementPlusComponent({
   component: ElementPlus.ArrayCards,
   componentName: 'ArrayCards',
-  defaultProps: {},
+  defaultProps: { title: 'Array Cards' },
   description: 'Card list for array fields',
   icon: 'ArrayCards',
+  previewComponent: DesignableArrayCardsPreview,
   title: 'Array Cards',
   type: 'array',
 })
@@ -230,9 +319,10 @@ export const ArrayCards = defineElementPlusComponent({
 export const ArrayTable = defineElementPlusComponent({
   component: ElementPlus.ArrayTable,
   componentName: 'ArrayTable',
-  defaultProps: {},
+  defaultProps: { title: 'Array Table' },
   description: 'Table list for array fields',
   icon: 'ArrayTable',
+  previewComponent: DesignableArrayTablePreview,
   title: 'Array Table',
   type: 'array',
 })
@@ -265,6 +355,14 @@ export const AllComponents: Record<string, DesignableComponent> = {
   Space,
   ArrayCards,
   ArrayTable,
+}
+
+export const RuntimeComponents: Record<string, any> = {
+  ...ElementPlus,
+  'Card': ElCard,
+  'FormItem': ElementPlus.FormItem,
+  'Input.TextArea': ElementPlus.Input.TextArea,
+  'Text': ElementPlus.PreviewText.Input,
 }
 
 export const DesignableComponents = [

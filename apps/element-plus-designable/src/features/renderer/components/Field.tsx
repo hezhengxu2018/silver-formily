@@ -2,6 +2,7 @@ import type { DesignableComponent } from '../types'
 import { createBehavior } from '@silver-formily/designer-core'
 import { useComponents, useDesigner, useNode } from '@silver-formily/designer-vue'
 import { FormItem } from '@silver-formily/element-plus'
+import { ArrayField, Field as FormilyField, ObjectField, VoidField } from '@silver-formily/vue'
 import { defineComponent, h } from 'vue'
 import { AllLocales } from '../locales'
 import { AllSchemas } from '../schemas'
@@ -26,9 +27,19 @@ const maskStyle = {
 function pickSchemaState(attrs: Record<string, any>) {
   return {
     description: attrs.description,
+    initialValue: attrs.default,
     required: attrs.required,
     title: attrs.title,
+    value: attrs['x-value'],
   }
+}
+
+function omitUndefined<T extends Record<string, any>>(value: T): T {
+  return Object.entries(value).reduce((buffer, [key, item]) => {
+    if (item !== undefined)
+      buffer[key as keyof T] = item
+    return buffer
+  }, {} as T)
 }
 
 const FieldPreview = defineComponent({
@@ -51,18 +62,42 @@ const FieldPreview = defineComponent({
         ...(props['x-decorator-props'] || {}),
       }
       const nodeIdAttrName = designerRef.value?.props.nodeIdAttrName
-      if (nodeIdAttrName && nodeRef.value)
+      if (nodeIdAttrName && nodeRef.value) {
         componentProps[nodeIdAttrName] = nodeRef.value.id
+        decoratorProps[nodeIdAttrName] = nodeRef.value.id
+      }
 
       const component = resolveComponentPath(componentsRef.value, componentName)
       const decorator = resolveComponentPath(componentsRef.value, decoratorName) || FormItem
-      const children = component
-        ? () => h(component, componentProps, slots)
-        : () => slots.default?.()
+      const fieldProps = omitUndefined({
+        ...pickSchemaState(props),
+        component: component ? [component, componentProps] : undefined,
+        content: props['x-content'],
+        dataSource: props.enum,
+        decorator: decorator ? [decorator, decoratorProps] : undefined,
+        disabled: props['x-disabled'],
+        display: props['x-display'],
+        editable: props['x-editable'],
+        hidden: props['x-hidden'],
+        name: props.name ?? nodeRef.value?.id,
+        pattern: props['x-pattern'],
+        readOnly: props.readOnly ?? props['x-read-only'],
+        readPretty: props['x-read-pretty'],
+        required: props.required,
+        title: props.title,
+        validator: props['x-validator'],
+        visible: props['x-visible'],
+      })
 
-      const preview = decorator
-        ? h(decorator, decoratorProps, children)
-        : children()
+      const fieldType = props.type === 'object'
+        ? ObjectField
+        : props.type === 'array'
+          ? ArrayField
+          : props.type === 'void'
+            ? VoidField
+            : FormilyField
+
+      const preview = h(fieldType as any, fieldProps, slots)
 
       return h('div', {
         [nodeIdAttrName || 'data-designer-node-id']: nodeRef.value?.id,
