@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { PaletteResourceGroup } from '@/features/editor/designer'
-import { Search } from '@lucide/vue'
+import { ScrollArea } from '@/components/ui/scroll-area'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 
 defineProps<{
   groups: PaletteResourceGroup[]
@@ -8,81 +9,117 @@ defineProps<{
 </script>
 
 <template>
-  <aside class="epd-resource-widget">
-    <div class="epd-resource-widget__top">
-      <div class="epd-resource-widget__search">
-        <Search class="epd-resource-widget__search-icon" />
-        <input
-          class="epd-resource-widget__search-input"
-          placeholder="Search fields"
-          readonly
-        >
-      </div>
-    </div>
-
-    <div class="epd-resource-widget__content">
-      <section
-        v-for="group in groups"
-        :key="group.name"
-        class="epd-resource-widget__group"
+  <Tabs
+    class="epd-resource-widget"
+    default-value="elements"
+  >
+    <TabsList
+      class="epd-resource-widget__tabs"
+      aria-label="Resource panel"
+    >
+      <TabsTrigger
+        class="epd-resource-widget__tab"
+        value="elements"
       >
-        <h3 class="epd-resource-widget__group-title">
-          {{ group.name }}
-        </h3>
+        Elements
+      </TabsTrigger>
+      <TabsTrigger
+        class="epd-resource-widget__tab"
+        value="tree"
+      >
+        Tree
+      </TabsTrigger>
+    </TabsList>
 
-        <div class="epd-resource-widget__items">
-          <article
-            v-for="item in group.items"
-            :key="item.sourceId"
-            class="epd-resource-widget__item"
-            draggable="true"
-            :data-designer-source-id="item.sourceId"
+    <TabsContent
+      class="epd-resource-widget__panel"
+      value="elements"
+    >
+      <ScrollArea class="epd-resource-widget__scroll-area">
+        <div class="epd-resource-widget__content">
+          <section
+            v-for="group in groups"
+            :key="group.name"
+            class="epd-resource-widget__group"
           >
-            <span
-              v-if="item.iconSvg"
-              class="epd-resource-widget__item-icon epd-resource-widget__item-icon--svg"
-              v-html="item.iconSvg"
-            />
-            <span
-              v-else
-              class="epd-resource-widget__item-icon"
-            >
-              {{ String(item.icon ?? item.title).slice(0, 2) }}
-            </span>
-            <span class="epd-resource-widget__item-name">
-              {{ item.title }}
-            </span>
-          </article>
+            <h3 class="epd-resource-widget__group-title">
+              {{ group.name }}
+            </h3>
+
+            <div class="epd-resource-widget__items">
+              <article
+                v-for="item in group.items"
+                :key="item.sourceId"
+                class="epd-resource-widget__item"
+                draggable="true"
+                :data-designer-source-id="item.sourceId"
+              >
+                <span
+                  v-if="item.iconSvg"
+                  class="epd-resource-widget__item-icon epd-resource-widget__item-icon--svg"
+                  v-html="item.iconSvg"
+                />
+                <span
+                  v-else
+                  class="epd-resource-widget__item-icon"
+                >
+                  {{ String(item.icon ?? item.title).slice(0, 2) }}
+                </span>
+                <span class="epd-resource-widget__item-name">
+                  {{ item.title }}
+                </span>
+              </article>
+            </div>
+          </section>
         </div>
-      </section>
-    </div>
-  </aside>
+      </ScrollArea>
+    </TabsContent>
+
+    <TabsContent
+      class="epd-resource-widget__panel"
+      value="tree"
+    >
+      <ScrollArea class="epd-resource-widget__scroll-area" />
+    </TabsContent>
+  </Tabs>
 </template>
 
 <style scoped>
 @reference "../../../styles/globals.css";
 
 .epd-resource-widget {
-  @apply relative z-10 h-full w-[var(--editor-left-panel-width)] shrink-0 select-none overflow-hidden bg-white text-gray-900;
+  @apply flex flex-col relative z-10 h-full w-(--editor-left-panel-width) shrink-0 select-none overflow-hidden bg-white text-gray-900;
+
+  &__tabs {
+    @apply flex items-center text-[0.9375rem];
+  }
+
+  &__tab {
+    @apply flex-1 border-slate-200 border-r border-b cursor-pointer pt-2.5 pb-2.5 text-center bg-slate-100;
+
+    &:last-child {
+      @apply border-r-0;
+    }
+
+    &[data-state='active'] {
+      @apply bg-white border-slate-200 border-b-0;
+    }
+  }
+
+  &__panel {
+    @apply min-h-0 flex-1 overflow-hidden;
+  }
+
+  &__scroll-area {
+    @apply h-full min-h-0;
+  }
 
   &__top {
-    @apply px-5 pb-2 pt-4;
-  }
-
-  &__search {
-    @apply relative;
-  }
-
-  &__search-icon {
-    @apply pointer-events-none absolute left-2 top-1/2 size-4 -translate-y-1/2 text-gray-400;
-  }
-
-  &__search-input {
-    @apply w-full rounded-lg border-0 bg-gray-100 py-1.5 pl-8 pr-3 text-base shadow-none placeholder:text-gray-400 focus-visible:ring-0;
+    @apply px-5 pb-2 pt-7;
   }
 
   &__content {
-    @apply h-[calc(100%-4.5rem)] overflow-y-auto px-5 pb-6;
+    @apply px-5 pb-6;
   }
 
   &__group {
@@ -90,7 +127,7 @@ defineProps<{
   }
 
   &__group-title {
-    @apply text-[11px] font-semibold tracking-normal text-gray-500;
+    @apply text-[12px] font-semibold tracking-normal text-gray-500;
   }
 
   &__items {
@@ -122,7 +159,7 @@ defineProps<{
 
   &__item-icon--svg {
     :deep(svg) {
-      @apply block size-[22px];
+      @apply block size-5.5;
     }
   }
 
