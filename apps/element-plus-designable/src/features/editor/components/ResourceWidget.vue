@@ -51,7 +51,6 @@ defineProps<{
                 v-for="item in group.items"
                 :key="item.sourceId"
                 class="epd-resource-widget__item"
-                draggable="true"
                 :data-designer-source-id="item.sourceId"
               >
                 <span
@@ -88,30 +87,55 @@ defineProps<{
 @reference "../../../styles/globals.css";
 
 .epd-resource-widget {
-  @apply flex flex-col relative z-10 h-full w-(--editor-left-panel-width) shrink-0 select-none overflow-hidden bg-white text-gray-900;
+  @apply bg-white text-gray-900;
+
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+  user-select: none;
+  width: var(--editor-left-panel-width);
+  z-index: 10;
 
   &__tabs {
-    @apply flex items-center text-[0.9375rem];
+    align-items: center;
+    display: flex;
+    font-size: 15px;
   }
 
   &__tab {
-    @apply flex-1 border-slate-200 border-r border-b cursor-pointer pt-2.5 pb-2.5 text-center bg-slate-100;
+    @apply border-slate-200 bg-slate-100;
+
+    border-bottom-width: 1px;
+    border-right-width: 1px;
+    cursor: pointer;
+    flex: 1 1 0%;
+    padding-bottom: 10px;
+    padding-top: 10px;
+    text-align: center;
 
     &:last-child {
-      @apply border-r-0;
+      border-right-width: 0;
     }
 
     &[data-state='active'] {
-      @apply bg-white border-slate-200 border-b-0;
+      @apply bg-white border-slate-200;
+
+      border-bottom-width: 0;
     }
   }
 
   &__panel {
-    @apply min-h-0 flex-1 overflow-hidden;
+    flex: 1 1 0%;
+    min-height: 0;
+    overflow: hidden;
   }
 
   &__scroll-area {
-    @apply h-full min-h-0;
+    height: 100%;
+    min-height: 0;
   }
 
   &__top {
@@ -127,18 +151,31 @@ defineProps<{
   }
 
   &__group-title {
-    @apply text-[12px] font-semibold tracking-normal text-gray-500;
+    @apply text-gray-500;
+
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0;
   }
 
   &__items {
-    @apply mt-4 grid grid-cols-3 gap-x-3 gap-y-5;
+    @apply mt-4 gap-x-3 gap-y-3;
+
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
   &__item {
-    @apply relative flex min-w-0 touch-none select-none flex-col items-center bg-white pb-2 text-center text-black transition-colors;
-    cursor: grab;
-    -webkit-user-drag: none;
-    -webkit-tap-highlight-color: transparent;
+    @apply bg-white text-black;
+
+    align-items: center;
+    aspect-ratio: 1 / 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    touch-action: none;
+    user-select: none;
 
     &:hover {
       @apply bg-blue-600 text-white;
@@ -150,21 +187,40 @@ defineProps<{
   }
 
   &__item-icon {
-    @apply my-3 flex size-8 shrink-0 items-center justify-center rounded bg-gray-100 px-1 text-[10px] font-semibold text-gray-500;
+    @apply bg-gray-100 text-gray-500;
 
     &--svg {
       @apply bg-transparent text-current;
+
+      align-items: center;
+      display: flex;
+      height: 40px;
+      justify-content: center;
+      width: 40px;
     }
   }
 
   &__item-icon--svg {
     :deep(svg) {
-      @apply block size-5.5;
+      display: block;
+      height: 22px;
+      width: 22px;
     }
   }
 
   &__item-name {
-    @apply line-clamp-2 w-full min-w-0 text-[12px] leading-normal;
+    -webkit-box-orient: vertical;
+    display: -webkit-box;
+    font-size: 12px;
+    line-clamp: 2;
+    -webkit-line-clamp: 2;
+    line-height: 16px;
+    min-height: 32px;
+    min-width: 0;
+    overflow: hidden;
+    overflow-wrap: anywhere;
+    text-align: center;
+    width: 100%;
   }
 }
 </style>

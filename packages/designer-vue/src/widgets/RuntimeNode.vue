@@ -46,25 +46,43 @@ const isContainer = computed(() => props.node.isRoot || props.node.designerProps
 @reference "../styles/globals.css";
 
 .dn-runtime-node {
-  @apply relative min-h-10 rounded bg-white px-4 py-3;
+  @apply bg-white px-4 py-3;
+  border-radius: 4px;
+  min-height: 40px;
+  position: relative;
 
   &--container {
-    @apply min-h-32 border border-slate-200 bg-white/80;
+    @apply border-slate-200 bg-white/80;
+    border-width: 1px;
+    min-height: 128px;
   }
 
   &--root {
-    @apply my-0 min-h-full rounded-none border-0 bg-transparent p-0;
+    @apply my-0 bg-transparent p-0;
+    border-radius: 0;
+    border-width: 0;
+    min-height: 100%;
   }
 
   &__empty {
-    @apply min-h-28 border border-dashed border-slate-300 bg-white/80 px-4 py-3 text-sm text-slate-400;
+    @apply border-slate-300 bg-white/80 px-4 py-3 text-slate-400;
+    border-style: dashed;
+    border-width: 1px;
+    font-size: 14px;
+    line-height: 20px;
+    min-height: 112px;
   }
 
   &__fallback {
-    @apply rounded-lg border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-500;
+    @apply border-slate-200 bg-slate-50 px-4 py-3 text-slate-500;
+    border-radius: 8px;
+    border-width: 1px;
+    font-size: 14px;
+    line-height: 20px;
 
     strong {
-      @apply block text-slate-900;
+      @apply text-slate-900;
+      display: block;
     }
   }
 }

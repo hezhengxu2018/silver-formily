@@ -43,8 +43,13 @@
     "husky": "catalog:",
     "lint-staged": "catalog:",
     "oxc-resolver": "catalog:",
+    "postcss-html": "catalog:",
+    "postcss-scss": "catalog:",
     "prettier": "catalog:",
     "prompts": "catalog:",
+    "stylelint": "catalog:",
+    "stylelint-config-standard-scss": "catalog:",
+    "stylelint-order": "catalog:",
     "turbo": "catalog:",
     "typescript": "catalog:"
   },

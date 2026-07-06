@@ -1,6 +1,5 @@
 @import 'tailwindcss';
 @import 'tw-animate-css';
-
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
@@ -29,34 +28,34 @@
 }
 
 :root {
-  --editor-header-height: 3.5rem;
-  --editor-left-panel-width: 19rem;
-  --editor-right-panel-width: 19rem;
-  --radius: 0.5rem;
-  --background: oklch(0.985 0.004 106);
-  --foreground: oklch(0.18 0.018 96);
-  --card: oklch(1 0 0);
+  --editor-header-height: 56px;
+  --editor-left-panel-width: 304px;
+  --editor-right-panel-width: 304px;
+  --radius: 8px;
+  --background: oklch(98.5% 0.004 106deg);
+  --foreground: oklch(18% 0.018 96deg);
+  --card: oklch(100% 0 0deg);
   --card-foreground: var(--foreground);
-  --popover: oklch(1 0 0);
+  --popover: oklch(100% 0 0deg);
   --popover-foreground: var(--foreground);
   --primary: #2563eb;
-  --primary-foreground: oklch(0.985 0.01 285);
-  --secondary: oklch(0.955 0.012 105);
-  --secondary-foreground: oklch(0.24 0.02 96);
-  --muted: oklch(0.94 0.008 105);
-  --muted-foreground: oklch(0.49 0.018 96);
+  --primary-foreground: oklch(98.5% 0.01 285deg);
+  --secondary: oklch(95.5% 0.012 105deg);
+  --secondary-foreground: oklch(24% 0.02 96deg);
+  --muted: oklch(94% 0.008 105deg);
+  --muted-foreground: oklch(49% 0.018 96deg);
   --accent: color-mix(in oklab, #2563eb 12%, white);
   --accent-foreground: #1d4ed8;
-  --destructive: oklch(0.58 0.22 27);
-  --border: oklch(0.88 0.012 105);
-  --input: oklch(0.88 0.012 105);
+  --destructive: oklch(58% 0.22 27deg);
+  --border: oklch(88% 0.012 105deg);
+  --input: oklch(88% 0.012 105deg);
   --ring: #2563eb;
   --editor-canvas: rgb(241 245 249 / var(--tw-bg-opacity, 1));
   --editor-sidebar: color-mix(in oklab, white 94%, #f8fafc);
-  --editor-sidebar-foreground: oklch(0.22 0.02 96);
+  --editor-sidebar-foreground: oklch(22% 0.02 96deg);
   --editor-sidebar-muted: color-mix(in oklab, var(--foreground) 44%, white);
   --editor-sidebar-divider: color-mix(in oklab, var(--border) 78%, white);
-  --editor-sidebar-shadow: 0 22px 48px rgba(15, 23, 42, 0.08);
+  --editor-sidebar-shadow: 0 22px 48px rgb(15 23 42 / 8%);
 }
 
 @layer base {
@@ -65,14 +64,13 @@
   }
 
   html {
-    min-width: 320px;
     background: var(--background);
+    min-width: 320px;
   }
 
   body {
     @apply bg-background text-foreground;
-    min-width: 320px;
-    margin: 0;
+
     font-family:
       Inter,
       ui-sans-serif,
@@ -81,6 +79,8 @@
       BlinkMacSystemFont,
       'Segoe UI',
       sans-serif;
+    margin: 0;
+    min-width: 320px;
   }
 
   button,

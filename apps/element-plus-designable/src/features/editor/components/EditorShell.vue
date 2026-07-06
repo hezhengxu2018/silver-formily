@@ -37,26 +37,55 @@ import SchemaPreviewWidget from './SchemaPreviewWidget.vue'
 @reference "../../../styles/globals.css";
 
 .epd-designable-shell {
-  @apply min-h-screen bg-slate-100 pt-[var(--editor-header-height)] text-slate-950;
+  @apply bg-slate-100 text-slate-950;
+
+  min-height: 100vh;
+  padding-top: var(--editor-header-height);
 
   &__header {
-    @apply fixed inset-x-0 top-0 z-30 flex h-[var(--editor-header-height)] items-center border-b border-slate-200 bg-white px-5;
+    @apply border-slate-200 bg-white px-5;
+
+    align-items: center;
+    border-bottom-width: 1px;
+    display: flex;
+    height: var(--editor-header-height);
+    left: 0;
+    position: fixed;
+    right: 0;
+    top: 0;
+    z-index: 30;
 
     strong {
-      @apply block text-sm font-semibold;
+      display: block;
+      font-size: 14px;
+      font-weight: 600;
+      line-height: 20px;
     }
 
     span {
-      @apply block text-xs text-slate-500;
+      @apply text-slate-500;
+
+      display: block;
+      font-size: 12px;
+      line-height: 16px;
     }
   }
 
   &__workspace {
-    @apply relative flex h-[calc(100vh-var(--editor-header-height))] overflow-hidden;
+    display: flex;
+    height: calc(100vh - var(--editor-header-height));
+    overflow: hidden;
+    position: relative;
   }
 
   &__center {
-    @apply relative min-h-0 min-w-[30rem] flex-1 overflow-hidden px-6;
+    @apply px-6;
+
+    flex: 1 1 0%;
+    min-height: 0;
+    min-width: 480px;
+    overflow: hidden;
+    position: relative;
   }
 }
 </style>

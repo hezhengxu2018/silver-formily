@@ -61,15 +61,24 @@ function isVisible() {
 @reference "../styles/globals.css";
 
 .dn-aux-selection-box {
-  @apply absolute z-20 box-border;
+  box-sizing: border-box;
+  position: absolute;
+  z-index: 20;
 
   &__fill {
-    @apply pointer-events-none absolute inset-0 bg-blue-500/10;
+    @apply bg-blue-500/10;
+    inset: 0;
+    pointer-events: none;
+    position: absolute;
   }
 
   &__outline {
-    @apply pointer-events-none absolute inset-0 border border-blue-500;
+    @apply border-blue-500;
+    border-width: 1px;
     box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.18);
+    inset: 0;
+    pointer-events: none;
+    position: absolute;
   }
 }
 </style>

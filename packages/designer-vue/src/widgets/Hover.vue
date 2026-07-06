@@ -58,7 +58,12 @@ function isVisible() {
 @reference "../styles/globals.css";
 
 .dn-aux-hover {
-  @apply pointer-events-none absolute z-10 box-border border border-blue-400 bg-blue-500/5;
+  @apply border-blue-400 bg-blue-500/5;
+  border-width: 1px;
   box-shadow: 0 0 0 1px rgba(96, 165, 250, 0.18);
+  box-sizing: border-box;
+  pointer-events: none;
+  position: absolute;
+  z-index: 10;
 }
 </style>

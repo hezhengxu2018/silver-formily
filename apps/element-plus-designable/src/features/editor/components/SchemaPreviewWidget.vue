@@ -50,14 +50,31 @@ const schemaCode = computed(() => JSON.stringify(schemaDocumentRef.value, null, 
 @reference "../../../styles/globals.css";
 
 .epd-schema-preview {
-  @apply flex h-full w-[24rem] shrink-0 flex-col border-l border-slate-200 bg-white;
+  @apply border-slate-200 bg-white;
+
+  border-left-width: 1px;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  height: 100%;
+  width: 384px;
 
   &__runtime {
-    @apply min-h-[18rem] overflow-auto border-b border-slate-200 p-4;
+    @apply border-slate-200 p-4;
+
+    border-bottom-width: 1px;
+    min-height: 288px;
+    overflow: auto;
   }
 
   &__code {
-    @apply m-0 min-h-0 flex-1 overflow-auto bg-slate-950 p-4 text-xs leading-5 text-slate-100;
+    @apply m-0 bg-slate-950 p-4 text-slate-100;
+
+    flex: 1 1 0%;
+    font-size: 12px;
+    line-height: 20px;
+    min-height: 0;
+    overflow: auto;
   }
 }
 </style>

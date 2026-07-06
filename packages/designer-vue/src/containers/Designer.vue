@@ -2,6 +2,7 @@
 import type { Engine } from '@silver-formily/designer-core'
 import { onBeforeUnmount, provide, shallowRef, watch } from 'vue'
 import { DesignerEngineSymbol } from '../context'
+import GhostWidget from '../widgets/GhostWidget.vue'
 
 const props = defineProps<{
   engine: Engine
@@ -25,4 +26,5 @@ onBeforeUnmount(() => {
 
 <template>
   <slot />
+  <GhostWidget />
 </template>

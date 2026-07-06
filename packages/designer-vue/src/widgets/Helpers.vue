@@ -99,38 +99,94 @@ function selectNode(node: TreeNode) {
 @reference "../styles/globals.css";
 
 .dn-aux-helpers {
-  @apply pointer-events-auto absolute -top-8 right-0 z-40 flex items-center gap-1 rounded-lg bg-blue-500 px-2 py-1 text-white shadow-lg shadow-blue-500/20;
+  @apply gap-1 bg-blue-500 px-2 py-1 text-white;
+  align-items: center;
+  border-radius: 8px;
+  box-shadow:
+    0 10px 15px -3px rgb(59 130 246 / 0.2),
+    0 4px 6px -4px rgb(59 130 246 / 0.2);
+  display: flex;
+  pointer-events: auto;
+  position: absolute;
+  right: 0;
+  top: -32px;
+  z-index: 40;
 
   &__selector {
-    @apply relative border-r border-white/20 pr-1;
+    @apply border-white/20 pr-1;
+    border-right-width: 1px;
+    position: relative;
 
     &:hover .dn-aux-helpers__parents {
-      @apply block;
+      display: block;
     }
   }
 
   &__title {
-    @apply flex h-6 items-center gap-1.5 rounded-md px-1.5 text-xs font-semibold;
+    align-items: center;
+    border-radius: 6px;
+    display: flex;
+    font-size: 12px;
+    font-weight: 600;
+    gap: 6px;
+    height: 24px;
+    line-height: 16px;
+    padding-left: 6px;
+    padding-right: 6px;
 
     small {
-      @apply text-[10px] font-medium uppercase tracking-[0.18em] text-blue-100;
+      @apply text-blue-100;
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
     }
   }
 
   &__parents {
-    @apply absolute left-0 top-full z-50 mt-1 hidden min-w-28 overflow-hidden rounded-md bg-white py-1 text-slate-700 shadow-xl ring-1 ring-slate-200;
+    @apply mt-1 bg-white py-1 text-slate-700 ring-slate-200;
+    border-radius: 6px;
+    box-shadow:
+      var(--tw-ring-offset-shadow),
+      var(--tw-ring-shadow),
+      0 20px 25px -5px rgb(0 0 0 / 0.1),
+      0 8px 10px -6px rgb(0 0 0 / 0.1);
+    display: none;
+    left: 0;
+    min-width: 112px;
+    overflow: hidden;
+    position: absolute;
+    top: 100%;
+    z-index: 50;
+    --tw-ring-offset-shadow: 0 0 #0000;
+    --tw-ring-shadow: 0 0 0 calc(1px + var(--tw-ring-offset-width, 0px)) var(--tw-ring-color);
 
     button {
-      @apply block w-full px-2 py-1 text-left text-xs hover:bg-blue-50 hover:text-blue-600;
+      @apply px-2 py-1 hover:bg-blue-50 hover:text-blue-600;
+      display: block;
+      font-size: 12px;
+      line-height: 16px;
+      text-align: left;
+      width: 100%;
     }
   }
 
   &__button {
-    @apply inline-flex h-6 w-6 items-center justify-center rounded-md border border-white/15 bg-white/10 text-white transition-colors hover:bg-white/20;
+    @apply border-white/15 bg-white/10 text-white hover:bg-white/20;
+    align-items: center;
+    border-radius: 6px;
+    border-width: 1px;
+    display: inline-flex;
+    height: 24px;
+    justify-content: center;
+    transition-duration: 150ms;
+    transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    width: 24px;
   }
 
   &__button--drag {
-    @apply cursor-move;
+    cursor: move;
   }
 
   &__button--danger:hover {

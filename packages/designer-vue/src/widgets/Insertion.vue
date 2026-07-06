@@ -46,32 +46,12 @@ function getActualClosestOffsetRect() {
   return anchorRect
 }
 
-function getSiblingLineRect() {
-  const anchorRect = getActualClosestOffsetRect()
-  const closestNode = getClosestNode()
-  const activeViewport = getActiveViewport()
-  if (!anchorRect || !closestNode || !activeViewport)
-    return anchorRect
-
-  if (isVerticalInsertion())
-    return anchorRect
-
-  const parentRect = closestNode.parent
-    ? activeViewport.getValidNodeOffsetRect(closestNode.parent)
-    : null
-
-  if (!parentRect)
-    return anchorRect
-
-  return {
-    ...anchorRect,
-    width: parentRect.width,
-    x: parentRect.x,
-  }
-}
-
 function isVisible() {
-  return !!getActualClosestOffsetRect() && !!getClosestDirection()
+  const closestDirection = getClosestDirection()
+  return !!getActualClosestOffsetRect()
+    && !!closestDirection
+    && closestDirection !== ClosestPosition.Forbid
+    && closestDirection !== ClosestPosition.ForbidInner
 }
 
 function isVerticalInsertion() {
@@ -90,11 +70,6 @@ function isVerticalInsertion() {
 function isInnerInsertion() {
   const closestDirection = getClosestDirection()
   return closestDirection === ClosestPosition.Inner
-    || closestDirection === ClosestPosition.InnerBefore
-    || closestDirection === ClosestPosition.InnerAfter
-    || closestDirection === ClosestPosition.ForbidInner
-    || closestDirection === ClosestPosition.ForbidInnerBefore
-    || closestDirection === ClosestPosition.ForbidInnerAfter
 }
 
 function isForbiddenInsertion() {
@@ -137,8 +112,7 @@ function getLineStyle() {
     }
   }
 
-  const siblingLineRect = getSiblingLineRect()
-  if (!siblingLineRect)
+  if (!currentRect)
     return {}
 
   const top = closestDirection === ClosestPosition.After
@@ -150,9 +124,9 @@ function getLineStyle() {
     : currentRect.y
 
   return {
-    left: `${siblingLineRect.x - 4}px`,
+    left: `${currentRect.x - 4}px`,
     top: `${top}px`,
-    width: `${siblingLineRect.width + 8}px`,
+    width: `${currentRect.width + 8}px`,
   }
 }
 </script>
@@ -183,43 +157,71 @@ function getLineStyle() {
 @reference "../styles/globals.css";
 
 .dn-aux-insertion {
-  @apply pointer-events-none absolute z-30 flex h-0 -translate-y-1/2 items-center;
+  align-items: center;
+  display: flex;
+  height: 0;
+  pointer-events: none;
+  position: absolute;
+  transform: translateY(-50%);
+  z-index: 30;
 
   &__area {
-    @apply absolute inset-0 rounded-lg border-2 border-blue-500 bg-blue-500/10 shadow-[0_0_0_3px_rgba(59,130,246,0.14)];
+    @apply border-blue-500 bg-blue-500/10;
+    border-radius: 8px;
+    border-width: 2px;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.14);
+    inset: 0;
+    position: absolute;
   }
 
   &__line {
-    @apply h-1 flex-1 rounded-full bg-blue-500 shadow-[0_0_0_3px_rgba(59,130,246,0.16)];
+    @apply bg-blue-500;
+    border-radius: 9999px;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.16);
+    flex: 1 1 0%;
+    height: 4px;
   }
 
   &__handle {
-    @apply size-2 shrink-0 rounded-full border-2 border-blue-500 bg-white shadow-[0_0_0_3px_rgba(59,130,246,0.14)];
+    @apply border-blue-500 bg-white;
+    border-radius: 9999px;
+    border-width: 2px;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.14);
+    flex-shrink: 0;
+    height: 8px;
+    width: 8px;
   }
 
   &--vertical {
-    @apply h-auto w-0 -translate-x-1/2 translate-y-0 flex-col;
+    flex-direction: column;
+    height: auto;
+    transform: translateX(-50%) translateY(0);
+    width: 0;
   }
 
   &--vertical &__line {
-    @apply h-full w-1;
+    height: 100%;
     min-height: 100%;
+    width: 4px;
   }
 
   &--area {
-    @apply translate-x-0 translate-y-0;
+    transform: translateX(0) translateY(0);
   }
 
   &--forbidden &__area {
-    @apply border-red-500 bg-red-500/10 shadow-[0_0_0_3px_rgba(239,68,68,0.14)];
+    @apply border-red-500 bg-red-500/10;
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.14);
   }
 
   &--forbidden &__line {
-    @apply bg-red-500 shadow-[0_0_0_3px_rgba(239,68,68,0.14)];
+    @apply bg-red-500;
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.14);
   }
 
   &--forbidden &__handle {
-    @apply border-red-500 shadow-[0_0_0_3px_rgba(239,68,68,0.14)];
+    @apply border-red-500;
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.14);
   }
 }
 </style>

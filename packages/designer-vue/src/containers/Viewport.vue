@@ -72,7 +72,9 @@ onBeforeUnmount(() => {
 @reference "../styles/globals.css";
 
 .dn-viewport {
-  @apply relative h-full overflow-auto;
+  height: 100%;
+  overflow: auto;
+  position: relative;
 
   :deep(*) {
     cursor: default;

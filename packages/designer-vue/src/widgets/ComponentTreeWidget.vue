@@ -47,11 +47,18 @@ function getRootNodeAttrs() {
 @reference "../styles/globals.css";
 
 .dn-component-tree {
-  @apply mx-auto my-8 block min-h-[42rem] min-w-full w-[min(100%,50rem)] rounded-[1.25rem] bg-white/90 p-8 pb-24 shadow-[0_24px_60px_rgba(15,23,42,0.08)];
+  @apply mx-auto my-8 bg-white/90 p-8 pb-24;
+  border-radius: 20px;
+  box-shadow: 0 24px 60px rgba(15, 23, 42, 0.08);
   box-sizing: border-box;
+  display: block;
+  min-height: 432px;
+  min-width: 100%;
+  width: min(100%, 800px);
 
   > * {
-    @apply min-h-full min-w-full;
+    min-height: 100%;
+    min-width: 100%;
   }
 }
 </style>
