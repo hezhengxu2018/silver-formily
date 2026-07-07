@@ -54,6 +54,26 @@ describe('formily transformer', () => {
             },
           ],
         },
+        {
+          id: 'nested-form',
+          componentName: 'Field',
+          props: {
+            'name': 'profile',
+            'type': 'object',
+            'x-component': 'Form',
+          },
+          children: [
+            {
+              id: 'nested-form-field',
+              componentName: 'Field',
+              props: {
+                'name': 'nickname',
+                'type': 'string',
+                'x-component': 'Input',
+              },
+            },
+          ],
+        },
       ],
     }
 
@@ -84,6 +104,18 @@ describe('formily transformer', () => {
       'x-designable-id': 'array-addition',
       'x-index': 0,
     })
+    expect(properties.profile).toMatchObject({
+      'type': 'object',
+      'x-component': 'Form',
+      'x-designable-id': 'nested-form',
+      'x-index': 2,
+    })
+    expect(properties.profile.properties?.nickname).toMatchObject({
+      'type': 'string',
+      'x-component': 'Input',
+      'x-designable-id': 'nested-form-field',
+      'x-index': 0,
+    })
   })
 
   it('transforms formily schema document to designer tree', () => {
@@ -97,6 +129,18 @@ describe('formily transformer', () => {
             'title': 'Username',
             'x-component': 'Input',
             'x-designable-id': 'username-id',
+          },
+          profile: {
+            'type': 'object',
+            'x-component': 'Form',
+            'x-designable-id': 'profile-form-id',
+            'properties': {
+              nickname: {
+                'type': 'string',
+                'x-component': 'Input',
+                'x-designable-id': 'nickname-id',
+              },
+            },
           },
         },
       },
@@ -115,6 +159,26 @@ describe('formily transformer', () => {
             'x-component': 'Input',
             'x-designable-id': 'username-id',
           },
+        },
+        {
+          id: 'profile-form-id',
+          componentName: 'Field',
+          props: {
+            'type': 'object',
+            'x-component': 'Form',
+            'x-designable-id': 'profile-form-id',
+          },
+          children: [
+            {
+              id: 'nickname-id',
+              componentName: 'Field',
+              props: {
+                'type': 'string',
+                'x-component': 'Input',
+                'x-designable-id': 'nickname-id',
+              },
+            },
+          ],
         },
       ],
     })

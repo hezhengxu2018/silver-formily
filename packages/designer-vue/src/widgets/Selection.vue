@@ -18,7 +18,7 @@ function getSelectedNodes() {
     return []
   return selected
     .map(id => tree.findById(id))
-    .filter(node => node && !node.hidden && !node.isRoot)
+    .filter(node => node && !node.hidden)
 }
 
 function shouldRenderSelection() {

@@ -54,6 +54,9 @@ export const Form = composeExport(FormPreview, {
           feedbackLayout: 'loose',
           layout: 'horizontal',
           labelAlign: 'right',
+          shallow: true,
+          size: 'default',
+          tooltipLayout: 'icon',
           wrapperAlign: 'left',
         },
       }
@@ -62,12 +65,13 @@ export const Form = composeExport(FormPreview, {
   }),
   Resource: createResource({
     title: { 'zh-CN': '表单', 'en-US': 'Form' },
-    icon: 'Form',
+    icon: 'FormLayoutSource',
     elements: [
       {
-        componentName: 'Form',
+        componentName: 'Field',
         props: {
-          title: 'Untitled Form',
+          'type': 'object',
+          'x-component': 'Form',
         },
       },
     ],

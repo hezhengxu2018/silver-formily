@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import type { TreeNode } from '@silver-formily/designer-core'
 import { useObserver } from '@silver-formily/reactive-vue'
-import { useDesigner, useViewport } from '../hooks'
+import { toRef } from 'vue'
+import { useDesigner, useValidNodeOffsetRect } from '../hooks'
 import Helpers from './Helpers.vue'
 
 const props = defineProps<{
@@ -12,10 +13,10 @@ const props = defineProps<{
 useObserver()
 
 const designerRef = useDesigner()
-const viewportRef = useViewport()
+const rectRef = useValidNodeOffsetRect(toRef(props, 'node'))
 
 function getRect() {
-  return viewportRef.value?.getValidNodeOffsetRect(props.node) ?? null
+  return rectRef.value
 }
 
 function getHelperAttrs() {
@@ -29,8 +30,9 @@ function getBoxStyle() {
     return {}
   return {
     height: `${rect.height}px`,
-    left: `${rect.x}px`,
-    top: `${rect.y}px`,
+    left: '0',
+    top: '0',
+    transform: `perspective(1px) translate3d(${rect.x}px, ${rect.y}px, 0)`,
     width: `${rect.width}px`,
   }
 }
@@ -45,6 +47,7 @@ function isVisible() {
   <div
     v-if="isVisible()"
     class="dn-aux-selection-box"
+    :class="{ 'dn-aux-selection-box--root': node.isRoot }"
     :style="getBoxStyle()"
     v-bind="getHelperAttrs()"
   >
@@ -79,6 +82,10 @@ function isVisible() {
     inset: 0;
     pointer-events: none;
     position: absolute;
+  }
+
+  &--root &__fill {
+    display: none;
   }
 }
 </style>

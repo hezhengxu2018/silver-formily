@@ -369,9 +369,7 @@ export class Viewport {
       return
     const rect = this.getElementRectById(node.id)
     if (node && node === node.root && node.isInOperation) {
-      if (!rect)
-        return this.rect
-      return calcBoundingRect([this.rect, rect])
+      return rect ?? this.rect
     }
 
     if (rect) {
@@ -387,9 +385,7 @@ export class Viewport {
       return
     const rect = this.getElementOffsetRectById(node.id)
     if (node && node === node.root && node.isInOperation) {
-      if (!rect)
-        return this.innerRect
-      return calcBoundingRect([this.innerRect, rect])
+      return rect ?? this.innerRect
     }
     if (rect) {
       return rect

@@ -3,7 +3,7 @@ import type { Component } from 'vue'
 import { useObserver } from '@silver-formily/reactive-vue'
 import { provide, toRef } from 'vue'
 import { DesignerComponentsSymbol } from '../context'
-import { useDesigner, useTree } from '../hooks'
+import { useTree } from '../hooks'
 import TreeNodeWidget from './TreeNodeWidget'
 
 const props = withDefaults(defineProps<{
@@ -12,30 +12,14 @@ const props = withDefaults(defineProps<{
   components: () => ({}),
 })
 
-useObserver()
-
-const designerRef = useDesigner()
 const treeRef = useTree()
 
+useObserver()
 provide(DesignerComponentsSymbol, toRef(props, 'components'))
-
-function getRootNodeAttrs() {
-  const tree = treeRef.value
-  const designer = designerRef.value
-  const nodeIdAttrName = designer?.props.nodeIdAttrName
-  if (!tree || !nodeIdAttrName)
-    return {}
-  return {
-    [nodeIdAttrName]: tree.id,
-  }
-}
 </script>
 
 <template>
-  <div
-    class="dn-component-tree"
-    v-bind="getRootNodeAttrs()"
-  >
+  <div class="dn-component-tree">
     <TreeNodeWidget
       v-if="treeRef"
       :node="treeRef"

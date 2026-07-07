@@ -11,10 +11,6 @@ function getClosestDirection() {
   return moveHelperRef.value?.closestDirection ?? null
 }
 
-function getClosestNode() {
-  return moveHelperRef.value?.closestNode ?? null
-}
-
 function getClosestOffsetRect() {
   const moveHelper = moveHelperRef.value
   if (!moveHelper)
@@ -24,110 +20,136 @@ function getClosestOffsetRect() {
     : moveHelper.viewportClosestOffsetRect
 }
 
-function getActiveViewport() {
+function getClosestLayout() {
   const moveHelper = moveHelperRef.value
   if (!moveHelper)
-    return null
-  return moveHelper.activeViewport === moveHelper.outline
+    return 'vertical'
+  const viewport = moveHelper.activeViewport === moveHelper.outline
     ? moveHelper.outline
     : moveHelper.viewport
+  return moveHelper.getClosestLayout(viewport)
 }
 
-function getActualClosestOffsetRect() {
-  const anchorRect = getClosestOffsetRect()
-  const closestNode = getClosestNode()
-  const activeViewport = getActiveViewport()
-  if (!anchorRect || !closestNode || !activeViewport)
-    return anchorRect
-
-  if (closestNode.isRoot && isInnerInsertion())
-    return activeViewport.getElementOffsetRectById(closestNode.id) ?? anchorRect
-
-  return anchorRect
-}
-
-function isVisible() {
+function isAfterInsertion() {
   const closestDirection = getClosestDirection()
-  return !!getActualClosestOffsetRect()
-    && !!closestDirection
-    && closestDirection !== ClosestPosition.Forbid
-    && closestDirection !== ClosestPosition.ForbidInner
-}
-
-function isVerticalInsertion() {
-  const closestDirection = getClosestDirection()
-  const closestNode = moveHelperRef.value?.closestNode
-  const isInlineContainer = !!closestNode?.parent?.designerProps?.inlineChildrenLayout
-  if (!isInlineContainer)
-    return false
-
-  return closestDirection === ClosestPosition.Before
-    || closestDirection === ClosestPosition.After
-    || closestDirection === ClosestPosition.ForbidBefore
+  return closestDirection === ClosestPosition.After
+    || closestDirection === ClosestPosition.InnerAfter
+    || closestDirection === ClosestPosition.Under
     || closestDirection === ClosestPosition.ForbidAfter
+    || closestDirection === ClosestPosition.ForbidInnerAfter
+    || closestDirection === ClosestPosition.ForbidUnder
 }
 
-function isInnerInsertion() {
+function isBeforeInsertion() {
   const closestDirection = getClosestDirection()
-  return closestDirection === ClosestPosition.Inner
+  return closestDirection === ClosestPosition.Before
+    || closestDirection === ClosestPosition.InnerBefore
+    || closestDirection === ClosestPosition.Upper
+    || closestDirection === ClosestPosition.ForbidBefore
+    || closestDirection === ClosestPosition.ForbidInnerBefore
+    || closestDirection === ClosestPosition.ForbidUpper
 }
 
 function isForbiddenInsertion() {
-  const closestDirection = getClosestDirection()
-  return closestDirection === ClosestPosition.Forbid
-    || closestDirection === ClosestPosition.ForbidBefore
-    || closestDirection === ClosestPosition.ForbidAfter
-    || closestDirection === ClosestPosition.ForbidUpper
-    || closestDirection === ClosestPosition.ForbidUnder
-    || closestDirection === ClosestPosition.ForbidInner
-    || closestDirection === ClosestPosition.ForbidInnerBefore
-    || closestDirection === ClosestPosition.ForbidInnerAfter
+  return String(getClosestDirection() ?? '').includes('FORBID')
 }
 
 function getLineStyle() {
-  const currentRect = getActualClosestOffsetRect()
   const closestDirection = getClosestDirection()
-  if (!currentRect)
-    return {}
-
-  if (isInnerInsertion()) {
-    return {
-      height: `${currentRect.height}px`,
-      left: `${currentRect.x}px`,
-      top: `${currentRect.y}px`,
-      width: `${currentRect.width}px`,
-    }
+  const closestRect = getClosestOffsetRect()
+  const isInlineLayout = getClosestLayout() === 'horizontal'
+  const baseStyle: Record<string, string> = {
+    left: '0px',
+    top: '0px',
   }
 
-  if (isVerticalInsertion()) {
-    const left = closestDirection === ClosestPosition.After || closestDirection === ClosestPosition.ForbidAfter
-      ? currentRect.x + currentRect.width
-      : currentRect.x
+  if (!closestRect)
+    return baseStyle
 
+  if (
+    closestDirection === ClosestPosition.Before
+    || closestDirection === ClosestPosition.ForbidBefore
+  ) {
     return {
-      height: `${currentRect.height + 8}px`,
-      left: `${left}px`,
-      top: `${currentRect.y - 4}px`,
+      ...baseStyle,
+      height: `${closestRect.height}px`,
+      left: `${closestRect.x}px`,
+      top: `${closestRect.y}px`,
       width: '0px',
     }
   }
 
-  if (!currentRect)
-    return {}
-
-  const top = closestDirection === ClosestPosition.After
-    || closestDirection === ClosestPosition.Under
-    || closestDirection === ClosestPosition.InnerAfter
-    || closestDirection === ClosestPosition.ForbidUnder
-    || closestDirection === ClosestPosition.ForbidInnerAfter
-    ? currentRect.y + currentRect.height
-    : currentRect.y
-
-  return {
-    left: `${currentRect.x - 4}px`,
-    top: `${top}px`,
-    width: `${currentRect.width + 8}px`,
+  if (
+    closestDirection === ClosestPosition.After
+    || closestDirection === ClosestPosition.ForbidAfter
+  ) {
+    return {
+      ...baseStyle,
+      height: `${closestRect.height}px`,
+      left: `${closestRect.x + closestRect.width}px`,
+      top: `${closestRect.y}px`,
+      width: '0px',
+    }
   }
+
+  if (isAfterInsertion()) {
+    if (isInlineLayout) {
+      return {
+        ...baseStyle,
+        height: `${closestRect.height}px`,
+        left: `${closestRect.x + closestRect.width}px`,
+        top: `${closestRect.y}px`,
+        width: '0px',
+      }
+    }
+    return {
+      ...baseStyle,
+      height: '0px',
+      left: `${closestRect.x}px`,
+      top: `${closestRect.y + closestRect.height}px`,
+      width: `${closestRect.width}px`,
+    }
+  }
+
+  if (isBeforeInsertion()) {
+    if (isInlineLayout) {
+      return {
+        ...baseStyle,
+        height: `${closestRect.height}px`,
+        left: `${closestRect.x}px`,
+        top: `${closestRect.y}px`,
+        width: '0px',
+      }
+    }
+    return {
+      ...baseStyle,
+      height: '0px',
+      left: `${closestRect.x}px`,
+      top: `${closestRect.y}px`,
+      width: `${closestRect.width}px`,
+    }
+  }
+
+  return baseStyle
+}
+
+function isVisible() {
+  return !!getClosestOffsetRect()
+    && (isAfterInsertion() || isBeforeInsertion())
+}
+
+function isVerticalLine() {
+  const closestDirection = getClosestDirection()
+  const isInlineLayout = getClosestLayout() === 'horizontal'
+  if (
+    closestDirection === ClosestPosition.Before
+    || closestDirection === ClosestPosition.After
+    || closestDirection === ClosestPosition.ForbidBefore
+    || closestDirection === ClosestPosition.ForbidAfter
+  ) {
+    return true
+  }
+  return isInlineLayout && (isAfterInsertion() || isBeforeInsertion())
 }
 </script>
 
@@ -136,20 +158,14 @@ function getLineStyle() {
     v-if="isVisible()"
     class="dn-aux-insertion"
     :class="{
-      'dn-aux-insertion--area': isInnerInsertion(),
       'dn-aux-insertion--forbidden': isForbiddenInsertion(),
-      'dn-aux-insertion--vertical': isVerticalInsertion(),
+      'dn-aux-insertion--vertical': isVerticalLine(),
     }"
     :style="getLineStyle()"
   >
-    <template v-if="isInnerInsertion()">
-      <span class="dn-aux-insertion__area" />
-    </template>
-    <template v-else>
-      <span class="dn-aux-insertion__handle dn-aux-insertion__handle--start" />
-      <span class="dn-aux-insertion__line" />
-      <span class="dn-aux-insertion__handle dn-aux-insertion__handle--end" />
-    </template>
+    <span class="dn-aux-insertion__handle dn-aux-insertion__handle--start" />
+    <span class="dn-aux-insertion__line" />
+    <span class="dn-aux-insertion__handle dn-aux-insertion__handle--end" />
   </div>
 </template>
 
@@ -165,17 +181,9 @@ function getLineStyle() {
   transform: translateY(-50%);
   z-index: 30;
 
-  &__area {
-    @apply border-blue-500 bg-blue-500/10;
-    border-radius: 8px;
-    border-width: 2px;
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.14);
-    inset: 0;
-    position: absolute;
-  }
-
   &__line {
     @apply bg-blue-500;
+
     border-radius: 9999px;
     box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.16);
     flex: 1 1 0%;
@@ -184,6 +192,7 @@ function getLineStyle() {
 
   &__handle {
     @apply border-blue-500 bg-white;
+
     border-radius: 9999px;
     border-width: 2px;
     box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.14);
@@ -205,22 +214,15 @@ function getLineStyle() {
     width: 4px;
   }
 
-  &--area {
-    transform: translateX(0) translateY(0);
-  }
-
-  &--forbidden &__area {
-    @apply border-red-500 bg-red-500/10;
-    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.14);
-  }
-
   &--forbidden &__line {
     @apply bg-red-500;
+
     box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.14);
   }
 
   &--forbidden &__handle {
     @apply border-red-500;
+
     box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.14);
   }
 }

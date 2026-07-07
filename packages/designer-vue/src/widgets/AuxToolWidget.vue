@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { useObserver } from '@silver-formily/reactive-vue'
-import Hover from './Hover.vue'
+import Cover from './Cover.vue'
+import DashedBox from './DashedBox.vue'
+import FreeSelection from './FreeSelection.vue'
 import Insertion from './Insertion.vue'
 import Selection from './Selection.vue'
 
@@ -9,7 +11,9 @@ useObserver()
 
 <template>
   <div class="dn-auxtool">
-    <Hover />
+    <DashedBox />
+    <Cover />
+    <FreeSelection />
     <Insertion />
     <Selection />
   </div>

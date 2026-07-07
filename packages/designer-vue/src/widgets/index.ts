@@ -1,5 +1,7 @@
 export { default as AuxToolWidget } from './AuxToolWidget.vue'
 export { default as ComponentTreeWidget } from './ComponentTreeWidget.vue'
-export { default as Hover } from './Hover.vue'
+export { default as Cover } from './Cover.vue'
+export { default as DashedBox } from './DashedBox.vue'
+export { default as FreeSelection } from './FreeSelection.vue'
 export { default as RuntimeNode } from './RuntimeNode.vue'
 export { default as TreeNodeWidget } from './TreeNodeWidget'

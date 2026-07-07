@@ -21,18 +21,6 @@ function createOptions(options: IFormilyTransformerOptions = {}): Required<IForm
   }
 }
 
-function findNode(node: ITreeNode | undefined, finder: (node: ITreeNode) => boolean): ITreeNode | undefined {
-  if (!node)
-    return
-  if (finder(node))
-    return node
-  for (const child of node.children ?? []) {
-    const matched = findNode(child, finder)
-    if (matched)
-      return matched
-  }
-}
-
 function getSchemaProperties(schema: ISchema): Record<string, ISchema> {
   if (!schema.properties || typeof schema.properties !== 'object')
     schema.properties = {}
@@ -44,7 +32,9 @@ export function transformToSchema(
   options?: IFormilyTransformerOptions,
 ): IFormilySchemaDocument {
   const realOptions = createOptions(options)
-  const root = findNode(node, child => child.componentName === realOptions.designableFormName)
+  const root = node?.componentName === realOptions.designableFormName
+    ? node
+    : undefined
   const schema: ISchema = {
     type: 'object',
     properties: {},

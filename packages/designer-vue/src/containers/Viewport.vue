@@ -1,12 +1,14 @@
 <script setup lang="ts">
 import { useObserver } from '@silver-formily/reactive-vue'
-import { onBeforeUnmount, onMounted, ref, shallowRef } from 'vue'
-import { useWorkspace } from '../hooks'
+import { nextTick, onBeforeUnmount, onMounted, ref, shallowRef } from 'vue'
+import { useSelection, useTree, useWorkspace } from '../hooks'
 import AuxToolWidget from '../widgets/AuxToolWidget.vue'
 
 useObserver()
 
 const workspaceRef = useWorkspace()
+const selectionRef = useSelection()
+const treeRef = useTree()
 const viewportElementRef = ref<HTMLElement | null>(null)
 const mountedWorkspaceRef = shallowRef<typeof workspaceRef.value>(null)
 
@@ -47,6 +49,14 @@ onMounted(() => {
 
   workspace.viewport.onMount(viewportElement, window)
   mountedWorkspaceRef.value = workspace
+
+  nextTick(() => {
+    selectionRef.value?.clear()
+    nextTick(() => {
+      if (treeRef.value)
+        selectionRef.value?.select(treeRef.value)
+    })
+  })
 })
 
 onBeforeUnmount(() => {

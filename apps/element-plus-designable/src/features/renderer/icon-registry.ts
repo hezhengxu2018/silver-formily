@@ -21,6 +21,7 @@ const paletteIconNameByResourceIcon = {
   CheckboxGroup: 'checkbox',
   DatePicker: 'date',
   Form: 'form',
+  FormLayoutSource: 'form',
   Input: 'input',
   Number: 'number',
   Password: 'password',

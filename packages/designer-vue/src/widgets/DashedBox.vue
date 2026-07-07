@@ -1,11 +1,10 @@
 <script setup lang="ts">
-import { CursorStatus } from '@silver-formily/designer-core'
 import { useObserver } from '@silver-formily/reactive-vue'
-import { useCursor, useHover, useSelection, useViewport } from '../hooks'
+import { useHover, useSelection, useViewport } from '../hooks'
+import { getNodeTitle } from './node-title'
 
 useObserver()
 
-const cursorRef = useCursor()
 const hoverRef = useHover()
 const selectionRef = useSelection()
 const viewportRef = useViewport()
@@ -21,6 +20,16 @@ function getRect() {
   return viewportRef.value?.getValidNodeOffsetRect(node) ?? null
 }
 
+function isVisible() {
+  const node = getHoverNode()
+  const rect = getRect()
+  if (!node || node.hidden)
+    return false
+  if (selectionRef.value?.has(node))
+    return false
+  return !!rect?.width && !!rect?.height
+}
+
 function getBoxStyle() {
   const rect = getRect()
   if (!rect)
@@ -33,37 +42,50 @@ function getBoxStyle() {
   }
 }
 
-function isVisible() {
+function getHoverTitle() {
   const node = getHoverNode()
-  const rect = getRect()
-  if (!node || node.hidden || node.isRoot)
-    return false
-  if (cursorRef.value?.status !== CursorStatus.Normal)
-    return false
-  if (selectionRef.value?.has(node))
-    return false
-  return !!rect?.width && !!rect?.height
+  return node ? getNodeTitle(node) : ''
 }
 </script>
 
 <template>
   <div
     v-if="isVisible()"
-    class="dn-aux-hover"
+    class="dn-aux-dashed-box"
     :style="getBoxStyle()"
-  />
+  >
+    <span class="dn-aux-dashed-box__title">
+      {{ getHoverTitle() }}
+    </span>
+  </div>
 </template>
 
 <style scoped>
 @reference "../styles/globals.css";
 
-.dn-aux-hover {
-  @apply border-blue-400 bg-blue-500/5;
+.dn-aux-dashed-box {
+  @apply border-blue-400;
+
+  border-style: dashed;
   border-width: 1px;
-  box-shadow: 0 0 0 1px rgba(96, 165, 250, 0.18);
   box-sizing: border-box;
   pointer-events: none;
   position: absolute;
   z-index: 10;
+
+  &__title {
+    @apply bg-blue-500 px-1.5 py-0.5 text-white;
+
+    border-radius: 4px 4px 0 0;
+    bottom: 100%;
+    font-size: 12px;
+    left: -1px;
+    line-height: 16px;
+    max-width: 180px;
+    overflow: hidden;
+    position: absolute;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
 }
 </style>
