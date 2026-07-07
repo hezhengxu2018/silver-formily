@@ -93,3 +93,21 @@
     min-height: 100vh;
   }
 }
+
+@layer components {
+  .dn-load-template {
+    align-items: center;
+    display: flex;
+    gap: 6px;
+    justify-content: center;
+    margin: 8px 0;
+    pointer-events: auto;
+    position: relative;
+    z-index: 60;
+  }
+
+  .dn-load-template-action {
+    height: 28px;
+    width: 28px;
+  }
+}

@@ -1,5 +1,4 @@
 import type { Engine } from '../models'
-import { requestIdle } from '@silver-formily/designer-shared'
 import {
   DragMoveEvent,
   DragStartEvent,
@@ -35,8 +34,9 @@ export function useCursorEffect(engine: Engine) {
     engine.cursor.setStatus(CursorStatus.DragStop)
     engine.cursor.setDragEndPosition(event.data)
     engine.cursor.setDragStartPosition(null)
-    requestIdle(() => {
-      engine.cursor.setStatus(CursorStatus.Normal)
+    queueMicrotask(() => {
+      if (engine.cursor.status === CursorStatus.DragStop)
+        engine.cursor.setStatus(CursorStatus.Normal)
     })
   })
   engine.subscribeTo(MouseMoveEvent, (event) => {

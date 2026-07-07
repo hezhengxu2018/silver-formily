@@ -77,7 +77,7 @@ function resetNodesParent(nodes: TreeNode[], parent: TreeNode) {
 
   const deepReset = (node: TreeNode) => {
     shallowReset(node)
-    resetNodesParent(node.children, node)
+    node.children = resetNodesParent(node.children, node)
   }
 
   return nodes.map((node) => {

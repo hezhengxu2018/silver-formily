@@ -5,9 +5,10 @@ import { MouseMoveDriver } from '../drivers/MouseMoveDriver'
 import { ViewportResizeDriver } from '../drivers/ViewportResizeDriver'
 import { ViewportScrollDriver } from '../drivers/ViewportScrollDriver'
 import { useContentEditableEffect } from '../effects/useContentEditableEffect'
+import { useCursorEffect } from '../effects/useCursorEffect'
 import { useDragDropEffect } from '../effects/useDragDropEffect'
 import { useSelectionEffect } from '../effects/useSelectionEffect'
-import { DragStartEvent, MouseClickEvent, MouseDoubleClickEvent } from '../events'
+import { DragStartEvent, DragStopEvent, MouseClickEvent, MouseDoubleClickEvent } from '../events'
 import { CursorStatus, Engine, Viewport } from '../models'
 
 function createCursorEvent<T extends MouseClickEvent | MouseDoubleClickEvent>(
@@ -86,7 +87,11 @@ describe('designer-core regression coverage', () => {
 
     driver.onMouseUp(new MouseEvent('mouseup', { view: window }))
 
-    expect(removeSpy).not.toHaveBeenCalledWith('mousedown', driver.onMouseDown, true)
+    expect(
+      removeSpy.mock.calls.some(([type]) => type === 'mousedown'),
+    ).toBe(false)
+    expect(removeSpy).toHaveBeenCalledWith('dragend', driver.onMouseUp)
+    expect(removeSpy).toHaveBeenCalledWith('dragstart', driver.onStartDrag)
   })
 
   it('dragDropDriver removes the captured mousedown listener on detach', () => {
@@ -208,6 +213,38 @@ describe('designer-core regression coverage', () => {
     expect(selection.select).toHaveBeenCalledWith(node)
     expect(selection.add).not.toHaveBeenCalled()
     expect(selection.crossAddTo).not.toHaveBeenCalled()
+  })
+
+  it('useCursorEffect restores normal status right after drag stop subscribers run', async () => {
+    const subscribeMap = new Map<any, (event: DragStopEvent) => void>()
+    const cursor = {
+      status: CursorStatus.Dragging,
+      setDragEndPosition: vi.fn(),
+      setDragStartPosition: vi.fn(),
+      setStatus: vi.fn((status: CursorStatus) => {
+        cursor.status = status
+      }),
+    }
+    const engine = {
+      cursor,
+      subscribeTo: vi.fn((EventType, handler) => {
+        subscribeMap.set(EventType, handler)
+      }),
+    } as any
+
+    useCursorEffect(engine)
+
+    subscribeMap
+      .get(DragStopEvent)
+      ?.(
+        createCursorEvent(DragStopEvent, document.body),
+      )
+
+    expect(cursor.status).toBe(CursorStatus.DragStop)
+
+    await Promise.resolve()
+
+    expect(cursor.status).toBe(CursorStatus.Normal)
   })
 
   it('useSelectionEffect resolves outline nodes through DOMNodeResolver', () => {

@@ -4,7 +4,7 @@ import { transformToSchema } from '@silver-formily/designer-core'
 import { reactiveComputed } from '@silver-formily/designer-vue'
 import { Form as FormilyForm } from '@silver-formily/element-plus'
 import { createSchemaField } from '@silver-formily/vue'
-import { computed, shallowRef } from 'vue'
+import { computed, shallowRef, watch } from 'vue'
 import { RuntimeComponents } from '../../renderer'
 import { engine } from '../designer'
 
@@ -28,17 +28,22 @@ const schemaDocumentRef = reactiveComputed(() => {
 })
 
 const schemaCode = computed(() => JSON.stringify(schemaDocumentRef.value, null, 2))
+
+watch(schemaCode, () => {
+  formRef.value = createForm()
+})
 </script>
 
 <template>
   <aside class="epd-schema-preview">
     <div class="epd-schema-preview__runtime">
       <FormilyForm
+        :key="schemaCode"
         :form="formRef"
         v-bind="schemaDocumentRef.form"
         preview-text-placeholder=" "
       >
-        <SchemaField :schema="schemaDocumentRef.schema" />
+        <SchemaField :key="schemaCode" :schema="schemaDocumentRef.schema" />
       </FormilyForm>
     </div>
 
@@ -65,6 +70,39 @@ const schemaCode = computed(() => JSON.stringify(schemaDocumentRef.value, null, 
     border-bottom-width: 1px;
     min-height: 288px;
     overflow: auto;
+
+    :deep(.formily-element-plus-array-table) {
+      min-width: 100%;
+    }
+
+    :deep(.formily-element-plus-array-table .el-table) {
+      font-size: 12px;
+    }
+
+    :deep(.formily-element-plus-array-table .el-pagination) {
+      align-items: center;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      justify-content: flex-start;
+    }
+
+    :deep(.formily-element-plus-array-table .formily-element-plus-array-base-addition) {
+      align-items: center;
+      background: #fff;
+      border: 1px dashed var(--el-border-color);
+      border-radius: 4px;
+      display: inline-flex;
+      justify-content: center;
+      min-height: 32px;
+      width: 100%;
+    }
+
+    :deep(.formily-element-plus-array-table .formily-element-plus-array-base-addition:hover) {
+      background: var(--el-fill-color-light);
+      border-color: var(--el-color-primary);
+      color: var(--el-color-primary);
+    }
   }
 
   &__code {

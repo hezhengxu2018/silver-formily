@@ -55,7 +55,8 @@ export class DragDropDriver extends EventDriver<Engine> {
       true,
     )
     this.batchRemoveEventListener('mouseup', this.onMouseUp)
-    this.batchRemoveEventListener('mousedown', this.onMouseDown)
+    this.batchRemoveEventListener('dragend', this.onMouseUp)
+    this.batchRemoveEventListener('dragstart', this.onStartDrag)
     this.batchRemoveEventListener('dragover', this.onMouseMove)
     this.batchRemoveEventListener('mousemove', this.onMouseMove)
     this.batchRemoveEventListener('mousemove', this.onDistanceChange)
