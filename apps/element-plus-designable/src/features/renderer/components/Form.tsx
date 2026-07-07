@@ -49,7 +49,7 @@ export const Form = composeExport(FormPreview, {
         propsSchema: AllSchemas.Form,
         defaultProps: {
           labelCol: 6,
-          wrapperCol: 24,
+          wrapperCol: 18,
           colon: false,
           feedbackLayout: 'loose',
           layout: 'horizontal',

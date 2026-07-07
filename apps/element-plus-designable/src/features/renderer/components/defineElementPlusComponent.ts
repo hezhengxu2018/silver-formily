@@ -8,6 +8,7 @@ export interface ElementPlusResourceOptions {
   component: Component
   componentName: string
   defaultProps?: Record<string, any>
+  decorator?: false | string
   description?: string
   icon?: string
   previewComponent?: Component
@@ -16,12 +17,14 @@ export interface ElementPlusResourceOptions {
 }
 
 function createFieldElement(options: ElementPlusResourceOptions): ITreeNode {
+  const decorator = options.decorator === undefined ? 'FormItem' : options.decorator
+
   return {
     componentName: 'Field',
     props: {
       'type': options.type ?? 'string',
       'title': options.title,
-      'x-decorator': 'FormItem',
+      'x-decorator': decorator,
       'x-component': options.componentName,
       'x-component-props': options.defaultProps ?? {},
     },

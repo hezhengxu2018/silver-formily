@@ -6,6 +6,8 @@ import { useMoveHelper } from '../hooks'
 useObserver()
 
 const moveHelperRef = useMoveHelper()
+const lineSize = 4
+const halfLineSize = lineSize / 2
 
 function getClosestDirection() {
   return moveHelperRef.value?.closestDirection ?? null
@@ -73,9 +75,9 @@ function getLineStyle() {
     return {
       ...baseStyle,
       height: `${closestRect.height}px`,
-      left: `${closestRect.x}px`,
+      left: `${closestRect.x - halfLineSize}px`,
       top: `${closestRect.y}px`,
-      width: '0px',
+      width: `${lineSize}px`,
     }
   }
 
@@ -86,9 +88,9 @@ function getLineStyle() {
     return {
       ...baseStyle,
       height: `${closestRect.height}px`,
-      left: `${closestRect.x + closestRect.width}px`,
+      left: `${closestRect.x + closestRect.width - halfLineSize}px`,
       top: `${closestRect.y}px`,
-      width: '0px',
+      width: `${lineSize}px`,
     }
   }
 
@@ -97,16 +99,16 @@ function getLineStyle() {
       return {
         ...baseStyle,
         height: `${closestRect.height}px`,
-        left: `${closestRect.x + closestRect.width}px`,
+        left: `${closestRect.x + closestRect.width - halfLineSize}px`,
         top: `${closestRect.y}px`,
-        width: '0px',
+        width: `${lineSize}px`,
       }
     }
     return {
       ...baseStyle,
-      height: '0px',
+      height: `${lineSize}px`,
       left: `${closestRect.x}px`,
-      top: `${closestRect.y + closestRect.height}px`,
+      top: `${closestRect.y + closestRect.height - halfLineSize}px`,
       width: `${closestRect.width}px`,
     }
   }
@@ -116,16 +118,16 @@ function getLineStyle() {
       return {
         ...baseStyle,
         height: `${closestRect.height}px`,
-        left: `${closestRect.x}px`,
+        left: `${closestRect.x - halfLineSize}px`,
         top: `${closestRect.y}px`,
-        width: '0px',
+        width: `${lineSize}px`,
       }
     }
     return {
       ...baseStyle,
-      height: '0px',
+      height: `${lineSize}px`,
       left: `${closestRect.x}px`,
-      top: `${closestRect.y}px`,
+      top: `${closestRect.y - halfLineSize}px`,
       width: `${closestRect.width}px`,
     }
   }
@@ -173,57 +175,69 @@ function isVerticalLine() {
 @reference "../styles/globals.css";
 
 .dn-aux-insertion {
-  align-items: center;
-  display: flex;
-  height: 0;
   pointer-events: none;
   position: absolute;
-  transform: translateY(-50%);
   z-index: 30;
 
   &__line {
     @apply bg-blue-500;
 
     border-radius: 9999px;
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.16);
-    flex: 1 1 0%;
-    height: 4px;
+    box-shadow: 0 0 0 3px rgb(59 130 246 / 16%);
+    inset: 0;
+    position: absolute;
   }
 
   &__handle {
     @apply border-blue-500 bg-white;
 
+    background-color: white;
     border-radius: 9999px;
     border-width: 2px;
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.14);
-    flex-shrink: 0;
+    box-shadow: 0 0 0 3px rgb(59 130 246 / 14%);
     height: 8px;
+    position: absolute;
+    top: 50%;
     width: 8px;
+    z-index: 1;
   }
 
-  &--vertical {
-    flex-direction: column;
-    height: auto;
-    transform: translateX(-50%) translateY(0);
-    width: 0;
+  &__handle--start {
+    left: 0;
+    transform: translate(-50%, -50%);
   }
 
-  &--vertical &__line {
-    height: 100%;
-    min-height: 100%;
-    width: 4px;
+  &__handle--end {
+    right: 0;
+    transform: translate(50%, -50%);
+  }
+
+  &--vertical &__handle {
+    left: 50%;
+    top: auto;
+  }
+
+  &--vertical &__handle--start {
+    top: 0;
+    transform: translate(-50%, -50%);
+  }
+
+  &--vertical &__handle--end {
+    bottom: 0;
+    right: auto;
+    transform: translate(-50%, 50%);
   }
 
   &--forbidden &__line {
     @apply bg-red-500;
 
-    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.14);
+    box-shadow: 0 0 0 3px rgb(239 68 68 / 14%);
   }
 
   &--forbidden &__handle {
     @apply border-red-500;
 
-    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.14);
+    box-shadow: 0 0 0 3px rgb(239 68 68 / 14%);
   }
 }
 </style>

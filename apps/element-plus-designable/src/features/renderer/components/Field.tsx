@@ -13,6 +13,10 @@ const previewStyle = {
   userSelect: 'none',
 } as const
 
+const containerPreviewStyle = {
+  userSelect: 'none',
+} as const
+
 const wrapperStyle = {
   position: 'relative',
 } as const
@@ -53,7 +57,10 @@ const FieldPreview = defineComponent({
     return () => {
       const props = attrs as Record<string, any>
       const componentName = props['x-component']
-      const decoratorName = props['x-decorator'] || 'FormItem'
+      const selfHitTestComponent = componentName === 'ArrayTable'
+      const decoratorName = props['x-decorator'] === false || props['x-decorator'] === null
+        ? null
+        : props['x-decorator'] || 'FormItem'
       const componentProps = {
         ...(props['x-component-props'] || {}),
       }
@@ -68,7 +75,9 @@ const FieldPreview = defineComponent({
       }
 
       const component = resolveComponentPath(componentsRef.value, componentName)
-      const decorator = resolveComponentPath(componentsRef.value, decoratorName) || FormItem
+      const decorator = decoratorName === null
+        ? null
+        : resolveComponentPath(componentsRef.value, decoratorName) || FormItem
       const fieldProps = omitUndefined({
         ...pickSchemaState(props),
         component: component ? [component, componentProps] : undefined,
@@ -106,9 +115,9 @@ const FieldPreview = defineComponent({
       }, [
         h('div', {
           class: 'dn-designable-field__preview',
-          style: previewStyle,
+          style: selfHitTestComponent ? containerPreviewStyle : previewStyle,
         }, [preview]),
-        h('div', {
+        !selfHitTestComponent && h('div', {
           [nodeIdAttrName || 'data-designer-node-id']: nodeRef.value?.id,
           'aria-hidden': 'true',
           'class': 'dn-designable-field__mask',

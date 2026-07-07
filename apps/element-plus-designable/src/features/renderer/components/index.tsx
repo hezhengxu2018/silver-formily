@@ -1,445 +1,14 @@
-import type { Component } from 'vue'
 import type { DesignableComponent } from '../types'
-import { Columns3, GripVertical, ListOrdered, Settings2 } from '@lucide/vue'
-import { createBehavior, TreeNode } from '@silver-formily/designer-core'
-import { TreeNodeWidget, useNode } from '@silver-formily/designer-vue'
+import { createBehavior } from '@silver-formily/designer-core'
 import * as ElementPlus from '@silver-formily/element-plus'
-import { ElButton, ElCard, ElEmpty, ElTable, ElTableColumn } from 'element-plus'
-import { defineComponent, h } from 'vue'
-import { Button } from '@/components/ui/button'
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
-import { useDropTemplate } from '../hooks/useDropTemplate'
-import { createEnsureTypeItemsNode, findNodeByComponentPath, hasNodeByComponentPath, queryNodesByComponentPath } from '../shared'
+import { ElCard } from 'element-plus'
 import { defineElementPlusComponent } from './defineElementPlusComponent'
 import { Field } from './Field'
 import { Form } from './Form'
+import DesignableArrayCardsPreview from './previews/DesignableArrayCardsPreview.vue'
+import DesignableArrayTablePreview from './previews/DesignableArrayTablePreview.vue'
 
 export { Field, Form }
-
-const ensureObjectItemsNode = createEnsureTypeItemsNode('object')
-const ShadcnButton = Button as any
-
-interface TemplateAction {
-  icon: Component
-  onClick: () => void
-  title: string
-}
-
-const LoadTemplate = defineComponent({
-  name: 'DnLoadTemplate',
-  props: {
-    actions: {
-      default: () => [],
-      type: Array as () => TemplateAction[],
-    },
-  },
-  setup(props) {
-    return () => (
-      <TooltipProvider delayDuration={100}>
-        <div class="dn-load-template">
-          {props.actions.map((action) => {
-            return (
-              <Tooltip key={action.title}>
-                <TooltipTrigger asChild>
-                  <ShadcnButton
-                    aria-label={action.title}
-                    class="dn-load-template-action"
-                    size="icon"
-                    variant="outline"
-                    onClick={(event: MouseEvent) => {
-                      event.stopPropagation()
-                      action.onClick()
-                    }}
-                    onMousedown={(event: MouseEvent) => {
-                      event.stopPropagation()
-                    }}
-                  >
-                    {h(action.icon)}
-                  </ShadcnButton>
-                </TooltipTrigger>
-                <TooltipContent side="bottom">
-                  {action.title}
-                </TooltipContent>
-              </Tooltip>
-            )
-          })}
-        </div>
-      </TooltipProvider>
-    )
-  },
-})
-
-const DesignableArrayTablePreview = defineComponent({
-  name: 'DnArrayTablePreview',
-  inheritAttrs: false,
-  setup(_, { attrs }) {
-    const nodeRef = useNode()
-
-    useDropTemplate('ArrayTable', (source) => {
-      const sortHandleNode = new TreeNode({
-        componentName: 'Field',
-        props: {
-          'type': 'void',
-          'x-component': 'ArrayTable.Column',
-          'x-component-props': {
-            title: 'Title',
-          },
-        },
-        children: [
-          {
-            componentName: 'Field',
-            props: {
-              'type': 'void',
-              'x-component': 'ArrayTable.SortHandle',
-            },
-          },
-        ],
-      })
-      const indexNode = new TreeNode({
-        componentName: 'Field',
-        props: {
-          'type': 'void',
-          'x-component': 'ArrayTable.Column',
-          'x-component-props': {
-            title: 'Title',
-          },
-        },
-        children: [
-          {
-            componentName: 'Field',
-            props: {
-              'type': 'void',
-              'x-component': 'ArrayTable.Index',
-            },
-          },
-        ],
-      })
-      const columnNode = new TreeNode({
-        componentName: 'Field',
-        props: {
-          'type': 'void',
-          'x-component': 'ArrayTable.Column',
-          'x-component-props': {
-            title: 'Title',
-          },
-        },
-        children: source,
-      })
-      const operationNode = new TreeNode({
-        componentName: 'Field',
-        props: {
-          'type': 'void',
-          'x-component': 'ArrayTable.Column',
-          'x-component-props': {
-            title: 'Title',
-          },
-        },
-        children: [
-          {
-            componentName: 'Field',
-            props: {
-              'type': 'void',
-              'x-component': 'ArrayTable.Remove',
-            },
-          },
-          {
-            componentName: 'Field',
-            props: {
-              'type': 'void',
-              'x-component': 'ArrayTable.MoveDown',
-            },
-          },
-          {
-            componentName: 'Field',
-            props: {
-              'type': 'void',
-              'x-component': 'ArrayTable.MoveUp',
-            },
-          },
-        ],
-      })
-      const objectNode = new TreeNode({
-        componentName: 'Field',
-        props: {
-          type: 'object',
-        },
-        children: [sortHandleNode, indexNode, columnNode, operationNode],
-      })
-      const additionNode = new TreeNode({
-        componentName: 'Field',
-        props: {
-          'type': 'void',
-          'title': 'Addition',
-          'x-component': 'ArrayTable.Addition',
-        },
-      })
-      return [objectNode, additionNode]
-    })
-
-    useDropTemplate('ArrayTable.Column', (source) => {
-      return source.map((child) => {
-        if (child.props)
-          child.props.title = undefined
-        return child
-      })
-    })
-
-    return () => {
-      const node = nodeRef.value
-      const columns = node
-        ? queryNodesByComponentPath(node, ['ArrayTable', '*', 'ArrayTable.Column'])
-        : []
-      const tableColumns = columns.length
-        ? columns.map((column) => {
-            const columnProps = column.props?.['x-component-props'] ?? {}
-            const children = column.children.map(child =>
-              <TreeNodeWidget key={child.id} node={child} />,
-            )
-            const title = columnProps.title ?? columnProps.label ?? 'Title'
-            return (
-              <ElTableColumn {...columnProps} key={column.id} label={title}>
-                {{
-                  default: () => children.length ? children : 'Droppable',
-                  header: () => <span data-designer-node-id={column.id}>{title}</span>,
-                }}
-              </ElTableColumn>
-            )
-          })
-        : [
-            (
-              <ElTableColumn label="Title">
-                {{
-                  default: () => <ElEmpty description="Droppable" imageSize={48} />,
-                }}
-              </ElTableColumn>
-            ),
-          ]
-      const actions: TemplateAction[] = node
-        ? [
-            {
-              icon: GripVertical,
-              title: '添加排序',
-              onClick: () => {
-                if (hasNodeByComponentPath(node, [
-                  'ArrayTable',
-                  '*',
-                  'ArrayTable.Column',
-                  'ArrayTable.SortHandle',
-                ])) {
-                  return
-                }
-                const tableColumn = new TreeNode({
-                  componentName: 'Field',
-                  props: {
-                    'type': 'void',
-                    'x-component': 'ArrayTable.Column',
-                    'x-component-props': {
-                      title: '排序',
-                    },
-                  },
-                  children: [
-                    {
-                      componentName: 'Field',
-                      props: {
-                        'type': 'void',
-                        'x-component': 'ArrayTable.SortHandle',
-                      },
-                    },
-                  ],
-                })
-                ensureObjectItemsNode(node).prepend(tableColumn)
-              },
-            },
-            {
-              icon: ListOrdered,
-              title: '添加索引',
-              onClick: () => {
-                if (hasNodeByComponentPath(node, [
-                  'ArrayTable',
-                  '*',
-                  'ArrayTable.Column',
-                  'ArrayTable.Index',
-                ])) {
-                  return
-                }
-                const tableColumn = new TreeNode({
-                  componentName: 'Field',
-                  props: {
-                    'type': 'void',
-                    'x-component': 'ArrayTable.Column',
-                    'x-component-props': {
-                      title: '序号',
-                    },
-                  },
-                  children: [
-                    {
-                      componentName: 'Field',
-                      props: {
-                        'type': 'void',
-                        'x-component': 'ArrayTable.Index',
-                      },
-                    },
-                  ],
-                })
-                const sortNode = findNodeByComponentPath(node, [
-                  'ArrayTable',
-                  '*',
-                  'ArrayTable.Column',
-                  'ArrayTable.SortHandle',
-                ])
-                if (sortNode)
-                  sortNode.parent.insertAfter(tableColumn)
-                else
-                  ensureObjectItemsNode(node).prepend(tableColumn)
-              },
-            },
-            {
-              icon: Columns3,
-              title: '添加列',
-              onClick: () => {
-                const operationNode = findNodeByComponentPath(node, [
-                  'ArrayTable',
-                  '*',
-                  'ArrayTable.Column',
-                  name =>
-                    name === 'ArrayTable.Remove'
-                    || name === 'ArrayTable.MoveDown'
-                    || name === 'ArrayTable.MoveUp',
-                ])
-                const tableColumn = new TreeNode({
-                  componentName: 'Field',
-                  props: {
-                    'type': 'void',
-                    'x-component': 'ArrayTable.Column',
-                    'x-component-props': {
-                      title: 'Title',
-                    },
-                  },
-                })
-                if (operationNode)
-                  operationNode.parent.insertBefore(tableColumn)
-                else
-                  ensureObjectItemsNode(node).append(tableColumn)
-              },
-            },
-            {
-              icon: Settings2,
-              title: '添加操作',
-              onClick: () => {
-                const oldOperationNode = findNodeByComponentPath(node, [
-                  'ArrayTable',
-                  '*',
-                  'ArrayTable.Column',
-                  name =>
-                    name === 'ArrayTable.Remove'
-                    || name === 'ArrayTable.MoveDown'
-                    || name === 'ArrayTable.MoveUp',
-                ])
-                const oldAdditionNode = findNodeByComponentPath(node, [
-                  'ArrayTable',
-                  'ArrayTable.Addition',
-                ])
-                if (!oldOperationNode) {
-                  const operationNode = new TreeNode({
-                    componentName: 'Field',
-                    props: {
-                      'type': 'void',
-                      'x-component': 'ArrayTable.Column',
-                      'x-component-props': {
-                        title: '操作',
-                      },
-                    },
-                    children: [
-                      {
-                        componentName: 'Field',
-                        props: {
-                          'type': 'void',
-                          'x-component': 'ArrayTable.Remove',
-                        },
-                      },
-                      {
-                        componentName: 'Field',
-                        props: {
-                          'type': 'void',
-                          'x-component': 'ArrayTable.MoveDown',
-                        },
-                      },
-                      {
-                        componentName: 'Field',
-                        props: {
-                          'type': 'void',
-                          'x-component': 'ArrayTable.MoveUp',
-                        },
-                      },
-                    ],
-                  })
-                  ensureObjectItemsNode(node).append(operationNode)
-                }
-                if (!oldAdditionNode) {
-                  const additionNode = new TreeNode({
-                    componentName: 'Field',
-                    props: {
-                      'type': 'void',
-                      'title': 'Addition',
-                      'x-component': 'ArrayTable.Addition',
-                    },
-                  })
-                  ensureObjectItemsNode(node).insertAfter(additionNode)
-                }
-              },
-            },
-          ]
-        : []
-
-      return (
-        <div class="dn-designable-array-table">
-          <ElTable
-            {...attrs}
-            border
-            data={[{ id: 'preview' }]}
-            rowKey="id"
-            size="small"
-            style={{ marginBottom: '10px', width: '100%' }}
-          >
-            {tableColumns}
-          </ElTable>
-          <LoadTemplate actions={actions} />
-          <div style={{ display: 'flex', justifyContent: 'center' }}>
-            <ElButton disabled size="small">Add Item</ElButton>
-          </div>
-        </div>
-      )
-    }
-  },
-})
-
-const DesignableArrayCardsPreview = defineComponent({
-  name: 'DnArrayCardsPreview',
-  inheritAttrs: false,
-  setup(_, { attrs }) {
-    const nodeRef = useNode()
-    return () => {
-      const node = nodeRef.value
-      const item = node?.children.find(child => child.props?.type !== 'void')
-      const content = item?.children.map(child => <TreeNodeWidget key={child.id} node={child} />)
-      return (
-        <div class="dn-designable-array-cards">
-          <ElCard {...attrs} shadow="never">
-            {{
-              default: () => content?.length
-                ? content
-                : <ElEmpty description="Droppable" imageSize={48} />,
-              header: () => <span>{String(attrs.title ?? 'Array Cards')}</span>,
-            }}
-          </ElCard>
-          <div style={{ display: 'flex', justifyContent: 'center', marginTop: '10px' }}>
-            <ElButton disabled size="small">Add Item</ElButton>
-          </div>
-        </div>
-      )
-    }
-  },
-})
 
 export const Input = defineElementPlusComponent({
   component: ElementPlus.Input,
@@ -655,6 +224,7 @@ export const ArrayCards = defineElementPlusComponent({
   component: ElementPlus.ArrayCards,
   componentName: 'ArrayCards',
   defaultProps: { title: 'Array Cards' },
+  decorator: false,
   description: 'Card list for array fields',
   icon: 'ArrayCards',
   previewComponent: DesignableArrayCardsPreview,
@@ -666,6 +236,7 @@ export const ArrayTable = defineElementPlusComponent({
   component: ElementPlus.ArrayTable,
   componentName: 'ArrayTable',
   defaultProps: { title: 'Array Table' },
+  decorator: false,
   description: 'Table list for array fields',
   icon: 'ArrayTable',
   previewComponent: DesignableArrayTablePreview,
@@ -683,14 +254,26 @@ ArrayTable.Behavior = createBehavior(
     },
   },
   {
+    name: 'ArrayTable.Items',
+    extends: ['Field'],
+    selector: node =>
+      node.props?.type === 'object'
+      && node.parent?.props?.['x-component'] === 'ArrayTable',
+    designerProps: {
+      droppable: true,
+      allowAppend: (_, sources) =>
+        sources?.every(source => source.props?.['x-component'] === 'ArrayTable.Column') ?? true,
+    },
+  },
+  {
     name: 'ArrayTable.Column',
     extends: ['Field'],
     selector: node => node.props?.['x-component'] === 'ArrayTable.Column',
     designerProps: {
       droppable: true,
-      allowDrop: target =>
-        target.props?.type === 'object'
-        && target.parent?.props?.['x-component'] === 'ArrayTable',
+      allowDrop: parent =>
+        parent.props?.type === 'object'
+        && parent.parent?.props?.['x-component'] === 'ArrayTable',
       propsSchema: {
         type: 'object',
         properties: {},

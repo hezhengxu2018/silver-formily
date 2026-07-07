@@ -17,6 +17,7 @@ export default defineConfig({
       '@': workspacePath('./src'),
       '@silver-formily/designer-core': workspacePath('../../packages/designer-core/src/index.ts'),
       '@silver-formily/designer-vue': workspacePath('../../packages/designer-vue/src/index.ts'),
+      '@silver-formily/element-plus': workspacePath('../../packages/element-plus/src/index.ts'),
     },
   },
   server: {
