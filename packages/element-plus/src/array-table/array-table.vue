@@ -35,7 +35,9 @@ const { getKey, keyMap } = ArrayBase.useKey(schemaRef.value)
 
 const elTableRef = ref<TableInstance>()
 
-function extractTableSources(schema: Schema): any[] {
+function extractTableSources(schema?: Schema): any[] {
+  if (!schema)
+    return []
   if (isTableComponent(schema)) {
     return createTableSource(schema)
   }
