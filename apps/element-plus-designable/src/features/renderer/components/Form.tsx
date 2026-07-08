@@ -8,6 +8,34 @@ import { AllLocales } from '../locales'
 import { AllSchemas } from '../schemas'
 import { composeExport } from '../shared'
 
+export const formDefaultProps = {
+  labelCol: 6,
+  wrapperCol: 18,
+  colon: false,
+  feedbackLayout: 'loose',
+  layout: 'horizontal',
+  labelAlign: 'right',
+  shallow: true,
+  size: 'default',
+  tooltipLayout: 'icon',
+  wrapperAlign: 'left',
+} as const
+
+export const RuntimeForm = defineComponent({
+  name: 'RuntimeForm',
+  inheritAttrs: false,
+  setup(_, { attrs, slots }) {
+    return () => (
+      <FormilyForm
+        {...formDefaultProps}
+        {...attrs}
+      >
+        {slots.default?.()}
+      </FormilyForm>
+    )
+  },
+})
+
 const FormPreview = defineComponent({
   name: 'DnForm',
   inheritAttrs: false,
@@ -18,7 +46,6 @@ const FormPreview = defineComponent({
       {
         display: 'flex',
         flexDirection: 'column',
-        minHeight: '364px',
       },
       attrs.style,
     ])
@@ -47,18 +74,7 @@ export const Form = composeExport(FormPreview, {
         draggable: !node.isRoot,
         droppable: true,
         propsSchema: AllSchemas.Form,
-        defaultProps: {
-          labelCol: 6,
-          wrapperCol: 18,
-          colon: false,
-          feedbackLayout: 'loose',
-          layout: 'horizontal',
-          labelAlign: 'right',
-          shallow: true,
-          size: 'default',
-          tooltipLayout: 'icon',
-          wrapperAlign: 'left',
-        },
+        defaultProps: formDefaultProps,
       }
     },
     designerLocales: AllLocales.Form,

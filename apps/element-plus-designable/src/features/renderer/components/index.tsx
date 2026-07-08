@@ -4,11 +4,11 @@ import * as ElementPlus from '@silver-formily/element-plus'
 import { ElCard } from 'element-plus'
 import { defineElementPlusComponent } from './defineElementPlusComponent'
 import { Field } from './Field'
-import { Form } from './Form'
+import { Form, RuntimeForm } from './Form'
 import DesignableArrayCardsPreview from './previews/DesignableArrayCardsPreview.vue'
 import DesignableArrayTablePreview from './previews/DesignableArrayTablePreview.vue'
 
-export { Field, Form }
+export { Field, Form, RuntimeForm }
 
 export const Input = defineElementPlusComponent({
   component: ElementPlus.Input,
@@ -323,6 +323,7 @@ export const AllComponents: Record<string, DesignableComponent> = {
 export const RuntimeComponents: Record<string, any> = {
   ...ElementPlus,
   'Card': ElCard,
+  'Form': RuntimeForm,
   'FormItem': ElementPlus.FormItem,
   'Input.TextArea': ElementPlus.Input.TextArea,
   'Text': ElementPlus.PreviewText.Input,

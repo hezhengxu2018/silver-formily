@@ -1,47 +1,19 @@
 <script setup lang="ts">
-import { createForm } from '@silver-formily/core'
-import { reactiveComputed } from '@silver-formily/designer-vue'
-import { Form as FormilyForm } from '@silver-formily/element-plus'
-import { createSchemaField } from '@silver-formily/vue'
 import { storeToRefs } from 'pinia'
-import { computed, shallowRef, watch } from 'vue'
+import { computed } from 'vue'
 import { useEditorSchemaStore } from '@/stores/editorSchema'
-import { RuntimeComponents } from '../../renderer'
-import { getSchemaDocument } from '../designer'
+import RuntimeSchemaForm from './RuntimeSchemaForm.vue'
 
-const { SchemaField } = createSchemaField({
-  components: RuntimeComponents,
-})
-
-const formRef = shallowRef(createForm())
 const editorSchemaStore = useEditorSchemaStore()
 const { schemaDocument } = storeToRefs(editorSchemaStore)
-const designerSchemaDocumentRef = reactiveComputed(() => getSchemaDocument())
-
-watch(
-  designerSchemaDocumentRef,
-  document => editorSchemaStore.syncFromDesigner(document),
-  { immediate: true },
-)
 
 const schemaCode = computed(() => JSON.stringify(schemaDocument.value, null, 2))
-
-watch(schemaCode, () => {
-  formRef.value = createForm()
-})
 </script>
 
 <template>
   <aside class="epd-schema-preview">
     <div class="epd-schema-preview__runtime">
-      <FormilyForm
-        :key="schemaCode"
-        :form="formRef"
-        v-bind="schemaDocument.form"
-        preview-text-placeholder=" "
-      >
-        <SchemaField :key="schemaCode" :schema="schemaDocument.schema" />
-      </FormilyForm>
+      <RuntimeSchemaForm />
     </div>
 
     <pre class="epd-schema-preview__code">{{ schemaCode }}</pre>
