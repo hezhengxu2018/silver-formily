@@ -56,8 +56,13 @@ export const useEditorSchemaStore = defineStore('editorSchema', () => {
     }
   }
 
+  function clearSchemaDocument() {
+    setSchemaDocument(createEmptySchemaDocument())
+  }
+
   return {
     schemaDocument,
+    clearSchemaDocument,
     setSchemaDocument,
     syncFromDesigner,
   }

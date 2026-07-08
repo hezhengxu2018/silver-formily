@@ -2,14 +2,34 @@
 import { PanelLeftClose, PanelLeftOpen, Trash2 } from '@lucide/vue'
 import { storeToRefs } from 'pinia'
 import { computed } from 'vue'
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@/components/ui/alert-dialog'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import { useEditorStore } from '@/stores/editor'
+import { useEditorSchemaStore } from '@/stores/editorSchema'
 
 type LeftToolAction = 'close-panel' | 'clear-form'
 
 const editorStore = useEditorStore()
+const editorSchemaStore = useEditorSchemaStore()
 const { isLeftSidebarCollapsed } = storeToRefs(editorStore)
+const { schemaDocument } = storeToRefs(editorSchemaStore)
 const { toggleLeftSidebar } = editorStore
+const { clearSchemaDocument } = editorSchemaStore
+
+const isFormEmpty = computed(() => {
+  const properties = schemaDocument.value.schema?.properties
+  return !properties || Object.keys(properties).length === 0
+})
 
 const tools = computed<Array<{
   value: LeftToolAction
@@ -28,6 +48,10 @@ function handleToolClick(action: LeftToolAction) {
   if (action === 'close-panel')
     toggleLeftSidebar()
 }
+
+function handleClearForm() {
+  clearSchemaDocument()
+}
 </script>
 
 <template>
@@ -37,8 +61,70 @@ function handleToolClick(action: LeftToolAction) {
         v-for="tool in tools"
         :key="tool.value"
       >
-        <div class="epd-tool">
-          <TooltipTrigger as-child>
+        <div
+          class="epd-tool"
+          :class="{ 'epd-tool-placeholder': tool.value === 'clear-form' && isFormEmpty }"
+        >
+          <TooltipTrigger
+            v-if="tool.value === 'clear-form' && isFormEmpty"
+            as-child
+          >
+            <button
+              type="button"
+              class="epd-tool-item epd-tool-item-single epd-tool-item-placeholder"
+              aria-hidden="true"
+              disabled
+              tabindex="-1"
+            >
+              <component
+                :is="tool.icon"
+                class="epd-icon epd-icon-md"
+                aria-hidden="true"
+                :size="16"
+                :stroke-width="2"
+              />
+            </button>
+          </TooltipTrigger>
+
+          <AlertDialog v-else-if="tool.value === 'clear-form'">
+            <TooltipTrigger as-child>
+              <AlertDialogTrigger as-child>
+                <button
+                  type="button"
+                  class="epd-tool-item epd-tool-item-single epd-tool-item-hoverable"
+                  :aria-label="tool.label"
+                >
+                  <component
+                    :is="tool.icon"
+                    class="epd-icon epd-icon-md"
+                    aria-hidden="true"
+                    :size="16"
+                    :stroke-width="2"
+                  />
+                </button>
+              </AlertDialogTrigger>
+            </TooltipTrigger>
+
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Clear form?</AlertDialogTitle>
+                <AlertDialogDescription>
+                  This will remove all elements from the current form. This action cannot be undone.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogAction @click="handleClearForm">
+                  Clear form
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
+
+          <TooltipTrigger
+            v-else
+            as-child
+          >
             <button
               type="button"
               class="epd-tool-item epd-tool-item-single epd-tool-item-hoverable"
@@ -76,6 +162,10 @@ function handleToolClick(action: LeftToolAction) {
 
 .epd-tool {
   @apply relative flex flex-col rounded border border-solid border-slate-300 bg-white text-slate-700 shadow-lg;
+
+  &-placeholder {
+    @apply invisible pointer-events-none;
+  }
 }
 
 .epd-tool-item {
