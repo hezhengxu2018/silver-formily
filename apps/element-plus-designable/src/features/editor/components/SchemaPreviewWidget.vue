@@ -1,33 +1,30 @@
 <script setup lang="ts">
 import { createForm } from '@silver-formily/core'
-import { transformToSchema } from '@silver-formily/designer-core'
 import { reactiveComputed } from '@silver-formily/designer-vue'
 import { Form as FormilyForm } from '@silver-formily/element-plus'
 import { createSchemaField } from '@silver-formily/vue'
+import { storeToRefs } from 'pinia'
 import { computed, shallowRef, watch } from 'vue'
+import { useEditorSchemaStore } from '@/stores/editorSchema'
 import { RuntimeComponents } from '../../renderer'
-import { engine } from '../designer'
+import { getSchemaDocument } from '../designer'
 
 const { SchemaField } = createSchemaField({
   components: RuntimeComponents,
 })
 
 const formRef = shallowRef(createForm())
-const schemaDocumentRef = reactiveComputed(() => {
-  const tree = engine.getCurrentTree()
-  if (!tree) {
-    return {
-      form: {},
-      schema: {
-        type: 'object',
-        properties: {},
-      },
-    }
-  }
-  return transformToSchema(tree)
-})
+const editorSchemaStore = useEditorSchemaStore()
+const { schemaDocument } = storeToRefs(editorSchemaStore)
+const designerSchemaDocumentRef = reactiveComputed(() => getSchemaDocument())
 
-const schemaCode = computed(() => JSON.stringify(schemaDocumentRef.value, null, 2))
+watch(
+  designerSchemaDocumentRef,
+  document => editorSchemaStore.syncFromDesigner(document),
+  { immediate: true },
+)
+
+const schemaCode = computed(() => JSON.stringify(schemaDocument.value, null, 2))
 
 watch(schemaCode, () => {
   formRef.value = createForm()
@@ -40,10 +37,10 @@ watch(schemaCode, () => {
       <FormilyForm
         :key="schemaCode"
         :form="formRef"
-        v-bind="schemaDocumentRef.form"
+        v-bind="schemaDocument.form"
         preview-text-placeholder=" "
       >
-        <SchemaField :key="schemaCode" :schema="schemaDocumentRef.schema" />
+        <SchemaField :key="schemaCode" :schema="schemaDocument.schema" />
       </FormilyForm>
     </div>
 

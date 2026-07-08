@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { useObserver } from '@silver-formily/reactive-vue'
+import { nextTick, shallowRef, watch } from 'vue'
 import { useHover, useSelection, useViewport } from '../hooks'
+import { LayoutObserver } from '../hooks/observer'
 import { getNodeTitle } from './node-title'
 
 useObserver()
@@ -8,12 +10,54 @@ useObserver()
 const hoverRef = useHover()
 const selectionRef = useSelection()
 const viewportRef = useViewport()
+const layoutVersion = shallowRef(0)
+let frame: number | null = null
+
+function scheduleUpdate() {
+  if (frame != null)
+    cancelAnimationFrame(frame)
+  frame = requestAnimationFrame(() => {
+    frame = null
+    layoutVersion.value += 1
+  })
+}
+
+watch(
+  viewportRef,
+  (viewport, _oldValue, onCleanup) => {
+    let disposed = false
+    let viewportLayoutObserver: LayoutObserver | null = null
+
+    nextTick(() => {
+      if (disposed || !viewport?.viewportElement?.isConnected)
+        return
+
+      viewportLayoutObserver = new LayoutObserver(scheduleUpdate)
+      viewportLayoutObserver.observe(viewport.viewportElement)
+    })
+
+    onCleanup(() => {
+      disposed = true
+      if (frame != null) {
+        cancelAnimationFrame(frame)
+        frame = null
+      }
+      viewportLayoutObserver?.disconnect()
+    })
+  },
+  {
+    flush: 'post',
+    immediate: true,
+  },
+)
 
 function getHoverNode() {
   return hoverRef.value?.node ?? null
 }
 
 function getRect() {
+  void layoutVersion.value
+
   const node = getHoverNode()
   if (!node)
     return null

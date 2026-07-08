@@ -54,6 +54,7 @@
     "clsx": "catalog:",
     "easy-bem": "catalog:",
     "element-plus": "catalog:",
+    "pinia": "catalog:",
     "reka-ui": "catalog:",
     "tailwind-merge": "catalog:",
     "tw-animate-css": "catalog:",

@@ -31,18 +31,13 @@ provide(DesignerComponentsSymbol, toRef(props, 'components'))
 @reference "../styles/globals.css";
 
 .dn-component-tree {
-  @apply mx-auto my-8 bg-white/90 p-8 pb-24;
-  border-radius: 20px;
-  box-shadow: 0 24px 60px rgba(15, 23, 42, 0.08);
-  box-sizing: border-box;
-  display: block;
-  min-height: 432px;
-  min-width: 100%;
-  width: min(100%, 800px);
+  @apply relative mx-auto my-8 w-full rounded-lg bg-white p-10 text-slate-900 transition-all duration-150;
 
-  > * {
-    min-height: 100%;
-    min-width: 100%;
+  max-width: calc(432px + 5rem);
+  box-shadow: 0 0 20px 0 rgb(0 0 0 / 8%);
+
+  & > * {
+    @apply h-full;
   }
 }
 </style>

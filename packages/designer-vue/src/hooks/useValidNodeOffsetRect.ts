@@ -66,6 +66,7 @@ export function useValidNodeOffsetRect(nodeRef: Ref<TreeNode | null>) {
     ([node, viewport], _oldValue, onCleanup) => {
       let disposed = false
       let layoutObserver: LayoutObserver | null = null
+      let viewportLayoutObserver: LayoutObserver | null = null
 
       updateRect()
       nextTick(() => {
@@ -81,6 +82,10 @@ export function useValidNodeOffsetRect(nodeRef: Ref<TreeNode | null>) {
         layoutObserver = new LayoutObserver(scheduleUpdate)
         if (element?.isConnected)
           layoutObserver.observe(element)
+
+        viewportLayoutObserver = new LayoutObserver(scheduleUpdate)
+        if (viewport.viewportElement?.isConnected)
+          viewportLayoutObserver.observe(viewport.viewportElement)
       })
 
       onCleanup(() => {
@@ -90,6 +95,7 @@ export function useValidNodeOffsetRect(nodeRef: Ref<TreeNode | null>) {
           frame = null
         }
         layoutObserver?.disconnect()
+        viewportLayoutObserver?.disconnect()
       })
     },
     {

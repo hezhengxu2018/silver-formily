@@ -19,7 +19,7 @@ import SchemaPreviewWidget from './SchemaPreviewWidget.vue'
       <section class="epd-designable-shell__workspace">
         <ResourceWidget :groups="paletteResourceGroups" />
 
-        <div class="epd-designable-shell__center">
+        <div class="epd-designable-shell-center-container">
           <Workspace id="element-plus-designable">
             <Viewport>
               <ComponentTreeWidget :components="componentRegistry" />
@@ -74,8 +74,17 @@ import SchemaPreviewWidget from './SchemaPreviewWidget.vue'
   &__workspace {
     display: flex;
     height: calc(100vh - var(--editor-header-height));
+    min-height: 28.5rem;
     overflow: hidden;
     position: relative;
+  }
+
+  &-center-container {
+    @apply relative min-w-120 flex-1 bg-slate-100;
+  }
+
+  &-center-wrapper {
+    @apply absolute inset-0 flex flex-col;
   }
 
   &__center {
