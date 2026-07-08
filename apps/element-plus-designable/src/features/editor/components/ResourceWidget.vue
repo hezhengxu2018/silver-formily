@@ -147,7 +147,7 @@ const { isLeftSidebarCollapsed } = storeToRefs(editorStore)
   }
 
   &__scroll-area {
-    @apply h-full min-h-0;
+    @apply h-full min-h-0 outline-none;
   }
 
   &__top {

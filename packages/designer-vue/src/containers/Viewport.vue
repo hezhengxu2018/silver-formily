@@ -4,6 +4,12 @@ import { nextTick, onBeforeUnmount, onMounted, ref, shallowRef } from 'vue'
 import { useSelection, useTree, useWorkspace } from '../hooks'
 import AuxToolWidget from '../widgets/AuxToolWidget.vue'
 
+withDefaults(defineProps<{
+  showAuxTool?: boolean
+}>(), {
+  showAuxTool: true,
+})
+
 useObserver()
 
 const workspaceRef = useWorkspace()
@@ -74,7 +80,7 @@ onBeforeUnmount(() => {
     @mousedown.capture="preventRuntimeInteraction"
   >
     <slot />
-    <AuxToolWidget />
+    <AuxToolWidget v-if="showAuxTool" />
   </div>
 </template>
 
@@ -83,16 +89,5 @@ onBeforeUnmount(() => {
 
 .dn-viewport {
   @apply absolute inset-0 mx-auto flex w-full flex-col items-center overflow-y-auto px-16 transition-all duration-300;
-
-  :deep(*) {
-    cursor: default;
-    user-select: none;
-  }
-
-  :deep(input),
-  :deep(textarea),
-  :deep([contenteditable='true']) {
-    caret-color: transparent;
-  }
 }
 </style>

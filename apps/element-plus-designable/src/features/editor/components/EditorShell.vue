@@ -1,18 +1,13 @@
 <script setup lang="ts">
-import { ComponentTreeWidget, Designer, reactiveComputed, Viewport, Workspace } from '@silver-formily/designer-vue'
-import { storeToRefs } from 'pinia'
+import { Designer, reactiveComputed, Workspace } from '@silver-formily/designer-vue'
 import { watch } from 'vue'
-import { useEditorStore } from '@/stores/editor'
 import { useEditorSchemaStore } from '@/stores/editorSchema'
-import { componentRegistry } from '../componentRegistry'
 import { engine, getSchemaDocument, paletteResourceGroups } from '../designer'
+import EditorStage from './EditorStage.vue'
 import ResourceWidget from './ResourceWidget.vue'
-import RuntimeSchemaForm from './RuntimeSchemaForm.vue'
 import SchemaPreviewWidget from './SchemaPreviewWidget.vue'
 
-const editorStore = useEditorStore()
 const editorSchemaStore = useEditorSchemaStore()
-const { viewMode } = storeToRefs(editorStore)
 const designerSchemaDocumentRef = reactiveComputed(() => getSchemaDocument())
 
 watch(
@@ -37,18 +32,7 @@ watch(
 
         <div class="epd-designable-shell-center-container">
           <Workspace id="element-plus-designable">
-            <div
-              v-if="viewMode === 'preview'"
-              class="epd-preview-viewport"
-            >
-              <div class="epd-preview-component-tree">
-                <RuntimeSchemaForm class="epd-preview-form" />
-              </div>
-            </div>
-
-            <Viewport v-else>
-              <ComponentTreeWidget :components="componentRegistry" />
-            </Viewport>
+            <EditorStage />
           </Workspace>
         </div>
 
@@ -120,26 +104,6 @@ watch(
     min-width: 480px;
     overflow: hidden;
     position: relative;
-  }
-}
-
-.epd-preview-viewport {
-  @apply absolute inset-0 mx-auto flex w-full flex-col items-center overflow-y-auto px-16 transition-all duration-300;
-}
-
-.epd-preview-component-tree {
-  @apply relative mx-auto my-8 w-full rounded-lg bg-white p-10 text-slate-900 transition-all duration-150;
-
-  box-shadow: 0 0 20px 0 rgb(0 0 0 / 8%);
-  max-width: calc(432px + 5rem);
-}
-
-.epd-preview-form {
-  display: block;
-  width: 100%;
-
-  :deep(.formily-element-plus-array-table) {
-    min-width: 100%;
   }
 }
 </style>
