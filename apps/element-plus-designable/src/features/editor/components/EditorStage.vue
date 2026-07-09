@@ -5,6 +5,7 @@ import { useEditorStore } from '@/stores/editor'
 import { componentRegistry } from '../componentRegistry'
 import EditorEmptyState from './EditorEmptyState.vue'
 import RuntimeSchemaForm from './RuntimeSchemaForm.vue'
+import SchemaCodePanel from './SchemaCodePanel.vue'
 
 const editorStore = useEditorStore()
 const { viewMode } = storeToRefs(editorStore)
@@ -31,9 +32,11 @@ const isEmpty = reactiveComputed(() => !treeRef.value?.children.length)
     </div>
   </div>
 
-  <Viewport v-else>
+  <Viewport v-else-if="viewMode === 'editor'">
     <ComponentTreeWidget :components="componentRegistry" />
   </Viewport>
+
+  <SchemaCodePanel v-else-if="viewMode === 'code'" />
 </template>
 
 <style scoped>
