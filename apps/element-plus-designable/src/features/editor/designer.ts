@@ -5,6 +5,8 @@ import { AllBehaviors, AllResources, paletteResourceGroups } from '../renderer'
 
 export type { PaletteResourceGroup, PaletteResourceItem } from '../renderer'
 
+export const editorWorkspaceId = 'element-plus-designable'
+
 GlobalRegistry.setDesignerBehaviors([AllBehaviors])
 
 export { paletteResourceGroups }

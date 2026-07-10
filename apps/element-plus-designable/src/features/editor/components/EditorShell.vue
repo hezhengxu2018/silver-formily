@@ -3,11 +3,11 @@ import { Designer, reactiveComputed, Workspace } from '@silver-formily/designer-
 import { watch } from 'vue'
 import { createNamespace } from '@/lib/utils'
 import { useEditorSchemaStore } from '@/stores/editorSchema'
-import { engine, getSchemaDocument, paletteResourceGroups } from '../designer'
+import { editorWorkspaceId, engine, getSchemaDocument, paletteResourceGroups } from '../designer'
 import EditorHeader from './EditorHeader.vue'
 import EditorStage from './EditorStage.vue'
+import FormConfigWidget from './FormConfigWidget.vue'
 import ResourceWidget from './ResourceWidget.vue'
-import SchemaPreviewWidget from './SchemaPreviewWidget.vue'
 
 const editorSchemaStore = useEditorSchemaStore()
 const designerSchemaDocumentRef = reactiveComputed(() => getSchemaDocument())
@@ -29,12 +29,12 @@ watch(
         <ResourceWidget :groups="paletteResourceGroups" />
 
         <div :class="b('center-container')">
-          <Workspace id="element-plus-designable">
+          <Workspace :id="editorWorkspaceId">
             <EditorStage />
           </Workspace>
         </div>
 
-        <SchemaPreviewWidget />
+        <FormConfigWidget />
       </section>
     </main>
   </Designer>

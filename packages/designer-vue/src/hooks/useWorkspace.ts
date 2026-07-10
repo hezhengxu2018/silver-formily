@@ -5,7 +5,7 @@ import { WorkspaceSymbol } from '../context'
 import { reactiveComputed } from '../shared/reactive'
 import { useDesigner } from './useDesigner'
 
-export function useWorkspace(): Ref<Workspace | null> {
+export function useWorkspace(id?: string): Ref<Workspace | null> {
   const designerRef = useDesigner()
   const workspaceContextRef = inject(WorkspaceSymbol, ref(null))
 
@@ -14,7 +14,7 @@ export function useWorkspace(): Ref<Workspace | null> {
     if (!designer)
       return null
 
-    const workspaceId = workspaceContextRef.value?.id
+    const workspaceId = id || workspaceContextRef.value?.id
     if (workspaceId)
       return designer.workbench.findWorkspaceById(workspaceId) ?? null
 

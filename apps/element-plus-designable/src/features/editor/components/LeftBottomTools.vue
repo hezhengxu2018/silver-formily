@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { PanelLeftClose, PanelLeftOpen, Trash2 } from '@lucide/vue'
+import { reactiveComputed, useWorkspace } from '@silver-formily/designer-vue'
+import { autorun } from '@silver-formily/reactive'
 import { storeToRefs } from 'pinia'
-import { computed } from 'vue'
+import { computed, onBeforeUnmount, ref, watch } from 'vue'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -17,13 +19,15 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/comp
 import { createNamespace } from '@/lib/utils'
 import { useEditorStore } from '@/stores/editor'
 import { useEditorSchemaStore } from '@/stores/editorSchema'
+import { editorWorkspaceId } from '../designer'
 
 type LeftToolAction = 'close-panel' | 'clear-form'
 
 const editorStore = useEditorStore()
 const editorSchemaStore = useEditorSchemaStore()
+const workspaceRef = useWorkspace(editorWorkspaceId)
+const historyRef = reactiveComputed(() => workspaceRef.value?.history)
 const { isLeftSidebarCollapsed } = storeToRefs(editorStore)
-const { schemaDocument } = storeToRefs(editorSchemaStore)
 const { toggleLeftSidebar } = editorStore
 const { clearSchemaDocument } = editorSchemaStore
 const { prefixCls } = createNamespace('bottom-left-tools-container')
@@ -31,10 +35,28 @@ const { b: toolB } = createNamespace('tool')
 const { b: toolItemB } = createNamespace('tool-item')
 const { b: toolTooltipB } = createNamespace('tool-tooltip')
 const { b: iconB } = createNamespace('icon')
+const hasHistoryRecords = ref(false)
+let disposeHistoryAutorun: (() => void) | undefined
 
-const isFormEmpty = computed(() => {
-  const properties = schemaDocument.value.schema?.properties
-  return !properties || Object.keys(properties).length === 0
+function bindHistoryState() {
+  disposeHistoryAutorun?.()
+  disposeHistoryAutorun = undefined
+
+  const history = historyRef.value
+  if (!history) {
+    hasHistoryRecords.value = false
+    return
+  }
+
+  disposeHistoryAutorun = autorun(() => {
+    hasHistoryRecords.value = history.history.length > 1
+  })
+}
+
+watch(historyRef, bindHistoryState, { immediate: true })
+
+onBeforeUnmount(() => {
+  disposeHistoryAutorun?.()
 })
 
 const tools = computed<Array<{
@@ -57,6 +79,7 @@ function handleToolClick(action: LeftToolAction) {
 
 function handleClearForm() {
   clearSchemaDocument()
+  historyRef.value?.clear()
 }
 </script>
 
@@ -68,10 +91,10 @@ function handleClearForm() {
         :key="tool.value"
       >
         <div
-          :class="toolB({ placeholder: tool.value === 'clear-form' && isFormEmpty })"
+          :class="toolB({ placeholder: tool.value === 'clear-form' && !hasHistoryRecords })"
         >
           <TooltipTrigger
-            v-if="tool.value === 'clear-form' && isFormEmpty"
+            v-if="tool.value === 'clear-form' && !hasHistoryRecords"
             as-child
           >
             <button
