@@ -180,21 +180,27 @@ function isVerticalLine() {
   z-index: 30;
 
   &__line {
-    @apply bg-blue-500;
-
+    background-color: var(--silver-designer-color-primary, #2563eb);
     border-radius: 9999px;
-    box-shadow: 0 0 0 3px rgb(59 130 246 / 16%);
+    box-shadow: 0 0 0 3px
+      var(
+        --silver-designer-color-primary-shadow,
+        color-mix(in oklab, var(--silver-designer-color-primary, #2563eb) 16%, transparent)
+      );
     inset: 0;
     position: absolute;
   }
 
   &__handle {
-    @apply border-blue-500 bg-white;
-
     background-color: white;
     border-radius: 9999px;
+    border-color: var(--silver-designer-color-primary-border, var(--silver-designer-color-primary, #2563eb));
     border-width: 2px;
-    box-shadow: 0 0 0 3px rgb(59 130 246 / 14%);
+    box-shadow: 0 0 0 3px
+      var(
+        --silver-designer-color-primary-shadow,
+        color-mix(in oklab, var(--silver-designer-color-primary, #2563eb) 14%, transparent)
+      );
     height: 8px;
     position: absolute;
     top: 50%;

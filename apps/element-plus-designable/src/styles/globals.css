@@ -50,6 +50,14 @@
   --border: oklch(88% 0.012 105deg);
   --input: oklch(88% 0.012 105deg);
   --ring: #2563eb;
+  --silver-designer-color-primary: var(--primary);
+  --silver-designer-color-primary-foreground: var(--primary-foreground);
+  --silver-designer-color-primary-soft: color-mix(in oklab, var(--primary) 10%, transparent);
+  --silver-designer-color-primary-softer: color-mix(in oklab, var(--primary) 8%, white);
+  --silver-designer-color-primary-strong: var(--primary);
+  --silver-designer-color-primary-border: var(--primary);
+  --silver-designer-color-primary-shadow: color-mix(in oklab, var(--primary) 18%, transparent);
+  --silver-designer-color-primary-muted-foreground: color-mix(in oklab, var(--primary-foreground) 72%, transparent);
   --editor-canvas: rgb(241 245 249 / var(--tw-bg-opacity, 1));
   --editor-sidebar: color-mix(in oklab, white 94%, #f8fafc);
   --editor-sidebar-foreground: oklch(22% 0.02 96deg);

@@ -82,11 +82,18 @@ function getDroppingCoverStyle() {
   z-index: 12;
 
   &--dragging {
-    @apply bg-blue-500/20;
+    background-color: var(
+      --silver-designer-color-primary-subtle,
+      color-mix(in oklab, var(--silver-designer-color-primary, #2563eb) 20%, transparent)
+    );
   }
 
   &--dropping {
-    @apply bg-blue-500/10 border-blue-500;
+    background-color: var(
+      --silver-designer-color-primary-soft,
+      color-mix(in oklab, var(--silver-designer-color-primary, #2563eb) 10%, transparent)
+    );
+    border-color: var(--silver-designer-color-primary-border, var(--silver-designer-color-primary, #2563eb));
     border-width: 1px;
   }
 }

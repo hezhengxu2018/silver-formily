@@ -56,11 +56,11 @@ function getGhostStyle() {
 @reference "../styles/globals.css";
 
 .dn-ghost-widget {
-  @apply bg-blue-600 text-white;
-
   align-items: center;
+  background-color: var(--silver-designer-color-primary-strong, var(--silver-designer-color-primary, #2563eb));
   border-radius: 9999px;
   box-shadow: 0 8px 24px rgba(15, 23, 42, 0.16);
+  color: var(--silver-designer-color-primary-foreground, #fff);
   display: flex;
   font-size: 12px;
   height: 30px;

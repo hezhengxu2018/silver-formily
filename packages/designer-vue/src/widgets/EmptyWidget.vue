@@ -53,7 +53,11 @@ const isDragOver = reactiveComputed(() => {
   z-index: 1;
 
   &--drag-over {
-    @apply border-blue-400 bg-blue-50/70;
+    background-color: var(
+      --silver-designer-color-primary-softer,
+      color-mix(in oklab, var(--silver-designer-color-primary, #2563eb) 8%, white)
+    );
+    border-color: var(--silver-designer-color-primary-border, var(--silver-designer-color-primary, #2563eb));
   }
 }
 </style>

@@ -1,1 +1,16 @@
 @import 'tailwindcss';
+
+:root {
+  --silver-designer-color-primary: #2563eb;
+  --silver-designer-color-primary-foreground: #fff;
+  --silver-designer-color-primary-soft: color-mix(in oklab, var(--silver-designer-color-primary) 10%, transparent);
+  --silver-designer-color-primary-softer: color-mix(in oklab, var(--silver-designer-color-primary) 8%, white);
+  --silver-designer-color-primary-strong: var(--silver-designer-color-primary);
+  --silver-designer-color-primary-border: var(--silver-designer-color-primary);
+  --silver-designer-color-primary-shadow: color-mix(in oklab, var(--silver-designer-color-primary) 18%, transparent);
+  --silver-designer-color-primary-muted-foreground: color-mix(
+    in oklab,
+    var(--silver-designer-color-primary-foreground) 72%,
+    transparent
+  );
+}

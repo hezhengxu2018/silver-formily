@@ -44,6 +44,16 @@ function preventRuntimeInteraction(event: Event) {
   event.preventDefault()
 }
 
+function ensureSelection() {
+  const selection = selectionRef.value
+  const tree = treeRef.value
+  if (!selection || !tree)
+    return
+  if (selection.selectedNodes.length)
+    return
+  selection.select(tree)
+}
+
 onMounted(() => {
   const workspace = workspaceRef.value
   const viewportElement = viewportElementRef.value
@@ -57,11 +67,7 @@ onMounted(() => {
   mountedWorkspaceRef.value = workspace
 
   nextTick(() => {
-    selectionRef.value?.clear()
-    nextTick(() => {
-      if (treeRef.value)
-        selectionRef.value?.select(treeRef.value)
-    })
+    ensureSelection()
   })
 })
 

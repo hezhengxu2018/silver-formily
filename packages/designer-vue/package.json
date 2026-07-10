@@ -72,6 +72,7 @@
     "@silver-formily/designer-core": "workspace:*",
     "@silver-formily/reactive": "workspace:*",
     "@silver-formily/reactive-vue": "workspace:*",
+    "reka-ui": "*",
     "vue": "^3.3.0"
   },
   "devDependencies": {
@@ -87,6 +88,7 @@
     "eslint": "catalog:",
     "postcss": "catalog:",
     "postcss-nested": "catalog:",
+    "reka-ui": "catalog:",
     "tailwindcss": "catalog:",
     "tsdown": "catalog:",
     "typescript": "catalog:",

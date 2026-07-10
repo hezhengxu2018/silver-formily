@@ -58,8 +58,11 @@ function getSelectionStyle() {
 @reference "../styles/globals.css";
 
 .dn-aux-free-selection {
-  @apply border-blue-500 bg-blue-500/10;
-
+  background-color: var(
+    --silver-designer-color-primary-soft,
+    color-mix(in oklab, var(--silver-designer-color-primary, #2563eb) 10%, transparent)
+  );
+  border-color: var(--silver-designer-color-primary-border, var(--silver-designer-color-primary, #2563eb));
   border-style: dashed;
   border-width: 1px;
   box-sizing: border-box;

@@ -69,16 +69,23 @@ function isVisible() {
   z-index: 20;
 
   &__fill {
-    @apply bg-blue-500/10;
+    background-color: var(
+      --silver-designer-color-primary-soft,
+      color-mix(in oklab, var(--silver-designer-color-primary, #2563eb) 10%, transparent)
+    );
     inset: 0;
     pointer-events: none;
     position: absolute;
   }
 
   &__outline {
-    @apply border-blue-500;
     border-width: 1px;
-    box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.18);
+    border-color: var(--silver-designer-color-primary-border, var(--silver-designer-color-primary, #2563eb));
+    box-shadow: 0 0 0 1px
+      var(
+        --silver-designer-color-primary-shadow,
+        color-mix(in oklab, var(--silver-designer-color-primary, #2563eb) 18%, transparent)
+      );
     inset: 0;
     pointer-events: none;
     position: absolute;

@@ -1083,6 +1083,9 @@ importers:
       postcss-nested:
         specifier: 'catalog:'
         version: 7.0.2(postcss@8.5.15)
+      reka-ui:
+        specifier: 'catalog:'
+        version: 2.9.10(vue@3.5.32(typescript@6.0.2))
       tailwindcss:
         specifier: 'catalog:'
         version: 4.3.1

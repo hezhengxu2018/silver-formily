@@ -9,8 +9,8 @@ import { AllSchemas } from '../schemas'
 import { composeExport } from '../shared'
 
 export const formDefaultProps = {
-  labelCol: 6,
-  wrapperCol: 18,
+  labelCol: 4,
+  wrapperCol: 20,
   colon: false,
   feedbackLayout: 'loose',
   layout: 'horizontal',

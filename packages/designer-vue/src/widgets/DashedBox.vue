@@ -108,8 +108,7 @@ function getHoverTitle() {
 @reference "../styles/globals.css";
 
 .dn-aux-dashed-box {
-  @apply border-blue-400;
-
+  border-color: var(--silver-designer-color-primary-border, var(--silver-designer-color-primary, #2563eb));
   border-style: dashed;
   border-width: 1px;
   box-sizing: border-box;
@@ -118,10 +117,12 @@ function getHoverTitle() {
   z-index: 10;
 
   &__title {
-    @apply bg-blue-500 px-1.5 py-0.5 text-white;
+    @apply px-1.5 py-0.5;
 
+    background-color: var(--silver-designer-color-primary, #2563eb);
     border-radius: 4px 4px 0 0;
     bottom: 100%;
+    color: var(--silver-designer-color-primary-foreground, #fff);
     font-size: 12px;
     left: -1px;
     line-height: 16px;
