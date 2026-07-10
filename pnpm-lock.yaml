@@ -69,9 +69,6 @@ catalogs:
     '@vitest/coverage-istanbul':
       specifier: ^4.1.4
       version: 4.1.4
-    '@vue-dnd-kit/core':
-      specifier: ^2.4.6
-      version: 2.4.6
     '@vue/language-core':
       specifier: ~3.0.1
       version: 3.0.10
@@ -533,103 +530,6 @@ importers:
       vitepress:
         specifier: 'catalog:'
         version: 2.0.0-alpha.16(@types/node@24.10.13)(async-validator@4.2.5)(change-case@5.4.4)(jiti@2.7.0)(lightningcss@1.32.0)(nprogress@0.2.0)(postcss@8.5.15)(sass-embedded@1.97.3)(sass@1.97.3)(tsx@4.22.3)(typescript@6.0.2)(yaml@2.8.2)
-      vue-tsc:
-        specifier: 'catalog:'
-        version: 3.2.6(typescript@6.0.2)
-
-  apps/element-plus-form-builder:
-    dependencies:
-      '@lucide/vue':
-        specifier: 'catalog:'
-        version: 1.20.0(vue@3.5.32(typescript@6.0.2))
-      '@silver-formily/core':
-        specifier: workspace:*
-        version: link:../../packages/core
-      '@silver-formily/designer-core':
-        specifier: workspace:*
-        version: link:../../packages/designer-core
-      '@silver-formily/element-plus':
-        specifier: workspace:*
-        version: link:../../packages/element-plus
-      '@silver-formily/grid':
-        specifier: workspace:*
-        version: link:../../packages/grid
-      '@silver-formily/json-schema':
-        specifier: workspace:*
-        version: link:../../packages/json-schema
-      '@silver-formily/path':
-        specifier: workspace:*
-        version: link:../../packages/path
-      '@silver-formily/reactive':
-        specifier: workspace:*
-        version: link:../../packages/reactive
-      '@silver-formily/reactive-vue':
-        specifier: workspace:*
-        version: link:../../packages/reactive-vue
-      '@silver-formily/shared':
-        specifier: workspace:*
-        version: link:../../packages/shared
-      '@silver-formily/validator':
-        specifier: workspace:*
-        version: link:../../packages/validator
-      '@silver-formily/vue':
-        specifier: workspace:*
-        version: link:../../packages/vue
-      '@vue-dnd-kit/core':
-        specifier: 'catalog:'
-        version: 2.4.6(vue@3.5.32(typescript@6.0.2))
-      '@vueuse/core':
-        specifier: 'catalog:'
-        version: 14.2.1(vue@3.5.32(typescript@6.0.2))
-      class-variance-authority:
-        specifier: 'catalog:'
-        version: 0.7.1
-      clsx:
-        specifier: 'catalog:'
-        version: 2.1.1
-      easy-bem:
-        specifier: 'catalog:'
-        version: 1.1.1
-      element-plus:
-        specifier: 'catalog:'
-        version: 2.13.2(vue@3.5.32(typescript@6.0.2))
-      reka-ui:
-        specifier: 'catalog:'
-        version: 2.9.10(vue@3.5.32(typescript@6.0.2))
-      tailwind-merge:
-        specifier: 'catalog:'
-        version: 3.6.0
-      tw-animate-css:
-        specifier: 'catalog:'
-        version: 1.4.0
-      vue:
-        specifier: 'catalog:'
-        version: 3.5.32(typescript@6.0.2)
-    devDependencies:
-      '@silver-formily/typescript-config':
-        specifier: workspace:*
-        version: link:../../packages/typescript-config
-      '@tailwindcss/postcss':
-        specifier: 'catalog:'
-        version: 4.3.1
-      '@vitejs/plugin-vue':
-        specifier: 'catalog:'
-        version: 6.0.6(vite@8.0.8(@types/node@24.10.13)(esbuild@0.28.0)(jiti@2.7.0)(sass-embedded@1.97.3)(sass@1.97.3)(tsx@4.22.3)(yaml@2.8.2))(vue@3.5.32(typescript@6.0.2))
-      postcss:
-        specifier: 'catalog:'
-        version: 8.5.15
-      postcss-nested:
-        specifier: 'catalog:'
-        version: 7.0.2(postcss@8.5.15)
-      tailwindcss:
-        specifier: 'catalog:'
-        version: 4.3.1
-      typescript:
-        specifier: 'catalog:'
-        version: 6.0.2
-      vite:
-        specifier: 'catalog:'
-        version: 8.0.8(@types/node@24.10.13)(esbuild@0.28.0)(jiti@2.7.0)(sass-embedded@1.97.3)(sass@1.97.3)(tsx@4.22.3)(yaml@2.8.2)
       vue-tsc:
         specifier: 'catalog:'
         version: 3.2.6(typescript@6.0.2)
@@ -3570,11 +3470,6 @@ packages:
 
   '@volar/typescript@2.4.28':
     resolution: {integrity: sha512-Ja6yvWrbis2QtN4ClAKreeUZPVYMARDYZl9LMEv1iQ1QdepB6wn0jTRxA9MftYmYa4DQ4k/DaSZpFPUfxl8giw==}
-
-  '@vue-dnd-kit/core@2.4.6':
-    resolution: {integrity: sha512-MnfO05RTGyhxq0d0VmkPHoBbwa7U1Yt8MtE1s8ngnu9uyI3RC1t0IIi4/ULABDuTr6957IueYWHSdAt9hRZXqQ==}
-    peerDependencies:
-      vue: ^3.5.13
 
   '@vue/babel-helper-vue-transform-on@2.0.1':
     resolution: {integrity: sha512-uZ66EaFbnnZSYqYEyplWvn46GhZ1KuYSThdT68p+am7MgBNbQ3hphTL9L+xSIsWkdktwhPYLwPgVWqo96jDdRA==}
@@ -9611,10 +9506,6 @@ snapshots:
       '@volar/language-core': 2.4.28
       path-browserify: 1.0.1
       vscode-uri: 3.1.0
-
-  '@vue-dnd-kit/core@2.4.6(vue@3.5.32(typescript@6.0.2))':
-    dependencies:
-      vue: 3.5.32(typescript@6.0.2)
 
   '@vue/babel-helper-vue-transform-on@2.0.1': {}
 

@@ -14,6 +14,7 @@ import {
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
+import { createNamespace } from '@/lib/utils'
 import { useEditorStore } from '@/stores/editor'
 import { useEditorSchemaStore } from '@/stores/editorSchema'
 
@@ -25,6 +26,11 @@ const { isLeftSidebarCollapsed } = storeToRefs(editorStore)
 const { schemaDocument } = storeToRefs(editorSchemaStore)
 const { toggleLeftSidebar } = editorStore
 const { clearSchemaDocument } = editorSchemaStore
+const { prefixCls } = createNamespace('bottom-left-tools-container')
+const { b: toolB } = createNamespace('tool')
+const { b: toolItemB } = createNamespace('tool-item')
+const { b: toolTooltipB } = createNamespace('tool-tooltip')
+const { b: iconB } = createNamespace('icon')
 
 const isFormEmpty = computed(() => {
   const properties = schemaDocument.value.schema?.properties
@@ -55,15 +61,14 @@ function handleClearForm() {
 </script>
 
 <template>
-  <div class="epd-bottom-left-tools-container">
+  <div :class="prefixCls">
     <TooltipProvider>
       <Tooltip
         v-for="tool in tools"
         :key="tool.value"
       >
         <div
-          class="epd-tool"
-          :class="{ 'epd-tool-placeholder': tool.value === 'clear-form' && isFormEmpty }"
+          :class="toolB({ placeholder: tool.value === 'clear-form' && isFormEmpty })"
         >
           <TooltipTrigger
             v-if="tool.value === 'clear-form' && isFormEmpty"
@@ -71,14 +76,14 @@ function handleClearForm() {
           >
             <button
               type="button"
-              class="epd-tool-item epd-tool-item-single epd-tool-item-placeholder"
+              :class="toolItemB({ single: true, placeholder: true })"
               aria-hidden="true"
               disabled
               tabindex="-1"
             >
               <component
                 :is="tool.icon"
-                class="epd-icon epd-icon-md"
+                :class="iconB({ md: true })"
                 aria-hidden="true"
                 :size="16"
                 :stroke-width="2"
@@ -91,12 +96,12 @@ function handleClearForm() {
               <AlertDialogTrigger as-child>
                 <button
                   type="button"
-                  class="epd-tool-item epd-tool-item-single epd-tool-item-hoverable"
+                  :class="toolItemB({ single: true, hoverable: true })"
                   :aria-label="tool.label"
                 >
                   <component
                     :is="tool.icon"
-                    class="epd-icon epd-icon-md"
+                    :class="iconB({ md: true })"
                     aria-hidden="true"
                     :size="16"
                     :stroke-width="2"
@@ -127,13 +132,13 @@ function handleClearForm() {
           >
             <button
               type="button"
-              class="epd-tool-item epd-tool-item-single epd-tool-item-hoverable"
+              :class="toolItemB({ single: true, hoverable: true })"
               :aria-label="tool.label"
               @click="handleToolClick(tool.value)"
             >
               <component
                 :is="tool.icon"
-                class="epd-icon epd-icon-md"
+                :class="iconB({ md: true })"
                 aria-hidden="true"
                 :size="16"
                 :stroke-width="2"
@@ -142,7 +147,7 @@ function handleClearForm() {
           </TooltipTrigger>
         </div>
         <TooltipContent
-          class="epd-tool-tooltip epd-tool-tooltip-right"
+          :class="toolTooltipB({ right: true })"
           side="right"
           :side-offset="6"
         >
@@ -163,7 +168,7 @@ function handleClearForm() {
 .epd-tool {
   @apply relative flex flex-col rounded border border-solid border-slate-300 bg-white text-slate-700 shadow-lg;
 
-  &-placeholder {
+  &--placeholder {
     @apply invisible pointer-events-none;
   }
 }
@@ -171,19 +176,19 @@ function handleClearForm() {
 .epd-tool-item {
   @apply relative flex h-8 w-8 cursor-pointer items-center justify-center border-0 bg-transparent p-0 text-xs text-inherit transition-colors;
 
-  &-first {
+  &--first {
     @apply rounded-t;
   }
 
-  &-last {
+  &--last {
     @apply rounded-b;
   }
 
-  &-single {
+  &--single {
     @apply rounded;
   }
 
-  &-active {
+  &--active {
     @apply bg-slate-100;
 
     &-primary {
@@ -191,15 +196,15 @@ function handleClearForm() {
     }
   }
 
-  &-disabled {
+  &--disabled {
     @apply cursor-not-allowed text-slate-300;
   }
 
-  &-passive {
+  &--passive {
     cursor: default !important;
   }
 
-  &-hoverable {
+  &--hoverable {
     @apply hover:bg-slate-100;
   }
 }
@@ -215,11 +220,11 @@ function handleClearForm() {
     pointer-events: none;
   }
 
-  &-md {
+  &--md {
     @apply h-[1em];
   }
 
-  &-lg {
+  &--lg {
     @apply h-[1.2em];
   }
 }

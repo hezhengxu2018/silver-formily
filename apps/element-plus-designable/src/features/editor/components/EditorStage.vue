@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ComponentTreeWidget, EmptyWidget, reactiveComputed, useTree, Viewport } from '@silver-formily/designer-vue'
 import { storeToRefs } from 'pinia'
+import { createNamespace } from '@/lib/utils'
 import { useEditorStore } from '@/stores/editor'
 import { componentRegistry } from '../componentRegistry'
 import EditorEmptyState from './EditorEmptyState.vue'
@@ -11,6 +12,7 @@ const editorStore = useEditorStore()
 const { viewMode } = storeToRefs(editorStore)
 const treeRef = useTree()
 const isEmpty = reactiveComputed(() => !treeRef.value?.children.length)
+const { b } = createNamespace('preview')
 </script>
 
 <template>
@@ -25,10 +27,10 @@ const isEmpty = reactiveComputed(() => !treeRef.value?.children.length)
 
   <div
     v-else-if="viewMode === 'preview'"
-    class="epd-preview-viewport"
+    :class="b('viewport')"
   >
-    <div class="epd-preview-component-tree">
-      <RuntimeSchemaForm class="epd-preview-form" />
+    <div :class="b('component-tree')">
+      <RuntimeSchemaForm :class="b('form')" />
     </div>
   </div>
 
@@ -43,18 +45,18 @@ const isEmpty = reactiveComputed(() => !treeRef.value?.children.length)
 @reference "../../../styles/globals.css";
 
 .epd-preview {
-  &-viewport {
+  &__viewport {
     @apply absolute inset-0 mx-auto flex w-full flex-col items-center overflow-y-auto px-16 transition-all duration-300;
   }
 
-  &-component-tree {
-    @apply relative mx-auto my-8 w-full rounded-lg bg-white p-10 text-slate-900 transition-all duration-150;
+  &__component-tree {
+    @apply relative mx-auto my-8 w-full rounded-lg bg-white py-10 text-slate-900 transition-all duration-150;
 
     box-shadow: 0 0 20px 0 rgb(0 0 0 / 8%);
-    max-width: calc(432px + 5rem);
+    max-width: calc(780px + 5rem);
   }
 
-  &-form {
+  &__form {
     display: block;
     width: 100%;
   }

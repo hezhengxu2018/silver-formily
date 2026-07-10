@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { Designer, reactiveComputed, Workspace } from '@silver-formily/designer-vue'
 import { watch } from 'vue'
+import { createNamespace } from '@/lib/utils'
 import { useEditorSchemaStore } from '@/stores/editorSchema'
 import { engine, getSchemaDocument, paletteResourceGroups } from '../designer'
 import EditorHeader from './EditorHeader.vue'
@@ -10,6 +11,7 @@ import SchemaPreviewWidget from './SchemaPreviewWidget.vue'
 
 const editorSchemaStore = useEditorSchemaStore()
 const designerSchemaDocumentRef = reactiveComputed(() => getSchemaDocument())
+const { prefixCls, b } = createNamespace('designable-shell')
 
 watch(
   designerSchemaDocumentRef,
@@ -20,13 +22,13 @@ watch(
 
 <template>
   <Designer :engine="engine">
-    <main class="epd-designable-shell">
+    <main :class="prefixCls">
       <EditorHeader />
 
-      <section class="epd-designable-shell__workspace">
+      <section :class="b('workspace')">
         <ResourceWidget :groups="paletteResourceGroups" />
 
-        <div class="epd-designable-shell-center-container">
+        <div :class="b('center-container')">
           <Workspace id="element-plus-designable">
             <EditorStage />
           </Workspace>
@@ -55,11 +57,11 @@ watch(
     position: relative;
   }
 
-  &-center-container {
+  &__center-container {
     @apply relative min-w-120 flex-1 bg-slate-100;
   }
 
-  &-center-wrapper {
+  &__center-wrapper {
     @apply absolute inset-0 flex flex-col;
   }
 

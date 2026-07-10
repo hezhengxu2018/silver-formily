@@ -4,11 +4,17 @@ import { Code2, Eye, SquarePen } from '@lucide/vue'
 import { storeToRefs } from 'pinia'
 import { RadioGroupItem, RadioGroupRoot } from 'reka-ui'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
+import { createNamespace } from '@/lib/utils'
 import { useEditorStore } from '@/stores/editor'
 
 const editorStore = useEditorStore()
 const { viewMode } = storeToRefs(editorStore)
 const { setViewMode } = editorStore
+const { prefixCls } = createNamespace('top-left-tools-container')
+const { b: toolB } = createNamespace('tool')
+const { b: toolItemB } = createNamespace('tool-item')
+const { b: toolTooltipB } = createNamespace('tool-tooltip')
+const { b: iconB } = createNamespace('icon')
 
 const viewTools: Array<{
   value: EditorViewMode
@@ -22,32 +28,31 @@ const viewTools: Array<{
 </script>
 
 <template>
-  <div class="epd-top-left-tools-container">
+  <div :class="prefixCls">
     <TooltipProvider>
       <RadioGroupRoot
         v-model="viewMode"
-        class="epd-tool epd-tool-view"
+        :class="toolB({ view: true })"
         orientation="vertical"
         aria-label="View"
       >
         <RadioGroupItem
           v-for="(tool, index) in viewTools"
           :key="tool.value"
-          class="epd-tool-item"
-          :class="{
-            'epd-tool-item-first': index === 0,
-            'epd-tool-item-last': index === viewTools.length - 1,
-          }"
+          :class="toolItemB({
+            first: index === 0,
+            last: index === viewTools.length - 1,
+          })"
           :value="tool.value"
           :aria-label="tool.label"
           @click="setViewMode(tool.value)"
         >
           <Tooltip>
             <TooltipTrigger as-child>
-              <span class="epd-tool-item-trigger">
+              <span :class="toolItemB('trigger')">
                 <component
                   :is="tool.icon"
-                  class="epd-icon epd-icon-md"
+                  :class="iconB({ md: true })"
                   aria-hidden="true"
                   :size="16"
                   :stroke-width="2"
@@ -55,7 +60,7 @@ const viewTools: Array<{
               </span>
             </TooltipTrigger>
             <TooltipContent
-              class="epd-tool-tooltip epd-tool-tooltip-right"
+              :class="toolTooltipB({ right: true })"
               side="right"
               :side-offset="6"
             >
@@ -78,7 +83,7 @@ const viewTools: Array<{
 .epd-tool {
   @apply relative flex flex-col rounded border border-solid border-slate-300 bg-white text-slate-700 shadow-lg;
 
-  &-view {
+  &--view {
     @apply mb-2;
   }
 }
@@ -90,15 +95,15 @@ const viewTools: Array<{
     @apply bg-primary text-primary-foreground;
   }
 
-  &-first {
+  &--first {
     @apply rounded-t;
   }
 
-  &-last {
+  &--last {
     @apply rounded-b;
   }
 
-  &-active {
+  &--active {
     @apply bg-slate-100;
 
     &-primary {
@@ -106,19 +111,19 @@ const viewTools: Array<{
     }
   }
 
-  &-disabled {
+  &--disabled {
     @apply cursor-not-allowed text-slate-300;
   }
 
-  &-passive {
+  &--passive {
     cursor: default !important;
   }
 
-  &-hoverable {
+  &--hoverable {
     @apply hover:bg-slate-100;
   }
 
-  &-trigger {
+  &__trigger {
     @apply flex h-full w-full items-center justify-center;
   }
 }
@@ -134,11 +139,11 @@ const viewTools: Array<{
     pointer-events: none;
   }
 
-  &-md {
+  &--md {
     @apply h-[1em];
   }
 
-  &-lg {
+  &--lg {
     @apply h-[1.2em];
   }
 }

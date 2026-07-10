@@ -1,26 +1,29 @@
 <script setup lang="ts">
 import { Kbd, KbdGroup } from '@/components/ui/kbd'
+import { createNamespace } from '@/lib/utils'
 import { officialEmptyAnimations } from './officialEmptyAnimations'
 
 defineProps<{
   isDragOver?: boolean
 }>()
+
+const { prefixCls, b } = createNamespace('editor-empty-state')
 </script>
 
 <template>
-  <div class="epd-editor-empty-state">
-    <div class="epd-editor-empty-state__animations">
+  <div :class="prefixCls">
+    <div :class="b('animations')">
       <!-- Safe: these SVG fragments are bundled constants copied from the MIT-licensed official designable project. -->
       <!-- eslint-disable vue/html-self-closing -->
       <svg
-        class="epd-editor-empty-state__animation"
+        :class="b('animation')"
         viewBox="0 0 1024 1024"
         aria-hidden="true"
         focusable="false"
         v-html="officialEmptyAnimations.dragLeftSource"
       ></svg>
       <svg
-        class="epd-editor-empty-state__animation"
+        :class="b('animation')"
         viewBox="0 0 1024 1024"
         aria-hidden="true"
         focusable="false"
@@ -29,7 +32,7 @@ defineProps<{
       <!-- eslint-enable vue/html-self-closing -->
     </div>
 
-    <div class="epd-editor-empty-state__hotkeys">
+    <div :class="b('hotkeys')">
       <div v-if="isDragOver">
         松开鼠标，将组件放入画布
       </div>

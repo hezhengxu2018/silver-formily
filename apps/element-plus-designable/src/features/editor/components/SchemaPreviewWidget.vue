@@ -1,5 +1,11 @@
+<script setup lang="ts">
+import { createNamespace } from '@/lib/utils'
+
+const { prefixCls } = createNamespace('schema-preview')
+</script>
+
 <template>
-  <aside class="epd-schema-preview" />
+  <aside :class="prefixCls" />
 </template>
 
 <style scoped>

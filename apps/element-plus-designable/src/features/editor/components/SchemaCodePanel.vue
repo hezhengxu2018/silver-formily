@@ -3,10 +3,13 @@ import { Check, Copy } from '@lucide/vue'
 import { storeToRefs } from 'pinia'
 import { codeToHtml } from 'shiki'
 import { computed, onBeforeUnmount, ref, watch } from 'vue'
+import { createNamespace } from '@/lib/utils'
 import { useEditorSchemaStore } from '@/stores/editorSchema'
 
 const editorSchemaStore = useEditorSchemaStore()
 const { schemaDocument } = storeToRefs(editorSchemaStore)
+const { prefixCls: codeViewportCls } = createNamespace('code-viewport')
+const { prefixCls: codePanelCls, b: codePanelB } = createNamespace('code-panel')
 
 const schemaCode = computed(() => JSON.stringify(schemaDocument.value, null, 2))
 const highlightedSchemaCode = ref('')
@@ -77,10 +80,10 @@ async function writeClipboardText(text: string) {
 </script>
 
 <template>
-  <div class="epd-code-viewport">
-    <div class="epd-code-panel">
+  <div :class="codeViewportCls">
+    <div :class="codePanelCls">
       <button
-        class="epd-code-panel__copy"
+        :class="codePanelB('copy')"
         type="button"
         :aria-label="copyButtonLabel"
         :title="copyButtonLabel"
@@ -99,7 +102,7 @@ async function writeClipboardText(text: string) {
           :stroke-width="2"
         />
       </button>
-      <div class="epd-code-panel__code" v-html="highlightedSchemaCode" />
+      <div :class="codePanelB('code')" v-html="highlightedSchemaCode" />
     </div>
   </div>
 </template>
@@ -107,28 +110,26 @@ async function writeClipboardText(text: string) {
 <style scoped>
 @reference "../../../styles/globals.css";
 
-.epd-code {
-  &-viewport {
-    @apply absolute inset-0 mx-auto flex w-full flex-col items-center overflow-y-auto px-16 transition-all duration-300;
-  }
+.epd-code-viewport {
+  @apply absolute inset-0 mx-auto flex w-full flex-col items-center overflow-y-auto px-16 transition-all duration-300;
+}
 
-  &-panel {
-    @apply relative mx-auto my-8 flex min-h-0 w-full overflow-hidden rounded-lg bg-white text-slate-900 transition-all duration-150;
+.epd-code-panel {
+  @apply relative mx-auto my-8 flex min-h-0 w-full overflow-hidden rounded-lg bg-white text-slate-900 transition-all duration-150;
 
-    box-shadow: 0 0 20px 0 rgb(0 0 0 / 8%);
-    max-width: calc(720px + 5rem);
-  }
+  box-shadow: 0 0 20px 0 rgb(0 0 0 / 8%);
+  max-width: calc(720px + 5rem);
 
-  &-panel__copy {
+  &__copy {
     @apply absolute right-3 top-3 z-10 inline-flex size-8 items-center justify-center rounded-md border border-slate-700 bg-slate-900/90 text-slate-300 opacity-0 shadow-sm transition hover:border-slate-500 hover:bg-slate-800 hover:text-white focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400;
   }
 
-  &-panel:hover &-panel__copy,
-  &-panel:focus-within &-panel__copy {
+  &:hover &__copy,
+  &:focus-within &__copy {
     @apply opacity-100;
   }
 
-  &-panel__code {
+  &__code {
     @apply min-h-120 w-full overflow-auto bg-slate-950 text-slate-100;
 
     --epd-code-line-height: 12px;

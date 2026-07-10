@@ -3,6 +3,7 @@ import type { PaletteResourceGroup } from '@/features/editor/designer'
 import { storeToRefs } from 'pinia'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { createNamespace } from '@/lib/utils'
 import { useEditorStore } from '@/stores/editor'
 import LeftBottomTools from './LeftBottomTools.vue'
 import LeftTopTools from './LeftTopTools.vue'
@@ -13,33 +14,32 @@ defineProps<{
 
 const editorStore = useEditorStore()
 const { isLeftSidebarCollapsed } = storeToRefs(editorStore)
+const { b } = createNamespace('resource-widget')
 </script>
 
 <template>
   <div
-    class="epd-resource-widget"
-    :class="{ 'epd-resource-widget--collapsed': isLeftSidebarCollapsed }"
+    :class="b({ collapsed: isLeftSidebarCollapsed })"
   >
     <div
-      class="epd-resource-widget__clip"
-      :class="{ 'epd-resource-widget__clip--collapsed': isLeftSidebarCollapsed }"
+      :class="b('clip', { collapsed: isLeftSidebarCollapsed })"
     >
       <Tabs
         default-value="elements"
-        class="epd-resource-widget__wrapper"
+        :class="b('wrapper')"
       >
         <TabsList
-          class="epd-resource-widget__tabs"
+          :class="b('tabs')"
           aria-label="Resource panel"
         >
           <TabsTrigger
-            class="epd-resource-widget__tab"
+            :class="b('tab')"
             value="elements"
           >
             Elements
           </TabsTrigger>
           <TabsTrigger
-            class="epd-resource-widget__tab"
+            :class="b('tab')"
             value="tree"
           >
             Tree
@@ -47,39 +47,39 @@ const { isLeftSidebarCollapsed } = storeToRefs(editorStore)
         </TabsList>
 
         <TabsContent
-          class="epd-resource-widget__panel"
+          :class="b('panel')"
           value="elements"
         >
-          <ScrollArea class="epd-resource-widget__scroll-area">
-            <div class="epd-resource-widget__content">
+          <ScrollArea :class="b('scroll-area')">
+            <div :class="b('content')">
               <section
                 v-for="group in groups"
                 :key="group.name"
-                class="epd-resource-widget__group"
+                :class="b('group')"
               >
-                <h3 class="epd-resource-widget__group-title">
+                <h3 :class="b('group-title')">
                   {{ group.name }}
                 </h3>
 
-                <div class="epd-resource-widget__items">
+                <div :class="b('items')">
                   <article
                     v-for="item in group.items"
                     :key="item.sourceId"
-                    class="epd-resource-widget__item"
+                    :class="b('item')"
                     :data-designer-source-id="item.sourceId"
                   >
                     <span
                       v-if="item.iconSvg"
-                      class="epd-resource-widget__item-icon epd-resource-widget__item-icon--svg"
+                      :class="b('item-icon', { svg: true })"
                       v-html="item.iconSvg"
                     />
                     <span
                       v-else
-                      class="epd-resource-widget__item-icon"
+                      :class="b('item-icon')"
                     >
                       {{ String(item.icon ?? item.title).slice(0, 2) }}
                     </span>
-                    <span class="epd-resource-widget__item-name">
+                    <span :class="b('item-name')">
                       {{ item.title }}
                     </span>
                   </article>
@@ -90,10 +90,10 @@ const { isLeftSidebarCollapsed } = storeToRefs(editorStore)
         </TabsContent>
 
         <TabsContent
-          class="epd-resource-widget__panel"
+          :class="b('panel')"
           value="tree"
         >
-          <ScrollArea class="epd-resource-widget__scroll-area" />
+          <ScrollArea :class="b('scroll-area')" />
         </TabsContent>
       </Tabs>
     </div>
