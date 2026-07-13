@@ -5,8 +5,8 @@ import { FormItem } from '@silver-formily/element-plus'
 import { ArrayField, Field as FormilyField, ObjectField, VoidField } from '@silver-formily/vue'
 import { defineComponent, h } from 'vue'
 import { AllLocales } from '../locales'
-import { AllSchemas } from '../schemas'
 import { composeExport, resolveComponentPath } from '../shared'
+import { createFieldSchema } from './Field/shared'
 
 const previewStyle = {
   pointerEvents: 'none',
@@ -134,7 +134,7 @@ export const Field = composeExport(FieldPreview, {
     selector: node => node.componentName === 'Field',
     designerProps: {
       droppable: false,
-      propsSchema: AllSchemas.Field,
+      propsSchema: createFieldSchema(),
     },
     designerLocales: AllLocales.Field,
   }),

@@ -28,13 +28,13 @@ watch(
       <section :class="b('workspace')">
         <ResourceWidget :groups="paletteResourceGroups" />
 
-        <div :class="b('center-container')">
-          <Workspace :id="editorWorkspaceId">
+        <Workspace :id="editorWorkspaceId">
+          <div :class="b('center-container')">
             <EditorStage />
-          </Workspace>
-        </div>
+          </div>
 
-        <FormConfigWidget />
+          <FormConfigWidget />
+        </Workspace>
       </section>
     </main>
   </Designer>

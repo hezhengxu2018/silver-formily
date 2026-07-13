@@ -2,6 +2,7 @@ import type { DesignableComponent } from '../types'
 import { createBehavior } from '@silver-formily/designer-core'
 import * as ElementPlus from '@silver-formily/element-plus'
 import { ElCard } from 'element-plus'
+import { AllSchemas } from '../schemas'
 import { defineElementPlusComponent } from './defineElementPlusComponent'
 import { Field } from './Field'
 import { Form, RuntimeForm } from './Form'
@@ -16,6 +17,7 @@ export const Input = defineElementPlusComponent({
   defaultProps: { clearable: true, placeholder: 'Please enter' },
   description: 'Single line text input',
   icon: 'Input',
+  schema: AllSchemas.Input,
   title: 'Input',
 })
 
@@ -25,6 +27,7 @@ export const TextArea = defineElementPlusComponent({
   defaultProps: { placeholder: 'Please enter', rows: 3 },
   description: 'Multi-line text input',
   icon: 'TextArea',
+  schema: AllSchemas.Input.TextArea,
   title: 'TextArea',
 })
 
@@ -34,6 +37,7 @@ export const Password = defineElementPlusComponent({
   defaultProps: { clearable: true, placeholder: 'Please enter password' },
   description: 'Password input',
   icon: 'Password',
+  schema: AllSchemas.Input,
   title: 'Password',
 })
 
@@ -43,6 +47,7 @@ export const InputNumber = defineElementPlusComponent({
   defaultProps: { controlsPosition: 'right', min: 0 },
   description: 'Numeric input',
   icon: 'Number',
+  schema: AllSchemas.InputNumber,
   title: 'Input Number',
   type: 'number',
 })
@@ -60,6 +65,7 @@ export const Select = defineElementPlusComponent({
   },
   description: 'Dropdown selector',
   icon: 'Select',
+  schema: AllSchemas.Select,
   title: 'Select',
 })
 
@@ -138,6 +144,7 @@ export const Switch = defineElementPlusComponent({
   componentName: 'Switch',
   description: 'Boolean switch',
   icon: 'Switch',
+  schema: AllSchemas.Switch,
   title: 'Switch',
   type: 'boolean',
 })

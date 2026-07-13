@@ -3,6 +3,7 @@ import type { Component } from 'vue'
 import type { DesignableComponent } from '../types'
 import { createBehavior, createResource } from '@silver-formily/designer-core'
 import { composeExport } from '../shared'
+import { createFieldSchema, createVoidFieldSchema } from './Field/shared'
 
 export interface ElementPlusResourceOptions {
   component: Component
@@ -12,6 +13,8 @@ export interface ElementPlusResourceOptions {
   description?: string
   icon?: string
   previewComponent?: Component
+  schema?: Record<string, any>
+  schemaKind?: 'field' | 'void'
   title: string
   type?: string
 }
@@ -43,16 +46,17 @@ function createLocales(options: ElementPlusResourceOptions): IDesignerLocales {
 }
 
 export function defineElementPlusComponent(options: ElementPlusResourceOptions): DesignableComponent {
+  const propsSchema = options.schemaKind === 'void'
+    ? createVoidFieldSchema(options.schema, options.decorator === false ? false : undefined)
+    : createFieldSchema(options.schema, options.decorator === false ? false : undefined)
+
   return composeExport(options.previewComponent ?? options.component, {
     Behavior: createBehavior({
       name: options.componentName,
       extends: ['Field'],
       selector: node => node.props?.['x-component'] === options.componentName,
       designerProps: {
-        propsSchema: {
-          type: 'object',
-          properties: {},
-        },
+        propsSchema,
       },
       designerLocales: createLocales(options),
     }),

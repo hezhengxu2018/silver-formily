@@ -2,6 +2,7 @@
 import { storeToRefs } from 'pinia'
 import { createNamespace } from '@/lib/utils'
 import { useEditorStore } from '@/stores/editor'
+import { SettingsForm } from '../../settings-form'
 import RightBottomTools from './RightBottomTools.vue'
 import RightTopTools from './RightTopTools.vue'
 
@@ -13,6 +14,10 @@ const { b } = createNamespace('form-config-widget')
 <template>
   <aside :class="b({ collapsed: isRightSidebarCollapsed })">
     <div :class="b('clip', { collapsed: isRightSidebarCollapsed })" />
+    <SettingsForm
+      :class="b('settings')"
+      :collapsed="isRightSidebarCollapsed"
+    />
     <RightTopTools />
     <RightBottomTools />
   </aside>
@@ -36,6 +41,10 @@ const { b } = createNamespace('form-config-widget')
     &--collapsed {
       @apply pointer-events-none;
     }
+  }
+
+  &__settings {
+    @apply absolute inset-0;
   }
 }
 </style>
