@@ -53,9 +53,6 @@ const itemNodePathRef = computed(() => {
   return node ? getNodePath(node) : []
 })
 
-const formSchemaJSONRef = computed(() => stringifyJSON(formSourceRef.value.schema))
-const itemSchemaJSONRef = computed(() => stringifyJSON(itemSourceRef.value.schema))
-
 watch(
   formNodeRef,
   () => {
@@ -161,21 +158,6 @@ function getNodePath(node: TreeNode) {
     .concat(node)
     .filter(item => item && !item.isRoot)
 }
-
-function stringifyJSON(value: unknown) {
-  if (!value)
-    return ''
-
-  return JSON.stringify(
-    value,
-    (_, item) => {
-      if (typeof item === 'function')
-        return `[Function ${item.name || 'anonymous'}]`
-      return item
-    },
-    2,
-  )
-}
 </script>
 
 <template>
@@ -186,14 +168,15 @@ function stringifyJSON(value: unknown) {
     <div :class="b('content')">
       <FormSchemaPanel
         :is-empty="formSourceRef.isEmpty"
-        :json="formSchemaJSONRef"
+        :node="formSourceRef.node"
+        :schema="formSourceRef.schema"
         :source-key="formSourceRef.key"
       />
 
       <FieldSchemaPanel
-        :json="itemSchemaJSONRef"
         :node="itemSourceRef.node"
         :path="itemNodePathRef"
+        :schema="itemSourceRef.schema"
         :source-key="itemSourceRef.key"
         :visible="itemSourceRef.visible"
         @close="closeItemPanel"

@@ -1,17 +1,19 @@
 <script setup lang="ts">
 import type { TreeNode } from '@silver-formily/designer-core'
-import { Copy, Trash2, X } from '@lucide/vue'
+import { Copy, SquareMinus, SquarePlus, Trash2, X } from '@lucide/vue'
 import { TreeNode as TreeNodeModel } from '@silver-formily/designer-core'
-import { computed } from 'vue'
+import { computed, ref, shallowRef, watch } from 'vue'
 import { createNamespace } from '@/lib/utils'
+import { Accordion } from '../formily-shadcn'
+import SettingsSchemaForm from './SettingsSchemaForm.vue'
 
 const props = defineProps<{
-  json: string
   node?: TreeNode
   path: Array<{
     componentName: string
     id: string
   }>
+  schema?: Record<string, any>
   sourceKey?: string
   visible?: boolean
 }>()
@@ -22,8 +24,26 @@ defineEmits<{
 
 const { b } = createNamespace('settings-form')
 
+const isPanelsExpandedRef = ref(true)
+const settingsAccordionRef = shallowRef(createSettingsAccordion())
 const canCloneRef = computed(() => props.node?.allowClone() ?? false)
 const canDeleteRef = computed(() => props.node?.allowDelete() ?? false)
+
+watch(
+  () => props.sourceKey ?? props.node?.id ?? 'empty',
+  () => {
+    settingsAccordionRef.value = createSettingsAccordion()
+  },
+  { immediate: true },
+)
+
+function createSettingsAccordion() {
+  const accordion = Accordion.createAccordion()
+  accordion.setExpandedChangeHandler((expanded) => {
+    isPanelsExpandedRef.value = expanded
+  })
+  return accordion
+}
 
 function handleCopy() {
   if (!props.node?.allowClone())
@@ -37,6 +57,10 @@ function handleDelete() {
     return
 
   TreeNodeModel.remove([props.node])
+}
+
+function handleTogglePanels() {
+  settingsAccordionRef.value.toggleAll()
 }
 </script>
 
@@ -95,13 +119,30 @@ function handleDelete() {
           >
             <Trash2 :class="b('action-button-icon')" />
           </button>
+          <button
+            v-if="schema"
+            :aria-label="isPanelsExpandedRef ? '收起所有面板' : '展开所有面板'"
+            :class="b('action-button')"
+            :title="isPanelsExpandedRef ? '收起所有面板' : '展开所有面板'"
+            type="button"
+            @click.stop="handleTogglePanels"
+          >
+            <component
+              :is="isPanelsExpandedRef ? SquareMinus : SquarePlus"
+              :class="b('action-button-icon')"
+            />
+          </button>
         </div>
       </div>
-
-      <pre
-        :key="sourceKey"
-        :class="b('code')"
-      >{{ json }}</pre>
+      <div :class="b('panel-body')">
+        <SettingsSchemaForm
+          :accordion="settingsAccordionRef"
+          :class="b('form')"
+          :node="node"
+          :schema="schema"
+          :source-key="sourceKey"
+        />
+      </div>
     </section>
   </Transition>
 </template>

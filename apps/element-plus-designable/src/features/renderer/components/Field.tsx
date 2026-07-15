@@ -2,11 +2,14 @@ import type { DesignableComponent } from '../types'
 import { createBehavior } from '@silver-formily/designer-core'
 import { useComponents, useDesigner, useNode } from '@silver-formily/designer-vue'
 import { FormItem } from '@silver-formily/element-plus'
+import { toJS } from '@silver-formily/reactive'
+import { useObserver } from '@silver-formily/reactive-vue'
 import { ArrayField, Field as FormilyField, ObjectField, VoidField } from '@silver-formily/vue'
 import { defineComponent, h } from 'vue'
 import { AllLocales } from '../locales'
 import { composeExport, resolveComponentPath } from '../shared'
 import { createFieldSchema } from './Field/shared'
+import './Field.css'
 
 const previewStyle = {
   pointerEvents: 'none',
@@ -46,6 +49,30 @@ function omitUndefined<T extends Record<string, any>>(value: T): T {
   }, {} as T)
 }
 
+function stringifyKey(value: unknown) {
+  if (value === undefined)
+    return ''
+
+  try {
+    return JSON.stringify(value)
+  }
+  catch {
+    return String(value)
+  }
+}
+
+function hashString(value: string) {
+  let hash = 0
+  for (let index = 0; index < value.length; index++) {
+    hash = Math.imul(31, hash) + value.charCodeAt(index) | 0
+  }
+  return hash.toString(36)
+}
+
+function createFieldPreviewKey(nodeId: string | undefined, props: Record<string, any> | undefined) {
+  return `${nodeId ?? ''}:${hashString(stringifyKey(toJS(props ?? {})))}`
+}
+
 const FieldPreview = defineComponent({
   name: 'DnField',
   inheritAttrs: false,
@@ -53,6 +80,8 @@ const FieldPreview = defineComponent({
     const componentsRef = useComponents()
     const designerRef = useDesigner()
     const nodeRef = useNode()
+
+    useObserver()
 
     return () => {
       const props = attrs as Record<string, any>
@@ -85,7 +114,7 @@ const FieldPreview = defineComponent({
         dataSource: props.enum,
         decorator: decorator ? [decorator, decoratorProps] : undefined,
         disabled: props['x-disabled'],
-        display: props['x-display'],
+        display: 'visible',
         editable: props['x-editable'],
         hidden: props['x-hidden'],
         name: props.name ?? nodeRef.value?.id,
@@ -106,11 +135,18 @@ const FieldPreview = defineComponent({
             ? VoidField
             : FormilyField
 
-      const preview = h(fieldType as any, fieldProps, slots)
+      const preview = h(fieldType as any, {
+        ...fieldProps,
+        key: createFieldPreviewKey(nodeRef.value?.id, nodeRef.value?.props),
+      }, slots)
 
       return h('div', {
         [nodeIdAttrName || 'data-designer-node-id']: nodeRef.value?.id,
-        class: 'dn-designable-field',
+        class: [
+          'dn-designable-field',
+          props['x-display'] === 'hidden' && 'dn-designable-field-hidden',
+          props['x-display'] === 'none' && 'dn-designable-field-none',
+        ],
         style: wrapperStyle,
       }, [
         h('div', {

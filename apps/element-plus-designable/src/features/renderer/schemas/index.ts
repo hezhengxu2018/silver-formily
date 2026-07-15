@@ -1,5 +1,12 @@
 type SettingsSchema = Record<string, any>
 
+export function createSelectOptions(values: Array<string | null>) {
+  return values.map(value => ({
+    label: value === null || value === '' ? '默认' : value,
+    value: value ?? '',
+  }))
+}
+
 const CSSStyle: SettingsSchema = {
   type: 'object',
   properties: {},
@@ -47,35 +54,35 @@ const FormItem: SettingsSchema = {
     feedbackLayout: {
       'type': 'string',
       'title': '反馈布局',
-      'enum': ['loose', 'terse', 'popover', null],
+      'enum': createSelectOptions(['loose', 'terse', 'popover', null]),
       'x-decorator': 'FormItem',
       'x-component': 'Select',
     },
     size: {
       'type': 'string',
       'title': '尺寸',
-      'enum': ['large', 'default', 'small', null],
+      'enum': createSelectOptions(['large', 'default', 'small', null]),
       'x-decorator': 'FormItem',
       'x-component': 'Select',
     },
     layout: {
       'type': 'string',
       'title': '布局',
-      'enum': ['vertical', 'horizontal', 'inline', null],
+      'enum': createSelectOptions(['vertical', 'horizontal', 'inline', null]),
       'x-decorator': 'FormItem',
       'x-component': 'Select',
     },
     labelAlign: {
       'type': 'string',
       'title': '标签对齐',
-      'enum': ['left', 'right', null],
+      'enum': createSelectOptions(['left', 'right', null]),
       'x-decorator': 'FormItem',
       'x-component': 'Select',
     },
     wrapperAlign: {
       'type': 'string',
       'title': '内容对齐',
-      'enum': ['left', 'right', null],
+      'enum': createSelectOptions(['left', 'right', null]),
       'x-decorator': 'FormItem',
       'x-component': 'Select',
     },
@@ -139,7 +146,7 @@ const Input: SettingsSchema & { TextArea?: SettingsSchema } = {
     size: {
       'type': 'string',
       'title': '尺寸',
-      'enum': ['large', 'default', 'small', null],
+      'enum': createSelectOptions(['large', 'default', 'small', null]),
       'x-decorator': 'FormItem',
       'x-component': 'Select',
     },
@@ -201,14 +208,14 @@ const InputNumber: SettingsSchema = {
     controlsPosition: {
       'type': 'string',
       'title': '控制按钮位置',
-      'enum': ['', 'right'],
+      'enum': createSelectOptions(['', 'right']),
       'x-decorator': 'FormItem',
       'x-component': 'Select',
     },
     size: {
       'type': 'string',
       'title': '尺寸',
-      'enum': ['large', 'default', 'small', null],
+      'enum': createSelectOptions(['large', 'default', 'small', null]),
       'x-decorator': 'FormItem',
       'x-component': 'Select',
     },
@@ -254,7 +261,7 @@ const Select: SettingsSchema = {
     size: {
       'type': 'string',
       'title': '尺寸',
-      'enum': ['large', 'default', 'small', null],
+      'enum': createSelectOptions(['large', 'default', 'small', null]),
       'x-decorator': 'FormItem',
       'x-component': 'Select',
     },
@@ -312,65 +319,82 @@ const Switch: SettingsSchema = {
 const Form: SettingsSchema = {
   type: 'object',
   properties: {
-    layout: {
-      'type': 'string',
-      'title': '布局',
-      'enum': ['vertical', 'horizontal', 'inline'],
-      'x-decorator': 'FormItem',
-      'x-component': 'Select',
-    },
-    labelCol: {
-      'type': 'number',
-      'title': '标签栅格',
-      'x-decorator': 'FormItem',
-      'x-component': 'InputNumber',
-    },
-    wrapperCol: {
-      'type': 'number',
-      'title': '内容栅格',
-      'x-decorator': 'FormItem',
-      'x-component': 'InputNumber',
-    },
-    labelAlign: {
-      'type': 'string',
-      'title': '标签对齐',
-      'enum': ['left', 'right'],
-      'x-decorator': 'FormItem',
-      'x-component': 'Select',
-    },
-    wrapperAlign: {
-      'type': 'string',
-      'title': '内容对齐',
-      'enum': ['left', 'right'],
-      'x-decorator': 'FormItem',
-      'x-component': 'Select',
-    },
-    colon: {
-      'type': 'boolean',
-      'title': '显示冒号',
-      'x-decorator': 'FormItem',
-      'x-component': 'Switch',
-    },
-    feedbackLayout: {
-      'type': 'string',
-      'title': '反馈布局',
-      'enum': ['loose', 'terse', 'popover'],
-      'x-decorator': 'FormItem',
-      'x-component': 'Select',
-    },
-    tooltipLayout: {
-      'type': 'string',
-      'title': '提示布局',
-      'enum': ['icon', 'text'],
-      'x-decorator': 'FormItem',
-      'x-component': 'Select',
-    },
-    size: {
-      'type': 'string',
-      'title': '尺寸',
-      'enum': ['large', 'default', 'small'],
-      'x-decorator': 'FormItem',
-      'x-component': 'Select',
+    'form-collapse': {
+      'type': 'void',
+      'x-component': 'Accordion',
+      'x-component-props': {
+        collapsible: true,
+        type: 'multiple',
+      },
+      'properties': {
+        'form-group': {
+          'type': 'void',
+          'title': '表单属性',
+          'x-component': 'Accordion.Item',
+          'properties': {
+            layout: {
+              'type': 'string',
+              'title': '布局',
+              'enum': createSelectOptions(['vertical', 'horizontal', 'inline']),
+              'x-decorator': 'FormItem',
+              'x-component': 'Select',
+            },
+            labelCol: {
+              'type': 'number',
+              'title': '标签栅格',
+              'x-decorator': 'FormItem',
+              'x-component': 'InputNumber',
+            },
+            wrapperCol: {
+              'type': 'number',
+              'title': '内容栅格',
+              'x-decorator': 'FormItem',
+              'x-component': 'InputNumber',
+            },
+            labelAlign: {
+              'type': 'string',
+              'title': '标签对齐',
+              'enum': createSelectOptions(['left', 'right']),
+              'x-decorator': 'FormItem',
+              'x-component': 'Select',
+            },
+            wrapperAlign: {
+              'type': 'string',
+              'title': '内容对齐',
+              'enum': createSelectOptions(['left', 'right']),
+              'x-decorator': 'FormItem',
+              'x-component': 'Select',
+            },
+            colon: {
+              'type': 'boolean',
+              'title': '显示冒号',
+              'x-decorator': 'FormItem',
+              'x-component': 'Switch',
+            },
+            feedbackLayout: {
+              'type': 'string',
+              'title': '反馈布局',
+              'enum': createSelectOptions(['loose', 'terse', 'popover']),
+              'x-decorator': 'FormItem',
+              'x-component': 'Select',
+            },
+            tooltipLayout: {
+              'type': 'string',
+              'title': '提示布局',
+              'enum': createSelectOptions(['icon', 'text']),
+              'x-decorator': 'FormItem',
+              'x-component': 'Select',
+            },
+            size: {
+              'type': 'string',
+              'title': '尺寸',
+              'enum': createSelectOptions(['large', 'default', 'small']),
+              'x-decorator': 'FormItem',
+              'x-component': 'Select',
+            },
+          },
+        },
+      },
     },
   },
 }

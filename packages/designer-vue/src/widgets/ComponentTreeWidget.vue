@@ -43,7 +43,7 @@ onBeforeUnmount(() => {
 @reference "../styles/globals.css";
 
 .dn-component-tree {
-  @apply relative mx-auto my-8 w-full rounded-lg bg-white py-8 px-2 text-slate-900 transition-all duration-150;
+  @apply relative mx-auto my-8 py-8 px-2 w-full rounded-lg bg-white text-slate-900 transition-all;
 
   max-width: calc(780px + 5rem);
   box-shadow: 0 0 20px 0 rgb(0 0 0 / 8%);

@@ -1,6 +1,20 @@
-import { AllSchemas } from '../../schemas'
+import { AllSchemas, createSelectOptions } from '../../schemas'
 
 type SettingsSchema = Record<string, any>
+
+function createAccordionSchema(properties: Record<string, any>): SettingsSchema {
+  return {
+    'settings-accordion': {
+      'type': 'void',
+      'x-component': 'Accordion',
+      'x-component-props': {
+        collapsible: true,
+        type: 'multiple',
+      },
+      properties,
+    },
+  }
+}
 
 export function createComponentSchema(
   component?: SettingsSchema,
@@ -10,7 +24,7 @@ export function createComponentSchema(
     'component-group': component && {
       'type': 'void',
       'title': '组件属性',
-      'x-component': 'CollapseItem',
+      'x-component': 'Accordion.Item',
       'x-reactions': {
         fulfill: {
           state: {
@@ -25,8 +39,7 @@ export function createComponentSchema(
     'decorator-group': decorator && {
       'type': 'void',
       'title': '容器属性',
-      'x-component': 'CollapseItem',
-      'x-component-props': { defaultExpand: false },
+      'x-component': 'Accordion.Item',
       'x-reactions': {
         fulfill: {
           state: {
@@ -41,8 +54,7 @@ export function createComponentSchema(
     'component-style-group': {
       'type': 'void',
       'title': '组件样式',
-      'x-component': 'CollapseItem',
-      'x-component-props': { defaultExpand: false },
+      'x-component': 'Accordion.Item',
       'x-reactions': {
         fulfill: {
           state: {
@@ -57,8 +69,7 @@ export function createComponentSchema(
     'decorator-style-group': decorator && {
       'type': 'void',
       'title': '容器样式',
-      'x-component': 'CollapseItem',
-      'x-component-props': { defaultExpand: false },
+      'x-component': 'Accordion.Item',
       'x-reactions': {
         fulfill: {
           state: {
@@ -79,20 +90,25 @@ export function createFieldSchema(
 ): SettingsSchema {
   return {
     type: 'object',
-    properties: {
+    properties: createAccordionSchema({
       'field-group': {
         'type': 'void',
         'title': '字段属性',
-        'x-component': 'CollapseItem',
+        'x-component': 'Accordion.Item',
         'properties': {
           'name': {
             'type': 'string',
             'title': '字段标识',
+            'required': true,
             'x-decorator': 'FormItem',
             'x-component': 'Input',
             'x-component-props': {
               clearable: true,
             },
+            'x-validator': [
+              { required: true, message: '字段标识不能为空' },
+              '{{ $validateNodeName }}',
+            ],
           },
           'title': {
             'type': 'string',
@@ -116,7 +132,7 @@ export function createFieldSchema(
             'default': 'visible',
             'type': 'string',
             'title': '展示状态',
-            'enum': ['visible', 'hidden', 'none', ''],
+            'enum': createSelectOptions(['visible', 'hidden', 'none', '']),
             'x-decorator': 'FormItem',
             'x-component': 'Select',
             'x-component-props': {
@@ -127,7 +143,7 @@ export function createFieldSchema(
             'default': 'editable',
             'type': 'string',
             'title': '交互模式',
-            'enum': ['editable', 'disabled', 'readOnly', 'readPretty', ''],
+            'enum': createSelectOptions(['editable', 'disabled', 'readOnly', 'readPretty', '']),
             'x-decorator': 'FormItem',
             'x-component': 'Select',
             'x-component-props': {
@@ -143,7 +159,7 @@ export function createFieldSchema(
         },
       },
       ...createComponentSchema(component, decorator),
-    },
+    }),
   }
 }
 
@@ -153,20 +169,25 @@ export function createVoidFieldSchema(
 ): SettingsSchema {
   return {
     type: 'object',
-    properties: {
+    properties: createAccordionSchema({
       'field-group': {
         'type': 'void',
         'title': '节点属性',
-        'x-component': 'CollapseItem',
+        'x-component': 'Accordion.Item',
         'properties': {
           'name': {
             'type': 'string',
             'title': '节点标识',
+            'required': true,
             'x-decorator': 'FormItem',
             'x-component': 'Input',
             'x-component-props': {
               clearable: true,
             },
+            'x-validator': [
+              { required: true, message: '节点标识不能为空' },
+              '{{ $validateNodeName }}',
+            ],
           },
           'title': {
             'type': 'string',
@@ -190,7 +211,7 @@ export function createVoidFieldSchema(
             'default': 'visible',
             'type': 'string',
             'title': '展示状态',
-            'enum': ['visible', 'hidden', 'none', ''],
+            'enum': createSelectOptions(['visible', 'hidden', 'none', '']),
             'x-decorator': 'FormItem',
             'x-component': 'Select',
             'x-component-props': {
@@ -201,7 +222,7 @@ export function createVoidFieldSchema(
             'default': 'editable',
             'type': 'string',
             'title': '交互模式',
-            'enum': ['editable', 'disabled', 'readOnly', 'readPretty', ''],
+            'enum': createSelectOptions(['editable', 'disabled', 'readOnly', 'readPretty', '']),
             'x-decorator': 'FormItem',
             'x-component': 'Select',
             'x-component-props': {
@@ -211,6 +232,6 @@ export function createVoidFieldSchema(
         },
       },
       ...createComponentSchema(component, decorator),
-    },
+    }),
   }
 }

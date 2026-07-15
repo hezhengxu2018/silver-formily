@@ -2,18 +2,23 @@
 import type { TreeNode } from '@silver-formily/designer-core'
 import { Copy, Layers, Trash2 } from '@lucide/vue'
 import { TreeNode as TreeNodeModel } from '@silver-formily/designer-core'
+import { useObserver } from '@silver-formily/reactive-vue'
 import { HoverCardContent, HoverCardPortal, HoverCardRoot, HoverCardTrigger } from 'reka-ui'
 import { computed } from 'vue'
 import { useHover, useSelection } from '../hooks'
+import { reactiveComputed } from '../shared/reactive'
 import { getNodeTitle } from './node-title'
 
 const props = defineProps<{
   node: TreeNode
 }>()
 
+useObserver()
+
 const hoverRef = useHover()
 const selectionRef = useSelection()
 
+const titleRef = reactiveComputed(() => getNodeTitle(props.node))
 const parentNodes = computed(() => props.node.getParents().filter(node => node !== props.node))
 
 function handleCopy() {
@@ -49,7 +54,7 @@ function setHoverNode(node: TreeNode) {
           @mouseenter="setHoverNode(node)"
         >
           <Layers :size="12" />
-          <span>{{ getNodeTitle(node) }}</span>
+          <span>{{ titleRef }}</span>
         </button>
       </HoverCardTrigger>
       <HoverCardPortal v-if="parentNodes.length">
