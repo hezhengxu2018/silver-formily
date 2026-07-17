@@ -12,7 +12,7 @@ const props = defineProps<NumberFieldIncrementProps & {
 
 <template>
   <NumberFieldIncrement
-    :class="cn('absolute right-1 z-10 flex size-7 items-center justify-center rounded-sm text-muted-foreground transition-colors hover:text-foreground disabled:pointer-events-none disabled:opacity-40', props.class)"
+    :class="cn('absolute right-1 flex size-7 items-center justify-center rounded-sm text-muted-foreground transition-colors hover:text-foreground disabled:pointer-events-none disabled:opacity-40', props.class)"
   >
     <Plus class="size-3" />
   </NumberFieldIncrement>

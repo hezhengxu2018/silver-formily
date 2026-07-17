@@ -329,7 +329,7 @@ const Form: SettingsSchema = {
       'properties': {
         'form-group': {
           'type': 'void',
-          'title': '表单属性',
+          'title': '布局属性',
           'x-component': 'Accordion.Item',
           'properties': {
             layout: {

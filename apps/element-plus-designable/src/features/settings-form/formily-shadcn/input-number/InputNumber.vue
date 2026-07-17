@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { computed, useAttrs } from 'vue'
 import {
   NumberField,
   NumberFieldContent,
@@ -11,12 +12,21 @@ defineOptions({
   name: 'FormilyShadcnInputNumber',
   inheritAttrs: false,
 })
+
+const attrs = useAttrs()
+
+const numberFieldAttrsRef = computed(() => {
+  const { id: _id, ...numberFieldAttrs } = attrs
+  return numberFieldAttrs
+})
+
+const inputIdRef = computed(() => typeof attrs.id === 'string' ? attrs.id : undefined)
 </script>
 
 <template>
-  <NumberField v-bind="$attrs">
+  <NumberField v-bind="numberFieldAttrsRef">
     <NumberFieldContent>
-      <NumberFieldInput class="pr-16" data-slot="input" />
+      <NumberFieldInput :id="inputIdRef" class="pr-16" data-slot="input" />
       <NumberFieldDecrement />
       <NumberFieldIncrement />
     </NumberFieldContent>

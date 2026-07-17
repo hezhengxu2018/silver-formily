@@ -1,5 +1,6 @@
 import type { Field, GeneralField } from '@silver-formily/core'
 import { isVoidField } from '@silver-formily/core'
+import { getFieldControlId } from '../utils'
 
 export function getFeedbackMessage(field: Field) {
   return field.selfErrors.join(', ')
@@ -25,6 +26,7 @@ export function fieldFeedbackMapper(props: Record<string, any>, field?: GeneralF
   return {
     ...props,
     asterisk,
+    controlId: props.controlId ?? getFieldControlId(field),
     feedbackStatus,
     feedbackText,
   }

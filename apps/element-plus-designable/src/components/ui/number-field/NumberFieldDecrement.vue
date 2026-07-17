@@ -12,7 +12,7 @@ const props = defineProps<NumberFieldDecrementProps & {
 
 <template>
   <NumberFieldDecrement
-    :class="cn('absolute right-8 z-10 flex size-7 items-center justify-center rounded-sm text-muted-foreground transition-colors hover:text-foreground disabled:pointer-events-none disabled:opacity-40', props.class)"
+    :class="cn('absolute right-8 flex size-7 items-center justify-center rounded-sm text-muted-foreground transition-colors hover:text-foreground disabled:pointer-events-none disabled:opacity-40', props.class)"
   >
     <Minus class="size-3" />
   </NumberFieldDecrement>

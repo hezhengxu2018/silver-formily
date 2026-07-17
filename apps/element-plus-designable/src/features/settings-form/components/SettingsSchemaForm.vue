@@ -1,18 +1,20 @@
 <script setup lang="ts">
+import type { GeneralField } from '@silver-formily/core'
 import type { TreeNode } from '@silver-formily/designer-core'
 import type { Schema } from '@silver-formily/json-schema'
 import type { IAccordion } from '../formily-shadcn'
-import { createForm } from '@silver-formily/core'
+import { createForm, onFieldInputValueChange } from '@silver-formily/core'
+import { FormItem as ElementPlusFormItem, Form } from '@silver-formily/element-plus'
+import { connect, createSchemaField, mapProps } from '@silver-formily/vue'
+import { computed, defineComponent, h, onBeforeUnmount, onMounted, shallowRef, watch } from 'vue'
 import {
-  FormItem,
+  Accordion,
   Input,
   InputNumber,
   Select,
   Switch,
-} from '@silver-formily/element-plus'
-import { createSchemaField, FormProvider } from '@silver-formily/vue'
-import { computed, defineComponent, h, shallowRef, watch } from 'vue'
-import { Accordion } from '../formily-shadcn'
+} from '../formily-shadcn'
+import { getFieldControlId } from '../formily-shadcn/utils'
 
 const props = defineProps<{
   accordion?: IAccordion
@@ -32,11 +34,19 @@ const SettingsAccordion = defineComponent({
   },
 })
 
+const SettingsFormItem = connect(
+  ElementPlusFormItem,
+  mapProps((props: Record<string, any>, field: GeneralField) => ({
+    ...props,
+    for: props.for ?? getFieldControlId(field),
+  })),
+)
+
 const { SchemaField } = createSchemaField({
   components: {
     'Accordion': SettingsAccordion,
     'Accordion.Item': Accordion.Item,
-    FormItem,
+    'FormItem': SettingsFormItem,
     Input,
     'Input.TextArea': Input.TextArea,
     InputNumber,
@@ -47,6 +57,8 @@ const { SchemaField } = createSchemaField({
 
 const formRef = shallowRef(createSettingsForm())
 const formKeyRef = computed(() => props.sourceKey ?? props.node?.id ?? 'empty')
+let keyboardInputPending = false
+let snapshotTimer: ReturnType<typeof setTimeout> | undefined
 
 watch(
   formKeyRef,
@@ -62,8 +74,33 @@ function createSettingsForm() {
   return createForm({
     initialValues: createInitialValues(),
     values: node?.props,
+    effects() {
+      onFieldInputValueChange('*', () => {
+        if (!keyboardInputPending)
+          return
+
+        clearTimeout(snapshotTimer)
+        snapshotTimer = setTimeout(() => {
+          node?.takeSnapshot('update:node:props')
+          keyboardInputPending = false
+        }, 1000)
+      })
+    },
   })
 }
+
+function markKeyboardInput() {
+  keyboardInputPending = true
+}
+
+onMounted(() => {
+  window.addEventListener('keyup', markKeyboardInput)
+})
+
+onBeforeUnmount(() => {
+  window.removeEventListener('keyup', markKeyboardInput)
+  clearTimeout(snapshotTimer)
+})
 
 function createInitialValues() {
   const node = props.node
@@ -122,9 +159,11 @@ function validateNodeName(value?: string) {
 </script>
 
 <template>
-  <FormProvider
+  <Form
     :key="formKeyRef"
     :form="formRef"
+    :label-col="6"
+    :wrapper-col="16"
   >
     <SchemaField
       v-if="schema"
@@ -132,5 +171,5 @@ function validateNodeName(value?: string) {
       :schema="schema"
       :scope="{ $validateNodeName: validateNodeName }"
     />
-  </FormProvider>
+  </Form>
 </template>

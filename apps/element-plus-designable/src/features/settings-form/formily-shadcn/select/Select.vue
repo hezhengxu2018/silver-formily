@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { AcceptableValue } from 'reka-ui'
-import { computed } from 'vue'
+import { computed, useAttrs } from 'vue'
 import {
   Select,
   SelectContent,
@@ -27,6 +27,22 @@ const props = defineProps<{
   placeholder?: string
 }>()
 
+const modelValue = defineModel<AcceptableValue>()
+const emptyOptionValue = '__formily_empty_option__'
+const attrs = useAttrs()
+
+const selectAttrsRef = computed(() => {
+  const { id: _id, ...selectAttrs } = attrs
+  return selectAttrs
+})
+
+const triggerIdRef = computed(() => typeof attrs.id === 'string' ? attrs.id : undefined)
+
+const selectValueRef = computed({
+  get: () => modelValue.value === '' ? emptyOptionValue : modelValue.value,
+  set: value => modelValue.value = value === emptyOptionValue ? '' : value,
+})
+
 const normalizedOptionsRef = computed(() => {
   return (props.options ?? []).map((option) => {
     if (typeof option === 'object' && option !== null && 'value' in option)
@@ -40,8 +56,8 @@ const normalizedOptionsRef = computed(() => {
 </script>
 
 <template>
-  <Select v-bind="$attrs">
-    <SelectTrigger data-slot="input">
+  <Select v-model="selectValueRef" v-bind="selectAttrsRef">
+    <SelectTrigger :id="triggerIdRef" data-slot="input">
       <SelectValue :placeholder="placeholder ?? '请选择'" />
     </SelectTrigger>
     <SelectContent>
@@ -49,7 +65,7 @@ const normalizedOptionsRef = computed(() => {
         v-for="option of normalizedOptionsRef"
         :key="String(option.value)"
         :disabled="option.disabled"
-        :value="option.value"
+        :value="option.value === '' ? emptyOptionValue : option.value"
       >
         {{ option.label }}
       </SelectItem>
