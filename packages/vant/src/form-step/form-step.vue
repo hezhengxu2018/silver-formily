@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { VoidField } from '@silver-formily/core'
 import type { FormStepSchemaSlots, IFormStepProps } from './types'
-import { formilyComputed } from '@silver-formily/reactive-vue'
+import { reactiveComputed } from '@silver-formily/reactive-vue'
 import { isValid } from '@silver-formily/shared'
 import { RecursionField, useField, useFieldSchema } from '@silver-formily/vue'
 import { Step as VanStep, Steps as VanSteps } from 'vant'
@@ -25,7 +25,7 @@ const { b, prefixCls } = createNamespace('form-step')
 const steps = parseSteps(fieldSchemaRef.value)
 const innerFormStep = createFormStep()
 const formStep = props.formStep ?? innerFormStep
-const internalCurrent = formilyComputed(() => innerFormStep.current)
+const internalCurrent = reactiveComputed(() => innerFormStep.current)
 
 provide(FormStepSymbol, computed(() => formStep))
 formStep.connect?.(steps, field)

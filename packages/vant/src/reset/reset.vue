@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { ResetProps } from './types'
-import { formilyComputed } from '@silver-formily/reactive-vue'
+import { reactiveComputed } from '@silver-formily/reactive-vue'
 import { useParentForm } from '@silver-formily/vue'
 import { omit } from 'es-toolkit'
 import { ActionBarButton as VanActionBarButton, Button as VanButton } from 'vant'
@@ -30,7 +30,7 @@ const { props: resetAttrs } = useCleanAttrs([
   'nativeType',
 ])
 const isCompactGroup = computed(() => buttonGroupContext?.value.layout === 'compact')
-const isDisabled = formilyComputed(() => Boolean(formRef.value?.submitting || props.disabled))
+const isDisabled = reactiveComputed(() => Boolean(formRef.value?.submitting || props.disabled))
 const isLoading = computed(() => Boolean(props.loading))
 
 const buttonBindings = computed(() => {

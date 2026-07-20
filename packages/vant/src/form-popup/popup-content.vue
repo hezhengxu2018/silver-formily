@@ -2,7 +2,7 @@
 import type { Form } from '@silver-formily/core'
 import type { PropType } from 'vue'
 import type { FormPopupProps, FormPopupResolve, FormPopupSlots } from './types'
-import { formilyComputed } from '@silver-formily/reactive-vue'
+import { reactiveComputed } from '@silver-formily/reactive-vue'
 import { FormProvider } from '@silver-formily/vue'
 import { Button as VanButton, Popup as VanPopup } from 'vant'
 import { computed } from 'vue'
@@ -61,7 +61,7 @@ const popupBindings = computed(() => {
   return vanPopupProps
 })
 const hasHeader = computed(() => Boolean(slots.header || props.popupProps.title))
-const internalSubmitting = formilyComputed(() => {
+const internalSubmitting = reactiveComputed(() => {
   return Boolean(props.form.submitting || props.popupProps.okButtonProps?.loading)
 })
 const cancelDisabled = computed(() => {

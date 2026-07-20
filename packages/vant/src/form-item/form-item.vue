@@ -2,7 +2,7 @@
 import type { ComponentPublicInstance, CSSProperties } from 'vue'
 import type { VantFormItemInputController } from './context'
 import type { FormItemProps } from './types'
-import { formilyComputed } from '@silver-formily/reactive-vue'
+import { reactiveComputed } from '@silver-formily/reactive-vue'
 import { isValid } from '@silver-formily/shared'
 import { useField } from '@silver-formily/vue'
 import { isNil } from 'es-toolkit'
@@ -145,7 +145,7 @@ const isRequired = computed(() => {
 const hasFieldError = computed(() => resolvedFieldProps.value.error)
 
 const hasFieldBorder = computed(() => fieldProps.value.border !== false)
-const isLink = formilyComputed(() => Boolean(
+const isLink = reactiveComputed(() => Boolean(
   fieldModelRef.value?.pattern !== 'readPretty'
   && !fieldProps.value.disabled
   && !fieldProps.value.readonly

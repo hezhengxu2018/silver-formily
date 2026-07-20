@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { SubmitProps } from './types'
-import { formilyComputed } from '@silver-formily/reactive-vue'
+import { reactiveComputed } from '@silver-formily/reactive-vue'
 import { useParentForm } from '@silver-formily/vue'
 import { omit } from 'es-toolkit'
 import { ActionBarButton as VanActionBarButton, Button as VanButton } from 'vant'
@@ -29,7 +29,7 @@ const { props: submitAttrs } = useCleanAttrs([
   'nativeType',
 ])
 const nativeType = computed(() => (props.submit || props.onSubmit ? 'button' : 'submit'))
-const isLoading = formilyComputed(() => Boolean(formRef.value?.submitting || props.loading))
+const isLoading = reactiveComputed(() => Boolean(formRef.value?.submitting || props.loading))
 const isDisabled = computed(() => Boolean(isLoading.value || props.disabled))
 const isCompactGroup = computed(() => buttonGroupContext?.value.layout === 'compact')
 
