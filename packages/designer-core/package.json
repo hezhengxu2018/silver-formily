@@ -2,6 +2,7 @@
   "name": "@silver-formily/designer-core",
   "type": "module",
   "version": "0.0.1",
+  "private": true,
   "description": "Designable engine core for Silver Formily",
   "author": "hezhengxu",
   "license": "MIT",

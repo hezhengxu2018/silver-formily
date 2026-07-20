@@ -2,6 +2,7 @@
   "name": "@silver-formily/designer-vue",
   "type": "module",
   "version": "0.0.1",
+  "private": true,
   "description": "Vue 3 designable shell and widgets for Silver Formily designer",
   "author": "hezhengxu",
   "license": "MIT",
