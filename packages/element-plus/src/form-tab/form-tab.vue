@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { IFormTabProps } from './types.ts'
-import { formilyComputed, reactionWatch } from '@silver-formily/reactive-vue'
+import { reactionWatch, reactiveComputed } from '@silver-formily/reactive-vue'
 import { RecursionField, useField, useFieldSchema } from '@silver-formily/vue'
 import { ElBadge, ElTabPane, ElTabs } from 'element-plus'
 import { computed, ref, watch } from 'vue'
@@ -19,7 +19,7 @@ const field = useField()
 const schema = useFieldSchema()
 const prefixCls = `${stylePrefix}-form-tab`
 const formTabRef = computed(() => props.formTab ?? createFormTab())
-const tabs = formilyComputed(() => useTabs(field.value, schema.value))
+const tabs = reactiveComputed(() => useTabs(field.value, schema.value))
 const _activeKey = ref(props?.modelValue ?? formTabRef.value.activeKey ?? tabs.value?.[0]?.name)
 
 reactionWatch(() => {
@@ -33,7 +33,7 @@ watch(() => formTabRef.value.activeKey, (val) => {
   _activeKey.value = val
 })
 
-const errorList = formilyComputed(() => {
+const errorList = reactiveComputed(() => {
   return tabs.value.map((tab) => {
     return field.value.form.queryFeedbacks({
       type: 'error',

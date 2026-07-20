@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { ArrayField } from '@silver-formily/core'
 import type { ISchema } from '@silver-formily/json-schema'
-import { formilyComputed } from '@silver-formily/reactive-vue'
+import { reactiveComputed } from '@silver-formily/reactive-vue'
 import { isArr } from '@silver-formily/shared'
 import { RecursionField, useField, useFieldSchema } from '@silver-formily/vue'
 import { ElBadge, ElCollapseItem } from 'element-plus'
@@ -19,7 +19,7 @@ const field = fieldRef.value
 const schemaRef = useFieldSchema()
 const schema = schemaRef.value.parent
 const index = useIndex()
-const errorCount = formilyComputed(() => {
+const errorCount = reactiveComputed(() => {
   const path = field.address.concat()
   return field.form.queryFeedbacks({
     type: 'error',

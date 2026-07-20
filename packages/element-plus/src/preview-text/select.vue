@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { Field } from '@silver-formily/core'
-import { formilyComputed } from '@silver-formily/reactive-vue'
+import { reactiveComputed } from '@silver-formily/reactive-vue'
 import { isValid } from '@silver-formily/shared'
 import { useField } from '@silver-formily/vue'
 import { ElSpace, ElTag, ElText } from 'element-plus'
@@ -23,7 +23,7 @@ const fieldRef = useField<Field>()
 const attrs = useAttrs()
 const rootAttrs = useExcludedAttrs(['multiple'])
 const { spaceProps, textProps, tagProps, placeholder } = usePreviewConfig()
-const dataSource = formilyComputed(() => fieldRef.value?.dataSource ?? [])
+const dataSource = reactiveComputed(() => fieldRef.value?.dataSource ?? [])
 
 function getOptionLabel(value: any) {
   return dataSource.value.find(i => i.value === value)?.label ?? value

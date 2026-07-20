@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { PropType } from 'vue'
 import type { IFormCollapse } from './utils'
-import { formilyComputed } from '@silver-formily/reactive-vue'
+import { reactiveComputed } from '@silver-formily/reactive-vue'
 import { isFn } from '@silver-formily/shared'
 import { RecursionField, useField, useFieldSchema } from '@silver-formily/vue'
 import { ElBadge, ElCollapse, ElCollapseItem } from 'element-plus'
@@ -24,7 +24,7 @@ const collapseAttrs = useExcludedAttrs(['modelValue', 'onUpdate:modelValue'])
 
 const field = useField()
 const schema = useFieldSchema()
-const panels = formilyComputed(() => usePanels(field.value, schema.value))
+const panels = reactiveComputed(() => usePanels(field.value, schema.value))
 const formCollapseRef = computed(
   () => props.formCollapse ?? createFormCollapse(),
 )
@@ -37,7 +37,7 @@ function takeActiveKeys(panelList) {
   return panelList.map(item => item.name)
 }
 
-const panelErrorCounts = formilyComputed(() => {
+const panelErrorCounts = reactiveComputed(() => {
   return panels.value.map((item) => {
     const panelErrors = field.value.form.queryFeedbacks({
       type: 'error',

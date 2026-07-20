@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { ArrayField } from '@silver-formily/core'
 import { DArrowLeft, DArrowRight, MoreFilled } from '@element-plus/icons-vue'
-import { formilyComputed, useObserver } from '@silver-formily/reactive-vue'
+import { reactiveComputed, useObserver } from '@silver-formily/reactive-vue'
 import { useField } from '@silver-formily/vue'
 import { CHANGE_EVENT, ElBadge, useLocale, useNamespace } from 'element-plus'
 import { computed, ref, watchEffect } from 'vue'
@@ -160,7 +160,7 @@ useObserver()
 const fieldRef = useField<ArrayField>()
 const field = fieldRef.value
 const path = field.address.entire
-const errorPageIndexList = formilyComputed(() => {
+const errorPageIndexList = reactiveComputed(() => {
   const errorPageSet = field.form
     .queryFeedbacks({
       type: 'error',
@@ -177,10 +177,10 @@ const errorPageIndexList = formilyComputed(() => {
   return errorPageList
 })
 
-const isPrevMoreError = formilyComputed(() => {
+const isPrevMoreError = reactiveComputed(() => {
   return errorPageIndexList.value.some(pageIdx => (pageIdx < pagers.value[0] - 1) && pageIdx !== 0)
 })
-const isNextMoreError = formilyComputed(() => {
+const isNextMoreError = reactiveComputed(() => {
   return errorPageIndexList.value.some(pageIdx => (pageIdx > pagers.value.at(-1) - 1) && pageIdx !== errorPageIndexList.value.length - 1)
 })
 </script>

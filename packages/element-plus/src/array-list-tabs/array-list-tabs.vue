@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { ArrayField } from '@silver-formily/core'
 import type { ISchema } from '@silver-formily/json-schema'
-import { autorunEffect, formilyComputed } from '@silver-formily/reactive-vue'
+import { autorunEffect, reactiveComputed } from '@silver-formily/reactive-vue'
 import { isArr } from '@silver-formily/shared'
 import { RecursionField, useField, useFieldSchema } from '@silver-formily/vue'
 import { ElBadge, ElEmpty, ElScrollbar } from 'element-plus'
@@ -49,7 +49,7 @@ autorunEffect(() => {
     : []
 })
 
-const errorCountList = formilyComputed(() => {
+const errorCountList = reactiveComputed(() => {
   if (!isArr(field.value))
     return []
   if (props.showTitleFieldInTab) {

@@ -3,7 +3,7 @@ import type { ArrayField } from '@silver-formily/core'
 import type { Schema } from '@silver-formily/json-schema'
 import type { TableInstance } from 'element-plus'
 import type { IArrayTableProps } from './types'
-import { autorunEffect, formilyComputed } from '@silver-formily/reactive-vue'
+import { autorunEffect, reactiveComputed } from '@silver-formily/reactive-vue'
 import { isArr } from '@silver-formily/shared'
 import { RecursionField, useField, useFieldSchema } from '@silver-formily/vue'
 import { ElTable, ElTableColumn, vLoading } from 'element-plus'
@@ -84,7 +84,7 @@ function updateDataSource() {
 watch([pageSize, currentPage], updateDataSource)
 autorunEffect(updateDataSource)
 
-const sources = formilyComputed(() => {
+const sources = reactiveComputed(() => {
   const schema = schemaRef.value.items
   const items = isArr(schema) ? schema : [schema]
   return items.reduce((columns, schema) => {
