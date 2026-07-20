@@ -1,5 +1,11 @@
 {
   "extends": "@silver-formily/typescript-config/docs.json",
+  "compilerOptions": {
+    "paths": {
+      "@silver-formily/reactive-vue": ["../../packages/reactive-vue/src"],
+      "@silver-formily/reactive-vue/*": ["../../packages/reactive-vue/src/*"]
+    }
+  },
   "include": [
     ".vitepress/**/*.ts",
     ".vitepress/**/*.d.ts",

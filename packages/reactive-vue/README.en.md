@@ -18,7 +18,8 @@ This package sits between the reactive engine and the Vue rendering layer:
 
 - `observer`
 - `useObserver`
-- `formilyComputed`
+- `reactiveComputed`
+- `formilyComputed` (deprecated, use `reactiveComputed`)
 - `autorunEffect`
 - `reactionWatch`
 

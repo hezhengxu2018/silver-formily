@@ -1,7 +1,7 @@
 export { autorunEffect } from './hooks/autorunEffect'
 export { reactionWatch } from './hooks/reactionWatch'
-export { formilyComputed } from './hooks/useFormilyComputed'
 export { useObserver } from './hooks/useObserver'
+export { formilyComputed, reactiveComputed } from './hooks/useReactiveComputed'
 export { observer } from './observer'
 
 export type { IObserverOptions } from './types'

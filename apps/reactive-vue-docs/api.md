@@ -2,7 +2,7 @@
 
 `observer` 的实现原理是对传入的组件返回一个包裹组件（HOC），在组件内调用 `useObserver` 因此会额外产生一层组件。如果你正在封装组件，那么在组件内使用 `useObserver` 来实现响应式的同步是更直接的方式。 `observer` 本身是`@formily/vue` 为了兼容 Vue2 的实现所产生的，在 Vue3 的封装中应该优先使用 `useObserver`。
 
-另外 `useObserver` 内部使用了 Vue3 未暴露的接口改写了内部响应式的更新方式。如果你不希望使用 hack 的方式解决响应式同步的问题，那么使用`formilyComputed`是更透明直接的选择，对于自己封装的组件基本都可以绕过`useObserver`的使用。
+另外 `useObserver` 内部使用了 Vue3 未暴露的接口改写了内部响应式的更新方式。如果你不希望使用 hack 的方式解决响应式同步的问题，那么使用`reactiveComputed`是更透明直接的选择，对于自己封装的组件基本都可以绕过`useObserver`的使用。
 
 ## observer
 
@@ -53,7 +53,7 @@ interface useObserver {
 useObserver
 :::
 
-## formilyComputed <ElTag>1.0.0</ElTag>
+## reactiveComputed <ElTag>2.0.0</ElTag>
 
 将一个 `@silver-formily/reactive` 的响应式转为 Vue3 的响应式（ComputedRef）。在 Vue3 中可以完全替代 `observable.computed`。
 
@@ -64,7 +64,7 @@ import type { IReactionOptions } from '@silver-formily/reactive'
 import type { ComputedRef } from 'vue'
 
 // options 默认值为 { fireImmediately: true }
-interface formilyComputed {
+interface reactiveComputed {
   (tracker: () => T, options?: IReactionOptions): ComputedRef<T>
 }
 ```
@@ -72,8 +72,12 @@ interface formilyComputed {
 ### 用例
 
 :::demo
-formilyComputed
+reactiveComputed
 :::
+
+## formilyComputed <ElTag type="warning">已废弃</ElTag>
+
+`formilyComputed` 是 `reactiveComputed` 的旧命名，目前仍然保留导出以兼容已有代码。新代码请使用 `reactiveComputed`。
 
 ## autorunEffect <ElTag>1.1.0</ElTag>
 

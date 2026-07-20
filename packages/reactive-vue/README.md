@@ -18,7 +18,8 @@
 
 - `observer`
 - `useObserver`
-- `formilyComputed`
+- `reactiveComputed`
+- `formilyComputed`（已废弃，请使用 `reactiveComputed`）
 - `autorunEffect`
 - `reactionWatch`
 

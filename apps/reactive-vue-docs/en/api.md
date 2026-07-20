@@ -2,7 +2,7 @@
 
 `observer` returns a higher-order component that wraps whatever you pass in, so calling `useObserver` from inside a component still inserts an extra level in the tree. If you are building your own components, prefer calling `useObserver` directly so the reactive syncing stays local. The `observer` helper exists in `@formily/vue` primarily to keep Vue 2 compatibility, but for Vue 3-centric codebases the hook should be your first choice.
 
-Internally, `useObserver` rewires Vue 3 reactivity with a non-public API. If you would rather avoid that hack, reach for `formilyComputed`, which exposes the Formily reaction as a standard Vue `ComputedRef` so most custom wrappers never need to touch `useObserver`.
+Internally, `useObserver` rewires Vue 3 reactivity with a non-public API. If you would rather avoid that hack, reach for `reactiveComputed`, which exposes the Formily reaction as a standard Vue `ComputedRef` so most custom wrappers never need to touch `useObserver`.
 
 ## observer
 
@@ -53,7 +53,7 @@ interface useObserver {
 useObserver
 :::
 
-## formilyComputed <ElTag>1.0.0</ElTag>
+## reactiveComputed <ElTag>2.0.0</ElTag>
 
 Converts a `@silver-formily/reactive` computation into a Vue 3 `ComputedRef`. You can use it anywhere Vue expects a computed value (Pinia, props, etc.).
 
@@ -64,7 +64,7 @@ import type { IReactionOptions } from '@silver-formily/reactive'
 import type { ComputedRef } from 'vue'
 
 // options default to { fireImmediately: true }
-interface formilyComputed {
+interface reactiveComputed {
   <T>(tracker: () => T, options?: IReactionOptions): ComputedRef<T>
 }
 ```
@@ -72,8 +72,12 @@ interface formilyComputed {
 ### Usage
 
 :::demo
-formilyComputed
+reactiveComputed
 :::
+
+## formilyComputed <ElTag type="warning">Deprecated</ElTag>
+
+`formilyComputed` is the previous name for `reactiveComputed`. It remains exported for compatibility, but new code should use `reactiveComputed`.
 
 ## autorunEffect <ElTag>1.1.0</ElTag>
 
