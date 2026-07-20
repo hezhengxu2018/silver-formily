@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import type { TreeNode } from '@silver-formily/designer-core'
 import { SelectNodeEvent } from '@silver-formily/designer-core'
-import { reactiveComputed, useOperation } from '@silver-formily/designer-vue'
-import { useObserver } from '@silver-formily/reactive-vue'
+import { useOperation } from '@silver-formily/designer-vue'
+import { reactiveComputed, useObserver } from '@silver-formily/reactive-vue'
 import { computed, onBeforeUnmount, shallowRef, useAttrs, watch } from 'vue'
 import { createNamespace } from '@/lib/utils'
 import FieldSchemaPanel from './components/FieldSchemaPanel.vue'

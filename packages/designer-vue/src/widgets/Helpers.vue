@@ -2,11 +2,10 @@
 import type { TreeNode } from '@silver-formily/designer-core'
 import { Copy, Layers, Trash2 } from '@lucide/vue'
 import { TreeNode as TreeNodeModel } from '@silver-formily/designer-core'
-import { useObserver } from '@silver-formily/reactive-vue'
+import { reactiveComputed, useObserver } from '@silver-formily/reactive-vue'
 import { HoverCardContent, HoverCardPortal, HoverCardRoot, HoverCardTrigger } from 'reka-ui'
 import { computed } from 'vue'
 import { useHover, useSelection } from '../hooks'
-import { reactiveComputed } from '../shared/reactive'
 import { getNodeTitle } from './node-title'
 
 const props = defineProps<{

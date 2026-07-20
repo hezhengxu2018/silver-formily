@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { PanelLeftClose, PanelLeftOpen, Trash2 } from '@lucide/vue'
-import { reactiveComputed, useWorkspace } from '@silver-formily/designer-vue'
+import { useWorkspace } from '@silver-formily/designer-vue'
 import { autorun } from '@silver-formily/reactive'
+import { reactiveComputed } from '@silver-formily/reactive-vue'
 import { storeToRefs } from 'pinia'
 import { computed, onBeforeUnmount, ref, watch } from 'vue'
 import {

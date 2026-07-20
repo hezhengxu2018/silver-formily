@@ -1,8 +1,8 @@
 import type { Workspace } from '@silver-formily/designer-core'
 import type { Ref } from 'vue'
+import { reactiveComputed } from '@silver-formily/reactive-vue'
 import { inject, ref } from 'vue'
 import { WorkspaceSymbol } from '../context'
-import { reactiveComputed } from '../shared/reactive'
 import { useDesigner } from './useDesigner'
 
 export function useWorkspace(id?: string): Ref<Workspace | null> {

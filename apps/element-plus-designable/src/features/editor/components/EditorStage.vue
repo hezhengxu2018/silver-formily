@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { ComponentTreeWidget, EmptyWidget, reactiveComputed, useTree, Viewport } from '@silver-formily/designer-vue'
+import { ComponentTreeWidget, EmptyWidget, useTree, Viewport } from '@silver-formily/designer-vue'
+import { reactiveComputed } from '@silver-formily/reactive-vue'
 import { storeToRefs } from 'pinia'
 import { createNamespace } from '@/lib/utils'
 import { useEditorStore } from '@/stores/editor'

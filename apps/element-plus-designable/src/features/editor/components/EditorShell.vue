@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { Designer, reactiveComputed, Workspace } from '@silver-formily/designer-vue'
+import { Designer, Workspace } from '@silver-formily/designer-vue'
+import { reactiveComputed } from '@silver-formily/reactive-vue'
 import { watch } from 'vue'
 import { createNamespace } from '@/lib/utils'
 import { useEditorSchemaStore } from '@/stores/editorSchema'

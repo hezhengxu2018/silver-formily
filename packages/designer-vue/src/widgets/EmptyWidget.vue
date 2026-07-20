@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { CursorStatus } from '@silver-formily/designer-core'
+import { reactiveComputed } from '@silver-formily/reactive-vue'
 import { useCursor, useTree, useViewport } from '../hooks'
-import { reactiveComputed } from '../shared/reactive'
 
 defineSlots<{
   default?: (props: { isDragOver: boolean }) => unknown

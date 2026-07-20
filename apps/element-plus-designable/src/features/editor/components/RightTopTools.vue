@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { Redo, Undo } from '@lucide/vue'
-import { reactiveComputed, useWorkspace } from '@silver-formily/designer-vue'
+import { useWorkspace } from '@silver-formily/designer-vue'
 import { autorun } from '@silver-formily/reactive'
+import { reactiveComputed } from '@silver-formily/reactive-vue'
 import { onBeforeUnmount, ref, watch } from 'vue'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import { createNamespace } from '@/lib/utils'

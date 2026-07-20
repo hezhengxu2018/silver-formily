@@ -1,9 +1,9 @@
 import type { TreeNode } from '@silver-formily/designer-core'
 import type { PropType, VNode } from 'vue'
+import { reactiveComputed } from '@silver-formily/reactive-vue'
 import { defineComponent, Fragment, provide, toRef } from 'vue'
 import { TreeNodeSymbol } from '../context'
 import { useComponents, useDesigner } from '../hooks'
-import { reactiveComputed } from '../shared/reactive'
 import RuntimeNode from './RuntimeNode.vue'
 
 const TreeNodeWidgetComponent = defineComponent({
