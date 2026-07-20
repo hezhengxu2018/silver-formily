@@ -1,33 +1,30 @@
 {
-  "extends": "@silver-formily/typescript-config/base.json",
+  "extends": "@silver-formily/typescript-config/vue-library.json",
   "compilerOptions": {
-    "target": "ES2022",
-    "jsx": "preserve",
-    "jsxImportSource": "vue",
-    "lib": ["DOM", "ES2022"],
-    "baseUrl": ".",
-    "ignoreDeprecations": "6.0",
-    "module": "ESNext",
-    "moduleResolution": "bundler",
     "paths": {
-      "@silver-formily/designer-core": ["../designer-core/src/index.ts"],
-      "@silver-formily/designer-vue": ["./src/index.ts"],
-      "@silver-formily/designer-vue/*": ["./src/*"],
-      "@silver-formily/reactive": ["../reactive/src/index.ts"],
-      "@silver-formily/reactive-vue": ["../reactive-vue/src/index.ts"]
-    },
-    "resolveJsonModule": true,
-    "types": ["node"],
-    "allowJs": false,
-    "strict": false,
-    "noUnusedLocals": false,
-    "declaration": false,
-    "emitDeclarationOnly": false,
-    "noEmit": true,
-    "esModuleInterop": true,
-    "verbatimModuleSyntax": false,
-    "skipLibCheck": true
+      "@silver-formily/designer-core": [
+        "../designer-core/src/index.ts"
+      ],
+      "@silver-formily/designer-vue": [
+        "./src/index.ts"
+      ],
+      "@silver-formily/designer-vue/*": [
+        "./src/*"
+      ],
+      "@silver-formily/reactive": [
+        "../reactive/src/index.ts"
+      ],
+      "@silver-formily/reactive-vue": [
+        "../reactive-vue/src/index.ts"
+      ]
+    }
   },
-  "include": ["src", "playground"],
-  "exclude": ["node_modules", "esm"]
+  "include": [
+    "src",
+    "playground"
+  ],
+  "exclude": [
+    "node_modules",
+    "esm"
+  ]
 }

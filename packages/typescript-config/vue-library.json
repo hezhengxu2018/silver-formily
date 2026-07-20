@@ -1,0 +1,19 @@
+{
+  "extends": "./base.json",
+  "compilerOptions": {
+    "target": "ES2022",
+    "jsx": "preserve",
+    "jsxImportSource": "vue",
+    "lib": ["DOM", "ES2022"],
+    "experimentalDecorators": true,
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "types": ["node", "vue/jsx"],
+    "allowJs": false,
+    "strict": false,
+    "noUnusedLocals": false,
+    "declaration": false,
+    "emitDeclarationOnly": false,
+    "noEmit": true
+  }
+}

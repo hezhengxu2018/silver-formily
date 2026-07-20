@@ -45,6 +45,7 @@
     "@silver-formily/shared": "workspace:*"
   },
   "devDependencies": {
+    "@silver-formily/typescript-config": "workspace:*",
     "@vitest/coverage-istanbul": "catalog:",
     "eslint": "catalog:",
     "oxc-resolver": "catalog:",

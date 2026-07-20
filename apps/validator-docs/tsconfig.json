@@ -1,5 +1,5 @@
 {
-  "extends": "../../packages/typescript-config/docs.json",
+  "extends": "@silver-formily/typescript-config/docs.json",
   "include": [
     ".vitepress/**/*.ts",
     ".vitepress/**/*.d.ts",
@@ -9,5 +9,9 @@
     "components.d.ts",
     "env.d.ts"
   ],
-  "exclude": ["node_modules", ".vitepress/cache", ".vitepress/dist"]
+  "exclude": [
+    "node_modules",
+    ".vitepress/cache",
+    ".vitepress/dist"
+  ]
 }

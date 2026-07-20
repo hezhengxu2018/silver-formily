@@ -1220,6 +1220,9 @@ importers:
 
   packages/path:
     devDependencies:
+      '@silver-formily/typescript-config':
+        specifier: workspace:*
+        version: link:../typescript-config
       '@vitest/coverage-istanbul':
         specifier: 'catalog:'
         version: 4.1.4(vitest@4.1.4)
@@ -1256,6 +1259,9 @@ importers:
       '@silver-formily/shared':
         specifier: workspace:*
         version: link:../shared
+      '@silver-formily/typescript-config':
+        specifier: workspace:*
+        version: link:../typescript-config
       '@vitest/coverage-istanbul':
         specifier: 'catalog:'
         version: 4.1.4(vitest@4.1.4)
@@ -1325,6 +1331,9 @@ importers:
 
   packages/shared:
     devDependencies:
+      '@silver-formily/typescript-config':
+        specifier: workspace:*
+        version: link:../typescript-config
       '@vitest/browser':
         specifier: 'catalog:'
         version: 4.1.4(vite@8.0.8(@types/node@24.10.13)(esbuild@0.28.0)(jiti@2.7.0)(sass-embedded@1.97.3)(sass@1.97.3)(tsx@4.22.3)(yaml@2.8.2))(vitest@4.1.4)
@@ -1367,6 +1376,9 @@ importers:
         specifier: workspace:*
         version: link:../shared
     devDependencies:
+      '@silver-formily/typescript-config':
+        specifier: workspace:*
+        version: link:../typescript-config
       '@vitest/coverage-istanbul':
         specifier: 'catalog:'
         version: 4.1.4(vitest@4.1.4)

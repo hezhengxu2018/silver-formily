@@ -44,6 +44,7 @@
   "devDependencies": {
     "@silver-formily/path": "workspace:*",
     "@silver-formily/shared": "workspace:*",
+    "@silver-formily/typescript-config": "workspace:*",
     "@vitest/coverage-istanbul": "catalog:",
     "@vue/reactivity": "catalog:",
     "es-toolkit": "catalog:",

@@ -1,19 +1,31 @@
 {
-  "extends": "../typescript-config/base.json",
+  "extends": "@silver-formily/typescript-config/legacy-library.json",
   "compilerOptions": {
-    "useDefineForClassFields": false,
     "paths": {
-      "@silver-formily/core": ["./src/index.ts"],
-      "@silver-formily/path": ["../path/src/index.ts"],
-      "@silver-formily/reactive": ["../reactive/src/index.ts"],
-      "@silver-formily/shared": ["../shared/src/index.ts"],
-      "@silver-formily/validator": ["../validator/src/index.ts"]
-    },
-    "strict": false,
-    "noUnusedLocals": false,
-    "noEmit": true,
-    "verbatimModuleSyntax": false
+      "@silver-formily/core": [
+        "./src/index.ts"
+      ],
+      "@silver-formily/path": [
+        "../path/src/index.ts"
+      ],
+      "@silver-formily/reactive": [
+        "../reactive/src/index.ts"
+      ],
+      "@silver-formily/shared": [
+        "../shared/src/index.ts"
+      ],
+      "@silver-formily/validator": [
+        "../validator/src/index.ts"
+      ]
+    }
   },
-  "include": ["src/**/*.ts", "src/global.d.ts"],
-  "exclude": ["node_modules", "esm", "src/__tests__"]
+  "include": [
+    "src/**/*.ts",
+    "src/global.d.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "esm",
+    "src/__tests__"
+  ]
 }

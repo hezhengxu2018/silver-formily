@@ -1,0 +1,10 @@
+{
+  "extends": "./base.json",
+  "compilerOptions": {
+    "useDefineForClassFields": false,
+    "strict": false,
+    "noUnusedLocals": false,
+    "noEmit": true,
+    "verbatimModuleSyntax": false
+  }
+}

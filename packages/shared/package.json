@@ -41,6 +41,7 @@
     "prepublishOnly": "pnpm run build"
   },
   "devDependencies": {
+    "@silver-formily/typescript-config": "workspace:*",
     "@vitest/browser": "catalog:",
     "@vitest/browser-playwright": "catalog:",
     "@vitest/coverage-istanbul": "catalog:",
