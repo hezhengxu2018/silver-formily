@@ -1,12 +1,12 @@
-import type { DesignableComponent } from '../types'
+import type { DesignableComponent } from '../../types'
 import { createForm } from '@silver-formily/core'
 import { createBehavior, createResource } from '@silver-formily/designer-core'
 import { Form as FormilyForm } from '@silver-formily/element-plus'
 import { useObserver } from '@silver-formily/reactive-vue'
 import { computed, defineComponent } from 'vue'
-import { AllLocales } from '../locales'
-import { AllSchemas } from '../schemas'
-import { composeExport } from '../shared'
+import { AllLocales } from '../../locales'
+import { AllSchemas } from '../../schemas'
+import { composeExport } from '../../shared'
 
 export const formDefaultProps = {
   labelCol: 4,

@@ -3,7 +3,7 @@ import type { Component } from 'vue'
 import type { DesignableComponent } from '../types'
 import { createBehavior, createResource } from '@silver-formily/designer-core'
 import { composeExport } from '../shared'
-import { createFieldSchema, createVoidFieldSchema } from './Field/shared'
+import { createFieldSchema, createVoidFieldSchema } from './field/shared'
 
 export interface ElementPlusResourceOptions {
   component: Component

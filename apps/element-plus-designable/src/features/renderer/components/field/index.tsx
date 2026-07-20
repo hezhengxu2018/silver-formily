@@ -1,4 +1,4 @@
-import type { DesignableComponent } from '../types'
+import type { DesignableComponent } from '../../types'
 import { createBehavior } from '@silver-formily/designer-core'
 import { useComponents, useDesigner, useNode } from '@silver-formily/designer-vue'
 import { FormItem } from '@silver-formily/element-plus'
@@ -6,10 +6,10 @@ import { toJS } from '@silver-formily/reactive'
 import { useObserver } from '@silver-formily/reactive-vue'
 import { ArrayField, Field as FormilyField, ObjectField, VoidField } from '@silver-formily/vue'
 import { defineComponent, h } from 'vue'
-import { AllLocales } from '../locales'
-import { composeExport, resolveComponentPath } from '../shared'
-import { createFieldSchema } from './Field/shared'
-import './Field.css'
+import { AllLocales } from '../../locales'
+import { composeExport, resolveComponentPath } from '../../shared'
+import { createFieldSchema } from './shared'
+import './index.css'
 
 const previewStyle = {
   pointerEvents: 'none',
