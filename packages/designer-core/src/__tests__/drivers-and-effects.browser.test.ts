@@ -1,0 +1,603 @@
+import { KeyCode } from '@silver-formily/designer-shared'
+import { afterEach, describe, expect, it, vi } from 'vitest'
+import { DragDropDriver } from '../drivers/DragDropDriver'
+import { MouseMoveDriver } from '../drivers/MouseMoveDriver'
+import { ViewportResizeDriver } from '../drivers/ViewportResizeDriver'
+import { ViewportScrollDriver } from '../drivers/ViewportScrollDriver'
+import { useContentEditableEffect } from '../effects/useContentEditableEffect'
+import { useCursorEffect } from '../effects/useCursorEffect'
+import { useDragDropEffect } from '../effects/useDragDropEffect'
+import { useSelectionEffect } from '../effects/useSelectionEffect'
+import { DragStartEvent, DragStopEvent, MouseClickEvent, MouseDoubleClickEvent } from '../events'
+import { CursorStatus, Engine, Viewport } from '../models'
+
+function createCursorEvent<T extends MouseClickEvent | MouseDoubleClickEvent>(
+  EventType: new (data: ConstructorParameters<typeof MouseClickEvent>[0]) => T,
+  target: EventTarget,
+) {
+  return new EventType({
+    clientX: 0,
+    clientY: 0,
+    pageX: 0,
+    pageY: 0,
+    target,
+    view: window,
+  })
+}
+
+function createDragStartEvent(target: EventTarget) {
+  return new DragStartEvent({
+    clientX: 0,
+    clientY: 0,
+    pageX: 0,
+    pageY: 0,
+    target,
+    view: window,
+  })
+}
+
+describe('designer-core regression coverage', () => {
+  afterEach(() => {
+    vi.useRealTimers()
+    document.body.innerHTML = ''
+    vi.restoreAllMocks()
+  })
+
+  it('mouseMoveDriver detach removes the same mousemove listener it attaches', () => {
+    const driver = new MouseMoveDriver({} as any)
+    const attachSpy = vi.spyOn(driver, 'addEventListener')
+    const detachSpy = vi.spyOn(driver, 'removeEventListener')
+
+    driver.attach()
+    driver.detach()
+
+    expect(attachSpy).toHaveBeenCalledWith('mousemove', driver.onMouseMove, {
+      mode: 'onlyOne',
+    })
+    expect(detachSpy).toHaveBeenCalledWith('mousemove', driver.onMouseMove, {
+      mode: 'onlyOne',
+    })
+  })
+
+  it('event drivers cancel pending animation frames when detached', () => {
+    vi.useFakeTimers()
+    const engine = { dispatch: vi.fn() } as any
+    const mouseMoveDriver = new MouseMoveDriver(engine)
+    const scrollDriver = new ViewportScrollDriver(engine)
+    const resizeDriver = new ViewportResizeDriver(engine)
+
+    mouseMoveDriver.onMouseMove(new MouseEvent('mousemove', { view: window }))
+    scrollDriver.onScroll(new UIEvent('scroll'))
+    resizeDriver.onResize(new UIEvent('resize'))
+
+    mouseMoveDriver.detach()
+    scrollDriver.detach()
+    resizeDriver.detach()
+    vi.runAllTimers()
+
+    expect(engine.dispatch).not.toHaveBeenCalled()
+    expect(mouseMoveDriver.request).toBeNull()
+    expect(scrollDriver.request).toBeNull()
+    expect(resizeDriver.request).toBeNull()
+  })
+
+  it('dragDropDriver keeps the mousedown listener after mouseup for subsequent drags', () => {
+    const driver = new DragDropDriver({} as any)
+    const removeSpy = vi.spyOn(driver, 'batchRemoveEventListener')
+
+    driver.onMouseUp(new MouseEvent('mouseup', { view: window }))
+
+    expect(
+      removeSpy.mock.calls.some(([type]) => type === 'mousedown'),
+    ).toBe(false)
+    expect(removeSpy).toHaveBeenCalledWith('dragend', driver.onMouseUp)
+    expect(removeSpy).toHaveBeenCalledWith('dragstart', driver.onStartDrag)
+  })
+
+  it('dragDropDriver removes the captured mousedown listener on detach', () => {
+    const driver = new DragDropDriver({} as any)
+    const removeSpy = vi.spyOn(driver, 'batchRemoveEventListener')
+
+    driver.detach()
+
+    expect(removeSpy).toHaveBeenCalledWith('mousedown', driver.onMouseDown, true)
+  })
+
+  it('useContentEditableEffect removes paste and keydown listeners when editing ends', () => {
+    const subscribeMap = new Map<
+      new (...args: any[]) => unknown,
+      (event: MouseClickEvent | MouseDoubleClickEvent) => void
+    >()
+    const targetNode = {
+      props: {},
+      takeSnapshot: vi.fn(),
+    }
+    const engine = {
+      props: {
+        contentEditableAttrName: 'data-content-editable',
+        contentEditableNodeIdAttrName: 'data-content-editable-node-id',
+        nodeIdAttrName: 'data-node-id',
+      },
+      workbench: {
+        activeWorkspace: {
+          operation: {
+            tree: {
+              findById: vi.fn(() => targetNode),
+            },
+          },
+        },
+      },
+      subscribeTo: vi.fn((EventType, handler) => {
+        subscribeMap.set(EventType, handler)
+      }),
+    } as any
+
+    useContentEditableEffect(engine)
+
+    const editableElement = document.createElement('div')
+    editableElement.setAttribute('data-content-editable', 'title')
+    editableElement.setAttribute('data-content-editable-node-id', 'node-1')
+    document.body.appendChild(editableElement)
+
+    const addSpy = vi.spyOn(editableElement, 'addEventListener')
+    const removeSpy = vi.spyOn(editableElement, 'removeEventListener')
+
+    subscribeMap
+      .get(MouseDoubleClickEvent)
+      ?.(
+        createCursorEvent(MouseDoubleClickEvent, editableElement),
+      )
+
+    expect(addSpy).toHaveBeenCalledWith('paste', expect.any(Function))
+    expect(addSpy).toHaveBeenCalledWith('keydown', expect.any(Function))
+
+    subscribeMap
+      .get(MouseClickEvent)
+      ?.(
+        createCursorEvent(MouseClickEvent, document.body),
+      )
+
+    expect(removeSpy).toHaveBeenCalledWith('keydown', expect.any(Function))
+    expect(removeSpy).toHaveBeenCalledWith('paste', expect.any(Function))
+  })
+
+  it('useSelectionEffect selects the clicked node by default', () => {
+    const subscribeMap = new Map<any, (event: MouseClickEvent) => void>()
+    const selection = {
+      add: vi.fn(),
+      crossAddTo: vi.fn(),
+      has: vi.fn(() => false),
+      remove: vi.fn(),
+      select: vi.fn(),
+      selected: [],
+    }
+    const node = { id: 'node-1' }
+    const engine = {
+      cursor: { status: CursorStatus.Normal },
+      keyboard: {
+        isKeyDown: vi.fn(() => false),
+        requestClean: vi.fn(),
+      },
+      props: {
+        nodeIdAttrName: 'data-node-id',
+        nodeSelectionIdAttrName: 'data-helper-id',
+        outlineNodeIdAttrName: 'data-outline-id',
+      },
+      subscribeTo: vi.fn((EventType, handler) => {
+        subscribeMap.set(EventType, handler)
+      }),
+      workbench: {
+        activeWorkspace: {
+          operation: {
+            selection,
+            tree: {
+              findById: vi.fn(() => node),
+            },
+          },
+        },
+      },
+    } as any
+
+    useSelectionEffect(engine)
+
+    const element = document.createElement('div')
+    element.setAttribute('data-node-id', 'node-1')
+    document.body.appendChild(element)
+
+    subscribeMap
+      .get(MouseClickEvent)
+      ?.(
+        createCursorEvent(MouseClickEvent, element),
+      )
+
+    expect(selection.select).toHaveBeenCalledWith(node)
+    expect(selection.add).not.toHaveBeenCalled()
+    expect(selection.crossAddTo).not.toHaveBeenCalled()
+  })
+
+  it('useCursorEffect restores normal status right after drag stop subscribers run', async () => {
+    const subscribeMap = new Map<any, (event: DragStopEvent) => void>()
+    const cursor = {
+      status: CursorStatus.Dragging,
+      setDragEndPosition: vi.fn(),
+      setDragStartPosition: vi.fn(),
+      setStatus: vi.fn((status: CursorStatus) => {
+        cursor.status = status
+      }),
+    }
+    const engine = {
+      cursor,
+      subscribeTo: vi.fn((EventType, handler) => {
+        subscribeMap.set(EventType, handler)
+      }),
+    } as any
+
+    useCursorEffect(engine)
+
+    subscribeMap
+      .get(DragStopEvent)
+      ?.(
+        createCursorEvent(DragStopEvent, document.body),
+      )
+
+    expect(cursor.status).toBe(CursorStatus.DragStop)
+
+    await Promise.resolve()
+
+    expect(cursor.status).toBe(CursorStatus.Normal)
+  })
+
+  it('useSelectionEffect resolves outline nodes through DOMNodeResolver', () => {
+    const subscribeMap = new Map<any, (event: MouseClickEvent) => void>()
+    const selection = {
+      add: vi.fn(),
+      crossAddTo: vi.fn(),
+      has: vi.fn(() => false),
+      remove: vi.fn(),
+      select: vi.fn(),
+      selected: [],
+    }
+    const node = { id: 'outline-node-1' }
+    const findById = vi.fn(() => node)
+    const engine = {
+      cursor: { status: CursorStatus.Normal },
+      keyboard: {
+        isKeyDown: vi.fn(() => false),
+        requestClean: vi.fn(),
+      },
+      props: {
+        nodeIdAttrName: 'data-node-id',
+        nodeSelectionIdAttrName: 'data-helper-id',
+        outlineNodeIdAttrName: 'data-outline-id',
+      },
+      subscribeTo: vi.fn((EventType, handler) => {
+        subscribeMap.set(EventType, handler)
+      }),
+      workbench: {
+        activeWorkspace: {
+          operation: {
+            selection,
+            tree: {
+              findById,
+            },
+          },
+        },
+      },
+    } as any
+
+    useSelectionEffect(engine)
+
+    const element = document.createElement('div')
+    element.setAttribute('data-outline-id', 'outline-node-1')
+    document.body.appendChild(element)
+
+    subscribeMap
+      .get(MouseClickEvent)
+      ?.(
+        createCursorEvent(MouseClickEvent, element),
+      )
+
+    expect(findById).toHaveBeenCalledWith('outline-node-1')
+    expect(selection.select).toHaveBeenCalledWith(node)
+  })
+
+  it('useSelectionEffect delegates shift-click to crossAddTo', () => {
+    const subscribeMap = new Map<any, (event: MouseClickEvent) => void>()
+    const selection = {
+      add: vi.fn(),
+      crossAddTo: vi.fn(),
+      has: vi.fn(() => false),
+      remove: vi.fn(),
+      select: vi.fn(),
+      selected: ['node-0'],
+    }
+    const node = { id: 'node-2' }
+    const engine = {
+      cursor: { status: CursorStatus.Normal },
+      keyboard: {
+        isKeyDown: vi.fn((code: string) => code === KeyCode.Shift),
+        requestClean: vi.fn(),
+      },
+      props: {
+        nodeIdAttrName: 'data-node-id',
+        nodeSelectionIdAttrName: 'data-helper-id',
+        outlineNodeIdAttrName: 'data-outline-id',
+      },
+      subscribeTo: vi.fn((EventType, handler) => {
+        subscribeMap.set(EventType, handler)
+      }),
+      workbench: {
+        activeWorkspace: {
+          operation: {
+            selection,
+            tree: {
+              findById: vi.fn(() => node),
+            },
+          },
+        },
+      },
+    } as any
+
+    useSelectionEffect(engine)
+
+    const element = document.createElement('div')
+    element.setAttribute('data-node-id', 'node-2')
+    document.body.appendChild(element)
+
+    subscribeMap
+      .get(MouseClickEvent)
+      ?.(
+        createCursorEvent(MouseClickEvent, element),
+      )
+
+    expect(selection.crossAddTo).toHaveBeenCalledWith(node)
+    expect(selection.select).not.toHaveBeenCalled()
+    expect(selection.add).not.toHaveBeenCalled()
+  })
+
+  it('engine mount attaches to window by default', () => {
+    const engine = new Engine({})
+    const attachSpy = vi.spyOn(engine, 'attachEvents')
+
+    engine.mount()
+
+    expect(attachSpy).toHaveBeenCalledWith(window)
+  })
+
+  it('viewport attaches events automatically by default', () => {
+    const attachSpy = vi
+      .spyOn(Viewport.prototype, 'attachEvents')
+      .mockImplementation(() => {})
+
+    const viewport = new Viewport({
+      engine: {} as any,
+      workspace: {} as any,
+      viewportElement: document.createElement('div'),
+      contentWindow: window,
+      nodeIdAttrName: 'data-node-id',
+    })
+
+    expect(viewport).toBeInstanceOf(Viewport)
+    expect(attachSpy).toHaveBeenCalledTimes(1)
+  })
+
+  it('viewport hit testing uses the viewport document instead of the global document', () => {
+    vi
+      .spyOn(Viewport.prototype, 'attachEvents')
+      .mockImplementation(() => {})
+
+    const viewportElement = document.createElement('div')
+    document.body.appendChild(viewportElement)
+    vi.spyOn(viewportElement, 'getBoundingClientRect').mockReturnValue({
+      x: 0,
+      y: 0,
+      width: 100,
+      height: 100,
+      left: 0,
+      top: 0,
+      right: 100,
+      bottom: 100,
+      toJSON: () => ({}),
+    })
+
+    const viewport = new Viewport({
+      engine: {} as any,
+      workspace: {
+        attachEvents: vi.fn(),
+        detachEvents: vi.fn(),
+      } as any,
+      viewportElement,
+      contentWindow: window,
+      nodeIdAttrName: 'data-node-id',
+    })
+    const globalElementFromPointSpy = vi
+      .spyOn(document, 'elementFromPoint')
+      .mockReturnValue(null)
+    const viewportElementFromPointSpy = vi
+      .spyOn(viewport, 'elementFromPoint')
+      .mockReturnValue(viewportElement)
+
+    expect(viewport.isPointInViewport({ x: 10, y: 10 })).toBe(true)
+    expect(viewportElementFromPointSpy).toHaveBeenCalledWith({ x: 10, y: 10 })
+    expect(globalElementFromPointSpy).not.toHaveBeenCalled()
+  })
+
+  it('viewport DOM adapter resolves cached node elements and offset rects', () => {
+    const viewportElement = document.createElement('div')
+    const nodeElement = document.createElement('div')
+    nodeElement.setAttribute('data-node-id', 'adapter-node')
+    viewportElement.appendChild(nodeElement)
+    document.body.appendChild(viewportElement)
+    vi.spyOn(viewportElement, 'getBoundingClientRect').mockReturnValue({
+      x: 10,
+      y: 20,
+      width: 200,
+      height: 100,
+      left: 10,
+      top: 20,
+      right: 210,
+      bottom: 120,
+      toJSON: () => ({}),
+    })
+    vi.spyOn(nodeElement, 'getBoundingClientRect').mockReturnValue({
+      x: 40,
+      y: 70,
+      width: 30,
+      height: 20,
+      left: 40,
+      top: 70,
+      right: 70,
+      bottom: 90,
+      toJSON: () => ({}),
+    })
+    Object.defineProperty(viewportElement, 'scrollLeft', {
+      configurable: true,
+      value: 5,
+    })
+    Object.defineProperty(viewportElement, 'scrollTop', {
+      configurable: true,
+      value: 7,
+    })
+    Object.defineProperty(viewportElement, 'offsetWidth', {
+      configurable: true,
+      value: 200,
+    })
+    Object.defineProperty(nodeElement, 'offsetWidth', {
+      configurable: true,
+      value: 30,
+    })
+    Object.defineProperty(nodeElement, 'offsetHeight', {
+      configurable: true,
+      value: 20,
+    })
+
+    const viewport = new Viewport({
+      engine: {} as any,
+      workspace: {
+        attachEvents: vi.fn(),
+        detachEvents: vi.fn(),
+      } as any,
+      viewportElement,
+      contentWindow: window,
+      nodeIdAttrName: 'data-node-id',
+    })
+
+    viewport.cacheElements()
+
+    expect(viewport.findElementById('adapter-node')).toBe(nodeElement)
+    expect(viewport.getElementOffsetRectById('adapter-node')).toMatchObject({
+      x: 35,
+      y: 57,
+      width: 30,
+      height: 20,
+    })
+  })
+
+  it('workbench removeWorkspace disposes workspace resources', () => {
+    const engine = new Engine({})
+    const workspace = engine.workbench.ensureWorkspace({ id: 'workspace-cleanup' })
+    const viewportDetachSpy = vi
+      .spyOn(workspace.viewport, 'detachEvents')
+      .mockImplementation(() => {})
+    const outlineDetachSpy = vi
+      .spyOn(workspace.outline, 'detachEvents')
+      .mockImplementation(() => {})
+    const operationDisposeSpy = vi.spyOn(workspace.operation, 'dispose')
+    const historyClearSpy = vi.spyOn(workspace.history, 'clear')
+
+    engine.workbench.removeWorkspace('workspace-cleanup')
+
+    expect(viewportDetachSpy).toHaveBeenCalledTimes(1)
+    expect(outlineDetachSpy).toHaveBeenCalledTimes(1)
+    expect(operationDisposeSpy).toHaveBeenCalledTimes(1)
+    expect(historyClearSpy).toHaveBeenCalledTimes(1)
+    expect(engine.workbench.currentWorkspace).toBeNull()
+  })
+
+  it('workbench removeWorkspace clears active workspace references', () => {
+    const engine = new Engine({})
+    const firstWorkspace = engine.workbench.ensureWorkspace({ id: 'first' })
+    const secondWorkspace = engine.workbench.ensureWorkspace({ id: 'second' })
+
+    engine.workbench.switchWorkspace('first')
+    engine.workbench.setActiveWorkspace(firstWorkspace)
+    engine.workbench.removeWorkspace('first')
+
+    expect(engine.workbench.activeWorkspace).toBeNull()
+    expect(engine.workbench.currentWorkspace).toBe(secondWorkspace)
+  })
+
+  it('useDragDropEffect resolves drag helpers within the event workspace', () => {
+    const engine = new Engine({
+      effects: [useDragDropEffect],
+      defaultComponentTree: {
+        id: 'drag-helper-root',
+        componentName: 'Root',
+        children: [
+          {
+            id: 'drag-helper-shared-id',
+            componentName: 'OriginalField',
+          },
+        ],
+      },
+    })
+    const firstWorkspace = engine.workbench.ensureWorkspace({ id: 'first' })
+    const secondWorkspace = engine.workbench.ensureWorkspace({ id: 'second' })
+    const firstNode = firstWorkspace.operation.tree.findById(
+      'drag-helper-shared-id',
+    )
+    const secondNode = secondWorkspace.operation.tree.findById(
+      'drag-helper-shared-id',
+    )
+    firstWorkspace.viewport.cacheElements = vi.fn()
+    secondWorkspace.viewport.cacheElements = vi.fn()
+
+    const helper = document.createElement('div')
+    helper.setAttribute(
+      engine.props.nodeSelectionIdAttrName,
+      'drag-helper-shared-id',
+    )
+    const handler = document.createElement('button')
+    handler.setAttribute(engine.props.nodeDragHandlerAttrName, 'true')
+    helper.appendChild(handler)
+    document.body.appendChild(helper)
+
+    engine.dispatch(
+      createDragStartEvent(handler),
+      secondWorkspace.getEventContext(),
+    )
+
+    expect(firstWorkspace.operation.moveHelper.dragNodes).toEqual([])
+    expect(secondWorkspace.operation.moveHelper.dragNodes).toEqual([secondNode])
+    expect(secondWorkspace.operation.moveHelper.dragNodes).not.toEqual([
+      firstNode,
+    ])
+  })
+
+  it('useDragDropEffect resolves source nodes through the owning engine', () => {
+    const engine = new Engine({
+      effects: [useDragDropEffect],
+      defaultComponentTree: {
+        id: 'source-drag-root',
+        componentName: 'Root',
+      },
+    })
+    const workspace = engine.workbench.ensureWorkspace()
+    workspace.viewport.cacheElements = vi.fn()
+    const source = engine.createNode({
+      id: 'source-drag-node',
+      componentName: 'Field',
+      isSourceNode: true,
+    })
+    const sourceElement = document.createElement('div')
+    sourceElement.setAttribute(engine.props.sourceIdAttrName, 'source-drag-node')
+    document.body.appendChild(sourceElement)
+
+    engine.dispatch(
+      createDragStartEvent(sourceElement),
+      workspace.getEventContext(),
+    )
+
+    expect(workspace.operation.moveHelper.dragNodes).toEqual([source])
+  })
+})

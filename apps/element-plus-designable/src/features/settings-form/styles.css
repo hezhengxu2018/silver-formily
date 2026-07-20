@@ -1,0 +1,112 @@
+@reference "../../styles/globals.css";
+
+.epd-settings-form {
+  @apply flex h-full min-h-0 flex-col bg-white;
+
+  &__content {
+    @apply relative min-h-0 flex-1 overflow-hidden;
+  }
+
+  &__code {
+    @apply m-0 flex-1 overflow-auto wrap-break-word bg-white p-3 font-mono text-xs leading-[1.6] whitespace-pre-wrap text-slate-950;
+
+    > pre {
+      @apply m-0;
+    }
+  }
+
+  &__form {
+    @apply min-h-0 flex-1 overflow-auto;
+  }
+
+  &__panel {
+    @apply flex h-full flex-col bg-white;
+
+    &--base {
+      @apply relative;
+    }
+
+    &--floating {
+      @apply absolute inset-0 z-1 overflow-auto bg-white;
+
+      box-shadow: -8px 0 24px rgb(15 23 42 / 10%);
+    }
+  }
+
+  &__panel-header {
+    @apply flex items-center bg-slate-100 px-4 py-2.5 text-center;
+
+    font-size: 15px;
+  }
+
+  &__panel-heading {
+    @apply flex min-w-0 flex-1 gap-3;
+  }
+
+  &__panel-title {
+    @apply text-sm font-semibold;
+  }
+
+  &__panel-body {
+    @apply flex-1 overflow-scroll;
+  }
+
+  &__path {
+    @apply flex min-h-0 flex-1 flex-wrap text-slate-800;
+  }
+
+  &__path-item {
+    @apply inline-flex min-w-0 items-center gap-1;
+  }
+
+  &__path-separator {
+    @apply text-slate-400;
+  }
+
+  &__panel-close {
+    @apply ml-auto inline-flex shrink-0 cursor-pointer items-center justify-center border-0 bg-transparent p-0 text-slate-500 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400;
+
+    &:hover {
+      @apply text-slate-800;
+    }
+  }
+
+  &__panel-close-icon {
+    @apply size-4;
+  }
+
+  &__action-buttons-wrapper {
+    @apply flex shrink-0 items-center gap-1;
+  }
+
+  &__action-button {
+    @apply inline-flex mx-1 cursor-pointer items-center justify-center border-0 p-0 text-slate-600 transition-opacity focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400;
+
+    &:hover {
+      @apply opacity-85;
+    }
+  }
+
+  &__action-button-icon {
+    @apply size-4;
+  }
+
+  &__slide-enter-active,
+  &__slide-leave-active {
+    @apply transition-[opacity,translate] duration-500 ease-in-out;
+  }
+
+  &__slide-enter-from,
+  &__slide-leave-to {
+    @apply translate-x-full opacity-0;
+  }
+
+  &__slide-enter-to,
+  &__slide-leave-from {
+    @apply translate-x-0 opacity-100;
+  }
+
+  &__empty {
+    @apply flex h-full min-h-60 items-center justify-center;
+  }
+}

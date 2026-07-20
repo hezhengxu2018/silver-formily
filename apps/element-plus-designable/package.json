@@ -1,0 +1,76 @@
+{
+  "name": "element-plus-designable",
+  "type": "module",
+  "private": true,
+  "description": "Element Plus designable editor aligned with the official designable structure",
+  "scripts": {
+    "dev": "pnpm run dev:deps && vite",
+    "dev:deps": "node ../../scripts/dev-deps.mjs",
+    "build": "vite build",
+    "preview": "vite preview",
+    "lint": "eslint . && pnpm run lint:styles",
+    "lint:styles": "stylelint \"**/*.{css,scss,vue}\"",
+    "format": "eslint . --fix && pnpm run format:styles",
+    "format:styles": "stylelint \"**/*.{css,scss,vue}\" --fix",
+    "check-types": "vue-tsc --noEmit"
+  },
+  "silverFormily": {
+    "tasks": {
+      "dev": {
+        "filterMode": "workspace-only",
+        "buildDependencies": [
+          "@silver-formily/core",
+          "@silver-formily/designer-core",
+          "@silver-formily/designer-vue",
+          "@silver-formily/element-plus",
+          "@silver-formily/grid",
+          "@silver-formily/json-schema",
+          "@silver-formily/path",
+          "@silver-formily/reactive",
+          "@silver-formily/reactive-vue",
+          "@silver-formily/shared",
+          "@silver-formily/validator",
+          "@silver-formily/vue"
+        ]
+      }
+    }
+  },
+  "dependencies": {
+    "@lucide/vue": "catalog:",
+    "@silver-formily/core": "workspace:*",
+    "@silver-formily/designer-core": "workspace:*",
+    "@silver-formily/designer-vue": "workspace:*",
+    "@silver-formily/element-plus": "workspace:*",
+    "@silver-formily/grid": "workspace:*",
+    "@silver-formily/json-schema": "workspace:*",
+    "@silver-formily/path": "workspace:*",
+    "@silver-formily/reactive": "workspace:*",
+    "@silver-formily/reactive-vue": "workspace:*",
+    "@silver-formily/shared": "workspace:*",
+    "@silver-formily/validator": "workspace:*",
+    "@silver-formily/vue": "workspace:*",
+    "@vueuse/core": "catalog:",
+    "class-variance-authority": "catalog:",
+    "clsx": "catalog:",
+    "easy-bem": "catalog:",
+    "element-plus": "catalog:",
+    "pinia": "catalog:",
+    "reka-ui": "catalog:",
+    "shiki": "catalog:",
+    "tailwind-merge": "catalog:",
+    "tw-animate-css": "catalog:",
+    "vue": "catalog:"
+  },
+  "devDependencies": {
+    "@silver-formily/typescript-config": "workspace:*",
+    "@tailwindcss/postcss": "catalog:",
+    "@vitejs/plugin-vue": "catalog:",
+    "@vitejs/plugin-vue-jsx": "catalog:",
+    "postcss": "catalog:",
+    "postcss-nested": "catalog:",
+    "tailwindcss": "catalog:",
+    "typescript": "catalog:",
+    "vite": "catalog:",
+    "vue-tsc": "catalog:"
+  }
+}

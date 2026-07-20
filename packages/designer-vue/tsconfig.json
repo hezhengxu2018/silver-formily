@@ -1,0 +1,30 @@
+{
+  "extends": "@silver-formily/typescript-config/vue-library.json",
+  "compilerOptions": {
+    "paths": {
+      "@silver-formily/designer-core": [
+        "../designer-core/src/index.ts"
+      ],
+      "@silver-formily/designer-vue": [
+        "./src/index.ts"
+      ],
+      "@silver-formily/designer-vue/*": [
+        "./src/*"
+      ],
+      "@silver-formily/reactive": [
+        "../reactive/src/index.ts"
+      ],
+      "@silver-formily/reactive-vue": [
+        "../reactive-vue/src/index.ts"
+      ]
+    }
+  },
+  "include": [
+    "src",
+    "playground"
+  ],
+  "exclude": [
+    "node_modules",
+    "esm"
+  ]
+}

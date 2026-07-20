@@ -1,0 +1,30 @@
+{
+  "extends": "@silver-formily/typescript-config/base.json",
+  "compilerOptions": {
+    "target": "ES2022",
+    "jsx": "preserve",
+    "jsxImportSource": "vue",
+    "lib": ["DOM", "ES2022"],
+    "baseUrl": ".",
+    "ignoreDeprecations": "6.0",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "paths": {
+      "@/*": ["src/*"],
+      "@silver-formily/designer-vue": ["../../packages/designer-vue/src/index.ts"],
+      "@silver-formily/designer-vue/*": ["../../packages/designer-vue/src/*"]
+    },
+    "resolveJsonModule": true,
+    "types": ["node", "vue/jsx"],
+    "allowJs": false,
+    "strict": true,
+    "noUnusedLocals": true,
+    "declaration": false,
+    "emitDeclarationOnly": false,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true
+  },
+  "include": ["src", "env.d.ts"],
+  "exclude": ["node_modules", "dist"]
+}

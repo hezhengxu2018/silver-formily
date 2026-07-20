@@ -1,32 +1,32 @@
 {
-  "extends": "@silver-formily/typescript-config/base.json",
+  "extends": "@silver-formily/typescript-config/vue-library.json",
   "compilerOptions": {
-    "target": "ES2022",
-    "jsx": "preserve",
-    "jsxImportSource": "vue",
-    "lib": ["DOM", "ES2022"],
-    "experimentalDecorators": true,
-    "module": "ESNext",
-    "moduleResolution": "bundler",
     "paths": {
-      "@silver-formily/vant": ["./src"],
-      "@silver-formily/vant/*": ["./src/*"],
-      "@silver-formily/reactive-vue": ["../reactive-vue/src"],
-      "@silver-formily/reactive-vue/*": ["../reactive-vue/src/*"],
-      "@silver-formily/vue": ["../vue/src"],
-      "@silver-formily/vue/*": ["../vue/src/*"]
-    },
-    "resolveJsonModule": true,
-    "types": ["node", "vue/jsx"],
-    "allowJs": false,
-    "strict": false,
-    "noUnusedLocals": false,
-    "declaration": false,
-    "emitDeclarationOnly": false,
-    "noEmit": true,
-    "esModuleInterop": true,
-    "skipLibCheck": true
+      "@silver-formily/vant": [
+        "./src"
+      ],
+      "@silver-formily/vant/*": [
+        "./src/*"
+      ],
+      "@silver-formily/reactive-vue": [
+        "../reactive-vue/src"
+      ],
+      "@silver-formily/reactive-vue/*": [
+        "../reactive-vue/src/*"
+      ],
+      "@silver-formily/vue": [
+        "../vue/src"
+      ],
+      "@silver-formily/vue/*": [
+        "../vue/src/*"
+      ]
+    }
   },
-  "include": ["src"],
-  "exclude": ["node_modules", "esm"]
+  "include": [
+    "src"
+  ],
+  "exclude": [
+    "node_modules",
+    "esm"
+  ]
 }

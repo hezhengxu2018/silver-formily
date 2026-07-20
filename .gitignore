@@ -11,12 +11,14 @@ node_modules
 .env.development.local
 .env.test.local
 .env.production.local
+.npmrc
 
 # Testing
 coverage
 codecov
 codecov.SHA256SUM
 codecov.SHA256SUM.sig
+.playwright-mcp
 
 # Turbo
 .turbo

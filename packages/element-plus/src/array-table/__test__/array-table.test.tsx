@@ -608,4 +608,38 @@ describe('arrayTable', async () => {
       expect(table).toBeInTheDocument()
     })
   })
+
+  it('应该允许仅有 ArrayTable 组件但没有 items 的 schema', async () => {
+    const { SchemaField } = createSchemaField({
+      components: {
+        FormItem,
+        ArrayTable,
+      },
+    })
+    const form = createForm()
+    const screen = render(defineComponent({
+      setup() {
+        return () => (
+          <FormProvider form={form}>
+            <SchemaField
+              schema={{
+                type: 'object',
+                properties: {
+                  array: {
+                    'type': 'array',
+                    'x-decorator': 'FormItem',
+                    'x-component': 'ArrayTable',
+                  },
+                },
+              }}
+            />
+          </FormProvider>
+        )
+      },
+    }))
+
+    await vi.waitFor(() => {
+      expect(screen.container.querySelector('.formily-element-plus-array-table')).toBeInTheDocument()
+    })
+  })
 })

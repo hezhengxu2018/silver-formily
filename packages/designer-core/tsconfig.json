@@ -1,0 +1,32 @@
+{
+  "extends": "@silver-formily/typescript-config/legacy-library.json",
+  "compilerOptions": {
+    "paths": {
+      "@silver-formily/designer-core": [
+        "./src/index.ts"
+      ],
+      "@silver-formily/designer-shared": [
+        "../designer-shared/src/index.ts"
+      ],
+      "@silver-formily/json-schema": [
+        "../json-schema/src/index.ts"
+      ],
+      "@silver-formily/path": [
+        "../path/src/index.ts"
+      ],
+      "@silver-formily/reactive": [
+        "../reactive/src/index.ts"
+      ]
+    },
+    "types": [
+      "node"
+    ]
+  },
+  "include": [
+    "src/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "esm"
+  ]
+}

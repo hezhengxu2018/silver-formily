@@ -1,0 +1,17 @@
+{
+  "extends": "@silver-formily/typescript-config/legacy-library.json",
+  "compilerOptions": {
+    "paths": {
+      "@silver-formily/designer-shared": [
+        "./src/index.ts"
+      ]
+    }
+  },
+  "include": [
+    "src/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "esm"
+  ]
+}

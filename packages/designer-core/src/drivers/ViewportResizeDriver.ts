@@ -1,0 +1,65 @@
+import type { Engine } from '../models/Engine'
+import { EventDriver } from '@silver-formily/designer-shared'
+import { ViewportResizeEvent } from '../events'
+
+const globalWindow = globalThis as unknown as Window
+
+export class ViewportResizeDriver extends EventDriver<Engine> {
+  request = null
+
+  resizeObserver: ResizeObserver | null = null
+
+  cancelRequest() {
+    if (this.request != null) {
+      cancelAnimationFrame(this.request)
+      this.request = null
+    }
+  }
+
+  onResize = (e: any) => {
+    if (e.preventDefault)
+      e.preventDefault()
+    this.cancelRequest()
+    this.request = requestAnimationFrame(() => {
+      this.request = null
+      this.dispatch(
+        new ViewportResizeEvent({
+          scrollX: this.contentWindow.scrollX,
+          scrollY: this.contentWindow.scrollY,
+          width: this.contentWindow.innerWidth,
+          height: this.contentWindow.innerHeight,
+          innerHeight: this.contentWindow.innerHeight,
+          innerWidth: this.contentWindow.innerWidth,
+          view: this.contentWindow,
+          target: e.target || this.container,
+        }),
+      )
+    })
+  }
+
+  attach() {
+    if (this.contentWindow && this.contentWindow !== globalWindow) {
+      this.addEventListener('resize', this.onResize)
+    }
+    else {
+      if (this.container && this.container !== document) {
+        this.resizeObserver = new ResizeObserver(this.onResize)
+        this.resizeObserver.observe(this.container as HTMLElement)
+      }
+    }
+  }
+
+  detach() {
+    if (this.contentWindow && this.contentWindow !== globalWindow) {
+      this.removeEventListener('resize', this.onResize)
+    }
+    else if (this.resizeObserver) {
+      if (this.container && this.container !== document) {
+        this.resizeObserver.unobserve(this.container as HTMLElement)
+        this.resizeObserver.disconnect()
+      }
+      this.resizeObserver = null
+    }
+    this.cancelRequest()
+  }
+}
