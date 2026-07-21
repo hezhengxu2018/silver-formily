@@ -430,7 +430,7 @@ api/entry/form-effect-hooks/on-form-validate-failed
 
 ### 描述
 
-用于监听表单校验开始的副作用钩子
+用于监听表单校验成功的副作用钩子
 
 ### 签名
 
@@ -447,3 +447,45 @@ interface onFormValidateSuccess {
 api/entry/form-effect-hooks/on-form-validate-success
 
 :::
+
+## onFormReset
+
+### 描述
+
+用于监听表单重置生命周期的副作用钩子。
+
+### 签名
+
+```ts
+interface onFormReset {
+  (callback: (form: Form) => void): void
+}
+```
+
+## onFormGraphChange
+
+### 描述
+
+用于监听字段图发生变化的副作用钩子，例如创建字段时触发。
+
+### 签名
+
+```ts
+interface onFormGraphChange {
+  (callback: (form: Form) => void): void
+}
+```
+
+## onFormLoading
+
+### 描述
+
+用于监听表单加载状态生命周期的副作用钩子。
+
+### 签名
+
+```ts
+interface onFormLoading {
+  (callback: (form: Form) => void): void
+}
+```

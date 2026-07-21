@@ -14,7 +14,7 @@ order: 0
 
 | 属性          | 描述                   | 类型                                  | 是否只读 | 默认值            |
 | ------------- | ---------------------- | ------------------------------------- | -------- | ----------------- |
-| initialized   | 表单是否初始化         | Boolean                               | 否       | `false`           |
+| initialized   | 表单是否初始化         | Boolean                               | 否       | `true`            |
 | loading       | 表单是否正在加载       | Boolean                               | 否       | `false`           |
 | validating    | 表单是否正在校验       | Boolean                               | 否       | `false`           |
 | submitting    | 表单是否正在提交       | Boolean                               | 否       | `false`           |
@@ -27,9 +27,9 @@ order: 0
 | initialValues | 表单默认值             | Object                                | 否       | `{}`              |
 | valid         | 表单是否合法           | Boolean                               | 是       | `true`            |
 | invalid       | 表单是否非法           | Boolean                               | 是       | `false`           |
-| errors        | 表单校验错误消息       | [IFormFeedback](#iformfeedback)       | 是       | `[]`              |
-| warnings      | 表单校验警告消息       | [IFormFeedback](#iformfeedback)       | 是       | `[]`              |
-| successes     | 表单校验成功消息       | [IFormFeedback](#iformfeedback)       | 是       | `[]`              |
+| errors        | 表单校验错误消息       | [IFormFeedback[]](#iformfeedback)     | 是       | `[]`              |
+| warnings      | 表单校验警告消息       | [IFormFeedback[]](#iformfeedback)     | 是       | `[]`              |
+| successes     | 表单校验成功消息       | [IFormFeedback[]](#iformfeedback)     | 是       | `[]`              |
 | hidden        | 表单是否隐藏           | Boolean                               | 否       | `false`           |
 | visible       | 表单是否显示           | Boolean                               | 否       | `true`            |
 | editable      | 表单是否可编辑         | Boolean                               | 否       | `true`            |
@@ -38,6 +38,12 @@ order: 0
 | readPretty    | 表单是否为阅读态       | Boolean                               | 否       | `false`           |
 | id            | 表单 ID                | String                                | 否       | `{RANDOM_STRING}` |
 | displayName   | 模型标签               | String                                | 否       | `"Form"`          |
+
+### 详细解释
+
+**initialized**
+
+构造过程中，`initialize()` 会先将该状态设为 `false`。完成响应式状态、表单值和生命周期等初始化后，构造函数会立即调用 `onInit()`，将其设为 `true` 并触发 `onFormInit` 生命周期。因此，通过 `createForm()` 取得 Form 实例时，该值已经是 `true`；`false` 只存在于实例尚未完成构造的内部阶段。
 
 ## 方法
 
@@ -470,8 +476,8 @@ IFormFeedback 参考[IFormFeedback](#iformfeedback)
 #### 签名
 
 ```ts
-interface notify<T> {
-  (type?: string, payload: T): void
+interface notify<T = any> {
+  (type: string, payload?: T): void
 }
 ```
 
@@ -484,8 +490,8 @@ interface notify<T> {
 #### 签名
 
 ```ts
-interface subscribe<T> {
-  (callback: (payload: T) => void): number
+interface subscribe<T = any> {
+  (callback: (event: { type: string, payload: T }) => void): number
 }
 ```
 
@@ -681,7 +687,7 @@ interface clearFormGraph {
 
 ```ts
 interface validate {
-  (pattern: FormPathPattern): Promise<void>
+  (pattern?: FormPathPattern): Promise<void>
 }
 ```
 
@@ -689,7 +695,7 @@ interface validate {
 
 #### 描述
 
-表单提交方法，如果在 onSubmit 回调函数中返回 Promise，表单会在提交开始的时候设置 submitting 状态为 true，Promise resolve 的时候再设置为 false，视图层可以消费 submitting 状态来实现防重复提交
+表单提交方法。提交开始时会进入 `submitting` 状态，完成或失败后退出；提交前会执行表单校验。未传 `onSubmit` 时返回当前表单值。
 
 #### 签名
 
@@ -706,11 +712,11 @@ interface submit<T> {
 
 表单重置方法，可以指定重置具体字段，也可以指定重置时自动校验
 
-#### 描述
+#### 签名
 
 ```ts
 interface reset {
-  (pattern: FormPathPattern, options?: IFieldResetOptions): Promise<void>
+  (pattern?: FormPathPattern, options?: IFieldResetOptions): Promise<void>
 }
 ```
 

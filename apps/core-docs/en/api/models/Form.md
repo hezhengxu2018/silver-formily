@@ -14,7 +14,7 @@ For process states like `loading`, `validating`, and `submitting`, direct assign
 
 | Property      | Description              | Type                                  | Readonly | Default           |
 | ------------- | ------------------------ | ------------------------------------- | -------- | ----------------- |
-| initialized   | Form initialized         | Boolean                               | No       | `false`           |
+| initialized   | Form initialized         | Boolean                               | No       | `true`            |
 | loading       | Form loading             | Boolean                               | No       | `false`           |
 | validating    | Form validating          | Boolean                               | No       | `false`           |
 | submitting    | Form submitting          | Boolean                               | No       | `false`           |
@@ -27,9 +27,9 @@ For process states like `loading`, `validating`, and `submitting`, direct assign
 | initialValues | Form initial values      | Object                                | No       | `{}`              |
 | valid         | Form valid               | Boolean                               | Yes      | `true`            |
 | invalid       | Form invalid             | Boolean                               | Yes      | `false`           |
-| errors        | Form error messages      | [IFormFeedback](#iformfeedback)       | Yes      | `[]`              |
-| warnings      | Form warning messages    | [IFormFeedback](#iformfeedback)       | Yes      | `[]`              |
-| successes     | Form success messages    | [IFormFeedback](#iformfeedback)       | Yes      | `[]`              |
+| errors        | Form error messages      | [IFormFeedback[]](#iformfeedback)     | Yes      | `[]`              |
+| warnings      | Form warning messages    | [IFormFeedback[]](#iformfeedback)     | Yes      | `[]`              |
+| successes     | Form success messages    | [IFormFeedback[]](#iformfeedback)     | Yes      | `[]`              |
 | hidden        | Form hidden              | Boolean                               | No       | `false`           |
 | visible       | Form visible             | Boolean                               | No       | `true`            |
 | editable      | Form editable            | Boolean                               | No       | `true`            |
@@ -38,6 +38,12 @@ For process states like `loading`, `validating`, and `submitting`, direct assign
 | readPretty    | Form read-pretty         | Boolean                               | No       | `false`           |
 | id            | Form ID                  | String                                | No       | `{RANDOM_STRING}` |
 | displayName   | Model label              | String                                | No       | `"Form"`          |
+
+### Detailed Explanations
+
+**initialized**
+
+During construction, `initialize()` first sets this state to `false`. After reactive state, form values, and lifecycles are prepared, the constructor immediately calls `onInit()`, which sets it to `true` and emits the `onFormInit` lifecycle. Therefore, a Form instance returned by `createForm()` already has `initialized === true`; `false` only exists during the internal construction phase.
 
 ## Methods
 
@@ -470,8 +476,8 @@ Broadcasts a message.
 #### Signature
 
 ```ts
-interface notify<T> {
-  (type?: string, payload: T): void
+interface notify<T = any> {
+  (type: string, payload?: T): void
 }
 ```
 
@@ -484,8 +490,8 @@ Subscribes to messages.
 #### Signature
 
 ```ts
-interface subscribe<T> {
-  (callback: (payload: T) => void): number
+interface subscribe<T = any> {
+  (callback: (event: { type: string, payload: T }) => void): number
 }
 ```
 
@@ -681,7 +687,7 @@ Form validation trigger. Can validate by specified path. On success nothing is r
 
 ```ts
 interface validate {
-  (pattern: FormPathPattern): Promise<void>
+  (pattern?: FormPathPattern): Promise<void>
 }
 ```
 
@@ -689,7 +695,7 @@ interface validate {
 
 #### Description
 
-Form submit method. If the `onSubmit` callback returns a Promise, the form sets `submitting` to `true` at the start and to `false` when the Promise resolves. The view layer can consume `submitting` to prevent duplicate submissions.
+Submits the form. The form enters the `submitting` state at the start and leaves it after completion or failure. Validation runs before submission. Without `onSubmit`, it returns the current form values.
 
 #### Signature
 
@@ -710,7 +716,7 @@ Form reset method. Can specify which fields to reset, and whether to auto-valida
 
 ```ts
 interface reset {
-  (pattern: FormPathPattern, options?: IFieldResetOptions): Promise<void>
+  (pattern?: FormPathPattern, options?: IFieldResetOptions): Promise<void>
 }
 ```
 

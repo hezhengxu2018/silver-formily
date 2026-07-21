@@ -270,3 +270,123 @@ interface onFieldValidateSuccess {
 api/entry/field-effect-hooks/on-field-validate-success
 
 :::
+
+## onFieldValidating
+
+监听字段处于校验中的生命周期。
+
+```ts
+interface onFieldValidating {
+  (pattern: FormPathPattern, callback: (field: Field, form: Form) => void): void
+}
+```
+
+## onFieldSubmit
+
+监听字段提交流程完成的生命周期。
+
+```ts
+interface onFieldSubmit {
+  (pattern: FormPathPattern, callback: (field: Field, form: Form) => void): void
+}
+```
+
+## onFieldSubmitStart
+
+监听字段提交开始的生命周期。
+
+```ts
+interface onFieldSubmitStart {
+  (pattern: FormPathPattern, callback: (field: Field, form: Form) => void): void
+}
+```
+
+## onFieldSubmitEnd
+
+监听字段提交结束的生命周期。
+
+```ts
+interface onFieldSubmitEnd {
+  (pattern: FormPathPattern, callback: (field: Field, form: Form) => void): void
+}
+```
+
+## onFieldSubmitValidateStart
+
+监听字段提交校验开始的生命周期。
+
+```ts
+interface onFieldSubmitValidateStart {
+  (pattern: FormPathPattern, callback: (field: Field, form: Form) => void): void
+}
+```
+
+## onFieldSubmitValidateEnd
+
+监听字段提交校验结束的生命周期。
+
+```ts
+interface onFieldSubmitValidateEnd {
+  (pattern: FormPathPattern, callback: (field: Field, form: Form) => void): void
+}
+```
+
+## onFieldSubmitValidateSuccess
+
+监听字段提交校验成功的生命周期。
+
+```ts
+interface onFieldSubmitValidateSuccess {
+  (pattern: FormPathPattern, callback: (field: Field, form: Form) => void): void
+}
+```
+
+## onFieldSubmitValidateFailed
+
+监听字段提交校验失败的生命周期。
+
+```ts
+interface onFieldSubmitValidateFailed {
+  (pattern: FormPathPattern, callback: (field: Field, form: Form) => void): void
+}
+```
+
+## onFieldSubmitSuccess
+
+监听字段提交成功的生命周期。
+
+```ts
+interface onFieldSubmitSuccess {
+  (pattern: FormPathPattern, callback: (field: Field, form: Form) => void): void
+}
+```
+
+## onFieldSubmitFailed
+
+监听字段提交失败的生命周期。
+
+```ts
+interface onFieldSubmitFailed {
+  (pattern: FormPathPattern, callback: (field: Field, form: Form) => void): void
+}
+```
+
+## onFieldReset
+
+监听字段重置的生命周期。
+
+```ts
+interface onFieldReset {
+  (pattern: FormPathPattern, callback: (field: Field, form: Form) => void): void
+}
+```
+
+## onFieldLoading
+
+监听字段加载状态的生命周期。
+
+```ts
+interface onFieldLoading {
+  (pattern: FormPathPattern, callback: (field: Field, form: Form) => void): void
+}
+```

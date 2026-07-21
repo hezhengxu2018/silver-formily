@@ -12,58 +12,62 @@ For process states like `loading`, `validating`, and `submitting`, direct assign
 
 ## Properties
 
-| Property       | Description                             | Type                                                          | Readonly | Default      |
-| -------------- | --------------------------------------- | ------------------------------------------------------------- | -------- | ------------ |
-| initialized    | Field initialized                       | Boolean                                                       | No       | `false`      |
-| mounted        | Field mounted                           | Boolean                                                       | No       | `false`      |
-| unmounted      | Field unmounted                         | Boolean                                                       | No       | `false`      |
-| address        | Field node path                         | [FormPath](https://path.silver-formily.org/en/api/path-class) | Yes      |              |
-| path           | Field data path                         | [FormPath](https://path.silver-formily.org/en/api/path-class) | Yes      |              |
-| title          | Field title                             | Any (determined by the `TextType` generic)                    | No       | `""`         |
-| description    | Field description                       | Any (determined by the `TextType` generic)                    | No       | `""`         |
-| loading        | Field loading state                     | Boolean                                                       | No       | `false`      |
-| validating     | Field validating                        | Boolean                                                       | No       | `false`      |
-| submitting     | Field submitting                        | Boolean                                                       | No       | `false`      |
-| modified       | Field subtree manually modified         | Boolean                                                       | No       | `false`      |
-| selfModified   | Field itself manually modified          | Boolean                                                       | No       | `false`      |
-| active         | Field active (focused)                  | Boolean                                                       | No       | `false`      |
-| visited        | Field visited                           | Boolean                                                       | No       | `false`      |
-| inputValue     | Field input value                       | Any                                                           | No       | `null`       |
-| inputValues    | Field input value set                   | Array                                                         | No       | `[]`         |
-| dataSource     | Field data source                       | Array                                                         | No       | `[]`         |
-| validator      | Field validator                         | [FieldValidator](#fieldvalidator)                             | No       | `null`       |
-| decorator      | Field decorator                         | Any[]                                                         | No       | `null`       |
-| component      | Field component                         | Any[]                                                         | No       | `null`       |
-| feedbacks      | Field feedback info                     | [IFieldFeedback](#ifieldfeedback)                             | No       | `[]`         |
-| parent         | Parent field                            | [GeneralField](#generalfield)                                 | Yes      | `null`       |
-| errors         | Field errors (aggregated + children)    | [IFormFeedback](/en/api/models/Form#iformfeedback)            | Yes      | `[]`         |
-| warnings       | Field warnings (aggregated + children)  | [IFormFeedback](/en/api/models/Form#iformfeedback)            | Yes      | `[]`         |
-| successes      | Field successes (aggregated + children) | [IFormFeedback](/en/api/models/Form#iformfeedback)            | Yes      | `[]`         |
-| valid          | Field valid (children included)         | Boolean                                                       | Yes      | `true`       |
-| invalid        | Field invalid (children included)       | Boolean                                                       | Yes      | `false`      |
-| value          | Field value                             | Any                                                           | No       |              |
-| initialValue   | Field initial value                     | Any                                                           | No       |              |
-| display        | Field display mode                      | [FieldDisplayTypes](#fielddisplaytypes)                       | No       | `"visible"`  |
-| pattern        | Field interaction pattern               | [FieldPatternTypes](#fieldpatterntypes)                       | No       | `"editable"` |
-| required       | Field required                          | Boolean                                                       | No       | `false`      |
-| hidden         | Field hidden                            | Boolean                                                       | No       | `false`      |
-| visible        | Field visible                           | Boolean                                                       | No       | `true`       |
-| disabled       | Field disabled                          | Boolean                                                       | No       | `false`      |
-| readOnly       | Field read-only                         | Boolean                                                       | No       | `false`      |
-| readPretty     | Field read-pretty                       | Boolean                                                       | No       | `false`      |
-| editable       | Field editable                          | Boolean                                                       | No       | `true`       |
-| validateStatus | Field validation status                 | [FieldValidateStatus](#fieldvalidatestatus)                   | Yes      | `null`       |
-| content        | Field content, usually child nodes      | any                                                           | No       | `null`       |
-| data           | Field extended property                 | Object                                                        | No       | `null`       |
-| selfErrors     | Field own error messages                | [FeedbackMessage](#feedbackmessage)                           | No       | `[]`         |
-| selfWarnings   | Field own warning messages              | [FeedbackMessage](#feedbackmessage)                           | No       | `[]`         |
-| selfSuccesses  | Field own success messages              | [FeedbackMessage](#feedbackmessage)                           | No       | `[]`         |
-| selfValid      | Field own valid                         | Boolean                                                       | Yes      | `true`       |
-| selfInvalid    | Field own invalid                       | Boolean                                                       | Yes      | `false`      |
-| indexes        | Field numeric index set                 | Number[]                                                      | Yes      | `-`          |
-| index          | Field numeric index, last of indexes    | Number                                                        | Yes      | `-`          |
+| Property       | Description                             | Type                                                          | Readonly | Default           |
+| -------------- | --------------------------------------- | ------------------------------------------------------------- | -------- | ----------------- |
+| initialized    | Field initialized                       | Boolean                                                       | No       | `true`            |
+| mounted        | Field mounted                           | Boolean                                                       | No       | `false`           |
+| unmounted      | Field unmounted                         | Boolean                                                       | No       | `false`           |
+| address        | Field node path                         | [FormPath](https://path.silver-formily.org/en/api/path-class) | Yes      |                   |
+| path           | Field data path                         | [FormPath](https://path.silver-formily.org/en/api/path-class) | Yes      |                   |
+| title          | Field title                             | Any (determined by the `TextType` generic)                    | No       | `undefined`       |
+| description    | Field description                       | Any (determined by the `TextType` generic)                    | No       | `undefined`       |
+| loading        | Field loading state                     | Boolean                                                       | No       | `false`           |
+| validating     | Field validating                        | Boolean                                                       | No       | `false`           |
+| submitting     | Field submitting                        | Boolean                                                       | No       | `false`           |
+| modified       | Field subtree manually modified         | Boolean                                                       | No       | `undefined`       |
+| selfModified   | Field itself manually modified          | Boolean                                                       | No       | `false`           |
+| active         | Field active (focused)                  | Boolean                                                       | No       | `false`           |
+| visited        | Field visited                           | Boolean                                                       | No       | `false`           |
+| inputValue     | Field input value                       | Any                                                           | No       | `null`            |
+| inputValues    | Field input value set                   | Array                                                         | No       | `[]`              |
+| dataSource     | Field data source                       | Array                                                         | No       | `undefined`       |
+| validator      | Field validator                         | [FieldValidator](#fieldvalidator)                             | No       | `undefined`       |
+| decorator      | Field decorator                         | Any[]                                                         | No       | `[undefined, {}]` |
+| component      | Field component                         | Any[]                                                         | No       | `[undefined, {}]` |
+| feedbacks      | Field feedback info                     | [IFieldFeedback[]](#ifieldfeedback)                           | No       | `[]`              |
+| parent         | Parent field                            | [GeneralField](#generalfield)                                 | Yes      | `undefined`       |
+| errors         | Field errors (aggregated + children)    | [IFormFeedback[]](/en/api/models/Form#iformfeedback)          | Yes      | `[]`              |
+| warnings       | Field warnings (aggregated + children)  | [IFormFeedback[]](/en/api/models/Form#iformfeedback)          | Yes      | `[]`              |
+| successes      | Field successes (aggregated + children) | [IFormFeedback[]](/en/api/models/Form#iformfeedback)          | Yes      | `[]`              |
+| valid          | Field valid (children included)         | Boolean                                                       | Yes      | `true`            |
+| invalid        | Field invalid (children included)       | Boolean                                                       | Yes      | `false`           |
+| value          | Field value                             | Any                                                           | No       |                   |
+| initialValue   | Field initial value                     | Any                                                           | No       |                   |
+| display        | Field display mode                      | [FieldDisplayTypes](#fielddisplaytypes)                       | No       | `"visible"`       |
+| pattern        | Field interaction pattern               | [FieldPatternTypes](#fieldpatterntypes)                       | No       | `"editable"`      |
+| required       | Field required                          | Boolean                                                       | No       | `false`           |
+| hidden         | Field hidden                            | Boolean                                                       | No       | `false`           |
+| visible        | Field visible                           | Boolean                                                       | No       | `true`            |
+| disabled       | Field disabled                          | Boolean                                                       | No       | `false`           |
+| readOnly       | Field read-only                         | Boolean                                                       | No       | `false`           |
+| readPretty     | Field read-pretty                       | Boolean                                                       | No       | `false`           |
+| editable       | Field editable                          | Boolean                                                       | No       | `true`            |
+| validateStatus | Field validation status                 | [FieldValidateStatus](#fieldvalidatestatus)                   | Yes      | `undefined`       |
+| content        | Field content, usually child nodes      | any                                                           | No       | `undefined`       |
+| data           | Field extended property                 | Object                                                        | No       | `undefined`       |
+| selfErrors     | Field own error messages                | [FeedbackMessage](#feedbackmessage)                           | No       | `[]`              |
+| selfWarnings   | Field own warning messages              | [FeedbackMessage](#feedbackmessage)                           | No       | `[]`              |
+| selfSuccesses  | Field own success messages              | [FeedbackMessage](#feedbackmessage)                           | No       | `[]`              |
+| selfValid      | Field own valid                         | Boolean                                                       | Yes      | `true`            |
+| selfInvalid    | Field own invalid                       | Boolean                                                       | Yes      | `false`           |
+| indexes        | Field numeric index set                 | Number[]                                                      | Yes      | `-`               |
+| index          | Field numeric index, last of indexes    | Number                                                        | Yes      | `-`               |
 
 ### Detailed Explanations
+
+**initialized**
+
+During field construction, this state is first set to `false`. After field location, state initialization, and reactive bindings are ready, the constructor immediately calls `onInit()`, which sets it to `true` and emits the `onFieldInit` lifecycle. Therefore, fields returned by `form.createField()`, `createArrayField()`, or `createObjectField()` already have `initialized === true`.
 
 **active**
 
@@ -237,7 +241,7 @@ Sets a rule on the field validator. Similar to `setRequired`.
 
 ```ts
 interface setValidatorRule {
-  (ruleName?: string, ruleValue: any): void
+  (ruleName: string, ruleValue: any): void
 }
 ```
 
@@ -572,35 +576,31 @@ interface submit<T> {
 
 #### Description
 
-Triggers field validation (includes all child nodes, mainly for sub-form scenarios).
+Triggers field validation (includes all child nodes, mainly for sub-form scenarios). The Promise resolves with `undefined` on success and rejects with the field error list on failure.
 
 #### Signature
 
 ```ts
 interface validate {
-  (triggerType?: 'onInput' | 'onFocus' | 'onBlur'): Promise<IValidateResults>
+  (triggerType?: 'onInput' | 'onFocus' | 'onBlur'): Promise<void>
 }
 ```
-
-IValidateResults reference: [IValidateResults](#ivalidateresults)
 
 ### reset
 
 #### Description
 
-Triggers field reset (includes all child nodes, mainly for sub-form scenarios). If validation is set, the return is the validation result.
+Triggers field reset (includes all child nodes, mainly for sub-form scenarios). When `validate` is `true`, it waits for validation to finish but does not return validation results.
 
 #### Signature
 
 ```ts
 interface reset {
-  (options?: IFieldResetOptions): Promise<IValidateResults>
+  (options?: IFieldResetOptions): Promise<void>
 }
 ```
 
 IFieldResetOptions reference: [IFieldResetOptions](#ifieldresetoptions)
-
-IValidateResults reference: [IValidateResults](#ivalidateresults)
 
 ### query
 
@@ -612,7 +612,7 @@ Queries fields. Can query neighboring fields relative to the current field.
 
 ```ts
 interface query {
-  (pattern: FormPathPattern): Query
+  (pattern: FormPathPattern | RegExp): Query
 }
 ```
 
@@ -630,7 +630,7 @@ Queries the current field's feedback info.
 
 ```ts
 interface queryFeedbacks {
-  (search: ISearchFeedback): IFieldFeedback[]
+  (search?: ISearchFeedback): IFieldFeedback[]
 }
 ```
 
@@ -662,7 +662,7 @@ Releases the observer and removes the field model.
 
 ```ts
 interface destroy {
-  (): void
+  (forceClear?: boolean): void
 }
 ```
 
@@ -1005,16 +1005,6 @@ Query reference: [Query](/en/api/models/Query)
 interface IFieldResetOptions {
   forceClear?: boolean // force clear
   validate?: boolean // validate
-}
-```
-
-### IValidateResults
-
-```ts
-interface IValidateResults {
-  error?: string[]
-  warning?: string[]
-  success?: string[]
 }
 ```
 

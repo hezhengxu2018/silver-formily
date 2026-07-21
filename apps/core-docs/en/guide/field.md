@@ -110,7 +110,7 @@ field.onInput('input value')
 field.setValue('programmatic value')
 ```
 
-`onInput()` behaves closer to a real user input. It writes the value, records input values, marks the field as modified, and triggers validation rules with `triggerType: 'onInput'`.
+`onInput()` behaves closer to real user input. It immediately writes `value`, records `inputValue` / `inputValues`, marks the field as modified, and triggers validation rules with `triggerType: 'onInput'`. `setValue()` is a programmatic update: it only changes `value` and does not record the new value as the latest input. See [Values & State](/en/guide/values#value-vs-inputvalue) for details.
 
 ## Data Source
 

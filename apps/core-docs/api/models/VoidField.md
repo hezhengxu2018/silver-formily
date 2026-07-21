@@ -10,32 +10,36 @@ order: 4
 
 ## 属性
 
-| 属性        | 描述               | 类型                                                       | 是否只读 | 默认值       |
-| ----------- | ------------------ | ---------------------------------------------------------- | -------- | ------------ |
-| initialized | 字段是否已被初始化 | Boolean                                                    | 否       | `false`      |
-| mounted     | 字段是否已挂载     | Boolean                                                    | 否       | `false`      |
-| unmounted   | 字段是否已卸载     | Boolean                                                    | 否       | `false`      |
-| address     | 字段节点路径       | [FormPath](https://path.silver-formily.org/api/path-class) | 是       |              |
-| path        | 字段数据路径       | [FormPath](https://path.silver-formily.org/api/path-class) | 是       |              |
-| title       | 字段标题           | Any（由泛型 `TextType` 决定）                              | 否       | `""`         |
-| description | 字段描述           | Any（由泛型 `TextType` 决定）                              | 否       | `""`         |
-| data        | 字段扩展属性       | Object                                                     | 否       | `null`       |
-| content     | 字段内容           | any                                                        | 否       | `null`       |
-| decorator   | 字段装饰器         | Any[]                                                      | 否       | `null`       |
-| component   | 字段组件           | Any[]                                                      | 否       | `null`       |
-| parent      | 父级字段           | [GeneralField](#generalfield)                              | 是       | `null`       |
-| display     | 字段展示状态       | [FieldDisplayTypes](#fielddisplaytypes)                    | 否       | `"visible"`  |
-| pattern     | 字段交互模式       | [FieldPatternTypes](#fieldpatterntypes)                    | 否       | `"editable"` |
-| hidden      | 字段是否隐藏       | Boolean                                                    | 否       | `false`      |
-| visible     | 字段是否显示       | Boolean                                                    | 否       | `true`       |
-| disabled    | 字段是否禁用       | Boolean                                                    | 否       | `false`      |
-| readOnly    | 字段是否只读       | Boolean                                                    | 否       | `false`      |
-| readPretty  | 字段是否为阅读态   | Boolean                                                    | 否       | `false`      |
-| editable    | 字段是可编辑       | Boolean                                                    | 否       | `true`       |
-| indexes     | 字段数字索引集合   | Number[]                                                   | 是       | `-`          |
-| index       | 字段数字索引       | Number                                                     | 是       | `-`          |
+| 属性        | 描述               | 类型                                                       | 是否只读 | 默认值            |
+| ----------- | ------------------ | ---------------------------------------------------------- | -------- | ----------------- |
+| initialized | 字段是否已被初始化 | Boolean                                                    | 否       | `true`            |
+| mounted     | 字段是否已挂载     | Boolean                                                    | 否       | `false`           |
+| unmounted   | 字段是否已卸载     | Boolean                                                    | 否       | `false`           |
+| address     | 字段节点路径       | [FormPath](https://path.silver-formily.org/api/path-class) | 是       |                   |
+| path        | 字段数据路径       | [FormPath](https://path.silver-formily.org/api/path-class) | 是       |                   |
+| title       | 字段标题           | Any（由泛型 `TextType` 决定）                              | 否       | `undefined`       |
+| description | 字段描述           | Any（由泛型 `TextType` 决定）                              | 否       | `undefined`       |
+| data        | 字段扩展属性       | Object                                                     | 否       | `undefined`       |
+| content     | 字段内容           | any                                                        | 否       | `undefined`       |
+| decorator   | 字段装饰器         | Any[]                                                      | 否       | `[undefined, {}]` |
+| component   | 字段组件           | Any[]                                                      | 否       | `[undefined, {}]` |
+| parent      | 父级字段           | [GeneralField](#generalfield)                              | 是       | `undefined`       |
+| display     | 字段展示状态       | [FieldDisplayTypes](#fielddisplaytypes)                    | 否       | `"visible"`       |
+| pattern     | 字段交互模式       | [FieldPatternTypes](#fieldpatterntypes)                    | 否       | `"editable"`      |
+| hidden      | 字段是否隐藏       | Boolean                                                    | 否       | `false`           |
+| visible     | 字段是否显示       | Boolean                                                    | 否       | `true`            |
+| disabled    | 字段是否禁用       | Boolean                                                    | 否       | `false`           |
+| readOnly    | 字段是否只读       | Boolean                                                    | 否       | `false`           |
+| readPretty  | 字段是否为阅读态   | Boolean                                                    | 否       | `false`           |
+| editable    | 字段是可编辑       | Boolean                                                    | 否       | `true`            |
+| indexes     | 字段数字索引集合   | Number[]                                                   | 是       | `-`               |
+| index       | 字段数字索引       | Number                                                     | 是       | `-`               |
 
 ### 详细解释
+
+**initialized**
+
+VoidField 构造过程中会先将该状态设为 `false`。完成字段定位、状态初始化和响应式绑定后，构造函数会立即调用 `onInit()`，将其设为 `true` 并触发 `onFieldInit` 生命周期。因此，通过 `form.createVoidField()` 取得实例时，该值已经是 `true`。
 
 **hidden**
 
@@ -281,7 +285,7 @@ interface onUnmount {
 
 ```ts
 interface query {
-  (pattern: FormPathPattern): Query
+  (pattern: FormPathPattern | RegExp): Query
 }
 ```
 
@@ -313,7 +317,7 @@ interface dispose {
 
 ```ts
 interface destroy {
-  (): void
+  (forceClear?: boolean): void
 }
 ```
 

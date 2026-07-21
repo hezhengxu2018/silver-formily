@@ -2,43 +2,61 @@
 
 理解 Form 和 Field 中的值与状态管理机制，是正确使用 core 包的关键。
 
-## 三种值
+## 字段中的值
 
-在 Formily Core 中，每个字段都有三种核心值：
+Field 使用以下状态描述当前值、初始值和最近一次输入：
 
-| 值             | 说明       | 触发时机                   |
-| -------------- | ---------- | -------------------------- |
-| `value`        | 当前有效值 | 失焦、程序化赋值、提交     |
-| `inputValue`   | 输入值     | 用户每次输入时实时更新     |
-| `initialValue` | 初始默认值 | 创建字段时设置，或手动重置 |
+| 值             | 说明                          | 更新时机                                   |
+| -------------- | ----------------------------- | ------------------------------------------ |
+| `value`        | 字段当前值，也是表单聚合值    | `onInput`、`setValue` 或其他表单值写入操作 |
+| `inputValue`   | 最近一次 `onInput` 的首个参数 | 每次调用 `onInput`                         |
+| `inputValues`  | 最近一次 `onInput` 的全部参数 | 每次调用 `onInput`，用于记录多参数组件事件 |
+| `initialValue` | 字段初始值                    | 创建字段或调用 `setInitialValue` 时设置    |
 
 ### value vs inputValue
 
 ```ts
 const field = form.createField({
   name: 'name',
-  value: '',
+  value: 'initial',
 })
 
-// 模拟用户输入 — 实时更新 inputValue
-field.onInput('a')
-console.log(field.inputValue) // 'a'
-console.log(field.value) // '' (尚未确认)
+console.log(field.value) // 'initial'
+console.log(field.inputValue) // null
 
-field.onInput('ab')
-console.log(field.inputValue) // 'ab'
-console.log(field.value) // '' (尚未确认)
+// 模拟用户输入：同时记录输入来源并更新字段值
+await field.onInput('user input')
+console.log(field.inputValue) // 'user input'
+console.log(field.inputValues) // ['user input']
+console.log(field.value) // 'user input'
+console.log(form.values.name) // 'user input'
+console.log(field.selfModified) // true
 
-// 程序化设置 — 直接更新 value
-field.setValue('silver')
-console.log(field.inputValue) // 'silver'
-console.log(field.value) // 'silver'
+// 程序化赋值只更新字段值，不会伪装成一次用户输入
+field.setValue('programmatic value')
+console.log(field.value) // 'programmatic value'
+console.log(form.values.name) // 'programmatic value'
+console.log(field.inputValue) // 'user input'
 ```
 
-这个设计的意义在于：
+`inputValue` 不是失焦前的暂存值。`onInput()` 会立即把首个输入参数写入 `value`，因此输入框、下拉框、单选、多选等组件都可以使用同一套输入通道。两类状态的区别在于来源和生命周期：
 
-- **inputValue**: 用户可实时看到输入内容，同时可据此做输入校验和即时反馈
-- **value**: 只在确认后更新（失焦、提交等），保证表单值的稳定性
+- `value` 表示当前业务值，`onInput()` 和程序化赋值都会更新它
+- `inputValue` / `inputValues` 记录最近一次 `onInput()` 的参数
+- `onInput()` 还会标记字段已修改，触发输入变化生命周期，并执行 `triggerType: 'onInput'` 的校验
+- `setValue()` 只执行程序化值更新，不更新 `inputValue`，也不会主动标记字段已修改
+
+对于传递多个参数的组件，`inputValues` 会保留完整参数列表，而 `value` 和 `inputValue` 使用第一个参数：
+
+```ts
+const option = { label: '管理员', value: 'admin' }
+
+await field.onInput('admin', option)
+
+console.log(field.value) // 'admin'
+console.log(field.inputValue) // 'admin'
+console.log(field.inputValues) // ['admin', option]
+```
 
 ## 值的层级
 
@@ -80,16 +98,23 @@ const exists = form.existValuesIn('profile.name')
 Form 提供了多种合并策略：
 
 ```ts
-// 覆盖 (默认) — 完全替换目标值
-form.setValues({ username: 'new' }) // values = { username: 'new' }
+// 深层合并（默认）
+form.setValues({ profile: { name: 'new' } })
+// 保留 profile 中未传入的属性以及其他顶层属性
 
 // 浅合并
 form.setValues({ username: 'new' }, 'shallowMerge')
 
-// 深合并
+// 深层合并（当前实现与默认的 merge 相同）
 form.setValues({ profile: { name: 'new' } }, 'deepMerge')
 // 结果: { profile: { name: 'new', age: 18 } }
+
+// 覆盖——完全替换表单值
+form.setValues({ username: 'new' }, 'overwrite')
+// 结果: { username: 'new' }
 ```
+
+`merge` 和 `deepMerge` 当前都递归合并普通对象、整体替换数组；`shallowMerge` 只合并第一层，`overwrite` 则替换整个 `values`。
 
 ## 表单状态
 
@@ -144,8 +169,11 @@ autorun(() => {
 ## 状态快照
 
 ```ts
-// 获取表单状态快照（不订阅）
-const state = form.getFormGraph()
+// 获取包含 Form 和所有 Field 状态的字段图快照
+const graph = form.getFormGraph()
+
+// 只获取 Form 状态快照
+const formState = form.getState()
 
 // 获取字段状态快照
 const fieldState = field.getState()

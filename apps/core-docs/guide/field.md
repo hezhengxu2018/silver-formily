@@ -110,7 +110,7 @@ field.onInput('input value')
 field.setValue('programmatic value')
 ```
 
-`onInput()` 更接近用户输入行为：它会写入值、记录输入值、标记 modified，并触发 `triggerType: 'onInput'` 的校验规则。
+`onInput()` 更接近用户输入行为：它会立即写入 `value`、记录 `inputValue` / `inputValues`、标记 modified，并触发 `triggerType: 'onInput'` 的校验规则。`setValue()` 属于程序化赋值，只更新 `value`，不会把新值记录为最近一次输入。详细区别参见[值与状态](/guide/values#value-vs-inputvalue)。
 
 ## 数据源
 

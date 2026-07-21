@@ -2,43 +2,61 @@
 
 Understanding the value and state management mechanism in Form and Field is key to using the core package correctly.
 
-## Three Kinds of Values
+## Field Values
 
-In Formily Core, every field has three core values:
+Field uses the following state to describe its current value, initial value, and most recent input:
 
-| Value          | Description             | When Updated                      |
-| -------------- | ----------------------- | --------------------------------- |
-| `value`        | Current committed value | On blur, programmatic set, submit |
-| `inputValue`   | Input value             | Real-time on every keystroke      |
-| `initialValue` | Initial default value   | On field creation or manual reset |
+| Value          | Description                             | When Updated                                         |
+| -------------- | --------------------------------------- | ---------------------------------------------------- |
+| `value`        | Current field and aggregated form value | `onInput`, `setValue`, or another form value write   |
+| `inputValue`   | First argument of the latest `onInput`  | Every time `onInput` is called                       |
+| `inputValues`  | All arguments of the latest `onInput`   | Every `onInput`, for multi-argument component events |
+| `initialValue` | Initial field value                     | On field creation or through `setInitialValue`       |
 
 ### value vs inputValue
 
 ```ts
 const field = form.createField({
   name: 'name',
-  value: '',
+  value: 'initial',
 })
 
-// Simulating user input — updates inputValue in real time
-field.onInput('a')
-console.log(field.inputValue) // 'a'
-console.log(field.value) // '' (not yet committed)
+console.log(field.value) // 'initial'
+console.log(field.inputValue) // null
 
-field.onInput('ab')
-console.log(field.inputValue) // 'ab'
-console.log(field.value) // '' (not yet committed)
+// Simulate user input: record its source and update the field value
+await field.onInput('user input')
+console.log(field.inputValue) // 'user input'
+console.log(field.inputValues) // ['user input']
+console.log(field.value) // 'user input'
+console.log(form.values.name) // 'user input'
+console.log(field.selfModified) // true
 
-// Programmatic set — directly updates value
-field.setValue('silver')
-console.log(field.inputValue) // 'silver'
-console.log(field.value) // 'silver'
+// A programmatic update changes the value without pretending to be user input
+field.setValue('programmatic value')
+console.log(field.value) // 'programmatic value'
+console.log(form.values.name) // 'programmatic value'
+console.log(field.inputValue) // 'user input'
 ```
 
-The purpose of this design:
+`inputValue` is not an uncommitted value waiting for blur. `onInput()` immediately writes its first argument to `value`, allowing text inputs, selects, radios, checkboxes, and other components to share the same input channel. The states differ by source and lifecycle semantics:
 
-- **inputValue**: users see the input content in real time, and you can perform input-level validation and instant feedback against it
-- **value**: only updated after confirmation (blur, submit, etc.), keeping form values stable
+- `value` is the current business value and can be updated by both `onInput()` and programmatic writes
+- `inputValue` / `inputValues` record the arguments from the latest `onInput()` call
+- `onInput()` also marks the field as modified, emits input-change lifecycles, and runs validation with `triggerType: 'onInput'`
+- `setValue()` performs a programmatic value update without changing `inputValue` or actively marking the field as modified
+
+For components that pass multiple arguments, `inputValues` keeps the complete argument list, while `value` and `inputValue` use the first argument:
+
+```ts
+const option = { label: 'Administrator', value: 'admin' }
+
+await field.onInput('admin', option)
+
+console.log(field.value) // 'admin'
+console.log(field.inputValue) // 'admin'
+console.log(field.inputValues) // ['admin', option]
+```
 
 ## Value Hierarchy
 
@@ -80,16 +98,23 @@ const exists = form.existValuesIn('profile.name')
 Form provides multiple merge strategies:
 
 ```ts
-// Overwrite (default) — completely replaces the target value
-form.setValues({ username: 'new' }) // values = { username: 'new' }
+// Deep merge (default)
+form.setValues({ profile: { name: 'new' } })
+// Preserves omitted profile properties and other top-level properties
 
 // Shallow merge
 form.setValues({ username: 'new' }, 'shallowMerge')
 
-// Deep merge
+// Deep merge (currently identical to the default merge strategy)
 form.setValues({ profile: { name: 'new' } }, 'deepMerge')
 // Result: { profile: { name: 'new', age: 18 } }
+
+// Overwrite — replaces the complete form value
+form.setValues({ username: 'new' }, 'overwrite')
+// Result: { username: 'new' }
 ```
+
+`merge` and `deepMerge` currently merge plain objects recursively and replace arrays as a whole. `shallowMerge` only merges the first level, while `overwrite` replaces the complete `values` object.
 
 ## Form State
 
@@ -144,8 +169,11 @@ autorun(() => {
 ## State Snapshots
 
 ```ts
-// Get a form state snapshot (no subscription)
-const state = form.getFormGraph()
+// Get a field graph snapshot containing Form and all Field states
+const graph = form.getFormGraph()
+
+// Get only the Form state snapshot
+const formState = form.getState()
 
 // Get a field state snapshot
 const fieldState = field.getState()

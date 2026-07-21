@@ -447,3 +447,45 @@ interface onFormValidateSuccess {
 api/entry/form-effect-hooks/on-form-validate-success
 
 :::
+
+## onFormReset
+
+### Description
+
+Listens to the form reset lifecycle.
+
+### Signature
+
+```ts
+interface onFormReset {
+  (callback: (form: Form) => void): void
+}
+```
+
+## onFormGraphChange
+
+### Description
+
+Listens to field graph changes, such as field creation.
+
+### Signature
+
+```ts
+interface onFormGraphChange {
+  (callback: (form: Form) => void): void
+}
+```
+
+## onFormLoading
+
+### Description
+
+Listens to the form loading-state lifecycle.
+
+### Signature
+
+```ts
+interface onFormLoading {
+  (callback: (form: Form) => void): void
+}
+```
