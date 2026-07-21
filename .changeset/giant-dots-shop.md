@@ -1,5 +1,5 @@
 ---
-'@silver-formily/reactive-vue': minor
+'@silver-formily/reactive-vue': patch
 ---
 
 formilyComputed改名为reactiveComputed
