@@ -67,6 +67,10 @@ import {
 } from './externals'
 
 const hasOwnProperty = Object.prototype.hasOwnProperty
+// Array indexes can be reused, but form-level initial values should only
+// initialize the first field instance at a given data path.
+// fix: https://github.com/alibaba/formily/issues/4235
+const initializedInitialValuePaths = new WeakMap<Form, Set<string>>()
 
 function notify(target: Form | Field, formType: LifeCycleTypes, fieldType: LifeCycleTypes) {
   if (isForm(target)) {
@@ -1110,6 +1114,27 @@ export function getValidFieldDefaultValue(value: any, initialValue: any) {
   if (allowAssignDefaultValue(value, initialValue))
     return clone(initialValue)
   return value
+}
+
+export function getFieldInitialValue(target: Field) {
+  const initialValue = target.initialValue
+  if (
+    isUndef(initialValue)
+    || !isUndef(target.props.initialValue)
+    || !getArrayParent(target)
+  ) {
+    return initialValue
+  }
+  const path = target.path.toString()
+  let initializedPaths = initializedInitialValuePaths.get(target.form)
+  if (!initializedPaths) {
+    initializedPaths = new Set<string>()
+    initializedInitialValuePaths.set(target.form, initializedPaths)
+  }
+  if (initializedPaths.has(path))
+    return
+  initializedPaths.add(path)
+  return initialValue
 }
 
 export function allowAssignDefaultValue(target: any, source: any) {

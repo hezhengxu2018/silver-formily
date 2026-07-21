@@ -173,6 +173,76 @@ it('array field repeated remove preserves the remaining child state', async () =
   expect(form.query('array.0').get('value')).toEqual({ value: 33 })
 })
 
+it('new array item does not reuse a removed item form initial value', async () => {
+  const form = attach(
+    createForm({
+      initialValues: {
+        array: [{ value: 11 }],
+      },
+    }),
+  )
+  const array = attach(
+    form.createArrayField({
+      name: 'array',
+    }),
+  )
+  attach(
+    form.createField({
+      name: 'value',
+      basePath: 'array.0',
+    }),
+  )
+
+  expect(array.value).toEqual([{ value: 11 }])
+
+  await array.remove(0)
+  await array.push({})
+  attach(
+    form.createField({
+      name: 'value',
+      basePath: 'array.0',
+    }),
+  )
+
+  expect(array.value).toEqual([{}])
+  expect(form.initialValues).toEqual({ array: [{ value: 11 }] })
+
+  await form.reset()
+
+  expect(array.value).toEqual([{ value: 11 }])
+})
+
+it('new array item still uses a field initial value', async () => {
+  const form = attach(createForm())
+  const array = attach(
+    form.createArrayField({
+      name: 'array',
+    }),
+  )
+
+  await array.push({})
+  attach(
+    form.createField({
+      name: 'value',
+      basePath: 'array.0',
+      initialValue: 11,
+    }),
+  )
+  expect(array.value).toEqual([{ value: 11 }])
+
+  await array.remove(0)
+  await array.push({})
+  attach(
+    form.createField({
+      name: 'value',
+      basePath: 'array.0',
+      initialValue: 11,
+    }),
+  )
+
+  expect(array.value).toEqual([{ value: 11 }])
+})
+
 it('array field shift transposes children state', async () => {
   const form = attach(createForm())
   const array = attach(

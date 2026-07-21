@@ -39,6 +39,7 @@ import {
   createReactions,
   createStateGetter,
   createStateSetter,
+  getFieldInitialValue,
   getValidFieldDefaultValue,
   getValuesFromEvent,
   initializeEnd,
@@ -437,7 +438,7 @@ export class Field<
         this.caches.value = value
         return
       }
-      value = getValidFieldDefaultValue(value, this.initialValue)
+      value = getValidFieldDefaultValue(value, getFieldInitialValue(this))
       if (!allowAssignDefaultValue(this.value, value) && !this.designable) {
         return
       }
