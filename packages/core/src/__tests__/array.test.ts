@@ -146,6 +146,33 @@ it('array field children state exchanges', () => {
   expect(form.query('array.2.value').get('value')).toEqual(55)
 })
 
+it('array field repeated remove preserves the remaining child state', async () => {
+  const form = attach(
+    createForm({
+      initialValues: {
+        array: [{ value: 11 }, { value: 22 }, { value: 33 }],
+      },
+    }),
+  )
+  const array = attach(
+    form.createArrayField({
+      name: 'array',
+    }),
+  )
+  const first = attach(form.createField({ name: 0, basePath: 'array' }))
+  const second = attach(form.createField({ name: 1, basePath: 'array' }))
+  const third = attach(form.createField({ name: 2, basePath: 'array' }))
+
+  await array.remove(0)
+  await array.remove(0)
+
+  expect(Object.keys(form.fields)).toEqual(['array', 'array.0'])
+  expect(form.fields['array.0']).toBe(third)
+  expect(form.fields['array.0']).not.toBe(first)
+  expect(form.fields['array.0']).not.toBe(second)
+  expect(form.query('array.0').get('value')).toEqual({ value: 33 })
+})
+
 it('array field shift transposes children state', async () => {
   const form = attach(createForm())
   const array = attach(

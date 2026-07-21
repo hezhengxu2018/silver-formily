@@ -158,7 +158,15 @@ export function locateNode(field: GeneralField, address: FormPathPattern) {
 export function patchFieldStates(target: Record<string, GeneralField>, patches: INodePatch<GeneralField>[]) {
   patches.forEach(({ type, address, oldAddress, payload }) => {
     if (type === 'remove') {
-      destroy(target, address, false)
+      if (payload) {
+        destroyField(payload, false)
+        if (target[address] === payload) {
+          target[address] = undefined
+        }
+      }
+      else {
+        delete target[address]
+      }
     }
     else if (type === 'update') {
       if (payload) {
@@ -174,15 +182,20 @@ export function patchFieldStates(target: Record<string, GeneralField>, patches: 
   })
 }
 
-export function destroy(target: Record<string, GeneralField>, address: string, forceClear = true) {
-  const field = target[address]
-  field?.dispose()
+export function destroyField(field: GeneralField, forceClear = true) {
+  field.dispose()
   if (isDataField(field) && forceClear) {
     const form = field.form
     const path = field.path
     form.deleteValuesIn(path)
     form.deleteInitialValuesIn(path)
   }
+}
+
+export function destroy(target: Record<string, GeneralField>, address: string, forceClear = true) {
+  const field = target[address]
+  if (field)
+    destroyField(field, forceClear)
   delete target[address]
 }
 
@@ -390,6 +403,14 @@ export function spliceArrayState(field: ArrayField, props?: ISpliceArrayStatePro
     return index >= startIndex && index < startIndex + insertCount
   }
   const isDeleteNode = (identifier: string) => {
+    const afterStr = identifier.substring(addrLength)
+    const number = afterStr.match(NumberIndexReg)?.[1]
+    if (number === undefined)
+      return false
+    const index = Number(number)
+    return index >= startIndex && index < startIndex + deleteCount
+  }
+  const isNeedCleanupNode = (identifier: string) => {
     const preStr = identifier.substring(0, addrLength)
     const afterStr = identifier.substring(addrLength)
     const number = afterStr.match(NumberIndexReg)?.[1]
@@ -397,11 +418,10 @@ export function spliceArrayState(field: ArrayField, props?: ISpliceArrayStatePro
       return false
     const index = Number(number)
     return (
-      (index > startIndex
-        && !fields[
-          `${preStr}${afterStr.replace(/^\.\d+/, `.${index + deleteCount}`)}`
-        ])
-        || index === startIndex
+      index >= startIndex
+      && !fields[
+        `${preStr}${afterStr.replace(/^\.\d+/, `.${index + deleteCount}`)}`
+      ]
     )
   }
   const moveIndex = (identifier: string) => {
@@ -427,9 +447,22 @@ export function spliceArrayState(field: ArrayField, props?: ISpliceArrayStatePro
             oldAddress: identifier,
             payload: field,
           })
+          if (isNeedCleanupNode(identifier)) {
+            fieldPatches.push({ type: 'remove', address: identifier })
+          }
         }
-        if (isInsertNode(identifier) || isDeleteNode(identifier)) {
+        else if (isInsertNode(identifier)) {
           fieldPatches.push({ type: 'remove', address: identifier })
+        }
+        else if (isDeleteNode(identifier)) {
+          fieldPatches.push({
+            type: 'remove',
+            address: identifier,
+            payload: field,
+          })
+          if (isNeedCleanupNode(identifier)) {
+            fieldPatches.push({ type: 'remove', address: identifier })
+          }
         }
       }
     })
