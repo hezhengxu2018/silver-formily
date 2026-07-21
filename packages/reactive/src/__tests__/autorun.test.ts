@@ -749,3 +749,97 @@ it('reaction recollect dependencies', () => {
   expect(fn2).toBeCalledTimes(2)
   expect(trigger2).toBeCalledTimes(2)
 })
+
+it('reruns an earlier reaction after a chained update', () => {
+  const obs = observable({
+    a: '',
+    b: '',
+    c: '',
+  })
+
+  autorun(() => {
+    obs.c = obs.a + obs.b
+  })
+  autorun(() => {
+    obs.b = obs.a
+  })
+
+  obs.a = 'a'
+
+  expect(obs.a).toBe('a')
+  expect(obs.b).toBe('a')
+  expect(obs.c).toBe('aa')
+})
+
+it('uses the latest value when a later reaction updates the same dependency', () => {
+  const obs = observable({
+    value: 0,
+  })
+  const reader = vi.fn()
+  const writer = vi.fn()
+  let value = 0
+
+  autorun(() => {
+    reader()
+    value = obs.value
+  })
+  autorun(() => {
+    writer()
+    if (obs.value === 1)
+      obs.value = 2
+  })
+
+  obs.value = 1
+
+  expect(value).toBe(2)
+  expect(reader).toHaveBeenCalledTimes(3)
+  expect(writer).toHaveBeenCalledTimes(2)
+})
+
+it('does not rerun a later reaction when it has already observed the chained update', () => {
+  const obs = observable({
+    value: 0,
+  })
+  const writer = vi.fn()
+  const reader = vi.fn()
+  let value = 0
+
+  autorun(() => {
+    writer()
+    if (obs.value === 1)
+      obs.value = 2
+  })
+  autorun(() => {
+    reader()
+    value = obs.value
+  })
+
+  obs.value = 1
+
+  expect(value).toBe(2)
+  expect(writer).toHaveBeenCalledTimes(2)
+  expect(reader).toHaveBeenCalledTimes(2)
+})
+
+it('reruns a reaction after a chained update in batch scope', () => {
+  const obs = observable({
+    a: '',
+    b: '',
+    c: '',
+  })
+
+  autorun(() => {
+    obs.c = obs.a + obs.b
+  })
+  autorun(() => {
+    obs.b = obs.a
+  })
+
+  batch.scope(() => {
+    obs.a = 'a'
+  })
+
+  expect(obs.a).toBe('a')
+  expect(obs.b).toBe('a')
+  expect(obs.c).toBe('aa')
+})

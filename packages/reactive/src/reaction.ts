@@ -5,9 +5,10 @@ import {
   BatchCount,
   BatchEndpoints,
   BatchScope,
+  createPendingReactions,
   DependencyCollected,
   ObserverListeners,
-  PendingReactions,
+  PendingReactionsRef,
   PendingScopeReactions,
   RawReactionsMap,
   ReactionStack,
@@ -29,14 +30,21 @@ function isUntracking() {
 }
 
 function executePendingReactions() {
-  PendingReactions.batchDelete((reaction) => {
-    if (isFn(reaction._scheduler)) {
-      reaction._scheduler(reaction)
-    }
-    else {
-      reaction()
-    }
-  })
+  while (PendingReactionsRef.value) {
+    const pendingReactions = PendingReactionsRef.value
+    PendingReactionsRef.value = null
+    pendingReactions.batchDelete((reaction) => {
+      if (!reaction._pending)
+        return
+      reaction._pending = false
+      if (isFn(reaction._scheduler)) {
+        reaction._scheduler(reaction)
+      }
+      else {
+        reaction()
+      }
+    })
+  }
 }
 
 function executeBatchEndpoints() {
@@ -106,7 +114,12 @@ function runReactions(target: any, key: PropertyKey) {
       PendingScopeReactions.add(reaction)
     }
     else if (isBatching()) {
-      PendingReactions.add(reaction)
+      if (!reaction._pending) {
+        reaction._pending = true
+        PendingReactionsRef.value
+          = PendingReactionsRef.value || createPendingReactions()
+        PendingReactionsRef.value.add(reaction)
+      }
     }
     else {
       // never reach
@@ -186,7 +199,8 @@ export function releaseBindingReactions(reaction: Reaction) {
       reactions.delete(reaction)
     })
   })
-  PendingReactions.delete(reaction)
+  reaction._pending = false
+  PendingReactionsRef.value?.delete(reaction)
   PendingScopeReactions.delete(reaction)
   delete reaction._reactionsSet
 }
