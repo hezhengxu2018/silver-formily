@@ -1,4 +1,9 @@
-export function attach<T extends { onMount: () => void }>(target: T): T {
+export function attach<T extends { onMount: () => void }>(
+  target: T | undefined,
+): T {
+  if (!target)
+    throw new Error('Expected a mountable model')
+
   target.onMount()
   return target
 }

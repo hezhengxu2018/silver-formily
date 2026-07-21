@@ -99,6 +99,10 @@ export class ArrayField<
     if (!isArr(this.value))
       return
     return action(() => {
+      spliceArrayState(this, {
+        startIndex: 0,
+        deleteCount: 1,
+      })
       this.value.shift()
       return this.onInput(this.value)
     })

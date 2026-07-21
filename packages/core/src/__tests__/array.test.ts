@@ -146,6 +146,39 @@ it('array field children state exchanges', () => {
   expect(form.query('array.2.value').get('value')).toEqual(55)
 })
 
+it('array field shift transposes children state', async () => {
+  const form = attach(createForm())
+  const array = attach(
+    form.createArrayField({
+      name: 'array',
+      value: [{ value: 11 }, { value: 22 }],
+    }),
+  )
+  const first = attach(
+    form.createField({
+      name: 'value',
+      basePath: 'array.0',
+      title: 'first',
+    }),
+  )
+  const second = attach(
+    form.createField({
+      name: 'value',
+      basePath: 'array.1',
+      title: 'second',
+    }),
+  )
+
+  await array.shift()
+
+  expect(array.value).toEqual([{ value: 22 }])
+  expect(form.fields['array.0.value']).toBe(second)
+  expect(form.fields['array.0.value']).not.toBe(first)
+  expect(form.query('array.0.value').get('title')).toBe('second')
+  expect(form.query('array.0.value').get('value')).toBe(22)
+  expect(form.query('array.1.value').take()).toBeUndefined()
+})
+
 it('array field move up/down then fields move', () => {
   const form = attach(createForm())
   const array = attach(
