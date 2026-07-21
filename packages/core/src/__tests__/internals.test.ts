@@ -1,5 +1,5 @@
-import { expect, it } from 'vitest'
-import { createForm } from '../'
+import { expect, it, vi } from 'vitest'
+import { createForm, onFieldValueChange } from '../'
 import {
   deserialize,
   getValuesFromEvent,
@@ -109,4 +109,97 @@ it('isHTMLInputEvent', () => {
   expect(isHTMLInputEvent({ target: { tagName: 'DIV' } })).toBeFalsy()
   expect(isHTMLInputEvent({ target: {}, stopPropagation() {} })).toBeFalsy()
   expect(isHTMLInputEvent({})).toBeFalsy()
+})
+
+it('reset restores the initial value of a display none field', async () => {
+  const valueChange = vi.fn()
+  const form = attach(
+    createForm({
+      initialValues: {
+        input: '123',
+      },
+      effects() {
+        onFieldValueChange('input', valueChange)
+      },
+    }),
+  )
+  const field = attach(
+    form.createField({
+      name: 'input',
+    }),
+  )
+
+  expect(form.values.input).toBe('123')
+  await field.onInput('456')
+  expect(form.values.input).toBe('456')
+  field.setDisplay('none')
+  expect(form.values.input).toBeUndefined()
+  expect(valueChange).toHaveBeenCalledTimes(2)
+
+  await form.reset()
+  await form.reset()
+
+  expect(field.display).toBe('none')
+  expect(form.values.input).toBeUndefined()
+  expect(valueChange).toHaveBeenCalledTimes(2)
+
+  field.setDisplay('visible')
+
+  expect(form.values.input).toBe('123')
+  expect(valueChange).toHaveBeenCalledTimes(3)
+})
+
+it('reset force clears the cached value of a display none field', async () => {
+  const form = attach(
+    createForm({
+      initialValues: {
+        input: '123',
+      },
+    }),
+  )
+  const field = attach(
+    form.createField({
+      name: 'input',
+    }),
+  )
+
+  await field.onInput('456')
+  field.setDisplay('none')
+
+  await field.reset({ forceClear: true })
+
+  expect(field.display).toBe('none')
+  expect(form.values.input).toBeUndefined()
+
+  field.setDisplay('visible')
+
+  expect(field.value).toBeUndefined()
+  expect(form.values.input).toBeUndefined()
+})
+
+it('reset clears the cached value of a display none field without an initial value', async () => {
+  const form = attach(
+    createForm({
+      values: {
+        input: '123',
+      },
+    }),
+  )
+  const field = attach(
+    form.createField({
+      name: 'input',
+    }),
+  )
+
+  field.setDisplay('none')
+
+  await field.reset()
+
+  expect(field.display).toBe('none')
+  expect(form.values.input).toBeUndefined()
+
+  field.setDisplay('visible')
+
+  expect(field.value).toBeUndefined()
+  expect(form.values.input).toBeUndefined()
 })

@@ -1011,6 +1011,12 @@ export const resetSelf = batch.bound(
     target.inputValue = typedDefaultValue
     target.inputValues = []
     target.caches = {}
+    if (target.display === 'none') {
+      target.caches.value
+        = options?.forceClear || isUndef(target.initialValue)
+          ? typedDefaultValue
+          : toJS(target.initialValue)
+    }
     if (!isUndef(target.value)) {
       if (options?.forceClear) {
         target.value = typedDefaultValue
