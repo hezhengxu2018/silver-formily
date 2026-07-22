@@ -4,18 +4,6 @@
 >
 > Editable is essentially a FormItem variant, so it is usually placed on the decorator side.
 
-::: warning Note
-In `readPretty` mode, Formily validation cannot be triggered directly. Because of that, this component library does not use the official `mapReadPretty` for read-pretty mappings. Instead, it uses an internally modified version that additionally reads `readPretty` from `Field.data`. When that value is `true`, the component still renders in read-pretty mode. This simulated read-pretty mode does not block Formily validation. If you build custom components that need to work with `Editable`, import `mapReadPretty` from `@silver-formily/element-plus/__builtins__`; otherwise read-pretty rendering will not work correctly.
-:::
-
-::: tip Tip
-Starting from [`@formily/core` v2.3.3](https://github.com/alibaba/formily/releases/tag/v2.3.3), validation-trigger states can be configured. If you use version `2.3.3` or above, you can use that capability together with the built-in `mapReadPretty` and still keep validation enabled.
-:::
-
-::: tip Tip
-When Editable switches modes, it no longer changes `Field.pattern`. Instead, it updates `readPretty` on `Field.data`, for the reasons explained above.
-:::
-
 ## Markup Schema Example
 
 :::demo

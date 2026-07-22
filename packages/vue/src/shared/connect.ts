@@ -123,7 +123,11 @@ export function mapReadPretty<T extends Component, C extends Component>(
             const field = fieldRef.value
             const { attrs: normalizedAttrs, events } = extractAttrsAndEvents(attrs)
             return h(
-              field && !isVoidField(field) && field.pattern === 'readPretty' ? component : target,
+              field
+              && !isVoidField(field)
+              && (field.pattern === 'readPretty' || !!field.data?.readPretty)
+                ? component
+                : target,
               createVNodeProps(
                 {
                   ...readPrettyProps,

@@ -4,18 +4,6 @@
 >
 > Editable 组件相当于是 FormItem 组件的变体，所以通常放在 decorator 中
 
-::: warning 注意
-由于 readPretty 状态下无法触发 formily 的校验，本组件库中所有组件的阅读态映射没有使用官方的mapReadPretty，而是使用了内部改造过的mapReadPretty函数，该函数会额外读取Field模型中data对象上的readPretty属性，如果为`true`则同样会呈现阅读态，这种模拟的阅读态不会阻止formily的校验，如果自行封装的组件想使用Editable组件请使用`@silver-formily/element-plus/__builtins__`中引入`mapReadPretty`。不然会出现阅读态无法呈现的问题。
-:::
-
-::: tip 提示
-`@formily/core`从[v2.3.3](https://github.com/alibaba/formily/releases/tag/v2.3.3)开始支持配置触发校验的状态。如果使用`2.3.3`以上版本可以通过该属性来使用内置的`mapReadPretty`，同样可以触发校验。
-:::
-
-::: tip 提示
-Editable 组件现在切换状态时不会修改Field的`pattern`属性，而是修改Field字段模型中data对象上的`readPretty`属性，原因见上。
-:::
-
 ## Markup Schema 案例
 
 :::demo

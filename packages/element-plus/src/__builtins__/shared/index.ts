@@ -1,6 +1,6 @@
 export * from './load-config-provider'
 export * from './loading'
 export * from './simple-version-compare'
-export * from './transform-component'
 export * from './types'
 export * from './utils'
+export { mapReadPretty } from '@silver-formily/vue'

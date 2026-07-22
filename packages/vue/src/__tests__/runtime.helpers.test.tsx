@@ -358,6 +358,37 @@ describe('runtime helpers', () => {
     expect(form.getValuesIn('editable')).toBe('updated')
   })
 
+  it('应该支持通过字段 data 切换 readPretty 展示且不改变校验模式', async () => {
+    const form = createForm({
+      values: {
+        preview: 'xyz',
+      },
+    })
+
+    const screen = await render(() => (
+      <FormProvider form={form}>
+        <Field
+          name="preview"
+          title="Preview"
+          data={{ readPretty: true }}
+          component={[ConnectedInput]}
+        />
+      </FormProvider>
+    ))
+
+    await expect
+      .element(screen.getByTestId('pretty-text'))
+      .toHaveTextContent('xyz|pretty|mapped')
+    expect(form.getFieldState('preview').pattern).toBe('editable')
+
+    form.setFieldState('preview', (state) => {
+      state.data = { readPretty: false }
+    })
+
+    await expect.element(screen.getByTestId('connected-input')).toBeInTheDocument()
+    expect(form.getFieldState('preview').pattern).toBe('editable')
+  })
+
   it('应该在真实渲染中保留 connect 的原始 attrs 和匿名组件 fallback', async () => {
     const handleClick = vi.fn()
 
