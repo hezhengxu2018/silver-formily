@@ -20,6 +20,7 @@ import {
   createBatchStateSetter,
   createStateGetter,
   createStateSetter,
+  discardFieldInitialValueRecords,
   getValidFormValues,
   setLoading,
   setSubmitting,
@@ -403,6 +404,14 @@ export class Form<ValueType extends object = any> {
   ) => {
     if (!isPlainObj(initialValues))
       return
+    if (strategy === 'overwrite') {
+      discardFieldInitialValueRecords(this)
+    }
+    else {
+      Object.keys(initialValues).forEach((key) => {
+        discardFieldInitialValueRecords(this, key)
+      })
+    }
     if (strategy === 'merge' || strategy === 'deepMerge') {
       merge(this.initialValues, initialValues, {
         // never reach
@@ -435,10 +444,12 @@ export class Form<ValueType extends object = any> {
   }
 
   setInitialValuesIn = (pattern: FormPathPattern, initialValue: any) => {
+    discardFieldInitialValueRecords(this, pattern)
     FormPath.setIn(this.initialValues, pattern, initialValue)
   }
 
   deleteInitialValuesIn = (pattern: FormPathPattern) => {
+    discardFieldInitialValueRecords(this, pattern)
     FormPath.deleteIn(this.initialValues, pattern)
   }
 

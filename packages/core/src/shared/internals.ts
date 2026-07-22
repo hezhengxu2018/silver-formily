@@ -72,6 +72,90 @@ const hasOwnProperty = Object.prototype.hasOwnProperty
 // fix: https://github.com/alibaba/formily/issues/4235
 const initializedInitialValuePaths = new WeakMap<Form, Set<string>>()
 
+interface IFieldInitialValueRecord {
+  path: string
+  previousExists: boolean
+  previousValue: any
+}
+
+// Field props can contribute defaults to form.initialValues. Keep the
+// contribution's previous value so array graph cleanup can remove only the
+// field-owned part without touching form-level initial values.
+const fieldInitialValueRecords = new WeakMap<
+  Form,
+  Map<Field, IFieldInitialValueRecord>
+>()
+
+function isSameOrChildPath(path: string, parent: string) {
+  return path === parent || path.startsWith(`${parent}.`)
+}
+
+export function discardFieldInitialValueRecords(
+  form: Form,
+  pattern?: FormPathPattern,
+) {
+  const records = fieldInitialValueRecords.get(form)
+  if (!records)
+    return
+  if (isUndef(pattern)) {
+    records.clear()
+    return
+  }
+  const path = FormPath.parse(pattern).toString()
+  records.forEach((record, field) => {
+    if (
+      isSameOrChildPath(record.path, path)
+      || isSameOrChildPath(path, record.path)
+    ) {
+      records.delete(field)
+    }
+  })
+}
+
+export function setFieldInitialValue(target: Field, initialValue: any) {
+  if (target.initialized || isUndef(target.props.initialValue))
+    return false
+  const form = target.form
+  const path = target.path.toString()
+  let records = fieldInitialValueRecords.get(form)
+  if (!records) {
+    records = new Map()
+    fieldInitialValueRecords.set(form, records)
+  }
+  if (!records.has(target)) {
+    records.set(target, {
+      path,
+      previousExists: form.existInitialValuesIn(path),
+      previousValue: clone(form.getInitialValuesIn(path)),
+    })
+  }
+  FormPath.setIn(form.initialValues, path, initialValue)
+  return true
+}
+
+function restoreFieldInitialValue(target: Field) {
+  const form = target.form
+  const records = fieldInitialValueRecords.get(form)
+  const record = records?.get(target)
+  if (!records || !record)
+    return
+  records.delete(target)
+  if (record.previousExists) {
+    FormPath.setIn(form.initialValues, record.path, clone(record.previousValue))
+  }
+  else {
+    FormPath.deleteIn(form.initialValues, record.path)
+  }
+  records.forEach((childRecord, field) => {
+    if (
+      childRecord.path !== record.path
+      && isSameOrChildPath(childRecord.path, record.path)
+    ) {
+      records.delete(field)
+    }
+  })
+}
+
 function notify(target: Form | Field, formType: LifeCycleTypes, fieldType: LifeCycleTypes) {
   if (isForm(target)) {
     target.notify(formType)
@@ -188,7 +272,10 @@ export function patchFieldStates(target: Record<string, GeneralField>, patches: 
 
 export function destroyField(field: GeneralField, forceClear = true) {
   field.dispose()
-  if (isDataField(field) && forceClear) {
+  if (isDataField(field) && !forceClear) {
+    restoreFieldInitialValue(field)
+  }
+  else if (isDataField(field) && forceClear) {
     const form = field.form
     const path = field.path
     form.deleteValuesIn(path)

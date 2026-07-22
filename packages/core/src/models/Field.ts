@@ -48,6 +48,7 @@ import {
   modifySelf,
   queryFeedbackMessages,
   queryFeedbacks,
+  setFieldInitialValue,
   setLoading,
   setSubmitting,
   setValidating,
@@ -457,7 +458,8 @@ export class Field<
         return
       }
     }
-    this.form.setInitialValuesIn(this.path, initialValue)
+    if (!setFieldInitialValue(this, initialValue))
+      this.form.setInitialValuesIn(this.path, initialValue)
   }
 
   setLoading = (loading?: boolean) => {

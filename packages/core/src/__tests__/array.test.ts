@@ -243,6 +243,142 @@ it('new array item still uses a field initial value', async () => {
   expect(array.value).toEqual([{ value: 11 }])
 })
 
+it('nested array removal clears only field-owned initial values', async () => {
+  const form = attach(createForm())
+  const outer = attach(
+    form.createArrayField({
+      name: 'aa',
+      initialValue: [{}],
+    }),
+  )
+
+  attach(
+    form.createArrayField({
+      name: 'bb',
+      basePath: 'aa.0',
+      initialValue: [{}],
+    }),
+  )
+  attach(
+    form.createField({
+      name: 'cc',
+      basePath: 'aa.0.bb.0',
+      initialValue: true,
+    }),
+  )
+  attach(
+    form.createField({
+      name: 'cc',
+      basePath: 'aa.0.bb.1',
+      initialValue: true,
+    }),
+  )
+  attach(
+    form.createField({
+      name: 'cc',
+      basePath: 'aa.0.bb.2',
+      initialValue: true,
+    }),
+  )
+
+  expect(form.initialValues).toEqual({
+    aa: [{ bb: [{ cc: true }, { cc: true }, { cc: true }] }],
+  })
+
+  await outer.remove(0)
+  attach(
+    form.createArrayField({
+      name: 'bb',
+      basePath: 'aa.0',
+      initialValue: [{}],
+    }),
+  )
+  attach(
+    form.createField({
+      name: 'cc',
+      basePath: 'aa.0.bb.0',
+      initialValue: true,
+    }),
+  )
+
+  expect(form.initialValues).toEqual({
+    aa: [{ bb: [{ cc: true }] }],
+  })
+})
+
+it('nested array removal preserves form initial values', async () => {
+  const form = attach(
+    createForm({
+      initialValues: {
+        aa: [{ bb: [] }],
+      },
+    }),
+  )
+  const outer = attach(
+    form.createArrayField({
+      name: 'aa',
+      initialValue: [{}],
+    }),
+  )
+  attach(
+    form.createArrayField({
+      name: 'bb',
+      basePath: 'aa.0',
+      initialValue: [{}],
+    }),
+  )
+
+  expect(form.initialValues).toEqual({ aa: [{ bb: [{}] }] })
+
+  await outer.remove(0)
+
+  expect(form.initialValues).toEqual({ aa: [{ bb: [] }] })
+})
+
+it('explicit initial value updates supersede field-owned defaults', async () => {
+  const form = attach(createForm())
+  const array = attach(
+    form.createArrayField({
+      name: 'array',
+      initialValue: [{}],
+    }),
+  )
+  attach(
+    form.createField({
+      name: 'value',
+      basePath: 'array.0',
+      initialValue: 11,
+    }),
+  )
+
+  form.setInitialValuesIn('array.0.value', 22)
+  await array.remove(0)
+
+  expect(form.initialValues).toEqual({ array: [{ value: 22 }] })
+})
+
+it('unrelated initial value updates keep field default ownership', async () => {
+  const form = attach(createForm())
+  const array = attach(
+    form.createArrayField({
+      name: 'array',
+      initialValue: [{}],
+    }),
+  )
+  attach(
+    form.createField({
+      name: 'value',
+      basePath: 'array.0',
+      initialValue: 11,
+    }),
+  )
+
+  form.setInitialValues({ other: 22 })
+  await array.remove(0)
+
+  expect(form.initialValues).toEqual({ array: [{}], other: 22 })
+})
+
 it('array field shift transposes children state', async () => {
   const form = attach(createForm())
   const array = attach(
@@ -720,7 +856,7 @@ it('nest array remove', async () => {
   expect(form.fields['metrics.0.content.0.attr']).not.toBeUndefined()
   expect(
     form.initialValues.metrics?.[1]?.content?.[0]?.attr,
-  ).not.toBeUndefined()
+  ).toBeUndefined()
 })
 
 it('indexes: nest path need exclude incomplete number', () => {
