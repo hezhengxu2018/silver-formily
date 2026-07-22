@@ -25,7 +25,6 @@
   ],
   "exclude": [
     "node_modules",
-    "esm",
-    "src/__tests__"
+    "esm"
   ]
 }

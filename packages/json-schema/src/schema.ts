@@ -161,6 +161,8 @@ export class Schema<
   'x-decorator'?: Decorator
   // 装饰器属性
   'x-decorator-props'?: DecoratorProps
+  // 装饰器内容
+  'x-decorator-content'?: any
   // 组件
   'x-component'?: Component
   // 组件属性

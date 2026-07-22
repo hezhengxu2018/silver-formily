@@ -59,6 +59,7 @@ export class VoidField<
     this.readPretty = this.props.readPretty
     this.visible = this.props.visible
     this.content = this.props.content
+    this.decoratorContent = this.props.decoratorContent
     this.data = this.props.data
     this.decorator = toArr(this.props.decorator)
     this.component = toArr(this.props.component)
@@ -79,6 +80,7 @@ export class VoidField<
       decoratorType: observable.ref,
       componentType: observable.ref,
       content: observable.ref,
+      decoratorContent: observable.ref,
       data: observable.shallow,
       decoratorProps: observable,
       componentProps: observable,
@@ -103,6 +105,7 @@ export class VoidField<
       setDecoratorProps: action,
       setData: action,
       setContent: action,
+      setDecoratorContent: action,
       onInit: batch,
       onMount: batch,
       onUnmount: batch,

@@ -1,8 +1,11 @@
-import type { DataField } from '../types'
 import { autorun, batch, observable } from '@silver-formily/reactive'
 import { expect, it, vi } from 'vitest'
 import { createForm, isDataField, isField, onFieldReact } from '../'
 import { attach, sleep } from './shared'
+
+function asComponentTuple(value: unknown) {
+  return value as [unknown, Record<string, any>?]
+}
 
 it('create field', () => {
   const form = attach(createForm())
@@ -314,12 +317,12 @@ it('setComponent/setComponentProps', () => {
 
   field.setComponent(undefined, { props: 123 })
   field.setComponent(component)
-  expect(field.component[0]).toEqual(component)
-  expect(field.component[1]).toEqual({ props: 123 })
+  expect(asComponentTuple(field.component)[0]).toEqual(component)
+  expect(asComponentTuple(field.component)[1]).toEqual({ props: 123 })
   field.setComponentProps({
     hello: 'world',
   })
-  expect(field.component[1]).toEqual({ props: 123, hello: 'world' })
+  expect(asComponentTuple(field.component)[1]).toEqual({ props: 123, hello: 'world' })
 })
 
 it('setDecorator/setDecoratorProps', () => {
@@ -332,12 +335,34 @@ it('setDecorator/setDecoratorProps', () => {
   )
   field.setDecorator(undefined, { props: 123 })
   field.setDecorator(component)
-  expect(field.decorator[0]).toEqual(component)
-  expect(field.decorator[1]).toEqual({ props: 123 })
+  expect(asComponentTuple(field.decorator)[0]).toEqual(component)
+  expect(asComponentTuple(field.decorator)[1]).toEqual({ props: 123 })
   field.setDecoratorProps({
     hello: 'world',
   })
-  expect(field.decorator[1]).toEqual({ props: 123, hello: 'world' })
+  expect(asComponentTuple(field.decorator)[1]).toEqual({ props: 123, hello: 'world' })
+})
+
+it('setDecoratorContent', () => {
+  const initialContent = { addon: 'initial' }
+  const nextContent = { addon: 'next' }
+  const form = attach(createForm())
+  const field = attach(
+    form.createField({
+      name: 'aa',
+      decoratorContent: initialContent,
+    }),
+  )
+  const contents: any[] = []
+  const dispose = autorun(() => {
+    contents.push(field.decoratorContent)
+  })
+
+  expect(field.decoratorContent).toBe(initialContent)
+  field.setDecoratorContent(nextContent)
+  expect(field.decoratorContent).toBe(nextContent)
+  expect(contents).toEqual([initialContent, nextContent])
+  dispose()
 })
 
 it('reaction initialValue', () => {
@@ -489,7 +514,7 @@ it('selfValidate/errors/warnings/successes/valid/invalid/validateStatus/queryFee
   ])
   expect(field3.feedbacks).toEqual([])
   field3.setFeedback()
-  field3.setFeedback({ messages: null })
+  field3.setFeedback({ messages: null as any })
   field3.setFeedback({ messages: ['error'], code: 'EffectError' })
   field3.setFeedback({ messages: ['error2'], code: 'EffectError' })
   expect(field3.feedbacks).toEqual([
@@ -510,7 +535,7 @@ it('selfValidate/errors/warnings/successes/valid/invalid/validateStatus/queryFee
       path: 'yyy',
     }),
   ).toEqual([])
-  field3.setFeedback({ messages: null, code: 'EffectError' })
+  field3.setFeedback({ messages: null as any, code: 'EffectError' })
   field3.setFeedback({ messages: [], code: 'EffectError' })
   field4.setDisplay('none')
   await field4.validate()
@@ -1079,7 +1104,7 @@ it('reactions', async () => {
             field.readOnly = false
           }
         },
-        null,
+        null as any,
       ],
     }),
   )
@@ -1115,8 +1140,8 @@ it('fault tolerance', () => {
   expect(field.value).toBeUndefined()
   field.setDisplay('visible')
   expect(field.value).toEqual(321)
-  form.setDisplay(null)
-  form.setPattern(null)
+  form.setDisplay(null as any)
+  form.setPattern(null as any)
   const field2 = attach(
     form.createField({
       name: 'xxx',
@@ -1867,8 +1892,8 @@ it('field setValidator repeat call', async () => {
 
 it('custom validator to get ctx.field', async () => {
   const form = attach(createForm())
-  let ctxField = null
-  let ctxForm = null
+  let ctxField: unknown = null
+  let ctxForm: unknown = null
   attach(
     form.createField({
       name: 'aaa',
@@ -1891,13 +1916,13 @@ it('single direction linkage effect', async () => {
 
   const input1 = form.createField({
     name: 'input1',
-    reactions: (field: DataField) => {
-      if (!field.selfModified) {
+    reactions: (field) => {
+      if (!isDataField(field) || !field.selfModified) {
         return
       }
       input2.value = field.value
     },
-  })
+  })!
 
   input2 = form.createField({
     name: 'input2',
@@ -1914,7 +1939,7 @@ it('path change will update computed value', () => {
 
   const input = form.createField({
     name: 'input',
-  })
+  })!
 
   const value = vi.fn()
 

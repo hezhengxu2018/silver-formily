@@ -59,6 +59,7 @@ Decorators wrap your real input with components such as `ElFormItem`. They can n
 
 - In component mode (`Field`, `ArrayField`, `VoidField`, etc.) bind `decorator-content` (kebab or camel case). Its shape mirrors `x-content`: pass a string, a component, or a map of slot names to components.
 - In schema mode declare `x-decorator-content`, reusing the same structure.
+- At runtime, call `field.setDecoratorContent(content)` or update `decoratorContent` through `setFieldState` or Schema reactions.
 
 :::demo
 questions/decorator-slot

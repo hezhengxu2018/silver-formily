@@ -118,6 +118,22 @@ it('setDecorator/setDecoratorProps', () => {
   expect(asComponentTuple(field.decorator)[1]).toEqual({ props: 123, hello: 'world' })
 })
 
+it('setDecoratorContent', () => {
+  const initialContent = { addon: 'initial' }
+  const nextContent = { addon: 'next' }
+  const form = attach(createForm())
+  const field = attach(
+    form.createVoidField({
+      name: 'aa',
+      decoratorContent: initialContent,
+    }),
+  )
+
+  expect(field.decoratorContent).toBe(initialContent)
+  field.setDecoratorContent(nextContent)
+  expect(field.decoratorContent).toBe(nextContent)
+})
+
 it('setState/getState', () => {
   const form = attach(createForm())
   const aa = attach(

@@ -24,9 +24,9 @@ When a type really comes from `@silver-formily/core`, `@silver-formily/path`, `@
 ### Field and context types
 
 - `IProviderProps`: props for `FormProvider`; only exposes `form`.
-- `IFieldProps`: extends `CoreFieldProps`, adds `decoratorContent`, and narrows `validator` to `SchemaFieldValidator`.
+- `IFieldProps`: extends `CoreFieldProps`, inherits `decoratorContent`, and narrows `validator` to `SchemaFieldValidator`.
 - `IFieldFactoryProps`: factory-component variant of the same idea.
-- `IVoidFieldProps`: extends `IVoidFieldFactoryProps` with `decoratorContent`.
+- `IVoidFieldProps`: directly reuses `IVoidFieldFactoryProps`, which already includes `decoratorContent`.
 - `IArrayFieldProps` / `IObjectFieldProps`: aliases of `IFieldProps` kept for stable component signatures.
 - `IReactiveFieldProps`: normalized payload for internal reactive field renderers.
 

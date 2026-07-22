@@ -1,3 +1,4 @@
+import { createForm } from '@silver-formily/core'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 async function loadSchema() {
@@ -124,5 +125,19 @@ describe('schema', () => {
       'first',
       'second',
     ])
+  })
+
+  it('maps x-decorator-content to field state', async () => {
+    const Schema = await loadSchema()
+    const decoratorContent = { addon: 'schema addon' }
+    const schema = new Schema({
+      'name': 'decorated',
+      'type': 'string',
+      'x-decorator-content': decoratorContent,
+    })
+    const form = createForm()
+    const field = form.createField(schema.toFieldProps())
+    expect.assert(field)
+    expect(field.decoratorContent).toEqual(decoratorContent)
   })
 })

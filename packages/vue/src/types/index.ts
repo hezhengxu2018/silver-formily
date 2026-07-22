@@ -48,7 +48,6 @@ export interface IFieldProps<
   ValueType = any,
 > extends Omit<CoreFieldProps<D, C, TextType, ValueType>, 'validator'> {
   validator?: SchemaFieldValidator
-  decoratorContent?: any
 }
 
 export interface IFieldFactoryProps<
@@ -58,15 +57,12 @@ export interface IFieldFactoryProps<
   ValueType = any,
 > extends Omit<CoreFieldFactoryProps<D, C, TextType, ValueType>, 'validator'> {
   validator?: SchemaFieldValidator
-  decoratorContent?: any
 }
 
 export type IVoidFieldProps<
   D extends Component = Component,
   C extends Component = Component,
-> = IVoidFieldFactoryProps<D, C> & {
-  decoratorContent?: any
-}
+> = IVoidFieldFactoryProps<D, C>
 
 export type IArrayFieldProps = IFieldProps
 export type IObjectFieldProps = IFieldProps

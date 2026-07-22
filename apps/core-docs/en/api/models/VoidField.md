@@ -10,30 +10,31 @@ All model properties are listed below. If a property is writable, assigning to i
 
 ## Properties
 
-| Property    | Description                              | Type                                                          | Readonly | Default           |
-| ----------- | ---------------------------------------- | ------------------------------------------------------------- | -------- | ----------------- |
-| initialized | Whether the field has been initialized   | Boolean                                                       | No       | `true`            |
-| mounted     | Whether the field has been mounted       | Boolean                                                       | No       | `false`           |
-| unmounted   | Whether the field has been unmounted     | Boolean                                                       | No       | `false`           |
-| address     | Field node path                          | [FormPath](https://path.silver-formily.org/en/api/path-class) | Yes      |                   |
-| path        | Field data path                          | [FormPath](https://path.silver-formily.org/en/api/path-class) | Yes      |                   |
-| title       | Field title                              | Any (determined by the generic `TextType`)                    | No       | `undefined`       |
-| description | Field description                        | Any (determined by the generic `TextType`)                    | No       | `undefined`       |
-| data        | Extended field data                      | Object                                                        | No       | `undefined`       |
-| content     | Field content                            | any                                                           | No       | `undefined`       |
-| decorator   | Field decorator                          | Any[]                                                         | No       | `[undefined, {}]` |
-| component   | Field component                          | Any[]                                                         | No       | `[undefined, {}]` |
-| parent      | Parent field                             | [GeneralField](#generalfield)                                 | Yes      | `undefined`       |
-| display     | Field display state                      | [FieldDisplayTypes](#fielddisplaytypes)                       | No       | `"visible"`       |
-| pattern     | Field interaction mode                   | [FieldPatternTypes](#fieldpatterntypes)                       | No       | `"editable"`      |
-| hidden      | Whether the field is hidden              | Boolean                                                       | No       | `false`           |
-| visible     | Whether the field is visible             | Boolean                                                       | No       | `true`            |
-| disabled    | Whether the field is disabled            | Boolean                                                       | No       | `false`           |
-| readOnly    | Whether the field is read-only           | Boolean                                                       | No       | `false`           |
-| readPretty  | Whether the field is in read-pretty mode | Boolean                                                       | No       | `false`           |
-| editable    | Whether the field is editable            | Boolean                                                       | No       | `true`            |
-| indexes     | Numeric index collection                 | Number[]                                                      | Yes      | `-`               |
-| index       | Numeric index                            | Number                                                        | Yes      | `-`               |
+| Property         | Description                              | Type                                                          | Readonly | Default           |
+| ---------------- | ---------------------------------------- | ------------------------------------------------------------- | -------- | ----------------- |
+| initialized      | Whether the field has been initialized   | Boolean                                                       | No       | `true`            |
+| mounted          | Whether the field has been mounted       | Boolean                                                       | No       | `false`           |
+| unmounted        | Whether the field has been unmounted     | Boolean                                                       | No       | `false`           |
+| address          | Field node path                          | [FormPath](https://path.silver-formily.org/en/api/path-class) | Yes      |                   |
+| path             | Field data path                          | [FormPath](https://path.silver-formily.org/en/api/path-class) | Yes      |                   |
+| title            | Field title                              | Any (determined by the generic `TextType`)                    | No       | `undefined`       |
+| description      | Field description                        | Any (determined by the generic `TextType`)                    | No       | `undefined`       |
+| data             | Extended field data                      | Object                                                        | No       | `undefined`       |
+| content          | Field content                            | any                                                           | No       | `undefined`       |
+| decoratorContent | Decorator slot content                   | any                                                           | No       | `undefined`       |
+| decorator        | Field decorator                          | Any[]                                                         | No       | `[undefined, {}]` |
+| component        | Field component                          | Any[]                                                         | No       | `[undefined, {}]` |
+| parent           | Parent field                             | [GeneralField](#generalfield)                                 | Yes      | `undefined`       |
+| display          | Field display state                      | [FieldDisplayTypes](#fielddisplaytypes)                       | No       | `"visible"`       |
+| pattern          | Field interaction mode                   | [FieldPatternTypes](#fieldpatterntypes)                       | No       | `"editable"`      |
+| hidden           | Whether the field is hidden              | Boolean                                                       | No       | `false`           |
+| visible          | Whether the field is visible             | Boolean                                                       | No       | `true`            |
+| disabled         | Whether the field is disabled            | Boolean                                                       | No       | `false`           |
+| readOnly         | Whether the field is read-only           | Boolean                                                       | No       | `false`           |
+| readPretty       | Whether the field is in read-pretty mode | Boolean                                                       | No       | `false`           |
+| editable         | Whether the field is editable            | Boolean                                                       | No       | `true`            |
+| indexes          | Numeric index collection                 | Number[]                                                      | Yes      | `-`               |
+| index            | Numeric index                            | Number                                                        | Yes      | `-`               |
 
 ### Detailed Explanations
 
@@ -229,6 +230,20 @@ Sets the `content` value.
 
 ```ts
 interface setContent {
+  (content: any): void
+}
+```
+
+### setDecoratorContent ^(1.1.0)
+
+#### Description
+
+Sets decorator content. The Vue binding reactively renders it as decorator slot content.
+
+#### Signature
+
+```ts
+interface setDecoratorContent {
   (content: any): void
 }
 ```

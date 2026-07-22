@@ -192,6 +192,7 @@ export interface IBaseFieldState<
   mounted?: boolean
   unmounted?: boolean
   content?: any
+  decoratorContent?: any
   data?: any
   decoratorType?: Decorator
   decoratorProps?: Record<string, any>
@@ -406,6 +407,7 @@ export interface IFieldProps<
   component?: FieldComponent<Component>
   reactions?: FieldReaction[] | FieldReaction
   content?: any
+  decoratorContent?: any
   data?: any
 }
 
@@ -430,6 +432,7 @@ export interface IVoidFieldProps<
   component?: FieldComponent<Component>
   reactions?: FieldReaction[] | FieldReaction
   content?: any
+  decoratorContent?: any
   data?: any
 }
 

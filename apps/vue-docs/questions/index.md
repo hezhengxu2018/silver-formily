@@ -59,6 +59,7 @@ questions/functional-scoped-slot
 
 - 在组件模式下（`Field`、`ArrayField`、`VoidField` 等），通过驼峰/短横线写法绑定 `decorator-content`，其值可以是字符串、组件或具名插槽映射。
 - 在 Schema 模式下使用 `x-decorator-content`，语法与 `x-content` 保持一致。
+- 运行时可调用 `field.setDecoratorContent(content)`，或通过 `setFieldState` / Schema reactions 修改 `decoratorContent`。
 
 :::demo
 questions/decorator-slot

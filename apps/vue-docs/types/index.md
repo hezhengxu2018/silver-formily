@@ -24,9 +24,9 @@
 ### 字段与上下文
 
 - `IProviderProps`：`FormProvider` 的 props，仅暴露 `form`。
-- `IFieldProps`：在 `CoreFieldProps` 基础上，保留 Vue 侧常用的 `decoratorContent`，并把 `validator` 收敛为 `SchemaFieldValidator`。
+- `IFieldProps`：在 `CoreFieldProps` 基础上继承 `decoratorContent`，并把 `validator` 收敛为 `SchemaFieldValidator`。
 - `IFieldFactoryProps`：字段工厂组件使用的 props 版本，语义与 `IFieldProps` 一致。
-- `IVoidFieldProps`：基于 `IVoidFieldFactoryProps` 增补 `decoratorContent`。
+- `IVoidFieldProps`：直接复用已包含 `decoratorContent` 的 `IVoidFieldFactoryProps`。
 - `IArrayFieldProps` / `IObjectFieldProps`：当前都是 `IFieldProps` 的别名，用于保持组件签名稳定。
 - `IReactiveFieldProps`：内部响应式字段组件的统一负载，区分 `Field`、`ArrayField`、`ObjectField`、`VoidField`。
 

@@ -6,5 +6,6 @@
     "declaration": true,
     "emitDeclarationOnly": true,
     "noEmit": false
-  }
+  },
+  "exclude": ["node_modules", "esm", "src/__tests__"]
 }

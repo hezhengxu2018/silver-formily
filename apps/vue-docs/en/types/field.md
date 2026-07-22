@@ -16,10 +16,7 @@ interface IProviderProps {
 
 ## `IFieldProps`
 
-The Vue-facing field props start from `CoreFieldProps` and only make two adjustments:
-
-- replace `validator` with the Vue-side alias `SchemaFieldValidator`
-- add `decoratorContent` for decorator-centric render trees
+The Vue-facing field props start from `CoreFieldProps` and replace `validator` with the Vue-side alias `SchemaFieldValidator`. Core now defines `decoratorContent`, so it is inherited directly:
 
 ```ts
 interface IFieldProps<
@@ -29,7 +26,6 @@ interface IFieldProps<
   ValueType = any,
 > extends Omit<CoreFieldProps<D, C, TextType, ValueType>, 'validator'> {
   validator?: SchemaFieldValidator
-  decoratorContent?: any
 }
 ```
 
@@ -45,21 +41,18 @@ interface IFieldFactoryProps<
   ValueType = any,
 > extends Omit<CoreFieldFactoryProps<D, C, TextType, ValueType>, 'validator'> {
   validator?: SchemaFieldValidator
-  decoratorContent?: any
 }
 ```
 
 ## `IVoidFieldProps`
 
-`VoidField` does not carry a value, so the Vue package keeps the Core factory contract and only adds `decoratorContent`:
+`VoidField` does not carry a value, so the Vue package directly uses the Core factory contract, which already includes `decoratorContent`:
 
 ```ts
 type IVoidFieldProps<
   D extends Component = Component,
   C extends Component = Component,
-> = IVoidFieldFactoryProps<D, C> & {
-  decoratorContent?: any
-}
+> = IVoidFieldFactoryProps<D, C>
 ```
 
 ## `IArrayFieldProps` and `IObjectFieldProps`

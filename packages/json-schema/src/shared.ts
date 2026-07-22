@@ -38,6 +38,7 @@ export const SchemaStateMap = {
   'x-pattern': 'pattern',
   'x-validator': 'validator',
   'x-decorator': 'decoratorType',
+  'x-decorator-content': 'decoratorContent',
   'x-component': 'componentType',
   'x-decorator-props': 'decoratorProps',
   'x-component-props': 'componentProps',

@@ -131,6 +131,7 @@ export class Field<
     this.validator = this.props.validator
     this.required = this.props.required
     this.content = this.props.content
+    this.decoratorContent = this.props.decoratorContent
     this.initialValue = this.props.initialValue
     this.value = this.props.value
     this.data = this.props.data
@@ -163,6 +164,7 @@ export class Field<
       decoratorType: observable.ref,
       componentType: observable.ref,
       content: observable.ref,
+      decoratorContent: observable.ref,
       feedbacks: observable.ref,
       decoratorProps: observable,
       componentProps: observable,
@@ -214,6 +216,7 @@ export class Field<
       setDecoratorProps: action,
       setData: action,
       setContent: action,
+      setDecoratorContent: action,
       validate: action,
       reset: action,
       onInit: batch,

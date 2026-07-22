@@ -14,7 +14,7 @@ Because this component mostly follows the styling and interactions of Element Pl
 :::
 
 ::: tip Tip
-Starting from `2.1.0`, the Vue wrapper has been upgraded to `@silver-formily/vue@2.2.1`. This means you can use `decoratorContent` to insert content into FormItem. Although this is not an official Formily implementation and does not use Formily reactivity, it should be sufficient in most cases. See the example in the [`@silver-formily/vue` documentation](https://vue.silver-formily.org/questions/#%E5%A6%82%E4%BD%95%E5%90%91%E8%A3%85%E9%A5%B0%E5%99%A8%E4%BC%A0%E9%80%92%E6%8F%92%E6%A7%BD) for details.
+Use `decoratorContent` to insert content into FormItem. The option is now part of Core field state and the Schema protocol, so `field.setDecoratorContent()` updates it reactively. See the example in the [`@silver-formily/vue` documentation](https://vue.silver-formily.org/questions/#%E5%A6%82%E4%BD%95%E5%90%91%E8%A3%85%E9%A5%B0%E5%99%A8%E4%BC%A0%E9%80%92%E6%8F%92%E6%A7%BD) for details.
 :::
 
 ## Common Props Example

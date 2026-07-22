@@ -16,10 +16,7 @@ interface IProviderProps {
 
 ## `IFieldProps`
 
-Vue 版本的字段 props 以 `CoreFieldProps` 为基础，只做了两件事：
-
-- 把 `validator` 改成 Vue 文档里统一使用的 `SchemaFieldValidator`
-- 增加 `decoratorContent`，便于在 Vue 组件树里补充装饰器内容
+Vue 版本的字段 props 以 `CoreFieldProps` 为基础，并把 `validator` 改成 Vue 文档里统一使用的 `SchemaFieldValidator`。`decoratorContent` 已由 Core 定义，因此会直接继承：
 
 ```ts
 interface IFieldProps<
@@ -29,7 +26,6 @@ interface IFieldProps<
   ValueType = any,
 > extends Omit<CoreFieldProps<D, C, TextType, ValueType>, 'validator'> {
   validator?: SchemaFieldValidator
-  decoratorContent?: any
 }
 ```
 
@@ -45,21 +41,18 @@ interface IFieldFactoryProps<
   ValueType = any,
 > extends Omit<CoreFieldFactoryProps<D, C, TextType, ValueType>, 'validator'> {
   validator?: SchemaFieldValidator
-  decoratorContent?: any
 }
 ```
 
 ## `IVoidFieldProps`
 
-`VoidField` 没有值语义，因此它沿用 Core 的 `IVoidFieldFactoryProps`，这里只补一个 Vue 侧的 `decoratorContent`：
+`VoidField` 没有值语义，因此它直接沿用 Core 的 `IVoidFieldFactoryProps`，其中已经包含 `decoratorContent`：
 
 ```ts
 type IVoidFieldProps<
   D extends Component = Component,
   C extends Component = Component,
-> = IVoidFieldFactoryProps<D, C> & {
-  decoratorContent?: any
-}
+> = IVoidFieldFactoryProps<D, C>
 ```
 
 ## `IArrayFieldProps` 与 `IObjectFieldProps`

@@ -38,6 +38,7 @@ export class BaseField<Decorator = any, Component = any, TextType = any> {
   unmounted: boolean
 
   content: any
+  decoratorContent: any
 
   data: any
 
@@ -312,6 +313,10 @@ export class BaseField<Decorator = any, Component = any, TextType = any> {
 
   setContent = (content: any) => {
     this.content = content
+  }
+
+  setDecoratorContent = (content: any) => {
+    this.decoratorContent = content
   }
 
   onInit = () => {

@@ -239,6 +239,12 @@ describe('reactive field branches', () => {
     await expect
       .element(screen.getByTestId('decorator-addon'))
       .toHaveTextContent('decorator')
+
+    form.query('decorated').take()?.setDecoratorContent({ addon: 'updated addon' })
+
+    await expect
+      .element(screen.getByTestId('decorator-addon'))
+      .toHaveTextContent('updated addon')
   })
 
   it('应该在字段配置变更时触发旧字段卸载并挂载新字段', async () => {

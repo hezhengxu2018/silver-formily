@@ -283,6 +283,8 @@ export type ISchema<
   ['x-decorator']?: Decorator | (string & {}) | ((...args: any[]) => any)
   // 装饰器属性
   ['x-decorator-props']?: DecoratorProps
+  // 装饰器内容
+  ['x-decorator-content']?: any
   // 组件
   ['x-component']?: Component | (string & {}) | ((...args: any[]) => any)
   // 组件属性
