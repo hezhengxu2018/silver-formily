@@ -18,17 +18,13 @@ See [https://element-plus.org/en-US/component/button.html](https://element-plus.
 
 ### Extended Props
 
-| Prop           | Type                  | Description | Default  |
-| -------------- | --------------------- | ----------- | -------- |
-| `title`        | `string`              | Text        | -        |
-| `method`       | `'push' \| 'unshift'` | Add method  | `'push'` |
-| `defaultValue` | `any`                 | Default     | -        |
+| Prop           | Type                  | Description                 | Default  |
+| -------------- | --------------------- | --------------------------- | -------- |
+| `title`        | `string`              | Text                        | -        |
+| `method`       | `'push' \| 'unshift'` | Add method                  | `'push'` |
+| `defaultValue` | `any`                 | Default value for new items | -        |
 
 For the rest, see [https://element-plus.org/en-US/component/button.html](https://element-plus.org/en-US/component/button.html).
-
-::: warning Note
-Array controls have a known issue: after setting `initialValue`, removing an item and adding it again restores the original `initialValue`. You can work around this by setting `defaultValue` on the Addition component. There is currently no official fix. See the [issue](https://github.com/alibaba/formily/issues/4235).
-:::
 
 ::: tip Tip
 The `title` prop can reuse the title mapped on the Field model, so setting `title` on the Field also works here.
