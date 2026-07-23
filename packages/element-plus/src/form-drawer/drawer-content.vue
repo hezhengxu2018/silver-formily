@@ -4,7 +4,7 @@ import type { ComponentPublicInstance, PropType } from 'vue'
 import type { FormDrawerSlots, IFormDrawerProps } from './types'
 import { isFn } from '@silver-formily/shared'
 import { FormProvider } from '@silver-formily/vue'
-import { ElButton, ElConfigProvider, ElDrawer } from 'element-plus'
+import { ElButton, ElConfigProvider, ElDrawer, useLocale } from 'element-plus'
 import { omit } from 'lodash-es'
 import { computed, ref } from 'vue'
 import { loadElConfigProvider, stylePrefix, useDebonceSubmitting } from '../__builtins__'
@@ -43,6 +43,15 @@ const elConfig = loadElConfigProvider()
 
 const { internalSubmitting } = useDebonceSubmitting(props.form)
 const _drawerProps = omit(props.drawerProps, ['modelValue', 'onUpdate:modelValue', 'beforeClose', 'enterSubmit'])
+const { t } = useLocale(computed(() => elConfig.locale))
+const documentLang = document.documentElement.lang.toLowerCase()
+const useEnglishFallback = documentLang !== '' && !documentLang.startsWith('zh')
+const cancelText = computed(() =>
+  props.drawerProps.cancelText
+  ?? (elConfig.locale ? t('el.messagebox.cancel') : useEnglishFallback ? 'Cancel' : '取消'))
+const okText = computed(() =>
+  props.drawerProps.okText
+  ?? (elConfig.locale ? t('el.messagebox.confirm') : useEnglishFallback ? 'OK' : '确定'))
 const drawerRef = ref<ComponentPublicInstance | null>(null)
 const enableEnterSubmit = computed(() => props.drawerProps.enterSubmit !== false)
 
@@ -94,7 +103,7 @@ useEnterSubmit({
             v-bind="_drawerProps.cancelButtonProps"
             @click="reject()"
           >
-            {{ _drawerProps.cancelText || '取消' }}
+            {{ cancelText }}
           </ElButton>
           <ElButton
             type="primary"
@@ -102,7 +111,7 @@ useEnterSubmit({
             :loading="internalSubmitting"
             @click="resolve()"
           >
-            {{ _drawerProps.okText || '确定' }}
+            {{ okText }}
           </ElButton>
         </template>
       </div>

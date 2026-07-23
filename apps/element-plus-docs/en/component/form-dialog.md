@@ -135,17 +135,19 @@ interface FormDialog {
 
 The first argument. When a string is passed, it is displayed as the dialog title. You can also pass `IFormDialogProps` for customization. Prefer middleware such as `forOpen`, `forConfirm`, and `forCancel` when you need to control the dialog lifecycle.
 
-| Parameter           | Description                                                       | Type                   | Default   |
-| ------------------- | ----------------------------------------------------------------- | ---------------------- | --------- |
-| `cancelText`        | Cancel button text                                                | `string`               | `Cancel`  |
-| `cancelButtonProps` | Props for the cancel button                                       | ^[object]`ButtonProps` | -         |
-| `okText`            | Confirm button text                                               | `string`               | `Confirm` |
-| `okButtonProps`     | Props for the confirm button                                      | ^[object]`ButtonProps` | -         |
-| `loadingText`       | Loading text                                                      | `string`               | `loading` |
-| `enterSubmit`       | Whether pressing Enter in an input immediately triggers `resolve` | `boolean`              | `true`    |
-| `closeOnUrlChange`  | Whether the dialog closes automatically on URL change             | `boolean`              | `true`    |
+| Parameter           | Description                                                       | Type                   | Default             |
+| ------------------- | ----------------------------------------------------------------- | ---------------------- | ------------------- |
+| `cancelText`        | Cancel button text                                                | `string`               | Element Plus locale |
+| `cancelButtonProps` | Props for the cancel button                                       | ^[object]`ButtonProps` | -                   |
+| `okText`            | Confirm button text                                               | `string`               | Element Plus locale |
+| `okButtonProps`     | Props for the confirm button                                      | ^[object]`ButtonProps` | -                   |
+| `loadingText`       | Loading text                                                      | `string`               | `loading`           |
+| `enterSubmit`       | Whether pressing Enter in an input immediately triggers `resolve` | `boolean`              | `true`              |
+| `closeOnUrlChange`  | Whether the dialog closes automatically on URL change             | `boolean`              | `true`              |
 
 For the rest, see [https://element-plus.org/en-US/component/dialog.html](https://element-plus.org/en-US/component/dialog.html#attributes)
+
+`cancelText` and `okText` inherit `el.messagebox.cancel` and `el.messagebox.confirm` from the current Element Plus locale. Explicit values take precedence over the inherited translations.
 
 #### content
 

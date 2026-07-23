@@ -125,17 +125,19 @@ interface FormDrawer {
 
 函数的第一个参数，传入字符串时会作为标题显示。可以传入 IFormDrawerProps 来进行自定义。请优先使用 forOpen 、 forConfirm 、 forCancel 等中间件来控制抽屉的生命周期。
 
-| 参数                | 说明                                     | 类型                   | 默认值    |
-| ------------------- | ---------------------------------------- | ---------------------- | --------- |
-| `cancelText`        | 取消按钮文字                             | `string`               | `取消`    |
-| `cancelButtonProps` | 取消按钮的props                          | ^[object]`ButtonProps` | -         |
-| `okText`            | 确定按钮文字                             | `string`               | `确定`    |
-| `okButtonProps`     | 确定按钮的props                          | ^[object]`ButtonProps` | -         |
-| `loadingText`       | 加载中文字                               | `string`               | `loading` |
-| `enterSubmit`       | 是否允许在输入框回车时立即触发 `resolve` | `boolean`              | `true`    |
-| `closeOnUrlChange`  | 浏览器地址变化时是否自动关闭抽屉         | `boolean`              | `true`    |
+| 参数                | 说明                                     | 类型                   | 默认值                |
+| ------------------- | ---------------------------------------- | ---------------------- | --------------------- |
+| `cancelText`        | 取消按钮文字                             | `string`               | Element Plus 语言配置 |
+| `cancelButtonProps` | 取消按钮的props                          | ^[object]`ButtonProps` | -                     |
+| `okText`            | 确定按钮文字                             | `string`               | Element Plus 语言配置 |
+| `okButtonProps`     | 确定按钮的props                          | ^[object]`ButtonProps` | -                     |
+| `loadingText`       | 加载中文字                               | `string`               | `loading`             |
+| `enterSubmit`       | 是否允许在输入框回车时立即触发 `resolve` | `boolean`              | `true`                |
+| `closeOnUrlChange`  | 浏览器地址变化时是否自动关闭抽屉         | `boolean`              | `true`                |
 
 其余参数请参考参考 [https://cn.element-plus.org/zh-CN/component/drawer.html](https://cn.element-plus.org/zh-CN/component/drawer.html#attributes)
+
+`cancelText` 和 `okText` 默认继承当前 Element Plus 语言配置中的 `el.messagebox.cancel` 与 `el.messagebox.confirm`；显式传入的文案优先级更高。
 
 #### content
 

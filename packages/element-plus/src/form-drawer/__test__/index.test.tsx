@@ -1,7 +1,7 @@
 import type { FormDrawerSlotContent, FormDrawerSlots } from '../types'
 import { createSchemaField } from '@silver-formily/vue'
 import { ElButton } from 'element-plus'
-import { afterEach, describe, expect, expectTypeOf, it, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, expectTypeOf, it, vi } from 'vitest'
 import { render } from 'vitest-browser-vue'
 import { userEvent } from 'vitest/browser'
 import { defineComponent } from 'vue'
@@ -14,6 +14,7 @@ import 'element-plus/theme-chalk/el-drawer.css'
 // import 'element-plus/theme-chalk/el-overlay.css' // FIXME 引入overlay会引起headless测试异常
 
 const { SchemaField, SchemaStringField } = createSchemaField({ components: { Input, FormItem } })
+const initialDocumentLang = document.documentElement.lang
 
 const typedFormDrawerSlots: FormDrawerSlots<{ name: string }, 'save-draft'> = {
   default: ({ form, resolve }) => {
@@ -30,8 +31,13 @@ const typedFormDrawerSlots: FormDrawerSlots<{ name: string }, 'save-draft'> = {
 const typedFormDrawerContent: FormDrawerSlotContent<{ name: string }, 'save-draft'> = typedFormDrawerSlots
 
 describe('formDrawer', () => {
+  beforeEach(() => {
+    document.documentElement.lang = 'zh-CN'
+  })
+
   afterEach(() => {
     vi.clearAllMocks()
+    document.documentElement.lang = initialDocumentLang
     document.body.innerHTML = ''
   })
 
@@ -490,6 +496,23 @@ describe('formDrawer', () => {
         expect(forConfirm).toHaveBeenCalledWith({ input: 'test' })
         expect(document.querySelector('.el-drawer')).toBeNull()
       })
+    })
+
+    it('应该在没有 Element Plus 语言配置时继承文档语言', async () => {
+      document.documentElement.lang = 'en-US'
+
+      const TestComponent = () => {
+        const handleOpen = () => {
+          FormDrawer('Drawer title').open().catch(() => undefined)
+        }
+        return <ElButton onClick={handleOpen}>Open drawer</ElButton>
+      }
+
+      const { getByRole, getByText } = render(() => <TestComponent />)
+      await getByText('Open drawer').click()
+      await expect.element(getByRole('button', { name: 'Cancel' })).toBeInTheDocument()
+      await expect.element(getByRole('button', { name: 'OK' })).toBeInTheDocument()
+      await getByRole('button', { name: 'Cancel' }).click()
     })
 
     it('应该在 forConfirm 中间件失败后允许再次提交', async () => {

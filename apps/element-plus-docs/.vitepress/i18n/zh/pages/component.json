@@ -5,6 +5,10 @@
       {
         "link": "/component/quick-start",
         "text": "Quick Start 快速开始"
+      },
+      {
+        "link": "/component/i18n",
+        "text": "Internationalization 多语言配置"
       }
     ]
   },

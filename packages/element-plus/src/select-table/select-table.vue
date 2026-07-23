@@ -9,6 +9,7 @@ import {
   ElRadioGroup,
   ElTable,
   ElTableColumn,
+  useLocale,
   version,
   vLoading,
 } from 'element-plus'
@@ -37,6 +38,7 @@ const emit = defineEmits(['update:modelValue'])
 
 const { rootAttrs, componentProps: elTableProps } = useSplitAttrsByComponent(ElTable)
 const field = useField()
+const { lang } = useLocale()
 const elTableRef = ref<TableInstance>()
 const radioSelectedKey = ref()
 
@@ -124,6 +126,22 @@ const currentSelectLength = computed(() => {
     return isValid(radioSelectedKey.value) ? 1 : 0
   }
 })
+const isChineseLocale = computed(() => lang.value.toLowerCase().startsWith('zh'))
+const selectionText = computed(() => {
+  const count = currentSelectLength.value
+  if (isFn(props.selectionText)) {
+    return props.selectionText(count)
+  }
+  if (props.selectionText !== undefined) {
+    return props.selectionText.replaceAll('{count}', String(count))
+  }
+  return isChineseLocale.value
+    ? `已选择 ${count} 项`
+    : `${count} ${count === 1 ? 'item' : 'items'} selected`
+})
+const clearSelectionText = computed(() =>
+  props.clearSelectionText
+  ?? (isChineseLocale.value ? '取消选择' : 'Clear selection'))
 
 watch(
   () => props.dataSource,
@@ -295,14 +313,14 @@ function getRowClassName(params: { row: Record<string, any>, rowIndex: number })
       v-if="currentSelectLength > 0 && props.showAlertToolbar"
       :class="`${stylePrefix}-select-table-alert-container`"
     >
-      <span>已选择 {{ currentSelectLength }} 项</span>
+      <span>{{ selectionText }}</span>
       <ElLink
         type="primary"
         :underline="lt(version, '2.9.9') ? false : 'never'"
         style="margin-left: 8px;"
         @click="onClearSelectionClick"
       >
-        取消选择
+        {{ clearSelectionText }}
       </ElLink>
     </div>
     <ElTable

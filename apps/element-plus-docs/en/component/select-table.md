@@ -82,19 +82,25 @@ In real-world projects, you may still choose to hide the select-all checkbox wit
 
 ### SelectTable Props
 
-| Prop                        | Description                                                                                                                                | Type                                                                                   | Default      |
-| --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------- | ------------ |
-| `mode`                      | Selection mode                                                                                                                             | ^[enum]`'multiple' \| 'single'`                                                        | `multiple`   |
-| `columns`                   | Table column configuration. See the [official documentation](https://element-plus.org/en-US/component/table.html#table-column-attributes). | ^[array]`See official docs for structure`                                              | `[]`         |
-| `optionAsValue`             | Whether the selected value should be the whole row                                                                                         | ^[boolean]                                                                             | `false`      |
-| `rowKey`                    | Required unique field name for each row, corresponding to the Element Plus table prop                                                      | ^[string]                                                                              | `-`          |
-| `clickRowToSelect`          | Whether clicking a whole row triggers selection. Disable this if you need custom click handlers inside the table.                          | ^[boolean]                                                                             | `true`       |
-| `showAlertToolbar`          | Whether to show the selection alert toolbar                                                                                                | ^[boolean]                                                                             | `true`       |
-| `selectable` ^(1.0.0)       | Return value controls whether the current row can be checked                                                                               | ^[Function]`(row: Record<string, any>, index: number, field: GeneralField) => boolean` | `() => true` |
-| `ignoreSelectable` ^(1.0.0) | Whether to ignore `selectable` restrictions in certain cases                                                                               | ^[boolean]                                                                             | `true`       |
+| Prop                          | Description                                                                                                                                | Type                                                                                   | Default        |
+| ----------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------- | -------------- |
+| `mode`                        | Selection mode                                                                                                                             | ^[enum]`'multiple' \| 'single'`                                                        | `multiple`     |
+| `columns`                     | Table column configuration. See the [official documentation](https://element-plus.org/en-US/component/table.html#table-column-attributes). | ^[array]`See official docs for structure`                                              | `[]`           |
+| `optionAsValue`               | Whether the selected value should be the whole row                                                                                         | ^[boolean]                                                                             | `false`        |
+| `rowKey`                      | Required unique field name for each row, corresponding to the Element Plus table prop                                                      | ^[string]                                                                              | `-`            |
+| `clickRowToSelect`            | Whether clicking a whole row triggers selection. Disable this if you need custom click handlers inside the table.                          | ^[boolean]                                                                             | `true`         |
+| `showAlertToolbar`            | Whether to show the selection alert toolbar                                                                                                | ^[boolean]                                                                             | `true`         |
+| `selectionText` ^(5.1.0)      | Selection summary. A string can contain `{count}`; a function receives the selected count.                                                 | `string` ^[Function]`(count: number) => string`                                        | Current locale |
+| `clearSelectionText` ^(5.1.0) | Clear-selection action text                                                                                                                | `string`                                                                               | Current locale |
+| `selectable` ^(1.0.0)         | Return value controls whether the current row can be checked                                                                               | ^[Function]`(row: Record<string, any>, index: number, field: GeneralField) => boolean` | `() => true`   |
+| `ignoreSelectable` ^(1.0.0)   | Whether to ignore `selectable` restrictions in certain cases                                                                               | ^[boolean]                                                                             | `true`         |
 
 ::: tip Tip
 `onSelect`, `onSelectAll`, and `onRowClick` are already used internally and should not be overridden. For other props and events, see the [official documentation](https://element-plus.org/en-US/component/table.html#table-attributes). For example, you can still configure table height or striping, but avoid configurations that go against the Formily contract, such as driving table data through `ElTable.data` instead of Formily `dataSource`.
+:::
+
+::: tip Internationalization
+The selection toolbar follows the current Element Plus locale for Chinese and English. Use `selectionText` and `clearSelectionText` for other languages or workflow-specific wording.
 :::
 
 ::: tip Tip

@@ -5,6 +5,10 @@
       {
         "link": "/en/component/quick-start",
         "text": "Quick Start"
+      },
+      {
+        "link": "/en/component/i18n",
+        "text": "Internationalization"
       }
     ]
   },

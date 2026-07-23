@@ -1,7 +1,7 @@
 import type { FormDialogSlotContent, FormDialogSlots } from '../types'
 import { createSchemaField } from '@silver-formily/vue'
 import { ElButton } from 'element-plus'
-import { afterEach, describe, expect, expectTypeOf, it, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, expectTypeOf, it, vi } from 'vitest'
 import { render } from 'vitest-browser-vue'
 import { userEvent } from 'vitest/browser'
 import { defineComponent } from 'vue'
@@ -10,6 +10,7 @@ import { queryElement } from '../../../test-utils/dom'
 import 'element-plus/theme-chalk/index.css'
 
 const { SchemaField, SchemaStringField } = createSchemaField({ components: { Input, FormItem } })
+const initialDocumentLang = document.documentElement.lang
 
 const typedFormDialogSlots: FormDialogSlots<{ name: string }, 'save-draft'> = {
   default: ({ form, resolve }) => {
@@ -26,8 +27,13 @@ const typedFormDialogSlots: FormDialogSlots<{ name: string }, 'save-draft'> = {
 const typedFormDialogContent: FormDialogSlotContent<{ name: string }, 'save-draft'> = typedFormDialogSlots
 
 describe('formDialog', () => {
+  beforeEach(() => {
+    document.documentElement.lang = 'zh-CN'
+  })
+
   afterEach(() => {
     vi.clearAllMocks()
+    document.documentElement.lang = initialDocumentLang
     document.body.innerHTML = ''
   })
 
@@ -65,6 +71,23 @@ describe('formDialog', () => {
       await expect.element(getByRole('button', { name: 'Close this dialog' })).toBeInTheDocument()
       await getByRole('button', { name: 'Close this dialog' }).click()
       expect(document.querySelector('.el-dialog__wrapper')).toBeNull()
+    })
+
+    it('应该在没有 Element Plus 语言配置时继承文档语言', async () => {
+      document.documentElement.lang = 'en-US'
+
+      const TestComponent = () => {
+        const handleOpen = () => {
+          FormDialog('Dialog title').open().catch(() => undefined)
+        }
+        return <ElButton onClick={handleOpen}>Open dialog</ElButton>
+      }
+
+      const { getByRole, getByText } = render(() => <TestComponent />)
+      await getByText('Open dialog').click()
+      await expect.element(getByRole('button', { name: 'Cancel' })).toBeInTheDocument()
+      await expect.element(getByRole('button', { name: 'OK' })).toBeInTheDocument()
+      await getByRole('button', { name: 'Cancel' }).click()
     })
 
     it('应该支持渲染组件', async () => {

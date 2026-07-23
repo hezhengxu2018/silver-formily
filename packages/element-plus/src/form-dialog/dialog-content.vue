@@ -4,7 +4,7 @@ import type { ComponentPublicInstance, PropType } from 'vue'
 import type { FormDialogSlots, IFormDialogProps } from './types'
 import { isFn } from '@silver-formily/shared'
 import { FormProvider } from '@silver-formily/vue'
-import { ElButton, ElConfigProvider, ElDialog } from 'element-plus'
+import { ElButton, ElConfigProvider, ElDialog, useLocale } from 'element-plus'
 import { omit } from 'lodash-es'
 import { computed, ref } from 'vue'
 import { loadElConfigProvider, stylePrefix, useDebonceSubmitting } from '../__builtins__'
@@ -46,6 +46,15 @@ const _dialogProps = omit(props.dialogProps, [
   'beforeClose',
   'enterSubmit',
 ])
+const { t } = useLocale(computed(() => elConfig.locale))
+const documentLang = document.documentElement.lang.toLowerCase()
+const useEnglishFallback = documentLang !== '' && !documentLang.startsWith('zh')
+const cancelText = computed(() =>
+  props.dialogProps.cancelText
+  ?? (elConfig.locale ? t('el.messagebox.cancel') : useEnglishFallback ? 'Cancel' : '取消'))
+const okText = computed(() =>
+  props.dialogProps.okText
+  ?? (elConfig.locale ? t('el.messagebox.confirm') : useEnglishFallback ? 'OK' : '确定'))
 const { internalSubmitting } = useDebonceSubmitting(props.form)
 const dialogRef = ref<ComponentPublicInstance | null>(null)
 const enableEnterSubmit = computed(() => props.dialogProps.enterSubmit !== false)
@@ -98,7 +107,7 @@ useEnterSubmit({
             v-bind="_dialogProps.cancelButtonProps"
             @click="props.reject()"
           >
-            {{ _dialogProps.cancelText || '取消' }}
+            {{ cancelText }}
           </ElButton>
           <ElButton
             type="primary"
@@ -106,7 +115,7 @@ useEnterSubmit({
             :loading="internalSubmitting"
             @click="props.resolve()"
           >
-            {{ _dialogProps.okText || '确定' }}
+            {{ okText }}
           </ElButton>
         </template>
       </div>

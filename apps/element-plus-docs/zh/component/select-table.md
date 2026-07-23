@@ -80,19 +80,25 @@ select-table/template-multiple-selectable
 
 ### SelectTable Props
 
-| 属性名                    | 说明                                                                                                                           | 类型                                                                                   | 默认值       |
-| ------------------------- | ------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------- | ------------ |
-| mode                      | 选择模式                                                                                                                       | ^[enum]`'multiple' \| 'single'`                                                        | `multiple`   |
-| columns                   | 表格列配置，配置参数可以参考[官方文档](https://cn.element-plus.org/zh-CN/component/table.html#table-column-%E5%B1%9E%E6%80%A7) | ^[array]`数组格式参考说明中的官方文档地址`                                             | `[]`         |
-| optionAsValue             | 是否将整行数据作为选择值                                                                                                       | ^[boolean]                                                                             | `false`      |
-| rowKey                    | 必填，行数据的唯一标识字段，element-plus中的属性值                                                                             | ^[string]                                                                              | —            |
-| clickRowToSelect          | 是否点击整行进行选择，如果需要对表格内局部添加点击事件需要禁用该配置项                                                         | ^[boolean]                                                                             | `true`       |
-| showAlertToolbar          | 是否显示选择提示工具栏                                                                                                         | ^[boolean]                                                                             | `true`       |
-| selectable ^(1.0.0)       | 该函数的返回值用来决定这一行是否可以勾选                                                                                       | ^[Function]`(row: Record<string, any>, index: number, field: GeneralField) => boolean` | `() => true` |
-| ignoreSelectable ^(1.0.0) | 是否显示选择提示工具栏                                                                                                         | ^[boolean]                                                                             | `true`       |
+| 属性名                      | 说明                                                                                                                           | 类型                                                                                   | 默认值       |
+| --------------------------- | ------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------- | ------------ |
+| mode                        | 选择模式                                                                                                                       | ^[enum]`'multiple' \| 'single'`                                                        | `multiple`   |
+| columns                     | 表格列配置，配置参数可以参考[官方文档](https://cn.element-plus.org/zh-CN/component/table.html#table-column-%E5%B1%9E%E6%80%A7) | ^[array]`数组格式参考说明中的官方文档地址`                                             | `[]`         |
+| optionAsValue               | 是否将整行数据作为选择值                                                                                                       | ^[boolean]                                                                             | `false`      |
+| rowKey                      | 必填，行数据的唯一标识字段，element-plus中的属性值                                                                             | ^[string]                                                                              | —            |
+| clickRowToSelect            | 是否点击整行进行选择，如果需要对表格内局部添加点击事件需要禁用该配置项                                                         | ^[boolean]                                                                             | `true`       |
+| showAlertToolbar            | 是否显示选择提示工具栏                                                                                                         | ^[boolean]                                                                             | `true`       |
+| selectionText ^(5.1.0)      | 选择数量提示；字符串可使用 `{count}` 占位符，函数会接收当前选择数量                                                            | `string` ^[Function]`(count: number) => string`                                        | 当前语言配置 |
+| clearSelectionText ^(5.1.0) | 取消选择操作文案                                                                                                               | `string`                                                                               | 当前语言配置 |
+| selectable ^(1.0.0)         | 该函数的返回值用来决定这一行是否可以勾选                                                                                       | ^[Function]`(row: Record<string, any>, index: number, field: GeneralField) => boolean` | `() => true` |
+| ignoreSelectable ^(1.0.0)   | 是否显示选择提示工具栏                                                                                                         | ^[boolean]                                                                             | `true`       |
 
 ::: tip 提示
 `onSelect`、`onSelectAll`、`onRowClick`事件已被组件内部使用，请勿使用。其余属性与事件请参考[官方文档](https://cn.element-plus.org/zh-CN/component/table.html#table-%E5%B1%9E%E6%80%A7)，例如可以限制表格高度或者条纹等，但会有不推荐的配置项，例如应该用Formily的dataSource配置项来渲染表格数据而不是ElTable的data属性。
+:::
+
+::: tip 多语言
+选择提示工具栏会根据当前 Element Plus 语言配置自动使用中文或英文。其他语言或业务定制文案可以通过 `selectionText` 和 `clearSelectionText` 配置。
 :::
 
 ::: tip 提示

@@ -1,10 +1,12 @@
 import type { EnhanceAppContext, Theme as VitePressTheme } from 'vitepress'
 import BaseTheme from '@silver-formily/docs-toolkit/theme'
 import ElementPlus, { ID_INJECTION_KEY, ZINDEX_INJECTION_KEY } from 'element-plus'
+import Layout from './Layout.vue'
 import '../styles/theme.css'
 
 const theme = {
   ...BaseTheme,
+  Layout,
   enhanceApp(ctx: EnhanceAppContext) {
     // Provide stable SSR ids before any theme/plugin code touches Element Plus.
     ctx.app.provide(ID_INJECTION_KEY, { prefix: 0, current: 0 })

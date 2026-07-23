@@ -1,7 +1,8 @@
 import type { ArrayField, FieldDataSource } from '@silver-formily/core'
 import { createForm } from '@silver-formily/core'
 import { createSchemaField, Field, FormProvider } from '@silver-formily/vue'
-import { ElTableColumn } from 'element-plus'
+import { ElConfigProvider, ElTableColumn } from 'element-plus'
+import zhCn from 'element-plus/es/locale/lang/zh-cn'
 import { describe, expect, it, vi } from 'vitest'
 import { render } from 'vitest-browser-vue'
 import { defineComponent, Fragment, h } from 'vue'
@@ -159,7 +160,7 @@ describe('基础数据展示', async () => {
   it('应该显示为空数据', async () => {
     const screen = render(() => <SelectTable rowKey="key" />)
     await expect.element(screen.getByText('No Data')).toBeInTheDocument()
-    await expect.element(screen.getByText('已选择')).not.toBeInTheDocument()
+    await expect.element(screen.getByText('items selected')).not.toBeInTheDocument()
   })
 
   it('应该显示数据', async () => {
@@ -524,7 +525,36 @@ describe('多选框交互', async () => {
     await screen.getByRole('row', { name: 'title-1' }).click()
     expect(form.query('selectTable').get('value')).toEqual(['1'])
     // 点击取消选择
-    await screen.getByText('取消选择').click()
+    await screen.getByText('Clear selection').click()
+    expect(form.query('selectTable').get('value')).toEqual([])
+  })
+
+  it('应该继承 Element Plus 中文语言配置', async () => {
+    const form = createForm()
+    const screen = render(() => (
+      <ElConfigProvider locale={zhCn}>
+        {h(formilyWrapperFactory({ rowKey: 'key' }), { form })}
+      </ElConfigProvider>
+    ))
+
+    await screen.getByRole('row', { name: 'title-1' }).click()
+    await expect.element(screen.getByText('已选择 1 项')).toBeInTheDocument()
+    await expect.element(screen.getByText('取消选择')).toBeInTheDocument()
+  })
+
+  it('应该支持自定义选择提示工具栏文案', async () => {
+    const form = createForm()
+    const screen = render(
+      formilyWrapperFactory({}, {
+        selectionText: 'Selected: {count}',
+        clearSelectionText: 'Reset selected rows',
+      }),
+      { props: { form } },
+    )
+
+    await screen.getByRole('row', { name: 'title-1' }).click()
+    await expect.element(screen.getByText('Selected: 1')).toBeInTheDocument()
+    await screen.getByText('Reset selected rows').click()
     expect(form.query('selectTable').get('value')).toEqual([])
   })
 
@@ -868,7 +898,7 @@ describe('单选框交互', async () => {
     await screen.getByRole('row', { name: 'title-1' }).click()
     expect(form.query('selectTable').get('value')).toEqual('1')
     // 点击取消选择
-    await screen.getByText('取消选择').click()
+    await screen.getByText('Clear selection').click()
     expect(form.query('selectTable').get('value')).toEqual(null)
   })
 
