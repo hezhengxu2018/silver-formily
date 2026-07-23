@@ -31,6 +31,29 @@ setValidateLanguage('en-US')
 setValidateLanguage('zh-CN')
 ```
 
+## getLocaleByPath
+
+### 描述
+
+按消息路径读取指定语言的校验文案。省略 `language` 时使用当前校验语言；语言标识会通过注册中心匹配到最接近的已注册语言。
+
+### 签名
+
+```ts
+interface getLocaleByPath {
+  (path: string, language?: string): any
+}
+```
+
+### 用例
+
+```ts
+import { getLocaleByPath } from '@silver-formily/core'
+
+getLocaleByPath('required')
+getLocaleByPath('maxLength', 'zh-CN')
+```
+
 ## registerValidateFormats
 
 ### 描述

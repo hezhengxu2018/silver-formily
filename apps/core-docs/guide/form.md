@@ -83,7 +83,17 @@ form.setFormGraph(graph)
 form.clearFormGraph()
 ```
 
-字段图关注的是**字段模型树**，而不是单纯的 `values`。如果只想读写表单数据，应使用 `values` / `initialValues` 或深路径读写方法。
+字段图关注的是**字段模型树及其运行时状态**，快照中的 Form 状态也包含 `values` 和 `initialValues`。如果只想读写表单数据，应使用 `values` / `initialValues` 或深路径读写方法。
+
+:::warning 注意
+`clearFormGraph(pattern, forceClear)` 的 `forceClear` 默认为 `true`，因此清除数据字段时还会删除对应的 `values` 和 `initialValues`。传入 `false` 会在销毁字段模型时恢复字段初始值语义：
+
+```ts
+form.clearFormGraph('*', true) // 默认：清除字段及其当前值和初始值
+form.clearFormGraph('*', false) // 清除字段模型，但不强制清空字段数据
+```
+
+:::
 
 ## 值入口
 

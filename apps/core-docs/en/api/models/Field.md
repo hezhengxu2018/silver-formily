@@ -4,7 +4,7 @@ order: 1
 
 # Field
 
-The Field model returned by [createField](/en/api/models/Form#createfield). All model properties are listed below. Most writable properties can be assigned directly, and `@formily/reactive` will respond and trigger UI updates.
+The Field model returned by [createField](/en/api/models/Form#createfield). The main public model properties are listed below. Most writable properties can be assigned directly, and `@silver-formily/reactive` will respond and trigger UI updates.
 
 :::warning Note
 For process states like `loading`, `validating`, and `submitting`, direct assignment is not fully equivalent to the corresponding `setXxx` method. Prefer using setters.
@@ -830,7 +830,7 @@ type FieldDataSource = Array<{
 }>
 ```
 
-The field data source is essentially an array; the content format is up to the user. We recommend using the `label`/`value` format. Note that in UI frameworks, setting it does not automatically take effect — the `dataSource` property must be bound to a specific UI component. For example, in `@formily/react`, use the `connect` function to bind state, or consume it directly inside a component via `useField`.
+The field data source is an array whose item shape is application-defined; `label` / `value` is the recommended option format. Setting `dataSource` does not update the UI by itself—the concrete component must bind it. In `@silver-formily/vue`, use `connect` to map field state, or call `useField` inside a component and consume the field instance directly.
 
 ### FieldValue
 
@@ -946,6 +946,7 @@ interface IFieldState {
   selfDisplay?: FieldDisplayTypes
   selfPattern?: FieldPatternTypes
   content?: any
+  decoratorContent?: any
   data?: any
   decoratorType?: any
   decoratorProps?: Record<string, any>

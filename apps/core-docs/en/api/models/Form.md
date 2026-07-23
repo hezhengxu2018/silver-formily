@@ -4,7 +4,7 @@ order: 0
 
 # Form
 
-The core [form model](/en/guide/form) API returned by [createForm](/en/api/entry/createForm). All model properties are listed below. Most writable properties can be assigned directly, and `@formily/reactive` will respond and trigger UI updates.
+The core [form model](/en/guide/form) API returned by [createForm](/en/api/entry/createForm). The main public model properties are listed below. Most writable properties can be assigned directly, and `@silver-formily/reactive` will respond and trigger UI updates.
 
 :::warning Note
 For process states like `loading`, `validating`, and `submitting`, direct assignment is not fully equivalent to the corresponding `setXxx` method. Prefer using setters.
@@ -51,7 +51,7 @@ During construction, `initialize()` first sets this state to `false`. After reac
 
 #### Description
 
-Creates a Field instance. If the same path is used, repeated calls will reuse the same instance.
+Creates a Field instance. Calls with the same path reuse the instance in normal mode; `designable: true` creates a new instance.
 
 #### Signature
 
@@ -67,7 +67,7 @@ For function parameters, see [IFieldFactoryProps](#ifieldfactoryprops).
 
 #### Description
 
-Creates an ArrayField instance. If the same path is used, repeated calls will reuse the same instance.
+Creates an ArrayField instance. Calls with the same path reuse the instance in normal mode; `designable: true` creates a new instance.
 
 #### Signature
 
@@ -83,7 +83,7 @@ For function parameters, see [IFieldFactoryProps](#ifieldfactoryprops).
 
 #### Description
 
-Creates an ObjectField instance. If the same path is used, repeated calls will reuse the same instance.
+Creates an ObjectField instance. Calls with the same path reuse the instance in normal mode; `designable: true` creates a new instance.
 
 #### Signature
 
@@ -99,7 +99,7 @@ For function parameters, see [IFieldFactoryProps](#ifieldfactoryprops).
 
 #### Description
 
-Creates a VoidField instance. If the same path is used, repeated calls will reuse the same instance.
+Creates a VoidField instance. Calls with the same path reuse the instance in normal mode; `designable: true` creates a new instance.
 
 #### Signature
 
@@ -835,6 +835,7 @@ interface IFieldFactoryProps {
   component?: FieldComponent // field component
   reactions?: FieldReaction[] | FieldReaction // field reactions
   content?: any // field content
+  decoratorContent?: any // field decorator content
   data?: any // field extended properties
 }
 ```
@@ -871,6 +872,7 @@ interface IVoidFieldFactoryProps {
   component?: FieldComponent // field component
   reactions?: FieldReaction[] | FieldReaction // field reactions
   content?: any // field content
+  decoratorContent?: any // field decorator content
   data?: any // field extended properties
 }
 ```

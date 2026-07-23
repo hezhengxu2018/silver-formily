@@ -4,7 +4,7 @@ order: 1
 
 # Field
 
-调用[createField](/api/models/Form#createfield)所返回的 Field 模型。以下会列出所有模型属性。多数可写属性都可以直接赋值，@formily/reactive 会响应并触发 UI 更新。
+调用[createField](/api/models/Form#createfield)所返回的 Field 模型。以下会列出主要的公开模型属性。多数可写属性都可以直接赋值，`@silver-formily/reactive` 会响应并触发 UI 更新。
 
 :::warning 注意
 像 `loading`、`validating`、`submitting` 这类流程状态，直接赋值与对应的 `setXxx` 方法并不完全等价，通常应优先使用 setter。
@@ -830,7 +830,7 @@ type FieldDataSource = Array<{
 }>
 ```
 
-字段数据源其实就是一个数组，内容是啥形式由用户定，只是我们推荐用户都以 label/value 形式来表达数据源，这里需要注意的是，如果要在 UI 框架中使用，不是设置了就直接能生效，dataSource 属性必须是与具体 UI 组件产生了绑定才能生效，比如使用@formily/react，想要绑定状态，可以使用 connect 函数，也可以直接在组件内通过 useField 拿到字段实例，直接消费。
+字段数据源本质上是一个数组，具体内容形式由用户决定，推荐使用 `label` / `value` 表达选项。设置 `dataSource` 后并不会自动改变 UI，仍需由具体组件完成绑定。在 `@silver-formily/vue` 中，可以使用 `connect` 映射字段状态，也可以在组件内通过 `useField` 获取字段实例并直接消费。
 
 ### FieldValue
 
@@ -946,6 +946,7 @@ interface IFieldState {
   selfDisplay?: FieldDisplayTypes
   selfPattern?: FieldPatternTypes
   content?: any
+  decoratorContent?: any
   data?: any
   decoratorType?: any
   decoratorProps?: Record<string, any>

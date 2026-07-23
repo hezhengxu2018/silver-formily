@@ -6,7 +6,7 @@ order: 4
 
 The `VoidField` model returned by [createVoidField](/en/api/models/Form#createvoidfield).
 
-All model properties are listed below. If a property is writable, assigning to it directly will trigger `@formily/reactive` and update the UI.
+The main public model properties are listed below. Assigning to writable properties directly will trigger `@silver-formily/reactive` and update the UI.
 
 ## Properties
 
@@ -397,18 +397,26 @@ At the core layer, `VoidField` does not independently constrain the message type
 ### FieldComponent
 
 ```ts
-type FieldComponent = string | JSXComponentConstructor
+type FieldComponent<Component extends JSXComponent, ComponentProps = any>
+  = | [Component]
+    | [Component, ComponentProps]
+    | boolean
+    | any[]
 ```
 
-Field component. In frameworks that support JSX, `FieldComponent` is best stored as a direct JSX component reference. Otherwise, it can store a component identifier string and be dispatched during rendering.
+Field components are runtime configuration slots, usually passed as a `[component, props]` tuple. Boolean values and other array shapes may also be interpreted by an upper-layer adapter.
 
 ### FieldDecorator
 
 ```ts
-type FieldDecorator = string | JSXComponentConstructor
+type FieldDecorator<Decorator extends JSXComponent, DecoratorProps = any>
+  = | [Decorator]
+    | [Decorator, DecoratorProps]
+    | boolean
+    | any[]
 ```
 
-Field decorator. In frameworks that support JSX, `FieldDecorator` is best stored as a direct JSX component reference. Otherwise, it can store a component identifier string and be dispatched during rendering.
+Field decorators use the same runtime storage shape as `FieldComponent`.
 
 ### FieldReaction
 
@@ -419,13 +427,18 @@ type FieldReaction = (field: GeneralField) => void
 ### FieldDisplayTypes
 
 ```ts
-type FieldDisplayTypes = 'none' | 'hidden' | 'visible'
+type FieldDisplayTypes = 'none' | 'hidden' | 'visible' | ({} & string)
 ```
 
 ### FieldPatternTypes
 
 ```ts
-type FieldPatternTypes = 'editable' | 'disabled' | 'readOnly' | 'readPretty'
+type FieldPatternTypes
+  = | 'editable'
+    | 'readOnly'
+    | 'disabled'
+    | 'readPretty'
+    | ({} & string)
 ```
 
 ### GeneralField
@@ -447,6 +460,7 @@ interface IVoidFieldState {
   selfDisplay?: FieldDisplayTypes
   selfPattern?: FieldPatternTypes
   content?: any
+  decoratorContent?: any
   data?: any
   decoratorType?: any
   decoratorProps?: Record<string, any>

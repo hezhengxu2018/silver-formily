@@ -6,7 +6,7 @@ order: 4
 
 调用[createVoidField](/api/models/Form#createvoidfield)所返回的 VoidField 模型。
 
-以下会列出所有模型属性，如果该属性是可写的，那么我们可以直接引用是修改该属性，@formily/reactive 便会响应从而触发 UI 更新。
+以下会列出主要的公开模型属性。可写属性可以直接赋值，`@silver-formily/reactive` 会响应并触发 UI 更新。
 
 ## 属性
 
@@ -397,18 +397,26 @@ type TextType = any
 ### FieldComponent
 
 ```ts
-type FieldComponent = string | JSXComponentConstructor
+type FieldComponent<Component extends JSXComponent, ComponentProps = any>
+  = | [Component]
+    | [Component, ComponentProps]
+    | boolean
+    | any[]
 ```
 
-字段组件，如果我们在支持 JSX 的框架中使用，FieldComponent 推荐直接存储 JSX 组件引用，否则可以存储一个组件标识字符串，在实际渲染的时候做一次分发。
+字段组件是运行时配置槽位，通常以 `[组件, 属性]` 元组传入，也允许由上层适配器解释布尔值或其他数组形态。
 
 ### FieldDecorator
 
 ```ts
-type FieldDecorator = string | JSXComponentConstructor
+type FieldDecorator<Decorator extends JSXComponent, DecoratorProps = any>
+  = | [Decorator]
+    | [Decorator, DecoratorProps]
+    | boolean
+    | any[]
 ```
 
-字段装饰器，如果我们在支持 JSX 的框架中使用，FieldDecorator 推荐直接存储 JSX 组件引用，否则可以存储一个组件标识字符串，在实际渲染的时候做一次分发。
+字段装饰器与 `FieldComponent` 使用相同的运行时存储形式。
 
 ### FieldReaction
 
@@ -419,13 +427,18 @@ type FieldReaction = (field: GeneralField) => void
 ### FieldDisplayTypes
 
 ```ts
-type FieldDisplayTypes = 'none' | 'hidden' | 'visible'
+type FieldDisplayTypes = 'none' | 'hidden' | 'visible' | ({} & string)
 ```
 
 ### FieldPatternTypes
 
 ```ts
-type FieldPatternTypes = 'editable' | 'disabled' | 'readOnly' | 'readPretty'
+type FieldPatternTypes
+  = | 'editable'
+    | 'readOnly'
+    | 'disabled'
+    | 'readPretty'
+    | ({} & string)
 ```
 
 ### GeneralField
@@ -447,6 +460,7 @@ interface IVoidFieldState {
   selfDisplay?: FieldDisplayTypes
   selfPattern?: FieldPatternTypes
   content?: any
+  decoratorContent?: any
   data?: any
   decoratorType?: any
   decoratorProps?: Record<string, any>

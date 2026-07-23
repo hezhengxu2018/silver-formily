@@ -126,18 +126,19 @@ The default is `false`, so failed rules do not prevent later rules from running,
 
 ## Feedback
 
-Validation results are stored in `field.feedbacks`:
+Validation results are stored in `field.feedbacks`. A field stores `IFieldFeedback`, which does not include path information:
 
 ```ts
-interface Feedback {
-  path: string
-  address: string
-  type: 'error' | 'success' | 'warning'
-  code: 'ValidateError' | 'ValidateSuccess' | 'ValidateWarning'
+interface IFieldFeedback {
+  triggerType?: 'onInput' | 'onFocus' | 'onBlur'
+  type?: 'error' | 'success' | 'warning'
+  code?: 'ValidateError' | 'ValidateSuccess' | 'ValidateWarning'
     | 'EffectError' | 'EffectSuccess' | 'EffectWarning'
-  messages: string[]
+  messages?: any[]
 }
 ```
+
+When Form or a parent field aggregates feedback, it adds optional `path` and `address` properties to produce `IFormFeedback`.
 
 Fields provide type-based feedback helpers:
 
@@ -159,12 +160,12 @@ field.selfSuccesses
 Business side effects can write feedback directly:
 
 ```ts
-field.errors = ['Username already exists']
-field.warnings = ['Company email is recommended']
-field.successes = ['Passed']
+field.selfErrors = ['Username already exists']
+field.selfWarnings = ['Company email is recommended']
+field.selfSuccesses = ['Passed']
 ```
 
-Directly written feedback uses `Effect*` codes, keeping it separate from validator-generated `Validate*` codes.
+You can also call `setSelfErrors()`, `setSelfWarnings()`, and `setSelfSuccesses()`. Feedback written through these APIs uses `Effect*` codes, keeping it separate from validator-generated `Validate*` codes. The `errors`, `warnings`, and `successes` properties are read-only aggregates that include descendant fields and cannot be used to write feedback.
 
 Feedback can also be queried:
 

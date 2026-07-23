@@ -31,6 +31,29 @@ setValidateLanguage('en-US')
 setValidateLanguage('zh-CN')
 ```
 
+## getLocaleByPath
+
+### Description
+
+Reads a validation message by path for a given language. When `language` is omitted, the current validation language is used. The registry resolves the language value to the closest registered locale.
+
+### Signature
+
+```ts
+interface getLocaleByPath {
+  (path: string, language?: string): any
+}
+```
+
+### Usage
+
+```ts
+import { getLocaleByPath } from '@silver-formily/core'
+
+getLocaleByPath('required')
+getLocaleByPath('maxLength', 'zh-CN')
+```
+
 ## registerValidateFormats
 
 ### Description

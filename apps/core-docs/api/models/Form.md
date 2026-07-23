@@ -4,7 +4,7 @@ order: 0
 
 # Form
 
-调用[createForm](/api/entry/createForm)所返回的核心[表单模型](/guide/form) API。以下会列出所有模型属性。多数可写属性都可以直接赋值，`@formily/reactive` 会响应并触发 UI 更新。
+调用[createForm](/api/entry/createForm)所返回的核心[表单模型](/guide/form) API。以下会列出主要的公开模型属性。多数可写属性都可以直接赋值，`@silver-formily/reactive` 会响应并触发 UI 更新。
 
 :::warning 注意
 像 `loading`、`validating`、`submitting` 这类流程状态，直接赋值与对应的 `setXxx` 方法并不完全等价，通常应优先使用 setter。
@@ -51,7 +51,7 @@ order: 0
 
 #### 描述
 
-创建一个 Field 实例的工厂函数，如果路径相同，多次调用，会复用实例对象
+创建一个 Field 实例的工厂函数。普通模式下路径相同时会复用实例；`designable: true` 时会重新创建实例
 
 #### 签名
 
@@ -67,7 +67,7 @@ interface createField {
 
 #### 描述
 
-创建一个 ArrayField 实例的工厂函数，如果路径相同，多次调用，会复用实例对象
+创建一个 ArrayField 实例的工厂函数。普通模式下路径相同时会复用实例；`designable: true` 时会重新创建实例
 
 #### 签名
 
@@ -83,7 +83,7 @@ interface createArrayField {
 
 #### 描述
 
-创建一个 ObjectField 实例的工厂函数，如果路径相同，多次调用，会复用实例对象
+创建一个 ObjectField 实例的工厂函数。普通模式下路径相同时会复用实例；`designable: true` 时会重新创建实例
 
 #### 签名
 
@@ -99,7 +99,7 @@ interface createObjectField {
 
 #### 描述
 
-创建一个 VoidField 实例的工厂函数，如果路径相同，多次调用，会复用实例对象
+创建一个 VoidField 实例的工厂函数。普通模式下路径相同时会复用实例；`designable: true` 时会重新创建实例
 
 #### 签名
 
@@ -837,6 +837,7 @@ interface IFieldFactoryProps {
   component?: FieldComponent // 字段组件
   reactions?: FieldReaction[] | FieldReaction // 字段响应器
   content?: any // 字段内容
+  decoratorContent?: any // 字段装饰器内容
   data?: any // 字段扩展属性
 }
 ```
@@ -873,6 +874,7 @@ interface IVoidFieldFactoryProps {
   component?: FieldComponent // 字段组件
   reactions?: FieldReaction[] | FieldReaction // 字段响应器
   content?: any // 字段内容
+  decoratorContent?: any // 字段装饰器内容
   data?: any // 字段扩展属性
 }
 ```

@@ -71,7 +71,7 @@ If a parent explicitly sets `display` and the child does not, the child inherits
 ```ts
 field.setDisplay('hidden')
 field.setDisplay('none')
-field.setDisplay(null) // restore inheritance from parent
+field.setDisplay() // restore inheritance from parent
 ```
 
 ## Interaction Pattern

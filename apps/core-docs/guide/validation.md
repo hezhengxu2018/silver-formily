@@ -126,18 +126,19 @@ form.createField({
 
 ## 校验反馈
 
-校验结果存放在字段的 `feedbacks` 中：
+校验结果存放在字段的 `feedbacks` 中。字段自身保存的是 `IFieldFeedback`，不包含路径信息：
 
 ```ts
-interface Feedback {
-  path: string
-  address: string
-  type: 'error' | 'success' | 'warning'
-  code: 'ValidateError' | 'ValidateSuccess' | 'ValidateWarning'
+interface IFieldFeedback {
+  triggerType?: 'onInput' | 'onFocus' | 'onBlur'
+  type?: 'error' | 'success' | 'warning'
+  code?: 'ValidateError' | 'ValidateSuccess' | 'ValidateWarning'
     | 'EffectError' | 'EffectSuccess' | 'EffectWarning'
-  messages: string[]
+  messages?: any[]
 }
 ```
+
+Form 或父字段聚合反馈时，会在 `IFieldFeedback` 上补充可选的 `path` 和 `address`，形成 `IFormFeedback`。
 
 字段提供了按类型聚合的便捷属性：
 
@@ -159,12 +160,12 @@ field.selfSuccesses
 业务副作用也可以直接写入反馈：
 
 ```ts
-field.errors = ['用户名已存在']
-field.warnings = ['建议使用公司邮箱']
-field.successes = ['校验通过']
+field.selfErrors = ['用户名已存在']
+field.selfWarnings = ['建议使用公司邮箱']
+field.selfSuccesses = ['校验通过']
 ```
 
-直接写入的反馈会使用 `Effect*` code，以便和校验器产生的 `Validate*` code 分离。
+也可以调用 `setSelfErrors()`、`setSelfWarnings()` 和 `setSelfSuccesses()`。这些写法产生的反馈会使用 `Effect*` code，以便和校验器产生的 `Validate*` code 分离。`errors`、`warnings`、`successes` 是包含子孙字段的只读聚合结果，不能用来写入反馈。
 
 也可以查询反馈：
 

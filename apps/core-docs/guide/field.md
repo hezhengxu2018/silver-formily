@@ -71,7 +71,7 @@ Field 和 VoidField 之间存在**父子继承**关系——当父节点设置 d
 ```ts
 field.setDisplay('hidden')
 field.setDisplay('none')
-field.setDisplay(null) // 恢复为继承父节点的 display
+field.setDisplay() // 恢复为继承父节点的 display
 ```
 
 ## 交互模式

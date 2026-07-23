@@ -83,7 +83,17 @@ form.setFormGraph(graph)
 form.clearFormGraph()
 ```
 
-The field graph describes the **field model tree**, not just `values`. If you only need form data, use `values`, `initialValues`, or deep path read/write helpers.
+The field graph describes the **field model tree and its runtime state**. The Form state in a snapshot also includes `values` and `initialValues`. If you only need form data, use `values`, `initialValues`, or deep path read/write helpers.
+
+:::warning Note
+The `forceClear` argument of `clearFormGraph(pattern, forceClear)` defaults to `true`, so clearing data fields also removes their corresponding `values` and `initialValues`. Pass `false` to restore field initial-value semantics while destroying the field models:
+
+```ts
+form.clearFormGraph('*', true) // default: clear fields, current values, and initial values
+form.clearFormGraph('*', false) // clear field models without force-clearing field data
+```
+
+:::
 
 ## Values Entry
 
