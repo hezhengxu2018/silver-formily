@@ -52,7 +52,7 @@ tree/template-others
 | valueType          | ^[enum]`'all' \| 'parent' \| 'child' \| 'path'` | 数据类型，仅在`checkStrictly`为`false`生效           | `'all'` |
 | includeHalfChecked | `boolean`                                       | 是否包含半勾选的节点，仅在`valueType`为`'all'`时生效 | `false` |
 | optionAsValue      | `boolean`                                       | 是否将节点值作为选项的值，`valueType`为`path`时无效  | `false` |
-| optionFormatter    | `(node: TreeNode) => TreeNode`                  | 选项格式化函数，仅在`optionAsValue`为`true`时生效    | -       |
+| optionFormatter    | ^[Function]`(node: TreeNode) => TreeNode`       | 选项格式化函数，仅在`optionAsValue`为`true`时生效    | -       |
 | height             | `number`                                        | ElScorller组件的height属性                           | -       |
 | maxHeight          | `number`                                        | ElScorller组件的maxHeight属性                        | -       |
 

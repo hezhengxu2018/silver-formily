@@ -26,9 +26,9 @@ This component is intended for Schema-based scenarios only.
 
 ### FormTab
 
-| Prop      | Type       | Description                               | Default |
-| --------- | ---------- | ----------------------------------------- | ------- |
-| `formTab` | `IFormTab` | Model instance created by `createFormTab` | -       |
+| Prop      | Type                | Description                               | Default |
+| --------- | ------------------- | ----------------------------------------- | ------- |
+| `formTab` | ^[object]`IFormTab` | Model instance created by `createFormTab` | -       |
 
 For the rest, see [https://element-plus.org/en-US/component/tabs.html](https://element-plus.org/en-US/component/tabs.html)
 

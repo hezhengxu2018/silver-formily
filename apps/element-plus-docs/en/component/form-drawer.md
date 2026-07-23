@@ -99,11 +99,11 @@ FormDrawer also closes automatically when the browser URL changes, including Bac
 
 ### FormDrawer Function Arguments
 
-| Parameter                    | Description                                                                 | Type                                                    |
-| ---------------------------- | --------------------------------------------------------------------------- | ------------------------------------------------------- |
-| `title` or `formDrawerProps` | Drawer title or Drawer props                                                | `string` `FormDrawerProps`                              |
-| `formDrawerSlots`            | Drawer content, supporting components, VNodes, and slot-style authoring     | `Component` `VNode[]` `() => VNode[]` `FormDrawerSlots` |
-| `dynamicMiddlewareNames`     | List of dynamic middleware names. They are converted to camelCase on usage. | `string[]` except `cancel`, `confirm`, `open`           |
+| Parameter                    | Description                                                                 | Type                                                                        |
+| ---------------------------- | --------------------------------------------------------------------------- | --------------------------------------------------------------------------- |
+| `title` or `formDrawerProps` | Drawer title or Drawer props                                                | `string` ^[object]`FormDrawerProps`                                         |
+| `formDrawerSlots`            | Drawer content, supporting components, VNodes, and slot-style authoring     | `Component` `VNode[]` ^[Function]`() => VNode[]` ^[object]`FormDrawerSlots` |
+| `dynamicMiddlewareNames`     | List of dynamic middleware names. They are converted to camelCase on usage. | `string[]` except `cancel`, `confirm`, `open`                               |
 
 ::: warning Note
 `formDrawerProps` has reserved fields. Passing `modelValue` or `onUpdate:modelValue` has no effect because they are already used internally by FormDrawer.
@@ -125,15 +125,15 @@ interface FormDrawer {
 
 The first argument. When a string is passed, it is displayed as the drawer title. You can also pass `IFormDrawerProps` for customization. Prefer middleware such as `forOpen`, `forConfirm`, and `forCancel` to control the drawer lifecycle.
 
-| Parameter           | Description                                                       | Type          | Default   |
-| ------------------- | ----------------------------------------------------------------- | ------------- | --------- |
-| `cancelText`        | Cancel button text                                                | `string`      | `Cancel`  |
-| `cancelButtonProps` | Props for the cancel button                                       | `ButtonProps` | -         |
-| `okText`            | Confirm button text                                               | `string`      | `Confirm` |
-| `okButtonProps`     | Props for the confirm button                                      | `ButtonProps` | -         |
-| `loadingText`       | Loading text                                                      | `string`      | `loading` |
-| `enterSubmit`       | Whether pressing Enter in an input immediately triggers `resolve` | `boolean`     | `true`    |
-| `closeOnUrlChange`  | Whether the drawer closes automatically on URL change             | `boolean`     | `true`    |
+| Parameter           | Description                                                       | Type                   | Default   |
+| ------------------- | ----------------------------------------------------------------- | ---------------------- | --------- |
+| `cancelText`        | Cancel button text                                                | `string`               | `Cancel`  |
+| `cancelButtonProps` | Props for the cancel button                                       | ^[object]`ButtonProps` | -         |
+| `okText`            | Confirm button text                                               | `string`               | `Confirm` |
+| `okButtonProps`     | Props for the confirm button                                      | ^[object]`ButtonProps` | -         |
+| `loadingText`       | Loading text                                                      | `string`               | `loading` |
+| `enterSubmit`       | Whether pressing Enter in an input immediately triggers `resolve` | `boolean`              | `true`    |
+| `closeOnUrlChange`  | Whether the drawer closes automatically on URL change             | `boolean`              | `true`    |
 
 For the rest, see [https://element-plus.org/en-US/component/drawer.html](https://element-plus.org/en-US/component/drawer.html#attributes)
 
@@ -141,11 +141,11 @@ For the rest, see [https://element-plus.org/en-US/component/drawer.html](https:/
 
 The second argument. In addition to components and VNodes, it can also accept Vue's [JSX slot syntax](https://vuejs.org/guide/extras/render-function.html#passing-slots) to customize `header` and `footer`.
 
-| Slot      | Description                                                                                                                                | Type                  |
-| --------- | ------------------------------------------------------------------------------------------------------------------------------------------ | --------------------- |
-| `default` | Main drawer content. Supports components, VNodes, and scoped-slot style content. Injects `form`, `resolve`, and `reject`.                  | `FormDrawerSlotProps` |
-| `header`  | Header slot. Scoped content can call `resolve` or `reject` to close the drawer. `resolve` can receive names from `dynamicMiddlewareNames`. | `FormDrawerSlotProps` |
-| `footer`  | Footer slot. Scoped content can call `resolve` or `reject` to close the drawer. `resolve` can receive names from `dynamicMiddlewareNames`. | `FormDrawerSlotProps` |
+| Slot      | Description                                                                                                                                | Type                           |
+| --------- | ------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------ |
+| `default` | Main drawer content. Supports components, VNodes, and scoped-slot style content. Injects `form`, `resolve`, and `reject`.                  | ^[object]`FormDrawerSlotProps` |
+| `header`  | Header slot. Scoped content can call `resolve` or `reject` to close the drawer. `resolve` can receive names from `dynamicMiddlewareNames`. | ^[object]`FormDrawerSlotProps` |
+| `footer`  | Footer slot. Scoped content can call `resolve` or `reject` to close the drawer. `resolve` can receive names from `dynamicMiddlewareNames`. | ^[object]`FormDrawerSlotProps` |
 
 #### dynamicMiddlewareNames
 
@@ -170,13 +170,13 @@ When used together with generics, literal values in `dynamicMiddlewareNames` aff
 
 The return value is a Promise object, so you can `await` it to simplify flow control. You need to call `open` to display the drawer. Chain calls can be used to handle different lifecycle events. Dynamic middleware actions are also supported through `dynamicMiddlewareNames`.
 
-| Method          | Description      | Type                                         |
-| --------------- | ---------------- | -------------------------------------------- |
-| `open`          | Open drawer      | `(IFormProps) => Promise<IFormProps.values>` |
-| `forOpen`       | Drawer open hook | `(IMiddleware<IFormProps>) => IFormDrawer`   |
-| `forConfirm`    | Confirm hook     | `(IMiddleware<Form>) => IFormDrawer`         |
-| `forCancel`     | Cancel hook      | `(IMiddleware<Form>) => IFormDrawer`         |
-| `for${Dynamic}` | Custom hook      | `(IMiddleware<Form>) => IFormDrawer`         |
+| Method          | Description      | Type                                                              |
+| --------------- | ---------------- | ----------------------------------------------------------------- |
+| `open`          | Open drawer      | ^[Function]`(props?: IFormProps) => Promise<any>`                 |
+| `forOpen`       | Drawer open hook | ^[Function]`(middleware: IMiddleware<IFormProps>) => IFormDrawer` |
+| `forConfirm`    | Confirm hook     | ^[Function]`(middleware: IMiddleware<Form>) => IFormDrawer`       |
+| `forCancel`     | Cancel hook      | ^[Function]`(middleware: IMiddleware<Form>) => IFormDrawer`       |
+| `for${Dynamic}` | Custom hook      | ^[Function]`(middleware: IMiddleware<Form>) => IFormDrawer`       |
 
 ::: tip Tip
 In custom hooks, `Dynamic` corresponds to the values passed into `dynamicMiddlewareNames`. The related action is triggered by calling `resolve` inside scoped slots. When methods are generated, names from `dynamicMiddlewareNames` are converted to PascalCase, so `['save-draft']` becomes `forSaveDraft`.

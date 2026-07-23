@@ -20,9 +20,14 @@ The `component` prop has been renamed to `tag` and moved to the FormLayout compo
 
 Most props are inherited from [FormLayout](./form-layout). The following are the extra props exposed by the Form component.
 
-| Prop                     | Type                                                    | Description                                     | Default |
-| ------------------------ | ------------------------------------------------------- | ----------------------------------------------- | ------- |
-| `form`                   | [Form](https://core.silver-formily.org/api/models/Form) | Form instance                                   | -       |
-| `previewTextPlaceholder` | `string`                                                | Placeholder shown in read-pretty mode           | `N/A`   |
-| `onAutoSubmit`           | `(values: any) => any`                                  | Callback triggered by Enter-to-submit           | -       |
-| `onAutoSubmitFailed`     | `(feedbacks) => void`                                   | Validation failure callback for Enter-to-submit | -       |
+| Prop                     | Type                                              | Description                                     | Default |
+| ------------------------ | ------------------------------------------------- | ----------------------------------------------- | ------- |
+| `form`                   | ^[object]`Form`                                   | Form instance                                   | -       |
+| `previewTextPlaceholder` | `string`                                          | Placeholder shown in read-pretty mode           | `N/A`   |
+| `onAutoSubmit`           | ^[Function]`(values: any) => any`                 | Callback triggered by Enter-to-submit           | -       |
+| `onAutoSubmitFailed`     | ^[Function]`(feedbacks: IFormFeedback[]) => void` | Validation failure callback for Enter-to-submit | -       |
+
+### Type References
+
+- [Form](https://core.silver-formily.org/api/models/Form)
+- [IFormFeedback](https://core.silver-formily.org/api/models/Form#iformfeedback)

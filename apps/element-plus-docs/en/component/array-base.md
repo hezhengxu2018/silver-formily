@@ -18,11 +18,11 @@ See [https://element-plus.org/en-US/component/button.html](https://element-plus.
 
 ### Extended Props
 
-| Prop           | Type                  | Description                 | Default  |
-| -------------- | --------------------- | --------------------------- | -------- |
-| `title`        | `string`              | Text                        | -        |
-| `method`       | `'push' \| 'unshift'` | Add method                  | `'push'` |
-| `defaultValue` | `any`                 | Default value for new items | -        |
+| Prop           | Type                         | Description                 | Default  |
+| -------------- | ---------------------------- | --------------------------- | -------- |
+| `title`        | `string`                     | Text                        | -        |
+| `method`       | ^[enum]`'push' \| 'unshift'` | Add method                  | `'push'` |
+| `defaultValue` | `any`                        | Default value for new items | -        |
 
 For the rest, see [https://element-plus.org/en-US/component/button.html](https://element-plus.org/en-US/component/button.html).
 

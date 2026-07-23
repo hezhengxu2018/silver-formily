@@ -22,10 +22,14 @@ submit/loading
 
 属性主要继承自 [Button组件](https://cn.element-plus.org/zh-CN/component/button.html) 即可，剩下是 Submit 组件独有的 API 属性
 
-| 属性名          | 类型                                                                                                    | 描述                                  | 默认值 |
-| --------------- | ------------------------------------------------------------------------------------------------------- | ------------------------------------- | ------ |
-| onClick         | `(event: MouseEvent) => void \| boolean`                                                                | 点击事件，如果返回 false 可以阻塞提交 | -      |
-| onSubmit        | `(values: any) => Promise<any> \| any`                                                                  | 提交事件回调                          | -      |
-| onSubmitSuccess | `(payload: any) => void`                                                                                | 提交成功响应事件                      | -      |
-| onSubmitFailed  | `(feedbacks: [IFormFeedback](https://core.silver-formily.org/api/models/Form#iformfeedback)[]) => void` | 提交校验失败事件回调                  | -      |
-| submit          | `boolean`                                                                                               | 是否作为原生提交按钮                  | `true` |
+| 属性名          | 类型                                                | 描述                                  | 默认值 |
+| --------------- | --------------------------------------------------- | ------------------------------------- | ------ |
+| onClick         | ^[Function]`(event: MouseEvent) => void \| boolean` | 点击事件，如果返回 false 可以阻塞提交 | -      |
+| onSubmit        | ^[Function]`(values: any) => Promise<any> \| any`   | 提交事件回调                          | -      |
+| onSubmitSuccess | ^[Function]`(payload: any) => void`                 | 提交成功响应事件                      | -      |
+| onSubmitFailed  | ^[Function]`(feedbacks: IFormFeedback[]) => void`   | 提交校验失败事件回调                  | -      |
+| submit          | `boolean`                                           | 是否作为原生提交按钮                  | `true` |
+
+### IFormFeedback
+
+参考 [IFormFeedback](https://core.silver-formily.org/api/models/Form#iformfeedback)。

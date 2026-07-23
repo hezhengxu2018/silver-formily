@@ -58,24 +58,24 @@ query-form-item/transfer-clear-on-data-change
 
 基本继承了所有 FormItem 的配置项。为了避免校验失败时报错的样式影响到内部的QueryForm，组件修改了FormItem的class名，因此可能会出现部分配置项不生效的情况。下面的这些配置项是 QueryFormItem 独有的。
 
-| 属性名              | 说明                             | 类型                          | 默认值                        |
-| ------------------- | -------------------------------- | ----------------------------- | ----------------------------- |
-| `mode`              | 查询模式                         | `'default' \| 'light'`        | `'default'`                   |
-| `request`           | 查询函数；                       | [Request 约定](#request-约定) | -                             |
-| `clearOnDataChange` | 查询成功后是否清空当前字段值     | `boolean`                     | `false`                       |
-| `querySchema`       | 等价于`queryFormProps.schema`    | `ISchema`                     | -                             |
-| `queryFormProps`    | 查询表单配置                     | `QueryFormItemQueryProps`     | 参考QueryForm默认值           |
-| `pagination`        | 是否启用分页                     | `boolean`                     | `true`                        |
-| `paginationProps`   | 分页配置，透传给 `ElPagination`  | 参考Element-plus 官方文档     | 略                            |
-| `paginationMap`     | 分页参数映射（用于请求入参键名） | `QueryFormItemPaginationMap`  | [分页参数映射](#分页参数映射) |
-| `immediate`         | 挂载后是否立即执行一次查询       | `boolean`                     | `true`                        |
+| 属性名              | 说明                                         | 类型                                                                                                                       | 默认值                        |
+| ------------------- | -------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- | ----------------------------- |
+| `mode`              | 查询模式                                     | ^[enum]`'default' \| 'light'`                                                                                              | `'default'`                   |
+| `request`           | 查询函数，参见 [Request 约定](#request-约定) | ^[Function]`(params: Record<string, any> & Partial<QueryFormItemPagination>) => Promise<QueryFormItemRequestResultObject>` | -                             |
+| `clearOnDataChange` | 查询成功后是否清空当前字段值                 | `boolean`                                                                                                                  | `false`                       |
+| `querySchema`       | 等价于`queryFormProps.schema`                | ^[object]`ISchema`                                                                                                         | -                             |
+| `queryFormProps`    | 查询表单配置                                 | ^[object]`QueryFormItemQueryProps`                                                                                         | 参考QueryForm默认值           |
+| `pagination`        | 是否启用分页                                 | `boolean`                                                                                                                  | `true`                        |
+| `paginationProps`   | 分页配置，透传给 `ElPagination`              | 参考Element-plus 官方文档                                                                                                  | 略                            |
+| `paginationMap`     | 分页参数映射（用于请求入参键名）             | ^[object]`QueryFormItemPaginationMap`                                                                                      | [分页参数映射](#分页参数映射) |
+| `immediate`         | 挂载后是否立即执行一次查询                   | `boolean`                                                                                                                  | `true`                        |
 
 ### 事件
 
-| 属性名           | 类型                                                    | 描述           | 默认值 |
-| ---------------- | ------------------------------------------------------- | -------------- | ------ |
-| `requestSuccess` | `(payload: QueryFormItemRequestSuccessPayload) => void` | 查询成功后触发 | -      |
-| `requestFailed`  | `(error: any) => void`                                  | 查询失败后触发 | -      |
+| 属性名           | 类型                                                               | 描述           | 默认值 |
+| ---------------- | ------------------------------------------------------------------ | -------------- | ------ |
+| `requestSuccess` | ^[Function]`(payload: QueryFormItemRequestSuccessPayload) => void` | 查询成功后触发 | -      |
+| `requestFailed`  | ^[Function]`(error: any) => void`                                  | 查询失败后触发 | -      |
 
 ### Request 约定
 

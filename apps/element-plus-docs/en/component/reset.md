@@ -41,8 +41,12 @@ Most props are inherited from the [Button component](https://element-plus.org/en
 
 ### Events
 
-| Prop                     | Type                                                                                                     | Description                                   | Default |
-| ------------------------ | -------------------------------------------------------------------------------------------------------- | --------------------------------------------- | ------- |
-| `onClick`                | `(event: MouseEvent) => void \| boolean`                                                                 | Click handler. Return `false` to block reset. | -       |
-| `onResetValidateSuccess` | `(payload: any) => void`                                                                                 | Called when reset validation succeeds         | -       |
-| `onResetValidateFailed`  | `(feedbacks: [IFormFeedback](https://core.silver-formily.org/api/models/Form#iformfeedback)`[]`) => void | Called when reset validation fails            | -       |
+| Prop                     | Type                                                | Description                                   | Default |
+| ------------------------ | --------------------------------------------------- | --------------------------------------------- | ------- |
+| `onClick`                | ^[Function]`(event: MouseEvent) => void \| boolean` | Click handler. Return `false` to block reset. | -       |
+| `onResetValidateSuccess` | ^[Function]`(payload: any) => void`                 | Called when reset validation succeeds         | -       |
+| `onResetValidateFailed`  | ^[Function]`(feedbacks: IFormFeedback[]) => void`   | Called when reset validation fails            | -       |
+
+### IFormFeedback
+
+See [IFormFeedback](https://core.silver-formily.org/api/models/Form#iformfeedback).

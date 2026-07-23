@@ -26,9 +26,9 @@ This component is intended for Schema-based scenarios only.
 
 ### FormCollapse
 
-| Prop           | Type            | Description                                                        | Default |
-| -------------- | --------------- | ------------------------------------------------------------------ | ------- |
-| `formCollapse` | `IFormCollapse` | Model instance created by `createFormCollapse` / `useFormCollapse` | -       |
+| Prop           | Type                     | Description                                                        | Default |
+| -------------- | ------------------------ | ------------------------------------------------------------------ | ------- |
+| `formCollapse` | ^[object]`IFormCollapse` | Model instance created by `createFormCollapse` / `useFormCollapse` | -       |
 
 The `onChange` event is already used internally by the component and should not be overridden. For everything else, see [https://element-plus.org/en-US/component/collapse.html](https://element-plus.org/en-US/component/collapse.html)
 

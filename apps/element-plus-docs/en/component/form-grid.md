@@ -53,9 +53,9 @@ To reduce layout jumps between the initial SSR render and hydration, follow thes
 
 The component inherits all Grid options. For the full prop list, see the [Grid API documentation](https://grid.silver-formily.org/api.html#%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0%E9%85%8D%E7%BD%AE%E8%A1%A8) for `@silver-formily/grid`.
 
-| Prop   | Type   | Description                                                 | Default |
-| ------ | ------ | ----------------------------------------------------------- | ------- |
-| `grid` | `Grid` | Externally provided Grid instance for advanced layout logic | -       |
+| Prop   | Type            | Description                                                 | Default |
+| ------ | --------------- | ----------------------------------------------------------- | ------- |
+| `grid` | ^[object]`Grid` | Externally provided Grid instance for advanced layout logic | -       |
 
 ::: tip Note
 

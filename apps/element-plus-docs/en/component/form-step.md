@@ -30,9 +30,9 @@ Objects created by `createFormStep` are reactive values from `@silver-formily/re
 
 ### FormStep
 
-| Prop       | Type        | Description                                | Default |
-| ---------- | ----------- | ------------------------------------------ | ------- |
-| `formStep` | `IFormStep` | Model instance created by `createFormStep` | -       |
+| Prop       | Type                 | Description                                | Default |
+| ---------- | -------------------- | ------------------------------------------ | ------- |
+| `formStep` | ^[object]`IFormStep` | Model instance created by `createFormStep` | -       |
 
 For the rest, see [https://element-plus.org/en-US/component/steps.html](https://element-plus.org/en-US/component/steps.html)
 

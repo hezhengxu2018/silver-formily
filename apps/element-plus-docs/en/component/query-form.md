@@ -145,45 +145,49 @@ Both `QueryForm` and `QueryForm.Light` inherit and forward props from `Form`, su
 
 ### QueryForm Props
 
-| Prop              | Description                                                                                                  | Type                                                | Default    |
-| ----------------- | ------------------------------------------------------------------------------------------------------------ | --------------------------------------------------- | ---------- |
-| `schema`          | JSON Schema rendering                                                                                        | `ISchema`                                           | -          |
-| `schemaField`     | Custom SchemaField                                                                                           | `Component`                                         | -          |
-| `components`      | JSON Schema component mapping. Merged with the built-in mapping, and duplicate names override the built-ins. | `Record<string, Component>`                         | `{}`       |
-| `gridProps`       | Parameters used to create the Grid, excluding `shouldVisible` and `maxRows`                                  | `Omit<IGridOptions, 'shouldVisible' \| 'maxRows'>`  | `{}`       |
-| `defaultExpanded` | Whether the form is expanded initially                                                                       | `boolean`                                           | `false`    |
-| `showToggle`      | Whether to show the expand/collapse toggle button. When `false`, all search items are always shown.          | `boolean`                                           | `true`     |
-| `actionsAtRowEnd` | Whether the action area is fixed to the right end of the row                                                 | `boolean`                                           | `false`    |
-| `visibleWhen`     | Field visibility predicate                                                                                   | [QueryFormVisibleContext](#queryformvisiblecontext) | -          |
-| `submitText`      | Submit button text                                                                                           | `string`                                            | `Search`   |
-| `resetText`       | Reset button text                                                                                            | `string`                                            | `Reset`    |
-| `expandText`      | Expand button text                                                                                           | `string`                                            | `Expand`   |
-| `collapseText`    | Collapse button text                                                                                         | `string`                                            | `Collapse` |
-| `showSubmit`      | Whether to show the submit button                                                                            | `boolean`                                           | `true`     |
-| `showReset`       | Whether to show the reset button                                                                             | `boolean`                                           | `true`     |
-| `submitProps`     | Props forwarded to Submit                                                                                    | `Record<string, any>`                               | -          |
-| `resetProps`      | Props forwarded to Reset                                                                                     | `Record<string, any>`                               | -          |
+| Prop              | Description                                                                                                  | Type                                                        | Default    |
+| ----------------- | ------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------- | ---------- |
+| `schema`          | JSON Schema rendering                                                                                        | ^[object]`ISchema`                                          | -          |
+| `schemaField`     | Custom SchemaField                                                                                           | `Component`                                                 | -          |
+| `components`      | JSON Schema component mapping. Merged with the built-in mapping, and duplicate names override the built-ins. | ^[object]`Record<string, Component>`                        | `{}`       |
+| `gridProps`       | Parameters used to create the Grid, excluding `shouldVisible` and `maxRows`                                  | ^[object]`Omit<IGridOptions, 'shouldVisible' \| 'maxRows'>` | `{}`       |
+| `defaultExpanded` | Whether the form is expanded initially                                                                       | `boolean`                                                   | `false`    |
+| `showToggle`      | Whether to show the expand/collapse toggle button. When `false`, all search items are always shown.          | `boolean`                                                   | `true`     |
+| `actionsAtRowEnd` | Whether the action area is fixed to the right end of the row                                                 | `boolean`                                                   | `false`    |
+| `visibleWhen`     | Field visibility predicate. See [QueryFormVisibleContext](#queryformvisiblecontext).                         | ^[Function]`(context: QueryFormVisibleContext) => boolean`  | -          |
+| `submitText`      | Submit button text                                                                                           | `string`                                                    | `Search`   |
+| `resetText`       | Reset button text                                                                                            | `string`                                                    | `Reset`    |
+| `expandText`      | Expand button text                                                                                           | `string`                                                    | `Expand`   |
+| `collapseText`    | Collapse button text                                                                                         | `string`                                                    | `Collapse` |
+| `showSubmit`      | Whether to show the submit button                                                                            | `boolean`                                                   | `true`     |
+| `showReset`       | Whether to show the reset button                                                                             | `boolean`                                                   | `true`     |
+| `submitProps`     | Props forwarded to Submit                                                                                    | ^[object]`Record<string, any>`                              | -          |
+| `resetProps`      | Props forwarded to Reset                                                                                     | ^[object]`Record<string, any>`                              | -          |
 
 ### Slots
 
-| Slot       | Description                             | Slot Props                   |
-| ---------- | --------------------------------------- | ---------------------------- |
-| `default`  | Form content in Markup Schema scenarios | -                            |
-| `actions`  | Custom action-button area               | `{ expanded, toggle, type }` |
-| `collapse` | Custom expand/collapse trigger          | `{ expanded, toggle, type }` |
+| Slot       | Description                             | Slot Props                            |
+| ---------- | --------------------------------------- | ------------------------------------- |
+| `default`  | Form content in Markup Schema scenarios | -                                     |
+| `actions`  | Custom action-button area               | ^[object]`{ expanded, toggle, type }` |
+| `collapse` | Custom expand/collapse trigger          | ^[object]`{ expanded, toggle, type }` |
 
-::: tip Tip
-Possible values for `type` are `'incomplete-wrap' | 'collapsible' | 'complete-wrap'`.
-:::
+#### Slot Props
+
+| Prop       | Type                                                           | Description                                                                   |
+| ---------- | -------------------------------------------------------------- | ----------------------------------------------------------------------------- |
+| `expanded` | `boolean`                                                      | Whether the form is expanded; `false` when collapsed and `true` when expanded |
+| `toggle`   | ^[Function]`() => void`                                        | Switches between the collapsed and expanded states                            |
+| `type`     | ^[enum]`'incomplete-wrap' \| 'collapsible' \| 'complete-wrap'` | Current collapsed-layout state of the field and action areas                  |
 
 ### QueryForm.Light Props
 
-| Prop           | Description                                                           | Type                        | Default                                      |
-| -------------- | --------------------------------------------------------------------- | --------------------------- | -------------------------------------------- |
-| `schema`       | JSON Schema rendering                                                 | `ISchema`                   | -                                            |
-| `schemaField`  | Custom SchemaField                                                    | `Component`                 | -                                            |
-| `components`   | Components used by JSON Schema. Merged with the default registration. | `Record<string, Component>` | Most commonly used QueryForm-friendly inputs |
-| `throttleWait` | Throttle duration in milliseconds for auto submission on value change | `number`                    | `300`                                        |
+| Prop           | Description                                                           | Type                                 | Default                                      |
+| -------------- | --------------------------------------------------------------------- | ------------------------------------ | -------------------------------------------- |
+| `schema`       | JSON Schema rendering                                                 | ^[object]`ISchema`                   | -                                            |
+| `schemaField`  | Custom SchemaField                                                    | `Component`                          | -                                            |
+| `components`   | Components used by JSON Schema. Merged with the default registration. | ^[object]`Record<string, Component>` | Most commonly used QueryForm-friendly inputs |
+| `throttleWait` | Throttle duration in milliseconds for auto submission on value change | `number`                             | `300`                                        |
 
 ### QueryForm.Light Slots
 

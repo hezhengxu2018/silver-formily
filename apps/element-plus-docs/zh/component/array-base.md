@@ -18,11 +18,11 @@
 
 扩展属性
 
-| 属性名       | 类型                  | 描述         | 默认值   |
-| ------------ | --------------------- | ------------ | -------- |
-| title        | string                | 文案         |          |
-| method       | `'push' \| 'unshift'` | 添加方式     | `'push'` |
-| defaultValue | any                   | 新增项默认值 |          |
+| 属性名       | 类型                         | 描述         | 默认值   |
+| ------------ | ---------------------------- | ------------ | -------- |
+| title        | string                       | 文案         |          |
+| method       | ^[enum]`'push' \| 'unshift'` | 添加方式     | `'push'` |
+| defaultValue | any                          | 新增项默认值 |          |
 
 其余参考 [https://cn.element-plus.org/zh-CN/component/button.html](https://cn.element-plus.org/zh-CN/component/button.html)
 

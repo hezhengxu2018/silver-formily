@@ -52,7 +52,7 @@ tree/template-others
 | `valueType`          | ^[enum]`'all' \| 'parent' \| 'child' \| 'path'` | Output value type. Only effective when `checkStrictly` is `false`                               | `'all'` |
 | `includeHalfChecked` | `boolean`                                       | Whether to include half-checked nodes. Only effective when `valueType` is `'all'`               | `false` |
 | `optionAsValue`      | `boolean`                                       | Whether to use the whole node option as the selected value. Invalid when `valueType` is `path`. | `false` |
-| `optionFormatter`    | `(node: TreeNode) => TreeNode`                  | Option formatting function. Only effective when `optionAsValue` is `true`                       | -       |
+| `optionFormatter`    | ^[Function]`(node: TreeNode) => TreeNode`       | Option formatting function. Only effective when `optionAsValue` is `true`                       | -       |
 | `height`             | `number`                                        | Height prop forwarded to `ElScrollbar`                                                          | -       |
 | `maxHeight`          | `number`                                        | maxHeight prop forwarded to `ElScrollbar`                                                       | -       |
 

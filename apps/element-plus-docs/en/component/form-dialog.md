@@ -109,11 +109,11 @@ You can call `FormDialog` again from inside an existing FormDialog to open a nes
 
 ### FormDialog Function Arguments
 
-| Parameter                    | Description                                                                   | Type                                                    |
-| ---------------------------- | ----------------------------------------------------------------------------- | ------------------------------------------------------- |
-| `title` or `formDialogProps` | Dialog title or Dialog props                                                  | `string` `FormDialogProps`                              |
-| `formDialogSlots`            | Dialog content, supporting components, VNodes, and slot-style authoring       | `Component` `VNode[]` `() => VNode[]` `FormDialogSlots` |
-| `dynamicMiddlewareNames`     | List of dynamic middleware names. They are normalized to camelCase when used. | `string[]` except `cancel`, `confirm`, `open`           |
+| Parameter                    | Description                                                                   | Type                                                                        |
+| ---------------------------- | ----------------------------------------------------------------------------- | --------------------------------------------------------------------------- |
+| `title` or `formDialogProps` | Dialog title or Dialog props                                                  | `string` ^[object]`FormDialogProps`                                         |
+| `formDialogSlots`            | Dialog content, supporting components, VNodes, and slot-style authoring       | `Component` `VNode[]` ^[Function]`() => VNode[]` ^[object]`FormDialogSlots` |
+| `dynamicMiddlewareNames`     | List of dynamic middleware names. They are normalized to camelCase when used. | `string[]` except `cancel`, `confirm`, `open`                               |
 
 ::: warning Note
 `formDialogProps` has reserved fields. Passing `modelValue` or `onUpdate:modelValue` has no effect because they are already used internally by FormDialog.
@@ -135,15 +135,15 @@ interface FormDialog {
 
 The first argument. When a string is passed, it is displayed as the dialog title. You can also pass `IFormDialogProps` for customization. Prefer middleware such as `forOpen`, `forConfirm`, and `forCancel` when you need to control the dialog lifecycle.
 
-| Parameter           | Description                                                       | Type          | Default   |
-| ------------------- | ----------------------------------------------------------------- | ------------- | --------- |
-| `cancelText`        | Cancel button text                                                | `string`      | `Cancel`  |
-| `cancelButtonProps` | Props for the cancel button                                       | `ButtonProps` | -         |
-| `okText`            | Confirm button text                                               | `string`      | `Confirm` |
-| `okButtonProps`     | Props for the confirm button                                      | `ButtonProps` | -         |
-| `loadingText`       | Loading text                                                      | `string`      | `loading` |
-| `enterSubmit`       | Whether pressing Enter in an input immediately triggers `resolve` | `boolean`     | `true`    |
-| `closeOnUrlChange`  | Whether the dialog closes automatically on URL change             | `boolean`     | `true`    |
+| Parameter           | Description                                                       | Type                   | Default   |
+| ------------------- | ----------------------------------------------------------------- | ---------------------- | --------- |
+| `cancelText`        | Cancel button text                                                | `string`               | `Cancel`  |
+| `cancelButtonProps` | Props for the cancel button                                       | ^[object]`ButtonProps` | -         |
+| `okText`            | Confirm button text                                               | `string`               | `Confirm` |
+| `okButtonProps`     | Props for the confirm button                                      | ^[object]`ButtonProps` | -         |
+| `loadingText`       | Loading text                                                      | `string`               | `loading` |
+| `enterSubmit`       | Whether pressing Enter in an input immediately triggers `resolve` | `boolean`              | `true`    |
+| `closeOnUrlChange`  | Whether the dialog closes automatically on URL change             | `boolean`              | `true`    |
 
 For the rest, see [https://element-plus.org/en-US/component/dialog.html](https://element-plus.org/en-US/component/dialog.html#attributes)
 
@@ -151,11 +151,11 @@ For the rest, see [https://element-plus.org/en-US/component/dialog.html](https:/
 
 The second argument. In addition to components and VNodes, it can also accept Vue's [JSX slot syntax](https://vuejs.org/guide/extras/render-function.html#passing-slots) for customizing `header` and `footer`.
 
-| Slot      | Description                                                                                                                                | Type                  |
-| --------- | ------------------------------------------------------------------------------------------------------------------------------------------ | --------------------- |
-| `default` | Main dialog content. Supports components, VNodes, and scoped-slot style content. Injects `form`, `resolve`, and `reject`.                  | `FormDialogSlotProps` |
-| `header`  | Header slot. Scoped content can call `resolve` or `reject` to close the dialog. `resolve` can receive names from `dynamicMiddlewareNames`. | `FormDialogSlotProps` |
-| `footer`  | Footer slot. Scoped content can call `resolve` or `reject` to close the dialog. `resolve` can receive names from `dynamicMiddlewareNames`. | `FormDialogSlotProps` |
+| Slot      | Description                                                                                                                                | Type                           |
+| --------- | ------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------ |
+| `default` | Main dialog content. Supports components, VNodes, and scoped-slot style content. Injects `form`, `resolve`, and `reject`.                  | ^[object]`FormDialogSlotProps` |
+| `header`  | Header slot. Scoped content can call `resolve` or `reject` to close the dialog. `resolve` can receive names from `dynamicMiddlewareNames`. | ^[object]`FormDialogSlotProps` |
+| `footer`  | Footer slot. Scoped content can call `resolve` or `reject` to close the dialog. `resolve` can receive names from `dynamicMiddlewareNames`. | ^[object]`FormDialogSlotProps` |
 
 #### dynamicMiddlewareNames
 
@@ -180,13 +180,13 @@ When used together with generics, literal values in `dynamicMiddlewareNames` aff
 
 The return value is a Promise-like object, so you can `await` it to simplify flow control. You still need to call `open` to display the dialog. Chain calls can be used to handle different lifecycle events, and dynamic middleware actions are also supported through `dynamicMiddlewareNames`.
 
-| Method          | Description      | Type                                         |
-| --------------- | ---------------- | -------------------------------------------- |
-| `open`          | Open dialog      | `(IFormProps) => Promise<IFormProps.values>` |
-| `forOpen`       | Dialog open hook | `(IMiddleware<IFormProps>) => IFormDialog`   |
-| `forConfirm`    | Confirm hook     | `(IMiddleware<Form>) => IFormDialog`         |
-| `forCancel`     | Cancel hook      | `(IMiddleware<Form>) => IFormDialog`         |
-| `for${Dynamic}` | Custom hook      | `(IMiddleware<Form>) => IFormDialog`         |
+| Method          | Description      | Type                                                              |
+| --------------- | ---------------- | ----------------------------------------------------------------- |
+| `open`          | Open dialog      | ^[Function]`(props?: IFormProps) => Promise<any>`                 |
+| `forOpen`       | Dialog open hook | ^[Function]`(middleware: IMiddleware<IFormProps>) => IFormDialog` |
+| `forConfirm`    | Confirm hook     | ^[Function]`(middleware: IMiddleware<Form>) => IFormDialog`       |
+| `forCancel`     | Cancel hook      | ^[Function]`(middleware: IMiddleware<Form>) => IFormDialog`       |
+| `for${Dynamic}` | Custom hook      | ^[Function]`(middleware: IMiddleware<Form>) => IFormDialog`       |
 
 ::: tip Tip
 In custom hooks, `Dynamic` corresponds to the values passed into `dynamicMiddlewareNames`. The related action is triggered by calling `resolve` inside scoped slots. When methods are generated, names from `dynamicMiddlewareNames` are converted to PascalCase, so `['save-draft']` becomes `forSaveDraft`.

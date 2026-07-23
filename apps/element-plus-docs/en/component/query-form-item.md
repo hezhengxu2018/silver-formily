@@ -58,24 +58,24 @@ query-form-item/transfer-clear-on-data-change
 
 The component inherits most FormItem props. To avoid validation-error styles from breaking the internal QueryForm layout, it changes the FormItem class name, so a few FormItem-related props may not behave exactly the same. The following are QueryFormItem-specific props.
 
-| Prop                | Description                                                       | Type                                  | Default                                                       |
-| ------------------- | ----------------------------------------------------------------- | ------------------------------------- | ------------------------------------------------------------- |
-| `mode`              | Query mode                                                        | `'default' \| 'light'`                | `'default'`                                                   |
-| `request`           | Query function                                                    | [Request Contract](#request-contract) | -                                                             |
-| `clearOnDataChange` | Whether to clear the current field value after a successful query | `boolean`                             | `false`                                                       |
-| `querySchema`       | Equivalent to `queryFormProps.schema`                             | `ISchema`                             | -                                                             |
-| `queryFormProps`    | Query form configuration                                          | `QueryFormItemQueryProps`             | See QueryForm defaults                                        |
-| `pagination`        | Whether to enable pagination                                      | `boolean`                             | `true`                                                        |
-| `paginationProps`   | Pagination props forwarded to `ElPagination`                      | See Element Plus documentation        | -                                                             |
-| `paginationMap`     | Pagination key mapping used when building request params          | `QueryFormItemPaginationMap`          | [Pagination Parameter Mapping](#pagination-parameter-mapping) |
-| `immediate`         | Whether to run the query immediately after mount                  | `boolean`                             | `true`                                                        |
+| Prop                | Description                                                       | Type                                                                                                                       | Default                                                       |
+| ------------------- | ----------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------- |
+| `mode`              | Query mode                                                        | ^[enum]`'default' \| 'light'`                                                                                              | `'default'`                                                   |
+| `request`           | Query function. See [Request Contract](#request-contract).        | ^[Function]`(params: Record<string, any> & Partial<QueryFormItemPagination>) => Promise<QueryFormItemRequestResultObject>` | -                                                             |
+| `clearOnDataChange` | Whether to clear the current field value after a successful query | `boolean`                                                                                                                  | `false`                                                       |
+| `querySchema`       | Equivalent to `queryFormProps.schema`                             | ^[object]`ISchema`                                                                                                         | -                                                             |
+| `queryFormProps`    | Query form configuration                                          | ^[object]`QueryFormItemQueryProps`                                                                                         | See QueryForm defaults                                        |
+| `pagination`        | Whether to enable pagination                                      | `boolean`                                                                                                                  | `true`                                                        |
+| `paginationProps`   | Pagination props forwarded to `ElPagination`                      | See Element Plus documentation                                                                                             | -                                                             |
+| `paginationMap`     | Pagination key mapping used when building request params          | ^[object]`QueryFormItemPaginationMap`                                                                                      | [Pagination Parameter Mapping](#pagination-parameter-mapping) |
+| `immediate`         | Whether to run the query immediately after mount                  | `boolean`                                                                                                                  | `true`                                                        |
 
 ### Events
 
-| Prop             | Type                                                    | Description                        | Default |
-| ---------------- | ------------------------------------------------------- | ---------------------------------- | ------- |
-| `requestSuccess` | `(payload: QueryFormItemRequestSuccessPayload) => void` | Triggered after a successful query | -       |
-| `requestFailed`  | `(error: any) => void`                                  | Triggered when the query fails     | -       |
+| Prop             | Type                                                               | Description                        | Default |
+| ---------------- | ------------------------------------------------------------------ | ---------------------------------- | ------- |
+| `requestSuccess` | ^[Function]`(payload: QueryFormItemRequestSuccessPayload) => void` | Triggered after a successful query | -       |
+| `requestFailed`  | ^[Function]`(error: any) => void`                                  | Triggered when the query fails     | -       |
 
 ### Request Contract
 

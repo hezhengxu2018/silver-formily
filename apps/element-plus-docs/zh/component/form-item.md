@@ -44,12 +44,12 @@ form-item/size
 
 | 属性名         | 类型                                                                                          | 描述                                             | 默认值    |
 | -------------- | --------------------------------------------------------------------------------------------- | ------------------------------------------------ | --------- |
-| label          | `string` \| `VNode`                                                                           | 标签                                             | -         |
+| label          | `string` \| ^[object]`VNode`                                                                  | 标签                                             | -         |
 | for            | `string`                                                                                      | 关联的表单字段                                   | -         |
-| tooltip        | `string` \| `VNode`                                                                           | 问号提示                                         | -         |
-| addonBefore    | `string` \| `VNode`                                                                           | 前缀内容                                         | -         |
-| addonAfter     | `string` \| `VNode`                                                                           | 后缀内容                                         | -         |
-| extra          | `string` \| `VNode`                                                                           | 扩展描述文案                                     | -         |
+| tooltip        | `string` \| ^[object]`VNode`                                                                  | 问号提示                                         | -         |
+| addonBefore    | `string` \| ^[object]`VNode`                                                                  | 前缀内容                                         | -         |
+| addonAfter     | `string` \| ^[object]`VNode`                                                                  | 后缀内容                                         | -         |
+| extra          | `string` \| ^[object]`VNode`                                                                  | 扩展描述文案                                     | -         |
 | feedbackText   | `string`                                                                                      | 反馈文案                                         | -         |
 | feedbackStatus | ^[enum]`'error' \| 'warning' \| 'success' \| 'pending'`                                       | 反馈状态                                         | -         |
 | asterisk       | `boolean`                                                                                     | 星号提醒                                         | -         |
