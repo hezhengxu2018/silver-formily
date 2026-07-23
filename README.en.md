@@ -6,13 +6,6 @@ Silver Formily is a Vue 3 form infrastructure monorepo. The core reactive system
 
 The workspace is organized with `pnpm`, `Turborepo`, `Vite`, and `VitePress`, covering core runtime packages, Vue bindings, Element Plus / Vant integrations, documentation sites, and shared internal tooling.
 
-## What Is Included
-
-- Core foundations: `@silver-formily/reactive`, `@silver-formily/path`, `@silver-formily/shared`, `@silver-formily/validator`
-- Form runtime stack: `@silver-formily/core`, `@silver-formily/json-schema`, `@silver-formily/vue`, `@silver-formily/reactive-vue`
-- UI adapters: `@silver-formily/element-plus`, `@silver-formily/vant`
-- Supporting packages: `@silver-formily/grid`, `@silver-formily/docs-toolkit`, `@silver-formily/typescript-config`
-
 ## Documentation Sites
 
 - Reactive: <https://reactive.silver-formily.org>

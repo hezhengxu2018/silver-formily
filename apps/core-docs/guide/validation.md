@@ -2,7 +2,7 @@
 
 校验系统主要由字段模型承载，Form 提供批量入口。字段负责声明规则、执行自身校验并维护反馈；Form 的 `validate()` / `submit()` 会聚合字段树中的数据字段，再批量调度校验。
 
-大部分的校验能力都依赖于 `@silver-formily/validator`，也可以阅读validator的指南《[在 Formily 中使用](https://validator.silver-formily.org/guide/formily-validator)》章节作为参考
+大部分的校验能力都依赖于 `@silver-formily/validator`，也可以阅读 validator 的[快速上手](https://validator.silver-formily.org/guide/quick-start)章节作为参考。
 
 ## 校验器
 

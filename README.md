@@ -6,13 +6,6 @@ Silver Formily 是一个面向 Vue 3 的表单基础设施 Monorepo。仓库中�
 
 项目基于 `pnpm`、`Turborepo`、`Vite` 与 `VitePress` 组织，覆盖了核心运行时、Vue 绑定、Element Plus / Vant 组件方案，以及配套的文档站点与内部工具链。
 
-## 现在包含什么
-
-- 核心基础库：`@silver-formily/reactive`、`@silver-formily/path`、`@silver-formily/shared`、`@silver-formily/validator`
-- 表单运行时：`@silver-formily/core`、`@silver-formily/json-schema`、`@silver-formily/vue`、`@silver-formily/reactive-vue`
-- UI 适配层：`@silver-formily/element-plus`、`@silver-formily/vant`
-- 周边能力：`@silver-formily/grid`、`@silver-formily/docs-toolkit`、`@silver-formily/typescript-config`
-
 ## 文档站点
 
 - Reactive: <https://reactive.silver-formily.org>
