@@ -222,6 +222,7 @@ export interface IFieldState<
 > extends IBaseFieldState<Decorator, Component, TextType> {
   loading?: boolean
   validating?: boolean
+  readonly validated?: boolean
   submitting?: boolean
   active?: boolean
   visited?: boolean
@@ -242,7 +243,7 @@ export interface IFieldState<
   valid?: boolean
   selfInvalid?: boolean
   invalid?: boolean
-  validateStatus?: 'validating' | 'error' | 'warning' | 'success'
+  readonly validateStatus?: 'validating' | 'error' | 'warning' | 'success'
   value?: ValueType
   initialValue?: ValueType
   required?: boolean

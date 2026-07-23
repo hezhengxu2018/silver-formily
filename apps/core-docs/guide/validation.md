@@ -124,6 +124,22 @@ form.createField({
 
 默认为 `false`，即使某条规则失败，也会继续执行后续规则并返回完整反馈。
 
+## 校验状态
+
+字段通过 `validated` 区分“当前没有错误”和“已经实际校验通过”：
+
+```ts
+field.valid
+field.validated
+field.validateStatus
+```
+
+`valid` 初始即为 `true`，只表示字段当前没有错误。`validated` 仅在至少一条与当前触发类型匹配的规则执行完成后为 `true`。字段值变化、开始下一次匹配规则的校验或重置后，`validated` 会恢复为 `false`。
+
+普通规则校验通过时，`validateStatus` 为 `success`；校验失败、存在警告或正在校验时分别为 `error`、`warning`、`validating`。没有规则或当前触发类型没有匹配规则时，`validateStatus` 保持 `undefined`。
+
+普通校验通过不会自动写入成功反馈，因此 `selfSuccesses` 和 `form.successes` 仍为空。如需显示成功文案，需要由校验器显式返回 `{ type: 'success', message }`。
+
 ## 校验反馈
 
 校验结果存放在字段的 `feedbacks` 中。字段自身保存的是 `IFieldFeedback`，不包含路径信息：

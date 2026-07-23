@@ -4,6 +4,7 @@ import { createSchemaField, Field, FormProvider } from '@silver-formily/vue'
 import { ElIcon } from 'element-plus'
 import { describe, expect, it, vi } from 'vitest'
 import { render } from 'vitest-browser-vue'
+import { userEvent } from 'vitest/browser'
 import { queryElement } from '../../../test-utils/dom'
 import { stylePrefix } from '../../__builtins__'
 import { DatePicker, FormItem, FormLayout, Input } from '../../index'
@@ -722,6 +723,80 @@ describe('formItem', () => {
           </FormItem>
         </FormProvider>
       ))
+    })
+
+    it('应该在普通字段校验通过后显示成功图标', async () => {
+      const form = createForm()
+      const { container } = render(() => (
+        <FormProvider form={form}>
+          <FormLayout>
+            <Field
+              name="test"
+              title="测试字段"
+              required={true}
+              decorator={[FormItem]}
+              component={[Input]}
+            />
+          </FormLayout>
+        </FormProvider>
+      ))
+      const formItem = queryElement(container, '.formily-element-plus-form-item')
+      const input = queryElement(container, 'input') as HTMLInputElement
+
+      expect(formItem).not.toHaveClass('is-success')
+      expect(container.querySelector('.el-input__validateIcon')).toBeNull()
+
+      await userEvent.type(input, 'valid')
+      await expect.element(formItem).toHaveClass('is-success')
+      await expect.element(queryElement(container, '.el-input__validateIcon')).toBeInTheDocument()
+
+      await userEvent.clear(input)
+      await expect.element(formItem).toHaveClass('is-error')
+      await expect.element(formItem).not.toHaveClass('is-success')
+    })
+
+    it('statusIcon=false 应该隐藏普通校验通过后的成功图标', async () => {
+      const form = createForm()
+      const { container } = render(() => (
+        <FormProvider form={form}>
+          <FormLayout statusIcon={false}>
+            <Field
+              name="test"
+              title="测试字段"
+              required={true}
+              decorator={[FormItem]}
+              component={[Input]}
+            />
+          </FormLayout>
+        </FormProvider>
+      ))
+      const formItem = queryElement(container, '.formily-element-plus-form-item')
+
+      await userEvent.type(queryElement(container, 'input'), 'valid')
+      await expect.element(formItem).toHaveClass('is-success')
+      expect(container.querySelector('.el-input__validateIcon')).toBeNull()
+    })
+
+    it('显式 feedbackStatus 应该优先于普通校验结果', async () => {
+      const form = createForm()
+      const { container } = render(() => (
+        <FormProvider form={form}>
+          <FormLayout>
+            <Field
+              name="test"
+              title="测试字段"
+              required={true}
+              decorator={[FormItem, { feedbackStatus: 'error' }]}
+              component={[Input]}
+            />
+          </FormLayout>
+        </FormProvider>
+      ))
+      const formItem = queryElement(container, '.formily-element-plus-form-item')
+
+      await userEvent.type(queryElement(container, 'input'), 'valid')
+      await expect.element(formItem).toHaveClass('is-error')
+      await expect.element(formItem).not.toHaveClass('is-success')
     })
 
     it('应该显示加载状态，当设置 feedbackStatus=pending', async () => {

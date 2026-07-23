@@ -491,10 +491,13 @@ it('selfValidate/errors/warnings/successes/valid/invalid/validateStatus/queryFee
   expect(field2.selfErrors.length).toEqual(3)
   await field.onInput('123')
   expect(field.selfSuccesses).toEqual(['success'])
+  expect(field.validateStatus).toEqual('success')
   await field.onInput('321')
   expect(field.selfWarnings).toEqual(['warning'])
+  expect(field.validateStatus).toEqual('warning')
   await field.onInput('111')
   expect(field.selfErrors).toEqual(['error'])
+  expect(field.validateStatus).toEqual('error')
   await field.onBlur()
   expect(field.selfErrors).toEqual([
     'error',
@@ -540,6 +543,118 @@ it('selfValidate/errors/warnings/successes/valid/invalid/validateStatus/queryFee
   field4.setDisplay('none')
   await field4.validate()
   expect(field4.selfErrors).toEqual([])
+})
+
+it('validated/validateStatus should track completed matching validations', async () => {
+  const form = attach(createForm())
+  const field = attach(
+    form.createField({
+      name: 'normal',
+      value: 'valid',
+      required: true,
+    }),
+  )
+  const noRuleField = attach(
+    form.createField({
+      name: 'noRule',
+    }),
+  )
+  const blurField = attach(
+    form.createField({
+      name: 'blur',
+      value: 'valid',
+      validator: {
+        required: true,
+        triggerType: 'onBlur',
+      },
+    }),
+  )
+
+  expect(field.validated).toBeFalsy()
+  expect(field.validateStatus).toBeUndefined()
+  expect(noRuleField.validated).toBeFalsy()
+  expect(noRuleField.validateStatus).toBeUndefined()
+
+  await field.validate()
+  expect(field.validated).toBeTruthy()
+  expect(field.validateStatus).toEqual('success')
+  expect(field.selfSuccesses).toEqual([])
+  expect(form.successes).toEqual([])
+
+  await noRuleField.validate()
+  expect(noRuleField.validated).toBeFalsy()
+  expect(noRuleField.validateStatus).toBeUndefined()
+
+  await form.validate()
+  expect(field.validated).toBeTruthy()
+  expect(field.validateStatus).toEqual('success')
+  expect(blurField.validated).toBeTruthy()
+  expect(blurField.validateStatus).toEqual('success')
+  expect(noRuleField.validated).toBeFalsy()
+  expect(noRuleField.validateStatus).toBeUndefined()
+
+  await blurField.onInput('next')
+  expect(blurField.validated).toBeFalsy()
+  expect(blurField.validateStatus).toBeUndefined()
+  await blurField.onBlur()
+  expect(blurField.validated).toBeTruthy()
+  expect(blurField.validateStatus).toEqual('success')
+
+  field.setValue('next')
+  expect(field.validated).toBeFalsy()
+  expect(field.validateStatus).toBeUndefined()
+  await field.reset()
+  expect(field.validated).toBeFalsy()
+  expect(field.validateStatus).toBeUndefined()
+
+  const submitForm = attach(createForm())
+  const submitField = attach(
+    submitForm.createField({
+      name: 'submit',
+      value: 'valid',
+      required: true,
+    }),
+  )
+  await submitForm.submit()
+  expect(submitField.validated).toBeTruthy()
+  expect(submitField.validateStatus).toEqual('success')
+})
+
+it('validated should distinguish failed, successful, and pending validations', async () => {
+  const form = attach(createForm())
+  const field = attach(
+    form.createField({
+      name: 'required',
+      required: true,
+    }),
+  )
+  let finishValidation: (value: string) => void = () => {}
+  const asyncField = attach(
+    form.createField({
+      name: 'async',
+      validator() {
+        return new Promise<string>((resolve) => {
+          finishValidation = resolve
+        })
+      },
+    }),
+  )
+
+  await field.onInput('')
+  expect(field.validated).toBeTruthy()
+  expect(field.validateStatus).toEqual('error')
+
+  await field.onInput('valid')
+  expect(field.validated).toBeTruthy()
+  expect(field.validateStatus).toEqual('success')
+
+  const validation = asyncField.onInput('valid')
+  expect(asyncField.validated).toBeFalsy()
+  expect(asyncField.validateStatus).toBeUndefined()
+  finishValidation('')
+  await validation
+  expect(asyncField.validated).toBeTruthy()
+  expect(asyncField.validateStatus).toEqual('success')
 })
 
 it('setValidateRule', () => {

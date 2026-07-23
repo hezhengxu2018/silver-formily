@@ -42,6 +42,7 @@ import {
   toArr,
 } from '@silver-formily/shared'
 import {
+  parseValidator,
   parseValidatorDescriptions,
   validate,
 } from '@silver-formily/validator'
@@ -1047,11 +1048,18 @@ function shouldValidate(field: Field) {
 
 export const validateSelf = batch.bound(
   async (target: Field, triggerType?: ValidatorTriggerType, noEmit = false) => {
+    const hasMatchedValidator = parseValidator(target.validator, {
+      triggerType,
+    }).length > 0
     const start = () => {
+      if (hasMatchedValidator)
+        target.validated = false
       setValidating(target, true)
     }
     const end = () => {
       setValidating(target, false)
+      if (hasMatchedValidator)
+        target.validated = true
       if (noEmit)
         return
       if (target.selfValid) {
@@ -1098,6 +1106,7 @@ export const resetSelf = batch.bound(
     target.modified = false
     target.selfModified = false
     target.visited = false
+    target.validated = false
     target.feedbacks = []
     target.inputValue = typedDefaultValue
     target.inputValues = []

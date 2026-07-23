@@ -23,6 +23,7 @@ order: 1
 | description               | 字段描述                           | Any（由泛型 `TextType` 决定）                              | 否       | `undefined`       |
 | loading                   | 字段加载状态                       | Boolean                                                    | 否       | `false`           |
 | validating                | 字段是否正在校验                   | Boolean                                                    | 否       | `false`           |
+| validated ^(1.1.0)        | 字段是否完成过匹配规则的校验       | Boolean                                                    | 是       | `false`           |
 | submitting                | 字段是否正在提交                   | Boolean                                                    | 否       | `false`           |
 | modified                  | 字段子树是否被手动修改过           | Boolean                                                    | 否       | `undefined`       |
 | selfModified              | 字段自身是否被手动修改过           | Boolean                                                    | 否       | `false`           |
@@ -89,6 +90,12 @@ order: 1
 **loading / validating / submitting**
 
 这三个状态建议优先通过 `setLoading`、`setValidating`、`setSubmitting` 更新。对应 setter 除了修改值本身，还会处理内部计时器与生命周期事件；直接赋值只会修改当前状态值。
+
+**validated / validateStatus**
+
+`validated` 仅在至少一条与当前触发类型匹配的规则执行完成后为 `true`。字段值变化、开始下一次匹配规则的校验或重置字段时会恢复为 `false`。无校验规则或当前触发类型没有匹配规则的字段不会进入已校验状态。
+
+`validateStatus` 按 `validating`、`error`、`warning`、`success` 的优先级返回字段自身的校验状态。普通规则通过后会返回 `success`，但不会生成成功反馈消息，因此 `selfSuccesses` 和 `form.successes` 仍为空；如需成功文案，校验器应显式返回 `{ type: 'success', message }`。
 
 **hidden**
 
@@ -963,6 +970,7 @@ interface IFieldState {
   description?: any
   loading?: boolean
   validating?: boolean
+  readonly validated?: boolean
   submitting?: boolean
   selfModified?: boolean
   modified?: boolean
@@ -993,7 +1001,7 @@ interface IFieldState {
   display?: FieldDisplayTypes
   pattern?: FieldPatternTypes
   required?: boolean
-  validateStatus?: 'error' | 'success' | 'warning' | 'validating'
+  readonly validateStatus?: 'error' | 'success' | 'warning' | 'validating'
   index?: number
   indexes?: number[]
 }

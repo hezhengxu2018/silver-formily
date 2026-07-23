@@ -23,6 +23,7 @@ For process states like `loading`, `validating`, and `submitting`, direct assign
 | description               | Field description                          | Any (determined by the `TextType` generic)                    | No       | `undefined`       |
 | loading                   | Field loading state                        | Boolean                                                       | No       | `false`           |
 | validating                | Field validating                           | Boolean                                                       | No       | `false`           |
+| validated ^(1.1.0)        | Field completed a matching validation      | Boolean                                                       | Yes      | `false`           |
 | submitting                | Field submitting                           | Boolean                                                       | No       | `false`           |
 | modified                  | Field subtree manually modified            | Boolean                                                       | No       | `undefined`       |
 | selfModified              | Field itself manually modified             | Boolean                                                       | No       | `false`           |
@@ -89,6 +90,12 @@ Multi-argument values collected when `onInput` is triggered.
 **loading / validating / submitting**
 
 These three states should preferably be updated via `setLoading`, `setValidating`, and `setSubmitting`. The corresponding setters handle internal timers and lifecycle events in addition to modifying the value; direct assignment only changes the current state value.
+
+**validated / validateStatus**
+
+`validated` becomes `true` only after at least one rule matching the current trigger type has completed. It returns to `false` when the field value changes, a new matching validation starts, or the field is reset. Fields without validation rules, or without rules matching the current trigger, remain unvalidated.
+
+`validateStatus` reports the field's own validation state with the priority `validating`, `error`, `warning`, then `success`. A normal successful validation returns `success` without creating success feedback, so `selfSuccesses` and `form.successes` remain empty. To display a success message, a validator must explicitly return `{ type: 'success', message }`.
 
 **hidden**
 
@@ -963,6 +970,7 @@ interface IFieldState {
   description?: any
   loading?: boolean
   validating?: boolean
+  readonly validated?: boolean
   submitting?: boolean
   selfModified?: boolean
   modified?: boolean
@@ -993,7 +1001,7 @@ interface IFieldState {
   display?: FieldDisplayTypes
   pattern?: FieldPatternTypes
   required?: boolean
-  validateStatus?: 'error' | 'success' | 'warning' | 'validating'
+  readonly validateStatus?: 'error' | 'success' | 'warning' | 'validating'
   index?: number
   indexes?: number[]
 }

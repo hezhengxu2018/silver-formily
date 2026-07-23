@@ -124,6 +124,22 @@ form.createField({
 
 The default is `false`, so failed rules do not prevent later rules from running, and the field can return complete feedback.
 
+## Validation State
+
+Fields use `validated` to distinguish “currently has no errors” from “has actually passed validation”:
+
+```ts
+field.valid
+field.validated
+field.validateStatus
+```
+
+`valid` starts as `true` and only means that the field currently has no errors. `validated` becomes `true` only after at least one rule matching the current trigger type has completed. It returns to `false` when the value changes, a new matching validation starts, or the field is reset.
+
+After normal validation succeeds, `validateStatus` is `success`. Failed, warning, and in-progress validations report `error`, `warning`, and `validating`. Fields without rules, or without rules matching the current trigger, keep `validateStatus` as `undefined`.
+
+Normal success does not write success feedback, so `selfSuccesses` and `form.successes` remain empty. A validator must explicitly return `{ type: 'success', message }` when a success message is required.
+
 ## Feedback
 
 Validation results are stored in `field.feedbacks`. A field stores `IFieldFeedback`, which does not include path information:

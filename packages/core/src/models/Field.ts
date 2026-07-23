@@ -73,6 +73,7 @@ export class Field<
 
   loading: boolean
   validating: boolean
+  validated: boolean
   submitting: boolean
   active: boolean
   visited: boolean
@@ -108,6 +109,7 @@ export class Field<
     this.initialized = false
     this.loading = this.props.loading ?? false
     this.validating = false
+    this.validated = false
     this.submitting = false
     this.selfModified = false
     this.active = false
@@ -151,6 +153,7 @@ export class Field<
       selfPattern: observable.ref,
       loading: observable.ref,
       validating: observable.ref,
+      validated: observable.ref,
       submitting: observable.ref,
       selfModified: observable.ref,
       modified: observable.ref,
@@ -235,6 +238,7 @@ export class Field<
       createReaction(
         () => this.value,
         (value) => {
+          this.validated = false
           this.notify(LifeCycleTypes.ON_FIELD_VALUE_CHANGE)
           if (isValid(value)) {
             if (this.selfModified && !this.caches.inputting) {
@@ -361,6 +365,8 @@ export class Field<
     if (this.selfWarnings.length)
       return 'warning'
     if (this.selfSuccesses.length)
+      return 'success'
+    if (this.validated && this.selfValid)
       return 'success'
   }
 

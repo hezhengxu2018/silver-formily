@@ -23,6 +23,7 @@ export const ReadOnlyProperties = {
   invalid: true,
   selfValid: true,
   selfInvalid: true,
+  validated: true,
   errors: true,
   successes: true,
   warnings: true,
