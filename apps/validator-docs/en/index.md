@@ -1,19 +1,28 @@
 # Introduction
 
-`@silver-formily/validator` is the validation core maintained by Silver Formily. It turns declarative rule descriptions into executable validation pipelines and normalizes output into error, warning, and success message buckets.
+`@silver-formily/validator` is the validation core for Silver Formily. It turns declarative field rules into executable validation flows and produces consistent error, warning, and success feedback.
 
-The package is built around four pieces:
+## Where to start
 
-1. A `validate` entry that executes one or many validation descriptions.
-2. A default ruleset for `required`, `min`, `max`, `pattern`, `format`, and related constraints.
-3. A registry layer for custom rules, formats, locales, and template engines.
-4. A parser layer that normalizes strings, functions, and rule objects into runnable validators.
+- Configure field rules in Formily: read [Quick Start](/en/guide/quick-start)
+- Look up `validate()`, built-in rules, and formats: read [Run Validation](/en/api/validate)
+- Register global rules, formats, and locales: read [Registry and Configuration](/en/api/registry)
+- Build a form adapter or inspect the parsing process: read [Rule Parsing](/en/api/parser)
 
-:::tip Tip
-Most users consume these capabilities indirectly through `@silver-formily/core`. If you are working in a Formily app, start with [Using with Formily](/en/guide/formily-validator). In the API section, the most commonly referenced pages are [Validation Rules](/en/api/validate) and sometimes [Registry](/en/api/registry). The parser APIs are mainly exposed for `@silver-formily/core`, so business apps rarely need them directly.
-:::
+Most application development only needs Quick Start and the rule reference in Run Validation.
 
-## Installation
+## What it includes
+
+The package mainly provides:
+
+1. Built-in rules such as `required`, `min`, `max`, `pattern`, and `format`.
+2. Custom synchronous or asynchronous validators, with error, warning, and success feedback.
+3. Global registration for rules, formats, locales, and message template engines.
+4. The `validate()` and rule parsing APIs used by Formily and other upper layers.
+
+## Install directly
+
+Formily projects normally receive validator capabilities indirectly through `@silver-formily/core`. Install this package directly only when you need to use it independently or build an adapter:
 
 ::: code-group
 
@@ -27,23 +36,20 @@ npm install @silver-formily/validator
 
 :::
 
-## Example
+## Standalone usage
+
+Outside Formily, call `validate()` directly:
 
 ```ts
 import { validate } from '@silver-formily/validator'
 
 const result = await validate('', [
   { required: true },
-  { minLength: 3, message: 'Please enter at least 3 characters' },
+  { minLength: 3, message: 'Enter at least 3 characters' },
 ])
 
 result.error
-// ['The field value is required', 'Please enter at least 3 characters']
+// ['The field value is required']
 ```
 
-## When to use it
-
-- You need a stable validation engine behind form or schema rules.
-- You want to add project-specific rules or formats.
-- You need locale-aware validation messages.
-- You need template-driven message rendering with runtime context.
+See [Run Validation](/en/api/validate) for the complete parameters and return value.

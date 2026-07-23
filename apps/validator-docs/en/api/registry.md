@@ -1,43 +1,54 @@
-# Registry
+# Registry and Configuration
 
-The registry stores these global validation capabilities:
+The registry stores global rules, formats, locale messages, and the message template engine. Registered capabilities are shared within the current JavaScript runtime and are suitable for reuse across fields and forms.
 
-- locale messages
-- active language
-- format matchers
-- rule handlers
-- message template engine
+::: tip
+In a Formily project, import registration APIs from `@silver-formily/core`; Core forwards the same capabilities to validator. Import them from `@silver-formily/validator` only when using this package independently.
+:::
 
-These capabilities live in `registry.ts` and are exposed through public helper functions.
+## Register custom rules
 
-## Register rules
+Use `registerValidateRules()` to register validation functions keyed by rule name:
 
 ```ts
-import { registerValidateRules } from '@silver-formily/validator'
+import { registerValidateRules } from '@silver-formily/core'
 
 registerValidateRules({
-  custom(value) {
-    return value === 'silver' ? '' : 'Only silver is allowed'
+  usernameAvailable(value) {
+    if (!value)
+      return ''
+    return value === 'silver' ? '' : 'Username is already taken'
   },
 })
 ```
 
-After registration, both of the following trigger it:
+After registration, declare the rule on a Formily field:
+
+```vue
+<Field
+  name="username"
+  :validator="{ usernameAvailable: true }"
+/>
+```
+
+The object key selects the registered function. Its configured value remains available on the current rule object and validation context:
 
 ```ts
-await validate('formily', { custom: true })
+import { validate } from '@silver-formily/validator'
 
 await validate('formily', {
-  custom: 'Any truthy value works - the real logic lives inside the custom rule function',
+  usernameAvailable: true,
 })
 ```
 
-## Register formats
+Registering the same rule name again replaces the previous function.
 
-Formats accept strings, regular expressions, or functions.
+## Register custom formats
+
+`registerValidateFormats()` accepts strings, regular expressions, and functions that return booleans:
 
 ```ts
-import { registerValidateFormats } from '@silver-formily/validator'
+import { registerValidateFormats } from '@silver-formily/core'
 
 registerValidateFormats({
   slug: /^[a-z0-9-]+$/,
@@ -45,35 +56,62 @@ registerValidateFormats({
 })
 ```
 
-You can then use them directly:
+Reference a format through the string shorthand or a rule object:
 
-```ts
+::: code-group
+
+```vue [Field]
+<Field name="slug" validator="slug" />
+
+<Field
+  name="code"
+  :validator="{ format: 'internalCode' }"
+/>
+```
+
+```ts [Standalone]
+import { validate } from '@silver-formily/validator'
+
 await validate('silver-formily', 'slug')
 await validate('SF-001', { format: 'internalCode' })
 ```
 
-## Locales and language switching
+:::
+
+Registered strings are converted to `RegExp` objects internally.
+
+## Configure locale messages
+
+### Register messages
+
+`registerValidateLocale()` merges messages incrementally by language identifier:
 
 ```ts
-import {
-  registerValidateLocale,
-  setValidateLanguage,
-} from '@silver-formily/validator'
+import { registerValidateLocale } from '@silver-formily/core'
 
 registerValidateLocale({
-  'zh-CN': {
-    slug: 'Slug can only contain lowercase letters, numbers, and hyphens',
+  'en-US': {
+    usernameAvailable: 'Username is already taken',
+    slug: 'Only lowercase letters, numbers, and hyphens are allowed',
   },
 })
-
-setValidateLanguage('zh-CN')
 ```
 
-Language matching is fuzzy on purpose. Values such as `en`, `en-US`, `zh`, and `zh-CN` can resolve to the nearest registered locale key.
+Registering the same language again only replaces the supplied message paths; other messages remain intact.
 
-## Built-in locales {#built-in-locales}
+### Switch language
 
-A set of locale messages is registered by default when the module is loaded. The following language tags are available out of the box:
+```ts
+import { setValidateLanguage } from '@silver-formily/core'
+
+setValidateLanguage('en-US')
+```
+
+Language lookup first checks for an exact registered identifier. Without an exact result, it returns the first identifier whose lowercase form has a containment relationship with the requested value. For example, among the built-in locales, `EN` matches `en` and `US` matches `en-US`. If no match is found, the current language identifier is preserved.
+
+### Built-in languages {#built-in-locales}
+
+Module initialization registers these language identifiers:
 
 - `en`
 - `en-US`
@@ -82,52 +120,56 @@ A set of locale messages is registered by default when the module is loaded. The
 - `zh-TW`
 - `ja`
 
-These locales include error messages for common rule and format keys such as `required`, `min`, `max`, `email`, `url`, `phone`, and more.
+Built-in messages cover common rules and formats such as `required`, `min`, `max`, `email`, `url`, and `phone`. Custom messages can extend or replace them incrementally.
 
-To inspect the exact messages, the safest approach is to query the registry:
+## Customize message templates
 
-```ts
-import {
-  getValidateLocale,
-  setValidateLanguage,
-} from '@silver-formily/validator'
-
-setValidateLanguage('zh-CN')
-
-getValidateLocale('required')
-getValidateLocale('email')
-```
-
-If the built-in locales are not sufficient, use `registerValidateLocale` to extend or override messages per language.
-
-## Read current registry state
-
-You can also treat the registry as a query entry:
+The default renderer supports <code v-pre>{{path.to.value}}</code> path placeholders. Register a preprocessing template engine to add custom syntax:
 
 ```ts
-import {
-  getValidateFormats,
-  getValidateLanguage,
-  getValidateLocale,
-  getValidateRules,
-} from '@silver-formily/validator'
-
-getValidateLanguage()
-getValidateLocale('required')
-getValidateFormats('email')
-getValidateRules('required')
-```
-
-## Message template engine
-
-By default, messages only apply built-in <code v-pre>{{path.to.value}}</code> interpolation. You can also plug in your own template engine:
-
-```ts
-import { registerValidateMessageTemplateEngine } from '@silver-formily/validator'
+import { registerValidateMessageTemplateEngine } from '@silver-formily/core'
 
 registerValidateMessageTemplateEngine((message, context) => {
   return String(message).replace('$title', context.title)
 })
 ```
 
-The custom engine runs before built-in <code v-pre>{{...}}</code> path interpolation, so both mechanisms can be combined.
+The custom engine runs first, and its output then goes through built-in <code v-pre>{{...}}</code> path replacement. The two mechanisms can therefore be combined.
+
+::: warning Global configuration
+The template engine and current language are global state. In server-side rendering or multi-tenant environments, avoid switching global configuration back and forth across concurrent requests.
+:::
+
+## Read current configuration
+
+The query APIs are primarily useful for debugging, framework adapters, and tests:
+
+```ts
+import {
+  getLocaleByPath,
+  getValidateFormats,
+  getValidateLanguage,
+  getValidateLocale,
+  getValidateLocaleIOSCode,
+  getValidateMessageTemplateEngine,
+  getValidateRules,
+} from '@silver-formily/validator'
+
+getValidateLanguage()
+getValidateLocale('required')
+getLocaleByPath('required', 'en-US')
+getValidateLocaleIOSCode('en')
+getValidateFormats('email')
+getValidateRules('required')
+getValidateMessageTemplateEngine()
+```
+
+| API                                  | Returns                                                                                                                  |
+| ------------------------------------ | ------------------------------------------------------------------------------------------------------------------------ |
+| `getValidateLanguage()`              | Current language identifier                                                                                              |
+| `getValidateLocale(path)`            | Message at the path for the current language; falls back to the current-language `pattern`, then the English `pattern`   |
+| `getLocaleByPath(path, lang?)`       | Message at the path after applying the language matching described above; does not perform `pattern` message fallback    |
+| `getValidateLocaleIOSCode(language)` | Registered language identifier selected by approximate matching; `IOS` in the API name is preserved from the source code |
+| `getValidateFormats(key?)`           | One format, or all registered formats                                                                                    |
+| `getValidateRules(key?)`             | One rule, or all registered rules                                                                                        |
+| `getValidateMessageTemplateEngine()` | Current message template engine                                                                                          |

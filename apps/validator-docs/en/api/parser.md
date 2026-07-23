@@ -1,6 +1,28 @@
-# Parser
+# Rule Parsing
 
-The parser layer normalizes multiple description forms into executable validator functions.
+The parser converts strings, functions, rule objects, and arrays into a unified queue of executable functions. `validate()` performs this process internally, so normal Formily application code does not need to call the parser directly.
+
+::: warning Intended audience
+This page is mainly for form framework adapters, debugging tools, and validator internals. If you only need to configure field validation, start with [Quick Start](/en/guide/quick-start).
+:::
+
+## Parsing flow
+
+A set of validation descriptions passes through these stages:
+
+1. Normalize strings, functions, and objects into rule objects.
+2. Normalize a single input or array into an array of rule objects.
+3. Expand each rule object into ordered executable functions.
+4. Filter by the current `triggerType` and produce the final queue.
+
+```text
+Validator
+  → IValidatorRules[]
+  → ValidatorParsedFunction[]
+  → validate() executes and groups messages
+```
+
+## Import
 
 ```ts
 import {
@@ -11,42 +33,47 @@ import {
 } from '@silver-formily/validator'
 ```
 
-## parseValidatorDescription
+## Normalize validation descriptions
 
-A single description becomes an `IValidatorRules` object:
+### `parseValidatorDescription()`
+
+Normalize one string, function, or rule object into `IValidatorRules`:
 
 ```ts
 parseValidatorDescription('email')
 // { format: 'email' }
 
-parseValidatorDescription(value => value ? '' : 'empty')
+parseValidatorDescription(value => value ? '' : 'Value is required')
 // { validator: [Function] }
 
 parseValidatorDescription({ required: true })
 // { required: true }
 ```
 
-## parseValidatorDescriptions
+An empty input returns an empty object. A rule object retains its rule fields.
 
-Multiple descriptions are normalized into a rule array:
+### `parseValidatorDescriptions()`
+
+Normalize one description or an array of descriptions into an array of rule objects:
 
 ```ts
+parseValidatorDescriptions('email')
+// [{ format: 'email' }]
+
 parseValidatorDescriptions([
   'email',
   { required: true },
 ])
+// [{ format: 'email' }, { required: true }]
 ```
 
-This step only reshapes data. It does not execute validation.
+This step only reshapes data. It does not resolve registered rules or execute validation.
 
-## parseValidatorRules
+## Compile a rule object
 
-Rule objects are expanded into ordered executable validators. Two ordering guarantees matter:
+### `parseValidatorRules()`
 
-1. `required` always runs first.
-2. `validator` always runs last.
-
-This ensures that basic empty-value checks happen first, while custom logic can extend validation at the end.
+Expand one rule object into an array of executable functions:
 
 ```ts
 const validators = parseValidatorRules({
@@ -58,30 +85,43 @@ const validators = parseValidatorRules({
 })
 ```
 
-## parseValidator
+Execution order has two guarantees:
 
-`parseValidator` is the high-level entry. It:
+1. `required` always runs first.
+2. The custom `validator` always runs last.
 
-1. normalizes input into an array
-2. converts each description into rules
-3. filters rules by `triggerType`
-4. returns the execution queue
+Other rules follow their property enumeration order. Only rule names that exist in the [registry](/en/api/registry) produce executable functions.
+
+Each executable function also handles:
+
+- boolean, string, and `{ type, message }` return values
+- the current rule's default message and template rendering
+- thrown exceptions, whose messages become error results
+
+## Produce the final execution queue
+
+### `parseValidator()`
+
+`parseValidator()` connects the preceding stages and filters rules using the current execution options:
 
 ```ts
 const queue = parseValidator([
   { triggerType: 'onInput', minLength: 3 },
-  { triggerType: 'onBlur', required: true },
+  { triggerType: 'onBlur', format: 'email' },
 ], {
   triggerType: 'onInput',
 })
 ```
 
-## Errors and rendering
+This example only produces functions for the `onInput` rule. A rule without `triggerType` is treated as `onInput`; when `options.triggerType` is omitted, no trigger filtering occurs.
 
-Each parsed validator applies the same fallback behavior:
+Each returned function receives the current value and context:
 
-- thrown errors become `error` messages
-- returned strings go through template rendering
-- returned `{ type, message }` objects preserve the explicit bucket
+```ts
+for (const run of queue) {
+  const result = await run(value, context)
+  // { type: 'error' | 'warning' | 'success', message?: string }
+}
+```
 
-That is why `validate` can always collapse results into one stable shape.
+Normally, use [`validate()`](/en/api/validate) directly and let it execute the queue, apply `validateFirst`, and group all three message types.

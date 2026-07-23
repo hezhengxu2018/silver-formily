@@ -41,16 +41,15 @@ export default createDocsConfig({
         text: '指南',
         items: [
           { text: '介绍', link: '/' },
-          { text: '在 Formily 中使用', link: '/guide/formily-validator' },
+          { text: '快速上手', link: '/guide/quick-start' },
         ],
       },
       {
         text: 'API',
         items: [
-          { text: '快速开始', link: '/api/quick-start' },
-          { text: '校验规则', link: '/api/validate' },
-          { text: '注册中心', link: '/api/registry' },
-          { text: '解析器', link: '/api/parser' },
+          { text: '执行校验', link: '/api/validate' },
+          { text: '注册与配置', link: '/api/registry' },
+          { text: '规则解析', link: '/api/parser' },
         ],
       },
     ],
@@ -59,16 +58,15 @@ export default createDocsConfig({
         text: 'Guide',
         items: [
           { text: 'Introduction', link: '/en/' },
-          { text: 'Using with Formily', link: '/en/guide/formily-validator' },
+          { text: 'Quick Start', link: '/en/guide/quick-start' },
         ],
       },
       {
         text: 'API',
         items: [
-          { text: 'Quick Start', link: '/en/api/quick-start' },
-          { text: 'Validation Rules', link: '/en/api/validate' },
-          { text: 'Registry', link: '/en/api/registry' },
-          { text: 'Parser', link: '/en/api/parser' },
+          { text: 'Run Validation', link: '/en/api/validate' },
+          { text: 'Registry and Configuration', link: '/en/api/registry' },
+          { text: 'Rule Parsing', link: '/en/api/parser' },
         ],
       },
     ],

@@ -1,19 +1,28 @@
 # 介绍
 
-`@silver-formily/validator` 是 Silver Formily 维护的校验核心。它负责把声明式规则转换成可执行的校验流程，并统一返回错误、警告和成功消息。
+`@silver-formily/validator` 是 Silver Formily 的校验核心。它把字段上的声明式规则转换成可执行的校验流程，并统一生成错误、警告和成功反馈。
 
-这个包的能力可以概括为四部分：
+## 从哪里开始
 
-1. 用一个 `validate` 入口执行单条或多条校验描述。
-2. 提供一组默认规则，包括 `required`、`min`、`max`、`pattern`、`format` 等。
-3. 允许通过 registry 动态注册格式、规则、语言包和消息模板引擎。
-4. 通过 parser 把字符串、函数、规则对象统一解析成可运行的校验函数。
+- 在 Formily 中配置字段规则：阅读[快速上手](/guide/quick-start)
+- 查询 `validate()`、内置规则和格式：阅读[执行校验](/api/validate)
+- 注册全局规则、格式和语言：阅读[注册与配置](/api/registry)
+- 开发表单框架或调试解析过程：阅读[规则解析](/api/parser)
 
-:::tip 提示
-普通用户是在使用 `@silver-formily/core` 的过程中间接使用其能力的。因此可以重点查看[在Formily中使用](/guide/formily-validator)章节。API部分中最常参考的章节是[校验规则](/api/validate)，偶尔会用到[注册中心](/api/registry)的部分。解析器的部分主要暴露给 `@silver-formily/core`， 业务开发很少会用到。
-:::
+普通业务开发通常只需要快速上手和执行校验中的规则速查部分。
 
-## 安装
+## 包含的能力
+
+这个包主要提供：
+
+1. `required`、`min`、`max`、`pattern`、`format` 等内置规则。
+2. 自定义同步或异步校验函数，以及 error、warning、success 三类反馈。
+3. 全局规则、格式、语言包和消息模板引擎的注册能力。
+4. 供 Formily 等上层调用的 `validate()` 与规则解析 API。
+
+## 直接安装
+
+Formily 项目通常会通过 `@silver-formily/core` 间接获得 validator 能力。只有需要独立使用或开发适配层时，才需要直接安装：
 
 ::: code-group
 
@@ -27,7 +36,9 @@ npm install @silver-formily/validator
 
 :::
 
-## 例子
+## 独立使用
+
+不使用 Formily 时，可以直接调用 `validate()`：
 
 ```ts
 import { validate } from '@silver-formily/validator'
@@ -41,9 +52,4 @@ result.error
 // ['The field value is required', '至少输入 3 个字符']
 ```
 
-## 何时使用它
-
-- 需要把 UI 层规则对象转换成统一的校验结果。
-- 需要为业务系统追加自定义规则或格式。
-- 需要为同一套规则切换不同语言文案。
-- 需要把错误消息和上下文数据进行模板渲染。
+完整参数和返回值请查看[执行校验](/api/validate)。
