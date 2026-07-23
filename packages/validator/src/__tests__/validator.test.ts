@@ -1,5 +1,6 @@
 import { expect, it } from 'vitest'
 import {
+  isValidateResult,
   registerValidateFormats,
   registerValidateMessageTemplateEngine,
   registerValidateRules,
@@ -27,6 +28,13 @@ function hasError(results: any, message?: string) {
 function noError(results: any) {
   return expect(results?.error?.[0]).toBeUndefined()
 }
+
+it('validate result types', () => {
+  expect(isValidateResult({ type: 'error', message: 'error' })).toBe(true)
+  expect(isValidateResult({ type: 'warning', message: 'warning' })).toBe(true)
+  expect(isValidateResult({ type: 'success', message: 'success' })).toBe(true)
+  expect(isValidateResult({ type: 'info', message: 'info' })).toBe(false)
+})
 
 it('empty string validate', async () => {
   const results = await validate('', { required: true })
@@ -245,14 +253,15 @@ it('multipleOf', async () => {
 it('uniqueItems', async () => {
   noError(await validate('', { uniqueItems: true }))
   noError(await validate(4, { uniqueItems: true }))
-  hasError(await validate([1, 2], { uniqueItems: true }))
-  hasError(
+  noError(await validate([1, 2], { uniqueItems: true }))
+  noError(
     await validate([{ label: '11', value: '11' }, { label: '11' }], {
       uniqueItems: true,
     }),
   )
-  noError(await validate([1, 1], { uniqueItems: true }))
-  noError(
+  hasError(await validate([1, 1], { uniqueItems: true }))
+  hasError(await validate([1, 2, 1], { uniqueItems: true }))
+  hasError(
     await validate(
       [
         { label: '11', value: '11' },
@@ -261,6 +270,7 @@ it('uniqueItems', async () => {
       { uniqueItems: true },
     ),
   )
+  noError(await validate([1, 1], { uniqueItems: false }))
 })
 
 it('pattern', async () => {

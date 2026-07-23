@@ -143,19 +143,16 @@ const RULES: IRegistryRules = {
     return Number(value) % Number(rule.multipleOf) !== 0 ? rule.message : ''
   },
   uniqueItems(value, rule) {
-    if (isValidateEmpty(value))
+    if (rule.uniqueItems !== true || isValidateEmpty(value))
       return ''
     value = toArr(value)
-    return value.some((item: any, index: number) => {
-      for (let i = 0; i < value.length; i++) {
-        if (i !== index && !isEqual(value[i], item)) {
-          return false
-        }
-      }
-      return true
-    })
-      ? ''
-      : rule.message
+    return value.some((item: any, index: number) =>
+      value.some((target: any, targetIndex: number) =>
+        targetIndex !== index && isEqual(target, item),
+      ),
+    )
+      ? rule.message
+      : ''
   },
   maxProperties(value, rule) {
     if (isValidateEmpty(value))

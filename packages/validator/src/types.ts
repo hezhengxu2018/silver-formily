@@ -15,7 +15,7 @@ export type ValidatorFormats
     | (string & {})
 
 export interface IValidateResult {
-  type: 'error' | 'warning' | 'success' | (string & {})
+  type: 'error' | 'warning' | 'success'
   message: string
 }
 
@@ -26,7 +26,7 @@ export interface IValidateResults {
 }
 
 export function isValidateResult(obj: any): obj is IValidateResult {
-  return !!obj.type && !!obj.message
+  return ['error', 'warning', 'success'].includes(obj?.type) && !!obj.message
 }
 
 export type ValidatorFunctionResponse
