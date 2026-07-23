@@ -72,10 +72,22 @@ query-form-item/transfer-clear-on-data-change
 
 ### 事件
 
-| 属性名           | 类型                                                               | 描述           | 默认值 |
-| ---------------- | ------------------------------------------------------------------ | -------------- | ------ |
-| `requestSuccess` | ^[Function]`(payload: QueryFormItemRequestSuccessPayload) => void` | 查询成功后触发 | -      |
-| `requestFailed`  | ^[Function]`(error: any) => void`                                  | 查询失败后触发 | -      |
+| 属性名           | 类型                                                               | 描述                                                                                             | 默认值 |
+| ---------------- | ------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------ | ------ |
+| `requestSuccess` | ^[Function]`(payload: QueryFormItemRequestSuccessPayload) => void` | 查询成功后触发，参数见 [QueryFormItemRequestSuccessPayload](#queryformitemrequestsuccesspayload) | -      |
+| `requestFailed`  | ^[Function]`(error: any) => void`                                  | 查询失败后触发                                                                                   | -      |
+
+#### QueryFormItemRequestSuccessPayload
+
+`requestSuccess` 在请求成功且 `result.success` 为 `true` 后触发，其 `payload` 包含以下字段：
+
+| 属性名       | 类型                                                            | 说明                                                            |
+| ------------ | --------------------------------------------------------------- | --------------------------------------------------------------- |
+| `values`     | ^[object]`Record<string, any>`                                  | QueryForm 收集的查询值，不包含分页参数                          |
+| `pagination` | ^[object]`{ current: number; pageSize: number }` \| `undefined` | 当前页码和每页条数；禁用分页时为 `undefined`                    |
+| `dataSource` | ^[array]`any[]`                                                 | `result.data`，同时会同步到当前字段的 `dataSource`              |
+| `total`      | `number` \| `undefined`                                         | 数据总数；当 `result.total` 未返回时，使用 `result.data.length` |
+| `result`     | ^[object]`{ data: any[]; success: boolean; total?: number }`    | `request` 返回的原始结果；其中 `total` 不会被上面的回退值覆盖   |
 
 ### Request 约定
 

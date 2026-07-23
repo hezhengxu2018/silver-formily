@@ -72,10 +72,22 @@ The component inherits most FormItem props. To avoid validation-error styles fro
 
 ### Events
 
-| Prop             | Type                                                               | Description                        | Default |
-| ---------------- | ------------------------------------------------------------------ | ---------------------------------- | ------- |
-| `requestSuccess` | ^[Function]`(payload: QueryFormItemRequestSuccessPayload) => void` | Triggered after a successful query | -       |
-| `requestFailed`  | ^[Function]`(error: any) => void`                                  | Triggered when the query fails     | -       |
+| Prop             | Type                                                               | Description                                                                                                        | Default |
+| ---------------- | ------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------ | ------- |
+| `requestSuccess` | ^[Function]`(payload: QueryFormItemRequestSuccessPayload) => void` | Triggered after a successful query. See [QueryFormItemRequestSuccessPayload](#queryformitemrequestsuccesspayload). | -       |
+| `requestFailed`  | ^[Function]`(error: any) => void`                                  | Triggered when the query fails                                                                                     | -       |
+
+#### QueryFormItemRequestSuccessPayload
+
+`requestSuccess` is emitted after the request succeeds with `result.success` set to `true`. Its `payload` contains:
+
+| Prop         | Type                                                            | Description                                                                                     |
+| ------------ | --------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
+| `values`     | ^[object]`Record<string, any>`                                  | Query values collected by QueryForm, excluding pagination parameters                            |
+| `pagination` | ^[object]`{ current: number; pageSize: number }` \| `undefined` | Current page and page size; `undefined` when pagination is disabled                             |
+| `dataSource` | ^[array]`any[]`                                                 | The value of `result.data`, also synchronized to the current field's `dataSource`               |
+| `total`      | `number` \| `undefined`                                         | Total item count; falls back to `result.data.length` when `result.total` is omitted             |
+| `result`     | ^[object]`{ data: any[]; success: boolean; total?: number }`    | Original value returned by `request`; its `total` is not replaced with the fallback shown above |
 
 ### Request Contract
 
