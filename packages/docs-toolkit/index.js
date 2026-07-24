@@ -151,11 +151,11 @@ function resolvePageUrl(siteUrl, relativePath) {
   return pageUrl.href
 }
 
-function resolveSitemapItems(items, transformItems, indexPagePaths) {
+function resolveSitemapItems(items, transformItems, indexPagePaths, siteUrl) {
   const transformedItems = transformItems?.(items) ?? items
 
   return transformedItems.map((item) => {
-    const url = new URL(item.url)
+    const url = new URL(item.url, `${siteUrl}/`)
 
     if (!url.pathname.endsWith('/') && indexPagePaths.has(`${url.pathname}/`)) {
       url.pathname += '/'
@@ -293,7 +293,7 @@ export function createDocsConfig(options = {}) {
           sitemap: {
             hostname: resolvedSiteUrl,
             ...extraSitemap,
-            transformItems: items => resolveSitemapItems(items, extraSitemap?.transformItems, indexPagePaths),
+            transformItems: items => resolveSitemapItems(items, extraSitemap?.transformItems, indexPagePaths, resolvedSiteUrl),
           },
         }
       : extraSitemap ? { sitemap: extraSitemap } : {}),
