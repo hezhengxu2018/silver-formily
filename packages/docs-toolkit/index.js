@@ -136,12 +136,36 @@ function resolveCurrentSiteUrl(pkg) {
 }
 
 function resolvePageUrl(siteUrl, relativePath) {
+  const isIndexPage = /(?:^|\/)index\.md$/.test(relativePath)
   const pathname = relativePath
     .replace(/^zh\//, '')
     .replace(/(?:^|\/)index\.md$/, '')
     .replace(/\.md$/, '')
 
-  return new URL(pathname, `${siteUrl}/`).href
+  const pageUrl = new URL(pathname, `${siteUrl}/`)
+
+  if (isIndexPage && !pageUrl.pathname.endsWith('/')) {
+    pageUrl.pathname += '/'
+  }
+
+  return pageUrl.href
+}
+
+function resolveSitemapItems(items, transformItems, indexPagePaths) {
+  const transformedItems = transformItems?.(items) ?? items
+
+  return transformedItems.map((item) => {
+    const url = new URL(item.url)
+
+    if (!url.pathname.endsWith('/') && indexPagePaths.has(`${url.pathname}/`)) {
+      url.pathname += '/'
+    }
+
+    return {
+      ...item,
+      url: url.href,
+    }
+  })
 }
 
 function filterBlogrollLinks(blogroll, pkg) {
@@ -259,6 +283,7 @@ export function createDocsConfig(options = {}) {
   const workspacePackageDependencies = getWorkspacePackageDependencies()
   const resolvedFooter = resolveFooterConfig(footer, undefined, locales?.root?.lang, pkg)
   const resolvedLocales = resolveLocales(locales, footer, pkg)
+  const indexPagePaths = new Set()
 
   return defineConfig({
     ...extraConfig,
@@ -268,12 +293,17 @@ export function createDocsConfig(options = {}) {
           sitemap: {
             hostname: resolvedSiteUrl,
             ...extraSitemap,
+            transformItems: items => resolveSitemapItems(items, extraSitemap?.transformItems, indexPagePaths),
           },
         }
       : extraSitemap ? { sitemap: extraSitemap } : {}),
     transformPageData(pageData, context) {
       if (resolvedSiteUrl) {
         const pageUrl = resolvePageUrl(resolvedSiteUrl, pageData.relativePath)
+
+        if (/(?:^|\/)index\.md$/.test(pageData.relativePath)) {
+          indexPagePaths.add(new URL(pageUrl).pathname)
+        }
 
         pageData.frontmatter.head ??= []
         pageData.frontmatter.head.push(
