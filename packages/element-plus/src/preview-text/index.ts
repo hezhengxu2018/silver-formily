@@ -7,6 +7,7 @@ import Preview from './preview.vue'
 import Rate from './rate.vue'
 import Select from './select.vue'
 import TimePicker from './time-picker.vue'
+import TreeSelect from './tree-select.vue'
 import Tree from './tree.vue'
 import './style.scss'
 
@@ -19,6 +20,7 @@ export const PreviewText = composeExport(Preview, {
   Rate,
   TimePicker,
   Tree,
+  TreeSelect,
 })
 
 export default PreviewText

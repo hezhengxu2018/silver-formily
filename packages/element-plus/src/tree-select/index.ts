@@ -6,7 +6,7 @@ import FTreeSelect from './tree-select.vue'
 export const TreeSelect = connect<typeof FTreeSelect>(
   FTreeSelect,
   mapProps({ readOnly: 'readonly', dataSource: 'data' }),
-  mapReadPretty(PreviewText.Select),
+  mapReadPretty(PreviewText.TreeSelect),
 )
 
 export default TreeSelect
