@@ -44,7 +44,7 @@ editable/template-validator
 
 > 内联编辑
 
-参考 [/component/form-item.html#api](./form-item.html#api)
+参考 [/component/form-item#api](./form-item#api)
 
 | 参数      | 说明                   | 类型                           | 默认值 |
 | --------- | ---------------------- | ------------------------------ | ------ |
@@ -54,7 +54,7 @@ editable/template-validator
 
 > 浮层编辑
 
-参考 [/component/form-item.html#api](./form-item.html#api)
+参考 [/component/form-item#api](./form-item#api)
 
 参考 [https://cn.element-plus.org/zh-CN/component/popover.html](https://cn.element-plus.org/zh-CN/component/popover.html)
 

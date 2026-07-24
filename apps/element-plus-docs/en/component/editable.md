@@ -44,7 +44,7 @@
 
 > Inline editing
 
-See [/en/component/form-item.html#api](./form-item.html#api)
+See [/en/component/form-item#api](./form-item#api)
 
 | Prop        | Description                            | Type                          | Default |
 | ----------- | -------------------------------------- | ----------------------------- | ------- |
@@ -54,7 +54,7 @@ See [/en/component/form-item.html#api](./form-item.html#api)
 
 > Popover editing
 
-See [/en/component/form-item.html#api](./form-item.html#api)
+See [/en/component/form-item#api](./form-item#api)
 
 See [https://element-plus.org/en-US/component/popover.html](https://element-plus.org/en-US/component/popover.html)
 
