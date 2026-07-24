@@ -522,18 +522,26 @@ describe('queryFormItem', () => {
 
   it('should trigger request when reset onClick does not return false', async () => {
     const form = createForm()
+    const externalQueryForm = createForm()
     const request = vi.fn<QueryFormItemRequest>(async () => ({
       data: [{ id: '12-1', name: 'Row-12-1' }],
       success: true,
       total: 1,
     }))
 
-    const screen = render(formilyWrapperFactory(form, request))
+    const screen = render(formilyWrapperFactory(form, request, {
+      queryFormProps: {
+        form: () => externalQueryForm,
+      },
+    }))
 
     await vi.waitFor(() => {
       expect(request).toHaveBeenCalledTimes(1)
     })
 
+    externalQueryForm.setValues({
+      keyword: 'stale-keyword',
+    })
     await screen.getByRole('button', { name: '重置' }).click()
 
     await vi.waitFor(() => {

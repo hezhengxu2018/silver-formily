@@ -212,7 +212,9 @@ function handleQueryReset(event: MouseEvent) {
   if (result === false)
     return false
 
-  void handleQuerySubmit()
+  queueMicrotask(() => {
+    void handleQuerySubmit()
+  })
 
   return result
 }
