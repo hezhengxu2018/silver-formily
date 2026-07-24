@@ -16,6 +16,7 @@ import {
 const DEFAULT_HEAD = [
   ['link', { rel: 'icon', href: '/favicon.svg' }],
   ['meta', { name: 'theme-color', content: '#3b82f6' }],
+  ['meta', { name: 'algolia-site-verification', content: 'E77C4E9042AEE9BA' }],
 ]
 const DEFAULT_NO_EXTERNAL = [
   'vitepress-theme-element-plus',
