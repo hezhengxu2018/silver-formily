@@ -9,21 +9,10 @@ import enNav from './i18n/en/pages/nav.json'
 import zhComponent from './i18n/zh/pages/component.json'
 import zhNav from './i18n/zh/pages/nav.json'
 
-const SITE_URL = 'https://element-plus.silver-formily.org'
-
 const currentDir = dirname(fileURLToPath(import.meta.url))
 const demoDir = path.resolve(currentDir, '../zh/demos')
 const elementPlusSource = `${path.resolve(currentDir, '../../../packages/element-plus/src')}/`
 type DocsPluginOption = NonNullable<NonNullable<UserConfig['vite']>['plugins']>[number]
-
-function getPageUrl(relativePath: string) {
-  const pathname = relativePath
-    .replace(/^zh\//, '')
-    .replace(/(?:^|\/)index\.md$/, '')
-    .replace(/\.md$/, '')
-
-  return new URL(pathname, `${SITE_URL}/`).href
-}
 
 export default createDocsConfig({
   pkg,
@@ -123,18 +112,6 @@ export default createDocsConfig({
     },
     title: 'Silver Formily Element Plus',
     description: 'Formily bindings for Element Plus',
-    sitemap: {
-      hostname: SITE_URL,
-    },
-    transformPageData(pageData) {
-      const pageUrl = getPageUrl(pageData.relativePath)
-
-      pageData.frontmatter.head ??= []
-      pageData.frontmatter.head.push(
-        ['link', { rel: 'canonical', href: pageUrl }],
-        ['meta', { property: 'og:url', content: pageUrl }],
-      )
-    },
     postRender(context) {
       if (!context.teleports)
         return context

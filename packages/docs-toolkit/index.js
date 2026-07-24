@@ -135,6 +135,15 @@ function resolveCurrentSiteUrl(pkg) {
   return `https://${siteName}.silver-formily.org`
 }
 
+function resolvePageUrl(siteUrl, relativePath) {
+  const pathname = relativePath
+    .replace(/^zh\//, '')
+    .replace(/(?:^|\/)index\.md$/, '')
+    .replace(/\.md$/, '')
+
+  return new URL(pathname, `${siteUrl}/`).href
+}
+
 function filterBlogrollLinks(blogroll, pkg) {
   const currentSiteUrl = resolveCurrentSiteUrl(pkg)
   if (!currentSiteUrl) {
@@ -231,6 +240,7 @@ export function createDocsConfig(options = {}) {
     footer,
     socialLinks,
     pkg,
+    siteUrl,
     vite = {},
     markdown,
     themeConfig = {},
@@ -239,12 +249,41 @@ export function createDocsConfig(options = {}) {
 
   const mergedHead = [...DEFAULT_HEAD, ...head]
   const markdownOptions = markdown ?? {}
+  const resolvedSiteUrl = siteUrl ?? resolveCurrentSiteUrl(pkg)
+  const {
+    cleanUrls: extraCleanUrls,
+    sitemap: extraSitemap,
+    transformPageData: extraTransformPageData,
+    ...extraConfig
+  } = extra
   const workspacePackageDependencies = getWorkspacePackageDependencies()
   const resolvedFooter = resolveFooterConfig(footer, undefined, locales?.root?.lang, pkg)
   const resolvedLocales = resolveLocales(locales, footer, pkg)
 
   return defineConfig({
-    ...extra,
+    ...extraConfig,
+    cleanUrls: extraCleanUrls ?? Boolean(resolvedSiteUrl),
+    ...(resolvedSiteUrl
+      ? {
+          sitemap: {
+            hostname: resolvedSiteUrl,
+            ...extraSitemap,
+          },
+        }
+      : extraSitemap ? { sitemap: extraSitemap } : {}),
+    transformPageData(pageData, context) {
+      if (resolvedSiteUrl) {
+        const pageUrl = resolvePageUrl(resolvedSiteUrl, pageData.relativePath)
+
+        pageData.frontmatter.head ??= []
+        pageData.frontmatter.head.push(
+          ['link', { rel: 'canonical', href: pageUrl }],
+          ['meta', { property: 'og:url', content: pageUrl }],
+        )
+      }
+
+      return extraTransformPageData?.(pageData, context)
+    },
     locales: resolvedLocales,
     head: mergedHead,
     vite: {

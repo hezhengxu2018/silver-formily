@@ -8,8 +8,6 @@ import pkg from '../../../packages/vue/package.json'
 import { enLocale, enSidebar } from './i18n/en'
 import { zhLocale, zhSidebar } from './i18n/zh'
 
-const SITE_URL = 'https://vue.silver-formily.org'
-
 const currentDir = dirname(fileURLToPath(import.meta.url))
 const demoDir = path.resolve(currentDir, '../demos')
 const vueSource = `${path.resolve(currentDir, '../../../packages/vue/src')}/`
@@ -42,8 +40,6 @@ export default createDocsConfig({
     ['meta', { property: 'og:site_name', content: 'Silver Formily Vue' }],
     ['meta', { property: 'og:title', content: 'Silver Formily Vue' }],
     ['meta', { property: 'og:description', content: 'Formily Vue 组件库文档、示例与最佳实践' }],
-    ['meta', { property: 'og:url', content: SITE_URL }],
-    ['link', { rel: 'canonical', href: SITE_URL }],
   ],
   footer,
   socialLinks: [
@@ -69,8 +65,5 @@ export default createDocsConfig({
   extra: {
     title: 'Silver Formily Vue',
     description: 'Vue 3 wrapper for Formily',
-    sitemap: {
-      hostname: SITE_URL,
-    },
   },
 })

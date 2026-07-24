@@ -4,6 +4,7 @@ import pkg from '../package.json' with { type: 'json' }
 
 export default createDocsConfig({
   pkg: pkg as { version?: string },
+  siteUrl: 'https://silver-formily.org',
   locales: {
     root: {
       label: '简体中文',

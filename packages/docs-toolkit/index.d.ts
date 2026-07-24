@@ -46,6 +46,7 @@ export interface DocsConfigOptions extends Omit<UserConfig<DocsThemeConfig>, 'vi
   footer?: DocsThemeConfig['footer']
   socialLinks?: DocsThemeConfig['socialLinks']
   pkg?: { version?: string }
+  siteUrl?: string
   vite?: UserConfig['vite']
   markdown?: UserConfig['markdown']
   themeConfig?: Partial<DocsThemeConfig>
