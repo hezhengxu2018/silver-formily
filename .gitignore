@@ -19,6 +19,8 @@ codecov
 codecov.SHA256SUM
 codecov.SHA256SUM.sig
 .playwright-mcp
+**/.vitest/
+**/.vitest-attachments/
 
 # Turbo
 .turbo

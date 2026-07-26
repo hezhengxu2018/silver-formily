@@ -1,0 +1,55 @@
+name: Update visual regression baselines
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: visual-regression-update-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  update:
+    name: Update FormItem baselines
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.58.2-noble
+      options: --user 1001
+    defaults:
+      run:
+        shell: bash
+    env:
+      PLAYWRIGHT_BROWSERS_PATH: /ms-playwright
+
+    steps:
+      - name: Checkout selected branch
+        uses: actions/checkout@v4
+
+      - name: Set up PNPM
+        uses: pnpm/action-setup@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+          cache: pnpm
+          cache-dependency-path: pnpm-lock.yaml
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build Element Plus dependency graph
+        run: pnpm --filter @silver-formily/element-plus... build
+
+      - name: Update FormItem visual baselines
+        run: pnpm --filter @silver-formily/element-plus test:visual:update
+
+      - name: Upload Linux Chromium baselines
+        uses: actions/upload-artifact@v4
+        with:
+          name: form-item-visual-baselines-${{ github.run_id }}
+          path: packages/element-plus/src/form-item/__test__/__screenshots__
+          if-no-files-found: error
+          retention-days: 7

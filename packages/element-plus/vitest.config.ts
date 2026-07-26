@@ -1,10 +1,14 @@
 import { playwright } from '@vitest/browser-playwright'
-import { defineConfig, mergeConfig } from 'vitest/config'
+import { configDefaults, defineConfig, mergeConfig } from 'vitest/config'
 import viteConfig from './vite.config'
 
 export default mergeConfig(viteConfig, defineConfig({
   test: {
     css: true,
+    exclude: [
+      ...configDefaults.exclude,
+      '**/*.visual.test.tsx',
+    ],
     setupFiles: ['vitest-browser-vue'],
     coverage: {
       provider: 'istanbul',
