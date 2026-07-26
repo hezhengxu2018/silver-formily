@@ -58,6 +58,11 @@ $form-item-isolated-prefix: '#{$form-item-prefix}--isolated';
     align-items: flex-start;
   }
 
+  .#{$form-item-prefix}-label-tooltip {
+    line-height: inherit;
+    height: 1lh;
+  }
+
   .#{$form-item-prefix}-label-content > span {
     overflow: visible;
     white-space: wrap;
