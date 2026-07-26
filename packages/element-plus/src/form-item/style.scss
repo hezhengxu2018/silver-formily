@@ -25,10 +25,6 @@ $form-item-isolated-prefix: '#{$form-item-prefix}--isolated';
 }
 
 .#{$form-item-prefix} {
-  .el-form-item__content {
-    display: block;
-  }
-
   &.el-form-item--label-top .el-form-item__label {
     display: inline-flex;
     align-items: center;
