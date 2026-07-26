@@ -48,7 +48,7 @@
     "test:watch": "vitest",
     "test:browser": "vitest run --browser.headless",
     "test:visual": "vitest run --config vitest.visual.config.ts --browser.headless --reporter=dot",
-    "test:visual:update": "pnpm run test:visual -- --update",
+    "test:visual:update": "vitest run --config vitest.visual.config.ts --browser.headless --reporter=dot --update",
     "test:coverage": "vitest run --coverage --browser.headless",
     "prepublishOnly": "pnpm run build"
   },
