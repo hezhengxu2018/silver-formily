@@ -54,13 +54,27 @@ $form-item-isolated-prefix: '#{$form-item-prefix}--isolated';
 }
 
 .#{$form-item-prefix}.is-warp {
+  --#{$form-item-prefix}-label-line-height: var(--el-component-size);
+
+  &.el-form-item--large {
+    --#{$form-item-prefix}-label-line-height: var(--el-component-size-large);
+  }
+
+  &.el-form-item--small {
+    --#{$form-item-prefix}-label-line-height: var(--el-component-size-small);
+  }
+
+  &.el-form-item--label-top {
+    --#{$form-item-prefix}-label-line-height: 22px;
+  }
+
   .#{$form-item-prefix}-label__wrapper {
     align-items: flex-start;
   }
 
   .#{$form-item-prefix}-label-tooltip {
     line-height: inherit;
-    height: 1lh;
+    height: var(--#{$form-item-prefix}-label-line-height);
   }
 
   .#{$form-item-prefix}-label-content > span {
