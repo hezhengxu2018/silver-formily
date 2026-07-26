@@ -78,7 +78,15 @@ describe('formItem visual regression', () => {
     expect(getComputedStyle(firstLabel).textAlign).toBe('right')
     expect(getComputedStyle(secondLabel).textAlign).toBe('left')
     expect(queryElement(formItems[2], `.${stylePrefix}-form-item-colon`).textContent).toBe(':')
-    expect(queryElement(formItems[2], `.${stylePrefix}-form-item-label-tooltip`)).toBeVisible()
+    const tooltipLabel = queryElement(formItems[2], '.el-form-item__label')
+    const tooltipIcon = queryElement(formItems[2], `.${stylePrefix}-form-item-label-tooltip`)
+    const tooltipLabelRect = tooltipLabel.getBoundingClientRect()
+    const tooltipIconRect = tooltipIcon.getBoundingClientRect()
+    expect(tooltipIcon).toBeVisible()
+    expectApproximately(
+      tooltipIconRect.top + tooltipIconRect.height / 2,
+      tooltipLabelRect.top + tooltipLabelRect.height / 2,
+    )
 
     await expect.element(canvas).toMatchScreenshot('form-item-horizontal-layout')
   })
@@ -121,13 +129,23 @@ describe('formItem visual regression', () => {
       wrappedLabel,
       `.${stylePrefix}-form-item-label-content > span`,
     )
+    const wrappedColon = queryElement(formItems[2], `.${stylePrefix}-form-item-colon`)
+    const wrappedInput = queryElement(formItems[2], '.el-input__wrapper')
 
     expect(verticalLabel.getBoundingClientRect().bottom)
       .toBeLessThanOrEqual(verticalContent.getBoundingClientRect().top)
     expectApproximately(ellipsisLabel.getBoundingClientRect().width, 120)
     expectApproximately(wrappedLabel.getBoundingClientRect().width, 120)
-    expect(wrappedText.getBoundingClientRect().height)
-      .toBeGreaterThan(ellipsisText.getBoundingClientRect().height)
+    const wrappedLabelRect = wrappedLabel.getBoundingClientRect()
+    const wrappedTextRect = wrappedText.getBoundingClientRect()
+    expect(wrappedTextRect.height).toBeGreaterThan(ellipsisText.getBoundingClientRect().height)
+    expect(wrappedTextRect.top).toBeGreaterThanOrEqual(wrappedLabelRect.top - 1)
+    expect(wrappedTextRect.bottom).toBeLessThanOrEqual(wrappedLabelRect.bottom + 1)
+    expectApproximately(
+      wrappedColon.getBoundingClientRect().top + wrappedColon.getBoundingClientRect().height / 2,
+      wrappedInput.getBoundingClientRect().top + wrappedInput.getBoundingClientRect().height / 2,
+      2,
+    )
 
     await expect.element(canvas).toMatchScreenshot('form-item-label-layouts')
   })
@@ -216,13 +234,13 @@ describe('formItem visual regression', () => {
   it('preserves small, default, and large control sizes', async () => {
     const { getByTestId } = renderCanvas('component-sizes', () => (
       <div>
-        <FormItem label="Small" labelWidth={140} size="small">
+        <FormItem label="Small" labelWidth={140} size="small" tooltip="Small tooltip">
           <Input placeholder="Small input" />
         </FormItem>
-        <FormItem label="Default" labelWidth={140} size="default">
+        <FormItem label="Default" labelWidth={140} size="default" tooltip="Default tooltip">
           <Input placeholder="Default input" />
         </FormItem>
-        <FormItem label="Large" labelWidth={140} size="large">
+        <FormItem label="Large" labelWidth={140} size="large" tooltip="Large tooltip">
           <Input placeholder="Large input" />
         </FormItem>
       </div>
@@ -231,11 +249,25 @@ describe('formItem visual regression', () => {
     const canvas = getByTestId('component-sizes')
     await waitForVisualStability()
 
-    const inputs = canvas.element().querySelectorAll<HTMLElement>('.el-input__wrapper')
+    const root = canvas.element()
+    const formItems = root.querySelectorAll<HTMLElement>('.el-form-item')
+    const inputs = root.querySelectorAll<HTMLElement>('.el-input__wrapper')
     const heights = Array.from(inputs, input => input.getBoundingClientRect().height)
 
     expect(heights[0]).toBeLessThan(heights[1])
     expect(heights[1]).toBeLessThan(heights[2])
+    formItems.forEach((formItem) => {
+      const labelRect = queryElement(formItem, '.el-form-item__label').getBoundingClientRect()
+      const labelCenter = labelRect.top + labelRect.height / 2
+
+      for (const selector of [
+        `.${stylePrefix}-form-item-label-tooltip`,
+        `.${stylePrefix}-form-item-colon`,
+      ]) {
+        const elementRect = queryElement(formItem, selector).getBoundingClientRect()
+        expectApproximately(elementRect.top + elementRect.height / 2, labelCenter)
+      }
+    })
 
     await expect.element(canvas).toMatchScreenshot('form-item-component-sizes')
   })
@@ -303,15 +335,17 @@ describe('formItem visual regression', () => {
 
   it('preserves popover feedback layout', async () => {
     const { getByTestId } = renderCanvas('popover-feedback', () => (
-      <FormItem
-        label="Popover"
-        labelWidth={140}
-        feedbackStatus="error"
-        feedbackText="Popover feedback"
-        feedbackLayout="popover"
-      >
-        <Input placeholder="Popover input" />
-      </FormItem>
+      <div style={{ minHeight: '112px' }}>
+        <FormItem
+          label="Popover"
+          labelWidth={140}
+          feedbackStatus="error"
+          feedbackText="Popover feedback"
+          feedbackLayout="popover"
+        >
+          <Input placeholder="Popover input" />
+        </FormItem>
+      </div>
     ))
 
     const canvas = getByTestId('popover-feedback')
@@ -325,9 +359,13 @@ describe('formItem visual regression', () => {
     await waitForVisualStability()
 
     const input = queryElement(canvas.element(), '.el-input')
+    const canvasRect = canvas.element().getBoundingClientRect()
+    const popoverRect = popover!.getBoundingClientRect()
     expect(popover!.getBoundingClientRect().left)
       .toBeGreaterThanOrEqual(input.getBoundingClientRect().left)
-    await expect.element(popover!).toMatchScreenshot('form-item-popover-feedback')
+    expect(popoverRect.top).toBeGreaterThanOrEqual(input.getBoundingClientRect().bottom)
+    expect(popoverRect.bottom).toBeLessThanOrEqual(canvasRect.bottom)
+    await expect.element(canvas).toMatchScreenshot('form-item-popover-feedback')
   })
 
   it('preserves the isolated FormItem root layout', async () => {

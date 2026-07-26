@@ -49,10 +49,15 @@ $form-item-isolated-prefix: '#{$form-item-prefix}--isolated';
 // 标签包装器样式
 .#{$form-item-prefix}-label__wrapper {
   display: flex;
+  align-items: center;
   overflow: hidden;
 }
 
-.is-warp {
+.#{$form-item-prefix}.is-warp {
+  .#{$form-item-prefix}-label__wrapper {
+    align-items: flex-start;
+  }
+
   .#{$form-item-prefix}-label-content > span {
     overflow: visible;
     white-space: wrap;
@@ -92,14 +97,13 @@ $form-item-isolated-prefix: '#{$form-item-prefix}--isolated';
   color: var(--el-text-color-secondary);
   display: flex;
   align-items: center;
-  height: 32px;
   cursor: pointer;
 }
 
 .#{$form-item-prefix}-colon {
   display: flex;
+  align-items: center;
   margin-left: 2px;
-  line-height: 2.3;
 }
 
 .#{$form-item-prefix}-content__wrapper {
