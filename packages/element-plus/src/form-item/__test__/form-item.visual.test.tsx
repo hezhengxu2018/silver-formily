@@ -4,7 +4,7 @@ import { FormProvider } from '@silver-formily/vue'
 import { describe, expect, it, vi } from 'vitest'
 import { render } from 'vitest-browser-vue'
 import { stylePrefix } from '../../__builtins__'
-import { DatePicker, FormItem, Input } from '../../index'
+import { DatePicker, FormItem, FormLayout, Input } from '../../index'
 import 'element-plus/theme-chalk/index.css'
 
 const canvasStyle: CSSProperties = {
@@ -150,6 +150,113 @@ describe('formItem visual regression', () => {
     await expect.element(canvas).toMatchScreenshot('form-item-label-layouts')
   })
 
+  it('preserves high-risk label decoration combinations', async () => {
+    const { getByTestId } = renderCanvas('label-edge-cases', () => (
+      <div>
+        <FormLayout tag="div" requireAsteriskPosition="right">
+          <FormItem
+            label="A required small label that wraps onto multiple lines"
+            labelWidth={140}
+            labelWrap
+            size="small"
+            asterisk
+            tooltip="Small wrapped tooltip"
+          >
+            <Input placeholder="Wrapped small input" />
+          </FormItem>
+        </FormLayout>
+        <FormItem
+          label="Large text tooltip"
+          labelWidth={180}
+          size="large"
+          tooltip="Text tooltip content"
+          tooltipLayout="text"
+        >
+          <Input placeholder="Large text tooltip input" />
+        </FormItem>
+        <FormItem label="No colon" labelWidth={140} colon={false} asterisk>
+          <Input placeholder="No colon input" />
+        </FormItem>
+      </div>
+    ))
+
+    const canvas = getByTestId('label-edge-cases')
+    await waitForVisualStability()
+
+    const formItems = canvas.element().querySelectorAll<HTMLElement>('.el-form-item')
+    const wrappedInput = queryElement(formItems[0], '.el-input__wrapper')
+    const textTooltipLabel = queryElement(
+      formItems[1],
+      `.${stylePrefix}-form-item-label-content`,
+    )
+
+    for (const selector of [
+      `.${stylePrefix}-form-item-label-tooltip`,
+      `.${stylePrefix}-form-item-colon`,
+    ]) {
+      const element = queryElement(formItems[0], selector)
+      expectApproximately(
+        element.getBoundingClientRect().top + element.getBoundingClientRect().height / 2,
+        wrappedInput.getBoundingClientRect().top + wrappedInput.getBoundingClientRect().height / 2,
+        2,
+      )
+    }
+    expect(formItems[0]).toHaveClass('asterisk-right')
+    expect(textTooltipLabel).toHaveClass('is-tooltip')
+    expect(formItems[1].querySelector(`.${stylePrefix}-form-item-label-tooltip`)).toBeNull()
+    expect(formItems[2].querySelector(`.${stylePrefix}-form-item-colon`)).toBeNull()
+
+    await expect.element(canvas).toMatchScreenshot('form-item-label-edge-cases')
+  })
+
+  it('preserves content-only, VNode label, and inline structures', async () => {
+    const { getByTestId } = renderCanvas('structural-layouts', () => (
+      <div>
+        <FormItem>
+          <Input placeholder="Content-only input" />
+        </FormItem>
+        <FormItem
+          label={(
+            <span data-custom-label>
+              <strong>Custom</strong>
+              {' label'}
+            </span>
+          )}
+          labelWidth={140}
+        >
+          <Input placeholder="VNode label input" />
+        </FormItem>
+        <FormItem label="Inline label" labelWidth={140} layout="inline">
+          <Input placeholder="Inline input" />
+        </FormItem>
+      </div>
+    ))
+
+    const canvas = getByTestId('structural-layouts')
+    await waitForVisualStability()
+
+    const formItems = canvas.element().querySelectorAll<HTMLElement>('.el-form-item')
+    const contentOnlyContent = queryElement(
+      formItems[0],
+      `.${stylePrefix}-form-item-content__wrapper`,
+    )
+    const vnodeLabel = queryElement(formItems[1], '[data-custom-label]')
+    const inlineLabel = queryElement(formItems[2], '.el-form-item__label')
+    const inlineContent = queryElement(formItems[2], '.el-form-item__content')
+
+    expect(formItems[0].querySelector('.el-form-item__label')).toBeNull()
+    expectApproximately(
+      contentOnlyContent.getBoundingClientRect().left,
+      formItems[0].getBoundingClientRect().left,
+    )
+    expect(vnodeLabel).toBeVisible()
+    expect(inlineLabel.getBoundingClientRect().right)
+      .toBeLessThanOrEqual(inlineContent.getBoundingClientRect().left)
+    expect(formItems[2]).not.toHaveClass('el-form-item--label-top')
+
+    await expect.element(canvas).toMatchScreenshot('form-item-structural-layouts')
+  })
+
   it('preserves grid widths, explicit wrapper width, and wrapper alignment', async () => {
     const { getByTestId } = renderCanvas('width-and-alignment', () => (
       <div>
@@ -229,6 +336,81 @@ describe('formItem visual regression', () => {
     )
 
     await expect.element(canvas).toMatchScreenshot('form-item-addons-and-fullness')
+  })
+
+  it('preserves sized addons and overflowing feedback', async () => {
+    const { getByTestId } = renderCanvas('sized-addons-and-overflow', () => (
+      <div style={{ minHeight: '280px' }}>
+        <FormItem
+          label="Small addons"
+          labelWidth={140}
+          size="small"
+          addonBefore="Before"
+          addonAfter="After"
+        >
+          <Input placeholder="Small addon input" />
+        </FormItem>
+        <FormItem
+          label="Large addons"
+          labelWidth={140}
+          size="large"
+          addonBefore="Before"
+          addonAfter="After"
+        >
+          <Input placeholder="Large addon input" />
+        </FormItem>
+        <FormItem
+          label="Long feedback"
+          labelWidth={140}
+          wrapperWidth={260}
+          feedbackStatus="warning"
+          feedbackText="A long feedback message that must wrap without covering adjacent content"
+          feedbackLayout="terse"
+        >
+          <Input placeholder="Long feedback input" />
+        </FormItem>
+        <FormItem
+          label="Edge popover"
+          labelWidth={400}
+          feedbackStatus="error"
+          feedbackText="A longer popover feedback message near the right edge"
+          feedbackLayout="popover"
+        >
+          <Input placeholder="Edge popover input" />
+        </FormItem>
+      </div>
+    ))
+
+    const canvas = getByTestId('sized-addons-and-overflow')
+    let popover: HTMLElement | null = null
+
+    await vi.waitFor(() => {
+      popover = Array.from(document.querySelectorAll<HTMLElement>('.el-popper[role="tooltip"]'))
+        .find(element => element.textContent?.includes('A longer popover feedback message')) ?? null
+      expect(popover).not.toBeNull()
+    })
+    await waitForVisualStability()
+
+    const root = canvas.element()
+    const formItems = root.querySelectorAll<HTMLElement>('.el-form-item')
+    const smallInput = queryElement(formItems[0], '.el-input__wrapper')
+    const largeInput = queryElement(formItems[1], '.el-input__wrapper')
+    const longFeedback = queryElement(
+      formItems[2],
+      `.${stylePrefix}-form-item-feedback`,
+    )
+    const canvasRect = root.getBoundingClientRect()
+    const popoverRect = popover!.getBoundingClientRect()
+
+    expect(smallInput.getBoundingClientRect().height)
+      .toBeLessThan(largeInput.getBoundingClientRect().height)
+    expect(longFeedback.getBoundingClientRect().height)
+      .toBeGreaterThan(Number.parseFloat(getComputedStyle(longFeedback).fontSize))
+    expect(popoverRect.left).toBeGreaterThanOrEqual(canvasRect.left)
+    expect(popoverRect.right).toBeLessThanOrEqual(canvasRect.right)
+    expect(popoverRect.bottom).toBeLessThanOrEqual(canvasRect.bottom)
+
+    await expect.element(canvas).toMatchScreenshot('form-item-sized-addons-and-overflow')
   })
 
   it('preserves small, default, and large control sizes', async () => {
