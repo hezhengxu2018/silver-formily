@@ -3,8 +3,17 @@
 $query-form-item-prefix-cls: '#{$formily-prefix}-query-form-item';
 
 .#{$query-form-item-prefix-cls} {
+  align-items: flex-start;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  width: 100%;
+}
+
+.#{$query-form-item-prefix-cls}__content-wrapper {
   display: flex;
   flex-direction: column;
+  min-width: 0;
+  overflow: hidden;
 }
 
 .#{$query-form-item-prefix-cls}__pagination {
@@ -13,5 +22,87 @@ $query-form-item-prefix-cls: '#{$formily-prefix}-query-form-item';
 
   .el-pagination__total {
     flex: 1;
+  }
+}
+
+.#{$query-form-item-prefix-cls}__selected-list-wrapper {
+  align-self: flex-start;
+  display: flex;
+  grid-column: 2;
+  justify-content: flex-end;
+  margin-left: 8px;
+  max-width: 100%;
+
+  &:empty {
+    display: none;
+  }
+}
+
+.#{$query-form-item-prefix-cls}__selected-list {
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  max-width: 100%;
+}
+
+.#{$query-form-item-prefix-cls}__selected-list-table {
+  overflow: hidden;
+  border-radius: var(--el-border-radius-base);
+  background-color: var(--el-bg-color);
+  color: var(--el-text-color-regular);
+}
+
+.#{$query-form-item-prefix-cls}__selected-list-row {
+  align-items: center;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 28px;
+  transition: background-color var(--el-transition-duration-fast);
+  user-select: none;
+  border-bottom: 1px solid var(--el-border-color-lighter);
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  &:hover {
+    background-color: var(--el-fill-color-light);
+
+    .#{$query-form-item-prefix-cls}__selected-list-remove {
+      opacity: 1;
+    }
+  }
+}
+
+.#{$query-form-item-prefix-cls}__selected-list-cell {
+  overflow: hidden;
+  padding: 8px 12px;
+  color: var(--el-table-text-color);
+  font-size: var(--el-font-size-base);
+  line-height: 22px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.#{$query-form-item-prefix-cls}__selected-list-remove {
+  appearance: none;
+  align-items: center;
+  background: transparent;
+  border: 0;
+  display: inline-flex;
+  justify-content: center;
+  height: 24px;
+  margin-right: 4px;
+  opacity: 0;
+  padding: 0;
+  transition: opacity var(--el-transition-duration-fast);
+  width: 24px;
+  cursor: pointer;
+
+  .el-icon {
+    line-height: 1;
+  }
+
+  &:focus-visible {
+    opacity: 1;
   }
 }

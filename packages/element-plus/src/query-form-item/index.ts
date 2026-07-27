@@ -1,6 +1,7 @@
 import { connect, mapProps } from '@silver-formily/vue'
 import { fieldFeedbackMapper } from '../form-item'
 import QueryFormItemInner from './query-form-item.vue'
+import QueryFormItemSelectedList from './selected-list.vue'
 import './style.scss'
 
 export type {
@@ -13,6 +14,8 @@ export type {
   QueryFormItemRequest,
   QueryFormItemRequestResultObject,
   QueryFormItemRequestSuccessPayload,
+  QueryFormItemSelectedListItem,
+  QueryFormItemSelectedListText,
 } from './types'
 
 export const QueryFormItem = connect<typeof QueryFormItemInner>(
@@ -27,5 +30,7 @@ export const QueryFormItem = connect<typeof QueryFormItemInner>(
     fieldFeedbackMapper,
   ),
 )
+
+export { QueryFormItemSelectedList }
 
 export default QueryFormItem

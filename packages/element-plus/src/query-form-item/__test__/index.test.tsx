@@ -1,5 +1,5 @@
 import type { Form } from '@silver-formily/core'
-import type { QueryFormItemRequest } from '../../index'
+import type { QueryFormItemRequest, QueryFormItemSelectedListItem } from '../../index'
 import { createForm } from '@silver-formily/core'
 import { createSchemaField, Field, FormProvider } from '@silver-formily/vue'
 import { describe, expect, it, vi } from 'vitest'
@@ -7,7 +7,7 @@ import { render } from 'vitest-browser-vue'
 import { userEvent } from 'vitest/browser'
 import { defineComponent } from 'vue'
 import { ensureDomElement, queryElement } from '../../../test-utils/dom'
-import { QueryFormItem, SelectTable } from '../../index'
+import { QueryFormItem, QueryFormItemSelectedList, SelectTable } from '../../index'
 import 'element-plus/theme-chalk/index.css'
 
 const querySchema = {
@@ -41,6 +41,50 @@ function formilyWrapperFactory(
               {
                 rowKey: 'id',
                 mode: 'multiple',
+                columns: [{ prop: 'name', label: 'Name' }],
+              },
+            ]}
+          />
+        </FormProvider>
+      )
+    },
+  })
+}
+
+function formilyWrapperFactoryWithSelectedList(
+  form: Form,
+  request?: (params: Record<string, any>) => Promise<any>,
+  decoratorProps: Record<string, any> = {},
+  fieldProps: Record<string, any> = {},
+) {
+  const SelectedListExtra = defineComponent({
+    setup() {
+      return () => (
+        <QueryFormItemSelectedList
+          itemText={(item: QueryFormItemSelectedListItem) => `Selected: ${item.record?.name ?? item.value}`}
+        />
+      )
+    },
+  })
+
+  return defineComponent({
+    setup() {
+      return () => (
+        <FormProvider form={form}>
+          <Field
+            name="selected"
+            {...fieldProps}
+            decorator={[QueryFormItem, { querySchema, request, ...decoratorProps }]}
+            decoratorContent={{
+              extra: SelectedListExtra,
+            }}
+            component={[
+              SelectTable,
+              {
+                rowKey: 'id',
+                mode: 'multiple',
+                optionAsValue: true,
+                showAlertToolbar: false,
                 columns: [{ prop: 'name', label: 'Name' }],
               },
             ]}
@@ -107,6 +151,43 @@ describe('queryFormItem', () => {
     })
 
     expect(form.query('selected').get('value')).toEqual(['legacy-id'])
+  })
+
+  it('should render selected-list in decoratorContent, remove item and clear selection', async () => {
+    const form = createForm({
+      values: {
+        selected: [
+          { id: 'legacy-id-18', name: 'Row-18' },
+          { id: 'legacy-id-19', name: 'Row-19' },
+        ],
+      },
+    })
+    const request = vi.fn<QueryFormItemRequest>(async () => ({
+      data: [
+        { id: 'legacy-id-18', name: 'Row-18' },
+        { id: 'legacy-id-19', name: 'Row-19' },
+      ],
+      success: true,
+      total: 2,
+    }))
+
+    const screen = render(formilyWrapperFactoryWithSelectedList(form, request, {
+      pagination: false,
+    }))
+
+    await vi.waitFor(() => {
+      expect(request).toHaveBeenCalled()
+    })
+
+    await expect.element(screen.getByText('2 items selected')).toBeInTheDocument()
+    await expect.element(screen.getByText('Selected: Row-18')).toBeInTheDocument()
+    await expect.element(screen.getByText('Selected: Row-19')).toBeInTheDocument()
+    await screen.getByRole('button', { name: 'Remove item: Selected: Row-18' }).click()
+    expect(form.query('selected').get('value')).toEqual([{ id: 'legacy-id-19', name: 'Row-19' }])
+    await expect.element(screen.getByText('1 item selected')).toBeInTheDocument()
+    await expect.element(screen.getByText('Selected: Row-18')).not.toBeInTheDocument()
+    await screen.getByText('Clear selection').click()
+    expect(form.query('selected').get('value')).toEqual([])
   })
 
   it('should clear field value after dataSource update when enabled', async () => {

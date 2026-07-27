@@ -52,6 +52,16 @@ query-form-item/transfer-clear-on-data-change
 
 :::
 
+## Inject selected-list into extra with decorator-content Example
+
+:::demo
+
+query-form-item/extra-slot-selected-list
+
+:vueFiles="['../../en/demos/query-form-item/extra-slot-selected-list.vue', '../../en/demos/query-form-item/mock-user-request.ts']"
+
+:::
+
 ## API
 
 ### QueryFormItem Props
@@ -118,3 +128,27 @@ const props = {
   },
 }
 ```
+
+## SelectedList API
+
+`QueryFormItemSelectedList` displays the items selected by the current field. It is usually injected into the `extra` area of `QueryFormItem` through `decoratorContent.extra`. The component reads the current field value automatically and includes interactions for clearing all selections and removing a single selected item.
+
+### SelectedList Props
+
+| Prop                 | Description                                                                        | Type                                                         | Default                           |
+| -------------------- | ---------------------------------------------------------------------------------- | ------------------------------------------------------------ | --------------------------------- |
+| `itemText`           | Required. Returns the display text for each selected item                          | ^[Function]`(item: QueryFormItemSelectedListItem) => string` | -                                 |
+| `width`              | List width                                                                         | `number`                                                     | `200`                             |
+| `selectionText`      | Selected-count text. When a string is provided, `{count}` is replaced by the count | `string \| ((count: number) => string)`                      | Generated from the current locale |
+| `clearSelectionText` | Text for the clear-all action                                                      | `string`                                                     | Generated from the current locale |
+
+### QueryFormItemSelectedListItem
+
+`itemText` receives the following item shape:
+
+| Prop       | Description                                                                                  | Type                                          |
+| ---------- | -------------------------------------------------------------------------------------------- | --------------------------------------------- |
+| `value`    | Current item value. When a record can be resolved by `rowKey`, this is the record key value  | `any`                                         |
+| `rawValue` | Original item stored in the field value                                                      | `any`                                         |
+| `record`   | Full record matched from `dataSource`; when `optionAsValue` is enabled, this is the raw item | ^[object]`Record<string, any>` \| `undefined` |
+| `index`    | Original index of the item in the field value array                                          | `number`                                      |

@@ -52,6 +52,16 @@ query-form-item/transfer-clear-on-data-change
 
 :::
 
+## 通过 decorator-content 注入 selected-list 到 extra
+
+:::demo
+
+query-form-item/extra-slot-selected-list
+
+:vueFiles="['query-form-item/extra-slot-selected-list.vue', 'query-form-item/mock-user-request.ts']"
+
+:::
+
 ## API
 
 ### QueryFormItem Props
@@ -118,3 +128,27 @@ const props = {
   },
 }
 ```
+
+## SelectedList API
+
+`QueryFormItemSelectedList` 用于展示当前字段已经勾选的项，通常通过 `decoratorContent.extra` 注入到 `QueryFormItem` 的 `extra` 区域。组件会自动读取当前字段值，并内置清空全部选择、移除单项选择的交互。
+
+### SelectedList Props
+
+| 属性名               | 说明                                                          | 类型                                                         | 默认值               |
+| -------------------- | ------------------------------------------------------------- | ------------------------------------------------------------ | -------------------- |
+| `itemText`           | 必填，用于决定每一项显示的文字内容                            | ^[Function]`(item: QueryFormItemSelectedListItem) => string` | -                    |
+| `width`              | 列表宽度                                                      | `number`                                                     | `200`                |
+| `selectionText`      | 已选数量文案；传入字符串时可使用 `{count}` 作为已选数量占位符 | `string \| ((count: number) => string)`                      | 根据当前语言自动生成 |
+| `clearSelectionText` | 清空全部选择的操作文案                                        | `string`                                                     | 根据当前语言自动生成 |
+
+### QueryFormItemSelectedListItem
+
+`itemText` 接收的参数结构如下：
+
+| 属性名     | 说明                                                           | 类型                                          |
+| ---------- | -------------------------------------------------------------- | --------------------------------------------- |
+| `value`    | 当前项的值；当能根据 `rowKey` 解析到记录时，优先为记录的键值   | `any`                                         |
+| `rawValue` | 字段值中原始保存的当前项                                       | `any`                                         |
+| `record`   | 从 `dataSource` 中匹配到的完整记录；`optionAsValue` 时为原始项 | ^[object]`Record<string, any>` \| `undefined` |
+| `index`    | 当前项在字段值数组中的原始下标                                 | `number`                                      |

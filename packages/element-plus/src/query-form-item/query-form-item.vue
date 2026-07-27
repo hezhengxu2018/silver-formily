@@ -251,21 +251,26 @@ watch([currentPageRef, pageSizeRef], ([currentPage, pageSize], [previousPage, pr
     :internal-form-item-class="formItemInternalClass"
   >
     <div :class="prefixCls">
-      <component
-        :is="props.mode === 'light' ? QueryForm.Light : QueryForm"
-        v-bind="queryFormBindings"
-      />
-      <div :class="`${prefixCls}__content`">
-        <slot />
+      <div :class="`${prefixCls}__content-wrapper`">
+        <component
+          :is="props.mode === 'light' ? QueryForm.Light : QueryForm"
+          v-bind="queryFormBindings"
+        />
+        <div :class="`${prefixCls}__content`">
+          <slot />
+        </div>
+        <ElPagination
+          v-if="props.pagination"
+          v-model:current-page="currentPageRef"
+          v-model:page-size="pageSizeRef"
+          :class="`${prefixCls}__pagination`"
+          v-bind="paginationBindings"
+          :total="totalRef"
+        />
       </div>
-      <ElPagination
-        v-if="props.pagination"
-        v-model:current-page="currentPageRef"
-        v-model:page-size="pageSizeRef"
-        :class="`${prefixCls}__pagination`"
-        v-bind="paginationBindings"
-        :total="totalRef"
-      />
+      <div :class="`${prefixCls}__selected-list-wrapper`">
+        <slot name="extra" />
+      </div>
     </div>
   </FormBaseItem>
 </template>

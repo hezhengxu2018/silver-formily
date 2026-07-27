@@ -55,3 +55,14 @@ export interface QueryFormItemRequestSuccessPayload {
   total?: number
   result: QueryFormItemRequestResultObject
 }
+
+export interface QueryFormItemSelectedListItem {
+  value: any
+  rawValue: any
+  record?: Record<string, any>
+  index: number
+}
+
+export type QueryFormItemSelectedListText = (
+  item: QueryFormItemSelectedListItem,
+) => string
