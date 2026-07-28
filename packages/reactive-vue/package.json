@@ -40,7 +40,7 @@
     "prepublishOnly": "pnpm run build"
   },
   "peerDependencies": {
-    "@silver-formily/reactive": "workspace:*",
+    "@silver-formily/reactive": "workspace:^",
     "vue": "^3.3.0"
   },
   "devDependencies": {

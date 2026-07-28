@@ -41,7 +41,7 @@
     "prepublishOnly": "pnpm run build"
   },
   "peerDependencies": {
-    "@silver-formily/reactive": "workspace:*"
+    "@silver-formily/reactive": "workspace:^"
   },
   "devDependencies": {
     "@silver-formily/reactive": "workspace:*",

@@ -42,10 +42,10 @@
     "prepublishOnly": "pnpm run build"
   },
   "dependencies": {
-    "@silver-formily/designer-shared": "workspace:*",
-    "@silver-formily/json-schema": "workspace:*",
-    "@silver-formily/path": "workspace:*",
-    "@silver-formily/reactive": "workspace:*"
+    "@silver-formily/designer-shared": "workspace:^",
+    "@silver-formily/json-schema": "workspace:^",
+    "@silver-formily/path": "workspace:^",
+    "@silver-formily/reactive": "workspace:^"
   },
   "devDependencies": {
     "@silver-formily/typescript-config": "workspace:*",

@@ -70,9 +70,9 @@
   },
   "peerDependencies": {
     "@lucide/vue": "*",
-    "@silver-formily/designer-core": "workspace:*",
-    "@silver-formily/reactive": "workspace:*",
-    "@silver-formily/reactive-vue": "workspace:*",
+    "@silver-formily/designer-core": "workspace:^",
+    "@silver-formily/reactive": "workspace:^",
+    "@silver-formily/reactive-vue": "workspace:^",
     "reka-ui": "*",
     "vue": "^3.3.0"
   },

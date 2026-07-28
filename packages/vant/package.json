@@ -47,13 +47,13 @@
     "prepublishOnly": "pnpm run build"
   },
   "peerDependencies": {
-    "@silver-formily/core": "workspace:*",
-    "@silver-formily/json-schema": "workspace:*",
-    "@silver-formily/path": "workspace:*",
-    "@silver-formily/reactive": "workspace:*",
-    "@silver-formily/reactive-vue": "workspace:*",
-    "@silver-formily/shared": "workspace:*",
-    "@silver-formily/vue": "workspace:*",
+    "@silver-formily/core": "workspace:^",
+    "@silver-formily/json-schema": "workspace:^",
+    "@silver-formily/path": "workspace:^",
+    "@silver-formily/reactive": "workspace:^",
+    "@silver-formily/reactive-vue": "workspace:^",
+    "@silver-formily/shared": "workspace:^",
+    "@silver-formily/vue": "workspace:^",
     "dayjs": "^1",
     "vant": "^4.9.22",
     "vue": "^3.3.0"
