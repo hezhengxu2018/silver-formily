@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
 
 concurrency:
   group: visual-regression-update-${{ github.ref }}
@@ -45,6 +45,19 @@ jobs:
 
       - name: Update FormItem visual baselines
         run: pnpm --filter @silver-formily/element-plus test:visual:update
+
+      - name: Commit updated Linux Chromium baselines
+        run: |
+          git add packages/element-plus/src/form-item/__test__/__screenshots__
+          if git diff --cached --quiet; then
+            echo 'Visual baselines are already up to date.'
+            exit 0
+          fi
+
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'test(element-plus): update Linux visual baselines'
+          git push origin "HEAD:${GITHUB_REF}"
 
       - name: Upload Linux Chromium baselines
         uses: actions/upload-artifact@v4
