@@ -27,6 +27,10 @@ Use `decoratorContent` to insert content into FormItem. The option is now part o
 
 ## Size Control Example
 
+::: tip Tip
+Choose between `contentAfter` and `addonAfter` based on the layout characteristics of the inner component.
+:::
+
 :::demo
 
 ../../en/demos/form-item/size
@@ -37,30 +41,31 @@ Use `decoratorContent` to insert content into FormItem. The option is now part o
 
 ### FormItem Attributes
 
-| Prop             | Type                                                                                          | Description                                                                            | Default   |
-| ---------------- | --------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- | --------- |
-| `label`          | `string` \| ^[object]`VNode`                                                                  | Label                                                                                  | -         |
-| `for`            | `string`                                                                                      | Associated form control id/name                                                        | -         |
-| `tooltip`        | `string` \| ^[object]`VNode`                                                                  | Question-mark tooltip content                                                          | -         |
-| `addonBefore`    | `string` \| ^[object]`VNode`                                                                  | Prefix addon content                                                                   | -         |
-| `addonAfter`     | `string` \| ^[object]`VNode`                                                                  | Suffix addon content                                                                   | -         |
-| `extra`          | `string` \| ^[object]`VNode`                                                                  | Extra description text                                                                 | -         |
-| `feedbackText`   | `string`                                                                                      | Feedback text                                                                          | -         |
-| `feedbackStatus` | ^[enum]`'error' \| 'warning' \| 'success' \| 'pending'`                                       | Feedback status                                                                        | -         |
-| `asterisk`       | `boolean`                                                                                     | Whether to show an asterisk                                                            | -         |
-| `colon`          | `boolean`                                                                                     | Whether to show a colon                                                                | `true`    |
-| `labelAlign`     | ^[enum]`'right' \| 'left'`                                                                    | Label text alignment                                                                   | -         |
-| `wrapperAlign`   | ^[enum]`'right' \| 'left'`                                                                    | Content text alignment                                                                 | -         |
-| `labelWrap`      | `boolean`                                                                                     | Whether label text wraps. Overflow text is ellipsized and shown in a tooltip on hover. | `false`   |
-| `labelWidth`     | `number`                                                                                      | Fixed label width                                                                      | -         |
-| `wrapperWidth`   | `number`                                                                                      | Fixed content width                                                                    | -         |
-| `labelCol`       | `number`                                                                                      | Label columns in a 24-column grid. Together with `wrapperCol`, the total should be 24. | -         |
-| `wrapperCol`     | `number`                                                                                      | Content columns in a 24-column grid. Together with `labelCol`, the total should be 24. | -         |
-| `fullness`       | `boolean`                                                                                     | Whether content fills available width                                                  | `false`   |
-| `size`           | ^[enum]`'small' \| 'default' \| 'large'`                                                      | Size                                                                                   | `default` |
-| `layout`         | ^[enum]`'vertical' \| 'horizontal' \| 'inline' \| ('vertical' \| 'horizontal' \| 'inline')[]` | Layout mode                                                                            | -         |
-| `feedbackLayout` | ^[enum]`'loose' \| 'terse' \| 'popover'`                                                      | Feedback layout                                                                        | `'loose'` |
-| `tooltipLayout`  | ^[enum]`'icon' \| 'text'`                                                                     | Tooltip layout                                                                         | -         |
+| Prop                    | Type                                                                                          | Description                                                                            | Default   |
+| ----------------------- | --------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- | --------- |
+| `label`                 | `string` \| ^[object]`VNode`                                                                  | Label                                                                                  | -         |
+| `for`                   | `string`                                                                                      | Associated form control id/name                                                        | -         |
+| `tooltip`               | `string` \| ^[object]`VNode`                                                                  | Question-mark tooltip content                                                          | -         |
+| `addonBefore`           | `string` \| ^[object]`VNode`                                                                  | Prefix addon content                                                                   | -         |
+| `addonAfter`            | `string` \| ^[object]`VNode`                                                                  | Trailing FormItem content                                                              | -         |
+| `contentAfter` ^(5.1.0) | `string` \| ^[object]`VNode`                                                                  | Inline suffix content in the field area                                                | -         |
+| `extra`                 | `string` \| ^[object]`VNode`                                                                  | Extra description text                                                                 | -         |
+| `feedbackText`          | `string`                                                                                      | Feedback text                                                                          | -         |
+| `feedbackStatus`        | ^[enum]`'error' \| 'warning' \| 'success' \| 'pending'`                                       | Feedback status                                                                        | -         |
+| `asterisk`              | `boolean`                                                                                     | Whether to show an asterisk                                                            | -         |
+| `colon`                 | `boolean`                                                                                     | Whether to show a colon                                                                | `true`    |
+| `labelAlign`            | ^[enum]`'right' \| 'left'`                                                                    | Label text alignment                                                                   | -         |
+| `wrapperAlign`          | ^[enum]`'right' \| 'left'`                                                                    | Content text alignment                                                                 | -         |
+| `labelWrap`             | `boolean`                                                                                     | Whether label text wraps. Overflow text is ellipsized and shown in a tooltip on hover. | `false`   |
+| `labelWidth`            | `number`                                                                                      | Fixed label width                                                                      | -         |
+| `wrapperWidth`          | `number`                                                                                      | Fixed content width                                                                    | -         |
+| `labelCol`              | `number`                                                                                      | Label columns in a 24-column grid. Together with `wrapperCol`, the total should be 24. | -         |
+| `wrapperCol`            | `number`                                                                                      | Content columns in a 24-column grid. Together with `labelCol`, the total should be 24. | -         |
+| `fullness`              | `boolean`                                                                                     | Whether content fills available width                                                  | `false`   |
+| `size`                  | ^[enum]`'small' \| 'default' \| 'large'`                                                      | Size                                                                                   | `default` |
+| `layout`                | ^[enum]`'vertical' \| 'horizontal' \| 'inline' \| ('vertical' \| 'horizontal' \| 'inline')[]` | Layout mode                                                                            | -         |
+| `feedbackLayout`        | ^[enum]`'loose' \| 'terse' \| 'popover'`                                                      | Feedback layout                                                                        | `'loose'` |
+| `tooltipLayout`         | ^[enum]`'icon' \| 'text'`                                                                     | Tooltip layout                                                                         | -         |
 
 ### FormItem.BaseItem
 

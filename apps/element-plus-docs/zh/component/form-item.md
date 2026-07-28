@@ -32,6 +32,10 @@ form-item/common
 
 ## 尺寸控制案例
 
+:::tip 提示
+需要根据内部组件的布局特性来选择是 `contentAfter`还是使用 `addonAfter`
+:::
+
 :::demo
 
 form-item/size
@@ -42,30 +46,31 @@ form-item/size
 
 ### FormItem Attributes
 
-| 属性名         | 类型                                                                                          | 描述                                             | 默认值    |
-| -------------- | --------------------------------------------------------------------------------------------- | ------------------------------------------------ | --------- |
-| label          | `string` \| ^[object]`VNode`                                                                  | 标签                                             | -         |
-| for            | `string`                                                                                      | 关联的表单字段                                   | -         |
-| tooltip        | `string` \| ^[object]`VNode`                                                                  | 问号提示                                         | -         |
-| addonBefore    | `string` \| ^[object]`VNode`                                                                  | 前缀内容                                         | -         |
-| addonAfter     | `string` \| ^[object]`VNode`                                                                  | 后缀内容                                         | -         |
-| extra          | `string` \| ^[object]`VNode`                                                                  | 扩展描述文案                                     | -         |
-| feedbackText   | `string`                                                                                      | 反馈文案                                         | -         |
-| feedbackStatus | ^[enum]`'error' \| 'warning' \| 'success' \| 'pending'`                                       | 反馈状态                                         | -         |
-| asterisk       | `boolean`                                                                                     | 星号提醒                                         | -         |
-| colon          | `boolean`                                                                                     | 是否显示冒号                                     | `true`    |
-| labelAlign     | ^[enum]`'right' \| 'left'`                                                                    | 标签文本对齐方式                                 | -         |
-| wrapperAlign   | ^[enum]`'right' \| 'left'`                                                                    | 内容文本对齐方式                                 | -         |
-| labelWrap      | `boolean`                                                                                     | 标签换行，超出部分显示省略号，hover 显示 tooltip | `false`   |
-| labelWidth     | `number`                                                                                      | 标签固定宽度                                     | -         |
-| wrapperWidth   | `number`                                                                                      | 内容固定宽度                                     | -         |
-| labelCol       | `number`                                                                                      | 标签网格所占列数，和内容列数加起来总和为 24      | -         |
-| wrapperCol     | `number`                                                                                      | 内容网格所占列数，和标签列数加起来总和为 24      | -         |
-| fullness       | `boolean`                                                                                     | 内容是否撑满                                     | `false`   |
-| size           | ^[enum]`'small' \| 'default' \| 'large'`                                                      | 尺寸                                             | `default` |
-| layout         | ^[enum]`'vertical' \| 'horizontal' \| 'inline' \| ('vertical' \| 'horizontal' \| 'inline')[]` | 布局模式                                         | -         |
-| feedbackLayout | ^[enum]`'loose' \| 'terse' \| 'popover'`                                                      | 反馈布局                                         | `'loose'` |
-| tooltipLayout  | ^[enum]`'icon' \| 'text'`                                                                     | 提示布局                                         | -         |
+| 属性名                | 类型                                                                                          | 描述                                             | 默认值    |
+| --------------------- | --------------------------------------------------------------------------------------------- | ------------------------------------------------ | --------- |
+| label                 | `string` \| ^[object]`VNode`                                                                  | 标签                                             | -         |
+| for                   | `string`                                                                                      | 关联的表单字段                                   | -         |
+| tooltip               | `string` \| ^[object]`VNode`                                                                  | 问号提示                                         | -         |
+| addonBefore           | `string` \| ^[object]`VNode`                                                                  | 前缀内容                                         | -         |
+| addonAfter            | `string` \| ^[object]`VNode`                                                                  | FormItem 行尾后缀内容                            | -         |
+| contentAfter ^(5.1.0) | `string` \| ^[object]`VNode`                                                                  | 内容区域内联后缀内容                             | -         |
+| extra                 | `string` \| ^[object]`VNode`                                                                  | 扩展描述文案                                     | -         |
+| feedbackText          | `string`                                                                                      | 反馈文案                                         | -         |
+| feedbackStatus        | ^[enum]`'error' \| 'warning' \| 'success' \| 'pending'`                                       | 反馈状态                                         | -         |
+| asterisk              | `boolean`                                                                                     | 星号提醒                                         | -         |
+| colon                 | `boolean`                                                                                     | 是否显示冒号                                     | `true`    |
+| labelAlign            | ^[enum]`'right' \| 'left'`                                                                    | 标签文本对齐方式                                 | -         |
+| wrapperAlign          | ^[enum]`'right' \| 'left'`                                                                    | 内容文本对齐方式                                 | -         |
+| labelWrap             | `boolean`                                                                                     | 标签换行，超出部分显示省略号，hover 显示 tooltip | `false`   |
+| labelWidth            | `number`                                                                                      | 标签固定宽度                                     | -         |
+| wrapperWidth          | `number`                                                                                      | 内容固定宽度                                     | -         |
+| labelCol              | `number`                                                                                      | 标签网格所占列数，和内容列数加起来总和为 24      | -         |
+| wrapperCol            | `number`                                                                                      | 内容网格所占列数，和标签列数加起来总和为 24      | -         |
+| fullness              | `boolean`                                                                                     | 内容是否撑满                                     | `false`   |
+| size                  | ^[enum]`'small' \| 'default' \| 'large'`                                                      | 尺寸                                             | `default` |
+| layout                | ^[enum]`'vertical' \| 'horizontal' \| 'inline' \| ('vertical' \| 'horizontal' \| 'inline')[]` | 布局模式                                         | -         |
+| feedbackLayout        | ^[enum]`'loose' \| 'terse' \| 'popover'`                                                      | 反馈布局                                         | `'loose'` |
+| tooltipLayout         | ^[enum]`'icon' \| 'text'`                                                                     | 提示布局                                         | -         |
 
 ### FormItem.BaseItem
 

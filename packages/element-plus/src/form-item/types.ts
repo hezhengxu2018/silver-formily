@@ -12,6 +12,7 @@ export interface IFormItemProps {
   tooltip?: FormItemContent
   addonBefore?: FormItemContent
   addonAfter?: FormItemContent
+  contentAfter?: FormItemContent
   extra?: FormItemContent
   feedbackText?: FormItemContent
   feedbackStatus?: 'error' | 'warning' | 'success' | 'pending'

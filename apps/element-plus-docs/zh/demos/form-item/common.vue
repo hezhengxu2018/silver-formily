@@ -306,6 +306,7 @@ const form = createForm()
         x-component="InputNumber"
         :x-decorator-props="{
           fullness: true,
+          addonAfter: 'addonAfter',
         }"
       />
       <SchemaStringField
@@ -313,7 +314,7 @@ const form = createForm()
         x-decorator="FormItem"
         :x-decorator-props="{
           addonBefore: 'addonBefore',
-          addonAfter: 'addonAfter',
+          contentAfter: 'contentAfter',
         }"
         x-component="InputNumber"
       />

@@ -596,16 +596,16 @@ describe('formItem', () => {
       await expect.element(formItem).toHaveClass('el-form-item--large')
     })
 
-    it('addonBefore 和 addonAfter 应该继承 FormItem 的 size', async () => {
+    it('addonBefore 和 contentAfter 应该继承 FormItem 的 size', async () => {
       const { container } = render(() => (
         <FormProvider form={createForm()}>
-          <FormItem label="Small" size="small" addonBefore="Before" addonAfter="After">
+          <FormItem label="Small" size="small" addonBefore="Before" contentAfter="After">
             <Input />
           </FormItem>
-          <FormItem label="Default" size="default" addonBefore="Before" addonAfter="After">
+          <FormItem label="Default" size="default" addonBefore="Before" contentAfter="After">
             <Input />
           </FormItem>
-          <FormItem label="Large" size="large" addonBefore="Before" addonAfter="After">
+          <FormItem label="Large" size="large" addonBefore="Before" contentAfter="After">
             <Input />
           </FormItem>
         </FormProvider>
@@ -618,7 +618,7 @@ describe('formItem', () => {
 
       for (const selector of [
         '.formily-element-plus-form-item-addon-before',
-        '.formily-element-plus-form-item-addon-after',
+        '.formily-element-plus-form-item-content-after',
       ]) {
         const fontSizes = getFontSizes(selector)
 
@@ -632,7 +632,7 @@ describe('formItem', () => {
 
       for (const selector of [
         '.formily-element-plus-form-item-addon-before',
-        '.formily-element-plus-form-item-addon-after',
+        '.formily-element-plus-form-item-content-after',
       ]) {
         expect(getMinHeights(selector)).toEqual(['24px', '32px', '40px'])
       }
@@ -706,6 +706,24 @@ describe('formItem', () => {
       const addonElement = queryElement(container, '.formily-element-plus-form-item-addon-after')
       await expect.element(addonElement).toBeInTheDocument()
       await expect(addonElement.textContent).toBe('后缀文本')
+    })
+
+    it('应该在内容区域显示后缀文本，当设置 contentAfter', async () => {
+      const { container } = render(() => (
+        <FormProvider form={createForm()}>
+          <FormItem label="内容后缀" contentAfter="内容后缀文本">
+            <Input placeholder="请输入" />
+          </FormItem>
+          <FormItem label="无内容后缀">
+            <Input placeholder="请输入" />
+          </FormItem>
+        </FormProvider>
+      ))
+
+      const contentAfter = queryElement(container, '.formily-element-plus-form-item-content-after')
+      await expect.element(contentAfter).toBeInTheDocument()
+      await expect(contentAfter.textContent).toBe('内容后缀文本')
+      expect(container.querySelectorAll('.formily-element-plus-form-item-content-after')).toHaveLength(1)
     })
 
     it('应该反馈信息显示反馈信息，当设置 feedbackText', async () => {
@@ -1043,6 +1061,26 @@ describe('vNode 渲染支持', () => {
     const customAddon = queryElement(container, '.custom-addon-after')
     await expect.element(customAddon).toBeInTheDocument()
     await expect.element(queryElement(customAddon, 'span')).toHaveTextContent('后缀组件')
+  })
+
+  it('contentAfter 支持 VNode 渲染', async () => {
+    const CustomContentAfter = () => (
+      <div class="custom-content-after">
+        <span>内容后缀组件</span>
+      </div>
+    )
+
+    const { container } = render(() => (
+      <FormProvider form={createForm()}>
+        <FormItem label="VNode内容后缀" contentAfter={<CustomContentAfter />}>
+          <Input placeholder="请输入" />
+        </FormItem>
+      </FormProvider>
+    ))
+
+    const customContentAfter = queryElement(container, '.custom-content-after')
+    await expect.element(customContentAfter).toBeInTheDocument()
+    await expect.element(queryElement(customContentAfter, 'span')).toHaveTextContent('内容后缀组件')
   })
 
   it('extra 支持 VNode 渲染', async () => {

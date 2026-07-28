@@ -129,7 +129,7 @@ const { SchemaField, SchemaStringField, SchemaVoidField, SchemaBooleanField }
           x-decorator="FormItem"
           :x-decorator-props="{
             addonBefore: '前缀',
-            addonAfter: '后缀',
+            contentAfter: '后缀',
           }"
           x-component="Cascader"
           required
@@ -140,7 +140,7 @@ const { SchemaField, SchemaStringField, SchemaVoidField, SchemaBooleanField }
           x-decorator="FormItem"
           :x-decorator-props="{
             addonBefore: '前缀',
-            addonAfter: '后缀',
+            contentAfter: '后缀',
           }"
           x-component="DatePicker"
           required
@@ -151,7 +151,7 @@ const { SchemaField, SchemaStringField, SchemaVoidField, SchemaBooleanField }
           x-decorator="FormItem"
           :x-decorator-props="{
             addonBefore: '前缀',
-            addonAfter: '后缀',
+            contentAfter: '后缀',
           }"
           x-component="InputNumber"
           required
@@ -162,7 +162,7 @@ const { SchemaField, SchemaStringField, SchemaVoidField, SchemaBooleanField }
           x-decorator="FormItem"
           :x-decorator-props="{
             addonBefore: '前缀',
-            addonAfter: '后缀',
+            contentAfter: '后缀',
           }"
           x-component="Switch"
           required

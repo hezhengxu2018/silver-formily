@@ -316,6 +316,14 @@ provide(formItemContextKey, context)
           </template>
         </ElTooltip>
         <slot v-else />
+        <template v-if="isValid(props.contentAfter)">
+          <template v-if="isVNode(props.contentAfter)">
+            <component :is="props.contentAfter" />
+          </template>
+          <div v-else :class="`${prefixCls}-content-after`">
+            {{ props.contentAfter }}
+          </div>
+        </template>
         <TransitionGroup :name="`${ns.namespace.value}-zoom-in-top`">
           <div v-if="props.feedbackText && formlayout.feedbackLayout !== 'popover'" :class="validateClasses">
             {{ props.feedbackText }}

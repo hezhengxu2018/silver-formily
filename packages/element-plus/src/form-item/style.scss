@@ -134,7 +134,7 @@ $form-item-isolated-prefix: '#{$form-item-prefix}--isolated';
 .#{$form-item-prefix}-content__wrapper {
   display: flex;
   flex: 1;
-  & .is-fullness > div {
+  & .is-fullness > div:not(.#{$form-item-prefix}-content-after) {
     width: 100%;
   }
 }
@@ -148,13 +148,18 @@ $form-item-isolated-prefix: '#{$form-item-prefix}--isolated';
 }
 
 .#{$form-item-prefix}-addon-before,
-.#{$form-item-prefix}-addon-after {
+.#{$form-item-prefix}-addon-after,
+.#{$form-item-prefix}-content-after {
   display: inline-flex;
   align-items: center;
   min-height: var(--#{$form-item-prefix}-addon-height);
   flex-shrink: 0;
   font-size: var(--font-size, var(--el-font-size-base));
   color: var(--el-text-color-regular);
+}
+
+.#{$form-item-prefix}-content-after {
+  margin-left: 8px;
 }
 
 .#{$form-item-prefix}-feedback {
