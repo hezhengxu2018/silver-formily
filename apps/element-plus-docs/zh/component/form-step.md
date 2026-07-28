@@ -30,9 +30,9 @@ form-step/json-schema
 
 ### FormStep
 
-| 属性名   | 类型                 | 描述                                   | 默认值 |
-| -------- | -------------------- | -------------------------------------- | ------ |
-| formStep | ^[object]`IFormStep` | 传入通过 createFormStep 创建出来的模型 |        |
+| 属性名   | 类型        | 描述                                   | 默认值 |
+| -------- | ----------- | -------------------------------------- | ------ |
+| formStep | `IFormStep` | 传入通过 createFormStep 创建出来的模型 |        |
 
 其余参考 [https://cn.element-plus.org/zh-CN/component/steps.html](https://cn.element-plus.org/zh-CN/component/steps.html)
 

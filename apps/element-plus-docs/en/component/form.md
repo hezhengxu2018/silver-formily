@@ -22,7 +22,7 @@ Most props are inherited from [FormLayout](./form-layout). The following are the
 
 | Prop                     | Type                                              | Description                                     | Default |
 | ------------------------ | ------------------------------------------------- | ----------------------------------------------- | ------- |
-| `form`                   | ^[object]`Form`                                   | Form instance                                   | -       |
+| `form`                   | `Form`                                            | Form instance                                   | -       |
 | `previewTextPlaceholder` | `string`                                          | Placeholder shown in read-pretty mode           | `N/A`   |
 | `onAutoSubmit`           | ^[Function]`(values: any) => any`                 | Callback triggered by Enter-to-submit           | -       |
 | `onAutoSubmitFailed`     | ^[Function]`(feedbacks: IFormFeedback[]) => void` | Validation failure callback for Enter-to-submit | -       |

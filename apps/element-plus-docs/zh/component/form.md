@@ -22,7 +22,7 @@ form/form
 
 | 属性名                 | 类型                                              | 描述                     | 默认值 |
 | ---------------------- | ------------------------------------------------- | ------------------------ | ------ |
-| form                   | ^[object]`Form`                                   | Form 实例                | -      |
+| form                   | `Form`                                            | Form 实例                | -      |
 | previewTextPlaceholder | string                                            | 预览态占位符             | `N/A`  |
 | onAutoSubmit           | ^[Function]`(values: any) => any`                 | 回车提交事件回调         | -      |
 | onAutoSubmitFailed     | ^[Function]`(feedbacks: IFormFeedback[]) => void` | 回车提交校验失败事件回调 | -      |

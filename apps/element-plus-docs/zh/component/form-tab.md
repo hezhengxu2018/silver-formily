@@ -26,9 +26,9 @@ form-tab/json-schema
 
 ### FormTab
 
-| 属性名  | 类型                | 描述                                  | 默认值 |
-| ------- | ------------------- | ------------------------------------- | ------ |
-| formTab | ^[object]`IFormTab` | 传入通过 createFormTab 创建出来的模型 |        |
+| 属性名  | 类型       | 描述                                  | 默认值 |
+| ------- | ---------- | ------------------------------------- | ------ |
+| formTab | `IFormTab` | 传入通过 createFormTab 创建出来的模型 |        |
 
 其余参考 [https://cn.element-plus.org/zh-CN/component/tabs.html](https://cn.element-plus.org/zh-CN/component/tabs.html)
 

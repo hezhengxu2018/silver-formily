@@ -26,9 +26,9 @@ form-collapse/json-schema
 
 ### FormCollapse
 
-| 属性名       | 类型                     | 描述                                                       | 默认值 |
-| ------------ | ------------------------ | ---------------------------------------------------------- | ------ |
-| formCollapse | ^[object]`IFormCollapse` | 传入通过 createFormCollapse/useFormCollapse 创建出来的模型 |        |
+| 属性名       | 类型            | 描述                                                       | 默认值 |
+| ------------ | --------------- | ---------------------------------------------------------- | ------ |
+| formCollapse | `IFormCollapse` | 传入通过 createFormCollapse/useFormCollapse 创建出来的模型 |        |
 
 `onChange`事件已被组件内部使用，请勿占用。其余参考 [https://cn.element-plus.org/zh-CN/component/collapse.html](https://cn.element-plus.org/zh-CN/component/collapse.html)
 
