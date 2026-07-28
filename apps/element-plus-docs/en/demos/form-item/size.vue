@@ -67,6 +67,10 @@ const { SchemaField, SchemaStringField, SchemaVoidField, SchemaBooleanField }
           name="input"
           title="Input"
           x-decorator="FormItem"
+          :x-decorator-props="{
+            addonBefore: 'Before',
+            addonAfter: 'After',
+          }"
           x-component="Input"
           required
         />
@@ -74,6 +78,10 @@ const { SchemaField, SchemaStringField, SchemaVoidField, SchemaBooleanField }
           name="select1"
           title="Multiple Select"
           x-decorator="FormItem"
+          :x-decorator-props="{
+            addonBefore: 'Before',
+            addonAfter: 'After',
+          }"
           x-component="Select"
           :enum="[
             {
@@ -95,6 +103,10 @@ const { SchemaField, SchemaStringField, SchemaVoidField, SchemaBooleanField }
           name="select2"
           title="Select"
           x-decorator="FormItem"
+          :x-decorator-props="{
+            addonBefore: 'Before',
+            addonAfter: 'After',
+          }"
           x-component="Select"
           :enum="[
             {
@@ -115,6 +127,10 @@ const { SchemaField, SchemaStringField, SchemaVoidField, SchemaBooleanField }
           name="Cascader"
           title="Cascader"
           x-decorator="FormItem"
+          :x-decorator-props="{
+            addonBefore: 'Before',
+            addonAfter: 'After',
+          }"
           x-component="Cascader"
           required
         />
@@ -122,6 +138,10 @@ const { SchemaField, SchemaStringField, SchemaVoidField, SchemaBooleanField }
           name="DatePicker"
           title="DatePicker"
           x-decorator="FormItem"
+          :x-decorator-props="{
+            addonBefore: 'Before',
+            addonAfter: 'After',
+          }"
           x-component="DatePicker"
           required
         />
@@ -129,6 +149,10 @@ const { SchemaField, SchemaStringField, SchemaVoidField, SchemaBooleanField }
           name="InputNumber"
           title="InputNumber"
           x-decorator="FormItem"
+          :x-decorator-props="{
+            addonBefore: 'Before',
+            addonAfter: 'After',
+          }"
           x-component="InputNumber"
           required
         />
@@ -136,6 +160,10 @@ const { SchemaField, SchemaStringField, SchemaVoidField, SchemaBooleanField }
           name="Switch"
           title="Switch"
           x-decorator="FormItem"
+          :x-decorator-props="{
+            addonBefore: 'Before',
+            addonAfter: 'After',
+          }"
           x-component="Switch"
           required
         />
@@ -143,6 +171,5 @@ const { SchemaField, SchemaStringField, SchemaVoidField, SchemaBooleanField }
     </SchemaField>
   </Form>
 </template>
-
 
 

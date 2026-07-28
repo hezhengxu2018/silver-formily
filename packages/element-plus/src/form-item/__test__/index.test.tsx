@@ -595,6 +595,63 @@ describe('formItem', () => {
       const formItem = queryElement(container, '.el-form-item')
       await expect.element(formItem).toHaveClass('el-form-item--large')
     })
+
+    it('addonBefore 和 addonAfter 应该继承 FormItem 的 size', async () => {
+      const { container } = render(() => (
+        <FormProvider form={createForm()}>
+          <FormItem label="Small" size="small" addonBefore="Before" addonAfter="After">
+            <Input />
+          </FormItem>
+          <FormItem label="Default" size="default" addonBefore="Before" addonAfter="After">
+            <Input />
+          </FormItem>
+          <FormItem label="Large" size="large" addonBefore="Before" addonAfter="After">
+            <Input />
+          </FormItem>
+        </FormProvider>
+      ))
+
+      const getFontSizes = (selector: string) => {
+        const addons = Array.from(container.querySelectorAll<HTMLElement>(selector))
+        return addons.map(element => Number.parseFloat(getComputedStyle(element).fontSize))
+      }
+
+      for (const selector of [
+        '.formily-element-plus-form-item-addon-before',
+        '.formily-element-plus-form-item-addon-after',
+      ]) {
+        const fontSizes = getFontSizes(selector)
+
+        expect(fontSizes).toEqual([12, 14, 14])
+      }
+
+      const getMinHeights = (selector: string) => {
+        const addons = Array.from(container.querySelectorAll<HTMLElement>(selector))
+        return addons.map(element => getComputedStyle(element).minHeight)
+      }
+
+      for (const selector of [
+        '.formily-element-plus-form-item-addon-before',
+        '.formily-element-plus-form-item-addon-after',
+      ]) {
+        expect(getMinHeights(selector)).toEqual(['24px', '32px', '40px'])
+      }
+    })
+
+    it('有 addonAfter 时内容区域应保持弹性宽度', async () => {
+      const { container } = render(() => (
+        <div style="width: 400px">
+          <FormProvider form={createForm()}>
+            <FormItem addonBefore="Before" addonAfter="After">
+              <Input />
+            </FormItem>
+          </FormProvider>
+        </div>
+      ))
+
+      const content = queryElement(container, '.el-form-item__content')
+      expect(getComputedStyle(content).flexGrow).toBe('1')
+    })
   })
 
   describe('辅助信息', () => {
