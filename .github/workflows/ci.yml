@@ -60,7 +60,12 @@ jobs:
             diff_range="$BEFORE_SHA...$HEAD_SHA"
           fi
 
-          changed_files="$(git diff --name-only "$diff_range")"
+          if ! changed_files="$(git diff --name-only "$diff_range")"; then
+            echo "::warning::Unable to determine changed files for $diff_range; running visual regression tests."
+            echo "run=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
           if grep -Eq '^(packages/(element-plus|vue|core|shared)/|pnpm-lock\.yaml$|pnpm-workspace\.yaml$|\.github/workflows/(ci|visual-regression-update)\.yml$)' <<< "$changed_files"; then
             echo "run=true" >> "$GITHUB_OUTPUT"
           else
