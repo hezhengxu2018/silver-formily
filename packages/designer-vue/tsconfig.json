@@ -5,6 +5,9 @@
       "@silver-formily/designer-core": [
         "../designer-core/src/index.ts"
       ],
+      "@silver-formily/designer-shared": [
+        "../designer-shared/src/index.ts"
+      ],
       "@silver-formily/designer-vue": [
         "./src/index.ts"
       ],
