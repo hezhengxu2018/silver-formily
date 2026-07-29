@@ -1,7 +1,7 @@
 import type { IReactionOptions } from '@silver-formily/reactive'
 import type { ComputedRef } from 'vue'
 import { reaction } from '@silver-formily/reactive'
-import { computed, onBeforeUnmount, shallowRef } from 'vue'
+import { computed, shallowRef, watchEffect } from 'vue'
 
 /**
  * Bridges a Formily observable expression into a Vue computed ref.
@@ -9,16 +9,19 @@ import { computed, onBeforeUnmount, shallowRef } from 'vue'
  */
 export function reactiveComputed<T>(getter: () => T, options?: IReactionOptions<T>): ComputedRef<T> {
   const state = shallowRef<T>()
-  const stop = reaction(
-    () => getter(),
-    (value) => {
-      state.value = value
-    },
-    { fireImmediately: true, ...options },
-  )
 
-  onBeforeUnmount(() => {
-    stop?.()
+  watchEffect((onCleanup) => {
+    const stop = reaction(
+      () => getter(),
+      (value) => {
+        state.value = value
+      },
+      { fireImmediately: true, ...options },
+    )
+
+    onCleanup(() => {
+      stop?.()
+    })
   })
 
   return computed(() => state.value as T)
