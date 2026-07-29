@@ -50,6 +50,9 @@ jobs:
 
       - name: Build publishable workspace packages
         run: |
+          pnpm --filter @silver-formily/designer-shared build
+          pnpm --filter @silver-formily/designer-core build
+          pnpm --filter @silver-formily/designer-vue build
           pnpm --filter @silver-formily/core build
           pnpm --filter @silver-formily/element-plus build
           pnpm --filter @silver-formily/grid build
