@@ -1,5 +1,11 @@
 # 更新日志
 
+## 1.0.2
+
+### Patch Changes
+
+- c8a1cf0: 迁移formilyComputed相关接口
+
 ## 1.0.1
 
 ### Patch Changes

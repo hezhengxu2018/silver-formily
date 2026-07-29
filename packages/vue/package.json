@@ -1,7 +1,7 @@
 {
   "name": "@silver-formily/vue",
   "type": "module",
-  "version": "3.0.1",
+  "version": "3.1.0",
   "description": "Vue 3 form rendering layer for Silver Formily with field components, schema rendering, and adapter utilities",
   "author": "hezhengxu",
   "license": "MIT",

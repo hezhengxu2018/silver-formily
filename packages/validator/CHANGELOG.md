@@ -1,5 +1,11 @@
 # @silver-formily/validator
 
+## 1.0.2
+
+### Patch Changes
+
+- 3e4e5ed: 修复uniqueItems实现错误
+
 ## 1.0.1
 
 ### Patch Changes

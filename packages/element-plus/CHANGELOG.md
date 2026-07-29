@@ -1,5 +1,24 @@
 # 更新日志
 
+## 5.1.0
+
+### Minor Changes
+
+- dd5dd30: 新增国际化支持：FormDialog 和 FormDrawer 的操作按钮默认继承 Element Plus 语言配置，SelectTable 的选择提示支持跟随语言配置，并新增 `selectionText` 和 `clearSelectionText` 属性用于自定义文案。
+- c3662de: FormItem组件新增contentAfter配置项
+
+### Patch Changes
+
+- b54cb48: 统一 Editable 的阅读态映射实现。`mapReadPretty` 现在支持在不改变字段 `pattern` 的情况下切换阅读态展示，Element Plus 改为复用公共实现，在保持校验能力的同时移除私有实现。
+- c8aa99f: 修复form-item的tooltip图标对齐问题
+- 9f868ee: 迁移接口至reactiveComputed.
+- d06e806: 修复TreeSelect的预览态
+- 9bf64cc: query-form-item添加SelectedList组件
+- cfee966: 稳定 Element Plus 组件 attrs 继承：移除组件内通用 `useCleanAttrs` 清洗，改为按当前 Element Plus 组件运行时声明分流 root attrs 与内部组件 props/events，避免 `attrs/on` 等历史字段泄漏到 DOM。
+- 03d192b: 修复QueryFormItem错误的reset执行时机
+- 345109e: 修复 ESM 子路径导出，并移除构建产物中的 CSS 运行时 import。
+- bd3d54b: 修复QueryForm在Light模式下多次触发提交的问题
+
 ## 5.0.1
 
 ### Patch Changes

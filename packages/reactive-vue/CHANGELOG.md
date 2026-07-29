@@ -1,5 +1,11 @@
 # 更新日志
 
+## 2.0.1
+
+### Patch Changes
+
+- a49e0a0: formilyComputed改名为reactiveComputed
+
 ## 2.0.0
 
 ### Major Changes

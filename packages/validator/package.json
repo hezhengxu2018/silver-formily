@@ -1,7 +1,7 @@
 {
   "name": "@silver-formily/validator",
   "type": "module",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Declarative validation engine for Silver Formily with rules, formats, locales, and async execution",
   "author": "hezhengxu",
   "license": "MIT",

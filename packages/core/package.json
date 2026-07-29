@@ -1,7 +1,7 @@
 {
   "name": "@silver-formily/core",
   "type": "module",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "Core form runtime for Silver Formily, including form state, field lifecycle, effects, and validation orchestration",
   "author": "hezhengxu",
   "license": "MIT",

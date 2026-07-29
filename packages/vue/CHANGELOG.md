@@ -1,5 +1,16 @@
 # 更新日志
 
+## 3.1.0
+
+### Minor Changes
+
+- 37ef944: 为字段新增 `decoratorContent` 状态和 `setDecoratorContent` API，并在 JSON Schema 中支持 `x-decorator-content`。Vue 渲染层现在统一从字段状态读取装饰器内容，使 `setFieldState`、reactions 和运行时 setter 能够更新装饰器插槽内容。
+
+### Patch Changes
+
+- b54cb48: 统一 Editable 的阅读态映射实现。`mapReadPretty` 现在支持在不改变字段 `pattern` 的情况下切换阅读态展示，Element Plus 改为复用公共实现，在保持校验能力的同时移除私有实现。
+- 5b46f86: 修复异常的attrs继承
+
 ## 3.0.1
 
 ### Patch Changes

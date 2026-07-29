@@ -1,5 +1,11 @@
 # @silver-formily/reactive
 
+## 1.0.1
+
+### Patch Changes
+
+- ea1518a: 完成链式 reaction 丢失修复
+
 ## 1.0.0
 
 ### Major Changes
