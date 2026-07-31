@@ -1,18 +1,44 @@
 import type { UserConfig } from 'vitepress'
 import path, { dirname } from 'node:path'
+import process from 'node:process'
 import { fileURLToPath } from 'node:url'
 import { createDocsConfig } from '@silver-formily/docs-toolkit'
 import pkg from '@silver-formily/element-plus/package.json' with { type: 'json' }
 import vueJsx from '@vitejs/plugin-vue-jsx'
+import { loadEnv } from 'vitepress'
 import enComponent from './i18n/en/pages/component.json'
 import enNav from './i18n/en/pages/nav.json'
 import zhComponent from './i18n/zh/pages/component.json'
 import zhNav from './i18n/zh/pages/nav.json'
 
 const currentDir = dirname(fileURLToPath(import.meta.url))
+const docsRoot = path.resolve(currentDir, '..')
 const demoDir = path.resolve(currentDir, '../zh/demos')
 const elementPlusSource = `${path.resolve(currentDir, '../../../packages/element-plus/src')}/`
 type DocsPluginOption = NonNullable<NonNullable<UserConfig['vite']>['plugins']>[number]
+
+const env = loadEnv(process.env.NODE_ENV ?? 'development', docsRoot, '')
+const algoliaAppId = env.ALGOLIA_APP_ID
+const algoliaSearchApiKey = env.ALGOLIA_SEARCH_API_KEY
+const algoliaIndexName = env.ALGOLIA_INDEX_NAME
+const algoliaAskAiAssistantId = env.ALGOLIA_ASK_AI_ASSISTANT_ID ?? 'd962cad5-2a19-47b6-8b01-03d5f9f75637'
+const algoliaSearch = algoliaAppId && algoliaSearchApiKey && algoliaIndexName
+  ? {
+      search: {
+        provider: 'algolia' as const,
+        options: {
+          appId: algoliaAppId,
+          apiKey: algoliaSearchApiKey,
+          indexName: algoliaIndexName,
+          placeholder: '搜索文档',
+          askAi: {
+            assistantId: algoliaAskAiAssistantId,
+            agentStudio: true,
+          },
+        },
+      },
+    }
+  : {}
 
 export default createDocsConfig({
   pkg,
@@ -88,6 +114,7 @@ export default createDocsConfig({
   themeConfig: {
     logo: '/formily-logo.svg',
     outline: [2, 4],
+    ...algoliaSearch,
   },
   vite: {
     define: {
