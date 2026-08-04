@@ -63,12 +63,9 @@ function handleOpen() {
       ]
     },
   }, ['extra', 'saveDraft'])
-    .forOpen((payload, next) => {
-      next({
-        initialValues: {
-          aaa: '123',
-        },
-      })
+    .forOpen((form, next) => {
+      form.setValues({ aaa: '123' })
+      next()
     })
     .forConfirm((payload, next) => {
       setTimeout(() => {
@@ -103,6 +100,5 @@ function handleOpen() {
     Open Form
   </ElButton>
 </template>
-
 
 

@@ -62,7 +62,7 @@ const DrawerForm = {
 
 function handleOpen() {
   FormDrawer('抽屉表单', DrawerForm)
-    .forOpen((props, next) => {
+    .forOpen((form, next) => {
       setTimeout(() => {
         next()
       }, 1000)

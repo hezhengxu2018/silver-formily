@@ -62,7 +62,7 @@ const DrawerForm = {
 
 function handleOpen() {
   FormDrawer('Drawer Form', DrawerForm)
-    .forOpen((props, next) => {
+    .forOpen((form, next) => {
       setTimeout(() => {
         next()
       }, 1000)
@@ -81,6 +81,5 @@ function handleOpen() {
     Open Form
   </ElButton>
 </template>
-
 
 

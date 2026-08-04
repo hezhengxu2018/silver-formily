@@ -53,13 +53,10 @@ const DialogForm = {
 
 function handleOpen() {
   FormDialog('弹框表单', DialogForm)
-    .forOpen((payload, next) => {
+    .forOpen((form, next) => {
       setTimeout(() => {
-        next({
-          initialValues: {
-            aaa: '123',
-          },
-        })
+        form.setValues({ aaa: '123' })
+        next()
       }, 1000)
     })
     .forConfirm((payload, next) => {

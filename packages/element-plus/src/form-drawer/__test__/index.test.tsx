@@ -409,7 +409,10 @@ describe('formDrawer', () => {
 
   describe('中间件功能', () => {
     it('应该支持 forOpen 中间件', async () => {
-      const openMiddleware = vi.fn((props, next) => next({ initialValues: { input: 'test' } }))
+      const openMiddleware = vi.fn((form, next) => {
+        form.setValues({ input: 'test' })
+        next()
+      })
       const TestComponent = () => {
         const handleOpen = () => {
           FormDrawer('测试标题', () => (

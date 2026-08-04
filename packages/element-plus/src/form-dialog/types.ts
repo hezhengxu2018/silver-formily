@@ -63,7 +63,7 @@ type FormDialogDynamicMiddlewareMethods<T extends object, DynamicMiddlewareName 
 }
 
 interface IFormDialogBase<T extends object = any, DynamicMiddlewareName extends string = never> {
-  forOpen: (middleware: IMiddleware<IFormProps<T>>) => IFormDialog<T, DynamicMiddlewareName>
+  forOpen: (middleware: IMiddleware<Form<T>>) => IFormDialog<T, DynamicMiddlewareName>
   forConfirm: (middleware: IMiddleware<Form<T>>) => IFormDialog<T, DynamicMiddlewareName>
   forCancel: (middleware: IMiddleware<Form<T>>) => IFormDialog<T, DynamicMiddlewareName>
   open: (props?: IFormProps<T>) => Promise<any>

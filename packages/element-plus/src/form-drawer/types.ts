@@ -63,7 +63,7 @@ type FormDrawerDynamicMiddlewareMethods<T extends object, DynamicMiddlewareName 
 }
 
 interface IFormDrawerBase<T extends object = any, DynamicMiddlewareName extends string = never> {
-  forOpen: (middleware: IMiddleware<IFormProps<T>>) => IFormDrawer<T, DynamicMiddlewareName>
+  forOpen: (middleware: IMiddleware<Form<T>>) => IFormDrawer<T, DynamicMiddlewareName>
   forConfirm: (middleware: IMiddleware<Form<T>>) => IFormDrawer<T, DynamicMiddlewareName>
   forCancel: (middleware: IMiddleware<Form<T>>) => IFormDrawer<T, DynamicMiddlewareName>
   open: (props?: IFormProps<T>) => Promise<any>

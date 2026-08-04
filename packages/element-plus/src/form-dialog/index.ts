@@ -26,10 +26,10 @@ export function FormDialog<
     instance?: any
     app?: App<Element>
     settled?: boolean
-    openMiddlewares: IMiddleware<IFormProps<T>>[]
+    openMiddlewares: IMiddleware<Form<T>>[]
     confirmMiddlewares: IMiddleware<Form<T>>[]
     cancelMiddlewares: IMiddleware<Form<T>>[]
-    [key: `${string}Middlewares`]: IMiddleware<Form<T>>[] | IMiddleware<IFormProps<T>>[] | undefined
+    [key: `${string}Middlewares`]: IMiddleware<Form<T>>[] | undefined
   } = {
     root: document.createElement('div'),
     form: null,
@@ -135,7 +135,7 @@ export function FormDialog<
   }
 
   const formDialog = {
-    forOpen: (middleware: IMiddleware<IFormProps<T>>) => {
+    forOpen: (middleware: IMiddleware<Form<T>>) => {
       isFn(middleware) && env.openMiddlewares.push(middleware)
       return formDialog
     },
@@ -147,16 +147,16 @@ export function FormDialog<
       isFn(middleware) && env.cancelMiddlewares.push(middleware)
       return formDialog
     },
-    open: (payload: IFormProps<T>) => {
+    open: (payload: IFormProps<T> = {}) => {
       /* istanbul ignore if -- @preserve */
       if (env.promise)
         return env.promise
 
       env.settled = false
       env.promise = new Promise((res, rej) => {
-        loading(props.loadingText, () => applyMiddleware(payload, env.openMiddlewares))
-          .then((resPayload) => {
-            env.form = env.form || createForm(resPayload as IFormProps<T>)
+        env.form = env.form || createForm(payload)
+        loading(props.loadingText, () => applyMiddleware(env.form, env.openMiddlewares))
+          .then(() => {
             render(true, (type: string) => {
               env.form.submit(async () => {
                 await submitDialog(type, res, formDialog.close)

@@ -35,13 +35,11 @@ function openUserPicker({ field }) {
       dataSource={userRows}
     />
   ))
-    .forOpen((payload, next) => {
-      next({
-        ...payload,
-        initialValues: {
-          users: userRows.filter(item => field?.value?.includes?.(item.id)),
-        },
+    .forOpen((form, next) => {
+      form.setValues({
+        users: userRows.filter(item => field?.value?.includes?.(item.id)),
       })
+      next()
     })
     .open()
     .then(values => values.users.map(item => ({
