@@ -39,7 +39,3 @@ guide/quick-start
 - `schema.properties.nickname` 和 `schema.properties.bio` 描述了两个字段
 - `x-component-props` 会原样传给目标组件
 - `FormConsumer` 只是为了展示当前值，业务代码里可以换成提交、校验或联动逻辑
-
-## 参考
-
-- [上游参考：Formily 核心概念 / JSON Schema 开发模式](https://vue.silver-formily.org/guide/concept#json-schema-%E5%BC%80%E5%8F%91%E6%A8%A1%E5%BC%8F)

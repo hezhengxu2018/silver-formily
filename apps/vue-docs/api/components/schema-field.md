@@ -16,7 +16,7 @@ SchemaField 有两种使用方式，一种是MarkupSchema，一种是JSONSchema�
 :::
 
 ::: tip Schema 协议说明
-本页只说明 `@silver-formily/vue` 如何消费 Schema。`Schema`、`ISchema`、`x-reactions`、`x-component-props` 等完整协议请查看 [JSON Schema 重建文档站](https://json-schema.silver-formily.org/)。
+本页只说明 `@silver-formily/vue` 如何消费 Schema。`Schema`、`ISchema`、`x-reactions`、`x-component-props` 等完整协议请查看 [JSON Schema 文档](https://json-schema.silver-formily.org/)。
 :::
 
 ### 函数定义

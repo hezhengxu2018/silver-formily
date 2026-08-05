@@ -43,7 +43,3 @@ Key points from the example:
 - `schema.properties.nickname` and `schema.properties.bio` describe two fields
 - `x-component-props` is passed directly to the target component
 - `FormConsumer` is only used here to preview current values; in real code you can replace it with submit, validation, or linkage logic
-
-## References
-
-- [Silver Formily Vue Guide](https://vue.silver-formily.org/en/guide/index)

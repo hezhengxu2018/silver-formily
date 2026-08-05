@@ -8,7 +8,7 @@
 
 ## 新特性
 
-从 `2.2.0` 开始，`@silver-formily/vue` 提供了对 decorator 插槽的支持。这一能力并不来自上游，因此只暴露渲染出口，不能通过 `@silver-formily/core` 的字段协议反向改写插槽内容，也不会参与 Formily 的响应式链路。具体用法可以参考 FAQ 中的[相应章节](/questions/#如何向装饰器传递插槽)。
+从 `2.2.0` 开始，`@silver-formily/vue` 提供了对 decorator 插槽的支持。具体用法可以参考 FAQ 中的[相应章节](/questions/#如何向装饰器传递插槽)。`json-schema` 中也新增了相应的模型，`core` 中添加了相应的接口修改 decorator 的插槽。
 
 ## 重大改动
 
@@ -19,4 +19,4 @@
 如果你还没有做好升级的准备，可以使用 `@silver-formily/vue` 的 1.x 版本。这是一个与 `@formily/vue` 的 API 完全对齐的版本。
 :::
 
-- `@silver-formily/vue` 移除了对 Schema 的导出，请从 `@silver-formily/json-schema` 导入。完整的 Schema、`ISchema` 和联动协议文档请查看 [JSON Schema 重建文档站](https://json-schema.silver-formily.org/)。
+- `@silver-formily/vue` 移除了对 Schema 的导出，请从 `@silver-formily/json-schema` 导入。完整的 Schema、`ISchema` 和联动协议文档请查看 [JSON Schema 文档](https://json-schema.silver-formily.org/)。

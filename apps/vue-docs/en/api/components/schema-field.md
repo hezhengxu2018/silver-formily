@@ -14,7 +14,7 @@ You never import `SchemaField` directly. Call `createSchemaField` to obtain the 
 :::
 
 ::: tip Schema Protocol
-This page only documents how `@silver-formily/vue` consumes schema objects. For the full `Schema`, `ISchema`, `x-reactions`, and `x-component-props` reference, see the [rebuilt JSON Schema docs](https://json-schema.silver-formily.org/en/).
+This page only documents how `@silver-formily/vue` consumes schema objects. For the full `Schema`, `ISchema`, `x-reactions`, and `x-component-props` reference, see the [JSON Schema docs](https://json-schema.silver-formily.org/en/).
 :::
 
 ### Function Signature

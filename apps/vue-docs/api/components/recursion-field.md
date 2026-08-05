@@ -7,10 +7,10 @@ outline: [2, 3]
 
 ## 描述
 
-递归渲染组件，主要基于 [JSON Schema](https://json-schema.silver-formily.org/) 做递归渲染，它是 [SchemaField](/api/components/schema-field) 组件内部的核心渲染组件，当然，它是可以独立于 SchemaField 单独使用的，我们使用的时候主要是在自定义组件中使用，用于实现具有递归渲染能力的自定义组件
+递归渲染组件，主要基于 [JSON Schema 文档](https://json-schema.silver-formily.org/) 做递归渲染，它是 [SchemaField](/api/components/schema-field) 组件内部的核心渲染组件，当然，它是可以独立于 SchemaField 单独使用的，我们使用的时候主要是在自定义组件中使用，用于实现具有递归渲染能力的自定义组件
 
 ::: tip Schema 协议说明
-本页只说明 `@silver-formily/vue` 如何递归消费 Schema。`Schema`、`ISchema`、属性协议和联动协议的完整定义请查看 [JSON Schema 重建文档站](https://json-schema.silver-formily.org/)。
+本页只说明 `@silver-formily/vue` 如何递归消费 Schema。`Schema`、`ISchema`、属性协议和联动协议的完整定义请查看 [JSON Schema 文档](https://json-schema.silver-formily.org/)。
 :::
 
 ## 简易递归

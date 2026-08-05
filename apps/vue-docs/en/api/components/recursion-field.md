@@ -10,7 +10,7 @@ outline: [2, 3]
 `RecursionField` is the low-level renderer that walks a [JSON Schema](https://json-schema.silver-formily.org/en/) tree and renders each node recursively. It powers `SchemaField`, but you can also import it directly when building custom components that need recursive rendering.
 
 ::: tip Schema Protocol
-This page only explains how `@silver-formily/vue` recursively consumes schema objects. For the full `Schema`, `ISchema`, property contracts, and linkage rules, see the [rebuilt JSON Schema docs](https://json-schema.silver-formily.org/en/).
+This page only explains how `@silver-formily/vue` recursively consumes schema objects. For the full `Schema`, `ISchema`, property contracts, and linkage rules, see the [JSON Schema docs](https://json-schema.silver-formily.org/en/).
 :::
 
 ## Basic Recursion

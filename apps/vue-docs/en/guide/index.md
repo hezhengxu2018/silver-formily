@@ -8,7 +8,7 @@ Refer to the upstream guide for the broad concepts if needed. This site focuses 
 
 ## New Features
 
-Starting with `2.2.0`, `@silver-formily/vue` adds support for decorator slots. This capability does not come from upstream, so only a render outlet is exposed. You cannot use `@silver-formily/core` to mutate the slot payload through field protocols, and it does not participate in Formily reactivity. See the FAQ’s [decorator slot section](/en/questions/#how-do-i-pass-slots-to-a-decorator) for concrete usage.
+Starting with `2.2.0`, `@silver-formily/vue` adds support for decorator slots. See the FAQ’s [decorator slot section](/en/questions/#how-do-i-pass-slots-to-a-decorator) for concrete usage. The corresponding model has also been added to `@silver-formily/json-schema`, and `@silver-formily/core` now includes the interface for modifying decorator slots.
 
 ## Breaking Changes
 
@@ -19,4 +19,4 @@ Starting with `2.2.0`, `@silver-formily/vue` adds support for decorator slots. T
 If you are not ready to migrate, stay on `@silver-formily/vue@1.x`, which keeps 100% API compatibility with `@formily/vue`.
 :::
 
-- Schema exports were removed from `@silver-formily/vue`. Import Schema helpers directly from `@silver-formily/json-schema` instead, and use the [rebuilt JSON Schema docs](https://json-schema.silver-formily.org/en/) for the full `Schema`, `ISchema`, and linkage reference.
+- Schema exports were removed from `@silver-formily/vue`. Import Schema helpers directly from `@silver-formily/json-schema` instead, and use the [JSON Schema docs](https://json-schema.silver-formily.org/en/) for the full `Schema`, `ISchema`, and linkage reference.
