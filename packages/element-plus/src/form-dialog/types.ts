@@ -42,6 +42,10 @@ export type FormDialogSlotContent<T extends object = any, DynamicMiddlewareName 
     [key in keyof FormDialogSlots<T, DynamicMiddlewareName>]?: FormDialogSlots<T, DynamicMiddlewareName>[key]
   }
 
+export interface FormDialogOpenMiddleware<T extends object = any> {
+  (form: Form<T>, next: (payload?: IFormProps<T>) => any): any
+}
+
 // #region iformdialog
 type ReservedFormDialogMiddlewareName = 'open' | 'confirm' | 'cancel'
 type ReservedFormDialogMiddlewareMethodName = `for${Capitalize<ReservedFormDialogMiddlewareName>}`
@@ -63,7 +67,7 @@ type FormDialogDynamicMiddlewareMethods<T extends object, DynamicMiddlewareName 
 }
 
 interface IFormDialogBase<T extends object = any, DynamicMiddlewareName extends string = never> {
-  forOpen: (middleware: IMiddleware<Form<T>>) => IFormDialog<T, DynamicMiddlewareName>
+  forOpen: (middleware: FormDialogOpenMiddleware<T>) => IFormDialog<T, DynamicMiddlewareName>
   forConfirm: (middleware: IMiddleware<Form<T>>) => IFormDialog<T, DynamicMiddlewareName>
   forCancel: (middleware: IMiddleware<Form<T>>) => IFormDialog<T, DynamicMiddlewareName>
   open: (props?: IFormProps<T>) => Promise<any>

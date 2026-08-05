@@ -413,7 +413,7 @@ describe('formDialog', () => {
     it('应该支持forOpen中间件', async () => {
       const openMiddleware = vi.fn((form, next) => {
         form.setValues({ input: 'test' })
-        next()
+        next({ initialValues: { input: 'test' } })
       })
       const TestComponent = () => {
         const handleOpen = () => {

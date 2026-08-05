@@ -180,13 +180,44 @@ interface FormDialog {
 
 函数的返回值，是一个是一个Promise对象，因此可以进行await操作来优化逻辑书写，需要调用`open`方法来打开弹框。可以进行链式调用来处理不同逻辑下的事件处理。现在支持通过`dynamicMiddlewareNames`来传入自定义的事件来处理业务逻辑。
 
-| 方法名          | 说明         | 类型                                                              |
-| --------------- | ------------ | ----------------------------------------------------------------- |
-| `open`          | 打开弹框     | ^[Function]`(props?: IFormProps) => Promise<any>`                 |
-| `forOpen`       | 打开弹框事件 | ^[Function]`(middleware: IMiddleware<IFormProps>) => IFormDialog` |
-| `forConfirm`    | 确认事件     | ^[Function]`(middleware: IMiddleware<Form>) => IFormDialog`       |
-| `forCancel`     | 取消事件     | ^[Function]`(middleware: IMiddleware<Form>) => IFormDialog`       |
-| `for${Dynamic}` | 自定义事件   | ^[Function]`(middleware: IMiddleware<Form>) => IFormDialog`       |
+| 方法名          | 说明         | 类型                                                               |
+| --------------- | ------------ | ------------------------------------------------------------------ |
+| `open`          | 打开弹框     | ^[Function]`(props?: IFormProps) => Promise<any>`                  |
+| `forOpen`       | 打开弹框事件 | ^[Function]`(middleware: FormDialogOpenMiddleware) => IFormDialog` |
+| `forConfirm`    | 确认事件     | ^[Function]`(middleware: IMiddleware<Form>) => IFormDialog`        |
+| `forCancel`     | 取消事件     | ^[Function]`(middleware: IMiddleware<Form>) => IFormDialog`        |
+| `for${Dynamic}` | 自定义事件   | ^[Function]`(middleware: IMiddleware<Form>) => IFormDialog`        |
+
+#### forOpen
+
+`forOpen` 会在 `open` 创建 `Form` 实例后执行。中间件的第一个参数是已创建的 `form`，可以通过 `form.props` 获取创建时传入的配置，通过 `form.values` 和 `form.initialValues` 获取当前值和初始值。
+
+异步加载数据时，可以直接修改 `form`：
+
+```ts
+FormDialog('编辑用户', UserForm)
+  .forOpen(async (form, next) => {
+    const data = await fetchUser()
+    form.setValues(data)
+    next()
+  })
+  .open()
+```
+
+为了兼容旧写法，也可以把表单配置传给 `next`。配置会应用到已经创建的 `form`：
+
+```ts
+FormDialog('编辑用户', UserForm).forOpen(async (form, next) => {
+  const data = await fetchUser()
+  next({
+    initialValues: data,
+    pattern: 'editable',
+    disabled: false,
+  })
+})
+```
+
+`next` 支持修改 `values`、`initialValues`、`pattern`、`display`、`visible`、`hidden`、`editable`、`disabled`、`readOnly`、`readPretty` 和 `effects`。`designable`、校验配置等仅在 `createForm` 阶段读取的配置不会在 `next` 后重建。
 
 ::: tip 提示
 自定义事件中的`Dynamic`的值为`dynamicMiddlewareNames`中传入的字符串，通过作用域插槽中的resolve方法来触发对应的事件。 传入`dynamicMiddlewareNames`中的字符串在调用方法时会被转成Pascal Case命名风格，比如传入`['save-draft']`应该调用`'forSaveDraft'`。

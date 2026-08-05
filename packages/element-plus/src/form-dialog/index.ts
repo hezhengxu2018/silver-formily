@@ -1,7 +1,7 @@
 import type { Form, IFormProps } from '@silver-formily/core'
 import type { IMiddleware } from '@silver-formily/shared'
 import type { App, Component } from 'vue'
-import type { FormDialogSlotContent, IFormDialog, IFormDialogProps } from './types'
+import type { FormDialogOpenMiddleware, FormDialogSlotContent, IFormDialog, IFormDialogProps } from './types'
 import { createForm } from '@silver-formily/core'
 import { toJS } from '@silver-formily/reactive'
 import { observer } from '@silver-formily/reactive-vue'
@@ -26,10 +26,10 @@ export function FormDialog<
     instance?: any
     app?: App<Element>
     settled?: boolean
-    openMiddlewares: IMiddleware<Form<T>>[]
+    openMiddlewares: FormDialogOpenMiddleware<T>[]
     confirmMiddlewares: IMiddleware<Form<T>>[]
     cancelMiddlewares: IMiddleware<Form<T>>[]
-    [key: `${string}Middlewares`]: IMiddleware<Form<T>>[] | undefined
+    [key: `${string}Middlewares`]: IMiddleware<Form<T>>[] | FormDialogOpenMiddleware<T>[] | undefined
   } = {
     root: document.createElement('div'),
     form: null,
@@ -134,8 +134,34 @@ export function FormDialog<
     }
   }
 
+  function applyOpenPayload(payload: IFormProps<T> | Form<T> | undefined) {
+    if (!payload || payload === env.form)
+      return
+
+    if (isValid(payload.initialValues)) {
+      env.form.setInitialValues(payload.initialValues, 'overwrite')
+      env.form.setValues(payload.initialValues, 'overwrite')
+    }
+    if (isValid(payload.values))
+      env.form.setValues(payload.values, 'overwrite')
+    if (isValid(payload.pattern))
+      env.form.setPattern(payload.pattern)
+    if (isValid(payload.display))
+      env.form.setDisplay(payload.display)
+    env.form.setState({
+      ...(isValid(payload.hidden) && { hidden: payload.hidden }),
+      ...(isValid(payload.visible) && { visible: payload.visible }),
+      ...(isValid(payload.editable) && { editable: payload.editable }),
+      ...(isValid(payload.disabled) && { disabled: payload.disabled }),
+      ...(isValid(payload.readOnly) && { readOnly: payload.readOnly }),
+      ...(isValid(payload.readPretty) && { readPretty: payload.readPretty }),
+    })
+    if ('effects' in payload && isFn(payload.effects))
+      env.form.setEffects(payload.effects)
+  }
+
   const formDialog = {
-    forOpen: (middleware: IMiddleware<Form<T>>) => {
+    forOpen: (middleware: FormDialogOpenMiddleware<T>) => {
       isFn(middleware) && env.openMiddlewares.push(middleware)
       return formDialog
     },
@@ -156,7 +182,8 @@ export function FormDialog<
       env.promise = new Promise((res, rej) => {
         env.form = env.form || createForm(payload)
         loading(props.loadingText, () => applyMiddleware(env.form, env.openMiddlewares))
-          .then(() => {
+          .then((resPayload) => {
+            applyOpenPayload(resPayload)
             render(true, (type: string) => {
               env.form.submit(async () => {
                 await submitDialog(type, res, formDialog.close)

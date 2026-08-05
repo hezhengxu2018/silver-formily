@@ -42,6 +42,10 @@ export type FormDrawerSlotContent<T extends object = any, DynamicMiddlewareName 
     [key in keyof FormDrawerSlots<T, DynamicMiddlewareName>]?: FormDrawerSlots<T, DynamicMiddlewareName>[key]
   }
 
+export interface FormDrawerOpenMiddleware<T extends object = any> {
+  (form: Form<T>, next: (payload?: IFormProps<T>) => any): any
+}
+
 // #region iformdrawer
 type ReservedFormDrawerMiddlewareName = 'open' | 'confirm' | 'cancel'
 type ReservedFormDrawerMiddlewareMethodName = `for${Capitalize<ReservedFormDrawerMiddlewareName>}`
@@ -63,7 +67,7 @@ type FormDrawerDynamicMiddlewareMethods<T extends object, DynamicMiddlewareName 
 }
 
 interface IFormDrawerBase<T extends object = any, DynamicMiddlewareName extends string = never> {
-  forOpen: (middleware: IMiddleware<Form<T>>) => IFormDrawer<T, DynamicMiddlewareName>
+  forOpen: (middleware: FormDrawerOpenMiddleware<T>) => IFormDrawer<T, DynamicMiddlewareName>
   forConfirm: (middleware: IMiddleware<Form<T>>) => IFormDrawer<T, DynamicMiddlewareName>
   forCancel: (middleware: IMiddleware<Form<T>>) => IFormDrawer<T, DynamicMiddlewareName>
   open: (props?: IFormProps<T>) => Promise<any>

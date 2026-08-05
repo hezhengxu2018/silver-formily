@@ -182,13 +182,44 @@ When used together with generics, literal values in `dynamicMiddlewareNames` aff
 
 The return value is a Promise-like object, so you can `await` it to simplify flow control. You still need to call `open` to display the dialog. Chain calls can be used to handle different lifecycle events, and dynamic middleware actions are also supported through `dynamicMiddlewareNames`.
 
-| Method          | Description      | Type                                                              |
-| --------------- | ---------------- | ----------------------------------------------------------------- |
-| `open`          | Open dialog      | ^[Function]`(props?: IFormProps) => Promise<any>`                 |
-| `forOpen`       | Dialog open hook | ^[Function]`(middleware: IMiddleware<IFormProps>) => IFormDialog` |
-| `forConfirm`    | Confirm hook     | ^[Function]`(middleware: IMiddleware<Form>) => IFormDialog`       |
-| `forCancel`     | Cancel hook      | ^[Function]`(middleware: IMiddleware<Form>) => IFormDialog`       |
-| `for${Dynamic}` | Custom hook      | ^[Function]`(middleware: IMiddleware<Form>) => IFormDialog`       |
+| Method          | Description      | Type                                                               |
+| --------------- | ---------------- | ------------------------------------------------------------------ |
+| `open`          | Open dialog      | ^[Function]`(props?: IFormProps) => Promise<any>`                  |
+| `forOpen`       | Dialog open hook | ^[Function]`(middleware: FormDialogOpenMiddleware) => IFormDialog` |
+| `forConfirm`    | Confirm hook     | ^[Function]`(middleware: IMiddleware<Form>) => IFormDialog`        |
+| `forCancel`     | Cancel hook      | ^[Function]`(middleware: IMiddleware<Form>) => IFormDialog`        |
+| `for${Dynamic}` | Custom hook      | ^[Function]`(middleware: IMiddleware<Form>) => IFormDialog`        |
+
+#### forOpen
+
+`forOpen` runs after `open` creates the `Form` instance. Its first argument is the created `form`. Use `form.props` to access the configuration passed during creation, and `form.values` or `form.initialValues` to access the current and initial values.
+
+For asynchronous data loading, you can update the form directly:
+
+```ts
+FormDialog('Edit User', UserForm)
+  .forOpen(async (form, next) => {
+    const data = await fetchUser()
+    form.setValues(data)
+    next()
+  })
+  .open()
+```
+
+The legacy configuration style is also supported. Passing a form configuration to `next` applies it to the already-created `form`:
+
+```ts
+FormDialog('Edit User', UserForm).forOpen(async (form, next) => {
+  const data = await fetchUser()
+  next({
+    initialValues: data,
+    pattern: 'editable',
+    disabled: false,
+  })
+})
+```
+
+`next` supports updating `values`, `initialValues`, `pattern`, `display`, `visible`, `hidden`, `editable`, `disabled`, `readOnly`, `readPretty`, and `effects`. Creation-only options such as `designable` and validation configuration are not rebuilt after `next` runs.
 
 ::: tip Tip
 In custom hooks, `Dynamic` corresponds to the values passed into `dynamicMiddlewareNames`. The related action is triggered by calling `resolve` inside scoped slots. When methods are generated, names from `dynamicMiddlewareNames` are converted to PascalCase, so `['save-draft']` becomes `forSaveDraft`.
