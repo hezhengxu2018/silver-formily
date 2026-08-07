@@ -15,6 +15,8 @@ defineOptions({
 const props = withDefaults(defineProps<PickerSelectProps>(), {
   options: () => [],
   cacheSelectedOptions: true,
+  optionAsValue: false,
+  valueKey: 'id',
 })
 
 const emit = defineEmits<{
@@ -31,7 +33,7 @@ const slots = defineSlots<{
 
 const ignoredOpenTriggerSelectors = ['.el-select__clear', '.el-tag__close']
 
-const selectProps = useExcludedAttrs()
+const selectProps = useExcludedAttrs(['optionAsValue', 'valueKey'])
 const fieldRef = useField<Field>()
 const selectRef = ref<InstanceType<typeof ElSelect>>()
 const openingPicker = ref(false)
@@ -41,6 +43,33 @@ const ignoreVisibleChangeUntil = ref(0)
 const multiple = computed(() => Boolean(selectProps.value.multiple))
 const currentValue = computed(() => selectProps.value.modelValue)
 const baseOptions = computed<PickerSelectOption[]>(() => props.options ?? [])
+const elSelectProps = computed(() => {
+  const { modelValue: _modelValue, ...attrs } = selectProps.value
+  return attrs
+})
+
+function getOptionValue(value: any) {
+  if (!props.optionAsValue || !value || typeof value !== 'object') {
+    return value
+  }
+  return isValid(value[props.valueKey]) ? value[props.valueKey] : value.value
+}
+
+function getExternalValue(option: PickerSelectOption) {
+  return props.optionAsValue ? option.raw ?? option : option.value
+}
+
+function resolveInternalValue(value: any) {
+  const optionValue = getOptionValue(value)
+  if (!props.optionAsValue) {
+    return optionValue
+  }
+  const matchedOption = [...baseOptions.value, ...selectedOptionCache.value].find((option) => {
+    return isSameValue(getOptionValue(option.raw), optionValue)
+      || isSameValue(option.value, optionValue)
+  })
+  return matchedOption?.value ?? optionValue
+}
 
 function isSameValue(left: any, right: any) {
   return isEqual(left, right)
@@ -60,9 +89,10 @@ function createFallbackOption(value: any): PickerSelectOption {
 const normalizedValues = computed(() => {
   const value = currentValue.value
   if (multiple.value) {
-    return isArr(value) ? value : []
+    return isArr(value) ? value.map(resolveInternalValue).filter(isValid) : []
   }
-  return isValid(value) ? [value] : []
+  const normalizedValue = resolveInternalValue(value)
+  return isValid(normalizedValue) ? [normalizedValue] : []
 })
 
 const displayOptions = computed<PickerSelectOption[]>(() => {
@@ -141,7 +171,7 @@ async function handleOpenPicker() {
       }
       const normalizedResult = isArr(result) ? result : [result]
       cacheOptions(normalizedResult)
-      setValue(normalizedResult.map(item => item.value))
+      setValue(normalizedResult.map(getExternalValue))
       return
     }
 
@@ -153,7 +183,7 @@ async function handleOpenPicker() {
       return
     }
     cacheOptions([normalizedResult])
-    setValue(normalizedResult.value)
+    setValue(getExternalValue(normalizedResult))
   }
   finally {
     openingPicker.value = false
@@ -187,6 +217,11 @@ function handleRemoveTag(value: any) {
   if (!multiple.value) {
     return
   }
+  if (props.optionAsValue) {
+    const currentValues = isArr(currentValue.value) ? currentValue.value : []
+    setValue(currentValues.filter(item => !isSameValue(resolveInternalValue(item), value)))
+    return
+  }
   setValue(normalizedValues.value.filter(item => !isSameValue(item, value)))
 }
 </script>
@@ -194,7 +229,8 @@ function handleRemoveTag(value: any) {
 <template>
   <ElSelect
     ref="selectRef"
-    v-bind="selectProps"
+    v-bind="elSelectProps"
+    :model-value="multiple ? normalizedValues : normalizedValues[0]"
     @click="handleTriggerClick"
     @clear="clearValue"
     @remove-tag="handleRemoveTag"

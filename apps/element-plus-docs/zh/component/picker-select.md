@@ -10,17 +10,32 @@ picker-select/template-dialog-table
 
 :::
 
+## 返回完整选项值 ^(5.2.0)
+
+开启 `optionAsValue` 后，`PickerSelect` 对外提交的是 `raw` 原始对象，内部仍使用 `value` 进行返显。
+
+:::demo
+
+picker-select/template-option-as-value
+
+:::
+
+- 开启了 `optionAsValue` 之后 `openPicker` 返回的 option 应提供 `raw`。
+- 如果原始对象的主键不是 `id`，可以通过 `valueKey` 指定主键字段。
+
 ## API
 
 参考 [https://cn.element-plus.org/zh-CN/component/select.html](https://cn.element-plus.org/zh-CN/component/select.html)
 
 ### 扩展属性
 
-| 属性名               | 类型                                                                                                                                                                                                                                      | 描述                                                                                     | 默认值 |
-| -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- | ------ |
-| options              | `PickerSelectOption[]`                                                                                                                                                                                                                    | 候选项配置，一般情况下优先通过 `dataSource` 注入                                         | `[]`   |
-| openPicker           | ^[Function]`(ctx: { field?: Field, dataSource: PickerSelectOption[], multiple: boolean }) => Promise<PickerSelectOption \| PickerSelectOption[] \| null \| undefined> \| PickerSelectOption \| PickerSelectOption[] \| null \| undefined` | 点击选择器后触发的选择函数，通常返回 `FormDialog(...).open()` 处理后的 option / option[] | -      |
-| cacheSelectedOptions | `boolean`                                                                                                                                                                                                                                 | 是否缓存 `openPicker` 返回的 option，用于在 `dataSource` 未同步更新时优先展示 label      | `true` |
+| 属性名               | 类型                                                                                                                                                                                                                                      | 描述                                                                                     | 默认值  |
+| -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- | ------- |
+| options              | `PickerSelectOption[]`                                                                                                                                                                                                                    | 候选项配置，一般情况下优先通过 `dataSource` 注入                                         | `[]`    |
+| openPicker           | ^[Function]`(ctx: { field?: Field, dataSource: PickerSelectOption[], multiple: boolean }) => Promise<PickerSelectOption \| PickerSelectOption[] \| null \| undefined> \| PickerSelectOption \| PickerSelectOption[] \| null \| undefined` | 点击选择器后触发的选择函数，通常返回 `FormDialog(...).open()` 处理后的 option / option[] | -       |
+| cacheSelectedOptions | `boolean`                                                                                                                                                                                                                                 | 是否缓存 `openPicker` 返回的 option，用于在 `dataSource` 未同步更新时优先展示 label      | `true`  |
+| optionAsValue        | `boolean`                                                                                                                                                                                                                                 | 是否将 `raw` 原始选项作为字段值，而不是使用 `value`                                      | `false` |
+| valueKey             | `string`                                                                                                                                                                                                                                  | 完整值模式下从 `raw` 中提取内部返显值的字段名                                            | `'id'`  |
 
 :::tip 提示
 

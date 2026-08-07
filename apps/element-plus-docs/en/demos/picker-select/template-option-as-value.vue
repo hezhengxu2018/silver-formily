@@ -18,7 +18,11 @@ const userOptions = userRows.map(item => ({
 }))
 
 function openUserPicker({ field }) {
-  return FormDialog('Select Members', () => (
+  const selectedIds = Array.isArray(field?.value)
+    ? field.value.map(item => typeof item === 'object' ? item.id : item)
+    : []
+
+  return FormDialog('Select members', () => (
     <Field
       name="users"
       component={[
@@ -35,9 +39,9 @@ function openUserPicker({ field }) {
       dataSource={userRows}
     />
   ))
-    .forOpen((form, next) => {
-      form.setValues({
-        users: userRows.filter(item => field?.value?.includes?.(item.id)),
+    .forOpen((dialogForm, next) => {
+      dialogForm.setValues({
+        users: userRows.filter(item => selectedIds.includes(item.id)),
       })
       next()
     })
@@ -50,7 +54,7 @@ function openUserPicker({ field }) {
 }
 
 function log(value: any) {
-  console.log(value)
+  console.log('Submitted full user records:', value)
 }
 </script>
 
@@ -64,19 +68,19 @@ function log(value: any) {
         PickerSelect,
         {
           multiple: true,
+          optionAsValue: true,
+          valueKey: 'id',
           clearable: true,
           collapseTags: true,
-          collapseTagsTooltip: true,
           openPicker: openUserPicker,
-          placeholder: 'Click to select members',
+          placeholder: 'Select members and submit full records',
         },
       ]"
-      :initial-value="['u1', 'u2', 'u3']"
+      :initial-value="userRows.slice(0, 2)"
       :data-source="userOptions"
     />
     <Submit style="margin-top: 16px" @submit="log">
-      Submit
+      Submit full records
     </Submit>
   </FormProvider>
 </template>
-

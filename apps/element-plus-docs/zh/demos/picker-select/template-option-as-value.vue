@@ -18,7 +18,11 @@ const userOptions = userRows.map(item => ({
 }))
 
 function openUserPicker({ field }) {
-  return FormDialog('Select Members', () => (
+  const selectedIds = Array.isArray(field?.value)
+    ? field.value.map(item => typeof item === 'object' ? item.id : item)
+    : []
+
+  return FormDialog('选择成员', () => (
     <Field
       name="users"
       component={[
@@ -27,17 +31,17 @@ function openUserPicker({ field }) {
           rowKey: 'id',
           optionAsValue: true,
           columns: [
-            { prop: 'name', label: 'Name' },
-            { prop: 'team', label: 'Team' },
+            { prop: 'name', label: '姓名' },
+            { prop: 'team', label: '团队' },
           ],
         },
       ]}
       dataSource={userRows}
     />
   ))
-    .forOpen((form, next) => {
-      form.setValues({
-        users: userRows.filter(item => field?.value?.includes?.(item.id)),
+    .forOpen((dialogForm, next) => {
+      dialogForm.setValues({
+        users: userRows.filter(item => selectedIds.includes(item.id)),
       })
       next()
     })
@@ -50,7 +54,7 @@ function openUserPicker({ field }) {
 }
 
 function log(value: any) {
-  console.log(value)
+  console.log('提交的完整用户对象:', value)
 }
 </script>
 
@@ -58,25 +62,25 @@ function log(value: any) {
   <FormProvider :form="form">
     <Field
       name="users"
-      title="Members"
+      title="成员"
       :decorator="[FormItem]"
       :component="[
         PickerSelect,
         {
           multiple: true,
+          optionAsValue: true,
+          valueKey: 'id',
           clearable: true,
           collapseTags: true,
-          collapseTagsTooltip: true,
           openPicker: openUserPicker,
-          placeholder: 'Click to select members',
+          placeholder: '选择成员后提交完整对象',
         },
       ]"
-      :initial-value="['u1', 'u2', 'u3']"
+      :initial-value="userRows.slice(0, 2)"
       :data-source="userOptions"
     />
     <Submit style="margin-top: 16px" @submit="log">
-      Submit
+      提交完整对象
     </Submit>
   </FormProvider>
 </template>
-

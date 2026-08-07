@@ -21,4 +21,6 @@ export interface PickerSelectProps {
   options?: PickerSelectOption[]
   openPicker?: PickerSelectOpenPicker
   cacheSelectedOptions?: boolean
+  optionAsValue?: boolean
+  valueKey?: string
 }

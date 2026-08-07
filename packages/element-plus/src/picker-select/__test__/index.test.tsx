@@ -109,6 +109,147 @@ describe('pickerSelect', () => {
     })
   })
 
+  it('optionAsValue 单选时应写入 raw 并使用 value 返显', async () => {
+    const form = createForm()
+    const openPicker = vi.fn().mockResolvedValue(options[1])
+
+    const page = render(() => (
+      <FormProvider form={form}>
+        <Field
+          name="picker"
+          component={[
+            PickerSelect,
+            {
+              optionAsValue: true,
+              openPicker,
+            },
+          ]}
+          dataSource={options}
+        />
+      </FormProvider>
+    ))
+
+    await userEvent.click(page.container.querySelector('.el-select__wrapper')!)
+
+    await vi.waitFor(() => {
+      expect(form.values.picker).toEqual({ id: 2 })
+    })
+    expect(page.container.textContent).toContain('Option 2')
+  })
+
+  it('optionAsValue 多选时应写入 raw 数组', async () => {
+    const form = createForm()
+    const openPicker = vi.fn().mockResolvedValue([options[0], options[2]])
+
+    const page = render(() => (
+      <FormProvider form={form}>
+        <Field
+          name="picker"
+          component={[
+            PickerSelect,
+            {
+              multiple: true,
+              optionAsValue: true,
+              openPicker,
+            },
+          ]}
+          dataSource={options}
+        />
+      </FormProvider>
+    ))
+
+    await userEvent.click(page.container.querySelector('.el-select__wrapper')!)
+
+    await vi.waitFor(() => {
+      expect(form.values.picker).toEqual([{ id: 1 }, { id: 3 }])
+    })
+  })
+
+  it('optionAsValue 应从完整初始值提取 value 进行返显', async () => {
+    const form = createForm({
+      initialValues: {
+        picker: { id: 2 },
+      },
+    })
+
+    const page = render(() => (
+      <FormProvider form={form}>
+        <Field
+          name="picker"
+          component={[
+            PickerSelect,
+            {
+              optionAsValue: true,
+            },
+          ]}
+          dataSource={options}
+        />
+      </FormProvider>
+    ))
+
+    await expect.element(page.getByText('Option 2').first()).toBeInTheDocument()
+  })
+
+  it('optionAsValue 删除标签时应按 value 移除完整对象', async () => {
+    const form = createForm({
+      initialValues: {
+        picker: [{ id: 1 }, { id: 2 }],
+      },
+    })
+
+    const page = render(() => (
+      <FormProvider form={form}>
+        <Field
+          name="picker"
+          component={[
+            PickerSelect,
+            {
+              multiple: true,
+              optionAsValue: true,
+              collapseTags: false,
+            },
+          ]}
+          dataSource={options}
+        />
+      </FormProvider>
+    ))
+
+    await vi.waitFor(() => {
+      expect(page.container.querySelectorAll('.el-tag__close')).toHaveLength(2)
+    })
+    await userEvent.click(page.container.querySelector('.el-tag__close')!)
+
+    await vi.waitFor(() => {
+      expect(form.values.picker).toEqual([{ id: 2 }])
+    })
+  })
+
+  it('optionAsValue 未提供 raw 时应回退写入 option 对象', async () => {
+    const form = createForm()
+    const openPicker = vi.fn().mockResolvedValue({ value: '100', label: 'Fallback' })
+
+    const page = render(() => (
+      <FormProvider form={form}>
+        <Field
+          name="picker"
+          component={[
+            PickerSelect,
+            {
+              optionAsValue: true,
+              openPicker,
+            },
+          ]}
+        />
+      </FormProvider>
+    ))
+
+    await userEvent.click(page.container.querySelector('.el-select__wrapper')!)
+
+    await vi.waitFor(() => {
+      expect(form.values.picker).toEqual({ value: '100', label: 'Fallback' })
+    })
+  })
+
   it('openPicker 返回空值时不应修改字段', async () => {
     const form = createForm({
       initialValues: {
