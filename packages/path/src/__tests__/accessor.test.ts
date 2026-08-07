@@ -75,6 +75,7 @@ it('test setIn dose not affect other items', () => {
 it('destruct getIn', () => {
   // getIn 通过解构表达式从扁平数据转为复合嵌套数据
   const value = { a: { b: { c: 2, d: 333 } } }
+  expect(getIn({ a: 2 }, '{a}')).toEqual({ a: 2 })
   expect(getIn({ a: { b: { kk: 2, mm: 333 } } }, 'a.b.{c:kk,d:mm}')).toEqual({
     c: 2,
     d: 333,
@@ -112,6 +113,7 @@ it('destruct getIn', () => {
 it('destruct setIn', () => {
   const value = { a: { b: { c: 2, d: 333 } } }
   // setIn 从复杂嵌套结构中解构数据出来对其做赋值处理
+  expect(setIn({}, '{a}', { a: 2 })).toEqual({ a: 2 })
   expect(
     setIn(
       {},

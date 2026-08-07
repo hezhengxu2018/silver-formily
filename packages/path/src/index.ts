@@ -21,6 +21,8 @@ function isSimplePath(val: string) {
     && !val.includes('~')
     && !val.includes('[')
     && !val.includes(']')
+    && !val.includes('{')
+    && !val.includes('}')
     && !val.includes(',')
     && !val.includes(':')
     && !val.includes(' ')
