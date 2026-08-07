@@ -2,7 +2,9 @@
 
 > Popup-based select box
 
-## Template Dialog Table Picker Example
+## Template
+
+### Dialog Table Picker
 
 :::demo
 
@@ -10,7 +12,7 @@
 
 :::
 
-## Returning Full Option Values ^(5.2.0)
+### Returning Full Option Values ^(5.2.0)
 
 With `optionAsValue` enabled, `PickerSelect` submits the `raw` records while the internal select still uses `value` for display.
 
@@ -22,6 +24,68 @@ With `optionAsValue` enabled, `PickerSelect` submits the `raw` records while the
 
 - When `optionAsValue` is enabled, `Field.value` contains the option's `raw` object while the internal select still uses the option's `value` for display. Returned options should provide `raw` in full-value mode.
 - Use `valueKey` when the raw record's identifier is not `id`.
+
+### Single-Selection Dialog
+
+In single-selection mode, `PickerSelect` stores one string, number, or object instead of an array.
+
+:::demo
+
+../../en/demos/picker-select/template-single
+
+:::
+
+## JSON Schema
+
+### Scalar value
+
+:::demo
+
+../../en/demos/picker-select/json-schema-scalar
+
+:::
+
+### Full object ^(5.2.0)
+
+:::demo
+
+../../en/demos/picker-select/json-schema-object
+
+:::
+
+### Multiple selection
+
+:::demo
+
+../../en/demos/picker-select/json-schema-multiple
+
+:::
+
+## Markup Schema
+
+### Scalar value
+
+:::demo
+
+../../en/demos/picker-select/markup-schema-scalar
+
+:::
+
+### Full object ^(5.2.0)
+
+:::demo
+
+../../en/demos/picker-select/markup-schema-object
+
+:::
+
+### Multiple selection
+
+:::demo
+
+../../en/demos/picker-select/markup-schema-multiple
+
+:::
 
 ## API
 

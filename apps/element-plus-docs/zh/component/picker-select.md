@@ -2,7 +2,9 @@
 
 > 弹窗版下拉选择框
 
-## Template 弹窗表格选择
+## Template
+
+### 弹窗表格选择
 
 :::demo
 
@@ -10,7 +12,7 @@ picker-select/template-dialog-table
 
 :::
 
-## 返回完整选项值 ^(5.2.0)
+### 返回完整选项值 ^(5.2.0)
 
 开启 `optionAsValue` 后，`PickerSelect` 对外提交的是 `raw` 原始对象，内部仍使用 `value` 进行返显。
 
@@ -22,6 +24,68 @@ picker-select/template-option-as-value
 
 - 开启了 `optionAsValue` 之后 `openPicker` 返回的 option 应提供 `raw`。
 - 如果原始对象的主键不是 `id`，可以通过 `valueKey` 指定主键字段。
+
+### 单选弹窗表格选择
+
+单选时 `PickerSelect` 的字段值是单个字符串、数字或对象，不会包装成数组。
+
+:::demo
+
+picker-select/template-single
+
+:::
+
+## JSON Schema
+
+### 标量值
+
+:::demo
+
+picker-select/json-schema-scalar
+
+:::
+
+### 完整对象 ^(5.2.0)
+
+:::demo
+
+picker-select/json-schema-object
+
+:::
+
+### 多选
+
+:::demo
+
+picker-select/json-schema-multiple
+
+:::
+
+## Markup Schema
+
+### 标量值
+
+:::demo
+
+picker-select/markup-schema-scalar
+
+:::
+
+### 完整对象 ^(5.2.0)
+
+:::demo
+
+picker-select/markup-schema-object
+
+:::
+
+### 多选
+
+:::demo
+
+picker-select/markup-schema-multiple
+
+:::
 
 ## API
 
