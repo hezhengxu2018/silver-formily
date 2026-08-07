@@ -1,5 +1,15 @@
 # 更新日志
 
+## 5.2.0
+
+### Minor Changes
+
+- 49bddfd: picker-select 新增optionAsValue配置项
+
+### Patch Changes
+
+- da65f3e: 修复forOpen函数传参错误
+
 ## 5.1.0
 
 ### Minor Changes

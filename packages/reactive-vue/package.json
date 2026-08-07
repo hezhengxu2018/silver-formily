@@ -1,7 +1,7 @@
 {
   "name": "@silver-formily/reactive-vue",
   "type": "module",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "Vue 3 integration layer for Silver Formily reactive state, observers, and lifecycle-bound effects",
   "author": "Hezhengxu",
   "license": "MIT",

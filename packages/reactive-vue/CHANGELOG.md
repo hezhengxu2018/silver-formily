@@ -1,5 +1,11 @@
 # 更新日志
 
+## 2.0.2
+
+### Patch Changes
+
+- 6f527ce: reactiveComputed支持跟踪vue的响应式
+
 ## 2.0.1
 
 ### Patch Changes

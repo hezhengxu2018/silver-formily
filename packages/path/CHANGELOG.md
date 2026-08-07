@@ -1,5 +1,11 @@
 # @silver-formily/path
 
+## 1.0.1
+
+### Patch Changes
+
+- 481715c: 修复单一key值的对象路径无法解析的问题
+
 ## 1.0.0
 
 ### Major Changes

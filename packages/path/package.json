@@ -1,7 +1,7 @@
 {
   "name": "@silver-formily/path",
   "type": "module",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Path parsing, pattern matching, and deep access utilities used across Silver Formily",
   "author": "hezhengxu",
   "license": "MIT",
