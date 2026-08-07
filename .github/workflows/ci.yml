@@ -88,20 +88,6 @@ jobs:
       - name: Run lint
         run: pnpm lint
 
-      - name: Run reactive-vue tests with coverage
-        run: pnpm --filter @silver-formily/reactive-vue test:coverage
-
-      - name: Upload reactive-vue coverage to Codecov
-        if: ${{ env.CODECOV_TOKEN != '' }}
-        uses: codecov/codecov-action@v5
-        with:
-          token: ${{ env.CODECOV_TOKEN }}
-          files: ./packages/reactive-vue/coverage/coverage-final.json
-          disable_search: true
-          plugins: noop
-          flags: reactive-vue
-          fail_ci_if_error: true
-
       - name: Build publishable workspace packages
         run: |
           pnpm --filter @silver-formily/core build
@@ -115,6 +101,20 @@ jobs:
           pnpm --filter @silver-formily/validator build
           pnpm --filter @silver-formily/vant build
           pnpm --filter @silver-formily/vue build
+
+      - name: Run reactive-vue tests with coverage
+        run: pnpm --filter @silver-formily/reactive-vue test:coverage
+
+      - name: Upload reactive-vue coverage to Codecov
+        if: ${{ env.CODECOV_TOKEN != '' }}
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ env.CODECOV_TOKEN }}
+          files: ./packages/reactive-vue/coverage/coverage-final.json
+          disable_search: true
+          plugins: noop
+          flags: reactive-vue
+          fail_ci_if_error: true
 
       - name: Run FormItem visual regression tests
         if: ${{ steps.visual-changes.outputs.run == 'true' }}
