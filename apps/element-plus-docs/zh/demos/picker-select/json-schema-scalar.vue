@@ -9,17 +9,15 @@ const people = [
   { id: 'u3', name: 'Linus Torvalds', team: 'Kernel' },
 ]
 const options = people.map(item => ({ label: item.name, value: item.id, raw: item }))
-function openPicker({ field }) {
-  return FormDialog('选择负责人', () => <FieldDialog />)
+async function openPicker({ field }) {
+  const values_1 = await FormDialog('选择负责人', () => <FieldDialog />)
     .forOpen((dialogForm, next) => {
       dialogForm.setValues({ person: field?.value })
       next()
     })
     .open()
-    .then((values) => {
-      const item = people.find(item => item.id === values.person)
-      return item ? { label: item.name, value: item.id, raw: item } : undefined
-    })
+  const item = people.find(item_1 => item_1.id === values_1.person)
+  return item ? { label: item.name, value: item.id, raw: item } : undefined
 }
 function FieldDialog() {
   return (

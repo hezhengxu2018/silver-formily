@@ -9,8 +9,8 @@ const people = [
   { id: 'u3', name: 'Linus Torvalds', team: 'Kernel' },
 ]
 const options = people.map(item => ({ label: item.name, value: item.id, raw: item }))
-function openPicker({ field }) {
-  return FormDialog('选择负责人', () => (
+async function openPicker({ field }) {
+  const values_1 = await FormDialog('选择负责人', () => (
     <Field name="person" component={[SelectTable, { mode: 'single', rowKey: 'id', optionAsValue: true, showAlertToolbar: false, columns: [{ prop: 'name', label: '姓名' }, { prop: 'team', label: '团队' }] }]} dataSource={people} />
   ))
     .forOpen((dialogForm, next) => {
@@ -18,7 +18,7 @@ function openPicker({ field }) {
       next()
     })
     .open()
-    .then(values => values.person && { label: values.person.name, value: values.person.id, raw: values.person })
+  return values_1.person && { label: values_1.person.name, value: values_1.person.id, raw: values_1.person }
 }
 const schema = { type: 'object', properties: { person: {
   'type': 'object',

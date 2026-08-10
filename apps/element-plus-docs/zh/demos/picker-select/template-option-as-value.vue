@@ -17,12 +17,12 @@ const userOptions = userRows.map(item => ({
   raw: item,
 }))
 
-function openUserPicker({ field }) {
+async function openUserPicker({ field }) {
   const selectedIds = Array.isArray(field?.value)
     ? field.value.map(item => typeof item === 'object' ? item.id : item)
     : []
 
-  return FormDialog('选择成员', () => (
+  const values_1 = await FormDialog('选择成员', () => (
     <Field
       name="users"
       component={[
@@ -41,16 +41,16 @@ function openUserPicker({ field }) {
   ))
     .forOpen((dialogForm, next) => {
       dialogForm.setValues({
-        users: userRows.filter(item => selectedIds.includes(item.id)),
+        users: userRows.filter(item_1 => selectedIds.includes(item_1.id)),
       })
       next()
     })
     .open()
-    .then(values => values.users.map(item => ({
-      label: `${item.name} / ${item.team}`,
-      value: item.id,
-      raw: item,
-    })))
+  return values_1.users.map(item_2 => ({
+    label: `${item_2.name} / ${item_2.team}`,
+    value: item_2.id,
+    raw: item_2,
+  }))
 }
 
 function log(value: any) {

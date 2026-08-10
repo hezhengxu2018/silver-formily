@@ -5,17 +5,15 @@ import { createSchemaField, Field, FormProvider } from '@silver-formily/vue'
 
 const people = [{ id: 101, name: 'Ada Lovelace', team: 'Math' }, { id: 102, name: 'Grace Hopper', team: 'Compiler' }]
 const options = people.map(item => ({ label: item.name, value: item.id, raw: item }))
-function openPicker({ field }) {
-  return FormDialog('选择负责人', () => <Field name="person" component={[SelectTable, { mode: 'single', rowKey: 'id', showAlertToolbar: false, columns: [{ prop: 'name', label: '姓名' }, { prop: 'team', label: '团队' }] }]} dataSource={people} />)
+async function openPicker({ field }) {
+  const values_1 = await FormDialog('选择负责人', () => <Field name="person" component={[SelectTable, { mode: 'single', rowKey: 'id', showAlertToolbar: false, columns: [{ prop: 'name', label: '姓名' }, { prop: 'team', label: '团队' }] }]} dataSource={people} />)
     .forOpen((dialogForm, next) => {
       dialogForm.setValues({ person: field?.value })
       next()
     })
     .open()
-    .then((values) => {
-      const item = people.find(item => item.id === values.person)
-      return item ? { label: item.name, value: item.id, raw: item } : undefined
-    })
+  const item = people.find(item_1 => item_1.id === values_1.person)
+  return item ? { label: item.name, value: item.id, raw: item } : undefined
 }
 const form = createForm()
 const { SchemaField, SchemaNumberField } = createSchemaField({ components: { FormItem, PickerSelect, SelectTable } })

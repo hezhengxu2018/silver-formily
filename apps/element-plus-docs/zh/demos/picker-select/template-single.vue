@@ -11,14 +11,19 @@ const people = [
 ]
 const options = people.map(item => ({ label: item.name, value: item.id, raw: item }))
 
-function openPicker({ field }) {
-  return FormDialog('选择负责人', () => (
+async function openPicker({ field }) {
+  const values_1 = await FormDialog('选择负责人', () => (
     <Field
       name="person"
-      component={[SelectTable, { mode: 'single', rowKey: 'id', showAlertToolbar: false, columns: [
-        { prop: 'name', label: '姓名' },
-        { prop: 'team', label: '团队' },
-      ] }]}
+      component={[SelectTable, {
+        mode: 'single',
+        rowKey: 'id',
+        showAlertToolbar: false,
+        columns: [
+          { prop: 'name', label: '姓名' },
+          { prop: 'team', label: '团队' },
+        ],
+      }]}
       dataSource={people}
     />
   ))
@@ -27,10 +32,8 @@ function openPicker({ field }) {
       next()
     })
     .open()
-    .then((values) => {
-      const item = people.find(item => item.id === values.person)
-      return item ? { label: item.name, value: item.id, raw: item } : undefined
-    })
+  const item = people.find(item_1 => item_1.id === values_1.person)
+  return item ? { label: item.name, value: item.id, raw: item } : undefined
 }
 
 function log(value: any) {

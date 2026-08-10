@@ -9,9 +9,9 @@ const people = [
   { id: 'u3', name: 'Linus Torvalds', team: 'Kernel' },
 ]
 const options = people.map(item => ({ label: item.name, value: item.id, raw: item }))
-function openPicker({ field }) {
+async function openPicker({ field }) {
   const selectedIds = Array.isArray(field?.value) ? field.value : []
-  return FormDialog('选择成员', () => (
+  const values_1 = await FormDialog('选择成员', () => (
     <Field
       name="people"
       component={[SelectTable, { mode: 'multiple', rowKey: 'id', optionAsValue: true, columns: [{ prop: 'name', label: '姓名' }, { prop: 'team', label: '团队' }] }]}
@@ -23,7 +23,7 @@ function openPicker({ field }) {
       next()
     })
     .open()
-    .then(values => values.people.map(item => ({ label: item.name, value: item.id, raw: item })))
+  return values_1.people.map(item_1 => ({ label: item_1.name, value: item_1.id, raw: item_1 }))
 }
 const schema = { type: 'object', properties: { people: {
   'type': 'array',

@@ -17,8 +17,8 @@ const userOptions = userRows.map(item => ({
   raw: item,
 }))
 
-function openUserPicker({ field }) {
-  return FormDialog('选择成员', () => (
+async function openUserPicker({ field }) {
+  const values_1 = await FormDialog('选择成员', () => (
     <Field
       name="users"
       component={[
@@ -42,11 +42,11 @@ function openUserPicker({ field }) {
       next()
     })
     .open()
-    .then(values => values.users.map(item => ({
-      label: `${item.name} / ${item.team}`,
-      value: item.id,
-      raw: item,
-    })))
+  return values_1.users.map(item_1 => ({
+    label: `${item_1.name} / ${item_1.team}`,
+    value: item_1.id,
+    raw: item_1,
+  }))
 }
 
 function log(value: any) {
