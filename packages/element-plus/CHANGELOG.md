@@ -1,5 +1,11 @@
 # 更新日志
 
+## 5.2.1
+
+### Patch Changes
+
+- 1100a95: 恢复css inject配置
+
 ## 5.2.0
 
 ### Minor Changes
