@@ -23,12 +23,12 @@ function openPicker({ field }) {
     />
   ))
     .forOpen((dialogForm, next) => {
-      dialogForm.setValues({ person: people.find(item => item.id === field?.value) })
+      dialogForm.setValues({ person: field?.value })
       next()
     })
     .open()
     .then((values) => {
-      const item = values.person
+      const item = people.find(item => item.id === values.person)
       return item ? { label: item.name, value: item.id, raw: item } : undefined
     })
 }

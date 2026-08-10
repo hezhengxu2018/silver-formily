@@ -8,11 +8,14 @@ const options = people.map(item => ({ label: item.name, value: item.id, raw: ite
 function openPicker({ field }) {
   return FormDialog('Select owner', () => <Field name="person" component={[SelectTable, { mode: 'single', rowKey: 'id', showAlertToolbar: false, columns: [{ prop: 'name', label: 'Name' }, { prop: 'team', label: 'Team' }] }]} dataSource={people} />)
     .forOpen((dialogForm, next) => {
-      dialogForm.setValues({ person: people.find(item => item.id === field?.value) })
+      dialogForm.setValues({ person: field?.value })
       next()
     })
     .open()
-    .then(values => values.person && { label: values.person.name, value: values.person.id, raw: values.person })
+    .then((values) => {
+      const item = people.find(item => item.id === values.person)
+      return item ? { label: item.name, value: item.id, raw: item } : undefined
+    })
 }
 const form = createForm()
 const { SchemaField, SchemaNumberField } = createSchemaField({ components: { FormItem, PickerSelect, SelectTable } })

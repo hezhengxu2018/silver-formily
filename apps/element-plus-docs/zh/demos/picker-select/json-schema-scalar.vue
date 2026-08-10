@@ -12,11 +12,14 @@ const options = people.map(item => ({ label: item.name, value: item.id, raw: ite
 function openPicker({ field }) {
   return FormDialog('选择负责人', () => <FieldDialog />)
     .forOpen((dialogForm, next) => {
-      dialogForm.setValues({ person: people.find(item => item.id === field?.value) })
+      dialogForm.setValues({ person: field?.value })
       next()
     })
     .open()
-    .then(values => values.person && { label: values.person.name, value: values.person.id, raw: values.person })
+    .then((values) => {
+      const item = people.find(item => item.id === values.person)
+      return item ? { label: item.name, value: item.id, raw: item } : undefined
+    })
 }
 function FieldDialog() {
   return (
