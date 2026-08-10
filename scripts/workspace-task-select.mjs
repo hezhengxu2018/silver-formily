@@ -30,11 +30,8 @@ async function getTaskWorkspaces(task) {
         if (!command)
           continue
 
-        const taskConfig = packageJson.silverFormily?.tasks?.[task] ?? {}
-
         workspaces.push({
           command,
-          filterMode: taskConfig.filterMode,
           group: dir,
           name: packageJson.name,
           path: relativePath,
@@ -112,7 +109,9 @@ function getTurboArgs(selection, options, extraTurboArgs) {
   const args = ['exec', 'turbo', 'run', task]
 
   if (selection?.type === 'workspace') {
-    const resolvedFilterMode = selection.workspace.filterMode ?? filterMode
+    const resolvedFilterMode = selection.workspace.group === 'apps'
+      ? 'workspace-only'
+      : filterMode
     const filterSuffix = resolvedFilterMode === 'with-dependencies' ? '...' : ''
     args.push(`--filter=${selection.workspace.name}${filterSuffix}`)
   }
@@ -121,8 +120,11 @@ function getTurboArgs(selection, options, extraTurboArgs) {
 }
 
 function shouldRunWorkspaceDirectly(selection, options, extraArgs) {
+  const directWorkspaceGroups = options.directWorkspaceGroups
   return selection?.type === 'workspace'
-    && options.runSelectedWorkspaceDirectly
+    && (directWorkspaceGroups
+      ? directWorkspaceGroups.includes(selection.workspace.group)
+      : options.runSelectedWorkspaceDirectly)
     && (extraArgs.length === 0 || extraArgs[0] === '--')
 }
 

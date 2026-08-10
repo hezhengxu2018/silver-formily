@@ -4,9 +4,8 @@
 
 ## Commands
 
-- `pnpm dev`: `pnpm run docs:deps && vitepress dev .`
-- `pnpm docs:build`: `pnpm run docs:deps && vitepress build .`
-- `pnpm docs:deps`: 读取 `silverFormily.docs.buildDependencies`，先构建 `@silver-formily/reactive-vue` 与 `@silver-formily/vue` 产物
+- `pnpm dev -- json-schema-docs`: 通过 Turbo 启动文档站，并先构建依赖产物
+- `pnpm docs:build`: 构建静态站点（根级 Turbo 会先构建依赖）
 - `pnpm preview`: 本地预览构建产物
 - `pnpm lint` / `pnpm format`: 运行并修复 ESLint
 

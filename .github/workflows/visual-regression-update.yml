@@ -22,6 +22,8 @@ jobs:
         shell: bash
     env:
       PLAYWRIGHT_BROWSERS_PATH: /ms-playwright
+      TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+      TURBO_TEAM: ${{ vars.TURBO_TEAM }}
 
     steps:
       - name: Checkout selected branch
@@ -41,7 +43,7 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Build Element Plus dependency graph
-        run: pnpm --filter @silver-formily/element-plus... build
+        run: pnpm exec turbo run build --filter=@silver-formily/element-plus...
 
       - name: Update FormItem visual baselines
         run: pnpm --filter @silver-formily/element-plus test:visual:update

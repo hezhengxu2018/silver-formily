@@ -116,8 +116,8 @@ pnpm test -- @silver-formily/element-plus
 # Build one runtime package
 pnpm --filter @silver-formily/vue build
 
-# Build one docs site
-pnpm --filter element-plus-docs docs:build
+# Build one docs site and its dependencies
+pnpm exec turbo run docs:build --filter=element-plus-docs
 ```
 
 ## Docs Workflow Conventions
@@ -125,8 +125,8 @@ pnpm --filter element-plus-docs docs:build
 - Root `pnpm dev` is the default entry point for docs work.
 - Docs apps use `docs:build` instead of a regular `build`.
 - When a docs app documents one internal package directly, prefer a VitePress `alias` to source.
-- When internal dependencies are only needed for demos, prefer `docs:deps` to build artifacts instead of pulling them into `dev/watch`.
-- Prebuilt internal dependencies should be declared in `silverFormily.docs.buildDependencies`, then translated into Turbo filters by the shared script.
+- When internal dependencies are only needed for demos, the docs app's Turbo `dev` task prebuilds their artifacts through `dependsOn: ["^build"]` without starting their development servers.
+- Docs development and builds run through Turbo, so dependency ordering and caching are managed centrally in `turbo.json`.
 
 ## Engineering Conventions
 

@@ -30,12 +30,11 @@ This document defines repository-wide expectations for anyone automating tasks (
 
 - Root `pnpm dev` is the default entry for docs work. The picker only shows apps/docs by default and starts the selected docs app itself.
 - A docs app that documents one internal package directly should usually alias that package to source in VitePress.
-- Internal packages that only appear in demos should not be started in `dev/watch`; build them first via a package-local `docs:deps` script instead.
-- Docs apps should expose `docs:build` instead of a regular `build`. If a docs app has `docs:deps`, both `dev` and `docs:build` should reuse that same dependency preparation so direct docs builds stay reproducible.
-- Docs dependency build targets belong in `silverFormily.docs.buildDependencies`; keep `docs:deps` itself as a shared script entry instead of repeating Turbo filter commands in every docs app.
+- Internal packages that only appear in demos should not be started in `dev/watch`; the docs app's Turbo `dev` task builds them through `dependsOn: ["^build"]` instead.
+- Docs apps should expose `docs:build` instead of a regular `build`; the root Turbo task builds their workspace dependencies before VitePress.
 - If an internal dependency does not need source-level hot updates, prefer built artifacts and skip VitePress `alias`.
 - Package-level `dev` tasks still exist for explicit use (`pnpm dev -- <workspace-name>`), but they are not the default docs workflow.
-- Keep docs app scripts ordered as `dev`, `docs:deps`, `preview`, `lint`, `format`, `check-types`, `docs:build`. Even when a site has no build dependencies, keep `docs:deps` wired to the shared script so the shape stays consistent.
+- Keep docs app scripts ordered as `dev`, `preview`, `lint`, `format`, `check-types`, `docs:build`.
 
 ## Code Style & Quality Gates
 

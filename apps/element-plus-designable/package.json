@@ -4,8 +4,7 @@
   "private": true,
   "description": "Element Plus designable editor aligned with the official designable structure",
   "scripts": {
-    "dev": "pnpm run dev:deps && vite",
-    "dev:deps": "node ../../scripts/dev-deps.mjs",
+    "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
     "lint": "eslint . && pnpm run lint:styles",
@@ -13,27 +12,6 @@
     "format": "eslint . --fix && pnpm run format:styles",
     "format:styles": "stylelint \"**/*.{css,scss,vue}\" --fix",
     "check-types": "vue-tsc --noEmit"
-  },
-  "silverFormily": {
-    "tasks": {
-      "dev": {
-        "filterMode": "workspace-only",
-        "buildDependencies": [
-          "@silver-formily/core",
-          "@silver-formily/designer-core",
-          "@silver-formily/designer-vue",
-          "@silver-formily/element-plus",
-          "@silver-formily/grid",
-          "@silver-formily/json-schema",
-          "@silver-formily/path",
-          "@silver-formily/reactive",
-          "@silver-formily/reactive-vue",
-          "@silver-formily/shared",
-          "@silver-formily/validator",
-          "@silver-formily/vue"
-        ]
-      }
-    }
   },
   "dependencies": {
     "@lucide/vue": "catalog:",

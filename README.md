@@ -116,8 +116,8 @@ pnpm test -- @silver-formily/element-plus
 # 构建某个运行时包
 pnpm --filter @silver-formily/vue build
 
-# 构建某个文档站
-pnpm --filter element-plus-docs docs:build
+# 构建某个文档站及其依赖
+pnpm exec turbo run docs:build --filter=element-plus-docs
 ```
 
 ## 文档站开发约定
@@ -125,8 +125,8 @@ pnpm --filter element-plus-docs docs:build
 - 根级 `pnpm dev` 是默认入口，优先用于启动文档站。
 - 文档站统一使用 `docs:build`，不再暴露普通 `build`。
 - 如果文档站直接服务于某个内部包，优先通过 VitePress `alias` 指向源码。
-- 如果某些内部依赖只在示例中使用，优先通过 `docs:deps` 预构建产物，而不是把它们拉进 `dev/watch`。
-- 需要预构建的内部依赖统一写在 `silverFormily.docs.buildDependencies` 中，再由共享脚本转换为 Turbo 过滤条件。
+- 如果某些内部依赖只在示例中使用，文档站的 Turbo `dev` 任务会通过 `dependsOn: ["^build"]` 预构建产物，而不会启动这些依赖的开发服务。
+- 文档站的开发和构建统一通过 Turbo 执行，依赖关系和缓存由 `turbo.json` 管理。
 
 ## 工程约定
 

@@ -4,26 +4,12 @@
   "private": true,
   "description": "Documentation site for @silver-formily/json-schema",
   "scripts": {
-    "dev": "pnpm run docs:deps && vitepress dev .",
-    "docs:deps": "node ../../scripts/docs-deps.mjs",
+    "dev": "vitepress dev .",
     "preview": "vitepress preview .",
     "lint": "eslint .",
     "format": "eslint . --fix",
     "check-types": "vue-tsc --noEmit",
-    "docs:build": "pnpm run docs:deps && vitepress build ."
-  },
-  "silverFormily": {
-    "docs": {
-      "buildDependencies": [
-        "@silver-formily/reactive-vue",
-        "@silver-formily/vue"
-      ]
-    },
-    "tasks": {
-      "dev": {
-        "filterMode": "workspace-only"
-      }
-    }
+    "docs:build": "vitepress build ."
   },
   "dependencies": {
     "@silver-formily/core": "workspace:*",
