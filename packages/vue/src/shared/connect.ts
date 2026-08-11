@@ -1,5 +1,5 @@
 import type { GeneralField } from '@silver-formily/core'
-import type { Component, DefineComponent, FunctionalComponent } from 'vue'
+import type { Component, DefineComponent, FunctionalComponent, SlotsType } from 'vue'
 import type {
   IComponentMapper,
   IStateMapper,
@@ -161,12 +161,20 @@ type ConnectedProps<T extends Component, Props extends object> = T extends new (
   ? Props & Omit<TargetProps, keyof Props>
   : Props
 
+type ConnectedSlots<T extends Component> = T extends new (...args: any[]) => {
+  $slots: infer TargetSlots
+}
+  ? TargetSlots extends Record<string, any>
+    ? SlotsType<TargetSlots>
+    : SlotsType
+  : SlotsType
+
 type ConnectedStatics<T extends Component> = Pick<T, keyof T>
 
 export type ConnectedComponent<
   T extends Component,
   Props extends object = VueComponentProps<T>,
-> = Omit<DefineComponent<ConnectedProps<T, Props>>, 'new'>
+> = Omit<DefineComponent<ConnectedProps<T, Props>, any, any, any, any, any, any, any, string, any, any, any, ConnectedSlots<T>>, 'new'>
   & ConnectedStatics<T>
   & (T extends new (...args: any[]) => any
     ? new (...args: any[]) => ConnectedInstance<T, Props>
