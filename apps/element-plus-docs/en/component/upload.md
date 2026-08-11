@@ -8,11 +8,9 @@ The first only provides file selection. File binaries are uploaded to the backen
 
 The second uploads files before the form is submitted, which is the more common case in practice, such as uploading to OSS in advance. In this mode, form submission does not send file binaries directly. Instead, it submits strings such as URLs or other backend identifiers that reference the uploaded files.
 
-This component handles those two flows differently. When `action` is `'#'` and `httpRequest` is not configured, it is treated as the first mode. In that case, `onChange` is triggered when the `status` of items in `fileList` changes.
+The upload behavior itself is controlled by Element Plus Upload props such as `action` and `httpRequest`.
 
-When either `action` or `httpRequest` is configured, it is treated as the second mode. In that case, `onChange` is triggered after the request completes, which means when the `response` field of any item in `fileList` changes.
-
-**The file list shown to the user and the final value submitted by the form are intentionally separated and flow in one direction only.** When `fileList` (`dataSource`) changes, `onChange` is triggered to update `Field.value`. But when `value` changes, `dataSource` is not updated automatically. That design matches most business cases: users add or remove files from `fileList`, and the final submitted `value` is derived from it.
+**The file list shown to the user and the final value submitted by the form are intentionally separated and converted in one direction only.** When ElUpload's file list changes, the component synchronizes the latest list to `Field.dataSource`, transforms it with `formatValue`, and emits `update:modelValue` to update `Field.value`. Changes to `Field.value` do not update `Field.dataSource` in the opposite direction.
 
 The main exception is form rehydration. When restoring existing data, setting `Field.value` is not enough. You also need to construct the component's `fileList` (`dataSource`) yourself. How much detail you include in that `fileList` depends on your actual business needs.
 
@@ -46,7 +44,7 @@ The main exception is form rehydration. When restoring existing data, setting `F
 
 ::: tip Tip
 
-1. The component now maps `fileList` to `Field.dataSource` instead of `Field.value`. When `dataSource` changes, it triggers `onChange`, and `value` is produced through `formatValue`.
+1. The component maps `fileList` to `Field.dataSource` instead of `Field.value`. When `dataSource` changes, it produces the form value with `formatValue` and updates `Field.value` through `update:modelValue`.
 2. When `limit` is `1`, the previous file is automatically replaced. This behavior is built in and cannot be overridden.
 3. If `accept` contains the string `image` and an item in `fileList` provides a `url`, image preview is enabled automatically. If you want to disable that behavior, set `onPreview` to an empty function.
 
@@ -60,7 +58,7 @@ The main exception is form rehydration. When restoring existing data, setting `F
 | `fileList` ^(1.0.0)         | File list, mapped to `dataSource` and forwarded to `ElUpload.fileList`                     | ^[array]`UploadFile[]`                        | `[]`                                       |
 | `imageViewerProps` ^(1.0.0) | Props for the image viewer, used to customize image preview behavior when uploading images | ^[object]`ImageViewerProps`                   | `{ teleported: true, showProgress: true }` |
 
-`onChange` and `onUpdate:fileList` are reserved and should not be used directly. For all other props and events, see [https://element-plus.org/en-US/component/upload.html](https://element-plus.org/en-US/component/upload.html)
+`onChange` and `onUpdate:fileList` are consumed internally and are not forwarded. Do not use them directly. For all other props and events, see [https://element-plus.org/en-US/component/upload.html](https://element-plus.org/en-US/component/upload.html)
 
 ## Slots ^(1.0.0)
 

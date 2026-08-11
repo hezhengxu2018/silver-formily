@@ -2,9 +2,11 @@
 
 > 上传组件，Upload组件经过了重构，虽然总体上与之前总体是兼容的，但是添加了很多的默认行为。具体参见API部分。
 
-上传组件的类型可以分为两个种：一种是仅提供选择文件的功能，文件数据会在用户点击提交时随表单的From对象一起上传给后端；另一种是在提交表单之前先上传至后端（大部分情况下是提前上传至OSS），在提交表单时不提交文件的二进制信息而是获取桶内对应文件的url或者其他可以获取已上传文件的字符串。本组件对这两种行为做了不同的处理。当组件的`action`属性为`'#'`且没有配置`httpRequest`属性时会将属性当做第一种情况处理，onChange事件会在`fileList`的`status`改变时触发。当用户配置了两者中的任意一项时会当做第二种情况处理，onChange事件会在请求完成（即`fileList`中有任意一项的`response`属性发生改变）时触发。
+上传组件的类型可以分为两种：一种是仅提供选择文件的功能，文件数据会在用户点击提交时随表单的 Form 对象一起上传给后端；另一种是在提交表单之前先上传至后端（大部分情况下是提前上传至 OSS），在提交表单时不提交文件的二进制信息，而是提交文件 URL 或其他可用于获取已上传文件的标识。具体的上传行为由 Element Plus Upload 的 `action`、`httpRequest` 等属性控制。
 
-**显示给用户看的文件列表与表单最后提交的值是分离的、是单向的**，即当`fileList`（`dataSource`）改变时会触发onChange事件（修改`Field`的`value`），但是当`value`改变时不会修改`dataSource`，这是因为大部分情况下这种改动都是单向的：用户添加删除选择的文件时从`fileList`中获取对应的`value`。只有一种情况下是例外的即表单信息的反显:在处理反显时除了需要设置`Field`的`value`外还需要自己组装组件的`fileList`（`dataSource`），具体需要将`fileList`组装到什么程度可以根据业务需要自己决定。
+**显示给用户的文件列表与表单最终提交的值是分离的，并且只进行单向转换。** ElUpload 的文件列表发生变化时，组件会在内部将最新列表同步到 `Field.dataSource`，再通过 `formatValue` 转换，并触发 `update:modelValue` 更新 `Field.value`；`Field.value` 变化时不会反向修改 `Field.dataSource`。
+
+表单数据反显是需要手动处理的例外场景：除了设置 `Field.value`，还需要根据业务需要组装并设置组件的 `fileList`（即 `Field.dataSource`）。
 
 ## Markup Schema 案例
 
@@ -36,7 +38,7 @@ upload/template
 
 ::: tip 提示
 
-1. 现在组件的`fileList`属性现在会映射为`Field`的`dataSource`属性，而不是之前的`value`属性，当`dataSource`（即`fileList`）改变时会触发onChange事件，`value`会经过`formatValue`函数处理。
+1. 组件的 `fileList` 属性映射到 `Field.dataSource`，而不是 `Field.value`。当 `dataSource`（即 `fileList`）改变时，组件会使用 `formatValue` 生成表单值，并通过 `update:modelValue` 更新 `Field.value`。
 
 2. 在`limit`为`1`时会自动替换掉之前的文件，这部分逻辑无法覆写。
 
@@ -51,7 +53,7 @@ upload/template
 | fileList ^(1.0.0)         | 文件列表，映射为`dataSource`,`ElUpload`的 fileList 属性 | ^[array]`UploadFile[]`                        | `[]`                                       |
 | imageViewerProps ^(1.0.0) | 图片预览器的属性配置，当上传图片时可用于自定义预览行为  | ^[object]`ImageViewerProps`                   | `{ teleported: true, showProgress: true }` |
 
-`onChange`事件与`onUpdate:fileList`事件被占用，请勿使用。其余属性与事件请参考 [https://cn.element-plus.org/zh-CN/component/upload.html](https://cn.element-plus.org/zh-CN/component/upload.html)
+`onChange` 与 `onUpdate:fileList` 由组件内部消费，不会向外透传，请勿直接使用。其余属性与事件请参考 [https://cn.element-plus.org/zh-CN/component/upload.html](https://cn.element-plus.org/zh-CN/component/upload.html)
 
 ## 插槽 ^(1.0.0)
 

@@ -12,7 +12,7 @@ import { isFn } from '@silver-formily/shared'
 import { useField } from '@silver-formily/vue'
 import { ElButton, ElIcon, ElImageViewer, ElUpload, genFileId } from 'element-plus'
 import { computed, ref, useAttrs } from 'vue'
-import { hasSlotContent, useExcludedAttrs } from '../__builtins__'
+import { hasSlotContent, stylePrefix, useExcludedAttrs } from '../__builtins__'
 
 defineOptions({
   name: 'FUpload',
@@ -46,6 +46,10 @@ const emit = defineEmits(['update:modelValue'])
 
 const uploadRef = ref<UploadInstance>()
 const attrs = useExcludedAttrs() as ComputedRef<UploadProps>
+const uploadClass = computed(() => [
+  `${stylePrefix}-upload`,
+  attrs.value.drag && `${stylePrefix}-upload--drag`,
+])
 const innerAttrs = useExcludedAttrs([
   'onChange',
   'onRemove',
@@ -53,6 +57,8 @@ const innerAttrs = useExcludedAttrs([
   'onError',
   'onPreview',
   'fileList',
+  'modelValue',
+  'onUpdate:modelValue',
   'onUpdate:fileList',
 ])
 const rawAttrs = useAttrs()
@@ -136,6 +142,7 @@ reactionWatch(() => {
 <template>
   <ElUpload
     ref="uploadRef"
+    :class="uploadClass"
     v-bind="innerAttrs"
     :file-list="$props.fileList"
     @change="handleChange"

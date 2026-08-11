@@ -5,6 +5,7 @@ import { describe, expect, it, vi } from 'vitest'
 import { render } from 'vitest-browser-vue'
 import { userEvent } from 'vitest/browser'
 import { queryElement } from '../../../test-utils/dom'
+import { FormItem } from '../../form-item'
 import { Upload } from '../index'
 import 'element-plus/theme-chalk/base.css'
 import 'element-plus/theme-chalk/el-upload.css'
@@ -34,6 +35,48 @@ describe('upload', () => {
       ))
       await expect.element(queryElement(container, '.el-upload-dragger')).toBeInTheDocument()
       await expect.element(queryElement(container, '.el-upload__text')).toHaveTextContent('拖拽上传')
+    })
+
+    it('拖拽上传在 FormItem 中应该撑满内容区域', async () => {
+      const { container } = render(() => (
+        <FormProvider form={createForm()}>
+          <div style={{ width: '828px' }}>
+            <FormItem label="拖拽上传" labelCol={4} wrapperCol={10}>
+              <Upload action="#" drag textContent="拖拽上传" />
+            </FormItem>
+          </div>
+        </FormProvider>
+      ))
+
+      const content = queryElement(container, '.el-form-item__content')
+      const uploadWrapper = queryElement(container, '.formily-element-plus-upload--drag')
+      const upload = queryElement(container, '.el-upload.is-drag')
+      const dragger = queryElement(container, '.el-upload-dragger')
+
+      await vi.waitFor(() => {
+        expect(uploadWrapper.getBoundingClientRect().width).toBe(content.getBoundingClientRect().width)
+        expect(upload.getBoundingClientRect().width).toBe(uploadWrapper.getBoundingClientRect().width)
+        expect(dragger.getBoundingClientRect().width).toBe(upload.getBoundingClientRect().width)
+      })
+    })
+
+    it('不应该将 Formily 注入的 modelValue 透传到 DOM', () => {
+      const form = createForm({
+        values: {
+          upload: ['https://example.com/file.png'],
+        },
+      })
+      const { container } = render(() => (
+        <FormProvider form={form}>
+          <Field
+            name="upload"
+            component={[Upload, { action: '#' }]}
+          />
+        </FormProvider>
+      ))
+
+      const upload = queryElement(container, '.formily-element-plus-upload')
+      expect(upload).not.toHaveAttribute('modelvalue')
     })
 
     it('应该支持卡片上传模式', async () => {

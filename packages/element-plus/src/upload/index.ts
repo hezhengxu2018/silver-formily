@@ -1,5 +1,6 @@
 import { connect, mapProps } from '@silver-formily/vue'
 import FUpload from './upload.vue'
+import './style.scss'
 
 export const Upload = connect<typeof FUpload>(
   FUpload,
