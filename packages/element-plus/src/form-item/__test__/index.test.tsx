@@ -7,7 +7,7 @@ import { render } from 'vitest-browser-vue'
 import { userEvent } from 'vitest/browser'
 import { queryElement } from '../../../test-utils/dom'
 import { stylePrefix } from '../../__builtins__'
-import { DatePicker, FormItem, FormLayout, Input } from '../../index'
+import { DatePicker, FormItem, FormLayout, Input, TimePicker } from '../../index'
 import 'element-plus/theme-chalk/index.css'
 
 describe('formItem', () => {
@@ -31,14 +31,17 @@ describe('formItem', () => {
     })
 
     it('应该继承 root attrs 且不泄漏 Formily 映射字段', async () => {
+      const fieldProps = {
+        name: 'test',
+        title: '测试标签',
+        required: true,
+        validateStatus: 'error',
+      }
       const { container } = render(() => (
         <FormProvider form={createForm()}>
           <FormLayout>
             <Field
-              name="test"
-              title="测试标签"
-              required={true}
-              validateStatus="error"
+              {...fieldProps}
               decorator={[FormItem, {
                 'class': 'form-item-root',
                 'data-testid': 'form-item-root',
@@ -467,6 +470,56 @@ describe('formItem', () => {
       })
     })
 
+    it('默认情况下 range DatePicker 保持 Element Plus 的默认宽度', async () => {
+      const containerWidth = 600
+      const { container } = render(() => (
+        <div style={`width: ${containerWidth}px;`}>
+          <FormProvider form={createForm()}>
+            <FormLayout>
+              <Field
+                name="defaultRange"
+                title="默认范围"
+                decorator={[FormItem]}
+                component={[DatePicker, { type: 'daterange' }]}
+              />
+            </FormLayout>
+          </FormProvider>
+        </div>
+      ))
+
+      await vi.waitFor(() => {
+        const picker = container.querySelector('.el-date-editor--daterange') as HTMLElement
+        const content = container.querySelector('.el-form-item__content') as HTMLElement
+        expect(getComputedStyle(picker).width).toBe('350px')
+        expect(picker.getBoundingClientRect().width).toBeLessThan(content.getBoundingClientRect().width)
+      })
+    })
+
+    it('默认情况下 range TimePicker 保持 Element Plus 的默认宽度', async () => {
+      const containerWidth = 600
+      const { container } = render(() => (
+        <div style={`width: ${containerWidth}px;`}>
+          <FormProvider form={createForm()}>
+            <FormLayout>
+              <Field
+                name="defaultTimeRange"
+                title="默认时间范围"
+                decorator={[FormItem]}
+                component={[TimePicker, { isRange: true }]}
+              />
+            </FormLayout>
+          </FormProvider>
+        </div>
+      ))
+
+      await vi.waitFor(() => {
+        const picker = container.querySelector('.el-range-editor') as HTMLElement
+        const content = container.querySelector('.el-form-item__content') as HTMLElement
+        expect(getComputedStyle(picker).width).toBe('350px')
+        expect(picker.getBoundingClientRect().width).toBeLessThan(content.getBoundingClientRect().width)
+      })
+    })
+
     it('formLayout fullness 能让 DatePicker 撑满容器', async () => {
       const containerWidth = 600
       const { container } = render(() => (
@@ -490,6 +543,30 @@ describe('formItem', () => {
         const width = picker?.getBoundingClientRect().width ?? 0
         const contentWidth = content?.getBoundingClientRect().width ?? 0
         expect(Math.abs(width - contentWidth)).toBeLessThan(1)
+      })
+    })
+
+    it('formLayout fullness 能让 range DatePicker 撑满容器', async () => {
+      const containerWidth = 600
+      const { container } = render(() => (
+        <div style={`width: ${containerWidth}px;`}>
+          <FormProvider form={createForm()}>
+            <FormLayout fullness>
+              <Field
+                name="rangeFullness"
+                title="范围撑满"
+                decorator={[FormItem]}
+                component={[DatePicker, { type: 'daterange' }]}
+              />
+            </FormLayout>
+          </FormProvider>
+        </div>
+      ))
+
+      await vi.waitFor(() => {
+        const picker = container.querySelector('.el-date-editor--daterange') as HTMLElement
+        const content = container.querySelector('.el-form-item__content') as HTMLElement
+        expect(picker.getBoundingClientRect().width).toBe(content.getBoundingClientRect().width)
       })
     })
 

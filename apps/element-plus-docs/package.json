@@ -23,6 +23,7 @@
     "@silver-formily/shared": "workspace:*",
     "@silver-formily/vue": "workspace:*",
     "@types/lodash-es": "catalog:",
+    "@vue/shared": "catalog:",
     "element-plus": "catalog:",
     "lodash-es": "catalog:",
     "shiki": "catalog:",

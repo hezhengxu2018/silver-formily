@@ -134,6 +134,12 @@ $form-item-isolated-prefix: '#{$form-item-prefix}--isolated';
 .#{$form-item-prefix}-content__wrapper {
   display: flex;
   flex: 1;
+
+  .el-form-item__content:not(.is-fullness) > .el-range-editor {
+    flex: 0 0 var(--el-date-editor-width);
+    width: var(--el-date-editor-width);
+  }
+
   & .is-fullness > div:not(.#{$form-item-prefix}-content-after) {
     width: 100%;
   }
