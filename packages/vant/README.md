@@ -22,6 +22,25 @@
 - 动作组件：`Submit`、`Reset`
 - 预览态组件：`PreviewText.*`
 
+## TypeScript 类型
+
+组件 Props 统一按公开组件接口声明。`FooProps` 表示消费者可以传入的属性、事件和
+`v-model` 更新事件；需要组件构造类型时使用对应的 `FooComponent`：
+
+```ts
+import type { InputComponent, InputProps } from '@silver-formily/vant'
+import { Input } from '@silver-formily/vant'
+
+const inputComponent: InputComponent = Input
+const inputProps: InputProps = {
+  type: 'text',
+  formatter: value => value.trim(),
+}
+```
+
+通过 `connect` 创建自定义包装组件时，可以使用第二个类型参数声明其公开 Props。
+此次调整只影响 TypeScript 类型推导，不改变 attrs、事件和插槽的运行时转发行为。
+
 ## Design Characteristics
 
 - 面向移动端录入场景与触控交互

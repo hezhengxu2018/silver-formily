@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { Form } from '@silver-formily/core'
-import type { IQueryFormLightProps } from './types'
+import type { QueryFormLightProps } from './types'
 import { toJS } from '@silver-formily/reactive'
 import { reactionWatch } from '@silver-formily/reactive-vue'
 import { useFieldSchema, useForm } from '@silver-formily/vue'
@@ -15,7 +15,7 @@ defineOptions({
   inheritAttrs: false,
 })
 
-const props = withDefaults(defineProps<IQueryFormLightProps>(), {
+const props = withDefaults(defineProps<QueryFormLightProps>(), {
   components: () => ({}),
   throttleWait: 300,
 })

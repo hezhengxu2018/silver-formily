@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import type { Field } from '@silver-formily/core'
-import type { IFormItemProps } from '../form-item/types'
+import type { FormItemProps } from '../form-item/types'
 import { Edit } from '@element-plus/icons-vue'
 import { reactionWatch } from '@silver-formily/reactive-vue'
 import { isValid } from '@silver-formily/shared'
@@ -16,7 +16,7 @@ defineOptions({
   inheritAttrs: false,
 })
 
-const props = withDefaults(defineProps<IFormItemProps>(), {
+const props = withDefaults(defineProps<FormItemProps>(), {
   feedbackLayout: 'popover',
   size: 'default',
 })

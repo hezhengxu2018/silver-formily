@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import type { FormContext } from 'element-plus'
-import type { IFormLayoutProps } from './types'
+import type { FormLayoutProps } from './types'
 import { isEmpty, isValid } from '@silver-formily/shared'
 import { useThrottleFn } from '@vueuse/core'
 import { formContextKey, useId } from 'element-plus'
@@ -13,7 +13,7 @@ defineOptions({
   inheritAttrs: false,
 })
 
-const props = withDefaults(defineProps<IFormLayoutProps>(), {
+const props = withDefaults(defineProps<FormLayoutProps>(), {
   tag: 'form',
   colon: undefined,
   labelWrap: undefined,

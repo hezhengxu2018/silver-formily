@@ -1,9 +1,10 @@
+import type { InputProps } from './types'
 import { connect, mapProps, mapReadPretty } from '@silver-formily/vue'
 import { composeExport } from '../__builtins__'
 import { PreviewText } from '../preview-text'
 import FInput from './input.vue'
 
-const InnerInput = connect<typeof FInput>(
+const InnerInput = connect<typeof FInput, Partial<InputProps>>(
   FInput,
   mapProps({
     readOnly: 'readonly',
@@ -12,7 +13,7 @@ const InnerInput = connect<typeof FInput>(
   mapReadPretty(PreviewText.Input),
 )
 
-const TextArea = connect<typeof FInput>(
+const TextArea = connect<typeof FInput, Partial<InputProps>>(
   FInput,
   mapProps((props) => {
     return {
@@ -32,3 +33,6 @@ export const Input = composeExport(InnerInput, {
 export default Input
 
 export type { InputProps } from './types'
+
+export type InputComponent = typeof Input
+export type InputTextAreaComponent = typeof TextArea

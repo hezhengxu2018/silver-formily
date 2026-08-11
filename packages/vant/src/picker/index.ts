@@ -1,8 +1,9 @@
+import type { PickerProps } from './types'
 import { connect, mapProps, mapReadPretty } from '@silver-formily/vue'
 import { PreviewText } from '../preview-text'
 import FPicker from './picker.vue'
 
-export const Picker = connect<typeof FPicker>(
+export const Picker = connect<typeof FPicker, Partial<PickerProps>>(
   FPicker,
   mapProps({
     dataSource: 'columns',
@@ -33,3 +34,5 @@ export type {
   VanPickerProps,
   VanPopupProps,
 } from './types'
+
+export type PickerComponent = typeof Picker

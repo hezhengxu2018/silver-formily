@@ -1,9 +1,11 @@
+import type { VueComponentProps } from '@silver-formily/vue'
 import { connect, mapProps } from '@silver-formily/vue'
 import { ElColorPickerPanel } from 'element-plus'
 import { mapReadPretty } from '../__builtins__'
 import { PreviewText } from '../preview-text'
 
-export type ColorPickerPanelProps = typeof ElColorPickerPanel
+export type ColorPickerPanelProps = VueComponentProps<typeof ElColorPickerPanel>
+export type ColorPickerPanelComponent = typeof ElColorPickerPanel
 
 export const ColorPickerPanel = connect<typeof ElColorPickerPanel>(
   ElColorPickerPanel,

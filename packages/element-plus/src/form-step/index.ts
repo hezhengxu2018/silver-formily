@@ -3,6 +3,8 @@ import FFormStepPane from './form-step-pane.vue'
 import FFormStep from './form-step.vue'
 import { createFormStep } from './utils'
 
+export type { FormStepProps, IFormStepProps } from './types'
+
 export const FormStep = composeExport(FFormStep, {
   StepPane: FFormStepPane,
   createFormStep,

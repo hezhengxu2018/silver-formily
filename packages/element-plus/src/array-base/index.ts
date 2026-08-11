@@ -10,6 +10,17 @@ import ArrayBaseSortHandle from './array-base-sort-handle.vue'
 import { useArray, useIndex, useKey, useRecord } from './utils'
 import './style.scss'
 
+export type {
+  ArrayBaseAdditionProps,
+  ArrayBaseItemProps,
+  ArrayBaseOperationProps,
+  ArrayBaseProps,
+  IArrayBaseAdditionProps,
+  IArrayBaseItemProps,
+  IArrayBaseOperationProps,
+  IArrayBaseProps,
+} from './types'
+
 export const ArrayBase = composeExport(ArrayBaseInner, {
   Index: ArrayBaseIndex,
   Item: ArrayBaseItem,

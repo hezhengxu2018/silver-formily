@@ -1,8 +1,9 @@
+import type { TreeSelectProps } from './types'
 import { connect, mapProps, mapReadPretty } from '@silver-formily/vue'
 import { PreviewText } from '../preview-text'
 import FTreeSelect from './tree-select.vue'
 
-export const TreeSelect = connect<typeof FTreeSelect>(
+export const TreeSelect = connect<typeof FTreeSelect, Partial<TreeSelectProps>>(
   FTreeSelect,
   mapProps({
     dataSource: 'items',
@@ -29,3 +30,5 @@ export type {
   VanPopupProps,
   VanTreeSelectProps,
 } from './types'
+
+export type TreeSelectComponent = typeof TreeSelect

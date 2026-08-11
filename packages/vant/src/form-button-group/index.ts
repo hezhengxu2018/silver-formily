@@ -10,3 +10,5 @@ export const FormButtonGroup = composeExport(FormButtonGroupInner, {
 export default FormButtonGroup
 
 export type { FormButtonGroupProps, FormButtonGroupStickyProps } from './types'
+
+export type FormButtonGroupComponent = typeof FormButtonGroup

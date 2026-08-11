@@ -29,15 +29,17 @@ export interface TreeSelectPanelProps extends Partial<Pick<VanTreeSelectProps, '
 }
 
 export interface TreeSelectProps extends Partial<Pick<VanTreeSelectProps, 'height' | 'items' | 'max' | 'selectedIcon'>> {
-  cancelButtonText?: VanPickerProps['cancelButtonText']
-  confirmButtonText?: VanPickerProps['confirmButtonText']
-  displayFormatter?: TreeSelectDisplayFormatter
-  modelValue?: TreeSelectValue
-  placeholder?: string
-  popupProps?: TreeSelectPopupProps
-  disabled?: boolean
-  readonly?: boolean
-  title?: VanPickerProps['title']
+  'cancelButtonText'?: VanPickerProps['cancelButtonText']
+  'confirmButtonText'?: VanPickerProps['confirmButtonText']
+  'displayFormatter'?: TreeSelectDisplayFormatter
+  'modelValue'?: TreeSelectValue
+  'placeholder'?: string
+  'popupProps'?: TreeSelectPopupProps
+  'disabled'?: boolean
+  'readonly'?: boolean
+  'title'?: VanPickerProps['title']
+  'onUpdate:modelValue'?: (value: TreeSelectValue) => void
+  'onClosed'?: (...args: any[]) => any
 }
 
 export interface TreeSelectNavTextSlotProps {

@@ -1,8 +1,9 @@
+import type { DatePickerProps } from './types'
 import { connect, mapProps, mapReadPretty } from '@silver-formily/vue'
 import { PreviewText } from '../preview-text'
 import FDatePicker from './date-picker.vue'
 
-export const DatePicker = connect<typeof FDatePicker>(
+export const DatePicker = connect<typeof FDatePicker, Partial<DatePickerProps>>(
   FDatePicker,
   mapProps({
     disabled: true,
@@ -29,3 +30,5 @@ export type {
   VanDatePickerProps,
   VanPopupProps,
 } from './types'
+
+export type DatePickerComponent = typeof DatePicker

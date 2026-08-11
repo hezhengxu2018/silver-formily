@@ -4,7 +4,7 @@ import type { ButtonProps, DrawerProps } from 'element-plus'
 import type { SlotsType, VNode } from 'vue'
 
 // #region props
-export type IFormDrawerProps = Partial<DrawerProps> & {
+export type FormDrawerProps = Partial<DrawerProps> & {
   cancelText?: string
   cancelButtonProps?: ButtonProps
   okText?: string
@@ -12,6 +12,9 @@ export type IFormDrawerProps = Partial<DrawerProps> & {
   loadingText?: string
   enterSubmit?: boolean
 }
+
+/** @deprecated Use FormDrawerProps instead. */
+export type IFormDrawerProps = FormDrawerProps
 // #endregion props
 
 // #region slots

@@ -22,6 +22,27 @@ This package sits between the Vue rendering layer and a mobile UI framework:
 - action components: `Submit`, `Reset`
 - preview components: `PreviewText.*`
 
+## TypeScript Types
+
+Component props use a consistent public interface model. `FooProps` represents props,
+events, and `v-model` update events accepted by consumers. Use the corresponding
+`FooComponent` when you need a component constructor type:
+
+```ts
+import type { InputComponent, InputProps } from '@silver-formily/vant'
+import { Input } from '@silver-formily/vant'
+
+const inputComponent: InputComponent = Input
+const inputProps: InputProps = {
+  type: 'text',
+  formatter: value => value.trim(),
+}
+```
+
+When creating a custom wrapper with `connect`, use its second type parameter to declare
+public props. This only changes TypeScript inference; runtime attrs, event, and slot
+forwarding remains unchanged.
+
 ## Design Characteristics
 
 - optimized for mobile data-entry and touch interactions

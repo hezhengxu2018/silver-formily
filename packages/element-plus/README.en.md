@@ -22,6 +22,28 @@ This package sits at the intersection of the Vue rendering layer and a concrete 
 - scene components: `FormDialog`, `FormDrawer`, `QueryForm`, `SelectTable`
 - preview components: `PreviewText.*`
 
+## TypeScript Types
+
+Component props use a consistent public type model. `FooProps` represents the props
+accepted by a component, including upstream Element Plus props, events, `v-model`
+update events, and Silver Formily extensions:
+
+```ts
+import type { InputComponent, InputProps, SelectProps } from '@silver-formily/element-plus'
+import { Input } from '@silver-formily/element-plus'
+
+const inputComponent: InputComponent = Input
+const inputProps: InputProps = { placeholder: 'Enter a value' }
+const selectProps: SelectProps = {
+  options: [{ label: 'Option one', value: 'one' }],
+}
+```
+
+Use `FooComponent` when you need the component constructor type. The old `IFooProps`
+names remain temporarily as deprecated compatibility aliases. When creating a wrapper
+with `connect`, use its second type parameter to declare public props; runtime attrs,
+event, and slot forwarding remains unchanged.
+
 ## Design Characteristics
 
 - aligns Silver Formily field contracts with Element Plus props and events

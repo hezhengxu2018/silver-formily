@@ -1,8 +1,9 @@
+import type { CascaderProps } from './types'
 import { connect, mapProps, mapReadPretty } from '@silver-formily/vue'
 import { PreviewText } from '../preview-text'
 import FCascader from './cascader.vue'
 
-export const Cascader = connect<typeof FCascader>(
+export const Cascader = connect<typeof FCascader, Partial<CascaderProps>>(
   FCascader,
   mapProps({
     dataSource: 'options',
@@ -34,3 +35,5 @@ export type {
   VanCascaderProps,
   VanPopupProps,
 } from './types'
+
+export type CascaderComponent = typeof Cascader

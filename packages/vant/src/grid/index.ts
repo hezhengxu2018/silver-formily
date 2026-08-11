@@ -24,3 +24,6 @@ export type {
   GridInstance,
   GridProps,
 } from './types'
+
+export type GridComponent = typeof Grid
+export type GridColumnComponent = typeof GridColumn

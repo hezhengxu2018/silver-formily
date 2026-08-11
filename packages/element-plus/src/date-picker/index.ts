@@ -1,8 +1,12 @@
+import type { VueComponentProps } from '@silver-formily/vue'
 import { connect, mapProps } from '@silver-formily/vue'
 import { ElDatePicker } from 'element-plus'
 import { mapReadPretty } from '../__builtins__'
 import { PreviewText } from '../preview-text'
 import { getDefaultFormat } from './utils'
+
+export type DatePickerProps = VueComponentProps<typeof ElDatePicker>
+export type DatePickerComponent = typeof ElDatePicker
 
 export const DatePicker = connect<typeof ElDatePicker>(
   ElDatePicker,

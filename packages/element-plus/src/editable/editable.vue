@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import type { Field } from '@silver-formily/core'
-import type { IFormItemProps } from '../form-item/types'
+import type { FormItemProps } from '../form-item/types'
 import { Close, Edit } from '@element-plus/icons-vue'
 import { isPlainObj, isValid } from '@silver-formily/shared'
 import { useField } from '@silver-formily/vue'
@@ -14,7 +14,7 @@ defineOptions({
   name: 'FEditable',
 })
 
-const props = withDefaults(defineProps<IFormItemProps & { editProps?: IFormItemProps }>(), {
+const props = withDefaults(defineProps<FormItemProps & { editProps?: FormItemProps }>(), {
   feedbackLayout: 'popover',
   size: 'default',
 })

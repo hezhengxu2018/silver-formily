@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { Form } from '@silver-formily/core'
 import type { ComponentPublicInstance, PropType } from 'vue'
-import type { FormDialogSlots, IFormDialogProps } from './types'
+import type { FormDialogProps, FormDialogSlots } from './types'
 import { isFn } from '@silver-formily/shared'
 import { FormProvider } from '@silver-formily/vue'
 import { ElButton, ElConfigProvider, ElDialog, useLocale } from 'element-plus'
@@ -16,7 +16,7 @@ defineOptions({
 })
 const props = defineProps({
   dialogProps: {
-    type: Object as PropType<IFormDialogProps>,
+    type: Object as PropType<FormDialogProps>,
     required: true,
   },
   visible: {

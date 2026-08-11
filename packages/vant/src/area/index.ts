@@ -1,8 +1,9 @@
+import type { AreaProps } from './types'
 import { connect, mapProps, mapReadPretty } from '@silver-formily/vue'
 import { PreviewText } from '../preview-text'
 import FArea from './area.vue'
 
-export const Area = connect<typeof FArea>(
+export const Area = connect<typeof FArea, Partial<AreaProps>>(
   FArea,
   mapProps({
     dataSource: 'areaList',
@@ -32,3 +33,5 @@ export type {
   VanAreaProps,
   VanPopupProps,
 } from './types'
+
+export type AreaComponent = typeof Area

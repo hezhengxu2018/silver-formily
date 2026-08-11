@@ -1,8 +1,9 @@
+import type { CalendarProps } from './types'
 import { connect, mapProps, mapReadPretty } from '@silver-formily/vue'
 import { PreviewText } from '../preview-text'
 import FCalendar from './calendar.vue'
 
-export const Calendar = connect<typeof FCalendar>(
+export const Calendar = connect<typeof FCalendar, Partial<CalendarProps>>(
   FCalendar,
   mapProps({
     readOnly: 'readonly',
@@ -32,3 +33,5 @@ export type {
   VanCalendarInstance,
   VanCalendarProps,
 } from './types'
+
+export type CalendarComponent = typeof Calendar

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { TableInstance } from 'element-plus'
-import type { ISelectTableProps } from './types'
+import type { SelectTableProps } from './types'
 import { isEqual, isFn, isValid } from '@silver-formily/shared'
 import { useField } from '@silver-formily/vue'
 import {
@@ -22,7 +22,7 @@ defineOptions({
   inheritAttrs: false,
 })
 
-const props = withDefaults(defineProps<ISelectTableProps>(), {
+const props = withDefaults(defineProps<SelectTableProps>(), {
   columns: () => [],
   mode: 'multiple',
   dataSource: () => [],

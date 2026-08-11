@@ -20,7 +20,7 @@ export type QueryFormVisible = (context: QueryFormVisibleContext) => boolean
 // #endregion visible
 
 // #region props
-export interface IQueryFormProps {
+export interface QueryFormProps {
   form?: QueryFormFormProvider
   schema?: ISchema
   schemaField?: Component
@@ -45,7 +45,7 @@ export interface IQueryFormProps {
 // #endregion props
 
 // #region light-props
-export interface IQueryFormLightProps {
+export interface QueryFormLightProps {
   form?: QueryFormFormProvider
   schema?: ISchema
   schemaField?: Component
@@ -55,6 +55,12 @@ export interface IQueryFormLightProps {
   onAutoSubmit?: (values: Form['values']) => Promise<any>
   onAutoSubmitFailed?: (error: any) => void
 }
+
+/** @deprecated Use QueryFormProps instead. */
+export type IQueryFormProps = QueryFormProps
+
+/** @deprecated Use QueryFormLightProps instead. */
+export type IQueryFormLightProps = QueryFormLightProps
 // #endregion light-props
 
 export interface SchemaEntry { name?: string | number, schema: ISchema }

@@ -1,9 +1,10 @@
+import type { PickerGroupPanelProps, PickerGroupProps } from './types'
 import { connect, mapProps, mapReadPretty } from '@silver-formily/vue'
 import { PreviewText } from '../preview-text'
 import FPickerGroupPanel from './picker-group-panel.vue'
 import FPickerGroup from './picker-group.vue'
 
-export const PickerGroupPanel = connect<typeof FPickerGroupPanel>(
+export const PickerGroupPanel = connect<typeof FPickerGroupPanel, Partial<PickerGroupPanelProps>>(
   FPickerGroupPanel,
   mapProps({
     dataSource: 'dataSource',
@@ -12,7 +13,7 @@ export const PickerGroupPanel = connect<typeof FPickerGroupPanel>(
   mapReadPretty(PreviewText.PickerGroup),
 )
 
-export const PickerGroup = connect<typeof FPickerGroup>(
+export const PickerGroup = connect<typeof FPickerGroup, Partial<PickerGroupProps>>(
   FPickerGroup,
   mapProps({
     dataSource: 'dataSource',
@@ -46,3 +47,6 @@ export type {
   VanPickerProps,
   VanPopupProps,
 } from './types'
+
+export type PickerGroupPanelComponent = typeof PickerGroupPanel
+export type PickerGroupComponent = typeof PickerGroup

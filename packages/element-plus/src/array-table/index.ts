@@ -4,6 +4,8 @@ import { ArrayBase } from '../array-base'
 import ArrayTableInner from './array-table.vue'
 import './style.scss'
 
+export type { ArrayTableProps, IArrayTableProps } from './types'
+
 const ArrayTableColumn: Component = {
   name: 'FArrayTableColumn',
   render() {

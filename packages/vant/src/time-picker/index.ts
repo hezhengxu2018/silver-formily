@@ -1,8 +1,9 @@
+import type { TimePickerProps } from './types'
 import { connect, mapProps, mapReadPretty } from '@silver-formily/vue'
 import { PreviewText } from '../preview-text'
 import FTimePicker from './time-picker.vue'
 
-export const TimePicker = connect<typeof FTimePicker>(
+export const TimePicker = connect<typeof FTimePicker, Partial<TimePickerProps>>(
   FTimePicker,
   mapProps({
     disabled: true,
@@ -28,3 +29,5 @@ export type {
   VanTimePickerInstance,
   VanTimePickerProps,
 } from './types'
+
+export type TimePickerComponent = typeof TimePicker

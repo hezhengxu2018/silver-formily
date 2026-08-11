@@ -1,8 +1,8 @@
 import type { Form } from '@silver-formily/core'
 import type { ISchema } from '@silver-formily/json-schema'
 import type { PaginationProps } from 'element-plus'
-import type { IFormItemProps } from '../form-item'
-import type { IQueryFormLightProps, IQueryFormProps } from '../query-form'
+import type { FormItemProps } from '../form-item'
+import type { QueryFormLightProps, QueryFormProps } from '../query-form'
 
 export type QueryFormItemMode = 'default' | 'light'
 
@@ -28,15 +28,15 @@ export type QueryFormItemRequest = (
 
 export type QueryFormItemPaginationProps = Partial<PaginationProps>
 
-type QueryFormDefaultProps = Omit<IQueryFormProps, 'schema'>
-type QueryFormLightProps = Omit<IQueryFormLightProps, 'schema'>
+type QueryFormDefaultComponentProps = Omit<QueryFormProps, 'schema'>
+type QueryFormLightComponentProps = Omit<QueryFormLightProps, 'schema'>
 
-export type QueryFormItemQueryProps = Partial<QueryFormDefaultProps & QueryFormLightProps> & {
+export type QueryFormItemQueryProps = Partial<QueryFormDefaultComponentProps & QueryFormLightComponentProps> & {
   form?: Form | (() => Form | undefined)
   schema?: ISchema
 }
 
-export interface IQueryFormItemProps extends IFormItemProps {
+export interface QueryFormItemProps extends FormItemProps {
   mode?: QueryFormItemMode
   request?: QueryFormItemRequest
   clearOnDataChange?: boolean
@@ -47,6 +47,9 @@ export interface IQueryFormItemProps extends IFormItemProps {
   paginationMap?: QueryFormItemPaginationMap
   immediate?: boolean
 }
+
+/** @deprecated Use QueryFormItemProps instead. */
+export type IQueryFormItemProps = QueryFormItemProps
 
 export interface QueryFormItemRequestSuccessPayload {
   values: Record<string, any>

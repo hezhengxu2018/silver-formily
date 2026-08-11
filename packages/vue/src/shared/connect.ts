@@ -1,6 +1,11 @@
 import type { GeneralField } from '@silver-formily/core'
-import type { Component } from 'vue'
-import type { IComponentMapper, IStateMapper, VueComponentProps } from '../types'
+import type { Component, DefineComponent, FunctionalComponent } from 'vue'
+import type {
+  IComponentMapper,
+  IStateMapper,
+  VueComponentMapperProps,
+  VueComponentProps,
+} from '../types'
 import { isVoidField } from '@silver-formily/core'
 import { Path as FormPath } from '@silver-formily/path'
 import { observer } from '@silver-formily/reactive-vue'
@@ -45,7 +50,7 @@ function shouldPreserveMappedAttrs(target: Component) {
 function pickMappableProps<T extends Component>(
   target: T,
   baseAttrKeys: Set<string>,
-  mappedAttrs: VueComponentProps<T>,
+  mappedAttrs: VueComponentMapperProps<T>,
 ) {
   if (shouldPreserveMappedAttrs(target))
     return mappedAttrs
@@ -60,13 +65,13 @@ function pickMappableProps<T extends Component>(
     }
     return buf
   }, {})
-  return picked as VueComponentProps<T>
+  return picked as VueComponentMapperProps<T>
 }
 
 export function mapProps<T extends Component = Component>(
-  ...args: IStateMapper<VueComponentProps<T>>[]
+  ...args: IStateMapper<VueComponentMapperProps<T>>[]
 ) {
-  const transform = (input: VueComponentProps<T>, field: GeneralField) =>
+  const transform = (input: VueComponentMapperProps<T>, field: GeneralField) =>
     args.reduce((props, mapper) => {
       if (isFn(mapper)) {
         props = Object.assign(props, mapper(props, field))
@@ -97,7 +102,7 @@ export function mapProps<T extends Component = Component>(
           const fieldRef = useField()
           return () => {
             const { attrs: normalizedAttrs, events } = extractAttrsAndEvents(attrs)
-            const baseAttrs = { ...normalizedAttrs } as VueComponentProps<T>
+            const baseAttrs = { ...normalizedAttrs } as VueComponentMapperProps<T>
             const baseAttrKeys = new Set(Object.keys(baseAttrs))
             const mappedAttrs = fieldRef.value ? transform(baseAttrs, fieldRef.value) : baseAttrs
             const newAttrs = pickMappableProps(target, baseAttrKeys, mappedAttrs)
@@ -144,7 +149,35 @@ export function mapReadPretty<T extends Component, C extends Component>(
   }
 }
 
-export function connect<T extends Component>(target: T, ...args: IComponentMapper[]): T {
+type ConnectedInstance<T extends Component, Props extends object> = T extends new (...args: any[]) => infer Instance
+  ? Omit<Instance, '$props'> & {
+    $props: Readonly<ConnectedProps<T, Props>>
+  }
+  : never
+
+type ConnectedProps<T extends Component, Props extends object> = T extends new (...args: any[]) => {
+  $props: infer TargetProps
+}
+  ? Props & Omit<TargetProps, keyof Props>
+  : Props
+
+type ConnectedStatics<T extends Component> = Pick<T, keyof T>
+
+export type ConnectedComponent<
+  T extends Component,
+  Props extends object = VueComponentProps<T>,
+> = Omit<DefineComponent<ConnectedProps<T, Props>>, 'new'>
+  & ConnectedStatics<T>
+  & (T extends new (...args: any[]) => any
+    ? new (...args: any[]) => ConnectedInstance<T, Props>
+    : T extends FunctionalComponent<any, infer Emits, infer Slots, any>
+      ? FunctionalComponent<ConnectedProps<T, Props>, Emits, Slots>
+      : new (...args: any[]) => ConnectedInstance<T, Props>)
+
+export function connect<
+  T extends Component,
+  Props extends object = VueComponentProps<T>,
+>(target: T, ...args: IComponentMapper[]): ConnectedComponent<T, Props> {
   const Component = args.reduce((target: Component, mapper) => {
     return mapper(target)
   }, target)
@@ -159,5 +192,5 @@ export function connect<T extends Component>(target: T, ...args: IComponentMappe
     },
   })
 
-  return markRaw(functionalComponent) as unknown as T
+  return markRaw(functionalComponent) as unknown as ConnectedComponent<T, Props>
 }

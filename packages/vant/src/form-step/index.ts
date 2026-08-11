@@ -22,3 +22,5 @@ export type {
   IFormStepProps,
   SchemaStep,
 } from './types'
+
+export type FormStepComponent = typeof FormStep

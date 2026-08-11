@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { Grid, GridNode, IGridOptions } from '@silver-formily/grid'
 import type { ISchema } from '@silver-formily/json-schema'
-import type { IQueryFormProps, SchemaEntry } from './types'
+import type { QueryFormProps, SchemaEntry } from './types'
 import { ArrowDown, ArrowUp } from '@element-plus/icons-vue'
 import { createGrid } from '@silver-formily/grid'
 import { Schema } from '@silver-formily/json-schema'
@@ -22,7 +22,7 @@ defineOptions({
   inheritAttrs: false,
 })
 
-const props = withDefaults(defineProps<IQueryFormProps>(), {
+const props = withDefaults(defineProps<QueryFormProps>(), {
   components: () => ({}),
   gridProps: () => ({}),
   defaultExpanded: false,

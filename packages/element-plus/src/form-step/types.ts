@@ -12,10 +12,13 @@ export interface IFormStep {
   back: () => void
 }
 
-export interface IFormStepProps {
+export interface FormStepProps {
   formStep?: IFormStep
   active?: number
 }
+
+/** @deprecated Use FormStepProps instead. */
+export type IFormStepProps = FormStepProps
 
 export interface FormStepEnv {
   form: Form

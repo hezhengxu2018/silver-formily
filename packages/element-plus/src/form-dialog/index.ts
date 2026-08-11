@@ -1,7 +1,7 @@
 import type { Form, IFormProps } from '@silver-formily/core'
 import type { IMiddleware } from '@silver-formily/shared'
 import type { App, Component } from 'vue'
-import type { FormDialogOpenMiddleware, FormDialogSlotContent, IFormDialog, IFormDialogProps } from './types'
+import type { FormDialogOpenMiddleware, FormDialogProps, FormDialogSlotContent, IFormDialog } from './types'
 import { createForm } from '@silver-formily/core'
 import { toJS } from '@silver-formily/reactive'
 import { observer } from '@silver-formily/reactive-vue'
@@ -15,7 +15,7 @@ export function FormDialog<
   T extends object = any,
   const DynamicMiddlewareNames extends readonly string[] = [],
 >(
-  title: IFormDialogProps | string,
+  title: FormDialogProps | string,
   content?: Component | FormDialogSlotContent<T, DynamicMiddlewareNames[number]>,
   dynamicMiddlewareNames?: DynamicMiddlewareNames,
 ): IFormDialog<T, DynamicMiddlewareNames[number]> {
@@ -58,7 +58,7 @@ export function FormDialog<
 
   document.body.append(env.root)
 
-  const props = (isStr(title) ? { title } : title) as IFormDialogProps
+  const props = (isStr(title) ? { title } : title) as FormDialogProps
 
   function render(visible: boolean, resolve?: (type?: string) => any, reject?: () => any) {
     const _content = isVueOptions(content)
@@ -215,3 +215,5 @@ export function FormDialog<
 }
 
 export default FormDialog
+
+export type { FormDialogProps, IFormDialogProps } from './types'

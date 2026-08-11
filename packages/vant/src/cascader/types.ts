@@ -25,7 +25,7 @@ export interface CascaderChangeEvent {
   field?: Field
 }
 
-export interface CascaderProps extends Pick<VanCascaderProps, 'activeColor' | 'closeIcon' | 'closeable' | 'fieldNames' | 'options' | 'placeholder' | 'showHeader' | 'swipeable' | 'title'>, Pick<VanPopupProps, 'closeOnClickOverlay' | 'closeOnPopstate' | 'duration' | 'lazyRender' | 'lockScroll' | 'overlay' | 'position' | 'round' | 'safeAreaInsetBottom' | 'safeAreaInsetTop' | 'teleport' | 'transition' | 'zIndex'> {
+export interface CascaderProps extends Partial<Pick<VanCascaderProps, 'activeColor' | 'closeIcon' | 'closeable' | 'fieldNames' | 'options' | 'placeholder' | 'showHeader' | 'swipeable' | 'title'>>, Partial<Pick<VanPopupProps, 'closeOnClickOverlay' | 'closeOnPopstate' | 'duration' | 'lazyRender' | 'lockScroll' | 'overlay' | 'position' | 'round' | 'safeAreaInsetBottom' | 'safeAreaInsetTop' | 'teleport' | 'transition' | 'zIndex'>> {
   modelValue?: CascaderModelValue
   separator?: string
   readonly?: boolean

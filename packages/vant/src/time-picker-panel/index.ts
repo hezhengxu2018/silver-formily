@@ -1,8 +1,9 @@
+import type { TimePickerPanelProps } from './types'
 import { connect, mapProps, mapReadPretty } from '@silver-formily/vue'
 import { PreviewText } from '../preview-text'
 import FTimePickerPanel from './time-picker-panel.vue'
 
-export const TimePickerPanel = connect<typeof FTimePickerPanel>(
+export const TimePickerPanel = connect<typeof FTimePickerPanel, Partial<TimePickerPanelProps>>(
   FTimePickerPanel,
   mapProps({
     disabled: true,
@@ -23,3 +24,5 @@ export type {
   VanTimePickerPanelInstance,
   VanTimePickerPanelProps,
 } from './types'
+
+export type TimePickerPanelComponent = typeof TimePickerPanel

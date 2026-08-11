@@ -1,7 +1,7 @@
 import type { Form, IFormProps } from '@silver-formily/core'
 import type { IMiddleware } from '@silver-formily/shared'
 import type { App, Component } from 'vue'
-import type { FormDrawerOpenMiddleware, FormDrawerSlotContent, IFormDrawer, IFormDrawerProps } from './types'
+import type { FormDrawerOpenMiddleware, FormDrawerProps, FormDrawerSlotContent, IFormDrawer } from './types'
 import { createForm } from '@silver-formily/core'
 import { toJS } from '@silver-formily/reactive'
 import { observer } from '@silver-formily/reactive-vue'
@@ -15,7 +15,7 @@ export function FormDrawer<
   T extends object = any,
   const DynamicMiddlewareNames extends readonly string[] = [],
 >(
-  title: IFormDrawerProps | string,
+  title: FormDrawerProps | string,
   content?: Component | FormDrawerSlotContent<T, DynamicMiddlewareNames[number]>,
   dynamicMiddlewareNames?: DynamicMiddlewareNames,
 ): IFormDrawer<T, DynamicMiddlewareNames[number]> {
@@ -58,7 +58,7 @@ export function FormDrawer<
 
   document.body.append(env.root)
 
-  const props = (isStr(title) ? { title } : title) as IFormDrawerProps
+  const props = (isStr(title) ? { title } : title) as FormDrawerProps
 
   function render(visible: boolean, resolve?: (type?: string) => any, reject?: () => any) {
     const _content = isVueOptions(content)
@@ -216,3 +216,5 @@ export function FormDrawer<
 }
 
 export default FormDrawer
+
+export type { FormDrawerProps, IFormDrawerProps } from './types'

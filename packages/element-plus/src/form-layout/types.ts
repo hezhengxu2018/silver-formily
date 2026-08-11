@@ -1,4 +1,4 @@
-export interface IFormLayoutProps {
+export interface FormLayoutProps {
   tag?: string
   colon?: boolean
   labelAlign?: 'right' | 'left' | ('right' | 'left')[]
@@ -25,7 +25,7 @@ export interface IFormLayoutProps {
   requireAsteriskPosition?: 'left' | 'right'
 }
 
-export interface ICalculatedFormLayoutProps {
+export interface CalculatedFormLayoutProps {
   colon?: boolean
   labelAlign?: 'right' | 'left'
   wrapperAlign?: 'right' | 'left'
@@ -46,3 +46,9 @@ export interface ICalculatedFormLayoutProps {
   statusIcon?: boolean
   requireAsteriskPosition?: 'left' | 'right'
 }
+
+/** @deprecated Use FormLayoutProps instead. */
+export type IFormLayoutProps = FormLayoutProps
+
+/** @deprecated Use CalculatedFormLayoutProps instead. */
+export type ICalculatedFormLayoutProps = CalculatedFormLayoutProps

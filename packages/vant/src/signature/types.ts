@@ -7,7 +7,7 @@ import type {
 export type SignatureType = VanSignatureProps['type']
 export type SignatureModelValue = string
 
-export interface SignatureProps extends Pick<VanSignatureProps, 'backgroundColor' | 'clearButtonText' | 'confirmButtonText' | 'lineWidth' | 'penColor' | 'tips' | 'type'> {
+export interface SignatureProps extends Partial<Pick<VanSignatureProps, 'backgroundColor' | 'clearButtonText' | 'confirmButtonText' | 'lineWidth' | 'penColor' | 'tips' | 'type'>> {
   modelValue?: SignatureModelValue
   disabled?: boolean
 }

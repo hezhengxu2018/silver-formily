@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { IFormTabProps } from './types.ts'
+import type { FormTabProps } from './types.ts'
 import { reactionWatch, reactiveComputed } from '@silver-formily/reactive-vue'
 import { RecursionField, useField, useFieldSchema } from '@silver-formily/vue'
 import { ElBadge, ElTabPane, ElTabs } from 'element-plus'
@@ -12,7 +12,7 @@ defineOptions({
   name: 'FFormTab',
 })
 
-const props = defineProps<IFormTabProps>()
+const props = defineProps<FormTabProps>()
 const emit = defineEmits(['update:modelValue'])
 
 const field = useField()

@@ -1,10 +1,11 @@
+import type { RadioGroupProps } from './types'
 import { connect, mapProps, mapReadPretty } from '@silver-formily/vue'
 import { Radio as VanRadio } from 'vant'
 import { composeExport } from '../__builtins__'
 import { PreviewText } from '../preview-text'
 import FRadioGroup from './radio-group.vue'
 
-const RadioGroup = connect<typeof FRadioGroup>(
+const RadioGroup = connect<typeof FRadioGroup, Partial<RadioGroupProps>>(
   FRadioGroup,
   mapProps({
     dataSource: 'options',
@@ -31,3 +32,6 @@ export type {
   VanRadioGroupProps,
   VanRadioProps,
 } from './types'
+
+export type RadioComponent = typeof Radio
+export type RadioGroupComponent = typeof RadioGroup

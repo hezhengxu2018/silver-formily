@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { Form } from '@silver-formily/core'
 import type { ComponentPublicInstance, PropType } from 'vue'
-import type { FormDrawerSlots, IFormDrawerProps } from './types'
+import type { FormDrawerProps, FormDrawerSlots } from './types'
 import { isFn } from '@silver-formily/shared'
 import { FormProvider } from '@silver-formily/vue'
 import { ElButton, ElConfigProvider, ElDrawer, useLocale } from 'element-plus'
@@ -17,7 +17,7 @@ defineOptions({
 
 const props = defineProps({
   drawerProps: {
-    type: Object as PropType<IFormDrawerProps>,
+    type: Object as PropType<FormDrawerProps>,
     required: true,
   },
   visible: {

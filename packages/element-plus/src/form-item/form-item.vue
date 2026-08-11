@@ -8,7 +8,7 @@ import type {
 } from 'element-plus'
 import type { CSSProperties } from 'vue'
 import type { ICalculatedFormLayoutProps } from '../form-layout/types'
-import type { IFormItemProps } from './types'
+import type { FormItemProps } from './types'
 import { CircleCheck, CircleClose, InfoFilled, Warning } from '@element-plus/icons-vue'
 import { isArr, isValid } from '@silver-formily/shared'
 import { useField } from '@silver-formily/vue'
@@ -24,7 +24,7 @@ defineOptions({
   name: 'FFormItem',
   inheritAttrs: false,
 })
-const props = withDefaults(defineProps<IFormItemProps>(), {
+const props = withDefaults(defineProps<FormItemProps>(), {
   asterisk: undefined,
   colon: undefined,
   labelWrap: undefined,

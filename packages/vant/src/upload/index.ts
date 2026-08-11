@@ -1,8 +1,9 @@
+import type { UploadProps } from './types'
 import { connect, mapProps, mapReadPretty } from '@silver-formily/vue'
 import { PreviewText } from '../preview-text'
 import FUpload from './upload.vue'
 
-export const Upload = connect<typeof FUpload>(
+export const Upload = connect<typeof FUpload, Partial<UploadProps>>(
   FUpload,
   mapProps({
     dataSource: 'fileList',
@@ -31,3 +32,5 @@ export type {
   VanUploaderFileListItem,
   VanUploaderProps,
 } from './types'
+
+export type UploadComponent = typeof Upload

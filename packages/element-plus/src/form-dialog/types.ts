@@ -4,7 +4,7 @@ import type { ButtonProps, DialogProps } from 'element-plus'
 import type { SlotsType, VNode } from 'vue'
 
 // #region props
-export type IFormDialogProps = Partial<DialogProps> & {
+export type FormDialogProps = Partial<DialogProps> & {
   cancelText?: string
   cancelButtonProps?: ButtonProps
   okText?: string
@@ -12,6 +12,9 @@ export type IFormDialogProps = Partial<DialogProps> & {
   loadingText?: string
   enterSubmit?: boolean
 }
+
+/** @deprecated Use FormDialogProps instead. */
+export type IFormDialogProps = FormDialogProps
 // #endregion props
 
 // #region slots

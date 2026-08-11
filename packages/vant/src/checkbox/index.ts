@@ -1,17 +1,18 @@
+import type { CheckboxGroupProps, CheckboxProps } from './types'
 import { connect, mapProps, mapReadPretty } from '@silver-formily/vue'
 import { Checkbox as VanCheckbox } from 'vant'
 import { composeExport } from '../__builtins__'
 import { PreviewText } from '../preview-text'
 import FCheckboxGroup from './checkbox-group.vue'
 
-const InnerCheckbox = connect<typeof VanCheckbox>(
+const InnerCheckbox = connect<typeof VanCheckbox, CheckboxProps>(
   VanCheckbox,
   mapProps({
     disabled: true,
   }),
 )
 
-const CheckboxGroup = connect<typeof FCheckboxGroup>(
+const CheckboxGroup = connect<typeof FCheckboxGroup, Partial<CheckboxGroupProps>>(
   FCheckboxGroup,
   mapProps({
     dataSource: 'options',
@@ -42,3 +43,6 @@ export type {
   VanCheckboxGroupProps,
   VanCheckboxProps,
 } from './types'
+
+export type CheckboxComponent = typeof Checkbox
+export type CheckboxGroupComponent = typeof CheckboxGroup

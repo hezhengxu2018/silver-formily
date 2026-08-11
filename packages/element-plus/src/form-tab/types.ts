@@ -4,11 +4,17 @@ export interface IFormTab {
   setActiveKey: (key: string) => void
 }
 
-export interface IFormTabProps {
+export interface FormTabProps {
   formTab?: IFormTab
   modelValue?: string | number
 }
 
-export interface IFormTabPaneProps {
+export interface FormTabPaneProps {
   key: string | number
 }
+
+/** @deprecated Use FormTabProps instead. */
+export type IFormTabProps = FormTabProps
+
+/** @deprecated Use FormTabPaneProps instead. */
+export type IFormTabPaneProps = FormTabPaneProps

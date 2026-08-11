@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { VoidField } from '@silver-formily/core'
-import type { IFormStepProps } from './types'
+import type { FormStepProps } from './types'
 import { useObserver } from '@silver-formily/reactive-vue'
 import { isObj } from '@silver-formily/shared'
 import { RecursionField, useField, useFieldSchema } from '@silver-formily/vue'
@@ -14,7 +14,7 @@ defineOptions({
   inheritAttrs: false,
 })
 
-const props = withDefaults(defineProps<IFormStepProps>(), {
+const props = withDefaults(defineProps<FormStepProps>(), {
   formStep: () => createFormStep(),
 })
 

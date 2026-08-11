@@ -22,6 +22,29 @@ This package sits between the runtime kernel and concrete UI libraries:
 - composables: `useForm`, `useField`, `useFieldSchema`, `useFormEffects`
 - adapter helpers: `connect`, `mapProps`
 
+## Component Types
+
+`connect` preserves the wrapped component's public props, slots, and instance type.
+Use `VueComponentProps<T>` to extract the props exposed to consumers. If a wrapper
+needs to add or override its public props, provide the second type parameter to
+`connect`:
+
+```ts
+import type { VueComponentProps } from '@silver-formily/vue'
+import { connect, mapProps } from '@silver-formily/vue'
+import { ElInput } from 'element-plus'
+
+type InputProps = VueComponentProps<typeof ElInput>
+
+const ConnectedInput = connect<typeof ElInput, InputProps>(
+  ElInput,
+  mapProps({ readOnly: 'readonly' }),
+)
+```
+
+This type change does not alter the runtime behavior of `connect` or `mapProps`,
+including attrs forwarding.
+
 ## Design Characteristics
 
 - pure Vue 3 runtime path

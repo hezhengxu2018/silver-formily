@@ -22,6 +22,26 @@
 - 场景组件：`FormDialog`、`FormDrawer`、`QueryForm`、`SelectTable`
 - 预览态组件：`PreviewText.*`
 
+## TypeScript 类型
+
+组件 Props 采用统一的公开类型声明。`FooProps` 表示组件可接收的 Props，包含
+Element Plus 的上游 Props、事件和 `v-model` 更新事件，以及 Silver Formily 的扩展属性：
+
+```ts
+import type { InputComponent, InputProps, SelectProps } from '@silver-formily/element-plus'
+import { Input } from '@silver-formily/element-plus'
+
+const inputComponent: InputComponent = Input
+const inputProps: InputProps = { placeholder: '请输入内容' }
+const selectProps: SelectProps = {
+  options: [{ label: '选项一', value: 'one' }],
+}
+```
+
+如果需要组件构造类型，请使用 `FooComponent`；旧的 `IFooProps` 名称暂时保留为
+deprecated 兼容别名。通过 `connect` 创建包装组件时，可以使用第二个类型参数声明
+包装组件的公开 Props，运行时 attrs、事件和插槽转发行为不变。
+
 ## Design Characteristics
 
 - 统一 Silver Formily 字段契约与 Element Plus 属性模型

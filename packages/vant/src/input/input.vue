@@ -30,7 +30,10 @@ const nativeInputProps = computed(() => {
     ...attrs
   } = inputProps.value
 
-  return attrs
+  return {
+    ...attrs,
+    placeholder: props.placeholder,
+  }
 })
 const resolvedFormatTrigger = computed(() => props.formatTrigger === 'onBlur' ? 'onBlur' : 'onChange')
 const inputId = computed(() => {

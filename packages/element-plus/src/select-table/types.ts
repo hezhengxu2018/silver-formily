@@ -1,7 +1,7 @@
 import type { GeneralField } from '@silver-formily/core'
 import type { Column } from 'element-plus'
 
-export interface ISelectTableProps {
+export interface SelectTableProps {
   columns?: Column<any>[]
   mode?: 'multiple' | 'single'
   dataSource?: any[]
@@ -18,3 +18,6 @@ export interface ISelectTableProps {
   selectable?: (row: Record<string, any>, index: number, field: GeneralField) => boolean
   ignoreSelectable?: boolean
 }
+
+/** @deprecated Use SelectTableProps instead. */
+export type ISelectTableProps = SelectTableProps

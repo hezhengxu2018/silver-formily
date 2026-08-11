@@ -38,7 +38,7 @@
     "build": "tsdown --tsconfig tsconfig.build.json",
     "lint": "eslint .",
     "format": "eslint . --fix",
-    "check-types": "vue-tsc --noEmit",
+    "check-types": "vue-tsc --noEmit && vue-tsc --noEmit --project tsconfig.type-tests.json",
     "test": "vitest run --reporter=dot --browser.headless",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage --browser.headless",

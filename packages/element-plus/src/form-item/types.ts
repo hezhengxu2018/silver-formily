@@ -2,7 +2,7 @@ import type { VNode } from 'vue'
 
 export type FormItemContent = string | VNode
 
-export interface IFormItemProps {
+export interface FormItemProps {
   /**
    * Internal: override Element Plus root class for isolated scenes (e.g. QueryFormItem).
    */
@@ -35,3 +35,6 @@ export interface IFormItemProps {
   feedbackLayout?: 'loose' | 'terse' | 'popover'
   tooltipLayout?: 'icon' | 'text'
 }
+
+/** @deprecated Use FormItemProps instead. */
+export type IFormItemProps = FormItemProps

@@ -18,7 +18,13 @@ import type {
   ValidatorFunctionResponse as FormilyValidatorResponse,
   IValidatorRules as FormilyValidatorRules,
 } from '@silver-formily/validator'
-import type { Component } from 'vue'
+import type {
+  AllowedComponentProps,
+  Component,
+  ComponentCustomProps,
+  FunctionalComponent,
+  VNodeProps,
+} from 'vue'
 
 export type SchemaFieldValidator = FormilyValidator
 export type SchemaValidatorFunction = FormilyValidatorFunction<any>
@@ -27,15 +33,21 @@ export type SchemaMultiValidator = FormilyMultiValidator<any>
 export type SchemaValidateResult = FormilyValidateResult
 export type SchemaValidatorResponse = FormilyValidatorResponse
 
-export interface VueComponentOptionsWithProps {
-  props: Record<string, unknown>
+type VueComponentPublicProps = VNodeProps & AllowedComponentProps & ComponentCustomProps
+
+type ComponentPropsOrRecord<T extends Component> = T extends new (...args: any[]) => {
+  $props: infer Props
 }
+  ? Omit<Props, keyof VueComponentPublicProps>
+  : T extends FunctionalComponent<infer Props>
+    ? Props
+    : Record<string, unknown>
 
-type ComponentPropsOrRecord<T extends Component> = T extends VueComponentOptionsWithProps
-  ? T['props']
-  : Record<string, unknown>
+/** Props accepted by a Vue component from a consumer. */
+export type VueComponentProps<T extends Component> = ComponentPropsOrRecord<T>
 
-export type VueComponentProps<T extends Component> = ComponentPropsOrRecord<T> & Record<string, unknown>
+/** Props plus fallthrough attrs used while mapping Formily field state. */
+export type VueComponentMapperProps<T extends Component> = VueComponentProps<T> & Record<string, unknown>
 
 export interface IProviderProps {
   form: Form

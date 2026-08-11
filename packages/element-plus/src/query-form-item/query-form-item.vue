@@ -4,7 +4,7 @@ import type { ISchema } from '@silver-formily/json-schema'
 import type { PropType } from 'vue'
 import type {
   FormItemContent,
-  IFormItemProps,
+  FormItemProps,
 } from '../form-item/types'
 import type {
   QueryFormItemMode,
@@ -63,7 +63,7 @@ const props = defineProps({
   label: [String, Object, Function] as PropType<FormItemContent>,
   extra: [String, Object, Function] as PropType<FormItemContent>,
   feedbackText: [String, Object, Function] as PropType<FormItemContent>,
-  feedbackStatus: String as PropType<IFormItemProps['feedbackStatus']>,
+  feedbackStatus: String as PropType<FormItemProps['feedbackStatus']>,
   asterisk: {
     type: Boolean,
     default: undefined,

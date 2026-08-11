@@ -1,3 +1,4 @@
+import type { FormItemProps } from './types'
 import { isVoidField } from '@silver-formily/core'
 import { connect, mapProps } from '@silver-formily/vue'
 import { composeExport } from '../__builtins__'
@@ -24,7 +25,7 @@ export function fieldFeedbackMapper(props, field) {
   }
 }
 
-const Item = connect<typeof FormBaseItem>(
+const Item = connect<typeof FormBaseItem, FormItemProps>(
   FormBaseItem,
   mapProps(
     {
@@ -44,4 +45,6 @@ export const FormItem = composeExport(Item, {
 export default FormItem
 
 export { default as FormBaseItem } from './form-item.vue'
-export type { IFormItemProps } from './types'
+export type { FormItemProps, IFormItemProps } from './types'
+export type FormItemComponent = typeof FormBaseItem
+export type FormItemBaseItemProps = FormItemProps

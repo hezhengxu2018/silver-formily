@@ -1,8 +1,9 @@
+import type { PickerPanelProps } from './types'
 import { connect, mapProps, mapReadPretty } from '@silver-formily/vue'
 import { PreviewText } from '../preview-text'
 import FPickerPanel from './picker-panel.vue'
 
-export const PickerPanel = connect<typeof FPickerPanel>(
+export const PickerPanel = connect<typeof FPickerPanel, Partial<PickerPanelProps>>(
   FPickerPanel,
   mapProps({
     dataSource: 'columns',
@@ -23,3 +24,5 @@ export type {
   VanPickerPanelInstance,
   VanPickerPanelProps,
 } from './types'
+
+export type PickerPanelComponent = typeof PickerPanel

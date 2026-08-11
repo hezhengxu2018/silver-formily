@@ -22,6 +22,30 @@
 
 由于所有组件都进行了重构，所有组件都有或多或少的改动，这里不一一列举，请参考组件文档，如果是项目迁移建议人工对所有表单的渲染进行确认。特别是FormDrawer与FromDialog的函数入参有变化，会导致表单无法渲染。
 
+## 组件类型调整
+
+从`6.0.0`起，组件 Props 类型统一按公开组件属性声明：
+
+- `FooProps` 表示消费者可以传入的组件 Props，不再表示组件构造类型。
+- 直接包装 Element Plus 组件时，`FooProps` 包含 Element Plus 的 Props、事件和 `v-model` 更新事件。
+- 具有 Silver Formily 扩展属性的组件会在上游 Props 基础上增加扩展字段，例如 `SelectProps` 的 `options`。
+- 需要组件构造类型时，请使用对应的 `FooComponent`，例如 `InputComponent`。
+- 旧的 `IFooProps` 名称暂时保留为 deprecated 兼容别名，建议迁移到 `FooProps`。
+
+```ts
+import type { InputComponent, InputProps, SelectProps } from '@silver-formily/element-plus'
+import { Input } from '@silver-formily/element-plus'
+
+const inputComponent: InputComponent = Input
+const inputProps: InputProps = { placeholder: '请输入内容' }
+const selectProps: SelectProps = {
+  options: [{ label: '选项一', value: 'one' }],
+}
+```
+
+如果使用 `connect` 创建自定义包装组件，可以通过第二个类型参数声明其公开 Props；
+运行时的 attrs、事件和插槽转发行为不变。此次调整主要用于修复 TSX 中上游组件 Props被推导为 `{}` 的问题。
+
 ## 打包方式重构
 
 移除 `umd` 格式与 `cjs` 的打包打包产物，只保留 `esm` 格式的打包，随着前端技术的发展应该不再需要`cjs`的打包产物了，不排除之后会添加umd格式的打包产物。同时对依赖内scss进行编译，产物为css格式，不再依赖预处理器。目前项目的构建方式已完全迁移至`vite`，不再是之前简单的通过typescript编译的产物。

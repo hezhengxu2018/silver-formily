@@ -1,3 +1,4 @@
+import type { QueryFormItemProps } from './types'
 import { connect, mapProps } from '@silver-formily/vue'
 import { fieldFeedbackMapper } from '../form-item'
 import QueryFormItemInner from './query-form-item.vue'
@@ -10,6 +11,7 @@ export type {
   QueryFormItemPagination,
   QueryFormItemPaginationMap,
   QueryFormItemPaginationProps,
+  QueryFormItemProps,
   QueryFormItemQueryProps,
   QueryFormItemRequest,
   QueryFormItemRequestResultObject,
@@ -18,7 +20,7 @@ export type {
   QueryFormItemSelectedListText,
 } from './types'
 
-export const QueryFormItem = connect<typeof QueryFormItemInner>(
+export const QueryFormItem = connect<typeof QueryFormItemInner, QueryFormItemProps>(
   QueryFormItemInner,
   mapProps(
     {

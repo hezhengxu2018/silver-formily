@@ -1,9 +1,11 @@
+import type { VueComponentProps } from '@silver-formily/vue'
 import { connect, mapProps } from '@silver-formily/vue'
 import { ElTimePicker } from 'element-plus'
 import { mapReadPretty } from '../__builtins__'
 import { PreviewText } from '../preview-text'
 
-export type TimePickerProps = typeof ElTimePicker
+export type TimePickerProps = VueComponentProps<typeof ElTimePicker>
+export type TimePickerComponent = typeof ElTimePicker
 
 export const TimePicker = connect<typeof ElTimePicker>(
   ElTimePicker,

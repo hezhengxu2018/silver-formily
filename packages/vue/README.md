@@ -22,6 +22,28 @@
 - composables：`useForm`、`useField`、`useFieldSchema`、`useFormEffects`
 - adapter helpers：`connect`、`mapProps`
 
+## 组件类型
+
+`connect` 会保留被包装组件的公开 Props、插槽和实例类型。可以使用
+`VueComponentProps<T>` 从 Vue 组件中提取消费者可使用的 Props；当包装组件需要
+补充或覆盖公开 Props 时，通过 `connect` 的第二个类型参数声明：
+
+```ts
+import type { VueComponentProps } from '@silver-formily/vue'
+import { connect, mapProps } from '@silver-formily/vue'
+import { ElInput } from 'element-plus'
+
+type InputProps = VueComponentProps<typeof ElInput>
+
+const ConnectedInput = connect<typeof ElInput, InputProps>(
+  ElInput,
+  mapProps({ readOnly: 'readonly' }),
+)
+```
+
+该类型调整只影响 TypeScript 的公开类型推导，不改变 `connect`、`mapProps` 的
+运行时行为或 attrs 转发逻辑。
+
 ## Design Characteristics
 
 - 纯 Vue 3 运行时路径

@@ -1,4 +1,5 @@
 import type { GeneralField } from '@silver-formily/core'
+import type { FormItemProps } from './types'
 import { isVoidField } from '@silver-formily/core'
 import { connect, mapProps } from '@silver-formily/vue'
 import { callListener, composeExport } from '../__builtins__'
@@ -60,7 +61,7 @@ export function fieldFeedbackMapper(props: Record<string, unknown>, field: Gener
   }
 }
 
-const Item = connect<typeof FormBaseItem>(
+const Item = connect<typeof FormBaseItem, FormItemProps>(
   FormBaseItem,
   mapProps(
     {
@@ -80,3 +81,6 @@ export default FormItem
 
 export { default as FormBaseItem } from './form-item.vue'
 export type { FormItemContent, FormItemFeedbackStatus, FormItemProps } from './types'
+
+export type FormItemComponent = typeof FormItem
+export type FormItemBaseItemComponent = typeof FormBaseItem

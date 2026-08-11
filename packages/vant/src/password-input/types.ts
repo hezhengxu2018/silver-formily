@@ -12,7 +12,7 @@ export interface PasswordInputKeyboardProps extends Partial<Pick<VanNumberKeyboa
 
 export type PasswordInputKeyboardConfig = boolean | PasswordInputKeyboardProps
 
-export interface PasswordInputProps extends Pick<VanPasswordInputProps, 'errorInfo' | 'focused' | 'gutter' | 'info' | 'length' | 'mask'> {
+export interface PasswordInputProps extends Partial<Pick<VanPasswordInputProps, 'errorInfo' | 'focused' | 'gutter' | 'info' | 'length' | 'mask'>> {
   modelValue?: PasswordInputModelValue
   disabled?: boolean
   readonly?: boolean

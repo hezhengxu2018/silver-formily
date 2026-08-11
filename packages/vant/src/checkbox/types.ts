@@ -1,9 +1,11 @@
+import type { VueComponentProps } from '@silver-formily/vue'
 import type {
   CheckboxGroupDirection,
   CheckboxGroupToggleAllOptions,
   CheckboxLabelPosition,
   CheckboxShape,
   CheckboxThemeVars,
+  Checkbox as VanCheckbox,
   CheckboxGroupProps as VanCheckboxGroupProps,
   CheckboxProps as VanCheckboxProps,
 } from 'vant'
@@ -15,13 +17,13 @@ import type {
 
 export type CheckboxOptionValue = VanCheckboxProps['name']
 
-export type CheckboxProps = VanCheckboxProps
+export type CheckboxProps = Partial<VueComponentProps<typeof VanCheckbox>>
 
 export interface CheckboxOption extends CheckerOptionBase<VanCheckboxProps, CheckboxOptionValue> {}
 
 export type CheckboxOptionLike = CheckboxOption
 
-export interface CheckboxGroupProps extends Pick<VanCheckboxGroupProps, 'checkedColor' | 'direction' | 'disabled' | 'iconSize' | 'max' | 'modelValue' | 'shape'>, CheckerGroupOptionSettings<CheckboxLabelPosition> {
+export interface CheckboxGroupProps extends Partial<Pick<VanCheckboxGroupProps, 'checkedColor' | 'direction' | 'disabled' | 'iconSize' | 'max' | 'modelValue' | 'shape'>>, CheckerGroupOptionSettings<CheckboxLabelPosition> {
   options?: CheckboxOption[]
 }
 
