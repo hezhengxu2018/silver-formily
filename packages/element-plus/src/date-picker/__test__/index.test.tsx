@@ -1,6 +1,6 @@
-import { createForm } from '@silver-formily/core'
+import { createForm, isDataField } from '@silver-formily/core'
 import { Field, FormProvider } from '@silver-formily/vue'
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import { render } from 'vitest-browser-vue'
 import { userEvent } from 'vitest/browser'
 import DatePicker from '../index'
@@ -229,6 +229,75 @@ describe('datePicker', () => {
       await userEvent.click(todayButton)
       const dateValue = form.values.date
       expect(dateValue).toMatch(/^(?:\d{2}\/){2}\d{4}$/)
+    })
+
+    it('应该响应 setComponentProps 动态更新 disabledDate', async () => {
+      const form = createForm()
+
+      render(() => (
+        <FormProvider form={form}>
+          <Field
+            name="startDateRange"
+            component={[DatePicker, { type: 'datetimerange' }]}
+          />
+          <Field
+            name="endDateRange"
+            component={[DatePicker, {
+              type: 'datetimerange',
+              class: 'end-date-range-input',
+              popperClass: 'end-date-range-picker',
+            }]}
+            reactions={(field) => {
+              const startDateRange = form.query('startDateRange').take()
+              const range = startDateRange && isDataField(startDateRange)
+                ? startDateRange.value as string[] | undefined
+                : undefined
+
+              if (!range?.[0] || !range[1])
+                return
+
+              const startDate = new Date(range[0])
+              const endDate = new Date(range[1])
+
+              startDate.setHours(0, 0, 0, 0)
+              endDate.setHours(23, 59, 59, 999)
+
+              field.setComponentProps({
+                disabledDate: (time: Date) => time.getTime() < startDate.getTime()
+                  || time.getTime() > endDate.getTime(),
+              })
+            }}
+          />
+        </FormProvider>
+      ))
+
+      const today = new Date()
+      const year = today.getFullYear()
+      const month = String(today.getMonth() + 1).padStart(2, '0')
+      const day = String(today.getDate()).padStart(2, '0')
+      const date = `${year}-${month}-${day}`
+      const startDateRange = form.query('startDateRange').take()
+
+      if (startDateRange && isDataField(startDateRange)) {
+        startDateRange.setValue([
+          `${date} 00:00:00`,
+          `${date} 23:59:59`,
+        ])
+      }
+
+      const endDateRange = form.query('endDateRange').take()
+      await vi.waitFor(() => {
+        expect(endDateRange?.componentProps.disabledDate).toBeTypeOf('function')
+        expect(endDateRange?.componentProps.disabledDate(new Date(year, today.getMonth(), today.getDate() + 1))).toBe(true)
+      })
+
+      const datePickerDOM = document.querySelector('.end-date-range-input')
+      await userEvent.click(datePickerDOM)
+
+      await vi.waitFor(() => {
+        const disabledCells = document.querySelectorAll('.end-date-range-picker td.disabled')
+        expect(disabledCells.length).toBeGreaterThan(0)
+      })
     })
   })
 })

@@ -12,9 +12,16 @@ export const DatePicker = connect<typeof ElDatePicker>(
       disabled: true,
       editable: true,
     },
-    (props: any) => {
+    (props: any, field) => {
       return {
         ...props,
+        // HACK: https://github.com/element-plus/element-plus/issues/24697
+        disabledDate: (time: Date) => {
+          const disabledDate
+            = field.componentProps?.disabledDate
+              ?? field.componentProps?.['disabled-date']
+          return typeof disabledDate === 'function' && disabledDate(time)
+        },
         format: props.format || getDefaultFormat(props.type),
         valueFormat:
           props.valueFormat || getDefaultFormat(props.type, 'valueFormat'),
