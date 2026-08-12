@@ -9,7 +9,7 @@ export default defineConfig({
   platform: 'neutral',
   unbundle: true,
   clean: true,
-  sourcemap: true,
+  sourcemap: !process.env.DOCS_BUILD,
   dts: process.env.DOCS_BUILD
     ? false
     : {
