@@ -5,6 +5,7 @@
     "build": {
       "dependsOn": ["^build"],
       "inputs": ["$TURBO_DEFAULT$", ".env*"],
+      "env": ["DOCS_BUILD"],
       "outputs": ["dist/**", ".vitepress/dist/**", "esm/**"]
     },
     "docs:build": {

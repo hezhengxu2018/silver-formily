@@ -1,3 +1,4 @@
+import process from 'node:process'
 import { defineConfig } from 'tsdown'
 import Vue from 'unplugin-vue/rolldown'
 
@@ -9,9 +10,11 @@ export default defineConfig({
   unbundle: true,
   clean: true,
   sourcemap: true,
-  dts: {
-    vue: true,
-  },
+  dts: process.env.DOCS_BUILD
+    ? false
+    : {
+        vue: true,
+      },
   css: {
     inject: true,
   },
