@@ -10,6 +10,20 @@ The core [form model](/en/guide/form) API returned by [createForm](/en/api/entry
 For process states like `loading`, `validating`, and `submitting`, direct assignment is not fully equivalent to the corresponding `setXxx` method. Prefer using setters.
 :::
 
+## Creation Options
+
+The following options are passed to `createForm()`. They are form creation options and are not necessarily exposed as same-named properties on the Form instance.
+
+| Option          | Description                         | Type                                    | Default        |
+| --------------- | ----------------------------------- | --------------------------------------- | -------------- |
+| effects         | Form side effects for linkage       | `(form: Form) => void`                  | `undefined`    |
+| validateFirst   | Validate only the first failed rule | Boolean                                 | `undefined`    |
+| validatePattern | Patterns where validation may run   | [FormPatternTypes[]](#formpatterntypes) | `['editable']` |
+| validateDisplay | Displays where validation may run   | [FormDisplayTypes[]](#formdisplaytypes) | `['visible']`  |
+| designable      | Enable design mode                  | Boolean                                 | `false`        |
+
+`validatePattern` and `validateDisplay` provide the default restrictions for field validation; field-level options with the same names take precedence. `effects` can also be managed after form creation with `addEffects()`, `removeEffects()`, and `setEffects()`.
+
 ## Properties
 
 | Property      | Description              | Type                                  | Readonly | Default           |

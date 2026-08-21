@@ -10,6 +10,20 @@ order: 0
 像 `loading`、`validating`、`submitting` 这类流程状态，直接赋值与对应的 `setXxx` 方法并不完全等价，通常应优先使用 setter。
 :::
 
+## 创建配置
+
+以下配置项通过 `createForm()` 传入。它们属于表单创建配置，不一定会作为 Form 实例的同名属性暴露。
+
+| 配置项          | 描述                         | 类型                                    | 默认值         |
+| --------------- | ---------------------------- | --------------------------------------- | -------------- |
+| effects         | 表单副作用，用于实现联动逻辑 | `(form: Form) => void`                  | `undefined`    |
+| validateFirst   | 是否只校验第一个非法规则     | Boolean                                 | `undefined`    |
+| validatePattern | 允许执行校验的字段交互模式   | [FormPatternTypes[]](#formpatterntypes) | `['editable']` |
+| validateDisplay | 允许执行校验的字段展示状态   | [FormDisplayTypes[]](#formdisplaytypes) | `['visible']`  |
+| designable      | 是否启用设计器模式           | Boolean                                 | `false`        |
+
+其中，`validatePattern` 和 `validateDisplay` 会作为字段校验的默认限制；字段自身配置了同名属性时，以字段配置为准。`effects` 也可以通过 `addEffects()`、`removeEffects()` 和 `setEffects()` 在表单创建后管理。
+
 ## 属性
 
 | 属性          | 描述                   | 类型                                  | 是否只读 | 默认值            |

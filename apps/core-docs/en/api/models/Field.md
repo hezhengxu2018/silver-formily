@@ -10,6 +10,20 @@ The Field model returned by [createField](/en/api/models/Form#createfield). The 
 For process states like `loading`, `validating`, and `submitting`, direct assignment is not fully equivalent to the corresponding `setXxx` method. Prefer using setters.
 :::
 
+## Creation Options
+
+The following options are passed to `form.createField()`, `form.createArrayField()`, `form.createObjectField()`, or `form.createVoidField()`. They are field creation options and are not necessarily exposed as same-named properties on the Field instance.
+
+| Option          | Description                         | Type                                                          | Default        |
+| --------------- | ----------------------------------- | ------------------------------------------------------------- | -------------- |
+| basePath        | Field base path                     | [FormPath](https://path.silver-formily.org/en/api/path-class) | `undefined`    |
+| validateFirst   | Validate only the first failed rule | Boolean                                                       | `undefined`    |
+| validatePattern | Patterns where validator may run    | [FieldPatternTypes[]](#fieldpatterntypes)                     | `['editable']` |
+| validateDisplay | Displays where validator may run    | [FieldDisplayTypes[]](#fielddisplaytypes)                     | `['visible']`  |
+| reactions       | Field reactions for linkage         | `FieldReaction[]` or `FieldReaction`                          | `undefined`    |
+
+`reactions` accepts a single reaction function or an array of reaction functions. Reactions run when the field is initialized and automatically track the field states read by the function; they run again when a dependency changes.
+
 ## Properties
 
 | Property                  | Description                                | Type                                                          | Readonly | Default           |
