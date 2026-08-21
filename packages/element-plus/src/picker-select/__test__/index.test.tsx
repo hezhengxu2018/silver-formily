@@ -495,4 +495,24 @@ describe('pickerSelect', () => {
       expect(document.body.textContent).toContain('Option 3')
     })
   })
+
+  it('readPretty 且 optionAsValue 时应展示 option label 而不是完整对象', async () => {
+    render(() => (
+      <FormProvider form={createForm()}>
+        <Field
+          name="picker"
+          component={[PickerSelect, { optionAsValue: true }]}
+          dataSource={options}
+          readPretty={true}
+          initialValue={{ id: 2 }}
+        />
+      </FormProvider>
+    ))
+
+    await vi.waitFor(() => {
+      expect(document.querySelector('.el-select')).not.toBeInTheDocument()
+      expect(document.body.textContent).toContain('Option 2')
+      expect(document.body.textContent).not.toContain('[object Object]')
+    })
+  })
 })
