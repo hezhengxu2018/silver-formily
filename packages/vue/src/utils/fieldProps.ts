@@ -28,6 +28,7 @@ export const fieldProps = {
   validateDisplay: createProp<IFieldProps['validateDisplay']>(),
   validator: createProp<IFieldProps['validator']>(),
   reactions: createProp<IFieldProps['reactions']>(),
+  mountedReactions: createProp<IFieldProps['mountedReactions']>(),
   content: createProp<IFieldProps['content']>(),
   data: createProp<IFieldProps['data']>(),
 } as const satisfies ComponentObjectPropsOptions<IFieldProps>
@@ -49,6 +50,7 @@ export const voidFieldProps = {
   readOnly: createBooleanProp(),
   readPretty: createBooleanProp(),
   reactions: createProp<IVoidFieldProps['reactions']>(),
+  mountedReactions: createProp<IVoidFieldProps['mountedReactions']>(),
   content: createProp<IVoidFieldProps['content']>(),
   data: createProp<IVoidFieldProps['data']>(),
 } as const satisfies ComponentObjectPropsOptions<IVoidFieldProps>

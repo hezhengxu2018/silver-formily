@@ -5,7 +5,7 @@ import type {
   SchemaEnum,
   SchemaKey,
   SchemaProperties,
-  SchemaReaction,
+  SchemaReactions,
   SchemaTypes,
   Slot,
 } from './types'
@@ -168,7 +168,9 @@ export class Schema<
   // 组件属性
   'x-component-props'?: ComponentProps
 
-  'x-reactions'?: SchemaReaction<ReactionField>[]
+  'x-reactions'?: SchemaReactions<ReactionField>
+
+  'x-mounted-reactions'?: SchemaReactions<ReactionField>
 
   'x-content'?: any
 

@@ -16,7 +16,9 @@ import {
   toArr,
 } from '@silver-formily/shared'
 import {
+  createMountedReactions,
   destroy,
+  disposeMountedReactions,
   getArrayParent,
   getObjectParent,
   initFieldUpdate,
@@ -328,6 +330,8 @@ export class BaseField<Decorator = any, Component = any, TextType = any> {
   onMount = () => {
     this.mounted = true
     this.unmounted = false
+    if (this.form.mounted)
+      createMountedReactions(this as any)
     this.notify(LifeCycleTypes.ON_FIELD_MOUNT)
   }
 
@@ -335,6 +339,7 @@ export class BaseField<Decorator = any, Component = any, TextType = any> {
     this.mounted = false
     this.unmounted = true
     this.notify(LifeCycleTypes.ON_FIELD_UNMOUNT)
+    disposeMountedReactions(this as any)
   }
 
   query = (pattern: FormPathPattern | RegExp) => {
@@ -350,6 +355,7 @@ export class BaseField<Decorator = any, Component = any, TextType = any> {
   }
 
   dispose = () => {
+    disposeMountedReactions(this as any)
     this.disposers.forEach((dispose) => {
       dispose()
     })

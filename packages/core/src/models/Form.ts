@@ -18,6 +18,7 @@ import {
   batchValidate,
   createBatchStateGetter,
   createBatchStateSetter,
+  createMountedReactions,
   createStateGetter,
   createStateSetter,
   discardFieldInitialValueRecords,
@@ -578,6 +579,10 @@ export class Form<ValueType extends object = any> {
   onMount = () => {
     this.mounted = true
     this.unmounted = false
+    this.query('*').forEach((field) => {
+      if (field.mounted)
+        createMountedReactions(field)
+    })
     this.notify(LifeCycleTypes.ON_FORM_MOUNT)
     if (globalThisPolyfill[DEV_TOOLS_HOOK] && !this.props.designable) {
       globalThisPolyfill[DEV_TOOLS_HOOK].inject(this.id, this)

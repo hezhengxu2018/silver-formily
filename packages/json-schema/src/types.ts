@@ -291,6 +291,8 @@ export type ISchema<
   ['x-component-props']?: ComponentProps
   // 组件响应器
   ['x-reactions']?: SchemaReactions<ReactionField>
+  // 组件挂载后响应器
+  ['x-mounted-reactions']?: SchemaReactions<ReactionField>
   // 内容
   ['x-content']?: any
 

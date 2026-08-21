@@ -48,6 +48,7 @@ const FieldEffects = {
 }
 
 const DefaultFieldEffects = ['onFieldInit', 'onFieldValueChange']
+const DefaultMountedFieldEffects = ['onFieldValueChange']
 
 function getDependencyValue(field: Field, pattern: string, property?: string) {
   const [target, path] = String(pattern).split(/\s*#\s*/)
@@ -203,8 +204,12 @@ function getBaseReactions(schema: ISchema, options: ISchemaTransformerOptions) {
   }
 }
 
-function getUserReactions(schema: ISchema, options: ISchemaTransformerOptions) {
-  const reactions: SchemaReaction[] = toArr(schema['x-reactions'])
+function getUserReactions(
+  schema: ISchema,
+  options: ISchemaTransformerOptions,
+  key: 'x-reactions' | 'x-mounted-reactions' = 'x-reactions',
+) {
+  const reactions: SchemaReaction[] = toArr(schema[key])
   return reactions.map((unCompiled) => {
     return (field: Field) => {
       const baseScope = getBaseScope(field, options)
@@ -237,7 +242,11 @@ function getUserReactions(schema: ISchema, options: ISchemaTransformerOptions) {
       }
 
       if (target) {
-        reaction.effects = effects?.length ? effects : DefaultFieldEffects
+        reaction.effects = effects?.length
+          ? effects
+          : key === 'x-mounted-reactions'
+            ? DefaultMountedFieldEffects
+            : DefaultFieldEffects
       }
       if (reaction.effects) {
         autorun.memo(() => {
@@ -249,6 +258,9 @@ function getUserReactions(schema: ISchema, options: ISchemaTransformerOptions) {
             })
           })
         }, [])
+        if (key === 'x-mounted-reactions' && target && !effects?.length) {
+          untracked(run)
+        }
       }
       else {
         run()
@@ -263,5 +275,6 @@ export function transformFieldProps(schema: Schema, options: ISchemaTransformerO
     reactions: [getBaseReactions(schema, options)].concat(
       getUserReactions(schema, options),
     ),
+    mountedReactions: getUserReactions(schema, options, 'x-mounted-reactions'),
   }
 }

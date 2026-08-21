@@ -850,6 +850,7 @@ interface IFieldFactoryProps {
   decorator?: FieldDecorator // 字段装饰器
   component?: FieldComponent // 字段组件
   reactions?: FieldReaction[] | FieldReaction // 字段响应器
+  mountedReactions?: FieldReaction[] | FieldReaction // 表单首批字段挂载后响应器
   content?: any // 字段内容
   decoratorContent?: any // 字段装饰器内容
   data?: any // 字段扩展属性
@@ -887,6 +888,7 @@ interface IVoidFieldFactoryProps {
   decorator?: FieldDecorator // 字段装饰器
   component?: FieldComponent // 字段组件
   reactions?: FieldReaction[] | FieldReaction // 字段响应器
+  mountedReactions?: FieldReaction[] | FieldReaction // 表单首批字段挂载后响应器
   content?: any // 字段内容
   decoratorContent?: any // 字段装饰器内容
   data?: any // 字段扩展属性

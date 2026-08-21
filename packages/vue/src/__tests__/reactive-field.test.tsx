@@ -291,6 +291,41 @@ describe('reactive field branches', () => {
     expect(field && 'loading' in field && field.loading).toBeTruthy()
   })
 
+  it('应该在表单首批字段全部挂载后启动 mountedReactions', async () => {
+    const form = createForm()
+    const phases: Array<[string, boolean, boolean, boolean, boolean]> = []
+
+    await render(() => (
+      <FormProvider form={form}>
+        <Field
+          name="first"
+          reactions={(field) => {
+            phases.push([
+              'reactions',
+              field.initialized,
+              field.mounted,
+              field.form.mounted,
+              Boolean(field.form.query('second').take()?.mounted),
+            ])
+          }}
+          mountedReactions={(field) => {
+            phases.push([
+              'mountedReactions',
+              field.initialized,
+              field.mounted,
+              field.form.mounted,
+              Boolean(field.form.query('second').take()?.mounted),
+            ])
+          }}
+        />
+        <Field name="second" />
+      </FormProvider>
+    ))
+
+    expect(phases[0]).toEqual(['reactions', false, false, false, false])
+    expect(phases).toContainEqual(['mountedReactions', true, true, true, true])
+  })
+
   it('应该在父级普通重渲染时避免重复创建同一字段实例', async () => {
     const form = createForm()
     const createFieldSpy = vi.spyOn(form, 'createField')

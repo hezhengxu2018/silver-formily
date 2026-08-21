@@ -16,6 +16,7 @@ export const SchemaNestedMap = {
   'additionalItems': true,
   'x-linkages': true,
   'x-reactions': true,
+  'x-mounted-reactions': true,
 }
 
 export const SchemaStateMap = {

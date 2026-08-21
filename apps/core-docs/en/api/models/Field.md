@@ -14,15 +14,18 @@ For process states like `loading`, `validating`, and `submitting`, direct assign
 
 The following options are passed to `form.createField()`, `form.createArrayField()`, `form.createObjectField()`, or `form.createVoidField()`. They are field creation options and are not necessarily exposed as same-named properties on the Field instance.
 
-| Option          | Description                         | Type                                                          | Default        |
-| --------------- | ----------------------------------- | ------------------------------------------------------------- | -------------- |
-| basePath        | Field base path                     | [FormPath](https://path.silver-formily.org/en/api/path-class) | `undefined`    |
-| validateFirst   | Validate only the first failed rule | Boolean                                                       | `undefined`    |
-| validatePattern | Patterns where validator may run    | [FieldPatternTypes[]](#fieldpatterntypes)                     | `['editable']` |
-| validateDisplay | Displays where validator may run    | [FieldDisplayTypes[]](#fielddisplaytypes)                     | `['visible']`  |
-| reactions       | Field reactions for linkage         | `FieldReaction[]` or `FieldReaction`                          | `undefined`    |
+| Option           | Description                                           | Type                                                          | Default        |
+| ---------------- | ----------------------------------------------------- | ------------------------------------------------------------- | -------------- |
+| basePath         | Field base path                                       | [FormPath](https://path.silver-formily.org/en/api/path-class) | `undefined`    |
+| validateFirst    | Validate only the first failed rule                   | Boolean                                                       | `undefined`    |
+| validatePattern  | Patterns where validator may run                      | [FieldPatternTypes[]](#fieldpatterntypes)                     | `['editable']` |
+| validateDisplay  | Displays where validator may run                      | [FieldDisplayTypes[]](#fielddisplaytypes)                     | `['visible']`  |
+| reactions        | Field reactions for linkage                           | `FieldReaction[]` or `FieldReaction`                          | `undefined`    |
+| mountedReactions | Reactions started after the initial form fields mount | `FieldReaction[]` or `FieldReaction`                          | `undefined`    |
 
 `reactions` accepts a single reaction function or an array of reaction functions. Reactions run when the field is initialized and automatically track the field states read by the function; they run again when a dependency changes.
+
+`mountedReactions` has the same dependency-tracking behavior, but its first run for an initial field is deferred until `form.onMount()`, after the synchronous fields in the current FormProvider's initial component tree have mounted. A field added after the form is already mounted starts its reactions after its own `onMount()`. The reactions stop on field unmount and are recreated on remount. Async components, conditionally rendered fields, and array fields added later are not part of the initial field batch.
 
 ## Properties
 

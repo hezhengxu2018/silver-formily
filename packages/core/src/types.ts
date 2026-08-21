@@ -407,6 +407,7 @@ export interface IFieldProps<
   decorator?: FieldDecorator<Decorator>
   component?: FieldComponent<Component>
   reactions?: FieldReaction[] | FieldReaction
+  mountedReactions?: FieldReaction[] | FieldReaction
   content?: any
   decoratorContent?: any
   data?: any
@@ -432,6 +433,7 @@ export interface IVoidFieldProps<
   decorator?: FieldDecorator<Decorator>
   component?: FieldComponent<Component>
   reactions?: FieldReaction[] | FieldReaction
+  mountedReactions?: FieldReaction[] | FieldReaction
   content?: any
   decoratorContent?: any
   data?: any

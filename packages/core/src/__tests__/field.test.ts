@@ -1,4 +1,4 @@
-import { autorun, batch, observable } from '@silver-formily/reactive'
+import { autorun, batch, observable, untracked } from '@silver-formily/reactive'
 import { expect, it, vi } from 'vitest'
 import { createForm, isDataField, isField, onFieldReact } from '../'
 import { attach, sleep } from './shared'
@@ -1235,6 +1235,84 @@ it('reactions', async () => {
   aa.setInitialValue('666')
   expect(bb.readOnly).toBeFalsy()
   form.onUnmount()
+})
+
+it('mountedReactions', () => {
+  const form = createForm()
+  const source = observable({ value: 1 })
+  const reactions = vi.fn((field) => {
+    return [source.value, ...untracked(() => [field.initialized, field.mounted])]
+  })
+  const mountedReactions = vi.fn((field) => {
+    return [source.value, ...untracked(() => [field.initialized, field.mounted])]
+  })
+  const field = form.createField({
+    name: 'mounted',
+    reactions,
+    mountedReactions,
+  })!
+
+  expect(reactions).toHaveReturnedWith([1, false, false])
+  expect(mountedReactions).not.toHaveBeenCalled()
+
+  field.onMount()
+  expect(mountedReactions).not.toHaveBeenCalled()
+
+  form.onMount()
+  expect(mountedReactions).toHaveReturnedWith([1, true, true])
+
+  source.value = 2
+  expect(reactions).toHaveBeenCalledTimes(2)
+  expect(mountedReactions).toHaveBeenCalledTimes(2)
+
+  field.onUnmount()
+  source.value = 3
+  expect(reactions).toHaveBeenCalledTimes(3)
+  expect(mountedReactions).toHaveBeenCalledTimes(2)
+
+  field.onMount()
+  expect(mountedReactions).toHaveBeenCalledTimes(3)
+  field.destroy()
+  source.value = 4
+  expect(mountedReactions).toHaveBeenCalledTimes(3)
+})
+
+it('mountedReactions wait until all initially mounted fields are ready', () => {
+  const form = createForm()
+  const firstReaction = vi.fn(field => [
+    field.form.mounted,
+    field.form.query('second').take()?.mounted,
+  ])
+  const secondReaction = vi.fn(field => [
+    field.form.mounted,
+    field.form.query('first').take()?.mounted,
+  ])
+  const first = form.createField({
+    name: 'first',
+    mountedReactions: firstReaction,
+  })!
+  const second = form.createField({
+    name: 'second',
+    mountedReactions: secondReaction,
+  })!
+
+  first.onMount()
+  second.onMount()
+  expect(firstReaction).not.toHaveBeenCalled()
+  expect(secondReaction).not.toHaveBeenCalled()
+
+  form.onMount()
+  expect(firstReaction).toHaveReturnedWith([true, true])
+  expect(secondReaction).toHaveReturnedWith([true, true])
+
+  const dynamicReaction = vi.fn()
+  const dynamic = form.createField({
+    name: 'dynamic',
+    mountedReactions: dynamicReaction,
+  })!
+  expect(dynamicReaction).not.toHaveBeenCalled()
+  dynamic.onMount()
+  expect(dynamicReaction).toHaveBeenCalledOnce()
 })
 
 it('fault tolerance', () => {

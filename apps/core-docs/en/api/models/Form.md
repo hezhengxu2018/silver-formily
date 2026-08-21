@@ -848,6 +848,7 @@ interface IFieldFactoryProps {
   decorator?: FieldDecorator // field decorator
   component?: FieldComponent // field component
   reactions?: FieldReaction[] | FieldReaction // field reactions
+  mountedReactions?: FieldReaction[] | FieldReaction // reactions started after initial form fields mount
   content?: any // field content
   decoratorContent?: any // field decorator content
   data?: any // field extended properties
@@ -885,6 +886,7 @@ interface IVoidFieldFactoryProps {
   decorator?: FieldDecorator // field decorator
   component?: FieldComponent // field component
   reactions?: FieldReaction[] | FieldReaction // field reactions
+  mountedReactions?: FieldReaction[] | FieldReaction // reactions started after initial form fields mount
   content?: any // field content
   decoratorContent?: any // field decorator content
   data?: any // field extended properties

@@ -58,6 +58,7 @@ export const markupSchemaProps = {
   'x-component': createProp<ISchemaMarkupFieldProps['x-component']>(),
   'x-component-props': createProp<ISchemaMarkupFieldProps['x-component-props']>(),
   'x-reactions': createProp<ISchemaMarkupFieldProps['x-reactions']>(),
+  'x-mounted-reactions': createProp<ISchemaMarkupFieldProps['x-mounted-reactions']>(),
   'x-content': createProp<ISchemaMarkupFieldProps['x-content']>(),
   'x-visible': createBooleanProp(),
   'x-hidden': createBooleanProp(),

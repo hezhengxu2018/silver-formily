@@ -140,4 +140,26 @@ describe('schema', () => {
     expect.assert(field)
     expect(field.decoratorContent).toEqual(decoratorContent)
   })
+
+  it('runs x-mounted-reactions only after the field mounts', async () => {
+    const Schema = await loadSchema()
+    const mountedReaction = vi.fn()
+    const schema = new Schema({
+      'name': 'mounted',
+      'type': 'string',
+      'x-mounted-reactions': mountedReaction,
+    })
+    const form = createForm()
+    const field = form.createField(schema.toFieldProps())!
+
+    expect(mountedReaction).not.toHaveBeenCalled()
+    field.onMount()
+    expect(mountedReaction).not.toHaveBeenCalled()
+    form.onMount()
+    expect(mountedReaction).toHaveBeenCalledOnce()
+    expect(mountedReaction).toHaveBeenCalledWith(
+      field,
+      expect.objectContaining({ $self: field }),
+    )
+  })
 })

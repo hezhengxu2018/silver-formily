@@ -40,6 +40,7 @@
 | x-component                  | 字段 UI 组件                                      | 参考绑定库                                                                              | `component`                                                                   |
 | x-component-props            | 字段 UI 组件属性                                  | `any `                                                                                  | `component`                                                                   |
 | x-reactions                  | 字段联动协议                                      | [SchemaReactions](/api/types#schemareactions)                                           | `reactions`                                                                   |
+| x-mounted-reactions          | 表单首批字段全部挂载后启动的联动协议              | [SchemaReactions](/api/types#schemareactions)                                           | `mountedReactions`                                                            |
 | x-content                    | 字段内容，用来传入某个组件的子节点                | 参考绑定库                                                                              | 参考绑定库                                                                    |
 | x-visible                    | 字段显示隐藏                                      | `boolean`                                                                               | `visible`                                                                     |
 | x-hidden                     | 字段 UI 隐藏(保留数据)                            | `boolean`                                                                               | `hidden`                                                                      |
@@ -56,4 +57,5 @@
 - x-component 的组件标识与[createSchemaField](https://vue.silver-formily.org/api/components/schema-field#签名)传入的组件集合的 Key 匹配
 - x-decorator 的组件标识与[createSchemaField](https://vue.silver-formily.org/api/components/schema-field#签名)传入的组件集合的 Key 匹配
 - Schema 的每个属性都能使用字符串表达式<code v-pre>{{expression}}</code>，表达式变量可以从 createSchemaField 中传入，也可以从 SchemaField 组件中传入
+- `x-mounted-reactions` 与 `x-reactions` 使用相同的联动结构，但首批字段会在当前 FormProvider 初始组件树的同步字段全部挂载后启动；动态字段在自身挂载后启动，字段卸载时停止，重新挂载时重新启动
 - $ref 指定 Schema 预定义的格式必须是<code v-pre>#/definitions/address</code>这种格式，不支持加载远程 JSON Schema

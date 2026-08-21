@@ -43,6 +43,7 @@ api/components/field
 | decoratorContent ^(beta) | 装饰器插槽内容, 避免使用default插槽。                                 | `Slots`                                                                                              | —              |
 | component                | 输入组件及其 props，形如 `[Component, props]`                         | `[Component, Props?]` \| `false`                                                                     | `false`        |
 | reactions                | 响应式副作用，支持函数或函数数组                                      | [FieldReaction](/types/field.html#fieldreaction) \| [FieldReaction](/types/field.html#fieldreaction) | —              |
+| mountedReactions         | 表单首批字段全部挂载后启动、字段卸载时自动停止的响应式副作用          | [FieldReaction](/types/field.html#fieldreaction) \| [FieldReaction](/types/field.html#fieldreaction) | —              |
 | content                  | 传给输入组件的插槽内容（通常是 `default` 槽）                         | `Slots`                                                                                              | —              |
 | data                     | 透传的扩展数据，可在副作用或组件中读取                                | `any`                                                                                                | —              |
 
