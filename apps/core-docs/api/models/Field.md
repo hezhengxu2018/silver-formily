@@ -14,14 +14,14 @@ order: 1
 
 以下配置项通过 `form.createField()`、`form.createArrayField()`、`form.createObjectField()` 或 `form.createVoidField()` 传入。它们属于字段创建配置，不一定会作为 Field 实例的同名属性暴露。
 
-| 配置项           | 描述                           | 类型                                                       | 默认值         |
-| ---------------- | ------------------------------ | ---------------------------------------------------------- | -------------- |
-| basePath         | 字段基础路径                   | [FormPath](https://path.silver-formily.org/api/path-class) | `undefined`    |
-| validateFirst    | 是否只校验第一个非法规则       | Boolean                                                    | `undefined`    |
-| validatePattern  | validator 可以运行的交互模式   | [FieldPatternTypes[]](#fieldpatterntypes)                  | `['editable']` |
-| validateDisplay  | validator 可以运行的展示状态   | [FieldDisplayTypes[]](#fielddisplaytypes)                  | `['visible']`  |
-| reactions        | 字段响应器，用于声明字段联动   | `FieldReaction[]` 或 `FieldReaction`                       | `undefined`    |
-| mountedReactions | 表单首批字段挂载后启动的响应器 | `FieldReaction[]` 或 `FieldReaction`                       | `undefined`    |
+| 配置项                    | 描述                           | 类型                                                                 | 默认值         |
+| ------------------------- | ------------------------------ | -------------------------------------------------------------------- | -------------- |
+| basePath                  | 字段基础路径                   | [FormPath](https://path.silver-formily.org/api/path-class)           | `undefined`    |
+| validateFirst             | 是否只校验第一个非法规则       | Boolean                                                              | `undefined`    |
+| validatePattern           | validator 可以运行的交互模式   | [FieldPatternTypes[]](#fieldpatterntypes)                            | `['editable']` |
+| validateDisplay           | validator 可以运行的展示状态   | [FieldDisplayTypes[]](#fielddisplaytypes)                            | `['visible']`  |
+| reactions                 | 字段响应器，用于声明字段联动   | [FieldReaction[]](#fieldreaction) 或 [FieldReaction](#fieldreaction) | `undefined`    |
+| mountedReactions ^(1.2.0) | 表单首批字段挂载后启动的响应器 | [FieldReaction[]](#fieldreaction) 或 [FieldReaction](#fieldreaction) | `undefined`    |
 
 其中，`reactions` 可以配置一个响应器函数，也可以配置响应器函数数组。响应器会在字段初始化时执行，并根据函数中读取的字段状态自动追踪依赖；依赖状态变化后会重新执行。
 
