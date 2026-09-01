@@ -1,7 +1,7 @@
 {
   "name": "@silver-formily/element-plus",
   "type": "module",
-  "version": "5.2.1",
+  "version": "6.0.0",
   "description": "Element Plus component bindings and form scene primitives for Silver Formily on Vue 3",
   "author": "hezhengxu",
   "license": "MIT",

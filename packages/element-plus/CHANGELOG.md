@@ -1,5 +1,23 @@
 # 更新日志
 
+## 6.0.0
+
+### Major Changes
+
+- 4d71af4: 统一 Vue 组件的公开 Props 类型声明，并通过 `connect` 保留上游组件的 Props 类型。
+  Element Plus 和 Vant 封装组件现在导出真实的 `FooProps` 类型，不再将组件构造类型
+  错误地作为 Props 类型使用；如需组件构造类型，请使用对应的 `FooComponent`。
+
+### Patch Changes
+
+- fb524c4: 添加el-date-picker无法响应式更新disabled-date的兼容.
+- 2ec2bea: 修复Upload组件在样式及细节描述上的问题
+- f5921b7: 添加对picker-select在optionAsValue时的阅读态支持
+- 5c5d8f7: 修复date-picker和time-picker异常的宽度问题
+- Updated dependencies [4d71af4]
+- Updated dependencies [05fe93d]
+  - @silver-formily/vue@4.0.0
+
 ## 5.2.1
 
 ### Patch Changes

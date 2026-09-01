@@ -1,7 +1,7 @@
 {
   "name": "@silver-formily/vant",
   "type": "module",
-  "version": "1.0.2",
+  "version": "2.0.0",
   "description": "Vant-based mobile form bindings and scene components for Silver Formily on Vue 3",
   "author": "hezhengxu",
   "license": "MIT",
