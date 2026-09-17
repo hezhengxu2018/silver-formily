@@ -73,6 +73,3 @@ export function createPermissionRequest(delay = 150) {
     }
   }
 }
-
-
-

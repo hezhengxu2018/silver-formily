@@ -223,8 +223,8 @@ catalogs:
       specifier: 2.0.0-alpha.18
       version: 2.0.0-alpha.18
     vitepress-better-demo-plugin:
-      specifier: ^0.6.2
-      version: 0.6.2
+      specifier: ^0.7.1
+      version: 0.7.1
     vitepress-plugin-group-icons:
       specifier: ^1.7.1
       version: 1.7.1
@@ -1027,7 +1027,7 @@ importers:
         version: 2.0.0-alpha.18(@types/node@24.10.13)(async-validator@4.2.5)(change-case@5.4.4)(esbuild@0.28.0)(jiti@2.7.0)(nprogress@0.2.0)(postcss@8.5.25)(sass-embedded@1.97.3)(sass@1.97.3)(tsx@4.22.3)(typescript@6.0.2)(yaml@2.8.2)
       vitepress-better-demo-plugin:
         specifier: 'catalog:'
-        version: 0.6.2(element-plus@2.13.2(vue@3.5.40(typescript@6.0.2)))(vitepress@2.0.0-alpha.18(@types/node@24.10.13)(async-validator@4.2.5)(change-case@5.4.4)(esbuild@0.28.0)(jiti@2.7.0)(nprogress@0.2.0)(postcss@8.5.25)(sass-embedded@1.97.3)(sass@1.97.3)(tsx@4.22.3)(typescript@6.0.2)(yaml@2.8.2))(vue@3.5.40(typescript@6.0.2))
+        version: 0.7.1(element-plus@2.13.2(vue@3.5.40(typescript@6.0.2)))(vitepress@2.0.0-alpha.18(@types/node@24.10.13)(async-validator@4.2.5)(change-case@5.4.4)(esbuild@0.28.0)(jiti@2.7.0)(nprogress@0.2.0)(postcss@8.5.25)(sass-embedded@1.97.3)(sass@1.97.3)(tsx@4.22.3)(typescript@6.0.2)(yaml@2.8.2))(vue@3.5.40(typescript@6.0.2))
       vitepress-plugin-group-icons:
         specifier: 'catalog:'
         version: 1.7.1(vite@8.1.5(@types/node@24.10.13)(esbuild@0.28.0)(jiti@2.7.0)(sass-embedded@1.97.3)(sass@1.97.3)(tsx@4.22.3)(yaml@2.8.2))
@@ -4488,6 +4488,7 @@ packages:
   eslint@9.39.1:
     resolution: {integrity: sha512-BhHmn2yNOFA9H9JmmIVKJmd288g9hrVRDkdoIgRCRuSySRUHH7r/DI6aAXW9T1WwUuY3DFgrcaqB+deURBLR5g==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
+    deprecated: This version is no longer supported. Please see https://eslint.org/version-support for other options.
     hasBin: true
     peerDependencies:
       jiti: '*'
@@ -7314,8 +7315,8 @@ packages:
       yaml:
         optional: true
 
-  vitepress-better-demo-plugin@0.6.2:
-    resolution: {integrity: sha512-ji9WBqL9Jrl8qtraPQV2N43tFc0ZUWssmtq09t0uiFlyWp13Bzhu+jNcmRfVuvaPrE8pCn/eCopxo8Rli+/m6w==}
+  vitepress-better-demo-plugin@0.7.1:
+    resolution: {integrity: sha512-v2QrxXShgB2fApc8AudaQmIXQNlN+tJ/EbNH9bwWQipfOEHKRqUzA1tBmNHo/5oWym7tMwRZGfygmzoAEL/kTw==}
     peerDependencies:
       element-plus: ^2.2.0
       vitepress: '*'
@@ -9529,7 +9530,7 @@ snapshots:
   '@vue/compiler-core@3.5.40':
     dependencies:
       '@babel/parser': 7.29.7
-      '@vue/shared': 3.5.32
+      '@vue/shared': 3.5.40
       entities: 7.0.1
       estree-walker: 2.0.2
       source-map-js: 1.2.1
@@ -9542,7 +9543,7 @@ snapshots:
   '@vue/compiler-dom@3.5.40':
     dependencies:
       '@vue/compiler-core': 3.5.40
-      '@vue/shared': 3.5.32
+      '@vue/shared': 3.5.40
 
   '@vue/compiler-sfc@3.5.40':
     dependencies:
@@ -13098,7 +13099,7 @@ snapshots:
 
   shortid@2.2.17:
     dependencies:
-      nanoid: 3.3.12
+      nanoid: 3.3.16
 
   siginfo@2.0.0: {}
 
@@ -13789,10 +13790,12 @@ snapshots:
       tsx: 4.22.3
       yaml: 2.8.2
 
-  vitepress-better-demo-plugin@0.6.2(element-plus@2.13.2(vue@3.5.40(typescript@6.0.2)))(vitepress@2.0.0-alpha.18(@types/node@24.10.13)(async-validator@4.2.5)(change-case@5.4.4)(esbuild@0.28.0)(jiti@2.7.0)(nprogress@0.2.0)(postcss@8.5.25)(sass-embedded@1.97.3)(sass@1.97.3)(tsx@4.22.3)(typescript@6.0.2)(yaml@2.8.2))(vue@3.5.40(typescript@6.0.2)):
+  vitepress-better-demo-plugin@0.7.1(element-plus@2.13.2(vue@3.5.40(typescript@6.0.2)))(vitepress@2.0.0-alpha.18(@types/node@24.10.13)(async-validator@4.2.5)(change-case@5.4.4)(esbuild@0.28.0)(jiti@2.7.0)(nprogress@0.2.0)(postcss@8.5.25)(sass-embedded@1.97.3)(sass@1.97.3)(tsx@4.22.3)(typescript@6.0.2)(yaml@2.8.2))(vue@3.5.40(typescript@6.0.2)):
     dependencies:
       '@stackblitz/sdk': 1.11.0
       codesandbox: 2.2.3
+      entities: 4.5.0
+      json5: 2.2.3
       vitepress: 2.0.0-alpha.18(@types/node@24.10.13)(async-validator@4.2.5)(change-case@5.4.4)(esbuild@0.28.0)(jiti@2.7.0)(nprogress@0.2.0)(postcss@8.5.25)(sass-embedded@1.97.3)(sass@1.97.3)(tsx@4.22.3)(typescript@6.0.2)(yaml@2.8.2)
       vue: 3.5.40(typescript@6.0.2)
     optionalDependencies:

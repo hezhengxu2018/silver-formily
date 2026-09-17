@@ -97,6 +97,3 @@ const { SchemaField } = createSchemaField({
     </ElButton>
   </FormProvider>
 </template>
-
-
-

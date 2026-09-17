@@ -86,7 +86,7 @@ catalog:
   vant: ^4.9.22
   vite: ^8.0.8
   vitepress: 2.0.0-alpha.18
-  vitepress-better-demo-plugin: ^0.6.2
+  vitepress-better-demo-plugin: ^0.7.1
   vitepress-plugin-group-icons: ^1.7.1
   vitepress-plugin-nprogress: ^0.1.1
   vitepress-theme-element-plus: ^1.4.2

@@ -6,7 +6,7 @@
 
 :::demo
 
-query-form-item/markup-schema
+../../en/demos/query-form-item/markup-schema
 
 :vueFiles="['../../en/demos/query-form-item/markup-schema.vue', '../../en/demos/query-form-item/mock-user-request.ts']"
 
@@ -24,7 +24,7 @@ query-form-item/markup-schema
 
 :::demo
 
-query-form-item/custom-components-segmented
+../../en/demos/query-form-item/custom-components-segmented
 
 :vueFiles="['../../en/demos/query-form-item/custom-components-segmented.vue', '../../en/demos/query-form-item/mock-user-request.ts']"
 
@@ -46,7 +46,7 @@ If you need to pass `form` inside the decorator, use a function that returns the
 
 :::demo
 
-query-form-item/transfer-clear-on-data-change
+../../en/demos/query-form-item/transfer-clear-on-data-change
 
 :vueFiles="['../../en/demos/query-form-item/transfer-clear-on-data-change.vue', '../../en/demos/query-form-item/mock-user-request.ts']"
 
@@ -56,7 +56,7 @@ query-form-item/transfer-clear-on-data-change
 
 :::demo
 
-query-form-item/extra-slot-selected-list
+../../en/demos/query-form-item/extra-slot-selected-list
 
 :vueFiles="['../../en/demos/query-form-item/extra-slot-selected-list.vue', '../../en/demos/query-form-item/mock-user-request.ts']"
 
