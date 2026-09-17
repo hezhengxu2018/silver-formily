@@ -14,7 +14,7 @@ Define batch operations, internal dependencies can be collected
 
 ### Interactive Comparison
 
-::: demo
+:::demo
 api/batch-en/compare
 :::
 
@@ -71,7 +71,7 @@ interface batch {
 
 ## Example
 
-::: demo
+:::demo
 api/batch-en/scope
 :::
 

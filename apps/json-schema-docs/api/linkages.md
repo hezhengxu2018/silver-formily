@@ -62,31 +62,31 @@ type SchemaReaction<Field = any>
 
 #### 标准主动联动
 
-::: demo
+:::demo
 api/linkages/active-standard
 :::
 
 #### 局部表达式分发联动
 
-::: demo
+:::demo
 api/linkages/active-state-expression
 :::
 
 #### 基于 Schema 协议联动
 
-::: demo
+:::demo
 api/linkages/active-schema
 :::
 
 #### 基于 run 语句联动
 
-::: demo
+:::demo
 api/linkages/active-run
 :::
 
 #### 基于生命周期钩子联动
 
-::: demo
+:::demo
 api/linkages/active-effects
 :::
 
@@ -94,7 +94,7 @@ api/linkages/active-effects
 
 在主动联动里，从 `source` 字段更新 `hint` 字段内容，展示 3 个内置作用域值。
 
-::: demo
+:::demo
 api/expression-scope/self-values-form
 :::
 
@@ -102,13 +102,13 @@ api/expression-scope/self-values-form
 
 在主动联动里，`source` 更新 `target`；当 `source` 为空时回退到 `$target.value`，保留目标字段当前值。
 
-::: demo
+:::demo
 api/expression-scope/target-active
 :::
 
 ### 被动联动
 
-::: demo
+:::demo
 api/linkages/passive-dependencies
 :::
 
@@ -116,7 +116,7 @@ api/linkages/passive-dependencies
 
 数组项里的同级字段推荐用被动依赖实现，例如当前行 `target` 依赖当前行 `.source`。
 
-::: demo
+:::demo
 api/linkages/active-neighbor
 :::
 
@@ -124,13 +124,13 @@ api/linkages/active-neighbor
 
 在被动联动里，`summary` 依赖 `price/count`，通过表达式同时读取 `$deps` 和 `$dependencies`。
 
-::: demo
+:::demo
 api/expression-scope/deps-dependencies
 :::
 
 ### 复杂联动
 
-::: demo
+:::demo
 api/linkages/complex-function
 :::
 
@@ -138,12 +138,12 @@ api/linkages/complex-function
 
 #### 操作状态
 
-::: demo
+:::demo
 api/linkages/component-style-state
 :::
 
 #### 操作 Schema 协议
 
-::: demo
+:::demo
 api/linkages/component-style-schema
 :::

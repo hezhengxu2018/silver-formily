@@ -18,6 +18,6 @@ interface useField {
 
 ## Example
 
-::: demo
+:::demo
 api/hooks/use-field
 :::

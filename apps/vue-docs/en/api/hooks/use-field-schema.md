@@ -20,6 +20,6 @@ See [Schema](/en/api/shared/schema) for the local bridge page, or go straight to
 
 ## Example
 
-::: demo
+:::demo
 api/hooks/use-field-schema
 :::

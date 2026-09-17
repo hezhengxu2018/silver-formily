@@ -6,7 +6,7 @@ The real strength of `@silver-formily/path` is not plain dot paths. It is the fa
 
 This playground shows the parsed segments, flags, and match result for the current pattern. It is useful for experimenting with `*`, `**`, `~`, groups, and relative paths.
 
-::: demo
+:::demo
 api/patterns/lab
 :::
 

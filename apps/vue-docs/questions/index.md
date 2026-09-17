@@ -13,7 +13,7 @@ outline: 2
 事件名冲突时，`@` 的优先级更高。例如同时设置了 `@change` 和 `onChange`，只有 `@change` 会生效。
 :::
 
-::: demo
+:::demo
 questions/events
 :::
 
@@ -21,7 +21,7 @@ questions/events
 
 使用 `x-content` 可以在组件的 `default` 插槽中插入内容。可以传入文本或组件。
 
-::: demo
+:::demo
 questions/default-slot
 :::
 
@@ -33,7 +33,7 @@ questions/default-slot
 注意键名不可包含 `template`、`render`、`setup` 三个关键字，否则整个 `x-content` 会被当做 vue 组件进行渲染。
 :::
 
-::: demo
+:::demo
 questions/named-slot
 :::
 
@@ -41,13 +41,13 @@ questions/named-slot
 
 `x-content` 使用函数式组件时, 渲染函数增加第二个参数，通过其 `props` 成员访问作用域插槽传入属性，支持 observer() 和 connect() 接入组件。
 
-::: demo
+:::demo
 questions/scoped-slot
 :::
 
 你可能会觉得奇怪为什么`ScopedSlotComponent`这个组件定义了两个props来接收作用域插槽中应该获取的作用域。事实上应该使用下面这种更规范的写法，他是Vue3中的函数式组件，因为插槽只接收VNode，除了VNode之外只能使用函数式组件。
 
-::: demo
+:::demo
 questions/functional-scoped-slot
 :::
 

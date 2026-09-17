@@ -14,7 +14,7 @@ interface untracked<T extends () => any> {
 
 ## Example
 
-::: demo
+:::demo
 api/untracked-en/basic
 :::
 

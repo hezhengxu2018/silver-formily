@@ -10,7 +10,7 @@ order: 8
 
 ## 用例
 
-::: demo
+:::demo
 api/components/expression-scope
 :::
 

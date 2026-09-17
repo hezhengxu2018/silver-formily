@@ -22,7 +22,7 @@ FormPathPattern的语法格式请参考 [FormPath](https://path.silver-formily.o
 
 ### 用例
 
-::: demo
+:::demo
 
 api/entry/field-effect-hooks/on-field-init
 
@@ -44,7 +44,7 @@ interface onFieldMount {
 
 ### 用例
 
-::: demo
+:::demo
 
 api/entry/field-effect-hooks/on-field-mount
 
@@ -66,7 +66,7 @@ interface onFieldUnmount {
 
 ### 用例
 
-::: demo
+:::demo
 
 api/entry/field-effect-hooks/on-field-unmount
 
@@ -86,7 +86,7 @@ interface onFieldReact {
 
 ### 用例
 
-::: demo
+:::demo
 
 api/entry/field-effect-hooks/on-field-react
 
@@ -117,7 +117,7 @@ interface onFieldChange {
 
 ### 用例
 
-::: demo
+:::demo
 
 api/entry/field-effect-hooks/on-field-change
 
@@ -137,7 +137,7 @@ interface onFieldValueChange {
 
 ### 用例
 
-::: demo
+:::demo
 
 api/entry/field-effect-hooks/on-field-value-change
 
@@ -157,7 +157,7 @@ interface onFieldInitialValueChange {
 
 ### 用例
 
-::: demo
+:::demo
 
 api/entry/field-effect-hooks/on-field-initial-value-change
 
@@ -177,7 +177,7 @@ interface onFieldInputValueChange {
 
 ### 用例
 
-::: demo
+:::demo
 
 api/entry/field-effect-hooks/on-field-input-value-change
 
@@ -199,7 +199,7 @@ interface onFieldValidateStart {
 
 ### 用例
 
-::: demo
+:::demo
 
 api/entry/field-effect-hooks/on-field-validate-start
 
@@ -221,7 +221,7 @@ interface onFieldValidateEnd {
 
 ### 用例
 
-::: demo
+:::demo
 
 api/entry/field-effect-hooks/on-field-validate-end
 
@@ -243,7 +243,7 @@ interface onFieldValidateFailed {
 
 ### 用例
 
-::: demo
+:::demo
 
 api/entry/field-effect-hooks/on-field-validate-failed
 
@@ -265,7 +265,7 @@ interface onFieldValidateSuccess {
 
 ### 用例
 
-::: demo
+:::demo
 
 api/entry/field-effect-hooks/on-field-validate-success
 

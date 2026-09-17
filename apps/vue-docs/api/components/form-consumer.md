@@ -10,7 +10,7 @@ Form 参考[Form](https://core.silver-formily.org/api/models/Form)
 
 ## 用例
 
-::: demo
+:::demo
 api/components/form-consumer
 :::
 

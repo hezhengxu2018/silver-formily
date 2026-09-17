@@ -10,7 +10,7 @@ Portal component that surfaces a Formily [Form](https://core.silver-formily.org/
 
 ## Usage
 
-::: demo
+:::demo
 api/components/form-provider
 :::
 

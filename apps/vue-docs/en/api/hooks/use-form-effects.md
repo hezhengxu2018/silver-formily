@@ -14,6 +14,6 @@ interface useFormEffects {
 
 ## Example
 
-::: demo
+:::demo
 api/hooks/use-form-effects
 :::

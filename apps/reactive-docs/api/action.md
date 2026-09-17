@@ -12,7 +12,7 @@ action 可以看作不收集依赖的 batch。它同样会把一组写操作合�
 
 ### 交互对比
 
-::: demo
+:::demo
 api/action/compare
 :::
 
@@ -50,7 +50,7 @@ interface action {
 
 ## 用例
 
-::: demo
+:::demo
 api/action/basic
 :::
 

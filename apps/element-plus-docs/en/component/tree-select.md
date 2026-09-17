@@ -4,7 +4,7 @@
 
 ## Markup Schema Example
 
-::: demo
+:::demo
 
 tree-select/markup-schema
 
@@ -12,7 +12,7 @@ tree-select/markup-schema
 
 ## JSON Schema Example
 
-::: demo
+:::demo
 
 tree-select/json-schema
 
@@ -20,7 +20,7 @@ tree-select/json-schema
 
 ## Template Example
 
-::: demo
+:::demo
 
 tree-select/template
 

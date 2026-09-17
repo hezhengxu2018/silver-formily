@@ -8,7 +8,7 @@ name 属性必填。
 
 ## 用例
 
-::: demo
+:::demo
 api/components/field
 :::
 

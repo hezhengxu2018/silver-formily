@@ -6,6 +6,6 @@ Re-export from [@silver-formily/reactive-vue](https://reactive-vue.silver-formil
 
 ## Example
 
-::: demo
+:::demo
 api/shared/observer
 :::

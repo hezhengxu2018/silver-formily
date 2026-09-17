@@ -14,6 +14,6 @@ interface useParentForm {
 
 ## Example
 
-::: demo
+:::demo
 api/hooks/use-parent-form
 :::

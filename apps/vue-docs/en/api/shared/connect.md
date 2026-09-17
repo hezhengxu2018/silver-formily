@@ -47,6 +47,6 @@ including attrs and event forwarding, remains unchanged.
 
 ## Example
 
-::: demo
+:::demo
 api/shared/connect
 :::

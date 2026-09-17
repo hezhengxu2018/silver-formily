@@ -36,7 +36,7 @@ interface define<Target extends object> {
 
 ## 用例
 
-::: demo
+:::demo
 api/define/basic
 :::
 

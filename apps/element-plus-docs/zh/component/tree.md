@@ -12,7 +12,7 @@
 
 ## Template 案例
 
-::: demo
+:::demo
 
 tree/template
 
@@ -20,7 +20,7 @@ tree/template
 
 ## Template 初始值返显案例
 
-::: demo
+:::demo
 
 tree/template-initial-value
 
@@ -28,7 +28,7 @@ tree/template-initial-value
 
 ## Template option 初始值返显案例
 
-::: demo
+:::demo
 
 tree/template-option-initial-value
 
@@ -36,7 +36,7 @@ tree/template-option-initial-value
 
 ## Template 其他特殊状态
 
-::: demo
+:::demo
 
 tree/template-others
 

@@ -18,7 +18,7 @@ interface raw<T extends object> {
 
 ## 用例
 
-::: demo
+:::demo
 api/raw/basic
 :::
 

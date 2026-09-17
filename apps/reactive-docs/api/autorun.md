@@ -20,7 +20,7 @@ interface autorun {
 
 ## 用例
 
-::: demo
+:::demo
 api/autorun/basic
 :::
 
@@ -60,7 +60,7 @@ interface memo<T> {
 
 ### 用例
 
-::: demo
+:::demo
 api/autorun/memo
 :::
 
@@ -116,7 +116,7 @@ interface effect {
 
 ### 用例
 
-::: demo
+:::demo
 api/autorun/effect
 :::
 

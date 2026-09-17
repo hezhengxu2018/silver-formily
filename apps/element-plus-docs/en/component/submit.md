@@ -4,7 +4,7 @@
 
 ## Basic Submit
 
-::: demo
+:::demo
 
 submit/base
 
@@ -12,7 +12,7 @@ submit/base
 
 ## Duplicate-Submission Guard
 
-::: demo
+:::demo
 
 submit/loading
 

@@ -46,6 +46,6 @@ const ConnectedInput = connect<typeof ElInput, InputProps>(
 
 ## 用例
 
-::: demo
+:::demo
 api/shared/connect
 :::

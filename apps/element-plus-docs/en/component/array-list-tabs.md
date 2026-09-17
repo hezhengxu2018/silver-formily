@@ -8,7 +8,7 @@ This component is intended for Schema-based scenarios only.
 
 ## Markup Schema Example
 
-::: demo
+:::demo
 array-list-tabs/markup-schema
 :::
 
@@ -18,7 +18,7 @@ array-list-tabs/markup-schema
 It is recommended to wrap the title field with `Editable`. When rendered as the tab title, its validation errors will not be counted as panel errors.
 :::
 
-::: demo
+:::demo
 array-list-tabs/markup-schema-show-title-field-in-tab
 :::
 

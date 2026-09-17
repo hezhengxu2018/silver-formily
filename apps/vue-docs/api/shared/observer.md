@@ -6,6 +6,6 @@ observer 是从 [@silver-formily/reactive-vue](https://reactive-vue.silver-formi
 
 ## 用例
 
-::: demo
+:::demo
 api/shared/observer
 :::

@@ -10,7 +10,7 @@
 
 但是再次显示的时候，又会恢复现场，这里是 Formily Core 内部的特性，支持完全恢复现场的能力。
 
-::: demo
+:::demo
 api/components/void-field
 :::
 

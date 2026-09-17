@@ -13,7 +13,7 @@ Inside `x-component-props` you can register events with the `@event` shorthand a
 When both syntaxes target the same event, the `@` form wins. For example, declaring both `@change` and `onChange` will only trigger the `@change` handler.
 :::
 
-::: demo
+:::demo
 questions/events
 :::
 
@@ -21,7 +21,7 @@ questions/events
 
 Use `x-content` to inject nodes into the component’s `default` slot. You can pass VNodes or renderless components.
 
-::: demo
+:::demo
 questions/default-slot
 :::
 
@@ -33,7 +33,7 @@ Map keys inside `x-content` to the slot names.
 Avoid the reserved keys `template`, `render`, and `setup`. When any of them shows up, the entire `x-content` payload will be treated as a Vue component instead of a slot map.
 :::
 
-::: demo
+:::demo
 questions/named-slot
 :::
 
@@ -41,13 +41,13 @@ questions/named-slot
 
 When `x-content` contains a functional component, the render function receives a second argument whose `props` bag exposes the scope payload. Both `observer()` and `connect()` wrappers are supported inside these components.
 
-::: demo
+:::demo
 questions/scoped-slot
 :::
 
 The `ScopedSlotComponent` example defines two props to show the expected shape, but the idiomatic pattern is to rely on a Vue 3 functional component so that only VNodes are rendered.
 
-::: demo
+:::demo
 questions/functional-scoped-slot
 :::
 

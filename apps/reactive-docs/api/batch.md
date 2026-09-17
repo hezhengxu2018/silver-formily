@@ -14,7 +14,7 @@ batch 用来把一组更新合并成一次派发，在批量修改数据时可�
 
 ### 交互对比
 
-::: demo
+:::demo
 api/batch/compare
 :::
 
@@ -71,7 +71,7 @@ interface batch {
 
 ## 用例
 
-::: demo
+:::demo
 api/batch/scope
 :::
 

@@ -12,7 +12,7 @@ Please make sure your initial value is correct. The `valueType` used for rehydra
 
 ## Template Example
 
-::: demo
+:::demo
 
 tree/template
 
@@ -20,7 +20,7 @@ tree/template
 
 ## Template Initial Value Example
 
-::: demo
+:::demo
 
 tree/template-initial-value
 
@@ -28,7 +28,7 @@ tree/template-initial-value
 
 ## Template Option Initial Value Example
 
-::: demo
+:::demo
 
 tree/template-option-initial-value
 
@@ -36,7 +36,7 @@ tree/template-option-initial-value
 
 ## Additional Template State Examples
 
-::: demo
+:::demo
 
 tree/template-others
 

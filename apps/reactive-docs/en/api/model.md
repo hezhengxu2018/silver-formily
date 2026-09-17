@@ -22,7 +22,7 @@ interface model<Target extends object> {
 
 ## Example
 
-::: demo
+:::demo
 api/model-en/basic
 :::
 

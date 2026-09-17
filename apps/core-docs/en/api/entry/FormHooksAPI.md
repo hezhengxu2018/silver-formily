@@ -27,7 +27,7 @@ interface createEffectHook {
 
 ### Usage
 
-::: demo
+:::demo
 
 api/entry/form-hooks-api/create-effect-hook
 
@@ -52,7 +52,7 @@ interface createEffectContext<T> {
 
 ### Usage
 
-::: demo
+:::demo
 
 api/entry/form-hooks-api/create-effect-context
 
@@ -74,7 +74,7 @@ interface useEffectForm {
 
 ### Usage
 
-::: demo
+:::demo
 
 api/entry/form-hooks-api/use-effect-form
 

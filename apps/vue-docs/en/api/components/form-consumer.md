@@ -8,7 +8,7 @@ Refer to [Form](https://core.silver-formily.org/en/api/models/Form) for the expo
 
 ## Usage
 
-::: demo
+:::demo
 api/components/form-consumer
 :::
 

@@ -29,7 +29,7 @@ pnpm add @silver-formily/vue @silver-formily/core @silver-formily/json-schema @s
 3. 编写一份 `schema`，通过 `type`、`properties`、`x-component` 描述字段
 4. 用 `FormProvider` 和 `SchemaField` 完成渲染
 
-::: demo
+:::demo
 guide/quick-start
 :::
 

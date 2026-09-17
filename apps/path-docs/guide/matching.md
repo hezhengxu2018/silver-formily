@@ -6,7 +6,7 @@
 
 下面这个 playground 适合直接比较 `match`、`Path.match`、`matchAliasGroup` 和 `includes` 的差异：
 
-::: demo
+:::demo
 api/matching/alias-playground
 :::
 

@@ -4,7 +4,7 @@
 
 ## 普通提交
 
-::: demo
+:::demo
 
 submit/base
 
@@ -12,7 +12,7 @@ submit/base
 
 ## 防重提交
 
-::: demo
+:::demo
 
 submit/loading
 

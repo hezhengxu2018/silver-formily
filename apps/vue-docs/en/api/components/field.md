@@ -8,7 +8,7 @@ The `name` prop is required.
 
 ## Usage
 
-::: demo
+:::demo
 api/components/field
 :::
 

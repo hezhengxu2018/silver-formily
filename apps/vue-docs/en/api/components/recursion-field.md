@@ -17,7 +17,7 @@ This page only explains how `@silver-formily/vue` recursively consumes schema ob
 
 Read a schema object from component props and hand it to `RecursionField` to render it.
 
-::: demo
+:::demo
 api/components/recursion-field
 :::
 
@@ -25,7 +25,7 @@ api/components/recursion-field
 
 Combine [useField](/en/api/hooks/use-field) and [useFieldSchema](/en/api/hooks/use-field-schema) to fetch the current field instance plus its schema before delegating to `RecursionField`.
 
-::: demo
+:::demo
 api/components/recursion-field-with-component
 :::
 

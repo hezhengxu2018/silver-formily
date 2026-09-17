@@ -10,7 +10,7 @@ order: 6
 
 ## 用例
 
-::: demo
+:::demo
 api/components/form-provider
 :::
 

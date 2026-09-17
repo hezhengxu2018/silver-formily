@@ -8,7 +8,7 @@
 
 ## MarkupSchema 示例
 
-::: demo
+:::demo
 array-list-tabs/markup-schema
 :::
 
@@ -18,7 +18,7 @@ array-list-tabs/markup-schema
 推荐使用`Editable`包裹作为标题的field，当其作为标题渲染时其报错不会被统计入panel的错误。
 :::
 
-::: demo
+:::demo
 array-list-tabs/markup-schema-show-title-field-in-tab
 :::
 

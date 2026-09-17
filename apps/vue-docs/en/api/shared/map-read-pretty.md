@@ -14,6 +14,6 @@ interface mapReadPretty {
 
 ## Example
 
-::: demo
+:::demo
 api/shared/map-read-pretty
 :::

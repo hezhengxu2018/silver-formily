@@ -59,7 +59,7 @@ interface ComposeSchemaField {
 
 ### Example
 
-::: demo
+:::demo
 api/components/schema-field
 :::
 
@@ -67,7 +67,7 @@ api/components/schema-field
 
 `SchemaField` can render a form directly from a [JSON Schema](https://json-schema.silver-formily.org/en/) object.
 
-::: demo
+:::demo
 api/components/schema-field-with-schema
 :::
 

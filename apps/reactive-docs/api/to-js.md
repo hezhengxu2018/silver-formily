@@ -16,7 +16,7 @@ interface toJS<T> {
 
 ## 用例
 
-::: demo
+:::demo
 api/to-js/basic
 :::
 

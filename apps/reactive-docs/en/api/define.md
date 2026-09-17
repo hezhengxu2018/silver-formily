@@ -36,7 +36,7 @@ All Annotations currently supported are:
 
 ## Example
 
-::: demo
+:::demo
 api/define-en/basic
 :::
 

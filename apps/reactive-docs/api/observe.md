@@ -48,7 +48,7 @@ interface observe {
 
 ## 用例
 
-::: demo
+:::demo
 api/observe/basic
 :::
 

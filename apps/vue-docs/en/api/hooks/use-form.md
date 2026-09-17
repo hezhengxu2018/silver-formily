@@ -14,6 +14,6 @@ interface useForm {
 
 ## Example
 
-::: demo
+:::demo
 api/hooks/use-form
 :::

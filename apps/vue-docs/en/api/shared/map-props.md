@@ -25,6 +25,6 @@ interface mapProps<T extends Vue.Component> {
 
 ## Example
 
-::: demo
+:::demo
 api/shared/map-props
 :::

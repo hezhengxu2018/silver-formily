@@ -22,7 +22,7 @@ For the syntax of `FormPathPattern`, see [FormPath](https://path.silver-formily.
 
 ### Usage
 
-::: demo
+:::demo
 
 api/entry/field-effect-hooks/on-field-init
 
@@ -44,7 +44,7 @@ interface onFieldMount {
 
 ### Usage
 
-::: demo
+:::demo
 
 api/entry/field-effect-hooks/on-field-mount
 
@@ -66,7 +66,7 @@ interface onFieldUnmount {
 
 ### Usage
 
-::: demo
+:::demo
 
 api/entry/field-effect-hooks/on-field-unmount
 
@@ -86,7 +86,7 @@ interface onFieldReact {
 
 ### Usage
 
-::: demo
+:::demo
 
 api/entry/field-effect-hooks/on-field-react
 
@@ -117,7 +117,7 @@ You can pass a specific list of properties to watch, or omit it. By default, it 
 
 ### Usage
 
-::: demo
+:::demo
 
 api/entry/field-effect-hooks/on-field-change
 
@@ -137,7 +137,7 @@ interface onFieldValueChange {
 
 ### Usage
 
-::: demo
+:::demo
 
 api/entry/field-effect-hooks/on-field-value-change
 
@@ -157,7 +157,7 @@ interface onFieldInitialValueChange {
 
 ### Usage
 
-::: demo
+:::demo
 
 api/entry/field-effect-hooks/on-field-initial-value-change
 
@@ -177,7 +177,7 @@ interface onFieldInputValueChange {
 
 ### Usage
 
-::: demo
+:::demo
 
 api/entry/field-effect-hooks/on-field-input-value-change
 
@@ -199,7 +199,7 @@ interface onFieldValidateStart {
 
 ### Usage
 
-::: demo
+:::demo
 
 api/entry/field-effect-hooks/on-field-validate-start
 
@@ -221,7 +221,7 @@ interface onFieldValidateEnd {
 
 ### Usage
 
-::: demo
+:::demo
 
 api/entry/field-effect-hooks/on-field-validate-end
 
@@ -243,7 +243,7 @@ interface onFieldValidateFailed {
 
 ### Usage
 
-::: demo
+:::demo
 
 api/entry/field-effect-hooks/on-field-validate-failed
 
@@ -265,7 +265,7 @@ interface onFieldValidateSuccess {
 
 ### Usage
 
-::: demo
+:::demo
 
 api/entry/field-effect-hooks/on-field-validate-success
 

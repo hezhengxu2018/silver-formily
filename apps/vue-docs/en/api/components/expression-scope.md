@@ -10,7 +10,7 @@ Injects a local scope for schema expressions defined inside JSON Schema blocks.
 
 ## Usage
 
-::: demo
+:::demo
 api/components/expression-scope
 :::
 

@@ -6,7 +6,7 @@
 
 这个 playground 会把当前 pattern 的解析结果、flags 和匹配结果直接展示出来，适合试验 `*`、`**`、`~`、group 和相对路径：
 
-::: demo
+:::demo
 api/patterns/lab
 :::
 

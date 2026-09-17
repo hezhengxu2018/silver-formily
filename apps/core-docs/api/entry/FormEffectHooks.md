@@ -20,7 +20,7 @@ interface onFormInit {
 
 ### 用例
 
-::: demo
+:::demo
 
 api/entry/form-effect-hooks/on-form-init
 
@@ -42,7 +42,7 @@ interface onFormMount {
 
 ### 用例
 
-::: demo
+:::demo
 
 api/entry/form-effect-hooks/on-form-mount
 
@@ -64,7 +64,7 @@ interface onFormUnmount {
 
 ### 用例
 
-::: demo
+:::demo
 
 api/entry/form-effect-hooks/on-form-unmount
 
@@ -86,7 +86,7 @@ interface onFormReact {
 
 ### 用例
 
-::: demo
+:::demo
 
 api/entry/form-effect-hooks/on-form-react
 
@@ -112,7 +112,7 @@ interface onFormValuesChange {
 
 ### 用例
 
-::: demo
+:::demo
 
 api/entry/form-effect-hooks/on-form-values-change
 
@@ -134,7 +134,7 @@ interface onFormInitialValuesChange {
 
 ### 用例
 
-::: demo
+:::demo
 
 api/entry/form-effect-hooks/on-form-initial-values-change
 
@@ -156,7 +156,7 @@ interface onFormInputChange {
 
 ### 用例
 
-::: demo
+:::demo
 
 api/entry/form-effect-hooks/on-form-input-change
 
@@ -178,7 +178,7 @@ interface onFormSubmit {
 
 ### 用例
 
-::: demo
+:::demo
 
 api/entry/form-effect-hooks/on-form-submit
 
@@ -200,7 +200,7 @@ interface onFormSubmitStart {
 
 ### 用例
 
-::: demo
+:::demo
 
 api/entry/form-effect-hooks/on-form-submit-start
 
@@ -222,7 +222,7 @@ interface onFormSubmitEnd {
 
 ### 用例
 
-::: demo
+:::demo
 
 api/entry/form-effect-hooks/on-form-submit-end
 
@@ -244,7 +244,7 @@ interface onFormSubmitFailed {
 
 ### 用例
 
-::: demo
+:::demo
 
 api/entry/form-effect-hooks/on-form-submit-failed
 
@@ -266,7 +266,7 @@ interface onFormSubmitSuccess {
 
 ### 用例
 
-::: demo
+:::demo
 
 api/entry/form-effect-hooks/on-form-submit-success
 
@@ -288,7 +288,7 @@ interface onFormSubmitValidateStart {
 
 ### 用例
 
-::: demo
+:::demo
 
 api/entry/form-effect-hooks/on-form-submit-validate-start
 
@@ -310,7 +310,7 @@ interface onFormSubmitValidateEnd {
 
 ### 用例
 
-::: demo
+:::demo
 
 api/entry/form-effect-hooks/on-form-submit-validate-end
 
@@ -332,7 +332,7 @@ interface onFormSubmitValidateFailed {
 
 ### 用例
 
-::: demo
+:::demo
 
 api/entry/form-effect-hooks/on-form-submit-validate-failed
 
@@ -354,7 +354,7 @@ interface onFormSubmitValidateSuccess {
 
 ### 用例
 
-::: demo
+:::demo
 
 api/entry/form-effect-hooks/on-form-submit-validate-success
 
@@ -376,7 +376,7 @@ interface onFormValidateStart {
 
 ### 用例
 
-::: demo
+:::demo
 
 api/entry/form-effect-hooks/on-form-validate-start
 
@@ -398,7 +398,7 @@ interface onFormValidateEnd {
 
 ### 用例
 
-::: demo
+:::demo
 
 api/entry/form-effect-hooks/on-form-validate-end
 
@@ -420,7 +420,7 @@ interface onFormValidateFailed {
 
 ### 用例
 
-::: demo
+:::demo
 
 api/entry/form-effect-hooks/on-form-validate-failed
 
@@ -442,7 +442,7 @@ interface onFormValidateSuccess {
 
 ### 用例
 
-::: demo
+:::demo
 
 api/entry/form-effect-hooks/on-form-validate-success
 

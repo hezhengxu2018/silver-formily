@@ -62,31 +62,31 @@ Built-in expression scope is mainly used to build different linkage relationship
 
 #### Standard active linkage
 
-::: demo
+:::demo
 api/linkages-en/active-standard
 :::
 
 #### Partial expression dispatch linkage
 
-::: demo
+:::demo
 api/linkages-en/active-state-expression
 :::
 
 #### Schema-based linkage
 
-::: demo
+:::demo
 api/linkages-en/active-schema
 :::
 
 #### `run` statement linkage
 
-::: demo
+:::demo
 api/linkages-en/active-run
 :::
 
 #### Lifecycle-hook-based linkage
 
-::: demo
+:::demo
 api/linkages-en/active-effects
 :::
 
@@ -94,7 +94,7 @@ api/linkages-en/active-effects
 
 In active linkage mode, `source` updates the content of `hint` to demonstrate three built-in scope values.
 
-::: demo
+:::demo
 api/expression-scope-en/self-values-form
 :::
 
@@ -102,13 +102,13 @@ api/expression-scope-en/self-values-form
 
 In active linkage mode, `source` updates `target`. When `source` is empty, it falls back to `$target.value` and keeps the current target value.
 
-::: demo
+:::demo
 api/expression-scope-en/target-active
 :::
 
 ### Passive Linkage
 
-::: demo
+:::demo
 api/linkages-en/passive-dependencies
 :::
 
@@ -116,7 +116,7 @@ api/linkages-en/passive-dependencies
 
 For sibling fields inside an array item, passive dependencies are usually clearer. In this example, the current row's `target` depends on the current row's `.source`.
 
-::: demo
+:::demo
 api/linkages-en/active-neighbor
 :::
 
@@ -124,13 +124,13 @@ api/linkages-en/active-neighbor
 
 In passive linkage mode, `summary` depends on `price/count` and reads both `$deps` and `$dependencies` in the same expression.
 
-::: demo
+:::demo
 api/expression-scope-en/deps-dependencies
 :::
 
 ### Complex Linkage
 
-::: demo
+:::demo
 api/linkages-en/complex-function
 :::
 
@@ -138,12 +138,12 @@ api/linkages-en/complex-function
 
 #### Updating state
 
-::: demo
+:::demo
 api/linkages-en/component-style-state
 :::
 
 #### Updating schema protocol
 
-::: demo
+:::demo
 api/linkages-en/component-style-schema
 :::

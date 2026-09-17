@@ -34,7 +34,7 @@ interface reaction<T> {
 
 ## Example
 
-::: demo
+:::demo
 api/reaction-en/basic
 :::
 

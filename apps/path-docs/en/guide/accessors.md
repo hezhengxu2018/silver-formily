@@ -6,7 +6,7 @@ The goal of the accessor APIs is simple: safely work with deeply nested data wit
 
 Use this playground to edit JSON, the pattern, and write values directly while observing the result of `getIn`, `existIn`, `setIn`, `deleteIn`, and `ensureIn`.
 
-::: demo
+:::demo
 api/accessors/playground
 :::
 

@@ -8,7 +8,7 @@ name 属性必填。需要使用 scoped slot 形式来使用
 
 ## 用例
 
-::: demo
+:::demo
 api/components/array-field
 :::
 

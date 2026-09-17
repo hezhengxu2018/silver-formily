@@ -33,7 +33,7 @@ A minimal setup usually has 4 steps:
 3. Declare a `schema` with `type`, `properties`, and `x-component`
 4. Render everything with `FormProvider` and `SchemaField`
 
-::: demo
+:::demo
 guide/quick-start-en
 :::
 

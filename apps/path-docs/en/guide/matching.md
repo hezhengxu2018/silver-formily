@@ -6,7 +6,7 @@ Matching is the part of path that Formily relies on heavily for field linkage, e
 
 This playground lets you compare `match`, `Path.match`, `matchAliasGroup`, and `includes` side by side.
 
-::: demo
+:::demo
 api/matching/alias-playground
 :::
 

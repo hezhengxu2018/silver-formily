@@ -8,7 +8,7 @@ The `name` prop is required. Consume the instance via a scoped slot.
 
 ## Usage
 
-::: demo
+:::demo
 api/components/array-field
 :::
 

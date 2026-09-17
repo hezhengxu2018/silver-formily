@@ -20,7 +20,7 @@ interface autorun {
 
 ## Example
 
-::: demo
+:::demo
 api/autorun-en/basic
 :::
 
@@ -60,7 +60,7 @@ Note: The default dependency is `[]`, that is, if the dependency is not passed, 
 
 ### Example
 
-::: demo
+:::demo
 api/autorun-en/memo
 :::
 
@@ -116,7 +116,7 @@ Note: The default dependency is `[{}]`, that is, if the dependency is not passed
 
 ### Example
 
-::: demo
+:::demo
 api/autorun-en/effect
 :::
 

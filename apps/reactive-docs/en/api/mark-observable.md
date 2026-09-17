@@ -14,7 +14,7 @@ interface markObservable<T> {
 
 ## Example
 
-::: demo
+:::demo
 api/mark-observable-en/basic
 :::
 

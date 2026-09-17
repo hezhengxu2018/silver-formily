@@ -20,6 +20,6 @@ interface useFieldSchema {
 
 ## 用例
 
-::: demo
+:::demo
 api/hooks/use-field-schema
 :::

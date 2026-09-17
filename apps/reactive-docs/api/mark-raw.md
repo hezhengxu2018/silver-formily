@@ -16,7 +16,7 @@ interface markRaw<T> {
 
 ## 用例
 
-::: demo
+:::demo
 api/mark-raw/basic
 :::
 

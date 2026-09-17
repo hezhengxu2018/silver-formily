@@ -6,7 +6,7 @@
 
 下面这个 playground 可以直接修改 JSON、pattern 和写入值，观察 `getIn`、`existIn`、`setIn`、`deleteIn`、`ensureIn` 的结果：
 
-::: demo
+:::demo
 api/accessors/playground
 :::
 

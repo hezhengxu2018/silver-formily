@@ -63,7 +63,7 @@ interface ComposeSchemaField {
 
 ### 用例
 
-::: demo
+:::demo
 api/components/schema-field
 :::
 
@@ -71,7 +71,7 @@ api/components/schema-field
 
 SchemaField 支持直接传入 [JSON Schema](https://json-schema.silver-formily.org/) 对象渲染表单。
 
-::: demo
+:::demo
 api/components/schema-field-with-schema
 :::
 

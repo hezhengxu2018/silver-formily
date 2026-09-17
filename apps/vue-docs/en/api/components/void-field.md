@@ -8,7 +8,7 @@ Vue binding for [createVoidField](https://core.silver-formily.org/en/api/models/
 
 The example shows how a VoidField toggles its children. When the VoidField is hidden (`visible = false`), child values are cleared because the field effectively leaves the tree. Once it becomes visible again, Formily restores the previous state thanks to its snapshot mechanism.
 
-::: demo
+:::demo
 api/components/void-field
 :::
 

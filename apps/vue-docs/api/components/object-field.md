@@ -12,7 +12,7 @@ name 属性必填。需要使用 scoped slot 形式来组织子组件
 
 ## 用例
 
-::: demo
+:::demo
 api/components/object-field
 :::
 

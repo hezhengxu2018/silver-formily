@@ -28,7 +28,7 @@ interface deep<T extends object> {
 
 ### Example
 
-::: demo
+:::demo
 api/observable-en/deep
 :::
 
@@ -66,7 +66,7 @@ interface shallow<T extends object> {
 
 ### Example
 
-::: demo
+:::demo
 api/observable-en/shallow
 :::
 
@@ -114,7 +114,7 @@ interface computed {
 
 ### Example
 
-::: demo
+:::demo
 api/observable-en/computed
 :::
 
@@ -153,7 +153,7 @@ interface ref<T extends object> {
 
 ### Example
 
-::: demo
+:::demo
 api/observable-en/ref
 :::
 
@@ -187,7 +187,7 @@ interface box<T extends object> {
 
 ### Example
 
-::: demo
+:::demo
 api/observable-en/box
 :::
 

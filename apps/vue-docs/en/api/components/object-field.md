@@ -12,7 +12,7 @@ The `name` prop is required. Compose child components through scoped slots.
 
 ## Usage
 
-::: demo
+:::demo
 api/components/object-field
 :::
 

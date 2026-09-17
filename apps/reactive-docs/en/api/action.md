@@ -12,7 +12,7 @@ Define a batch action. The only difference with batch is that dependencies canno
 
 ### Interactive Comparison
 
-::: demo
+:::demo
 api/action-en/compare
 :::
 
@@ -50,7 +50,7 @@ interface action {
 
 ## Example
 
-::: demo
+:::demo
 api/action-en/basic
 :::
 
