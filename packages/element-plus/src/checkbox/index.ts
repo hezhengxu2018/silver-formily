@@ -1,5 +1,6 @@
 import type { VueComponentProps } from '@silver-formily/vue'
 import type { ElCheckboxGroup, CheckboxProps as ElementCheckboxProps } from 'element-plus'
+import type { OptionValueProps } from '../__builtins__/shared/option-value'
 import { connect, mapProps } from '@silver-formily/vue'
 import { ElCheckbox } from 'element-plus'
 import { composeExport, mapReadPretty } from '../__builtins__'
@@ -8,7 +9,7 @@ import FCheckboxGroup from './checkbox-group.vue'
 
 export type CheckboxProps = VueComponentProps<typeof ElCheckbox>
 export type CheckboxComponent = typeof ElCheckbox
-export type CheckboxGroupProps = VueComponentProps<typeof ElCheckboxGroup> & {
+export type CheckboxGroupProps = OptionValueProps & Omit<VueComponentProps<typeof ElCheckboxGroup>, 'modelValue'> & { modelValue?: any } & {
   options?: Array<ElementCheckboxProps>
   optionType?: 'default' | 'button'
 }

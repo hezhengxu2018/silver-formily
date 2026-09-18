@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ElSegmented } from 'element-plus'
-import { useAttrs, useSlots } from 'vue'
+import { useSlots } from 'vue'
+import { useOptionValue } from '../__builtins__'
 
 defineOptions({
   name: 'FSegmented',
@@ -8,6 +9,8 @@ defineOptions({
 })
 
 const props = defineProps<{
+  optionAsValue?: boolean
+  optionValueKeys?: string[]
   options?: SegmentedOptions
 }>()
 
@@ -16,7 +19,7 @@ type SegmentedOption = NonNullable<InstanceType<typeof ElSegmented>['$props']['o
 type SegmentedOptions = SegmentedOption[]
 
 const slots = useSlots()
-const segmentedProps = useAttrs()
+const segmentedProps = useOptionValue(props, () => props.options ?? [])
 </script>
 
 <template>

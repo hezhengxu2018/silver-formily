@@ -51,3 +51,7 @@ primarily fixes cases where upstream component props were inferred as `{}` in TS
 ## Packaging Changes
 
 The `umd` and `cjs` build outputs have been removed, leaving only `esm` builds. As frontend tooling evolves, CJS builds should no longer be necessary, though a future UMD build is still possible. The SCSS inside dependencies is also compiled into CSS output so preprocessors are no longer required. The project build system has now fully migrated to Vite instead of the earlier TypeScript-only compilation flow.
+
+## Tree optionFormatter
+
+`optionFormatter` has been removed. Use `optionAsValue: true, optionValueKeys: ['id', 'label']` to select output properties. Include the `nodeKey` property explicitly; identities are not added automatically. The allowlist does not apply to `valueType="path"`.

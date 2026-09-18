@@ -56,7 +56,7 @@ function findRecord(value: any) {
 
 function createSelectedItem(rawValue: any, index: number): QueryFormItemSelectedListItem {
   const record = optionAsValue.value && isRecord(rawValue)
-    ? rawValue
+    ? findRecord(getRecordValue(rawValue)) ?? rawValue
     : findRecord(rawValue)
   return {
     value: record ? getRecordValue(record) ?? rawValue : rawValue,

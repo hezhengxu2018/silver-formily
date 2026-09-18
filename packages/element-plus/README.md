@@ -63,3 +63,7 @@ pnpm add @silver-formily/element-plus @silver-formily/vue @silver-formily/core @
 ## License
 
 MIT
+
+## 选择组件对象值
+
+九个选择组件统一支持 `optionAsValue` 和 `optionValueKeys`。后者严格筛选输出属性，不修改数据源；使用者须保留回显标识。Tree 的 `optionFormatter` 已移除，请迁移到 `optionValueKeys`。Tree 路径模式不应用筛选。

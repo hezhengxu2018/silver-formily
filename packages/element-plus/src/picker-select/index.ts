@@ -14,7 +14,7 @@ export type {
 export const PickerSelect = connect<typeof PickerSelectInner, PickerSelectProps>(
   PickerSelectInner,
   mapProps({ dataSource: 'options', loading: true, disabled: true }),
-  mapReadPretty(PreviewText.Select),
+  mapReadPretty(PreviewText.Select, { valueKey: 'id' }),
 )
 
 export default PickerSelect

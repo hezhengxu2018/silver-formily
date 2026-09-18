@@ -4,7 +4,6 @@ import { FormItem, FormLayout, Select, Switch, Tree } from '@silver-formily/elem
 import { autorun, toJS } from '@silver-formily/reactive'
 import { isPlainObj } from '@silver-formily/shared'
 import { Field, FormProvider } from '@silver-formily/vue'
-import { omit } from 'lodash-es'
 import { codeToHtml } from 'shiki'
 import { ref } from 'vue'
 
@@ -184,7 +183,7 @@ const data = [
         :component="[Tree, {
           nodeKey: 'id',
           checkStrictly: true,
-          optionFormatter: (node) => omit(node, 'children'),
+          optionValueKeys: ['id', 'label'],
         }]"
         :data-source="data"
         :initial-value="[

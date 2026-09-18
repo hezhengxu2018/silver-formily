@@ -5,7 +5,7 @@ import { isArr, isEqual, isValid } from '@silver-formily/shared'
 import { useField } from '@silver-formily/vue'
 import { ElOption, ElSelect } from 'element-plus'
 import { computed, ref } from 'vue'
-import { useExcludedAttrs } from '../__builtins__'
+import { pickOptionValue, useExcludedAttrs } from '../__builtins__'
 
 defineOptions({
   name: 'FPickerSelect',
@@ -56,7 +56,7 @@ function getOptionValue(value: any) {
 }
 
 function getExternalValue(option: PickerSelectOption) {
-  return props.optionAsValue ? option.raw ?? option : option.value
+  return props.optionAsValue ? pickOptionValue(option.raw ?? option, props.optionValueKeys) : option.value
 }
 
 function resolveInternalValue(value: any) {

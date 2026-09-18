@@ -146,9 +146,9 @@ const props = {
 
 `itemText` receives the following item shape:
 
-| Prop       | Description                                                                                  | Type                                          |
-| ---------- | -------------------------------------------------------------------------------------------- | --------------------------------------------- |
-| `value`    | Current item value. When a record can be resolved by `rowKey`, this is the record key value  | `any`                                         |
-| `rawValue` | Original item stored in the field value                                                      | `any`                                         |
-| `record`   | Full record matched from `dataSource`; when `optionAsValue` is enabled, this is the raw item | ^[object]`Record<string, any>` \| `undefined` |
-| `index`    | Original index of the item in the field value array                                          | `number`                                      |
+| Prop       | Description                                                                                                                                     | Type                                          |
+| ---------- | ----------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------- |
+| `value`    | Current item value. When a record can be resolved by `rowKey`, this is the record key value                                                     | `any`                                         |
+| `rawValue` | Original item stored in the field value                                                                                                         | `any`                                         |
+| `record`   | Full record matched from `dataSource`; in object-value mode, resolves the full data source record by identity and falls back to the form object | ^[object]`Record<string, any>` \| `undefined` |
+| `index`    | Original index of the item in the field value array                                                                                             | `number`                                      |

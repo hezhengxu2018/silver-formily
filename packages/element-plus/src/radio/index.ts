@@ -1,5 +1,6 @@
 import type { VueComponentProps } from '@silver-formily/vue'
 import type { RadioProps as ElementRadioProps, ElRadioGroup } from 'element-plus'
+import type { OptionValueProps } from '../__builtins__/shared/option-value'
 import { connect, mapProps } from '@silver-formily/vue'
 import { ElRadio } from 'element-plus'
 import { composeExport, mapReadPretty } from '../__builtins__'
@@ -9,7 +10,7 @@ import './style.scss'
 
 export type RadioProps = VueComponentProps<typeof ElRadio>
 export type RadioComponent = typeof ElRadio
-export type RadioGroupProps = VueComponentProps<typeof ElRadioGroup> & {
+export type RadioGroupProps = OptionValueProps & Omit<VueComponentProps<typeof ElRadioGroup>, 'modelValue'> & { modelValue?: any } & {
   options?: Array<ElementRadioProps | string | number>
   optionType?: 'default' | 'button'
 }

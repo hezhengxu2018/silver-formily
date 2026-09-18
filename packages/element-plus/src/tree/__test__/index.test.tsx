@@ -337,14 +337,9 @@ describe('tree', () => {
       })
     })
 
-    it('应该支持optionFormatter 基础功能', async () => {
+    it('应该仅提交 optionValueKeys 指定的属性', async () => {
       const form = createForm()
-      const mockFormatter = vi.fn((node, index, array) => ({
-        ...node,
-        formatted: true,
-        index,
-        arrayLength: array.length,
-      }))
+
 
       const { getByText } = render(() => (
         <FormProvider form={form}>
@@ -357,7 +352,7 @@ describe('tree', () => {
                 nodeKey: 'id',
                 valueType: 'all',
                 optionAsValue: true,
-                optionFormatter: mockFormatter,
+                optionValueKeys: ['id', 'label'],
                 defaultExpandAll: true,
               }]}
               dataSource={mockData}
@@ -375,19 +370,11 @@ describe('tree', () => {
       const leafNodeCheckbox = getByText('Level three 1-1-1').element().parentNode.querySelector('.el-checkbox')
       await userEvent.click(leafNodeCheckbox)
 
-      // 验证 optionFormatter 被调用且返回格式化后的数据
       await vi.waitFor(() => {
-        expect(mockFormatter).toHaveBeenCalled()
         const values = form.values.tree || []
-        expect(Array.isArray(values)).toBe(true)
-
-        // 验证返回的节点都经过了格式化
+        expect(values.length).toBeGreaterThan(0)
         for (const node of values) {
-          expect(node).toHaveProperty('formatted', true)
-          expect(node).toHaveProperty('index')
-          expect(node).toHaveProperty('arrayLength')
-          expect(typeof node.index).toBe('number')
-          expect(typeof node.arrayLength).toBe('number')
+          expect(Object.keys(node).sort()).toEqual(['id', 'label'])
         }
       })
     })

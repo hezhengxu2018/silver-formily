@@ -15,7 +15,7 @@ import {
 } from 'element-plus'
 import { differenceWith, remove, uniq, uniqWith, xor } from 'lodash-es'
 import { computed, nextTick, ref, watch } from 'vue'
-import { lt, stylePrefix, useSplitAttrsByComponent } from '../__builtins__'
+import { lt, pickOptionValue, stylePrefix, useSplitAttrsByComponent } from '../__builtins__'
 
 defineOptions({
   name: 'FSelectTable',
@@ -113,7 +113,7 @@ function getInitialSelectedList() {
     return [{ [props.rowKey]: props.modelValue }]
   }
 }
-const initialSelectedList = getInitialSelectedList()
+const initialSelectedList = getInitialSelectedList().map(item => props.dataSource.find(row => getRowValue(row) === getRowValue(item)) ?? item)
 const selectedFlatDataSource = ref(initialSelectedList)
 // 为了获取移除的项而缓存的当前页面的前一次选择。由于element-plus没有获取移除项的方法，需要通过这种方式移除field中移除的项
 let prevSelection = []
@@ -186,9 +186,11 @@ watch(
         .map(item => getRowValue(item))
         .filter(isValid) ?? []
       const valueKeys = getMultipleSelectedKeys(value)
-      selectedFlatDataSource.value = selectedFlatDataSource.value.filter(
-        item => valueKeys.includes(getRowValue(item)),
-      )
+      selectedFlatDataSource.value = valueKeys.map((key) => {
+        return props.dataSource.find(item => getRowValue(item) === key)
+          ?? selectedFlatDataSource.value.find(item => getRowValue(item) === key)
+          ?? (props.optionAsValue ? value.find(item => getRowValue(item) === key) : { [props.rowKey]: key })
+      })
       if (isEqual(valueKeys, currentDisplayDataKeys)) {
         return
       }
@@ -234,7 +236,7 @@ function onSelect(newSelection: Record<string, any>[]) {
   }
 
   if (props.optionAsValue) {
-    emit('update:modelValue', selectedFlatDataSource.value)
+    emit('update:modelValue', selectedFlatDataSource.value.map(item => pickOptionValue(item, props.optionValueKeys)))
   }
   else {
     const selectedKeys = selectedFlatDataSource.value.map(
@@ -248,7 +250,7 @@ function onRadioClick(item) {
   const rowKey = requireRowKey()
   syncRadioSelection(item)
   if (props.optionAsValue) {
-    emit('update:modelValue', item)
+    emit('update:modelValue', pickOptionValue(item, props.optionValueKeys))
   }
   else {
     emit('update:modelValue', item[rowKey])

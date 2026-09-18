@@ -49,3 +49,7 @@ const selectProps: SelectProps = {
 ## 打包方式重构
 
 移除 `umd` 格式与 `cjs` 的打包打包产物，只保留 `esm` 格式的打包，随着前端技术的发展应该不再需要`cjs`的打包产物了，不排除之后会添加umd格式的打包产物。同时对依赖内scss进行编译，产物为css格式，不再依赖预处理器。目前项目的构建方式已完全迁移至`vite`，不再是之前简单的通过typescript编译的产物。
+
+## Tree optionFormatter
+
+已移除 `optionFormatter`。请使用统一的 `optionValueKeys` 指定需要保留的属性，例如 `optionAsValue: true, optionValueKeys: ['id', 'label']`。白名单不会自动保留标识，请显式包含 `nodeKey` 对应属性。`valueType="path"` 不应用白名单。

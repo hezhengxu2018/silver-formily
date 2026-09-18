@@ -1,3 +1,4 @@
+import type { TreeProps } from '../src'
 import {
   Autocomplete,
   Cascader,
@@ -7,8 +8,12 @@ import {
   Input,
   InputTag,
   Mention,
+  PickerSelect,
   Radio,
+  Segmented,
   Select,
+  SelectTable,
+  Tree,
   TreeSelect,
 } from '../src'
 
@@ -48,3 +53,21 @@ void [
 const invalidInput = <Input notARealInputProp />
 
 void invalidInput
+
+const objectSelect = <Select optionAsValue optionValueKeys={['value']} />
+const objectTreeSelect = <TreeSelect optionAsValue optionValueKeys={['id']} modelValue={{ id: 1 }} />
+const objectCascader = <Cascader optionAsValue optionValueKeys={['value']} modelValue={[{ value: 1 }]} />
+const objectRadio = <Radio.Group optionAsValue optionValueKeys={['value']} modelValue={{ value: 1 }} />
+const objectCheckbox = <Checkbox.Group optionAsValue optionValueKeys={['value']} modelValue={[{ value: 1 }]} />
+const removedFormatter: TreeProps = {
+  nodeKey: 'id',
+  // @ts-expect-error optionFormatter was replaced by optionValueKeys
+  optionFormatter: () => ({}),
+}
+void [objectSelect, objectTreeSelect, objectCascader, objectRadio, objectCheckbox, removedFormatter]
+
+const objectTable = <SelectTable rowKey="id" optionAsValue optionValueKeys={['id']} />
+const objectPicker = <PickerSelect optionAsValue optionValueKeys={['id']} />
+const objectTree = <Tree nodeKey="id" optionAsValue optionValueKeys={['id']} />
+const objectSegmented = <Segmented optionAsValue optionValueKeys={['value']} modelValue={{ value: 1 }} />
+void [objectTable, objectPicker, objectTree, objectSegmented]

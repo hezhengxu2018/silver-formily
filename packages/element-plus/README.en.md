@@ -65,3 +65,7 @@ pnpm add @silver-formily/element-plus @silver-formily/vue @silver-formily/core @
 ## License
 
 MIT
+
+## Selection object values
+
+All nine selection components support `optionAsValue` and `optionValueKeys`. The latter strictly projects output properties without modifying the data source; retain the identity property for display. Tree `optionFormatter` has been removed; migrate to `optionValueKeys`. Tree path mode does not apply projection.

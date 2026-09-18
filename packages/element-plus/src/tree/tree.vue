@@ -1,11 +1,10 @@
 <script setup lang="ts">
 import type { Field } from '@silver-formily/core'
 import type { TreeValueTypeProps } from './types'
-import { isFn } from '@silver-formily/shared'
 import { useField } from '@silver-formily/vue'
 import { ElScrollbar, ElTree, vLoading } from 'element-plus'
 import { computed, nextTick, ref, useSlots, watch } from 'vue'
-import { useSplitAttrsByComponent } from '../__builtins__'
+import { pickOptionValue, useSplitAttrsByComponent } from '../__builtins__'
 import { addDisabledToNodes, flattenTree, getInputKeys, getOutputData } from './utils'
 
 defineOptions({
@@ -59,34 +58,28 @@ async function handleCheck() {
   })
 
   if (props.optionAsValue) {
-    isFn(props.optionFormatter)
-      ? emit('update:modelValue', nodes.map((element, index, array) => {
-          return props.optionFormatter(element, index, array)
-        }))
-      : emit('update:modelValue', nodes)
+    emit('update:modelValue', props.valueType === 'path' ? nodes : nodes.map(node => pickOptionValue(node, props.optionValueKeys)))
   }
   else {
     emit('update:modelValue', value)
   }
 }
 
-watch(() => props.modelValue, (newValue) => {
-  if (newValue !== undefined) {
-    checkedKeys.value = getInputKeys(newValue, {
-      optionAsValue: props.optionAsValue,
-      nodeKey: props.nodeKey,
-      flatData: flatData.value,
-      propsConfig: props.props,
-      data: props.data ?? [],
-      valueType: props.valueType,
-      checkStrictly: attrs.value.checkStrictly,
-    })
-    nextTick(() => {
-      if (treeRef.value) {
-        treeRef.value.setCheckedKeys(checkedKeys.value)
-      }
-    })
-  }
+watch(() => [props.modelValue, props.data], ([newValue]) => {
+  checkedKeys.value = getInputKeys(newValue, {
+    optionAsValue: props.optionAsValue,
+    nodeKey: props.nodeKey,
+    flatData: flatData.value,
+    propsConfig: props.props,
+    data: props.data ?? [],
+    valueType: props.valueType,
+    checkStrictly: attrs.value.checkStrictly,
+  })
+  nextTick(() => {
+    if (treeRef.value) {
+      treeRef.value.setCheckedKeys(checkedKeys.value)
+    }
+  })
 }, { immediate: true })
 
 watch(() => [props.valueType, props.optionAsValue, props.includeHalfChecked], () => {

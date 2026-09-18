@@ -2,7 +2,8 @@
 import { useField } from '@silver-formily/vue'
 import { ElOption, ElOptionGroup, ElSelect } from 'element-plus'
 import { omit } from 'lodash-es'
-import { computed, useAttrs } from 'vue'
+import { computed } from 'vue'
+import { flattenSelectOptions, useOptionValue } from '../__builtins__'
 
 defineOptions({
   name: 'FSelect',
@@ -10,6 +11,8 @@ defineOptions({
 })
 
 const props = defineProps<{
+  optionAsValue?: boolean
+  optionValueKeys?: string[]
   options?: Array<OptionType | OptionGroupType>
 }>()
 
@@ -29,8 +32,8 @@ type OptionGroupType = InstanceType<typeof ElOptionGroup>['$props'] & {
   options: OptionType[]
 }
 
-const selectProps = useAttrs()
-const valueKey = computed(() => selectProps.valueKey as string | undefined)
+const selectProps = useOptionValue(props, () => flattenSelectOptions(props.options ?? []))
+const valueKey = computed(() => selectProps.value.valueKey as string | undefined)
 
 const fieldRef = useField()
 

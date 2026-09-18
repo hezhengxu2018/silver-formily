@@ -52,7 +52,6 @@ tree/template-others
 | `valueType`          | ^[enum]`'all' \| 'parent' \| 'child' \| 'path'` | Output value type. Only effective when `checkStrictly` is `false`                               | `'all'` |
 | `includeHalfChecked` | `boolean`                                       | Whether to include half-checked nodes. Only effective when `valueType` is `'all'`               | `false` |
 | `optionAsValue`      | `boolean`                                       | Whether to use the whole node option as the selected value. Invalid when `valueType` is `path`. | `false` |
-| `optionFormatter`    | ^[Function]`(node: TreeNode) => TreeNode`       | Option formatting function. Only effective when `optionAsValue` is `true`                       | -       |
 | `height`             | `number`                                        | Height prop forwarded to `ElScrollbar`                                                          | -       |
 | `maxHeight`          | `number`                                        | maxHeight prop forwarded to `ElScrollbar`                                                       | -       |
 
@@ -75,3 +74,20 @@ const treeRef: Ref<TreeInstance> = fieldRef.value.invoke('getTreeRef')
 ## Slots
 
 All slots from the original component are supported, and each slot additionally receives the `field` value in its slot scope for easier access.
+
+## Object values and property selection
+
+Set `optionAsValue: true` to submit option objects. The optional `optionValueKeys?: string[]` strictly selects top-level properties. Omit it to return complete objects; an empty array returns an empty object, and missing properties are ignored. `optionAsValue` defaults to `false`.
+
+Projection affects only the submitted value, never `dataSource`. Include the identity property (`value`, or the configured `nodeKey` / `rowKey`) in the allowlist. Labels are resolved from the complete data source, so the form value does not need a label.
+
+```ts
+const componentProps = {
+  optionAsValue: true,
+  optionValueKeys: ['id'],
+}
+// dataSource: [{ id: 1, label: 'One', extra: 'Business data' }]
+// Form value: { id: 1 }
+```
+
+**Breaking change:** `optionFormatter` has been removed. Use `optionValueKeys`, for example `['id', 'label']`. `valueType="path"` retains its tree output and does not apply the allowlist.

@@ -235,7 +235,7 @@ export function getInputKeys(
   if (!inputValue || !Array.isArray(inputValue))
     return []
 
-  const valueArray = optionAsValue ? inputValue.map((item: any) => item[nodeKey]) : inputValue
+  const valueArray = optionAsValue && valueType !== 'path' ? inputValue.map((item: any) => item[nodeKey]) : inputValue
 
   if (checkStrictly) {
     return valueArray

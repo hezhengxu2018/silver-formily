@@ -1,3 +1,4 @@
+export type { OptionValueProps } from './__builtins__/shared/option-value'
 export * from './array-cards'
 export * from './array-collapse'
 export * from './array-items'

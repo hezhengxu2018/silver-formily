@@ -1,4 +1,5 @@
 import type { Field } from '@silver-formily/core'
+import type { OptionValueProps } from '../__builtins__/shared/option-value'
 
 export interface PickerSelectOption {
   label: string
@@ -17,10 +18,9 @@ export type PickerSelectOpenPicker = (
   ctx: PickerSelectOpenContext,
 ) => Promise<PickerSelectOption | PickerSelectOption[] | null | undefined> | PickerSelectOption | PickerSelectOption[] | null | undefined
 
-export interface PickerSelectProps {
+export interface PickerSelectProps extends OptionValueProps {
   options?: PickerSelectOption[]
   openPicker?: PickerSelectOpenPicker
   cacheSelectedOptions?: boolean
-  optionAsValue?: boolean
   valueKey?: string
 }

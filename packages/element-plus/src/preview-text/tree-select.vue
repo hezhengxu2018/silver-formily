@@ -20,13 +20,13 @@ const props = defineProps<{
 const prefixCls = `${stylePrefix}-preview-text`
 const fieldRef = useField<Field>()
 const attrs = useAttrs()
-const rootAttrs = useExcludedAttrs(['multiple'])
+const rootAttrs = useExcludedAttrs(['multiple', 'optionAsValue', 'optionValueKeys'])
 const { spaceProps, textProps, tagProps, placeholder } = usePreviewConfig()
-const dataSource = reactiveComputed(() => fieldRef.value?.dataSource ?? [])
+const dataSource = reactiveComputed(() => fieldRef.value?.dataSource ?? attrs.data as any[] ?? [])
 
 function findNode(nodes: any[], value: any): any {
   const propsConfig = attrs.props as Record<string, string> | undefined
-  const valueKey = propsConfig?.value ?? 'value'
+  const valueKey = propsConfig?.value ?? attrs.nodeKey as string ?? attrs.valueKey as string ?? 'value'
   const childrenKey = propsConfig?.children ?? 'children'
 
   for (const node of nodes) {
@@ -45,7 +45,10 @@ function findNode(nodes: any[], value: any): any {
 function getOptionLabel(value: any) {
   const propsConfig = attrs.props as Record<string, string> | undefined
   const labelKey = propsConfig?.label ?? 'label'
-  return findNode(dataSource.value, value)?.[labelKey] ?? value
+  const key = propsConfig?.value ?? attrs.nodeKey as string ?? attrs.valueKey as string ?? 'value'
+  const identity = attrs.optionAsValue && value && typeof value === 'object' ? value[key] : value
+  const node = findNode(dataSource.value, identity)
+  return typeof propsConfig?.label === 'function' ? (propsConfig.label as (node: any) => string)(node ?? value) : node?.[labelKey] ?? identity
 }
 </script>
 

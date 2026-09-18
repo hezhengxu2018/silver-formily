@@ -41,3 +41,18 @@ See [https://element-plus.org/en-US/component/segmented.html](https://element-pl
 | Slot      | Description                               | Type                |
 | --------- | ----------------------------------------- | ------------------- |
 | `default` | Scoped slot for customizing option render | ^[object]`{ item }` |
+
+## Object values and property selection
+
+Set `optionAsValue: true` to submit option objects. The optional `optionValueKeys?: string[]` strictly selects top-level properties. Omit it to return complete objects; an empty array returns an empty object, and missing properties are ignored. `optionAsValue` defaults to `false`.
+
+Projection affects only the submitted value, never `dataSource`. Include the identity property (`value`, or the configured `nodeKey` / `rowKey`) in the allowlist. Labels are resolved from the complete data source, so the form value does not need a label.
+
+```ts
+const componentProps = {
+  optionAsValue: true,
+  optionValueKeys: ['value'],
+}
+// dataSource: [{ value: 1, label: 'One', extra: 'Business data' }]
+// Form value: { value: 1 }
+```

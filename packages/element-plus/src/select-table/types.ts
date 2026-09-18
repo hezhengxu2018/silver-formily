@@ -1,11 +1,11 @@
 import type { GeneralField } from '@silver-formily/core'
 import type { Column } from 'element-plus'
+import type { OptionValueProps } from '../__builtins__/shared/option-value'
 
-export interface SelectTableProps {
+export interface SelectTableProps extends OptionValueProps {
   columns?: Column<any>[]
   mode?: 'multiple' | 'single'
   dataSource?: any[]
-  optionAsValue?: boolean
   valueType?: 'all' | 'parent' | 'child' | 'path'
   loading?: boolean
   rowKey: string

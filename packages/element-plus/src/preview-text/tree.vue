@@ -13,6 +13,8 @@ defineOptions({
 })
 
 const props = withDefaults(defineProps<{
+  optionAsValue?: boolean
+  optionValueKeys?: string[]
   nodeKey: string
   modelValue?: any
   valueType?: string
@@ -41,7 +43,7 @@ const { rootAttrs, componentProps: attrs } = useSplitAttrsByComponent(ElTree, {
 const { textProps, placeholder } = usePreviewConfig()
 
 const dataSource = computed(() => {
-  return fieldRef.value.dataSource ?? props.data ?? []
+  return fieldRef.value?.dataSource ?? props.data ?? []
 })
 
 const resolvedValue = computed(() => {
@@ -59,7 +61,7 @@ const previewData = computed(() => {
       return resolvedValue.value
     }
     default: {
-      const selectedPath = getSelectedPath(dataSource.value, resolvedValue.value, props.nodeKey, props.props)
+      const selectedPath = getSelectedPath(dataSource.value, props.optionAsValue ? resolvedValue.value.map(item => item[props.nodeKey]) : resolvedValue.value, props.nodeKey, props.props)
       return selectedPath
     }
   }

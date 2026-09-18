@@ -1,5 +1,6 @@
 export * from './load-config-provider'
 export * from './loading'
+export * from './option-value'
 export * from './simple-version-compare'
 export * from './types'
 export * from './utils'

@@ -5,7 +5,7 @@ import { isEqual, isValid } from '@silver-formily/shared'
 import { useField } from '@silver-formily/vue'
 import { ElSpace, ElTag, ElText } from 'element-plus'
 import { useAttrs } from 'vue'
-import { stylePrefix, useExcludedAttrs } from '../__builtins__'
+import { flattenOptions, flattenSelectOptions, stylePrefix, useExcludedAttrs } from '../__builtins__'
 import { usePreviewConfig } from './utils'
 
 defineOptions({
@@ -15,19 +15,23 @@ defineOptions({
 
 const props = defineProps<{
   modelValue?: any
+  optionGroups?: boolean
 }>()
 
 const prefixCls = `${stylePrefix}-preview-text`
 
 const fieldRef = useField<Field>()
 const attrs = useAttrs()
-const rootAttrs = useExcludedAttrs(['multiple'])
+const rootAttrs = useExcludedAttrs(['multiple', 'optionAsValue', 'optionValueKeys'])
 const { spaceProps, textProps, tagProps, placeholder } = usePreviewConfig()
-const dataSource = reactiveComputed(() => fieldRef.value?.dataSource ?? [])
+const dataSource = reactiveComputed(() => {
+  const options = fieldRef.value?.dataSource ?? attrs.options as any[] ?? []
+  return props.optionGroups ? flattenSelectOptions(options) : flattenOptions(options)
+})
 
 function getOptionLabel(value: any) {
   const optionAsValue = attrs.optionAsValue === true
-  const valueKey = typeof attrs.valueKey === 'string' ? attrs.valueKey : 'id'
+  const valueKey = typeof attrs.valueKey === 'string' ? attrs.valueKey : 'value'
   const optionValue = optionAsValue && value && typeof value === 'object'
     ? value[valueKey] ?? value.value
     : value

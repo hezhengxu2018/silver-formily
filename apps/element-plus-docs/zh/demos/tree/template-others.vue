@@ -2,7 +2,6 @@
 import { createForm, isField } from '@silver-formily/core'
 import { FormItem, FormLayout, Input, Tree } from '@silver-formily/element-plus'
 import { Field, FormProvider } from '@silver-formily/vue'
-import { omit } from 'lodash-es'
 
 const form = createForm()
 const data = [
@@ -80,7 +79,7 @@ const data = [
         :component="[Tree, {
           nodeKey: 'id',
           checkStrictly: true,
-          optionFormatter: (node) => omit(node, 'children'),
+          optionValueKeys: ['id', 'label'],
         }]"
         :data-source="data"
         :reactions="(field) => {

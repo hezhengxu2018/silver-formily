@@ -3,8 +3,8 @@ import type { RadioProps } from 'element-plus'
 import type { PropType } from 'vue'
 import { isPlainObj } from '@silver-formily/shared'
 import { ElRadio, ElRadioButton, ElRadioGroup, version } from 'element-plus'
-import { computed, useAttrs, useSlots } from 'vue'
-import { lt } from '../__builtins__'
+import { computed, useSlots } from 'vue'
+import { lt, useOptionValue } from '../__builtins__'
 
 defineOptions({
   name: 'FRadioGroup',
@@ -12,6 +12,8 @@ defineOptions({
 })
 
 const props = defineProps({
+  optionAsValue: Boolean,
+  optionValueKeys: Array as PropType<string[]>,
   options: {
     type: Array as PropType<Array<RadioProps | string | number>>,
     default: () => [],
@@ -22,7 +24,7 @@ const props = defineProps({
   },
 })
 
-const radioProps = useAttrs()
+const radioProps = useOptionValue(props, () => props.options ?? [])
 const normalizedOptions = computed(() => Array.isArray(props.options) ? props.options : [])
 
 const OptionType = computed(() => {
