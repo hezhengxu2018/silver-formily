@@ -1,5 +1,5 @@
 ---
-'@silver-formily/element-plus': major
+'@silver-formily/element-plus': minor
 ---
 
 统一 Select、TreeSelect、Cascader、Radio.Group、Checkbox.Group、Segmented、Tree、SelectTable 和 PickerSelect 的 optionAsValue 与 optionValueKeys 配置。属性筛选仅作用于输出，标识字段需要显式保留。
