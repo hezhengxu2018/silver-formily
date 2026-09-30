@@ -2,7 +2,9 @@ import { createForm } from '@silver-formily/core'
 import { Field, FormProvider } from '@silver-formily/vue'
 import { describe, expect, it } from 'vitest'
 import { render } from 'vitest-browser-vue'
+import { provide } from 'vue'
 import Select from '../../select'
+import { previewTextConfigKey } from '../utils'
 import 'element-plus/theme-chalk/index.css'
 
 describe('previewText.Select', () => {
@@ -69,6 +71,33 @@ describe('previewText.Select', () => {
     expect(tags.length).toBe(2)
     expect(tags[0].textContent).toContain('选项1')
     expect(tags[1].textContent).toContain('选项3')
+
+    // 多选标签默认换行，避免选项过多时撑出横向滚动
+    const space = container.querySelector('.el-space') as HTMLElement
+    expect(space.style.flexWrap).toBe('wrap')
+  })
+
+  it('应该允许通过全局配置覆盖默认换行', async () => {
+    const form = createForm()
+    const { container } = render({
+      setup() {
+        provide(previewTextConfigKey, { spaceProps: { wrap: false } })
+        return () => (
+          <FormProvider form={form}>
+            <Field
+              name="select"
+              initialValue={[1, 3]}
+              readPretty={true}
+              component={[Select, { multiple: true }]}
+              dataSource={options}
+            />
+          </FormProvider>
+        )
+      },
+    })
+
+    const space = container.querySelector('.el-space') as HTMLElement
+    expect(space.style.flexWrap).toBe('')
   })
 
   it('应该在多选模式下显示原始值（当找不到对应选项时）', async () => {

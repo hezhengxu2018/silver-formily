@@ -4,6 +4,11 @@
   display: flex;
   align-items: center;
   height: 100%;
+  min-width: 0;
+
+  .el-space {
+    min-width: 0;
+  }
 }
 
 .#{$formily-prefix}-preview-text__color {

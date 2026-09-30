@@ -14,7 +14,7 @@ export function usePreviewConfig() {
   const previewConfig = inject(previewTextConfigKey, {}) as PreviewTextProps
   const placeholder = computed(() => previewConfig?.placeholder || 'N/A')
   const tagProps = computed<Partial<TagProps>>(() => previewConfig?.tagProps ?? { type: 'info' })
-  const spaceProps = computed(() => previewConfig?.spaceProps || {})
+  const spaceProps = computed<Partial<SpaceProps>>(() => ({ wrap: true, ...previewConfig?.spaceProps }))
   const textProps = computed(() => previewConfig?.textProps || {})
   return {
     placeholder,
