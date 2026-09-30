@@ -26,6 +26,16 @@ tree-select/template
 
 :::
 
+## Multiple selection and deselecting
+
+Set `multiple: true` to enable multiple selection. Selected nodes are rendered as tags; click the close icon on a tag to deselect a single node, and use `clearable: true` to clear all selections at once. In multiple mode the form value is an array of node `value`s.
+
+:::demo
+
+tree-select/multiple
+
+:::
+
 ## API
 
 See [https://element-plus.org/en-US/component/tree-select.html](https://element-plus.org/en-US/component/tree-select.html)

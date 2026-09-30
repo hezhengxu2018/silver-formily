@@ -26,6 +26,16 @@ tree-select/template
 
 :::
 
+## 多选与取消选择
+
+设置 `multiple: true` 开启多选，选中项以标签形式展示；点击标签上的关闭图标可取消单个选中项，配合 `clearable: true` 后还可以一键清空全部选中。多选时表单值为节点 `value` 组成的数组。
+
+:::demo
+
+tree-select/multiple
+
+:::
+
 ## API
 
 参考 [https://cn.element-plus.org/zh-CN/component/tree-select.html](https://cn.element-plus.org/zh-CN/component/tree-select.html)
