@@ -2,6 +2,7 @@ import type { FormDisplayTypes, FormPathPattern, FormPatternTypes, HeartSubscrib
 import { Path as FormPath } from '@silver-formily/path'
 import { action, batch, define, observable, observe } from '@silver-formily/reactive'
 import {
+  clone,
   globalThisPolyfill,
   isArr,
   isObj,
@@ -395,7 +396,7 @@ export class Form<ValueType extends object = any> {
       Object.assign(this.values, values)
     }
     else {
-      this.values = values as any
+      this.values = clone(values) as any
     }
   }
 
@@ -424,7 +425,7 @@ export class Form<ValueType extends object = any> {
       Object.assign(this.initialValues, initialValues)
     }
     else {
-      this.initialValues = initialValues as any
+      this.initialValues = clone(initialValues) as any
     }
   }
 
