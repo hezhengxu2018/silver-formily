@@ -5,7 +5,7 @@ import { createSchemaField, Field, FormProvider } from '@silver-formily/vue'
 import { describe, expect, it, vi } from 'vitest'
 import { render } from 'vitest-browser-vue'
 import { userEvent } from 'vitest/browser'
-import { defineComponent } from 'vue'
+import { defineComponent, ref } from 'vue'
 import { ensureDomElement, queryElement } from '../../../test-utils/dom'
 import { QueryFormItem, QueryFormItemSelectedList, SelectTable } from '../../index'
 import 'element-plus/theme-chalk/index.css'
@@ -111,6 +111,43 @@ function createDeferred<T>() {
 }
 
 describe('queryFormItem', () => {
+  it('keeps lazy query field state when a table row is selected', async () => {
+    const form = createForm()
+    const mounts = vi.fn()
+    const LazyTreeSelect = defineComponent({
+      setup() {
+        mounts()
+        const label = ref('value')
+        const loadLabel = () => {
+          label.value = 'Loaded label'
+        }
+        return () => <button type="button" onClick={loadLabel}>{label.value}</button>
+      },
+    })
+    const request = vi.fn<QueryFormItemRequest>(async () => ({
+      data: [{ id: 'row-1', name: 'Row-1' }],
+      success: true,
+      total: 1,
+    }))
+    const screen = render(formilyWrapperFactory(form, request, {
+      pagination: false,
+      querySchema: {
+        type: 'object',
+        properties: {
+          tree: { 'type': 'string', 'x-component': 'LazyTreeSelect' },
+        },
+      },
+      queryFormProps: { components: { LazyTreeSelect } },
+    }))
+
+    await screen.getByRole('button', { name: 'value' }).click()
+    await expect.element(screen.getByRole('button', { name: 'Loaded label' })).toBeInTheDocument()
+    await userEvent.click(queryElement(screen.container, '.el-table__body .el-checkbox'))
+
+    expect(mounts).toHaveBeenCalledTimes(1)
+    await expect.element(screen.getByRole('button', { name: 'Loaded label' })).toBeInTheDocument()
+  })
+
   it('should request with pagination info by default and sync field dataSource', async () => {
     const form = createForm()
     const request = vi.fn<QueryFormItemRequest>(async () => ({

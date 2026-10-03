@@ -15,6 +15,66 @@ import { createVNodeProps, extractAttrsAndEvents, mergeSlots, wrapFragment } fro
 type ComponentEventArgs = unknown[]
 type ComponentEventHandler = (...args: ComponentEventArgs) => unknown
 
+const ReactiveFieldContent = defineComponent({
+  name: 'ReactiveFieldContent',
+  setup(_, { slots }) {
+    const fieldRef = useField()
+    const optionsRef = inject(SchemaOptionsSymbol, ref())
+    useObserver()
+
+    return () => {
+      const field = fieldRef.value
+      if (!field)
+        return wrapFragment(slots.default?.())
+
+      const mergedSlots = mergeSlots(field, slots, field.content)
+      if (!field.componentType)
+        return wrapFragment(mergedSlots?.default?.())
+
+      const component
+        = FormPath.getIn(optionsRef.value?.components, field.componentType as string) ?? field.componentType
+      const componentEntry = Array.isArray(field.component) ? field.component[1] : undefined
+      const originData = toJS(componentEntry) || {}
+      const fieldValue = !isVoidField(field) ? field.value : undefined
+      const composedAttrs = {
+        disabled: !isVoidField(field)
+          ? field.pattern === 'disabled' || field.pattern === 'readPretty'
+          : undefined,
+        readOnly: !isVoidField(field) ? field.pattern === 'readOnly' : undefined,
+        ...originData,
+        modelValue: fieldValue,
+      }
+      const { attrs, events } = extractAttrsAndEvents(composedAttrs)
+      const modelUpdateHandler: ComponentEventHandler | undefined = events['update:modelValue']
+      const focusHandler: ComponentEventHandler | undefined = events.focus
+      const blurHandler: ComponentEventHandler | undefined = events.blur
+
+      const emitInput = (...args: ComponentEventArgs) => {
+        if (!isVoidField(field))
+          field.onInput(...(args as Parameters<typeof field.onInput>))
+      }
+
+      events['update:modelValue'] = (...args: ComponentEventArgs) => {
+        emitInput(...args)
+        modelUpdateHandler?.(...args)
+      }
+      events.focus = (...args: ComponentEventArgs) => {
+        if (!isVoidField(field))
+          field.onFocus(...(args as Parameters<typeof field.onFocus>))
+        focusHandler?.(...args)
+      }
+      events.blur = (...args: ComponentEventArgs) => {
+        if (!isVoidField(field))
+          field.onBlur(...(args as Parameters<typeof field.onBlur>))
+        blurHandler?.(...args)
+      }
+
+      const componentProps = createVNodeProps(attrs, events)
+      return h(component, componentProps, mergedSlots)
+    }
+  },
+})
+
 export default defineComponent({
   name: 'ReactiveField',
   props: {
@@ -71,7 +131,6 @@ export default defineComponent({
         return null
       }
 
-      const mergedSlots = mergeSlots(field, slots, field.content)
       const decoratorSlots = mergeSlots(field, slots, field.decoratorContent)
 
       const renderDecorator = (childNodes: Array<VNode | null | undefined>) => {
@@ -93,58 +152,7 @@ export default defineComponent({
         })
       }
 
-      const renderComponent = (): VNode | null => {
-        if (!field.componentType) {
-          return wrapFragment(mergedSlots?.default?.())
-        }
-
-        const component
-          = FormPath.getIn(options?.components, field.componentType as string) ?? field.componentType
-
-        const componentEntry = Array.isArray(field.component) ? field.component[1] : undefined
-        const originData = toJS(componentEntry) || {}
-        const fieldValue = !isVoidField(field) ? field.value : undefined
-        const composedAttrs = {
-          disabled: !isVoidField(field)
-            ? field.pattern === 'disabled' || field.pattern === 'readPretty'
-            : undefined,
-          readOnly: !isVoidField(field) ? field.pattern === 'readOnly' : undefined,
-          ...originData,
-          modelValue: fieldValue,
-        }
-        const { attrs, events } = extractAttrsAndEvents(composedAttrs)
-        const modelUpdateHandler: ComponentEventHandler | undefined = events['update:modelValue']
-        const focusHandler: ComponentEventHandler | undefined = events.focus
-        const blurHandler: ComponentEventHandler | undefined = events.blur
-
-        const emitInput = (...args: ComponentEventArgs) => {
-          if (!isVoidField(field)) {
-            field.onInput(...(args as Parameters<typeof field.onInput>))
-          }
-        }
-
-        events['update:modelValue'] = (...args: ComponentEventArgs) => {
-          emitInput(...args)
-          modelUpdateHandler?.(...args)
-        }
-        events.focus = (...args: ComponentEventArgs) => {
-          if (!isVoidField(field)) {
-            field.onFocus(...(args as Parameters<typeof field.onFocus>))
-          }
-          focusHandler?.(...args)
-        }
-        events.blur = (...args: ComponentEventArgs) => {
-          if (!isVoidField(field)) {
-            field.onBlur(...(args as Parameters<typeof field.onBlur>))
-          }
-          blurHandler?.(...args)
-        }
-
-        const componentProps = createVNodeProps(attrs, events)
-        return h(component, componentProps, mergedSlots)
-      }
-
-      return renderDecorator([renderComponent()])
+      return renderDecorator([h(ReactiveFieldContent, null, slots)])
     }
   },
 })

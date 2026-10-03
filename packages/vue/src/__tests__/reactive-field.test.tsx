@@ -80,6 +80,42 @@ const SwitchProbe = defineComponent({
 })
 
 describe('reactive field branches', () => {
+  it('更新字段值时只刷新内容，decorator 属性变化时仍刷新 decorator', async () => {
+    const form = createForm({ values: { choice: 'first' } })
+    const decoratorRender = vi.fn()
+    const ValueDecorator = defineComponent({
+      props: { title: String },
+      setup(props, { slots }) {
+        return () => {
+          decoratorRender()
+          return <section data-testid="value-decorator" data-title={props.title}>{slots.default?.()}</section>
+        }
+      },
+    })
+    const ValueInput = defineComponent({
+      props: { modelValue: String },
+      emits: ['update:modelValue'],
+      setup(props, { emit }) {
+        return () => <button type="button" onClick={() => emit('update:modelValue', 'second')}>{props.modelValue}</button>
+      },
+    })
+    const screen = render(() => (
+      <FormProvider form={form}>
+        <Field name="choice" decorator={[ValueDecorator, { title: 'Initial' }]} component={[ValueInput]} />
+      </FormProvider>
+    ))
+
+    await expect.element(screen.getByRole('button', { name: 'first' })).toBeInTheDocument()
+    const initialRenders = decoratorRender.mock.calls.length
+    await screen.getByRole('button', { name: 'first' }).click()
+    await expect.element(screen.getByRole('button', { name: 'second' })).toBeInTheDocument()
+    expect(decoratorRender).toHaveBeenCalledTimes(initialRenders)
+
+    form.query('choice').take()?.setDecoratorProps({ title: 'Updated' })
+    await expect.element(screen.getByTestId('value-decorator')).toHaveAttribute('data-title', 'Updated')
+    expect(decoratorRender.mock.calls.length).toBeGreaterThan(initialRenders)
+  })
+
   it('应该在没有 field 实例时回退渲染默认插槽', async () => {
     const screen = await render(() => (
       <ReactiveField
