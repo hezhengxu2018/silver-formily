@@ -29,6 +29,7 @@ Silver Formily 是一个面向 Vue 3 的表单基础设施 Monorepo。仓库中�
 | `@silver-formily/validator`         | 表单校验能力                       |
 | `@silver-formily/core`              | 表单领域模型与运行时内核           |
 | `@silver-formily/json-schema`       | JSON Schema 与表单描述互转能力     |
+| `@silver-formily/reactive-react`    | React 响应式桥接层                 |
 | `@silver-formily/reactive-vue`      | Vue 响应式桥接层                   |
 | `@silver-formily/vue`               | Vue 3 运行时绑定                   |
 | `@silver-formily/element-plus`      | Element Plus 组件适配与场景组件    |
@@ -60,6 +61,7 @@ Silver Formily 是一个面向 Vue 3 的表单基础设施 Monorepo。仓库中�
 |  |- json-schema
 |  |- path
 |  |- reactive
+|  |- reactive-react
 |  |- reactive-vue
 |  |- shared
 |  |- typescript-config
