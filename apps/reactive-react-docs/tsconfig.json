@@ -1,0 +1,18 @@
+{
+  "extends": "@silver-formily/typescript-config/docs.json",
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "paths": {
+      "@silver-formily/reactive-react": ["../../packages/reactive-react/src"],
+      "@silver-formily/reactive-react/*": ["../../packages/reactive-react/src/*"]
+    }
+  },
+  "include": [
+    ".vitepress/**/*.ts",
+    ".vitepress/**/*.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "env.d.ts"
+  ],
+  "exclude": ["node_modules", ".vitepress/cache", ".vitepress/dist"]
+}
