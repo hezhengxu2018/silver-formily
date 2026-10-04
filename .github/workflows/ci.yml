@@ -96,6 +96,7 @@ jobs:
           pnpm exec turbo run build --filter=@silver-formily/json-schema...
           pnpm exec turbo run build --filter=@silver-formily/path...
           pnpm exec turbo run build --filter=@silver-formily/reactive...
+          pnpm exec turbo run build --filter=@silver-formily/reactive-react...
           pnpm exec turbo run build --filter=@silver-formily/reactive-vue...
           pnpm exec turbo run build --filter=@silver-formily/shared...
           pnpm exec turbo run build --filter=@silver-formily/validator...
@@ -114,6 +115,20 @@ jobs:
           disable_search: true
           plugins: noop
           flags: reactive-vue
+          fail_ci_if_error: true
+
+      - name: Run reactive-react tests with coverage
+        run: pnpm --filter @silver-formily/reactive-react test:coverage
+
+      - name: Upload reactive-react coverage to Codecov
+        if: ${{ env.CODECOV_TOKEN != '' }}
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ env.CODECOV_TOKEN }}
+          files: ./packages/reactive-react/coverage/coverage-final.json
+          disable_search: true
+          plugins: noop
+          flags: reactive-react
           fail_ci_if_error: true
 
       - name: Run FormItem visual regression tests
