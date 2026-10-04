@@ -45,6 +45,7 @@ export const silverFormilyFoundationFooterLinks = [
 export const silverFormilyFrameworkFooterLinks = [
   createLocalizedLink('Vue', 'https://vue.silver-formily.org/', { en: 'https://vue.silver-formily.org/en/' }),
   createLocalizedLink('Reactive Vue', 'https://reactive-vue.silver-formily.org/', { en: 'https://reactive-vue.silver-formily.org/en/' }),
+  createLocalizedLink('Reactive React', 'https://reactive-react.silver-formily.org/', { en: 'https://reactive-react.silver-formily.org/en/' }),
 ]
 
 export const silverFormilyUiFooterLinks = [
