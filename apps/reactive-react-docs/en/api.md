@@ -20,7 +20,7 @@ interface IObserverOptions {
 }
 
 interface observer<P, Options extends IObserverOptions> {
-  (component: ReactFC<P>, options?: Options): React.MemoExoticComponent<ReactFC<P>>
+  (component: (props: P & { children?: React.ReactNode }) => React.ReactNode, options?: Options): React.MemoExoticComponent<(props: P) => React.ReactNode>
 }
 ```
 

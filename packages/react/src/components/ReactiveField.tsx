@@ -1,5 +1,5 @@
 import type { Form, GeneralField } from '@silver-formily/core'
-import type { FC, ReactNode } from 'react'
+import type { ReactNode } from 'react'
 import type { RenderPropsChildren } from '../types'
 import { isVoidField } from '@silver-formily/core'
 import { Path as FormPath } from '@silver-formily/path'
@@ -35,7 +35,7 @@ function renderChildren(children: RenderPropsChildren<GeneralField>, field?: Gen
   return isFn(children) ? children(field as GeneralField, form as Form) : children
 }
 
-const ReactiveInternal: FC<IReactiveFieldProps> = (props) => {
+function ReactiveInternal(props: IReactiveFieldProps) {
   const components = useContext(SchemaComponentsContext)
   if (!props.field) {
     return <Fragment>{renderChildren(props.children)}</Fragment>
