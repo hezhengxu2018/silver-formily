@@ -1,5 +1,4 @@
 import type React from 'react'
-import type { ReactFC } from '../src'
 import { observable } from '@silver-formily/reactive'
 import { createRef, StrictMode } from 'react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
@@ -50,7 +49,11 @@ describe('observer', () => {
 
   it('hoists statics from the wrapped component', () => {
     const Base = (() => {
-      const component: ReactFC<{ value: string }> & { title: string } = props => <div>{props.value}</div>
+      const component: ((
+        props: { value: string, children?: React.ReactNode },
+      ) => React.ReactElement) & { title: string } = props => (
+        <div>{props.value}</div>
+      )
       component.title = 'base-title'
       return component
     })()
