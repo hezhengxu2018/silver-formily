@@ -29,6 +29,7 @@ The workspace is organized with `pnpm`, `Turborepo`, `Vite`, and `VitePress`, co
 | `@silver-formily/validator`         | Form validation primitives                        |
 | `@silver-formily/core`              | Form domain model and runtime kernel              |
 | `@silver-formily/json-schema`       | JSON Schema conversion and form description layer |
+| `@silver-formily/react`             | React runtime bindings and rendering layer        |
 | `@silver-formily/reactive-vue`      | Vue reactive bridge                               |
 | `@silver-formily/vue`               | Vue 3 runtime bindings                            |
 | `@silver-formily/element-plus`      | Element Plus adapters and scene components        |
@@ -59,6 +60,7 @@ The workspace is organized with `pnpm`, `Turborepo`, `Vite`, and `VitePress`, co
 |  |- grid
 |  |- json-schema
 |  |- path
+|  |- react
 |  |- reactive
 |  |- reactive-vue
 |  |- shared
