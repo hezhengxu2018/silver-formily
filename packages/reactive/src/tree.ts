@@ -1,14 +1,14 @@
-import type { IOperation, PropertyKey } from './types'
+import type { IOperation, ObservablePath, PropertyKey } from './types'
 import { ObModelNodeSymbol, ObModelSymbol, RawNode } from './environment'
 import { raw as getRaw } from './externals'
 
 export class DataChange {
   node: DataNode
-  key: PropertyKey
-  object: object
-  type: string
-  value: any
-  oldValue: any
+  key: PropertyKey | undefined
+  object: object | undefined
+  type: string | undefined
+  value: unknown
+  oldValue: unknown
   constructor(operation: IOperation, node: DataNode) {
     this.node = node
     this.key = operation.key
@@ -19,17 +19,18 @@ export class DataChange {
   }
 
   get path() {
-    return this.node.path.concat(this.key)
+    // 顶层节点的 key 可能未定义，运行时历史上会 concat(undefined)，保持原行为
+    return this.node.path.concat(this.key as ObservablePath[number])
   }
 }
 export class DataNode {
-  target: any
+  target: object | undefined
 
-  key: PropertyKey
+  key: PropertyKey | undefined
 
-  value: any
+  value: unknown
 
-  constructor(target: any, key: PropertyKey, value: any) {
+  constructor(target: object | undefined, key: PropertyKey | undefined, value: unknown) {
     this.target = target
     this.key = key
     this.value = value
@@ -38,7 +39,7 @@ export class DataNode {
   get path() {
     if (!this.parent)
       return this.key ? [this.key] : []
-    return this.parent.path.concat(this.key)
+    return this.parent.path.concat(this.key as ObservablePath[number])
   }
 
   get targetRaw() {
@@ -71,25 +72,25 @@ export class DataNode {
   }
 }
 
-export function getDataNode(raw: any) {
-  if (raw?.[ObModelNodeSymbol]) {
-    return raw[ObModelNodeSymbol]
+export function getDataNode(raw: object) {
+  if ((raw as Record<PropertyKey, unknown>)?.[ObModelNodeSymbol]) {
+    return (raw as Record<PropertyKey, unknown>)[ObModelNodeSymbol] as DataNode
   }
   return RawNode.get(raw)
 }
 
-export function setDataNode(raw: any, node: DataNode) {
-  if (raw?.[ObModelSymbol]) {
-    raw[ObModelNodeSymbol] = node
+export function setDataNode(raw: object, node: DataNode) {
+  if ((raw as Record<PropertyKey, unknown>)?.[ObModelSymbol]) {
+    ;(raw as Record<PropertyKey, unknown>)[ObModelNodeSymbol] = node
     return
   }
   RawNode.set(raw, node)
 }
 
-export function buildDataTree(target: any, key: PropertyKey, value: any) {
+export function buildDataTree(target: object | undefined, key: PropertyKey | undefined, value: unknown) {
   const raw = getRaw(value)
-  const currentNode = getDataNode(raw)
+  const currentNode = getDataNode(raw as object)
   if (currentNode)
     return currentNode
-  setDataNode(raw, new DataNode(target, key, value))
+  setDataNode(getRaw(value) as object, new DataNode(target, key, value))
 }

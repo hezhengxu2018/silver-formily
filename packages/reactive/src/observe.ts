@@ -5,13 +5,13 @@ import { raw as getRaw } from './externals'
 import { DataChange, getDataNode } from './tree'
 
 export function observe(target: object, observer?: (change: DataChange) => void, deep = true) {
-  const addListener = (target: any) => {
+  const addListener = (target: object) => {
     const raw = getRaw(target)
-    const node = getDataNode(raw)
+    const node = getDataNode(raw as object)
 
     const listener = (operation: IOperation) => {
       const targetRaw = getRaw(operation.target)
-      const targetNode = getDataNode(targetRaw)
+      const targetNode = getDataNode(targetRaw as object)
       if (deep) {
         if (node.contains(targetNode)) {
           observer(new DataChange(operation, targetNode))

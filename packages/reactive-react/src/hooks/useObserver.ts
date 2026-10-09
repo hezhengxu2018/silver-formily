@@ -16,5 +16,6 @@ export function useObserver<T extends () => unknown>(view: T, options?: IObserve
         }
       }, options?.displayName),
   )
-  return tracker.track(view)
+  // track 在正常路径下总返回 view 的执行结果，undefined 仅出现在异常用法
+  return tracker.track(view) as ReturnType<T>
 }

@@ -3,7 +3,7 @@ import { MakeObModelSymbol } from './environment'
 import { createObservable } from './internals'
 
 export function observable<T extends object>(target: T): T {
-  return createObservable(null, null, target)
+  return createObservable(undefined, undefined, target) as T
 }
 
 observable.box = annotations.box

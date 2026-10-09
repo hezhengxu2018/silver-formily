@@ -53,7 +53,7 @@ function executeBatchEndpoints() {
   })
 }
 
-function addRawReactionsMap(target: any, key: PropertyKey, reaction: Reaction) {
+function addRawReactionsMap(target: object, key: PropertyKey, reaction: Reaction) {
   const reactionsMap = RawReactionsMap.get(target)
   if (reactionsMap) {
     const reactions = reactionsMap.get(key)
@@ -85,7 +85,7 @@ function addReactionsMapToReaction(reaction: Reaction, reactionsMap: ReactionsMa
   return bindSet
 }
 
-function getReactionsFromTargetKey(target: any, key: PropertyKey) {
+function getReactionsFromTargetKey(target: object, key: PropertyKey) {
   const reactionsMap = RawReactionsMap.get(target)
   const reactions = []
   if (reactionsMap) {
@@ -101,7 +101,7 @@ function getReactionsFromTargetKey(target: any, key: PropertyKey) {
   return reactions
 }
 
-function runReactions(target: any, key: PropertyKey) {
+function runReactions(target: object, key: PropertyKey) {
   const reactions = getReactionsFromTargetKey(target, key)
   const prevUntrackCount = UntrackCount.value
   UntrackCount.value = 0
@@ -175,7 +175,7 @@ export function runReactionsFromTargetKey(operation: IOperation) {
   batchStart()
   notifyObservers(operation)
   if (type === 'clear') {
-    oldTarget.forEach((_: any, key: PropertyKey) => {
+    ;(oldTarget as Map<PropertyKey, unknown>).forEach((_, key: PropertyKey) => {
       runReactions(target, key)
     })
   }
@@ -268,10 +268,10 @@ export function untrackEnd() {
 
 export { isBatching, isScopeBatching, isUntracking }
 
-export function hasDepsChange(newDeps: any[], oldDeps: any[]) {
+export function hasDepsChange(newDeps: readonly unknown[], oldDeps?: readonly unknown[]) {
   if (newDeps === oldDeps)
     return false
-  if (newDeps.length !== oldDeps.length)
+  if (!oldDeps || newDeps.length !== oldDeps.length)
     return true
   if (newDeps.some((value, index) => value !== oldDeps[index]))
     return true
