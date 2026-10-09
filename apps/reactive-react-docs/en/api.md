@@ -2,7 +2,7 @@
 
 `observer` wraps your function component with `React.memo` and calls `useObserver` inside that wrapper, which inserts one extra level into the tree (static members of the original component are hoisted automatically). In React, `observer` should be your first choice; reach for `useObserver` directly only when you need finer control over dependency collection, for example inside a custom render pipeline.
 
-`observer`, `useObserver`, and the compatibility hooks are all StrictMode / ConcurrentMode friendly: instances are reclaimed by a garbage collector as a fallback, and effect replays never dispose subscriptions by mistake.
+`observer`, `useObserver`, and the effect hooks (`autorunEffect`, `reactionWatch`, `useComputed`) are all StrictMode / ConcurrentMode friendly: instances are reclaimed by a garbage collector as a fallback, and effect replays never dispose subscriptions by mistake nor leave duplicate instances behind.
 
 ## observer <ElTag>Recommended</ElTag>
 
@@ -73,27 +73,80 @@ interface useObserver<T extends () => any> {
 useObserver.tsx
 :::
 
-## useForceUpdate <ElTag>1.0.0</ElTag>
+## autorunEffect <ElTag>1.0.0</ElTag>
 
-Returns a function that forces the current component to re-render. It is batch-safe: multiple calls within the same event only trigger one re-render, and calls during the first render under StrictMode are deferred until after commit.
+Runs an `autorun` after the component commits and disposes it automatically on unmount. It is equivalent to setting up `autorun` inside `useEffect` by hand, except instance uniqueness is guaranteed internally: StrictMode effect replays neither dispose it by mistake nor leave duplicate instances behind.
+
+The tracker closure is fixed to the first render, which suits trackers that only read Formily observables; use `reactionWatch` when you want to watch for value changes instead of auto-running.
 
 ### Signature
 
 ```ts
-interface useForceUpdate {
-  (): () => void
+import type { Reaction } from '@silver-formily/reactive'
+
+interface autorunEffect {
+  (tracker: Reaction, name?: string): void
 }
 ```
 
 ### Usage
 
 :::demo
-useForceUpdate.tsx
+autorunEffect.tsx
 :::
 
-## useCompatEffect <ElTag>1.0.0</ElTag>
+## reactionWatch <ElTag>1.0.0</ElTag>
 
-A compatibility wrapper around `useEffect`. It aligns dispose timing with real dependency changes across omitted `deps` and StrictMode effect replays: cleanups are deferred while deps stay unchanged, and run immediately once deps really change or the component unmounts.
+Sets up a `reaction` after the component commits and disposes it automatically on unmount. Unlike `autorunEffect`, the subscriber is notified only when the tracker's return value changes, which fits a "watch" semantic. Options are forwarded to the underlying `reaction` (for example `fireImmediately`, `equals`).
+
+### Signature
+
+```ts
+import type { IReactionOptions } from '@silver-formily/reactive'
+
+interface reactionWatch<T> {
+  (tracker: () => T, subscriber?: (value: T, oldValue: T) => void, options?: IReactionOptions<T>): void
+}
+```
+
+### Usage
+
+:::demo
+reactionWatch.tsx
+:::
+
+## useComputed <ElTag>1.0.0</ElTag>
+
+Bridges a Formily reactive expression into component state: it returns the latest value of the expression and re-renders when its dependencies change. Handy for consuming Formily reactive data inside non-`observer` components.
+
+The getter should only read Formily observables; when it reads props/state or other non-reactive data, declare them via `options.deps`, otherwise the closure stays on the first render and misses later updates. The remaining options are forwarded to the underlying `reaction`.
+
+### Signature
+
+```ts
+import type { IReactionOptions } from '@silver-formily/reactive'
+import type { DependencyList } from 'react'
+
+interface IComputedOptions<T> extends IReactionOptions<T> {
+  deps?: DependencyList // props/state the getter depends on; changing them rebuilds tracking with the fresh getter
+}
+
+interface useComputed<T> {
+  (getter: () => T, options?: IComputedOptions<T>): T
+}
+```
+
+### Usage
+
+:::demo
+useComputed.tsx
+:::
+
+## useCompatEffect <ElTag>Advanced</ElTag>
+
+A `useEffect` variant for resources created inside the effect under React 18+ StrictMode / ConcurrentMode: when `deps` are omitted or effects are replayed, cleanup timing stays aligned with real dependency changes — deferred while deps are unchanged, and immediate once they truly change or the component unmounts.
+
+`@silver-formily/react` relies on it internally to keep Field `onMount` / `onUnmount` from being triggered by StrictMode replays. Reach for it when building your own integration layer that needs precise subscription lifecycles; regular components should just use the native `useEffect`.
 
 ### Signature
 
@@ -111,9 +164,11 @@ interface useCompatEffect {
 useCompatEffect.tsx
 :::
 
-## useCompatFactory <ElTag>1.0.0</ElTag>
+## useCompatFactory <ElTag>Advanced</ElTag>
 
 Creates an instance with a `dispose` method (for example a `Tracker`) inside a component and disposes it automatically when the component truly unmounts. Because StrictMode / ConcurrentMode may skip unmounting, a garbage collector reclaims the instance as a fallback.
+
+`useFormEffects` of `@silver-formily/react` uses it to bind effect lifecycles to the component. It fits "instance + dispose" external resources (subscriptions, observers, registration handles); plain scenarios are fine with native `useEffect` cleanup.
 
 ### Signature
 
@@ -128,27 +183,3 @@ interface useCompatFactory {
 :::demo
 useCompatFactory.tsx
 :::
-
-## useDidUpdate <ElTag>1.0.0</ElTag>
-
-A `useLayoutEffect` wrapper whose callback runs on every committed update (and once on mount).
-
-### Signature
-
-```ts
-interface useDidUpdate {
-  (callback?: () => void): void
-}
-```
-
-## useLayoutEffect <ElTag>1.0.0</ElTag>
-
-An SSR-safe `useLayoutEffect`: it uses React's `useLayoutEffect` on the client and falls back to `useEffect` on the server to avoid SSR warnings.
-
-### Signature
-
-```ts
-interface useLayoutEffect {
-  (effect: EffectCallback, deps?: DependencyList): void
-}
-```

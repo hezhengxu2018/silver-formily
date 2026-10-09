@@ -2,7 +2,7 @@ import { useCallback, useRef, useState } from 'react'
 import { useDidUpdate } from './useDidUpdate'
 import { useLayoutEffect } from './useLayoutEffect'
 
-const EMPTY_ARRAY: any[] = []
+const EMPTY_ARRAY: readonly unknown[] = []
 const RENDER_COUNT = { value: 0 }
 const RENDER_QUEUE = new Set<() => void>()
 
