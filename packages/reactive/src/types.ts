@@ -12,44 +12,68 @@ export type OperationType
     | 'get'
     | 'iterate'
     | 'has'
+
 export interface IOperation {
-  target?: any
-  oldTarget?: any
+  target?: object
+  oldTarget?: object
   key?: PropertyKey
-  value?: any
-  oldValue?: any
+  value?: unknown
+  oldValue?: unknown
   type?: OperationType
-  receiver?: any
+  receiver?: object
 }
 
 export interface IChange {
   key?: PropertyKey
   path?: ObservablePath
-  value?: any
-  oldValue?: any
+  value?: unknown
+  oldValue?: unknown
   type?: OperationType
 }
 
 export interface IEffectQueueItem {
   dispose?: void | Dispose
-  deps?: any[]
+  deps?: unknown[]
 }
 
 export interface IMemoQueueItem {
-  value?: any
-  deps?: any[]
+  value?: unknown
+  deps?: unknown[]
 }
 
-export interface IVisitor<Value = any, Target = any> {
+export interface IVisitor<Value = unknown, Target = Record<PropertyKey, unknown>> {
   target?: Target
   key?: PropertyKey
   value?: Value
 }
 
-export type Annotation = (...args: any[]) => any
+/**
+ * 参数 never[] 使任意函数签名（含带参数的）都能赋值（逆变下界），
+ * 返回 unknown 覆盖任意返回值。作为 (...args: any[]) => any 的无 any 替代。
+ */
+export type AnyFunction = (...args: never[]) => unknown
 
-export type Annotations<T = any> = {
+export type Annotation = AnyFunction
+
+export type Annotations<T = Record<PropertyKey, unknown>> = {
   [key in keyof T]?: Annotation
+}
+
+export interface IObservable {
+  <T>(target: T): T
+}
+
+export interface IBox {
+  <T>(target: T): { get: () => T, set: (value: T) => void }
+}
+
+export interface IRef {
+  <T>(target: T): { value: T }
+}
+
+export interface IComputed {
+  <T>(compute: () => T): { value?: T }
+  <T>(compute: { get?: () => T, set?: (value: T) => void }): { value?: T }
 }
 
 export type ObservableListener = (operation: IOperation) => void
@@ -60,12 +84,12 @@ export type Dispose = () => void
 
 export type Effect = () => void | Dispose
 
-export type Reaction = ((...args: any[]) => any) & {
+export type Reaction = AnyFunction & {
   _boundary?: number
   _name?: string
   _isComputed?: boolean
   _dirty?: boolean
-  _context?: any
+  _context?: object
   _disposed?: boolean
   _property?: PropertyKey
   _computesSet?: ArraySet<Reaction>
@@ -84,23 +108,31 @@ export type Reaction = ((...args: any[]) => any) & {
 
 export type ReactionsMap = Map<PropertyKey, ArraySet<Reaction>>
 
+export type PendingReactions = ArraySet<Reaction>
+
+/**
+ * track 的两个身份：作为 Reaction 入栈执行（携带内部属性），
+ * 同时对外保留泛型返回，让调用方按 view 的返回类型拿到结果。
+ */
+export type TrackerTrack = (<T>(tracker: () => T) => T | undefined) & Reaction
+
 export interface IReactionOptions<T> {
   name?: string
   equals?: (oldValue: T, newValue: T) => boolean
   fireImmediately?: boolean
 }
 
-export type BindFunction<F = (...args: any[]) => any> = (
+export type BindFunction<F = AnyFunction> = (
   callback?: F,
-  context?: any,
+  context?: unknown,
 ) => F
 
-export type BoundaryFunction = <F extends (...args: any) => any>(
+export type BoundaryFunction = <F extends AnyFunction>(
   fn?: F,
 ) => ReturnType<F>
 
 export interface IBoundable {
-  bound: <T extends (...args: any[]) => any>(callback: T, context?: any) => T // 高阶绑定
+  bound: <T extends AnyFunction>(callback: T, context?: unknown) => T // 高阶绑定
 }
 export interface IAction extends IBoundable {
   <T>(callback?: () => T): T // 原地action

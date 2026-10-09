@@ -1,4 +1,4 @@
-import type { Reaction } from './types'
+import type { Reaction, TrackerTrack } from './types'
 import { isFn } from './checkers'
 import { ReactionStack } from './environment'
 import {
@@ -9,7 +9,7 @@ import {
 } from './reaction'
 
 export class Tracker {
-  private results: any
+  private results: unknown
   constructor(
     scheduler?: (reaction: Reaction) => void,
     name = 'TrackerReaction',
@@ -18,13 +18,13 @@ export class Tracker {
       if (this.track._boundary === 0)
         this.dispose()
       if (isFn(callback))
-        scheduler(callback)
+        scheduler?.(callback)
     }
     this.track._name = name
     this.track._boundary = 0
   }
 
-  track: Reaction = (tracker: Reaction) => {
+  track: TrackerTrack = ((tracker: () => unknown) => {
     if (!isFn(tracker))
       return this.results
     if (this.track._boundary > 0)
@@ -44,7 +44,7 @@ export class Tracker {
       }
     }
     return this.results
-  }
+  }) as TrackerTrack
 
   dispose = () => {
     disposeBindingReactions(this.track)

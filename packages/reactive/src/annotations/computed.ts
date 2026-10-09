@@ -1,3 +1,4 @@
+import type { IComputed } from '../types'
 import { isFn } from '../checkers'
 import { ObModelSymbol, ReactionStack } from '../environment'
 import { createAnnotation } from '../internals'
@@ -13,12 +14,8 @@ import {
 } from '../reaction'
 import { buildDataTree } from '../tree'
 
-interface IValue<T = any> {
+interface IValue<T = unknown> {
   value?: T
-}
-export interface IComputed {
-  <T>(compute: () => T): IValue<T>
-  <T>(compute: { get?: () => T, set?: (value: T) => void }): IValue<T>
 }
 
 const getDescriptor = Object.getOwnPropertyDescriptor
@@ -27,13 +24,13 @@ const getProto = Object.getPrototypeOf
 
 const ClassDescriptorSymbol = Symbol('ClassDescriptorSymbol')
 
-function getPropertyDescriptor(obj: any, key: PropertyKey) {
+function getPropertyDescriptor(obj: object | null, key: PropertyKey) {
   if (!obj)
     return
   return getDescriptor(obj, key) || getPropertyDescriptor(getProto(obj), key)
 }
 
-function getPropertyDescriptorCache(obj: any, key: PropertyKey) {
+function getPropertyDescriptorCache(obj: object, key: PropertyKey) {
   const constructor = obj.constructor
   if (constructor === Object || constructor === Array)
     return getPropertyDescriptor(obj, key)
@@ -48,9 +45,9 @@ function getPropertyDescriptorCache(obj: any, key: PropertyKey) {
 }
 
 function getPrototypeDescriptor(
-  target: any,
+  target: Record<PropertyKey, unknown> | undefined,
   key: PropertyKey,
-  value: any,
+  value: unknown,
 ): PropertyDescriptor {
   if (!target) {
     if (value) {
@@ -58,7 +55,8 @@ function getPrototypeDescriptor(
         return { get: value }
       }
       else {
-        return value
+        // 装饰器场景下 value 本身就是属性描述符
+        return value as PropertyDescriptor
       }
     }
     return {}
@@ -132,7 +130,7 @@ export const computed: IComputed = createAnnotation(
       return store.value
     }
 
-    function set(value: any) {
+    function set(value: unknown) {
       try {
         batchStart()
         descriptor.set?.call(context, value)
@@ -159,4 +157,4 @@ export const computed: IComputed = createAnnotation(
     }
     return proxy
   },
-)
+) as IComputed

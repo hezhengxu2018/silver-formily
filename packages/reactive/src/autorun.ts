@@ -11,9 +11,9 @@ import {
   releaseBindingReactions,
 } from './reaction'
 
-interface IValue {
-  currentValue?: any
-  oldValue?: any
+interface IValue<T> {
+  currentValue?: T
+  oldValue?: T
 }
 
 export function autorun(tracker: Reaction, name = 'AutoRun') {
@@ -60,7 +60,7 @@ export function autorun(tracker: Reaction, name = 'AutoRun') {
   }
 }
 
-autorun.memo = <T>(callback: () => T, dependencies?: any[]): T => {
+autorun.memo = <T>(callback: () => T, dependencies?: readonly unknown[]): T => {
   if (!isFn(callback))
     return
   const current = ReactionStack[ReactionStack.length - 1]
@@ -77,10 +77,10 @@ autorun.memo = <T>(callback: () => T, dependencies?: any[]): T => {
     }
     return value
   }
-  return old.value
+  return old.value as T
 }
 
-autorun.effect = (callback: () => void | Dispose, dependencies?: any[]) => {
+autorun.effect = (callback: () => void | Dispose, dependencies?: readonly unknown[]) => {
   if (!isFn(callback))
     return
   const current = ReactionStack[ReactionStack.length - 1]
@@ -110,7 +110,7 @@ export function reaction<T>(tracker: () => T, subscriber?: (value: T, oldValue: 
     name: 'Reaction',
     ...options,
   }
-  const value: IValue = {}
+  const value: IValue<T> = {}
   const dirtyCheck = () => {
     if (isFn(realOptions.equals))
       return !realOptions.equals(value.oldValue, value.currentValue)

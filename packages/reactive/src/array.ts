@@ -1,4 +1,4 @@
-export function toArray(value: any) {
+export function toArray(value: unknown): unknown[] {
   return Array.isArray(value)
     ? value
     : value !== undefined && value !== null

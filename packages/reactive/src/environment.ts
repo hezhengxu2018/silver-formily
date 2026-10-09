@@ -1,14 +1,12 @@
 import type { DataNode } from './tree'
-import type { ObservableListener, Reaction, ReactionsMap } from './types'
+import type { ObservableListener, PendingReactions, Reaction, ReactionsMap } from './types'
 import { ArraySet } from './array'
 
-export const ProxyRaw = new WeakMap()
-export const RawProxy = new WeakMap()
-export const RawShallowProxy = new WeakMap()
+export const ProxyRaw = new WeakMap<object, object>()
+export const RawProxy = new WeakMap<object, object>()
+export const RawShallowProxy = new WeakMap<object, object>()
 export const RawNode = new WeakMap<object, DataNode>()
 export const RawReactionsMap = new WeakMap<object, ReactionsMap>()
-
-export type PendingReactions = ArraySet<Reaction>
 
 export function createPendingReactions(): PendingReactions {
   return new ArraySet<Reaction>()

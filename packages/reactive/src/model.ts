@@ -1,4 +1,4 @@
-import type { Annotations } from './types'
+import type { Annotations, IVisitor } from './types'
 import { action } from './action'
 import { isFn } from './checkers'
 import { ObModelSymbol } from './environment'
@@ -7,7 +7,7 @@ import { getObservableMaker } from './internals'
 import { observable } from './observable'
 import { buildDataTree } from './tree'
 
-export function define<Target extends object = any>(
+export function define<Target extends object = object>(
   target: Target,
   annotations?: Annotations<Target>,
 ): Target {
@@ -20,7 +20,9 @@ export function define<Target extends object = any>(
   for (const key in annotations) {
     const annotation = annotations[key]
     if (isAnnotation(annotation)) {
-      getObservableMaker(annotation)({
+      const maker = getObservableMaker(annotation) as
+        ((visitor: IVisitor<unknown, object>) => void) | undefined
+      maker?.({
         target,
         key,
       })
@@ -29,7 +31,7 @@ export function define<Target extends object = any>(
   return target
 }
 
-export function model<Target extends object = any>(target: Target): Target {
+export function model<Target extends object = object>(target: Target): Target {
   const annotations = Object.keys(target || {}).reduce((buf, key) => {
     const descriptor = Object.getOwnPropertyDescriptor(target, key)
     if (descriptor && descriptor.get) {

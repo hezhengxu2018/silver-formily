@@ -23,7 +23,9 @@ it('observable annotation', () => {
 
   const handler2 = vi.fn()
   const handler3 = vi.fn()
-  const obsAnno = getObservableMaker(observable)({ value: obs })
+  const makeObservable = getObservableMaker(observable) as
+    (visitor: { value: object }) => { aa: { bb: unknown } }
+  const obsAnno = makeObservable({ value: obs })
 
   observe(obsAnno, handler2)
   reaction(() => {

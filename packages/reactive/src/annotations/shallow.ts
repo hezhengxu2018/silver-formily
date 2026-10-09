@@ -1,4 +1,4 @@
-import type { IObservable } from './observable'
+import type { IObservable } from '../types'
 import { createAnnotation, createObservable } from '../internals'
 import {
   bindTargetKeyWithCurrentReaction,
@@ -20,7 +20,7 @@ export const shallow: IObservable = createAnnotation(
       return store.value
     }
 
-    function set(value: any) {
+    function set(value: unknown) {
       const oldValue = store.value
       value = createObservable(target, key, value, true)
       store.value = value
@@ -45,4 +45,4 @@ export const shallow: IObservable = createAnnotation(
     }
     return store.value
   },
-)
+) as IObservable

@@ -1,3 +1,4 @@
+import type { IBox } from '../types'
 import { ProxyRaw, RawProxy } from '../environment'
 import { createAnnotation } from '../internals'
 import {
@@ -5,10 +6,6 @@ import {
   runReactionsFromTargetKey,
 } from '../reaction'
 import { buildDataTree } from '../tree'
-
-export interface IBox {
-  <T>(target: T): { get: () => T, set: (value: T) => void }
-}
 
 export const box: IBox = createAnnotation(({ target, key, value }) => {
   const store = {
@@ -34,7 +31,7 @@ export const box: IBox = createAnnotation(({ target, key, value }) => {
     return store.value
   }
 
-  function set(value: any) {
+  function set(value: unknown) {
     const oldValue = store.value
     store.value = value
     if (oldValue !== value) {
@@ -58,4 +55,4 @@ export const box: IBox = createAnnotation(({ target, key, value }) => {
     return target
   }
   return proxy
-})
+}) as IBox

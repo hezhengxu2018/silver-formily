@@ -1,4 +1,4 @@
-import type { BoundaryFunction, IVisitor, PropertyKey } from './types'
+import type { AnyFunction, BoundaryFunction, IVisitor } from './types'
 import { isCollectionType, isFn, isNormalType } from './checkers'
 import {
   MakeObModelSymbol,
@@ -10,7 +10,7 @@ import { isSupportObservable } from './externals'
 import { baseHandlers, collectionHandlers } from './handlers'
 import { buildDataTree, getDataNode } from './tree'
 
-function createNormalProxy(target: any, shallow?: boolean) {
+function createNormalProxy(target: object, shallow?: boolean) {
   const proxy = new Proxy(target, baseHandlers)
   ProxyRaw.set(proxy, target)
   if (shallow) {
@@ -22,7 +22,7 @@ function createNormalProxy(target: any, shallow?: boolean) {
   return proxy
 }
 
-function createCollectionProxy(target: any, shallow?: boolean) {
+function createCollectionProxy(target: object, shallow?: boolean) {
   const proxy = new Proxy(target, collectionHandlers)
   ProxyRaw.set(proxy, target)
   if (shallow) {
@@ -34,7 +34,7 @@ function createCollectionProxy(target: any, shallow?: boolean) {
   return proxy
 }
 
-function createShallowProxy(target: any) {
+function createShallowProxy(target: object) {
   if (isNormalType(target))
     return createNormalProxy(target, true)
   if (isCollectionType(target))
@@ -43,8 +43,8 @@ function createShallowProxy(target: any) {
   return target
 }
 
-export function createObservable(target: any, key?: PropertyKey, value?: any, shallow?: boolean) {
-  if (typeof value !== 'object')
+export function createObservable(target?: object, key?: PropertyKey, value?: unknown, shallow?: boolean) {
+  if (!value || typeof value !== 'object')
     return value
   const raw = ProxyRaw.get(value)
   if (raw) {
@@ -76,9 +76,9 @@ export function createObservable(target: any, key?: PropertyKey, value?: any, sh
   return value
 }
 
-export function createAnnotation<T extends (visitor: IVisitor) => any>(maker: T) {
-  const annotation = (target: any): ReturnType<T> => {
-    return maker({ value: target })
+export function createAnnotation<T extends (visitor: IVisitor) => unknown>(maker: T) {
+  const annotation = (target: unknown): ReturnType<T> => {
+    return maker({ value: target }) as ReturnType<T>
   }
   if (isFn(maker)) {
     annotation[MakeObModelSymbol] = maker
@@ -86,28 +86,31 @@ export function createAnnotation<T extends (visitor: IVisitor) => any>(maker: T)
   return annotation
 }
 
-export function getObservableMaker(target: any) {
-  if (target[MakeObModelSymbol]) {
-    if (!target[MakeObModelSymbol][MakeObModelSymbol]) {
-      return target[MakeObModelSymbol]
+export function getObservableMaker(target: unknown) {
+  const maker = (target as Record<PropertyKey, unknown> | undefined)?.[MakeObModelSymbol]
+  if (maker) {
+    const innerMaker = (maker as Record<PropertyKey, unknown>)[MakeObModelSymbol]
+    if (!innerMaker) {
+      return maker
     }
-    return getObservableMaker(target[MakeObModelSymbol])
+    return getObservableMaker(maker)
   }
+  return undefined
 }
 
-export function createBoundaryFunction(start: (...args: any) => void, end: (...args: any) => void) {
-  function boundary<F extends (...args: any) => any>(fn?: F): ReturnType<F> {
-    let results: ReturnType<F>
+export function createBoundaryFunction(start: () => void, end: () => void) {
+  function boundary<F extends AnyFunction>(fn?: F): ReturnType<F> {
+    let results: ReturnType<F> | undefined
     try {
       start()
       if (isFn(fn)) {
-        results = fn()
+        results = fn() as ReturnType<F>
       }
     }
     finally {
       end()
     }
-    return results
+    return results as ReturnType<F>
   }
 
   boundary.bound = createBindFunction(boundary)
@@ -115,20 +118,20 @@ export function createBoundaryFunction(start: (...args: any) => void, end: (...a
 }
 
 export function createBindFunction<Boundary extends BoundaryFunction>(boundary: Boundary) {
-  function bind<F extends (...args: any[]) => any>(
+  function bind<F extends AnyFunction>(
     callback?: F,
-    context?: any,
+    context?: unknown,
   ): F {
-    return ((...args: any[]) =>
-      boundary(() => callback.apply(context, args))) as any
+    return ((...args: never[]) =>
+      boundary(() => (callback as F).apply(context, args))) as F
   }
   return bind
 }
 
-export function createBoundaryAnnotation(start: (...args: any) => void, end: (...args: any) => void) {
+export function createBoundaryAnnotation(start: () => void, end: () => void) {
   const boundary = createBoundaryFunction(start, end)
   const annotation = createAnnotation(({ target, key }) => {
-    target[key] = boundary.bound(target[key], target)
+    target[key] = boundary.bound(target[key] as AnyFunction, target)
     return target
   })
   boundary[MakeObModelSymbol] = annotation

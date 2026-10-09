@@ -1,12 +1,9 @@
+import type { IObservable } from '../types'
 import { createAnnotation, createObservable } from '../internals'
 import {
   bindTargetKeyWithCurrentReaction,
   runReactionsFromTargetKey,
 } from '../reaction'
-
-export interface IObservable {
-  <T>(target: T): T
-}
 
 export const observable: IObservable = createAnnotation(
   ({ target, key, value }) => {
@@ -23,7 +20,7 @@ export const observable: IObservable = createAnnotation(
       return store.value
     }
 
-    function set(value: any) {
+    function set(value: unknown) {
       const oldValue = store.value
       value = createObservable(target, key, value)
       store.value = value
@@ -48,4 +45,4 @@ export const observable: IObservable = createAnnotation(
     }
     return store.value
   },
-)
+) as IObservable

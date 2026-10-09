@@ -1,3 +1,4 @@
+import type { IRef } from '../types'
 import { ObModelSymbol } from '../environment'
 import { createAnnotation } from '../internals'
 import {
@@ -6,16 +7,12 @@ import {
 } from '../reaction'
 import { buildDataTree } from '../tree'
 
-export interface IRef {
-  <T>(target: T): { value: T }
-}
-
 export const ref: IRef = createAnnotation(({ target, key, value }) => {
   const store = {
     value: target ? target[key] : value,
   }
 
-  const proxy = {}
+  const proxy: { value?: unknown } = {}
 
   const context = target || store
   const property = target ? key : 'value'
@@ -29,7 +26,7 @@ export const ref: IRef = createAnnotation(({ target, key, value }) => {
     return store.value
   }
 
-  function set(value: any) {
+  function set(value: unknown) {
     const oldValue = store.value
     store.value = value
     if (oldValue !== value) {
@@ -59,4 +56,4 @@ export const ref: IRef = createAnnotation(({ target, key, value }) => {
     proxy[ObModelSymbol] = store
   }
   return proxy
-})
+}) as IRef
