@@ -1,6 +1,11 @@
+export { autorunEffect } from './autorunEffect'
+export { reactionWatch } from './reactionWatch'
 export { useCompatEffect } from './useCompatEffect'
 export { useCompatFactory } from './useCompatFactory'
+export { useComputed } from './useComputed'
+export type { IComputedOptions } from './useComputed'
 export { useDidUpdate } from './useDidUpdate'
 export { useForceUpdate } from './useForceUpdate'
 export { useLayoutEffect } from './useLayoutEffect'
+
 export { useObserver } from './useObserver'

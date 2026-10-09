@@ -2,7 +2,7 @@
 
 `observer` 的实现原理是用 `React.memo` 包裹传入的函数组件，渲染时在包裹层内调用 `useObserver` 收集依赖，因此会额外产生一层组件（并自动提升原组件的静态属性）。在 React 中优先使用 `observer`；只有当你需要更深地控制依赖收集（例如在自定义渲染流程中）时，才需要直接使用 `useObserver`。
 
-`observer`、`useObserver` 以及各个兼容 hooks 都针对 StrictMode / ConcurrentMode 做了处理：实例通过垃圾回收机制兜底销毁，effect 重放不会误清理订阅。
+`observer`、`useObserver` 与各个副作用 hooks（`autorunEffect`、`reactionWatch`、`useComputed`）都针对 StrictMode / ConcurrentMode 做了处理：实例通过垃圾回收机制兜底销毁，effect 重放不会误清理订阅，也不会残留重复实例。
 
 ## observer <ElTag>推荐</ElTag>
 
@@ -73,27 +73,80 @@ interface useObserver<T extends () => any> {
 useObserver.tsx
 :::
 
-## useForceUpdate <ElTag>1.0.0</ElTag>
+## autorunEffect <ElTag>1.0.0</ElTag>
 
-返回一个强制当前组件重渲染的函数。它对批处理是安全的：同一事件内多次调用只会触发一次重渲染；在 StrictMode 首次渲染期间调用会被推迟到提交之后。
+在组件提交后运行 `autorun`，组件卸载时自动销毁。等价于在 `useEffect` 里手动建立 `autorun`，但实例唯一性由包内部保证：StrictMode 重放 effect 时既不会误销毁，也不会残留重复实例。
+
+tracker 闭包固定为首次渲染，适合只读取 Formily observable 的场景；需要"监听值变化"而非"自动运行"时用 `reactionWatch`。
 
 ### 签名
 
 ```ts
-interface useForceUpdate {
-  (): () => void
+import type { Reaction } from '@silver-formily/reactive'
+
+interface autorunEffect {
+  (tracker: Reaction, name?: string): void
 }
 ```
 
 ### 用例
 
 :::demo
-useForceUpdate.tsx
+autorunEffect.tsx
 :::
 
-## useCompatEffect <ElTag>1.0.0</ElTag>
+## reactionWatch <ElTag>1.0.0</ElTag>
+
+在组件提交后建立 `reaction`，组件卸载时自动销毁。与 `autorunEffect` 的区别：只在 tracker 返回值变化时通知 subscriber，适合"监听"语义。options 透传给底层 `reaction`（如 `fireImmediately`、`equals`）。
+
+### 签名
+
+```ts
+import type { IReactionOptions } from '@silver-formily/reactive'
+
+interface reactionWatch<T> {
+  (tracker: () => T, subscriber?: (value: T, oldValue: T) => void, options?: IReactionOptions<T>): void
+}
+```
+
+### 用例
+
+:::demo
+reactionWatch.tsx
+:::
+
+## useComputed <ElTag>1.0.0</ElTag>
+
+把 Formily 响应式表达式桥接为组件状态：返回表达式的最新值，依赖变化时触发重渲染。适合在非 `observer` 组件中消费 Formily 响应式数据的场景。
+
+getter 应只读取 Formily observable；读取 props/state 等非响应式数据时必须通过 `options.deps` 声明，否则闭包停留在首次渲染，看不到后续更新。options 其余字段透传给底层 `reaction`。
+
+### 签名
+
+```ts
+import type { IReactionOptions } from '@silver-formily/reactive'
+import type { DependencyList } from 'react'
+
+interface IComputedOptions<T> extends IReactionOptions<T> {
+  deps?: DependencyList // getter 依赖的 props/state，变化时用新 getter 重建追踪
+}
+
+interface useComputed<T> {
+  (getter: () => T, options?: IComputedOptions<T>): T
+}
+```
+
+### 用例
+
+:::demo
+useComputed.tsx
+:::
+
+## useCompatEffect <ElTag>高级</ElTag>
 
 `useEffect` 的兼容版本。在省略 `deps` 与 StrictMode 重放等场景下保证清理函数的执行时机与真实依赖变化对齐：依赖未变化时延迟清理，依赖真实变化或组件卸载时立即清理。
+
+`@silver-formily/react` 内部用它保证 Field 的 `onMount` / `onUnmount` 不被 StrictMode 重放误触发。适合在编写自己的集成层、需要精确控制订阅生命周期时使用；普通业务组件直接用原生 `useEffect` 即可。
 
 ### 签名
 
@@ -111,9 +164,11 @@ interface useCompatEffect {
 useCompatEffect.tsx
 :::
 
-## useCompatFactory <ElTag>1.0.0</ElTag>
+## useCompatFactory <ElTag>高级</ElTag>
 
 在组件内创建带 `dispose` 方法的实例（例如 `Tracker`），组件真实卸载时自动 `dispose`。由于 StrictMode / ConcurrentMode 下 React 可能不触发卸载，内部通过垃圾回收机制兜底销毁实例。
+
+`@silver-formily/react` 的 `useFormEffects` 用它把 effects 的生命周期绑定到组件上。适合"实例 + dispose"模式的外部资源（订阅、观察者、注册句柄）；普通场景用原生 `useEffect` 清理即可。
 
 ### 签名
 
@@ -128,27 +183,3 @@ interface useCompatFactory {
 :::demo
 useCompatFactory.tsx
 :::
-
-## useDidUpdate <ElTag>1.0.0</ElTag>
-
-`useLayoutEffect` 的包装，回调会在每次更新提交时执行（首次挂载时也会执行一次）。
-
-### 签名
-
-```ts
-interface useDidUpdate {
-  (callback?: () => void): void
-}
-```
-
-## useLayoutEffect <ElTag>1.0.0</ElTag>
-
-SSR 安全的 `useLayoutEffect`：在客户端环境使用 React 的 `useLayoutEffect`，在服务端回退为 `useEffect`，避免 SSR 告警。
-
-### 签名
-
-```ts
-interface useLayoutEffect {
-  (effect: EffectCallback, deps?: DependencyList): void
-}
-```

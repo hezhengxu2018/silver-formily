@@ -6,12 +6,8 @@ import { immediate } from '../shared'
 // 注意：必须保持逐项 Object.is 的浅比较，与 React 对 deps 的判断一致。
 // 不能换成 shared 包的 isEqual（深比较）：内容相同但引用不同的 deps 会被判"未变化"，
 // 与 React 重跑 effect 的判断脱节，重挂载后 mountedRef 恢复 true，dispose 将永远不会执行。
-function isEqualDeps(target: any, source: any) {
-  const arrA = isArr(target)
-  const arrB = isArr(source)
-  if (arrA !== arrB)
-    return false
-  if (arrA) {
+function isEqualDeps(target: DependencyList | undefined, source: DependencyList | undefined) {
+  if (isArr(target) && isArr(source)) {
     if (target.length !== source.length)
       return false
     return target.every((val, index) => Object.is(val, source[index]))

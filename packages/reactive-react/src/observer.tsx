@@ -5,7 +5,9 @@ import { forwardRef, memo } from 'react'
 import { useObserver } from './hooks/useObserver'
 
 type WithForwardRef<P> = P & {
-  ref?: 'ref' extends keyof P ? P['ref'] : React.RefAttributes<any>['ref']
+  // 未声明 ref 的组件走 unknown 兜底：React 类型的 RefCallback 用 method 语法（双变），
+  // 对象 ref 靠结构协变，两种 ref 形态都能正确收窄
+  ref?: 'ref' extends keyof P ? P['ref'] : React.RefAttributes<unknown>['ref']
 }
 
 // React 18+ 的函数组件类型不再隐式包含 children，这里显式合并，
@@ -38,15 +40,15 @@ export function observer<
   }
 
   const wrappedComponent = realOptions.forwardRef
-    ? forwardRef((props: any, ref: any) => {
+    ? forwardRef<unknown, ObserverRenderProps<P>>((props, ref) => {
         // React 19 的 ReactNode 联合包含 Promise 成员，ReturnType 泛型推断会变宽，
         // 断言回渲染函数的标准返回类型
         return useObserver(
-          () => component({ ...props, ref }),
+          () => component({ ...props, ref } as ObserverRenderProps<P>),
           realOptions,
         ) as React.ReactNode
       })
-    : (props: any): React.ReactNode => {
+    : (props: ObserverRenderProps<P>): React.ReactNode => {
         return useObserver(() => component(props), realOptions) as React.ReactNode
       }
 
@@ -58,7 +60,9 @@ export function observer<
     memoComponent.displayName = realOptions.displayName
   }
 
-  return memoComponent
+  // 包装组件对 props 完全透传，运行时形状与声明一致；memo×forwardRef×条件类型的
+  // 静态形状无法在未解析泛型上证明等价，只能在出口断言到具体类型
+  return memoComponent as ObserverComponent<P, Options>
 }
 
 export const Observer = observer((props: IObserverProps) => {
