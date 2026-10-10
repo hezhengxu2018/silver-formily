@@ -14,6 +14,11 @@ interface IReactiveFieldProps {
   children?: RenderPropsChildren<GeneralField>
 }
 
+interface IReactiveFieldContentProps {
+  field: GeneralField
+  children?: RenderPropsChildren<GeneralField>
+}
+
 function mergeChildren(children: RenderPropsChildren<GeneralField>, content: ReactNode) {
   if (!children && !content)
     return
@@ -35,40 +40,25 @@ function renderChildren(children: RenderPropsChildren<GeneralField>, field?: Gen
   return isFn(children) ? children(field as GeneralField, form as Form) : children
 }
 
-function ReactiveInternal(props: IReactiveFieldProps) {
-  const components = useContext(SchemaComponentsContext)
-  if (!props.field) {
-    return <Fragment>{renderChildren(props.children)}</Fragment>
-  }
-  const field = props.field
-  const content = mergeChildren(
-    renderChildren(props.children, field, field.form as Form),
-    field.content ?? field.componentProps.children,
-  )
-  if (field.display !== 'visible')
-    return null
+// component 侧的响应式读取（value/componentProps/pattern）收敛在独立的
+// observer 子组件中，字段值变化只重渲染当前内容，不波及外层的 decorator
+const ReactiveFieldContent = observer(
+  (props: IReactiveFieldContentProps) => {
+    const components = useContext(SchemaComponentsContext)
+    const field = props.field
+    const content = mergeChildren(
+      renderChildren(props.children, field, field.form as Form),
+      field.content ?? field.componentProps.children,
+    )
+    if (!field.componentType)
+      return <Fragment>{content}</Fragment>
 
-  const getComponent = (target: any) => {
-    return isValidComponent(target)
-      ? target
-      : FormPath.getIn(components, target) ?? target
-  }
-
-  const renderDecorator = (children: ReactNode) => {
-    if (!field.decoratorType) {
-      return <Fragment>{children}</Fragment>
+    const getComponent = (target: any) => {
+      return isValidComponent(target)
+        ? target
+        : FormPath.getIn(components, target) ?? target
     }
 
-    return createElement(
-      getComponent(field.decoratorType),
-      toJS(field.decoratorProps),
-      children,
-    )
-  }
-
-  const renderComponent = () => {
-    if (!field.componentType)
-      return content
     const value = !isVoidField(field) ? field.value : undefined
     const onChange = !isVoidField(field)
       ? (...args: any[]) => {
@@ -107,9 +97,44 @@ function ReactiveInternal(props: IReactiveFieldProps) {
       },
       content,
     )
+  },
+  {
+    displayName: 'ReactiveFieldContent',
+  },
+)
+
+function ReactiveInternal(props: IReactiveFieldProps) {
+  const components = useContext(SchemaComponentsContext)
+  if (!props.field) {
+    return <Fragment>{renderChildren(props.children)}</Fragment>
+  }
+  const field = props.field
+  if (field.display !== 'visible')
+    return null
+
+  const getComponent = (target: any) => {
+    return isValidComponent(target)
+      ? target
+      : FormPath.getIn(components, target) ?? target
   }
 
-  return renderDecorator(renderComponent())
+  const renderDecorator = (children: ReactNode) => {
+    if (!field.decoratorType) {
+      return <Fragment>{children}</Fragment>
+    }
+
+    return createElement(
+      getComponent(field.decoratorType),
+      toJS(field.decoratorProps),
+      children,
+    )
+  }
+
+  return renderDecorator(
+    <ReactiveFieldContent field={field}>
+      {props.children}
+    </ReactiveFieldContent>,
+  )
 }
 
 ReactiveInternal.displayName = 'ReactiveField'
