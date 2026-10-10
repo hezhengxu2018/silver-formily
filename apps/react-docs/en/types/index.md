@@ -27,7 +27,8 @@ If a type already belongs to `@silver-formily/core`, `@silver-formily/path`, `@s
 - `IProviderProps`: the props of `FormProvider`, exposing only `form`.
 - `IFormSpyProps`: the props of `FormConsumer`, where `children` is `(form: Form) => ReactChild`.
 - `RenderPropsChildren<Payload>`: the `children` of field components, either a render function `(field, form) => ReactNode` or a plain `ReactNode`.
-- `IFieldProps<D, C>`: field component props; extends Core's `IFieldFactoryProps` with the React-semantic `children`, `decorator` and `component`.
+- `DecoratorContent`: decorator content (for `x-decorator-content`), either plain content or a named prop map.
+- `IFieldProps<D, C>`: field component props; extends Core's `IFieldFactoryProps` with the React-semantic `children`, `decoratorContent`, `decorator` and `component`.
 - `IVoidFieldProps<D, C>`: the `VoidField` component props, sourced similarly to `IFieldProps`.
 - `IExpressionScopeProps` / `IRecordScopeProps` / `IRecordsScopeProps`: the props of `ExpressionScope`, `RecordScope` and `RecordsScope`.
 

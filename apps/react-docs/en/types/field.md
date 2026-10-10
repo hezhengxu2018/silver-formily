@@ -36,7 +36,7 @@ type RenderPropsChildren<Payload>
 
 ## `IFieldProps`
 
-The React field props are based on Core's `IFieldFactoryProps` and extend `children` with React semantics:
+The React field props are based on Core's `IFieldFactoryProps` and extend `children` and `decoratorContent` with React semantics:
 
 ```ts
 interface IFieldProps<
@@ -45,6 +45,7 @@ interface IFieldProps<
   Field = FieldType,
 > extends IFieldFactoryProps<D, C> {
   children?: RenderPropsChildren<Field>
+  decoratorContent?: DecoratorContent
   decorator?: [] | [D] | [D, React.ComponentProps<D>] | any[]
   component?: [] | [C] | [C, React.ComponentProps<C>] | any[]
 }
@@ -63,6 +64,7 @@ interface IVoidFieldProps<
   Field = VoidField,
 > extends IVoidFieldFactoryProps<D, C> {
   children?: RenderPropsChildren<Field>
+  decoratorContent?: DecoratorContent
   decorator?: [] | [D] | [D, React.ComponentProps<D>] | any[]
   component?: [] | [C] | [C, React.ComponentProps<C>] | any[]
 }

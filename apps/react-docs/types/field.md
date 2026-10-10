@@ -36,7 +36,7 @@ type RenderPropsChildren<Payload>
 
 ## `IFieldProps`
 
-React 版本的字段 props 以 Core 的 `IFieldFactoryProps` 为基础，并扩展了 React 语义的 `children`：
+React 版本的字段 props 以 Core 的 `IFieldFactoryProps` 为基础，并扩展了 React 语义的 `children` 与 `decoratorContent`：
 
 ```ts
 interface IFieldProps<
@@ -45,6 +45,7 @@ interface IFieldProps<
   Field = FieldType,
 > extends IFieldFactoryProps<D, C> {
   children?: RenderPropsChildren<Field>
+  decoratorContent?: DecoratorContent
   decorator?: [] | [D] | [D, React.ComponentProps<D>] | any[]
   component?: [] | [C] | [C, React.ComponentProps<C>] | any[]
 }
@@ -63,6 +64,7 @@ interface IVoidFieldProps<
   Field = VoidField,
 > extends IVoidFieldFactoryProps<D, C> {
   children?: RenderPropsChildren<Field>
+  decoratorContent?: DecoratorContent
   decorator?: [] | [D] | [D, React.ComponentProps<D>] | any[]
   component?: [] | [C] | [C, React.ComponentProps<C>] | any[]
 }
