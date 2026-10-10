@@ -1,39 +1,37 @@
 import { createForm } from '@silver-formily/core'
 import { ArrayField, Field, FormProvider } from '@silver-formily/react'
-import '../../demoStyles.css'
+import { Button, Input, Space } from 'antd'
 
 const form = createForm()
-
-function Input(props: { value?: string, onChange?: (value: string) => void }) {
-  return (
-    <input
-      className="demoInput"
-      value={props.value ?? ''}
-      onChange={(event) => {
-        props.onChange?.(event.target.value)
-      }}
-    />
-  )
-}
 
 export default function Demo() {
   return (
     <FormProvider form={form}>
-      <ArrayField name="list">
+      <ArrayField name="array">
         {field => (
           <div>
-            {field.value?.map((_, index) => (
-              <div className="demoFormRow" key={index}>
-                <Field name={`${index}`} component={[Input]} />
-                <button className="demoButton secondary" onClick={() => field.remove(index)}>
-                  删除
-                </button>
+            {(field.value || []).map((item, index) => (
+              <div
+                key={`${item.id}-${index}`}
+                style={{ marginBottom: 10 }}
+              >
+                <Space>
+                  <Field name={`${index}.value`} component={[Input]} />
+                  <Button onClick={() => field.remove(index)}>
+                    Remove
+                  </Button>
+                  <Button onClick={() => field.moveUp(index)}>
+                    Move Up
+                  </Button>
+                  <Button onClick={() => field.moveDown(index)}>
+                    Move Down
+                  </Button>
+                </Space>
               </div>
             ))}
-            <div className="demoToolbar">
-              <button className="demoButton" onClick={() => field.push('')}>新增一行</button>
-              <button className="demoButton secondary" onClick={() => field.pop()}>pop</button>
-            </div>
+            <Button onClick={() => field.push({ id: Date.now(), value: '' })}>
+              Add
+            </Button>
           </div>
         )}
       </ArrayField>

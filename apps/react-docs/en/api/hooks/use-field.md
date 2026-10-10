@@ -2,7 +2,7 @@
 
 ## Description
 
-Mainly used inside custom components to read the current field attributes and manipulate the field state. It can be used anywhere in the subtree of any Field component. Note that what you get is a [GeneralField](https://core.silver-formily.org/api/models/Field#generalfield); if you need to handle different types of fields, use the [Type Checker](https://core.silver-formily.org/api/entry/form-checker).
+Mainly used inside custom components to read the current field attributes and manipulate the field state. It can be used anywhere in the subtree of any Field component. Note that what you get is a [GeneralField](https://core.silver-formily.org/api/models/Field#generalfield); if you need to handle different types of fields, use the [Type Checker](https://core.silver-formily.org/api/entry/FormChecker).
 
 ::: warning
 Note: to use useField inside a custom component and react to field model changes, the custom component must be wrapped with [observer](/en/api/shared/observer).

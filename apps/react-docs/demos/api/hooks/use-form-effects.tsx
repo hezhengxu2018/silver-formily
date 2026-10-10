@@ -1,43 +1,55 @@
-import { createForm, onFormValuesChange } from '@silver-formily/core'
-import { Field, FormProvider, useFormEffects } from '@silver-formily/react'
-import { useState } from 'react'
-import '../../demoStyles.css'
+import { createForm, isField, onFieldReact } from '@silver-formily/core'
+import { Field, FormConsumer, FormProvider, useFormEffects } from '@silver-formily/react'
+import { Form, Input } from 'antd'
 
-const form = createForm()
-
-function Input(props: { value?: string, onChange?: (value: string) => void }) {
-  return (
-    <input
-      className="demoInput"
-      value={props.value ?? ''}
-      onChange={(event) => {
-        props.onChange?.(event.target.value)
-      }}
-    />
-  )
-}
-
-// 通过 useFormEffects 往当前 Form 注入副作用逻辑，组件卸载时自动清理
-function ValuesChangeCounter() {
-  const [count, setCount] = useState(0)
+function Custom() {
+  // 通过 useFormEffects 往当前 Form 注入副作用逻辑，组件卸载时自动清理
   useFormEffects(() => {
-    onFormValuesChange(() => {
-      setCount(value => value + 1)
+    onFieldReact('custom.bb', (field) => {
+      if (!isField(field))
+        return
+      field.value = field.query('.aa').get('value')
     })
   })
+
   return (
-    <div className="demoPreview">
-      表单值变化次数：
-      {count}
-    </div>
+    <>
+      <Field
+        name="aa"
+        decorator={[Form.Item]}
+        component={[Input, { placeholder: 'aa' }]}
+      />
+      <Field
+        name="bb"
+        decorator={[Form.Item]}
+        component={[Input, { placeholder: 'bb' }]}
+      />
+    </>
   )
 }
+
+const form = createForm({
+  effects() {
+    onFieldReact('custom.aa', (field) => {
+      if (!isField(field))
+        return
+      field.value = field.query('input').get('value')
+    })
+  },
+})
 
 export default function Demo() {
   return (
     <FormProvider form={form}>
-      <Field name="input" component={[Input]} />
-      <ValuesChangeCounter />
+      <Field
+        name="input"
+        decorator={[Form.Item]}
+        component={[Input, { placeholder: 'input' }]}
+      />
+      <Field name="custom" component={[Custom]} />
+      <FormConsumer>
+        {_form => JSON.stringify(_form.values)}
+      </FormConsumer>
     </FormProvider>
   )
 }

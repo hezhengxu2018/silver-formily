@@ -15,7 +15,7 @@ This page only explains how `@silver-formily/react` recursively consumes Schemas
 
 ## Simple Recursion
 
-You can read a standalone schema object from the component attributes and pass it to RecursionField for rendering. When used standalone, there is no component registry, so `x-component` must be passed as a direct component reference.
+You can read a standalone schema object from the component attributes and pass it to RecursionField for rendering. Inside a custom component, `onlyRenderProperties` renders only the `properties` of the schema.
 
 :::demo
 api/components/recursion-field.tsx

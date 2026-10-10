@@ -4,37 +4,45 @@ import {
   FormProvider,
   useFieldSchema,
 } from '@silver-formily/react'
-import '../../demoStyles.css'
 
-const form = createForm()
+const form = createForm({ validateFirst: true })
 
 // useFieldSchema 只能在 SchemaField 或 RecursionField 子树内使用
-function SchemaPreview() {
+function Custom() {
   const schema = useFieldSchema()
   return (
-    <pre className="demoCode">{JSON.stringify(schema?.toJSON(), null, 2)}</pre>
+    <div style={{ whiteSpace: 'pre' }}>
+      {JSON.stringify(schema?.toJSON(), null, 4)}
+    </div>
   )
 }
 
 const SchemaField = createSchemaField({
-  components: { SchemaPreview },
+  components: {
+    Custom,
+  },
 })
 
 export default function Demo() {
   return (
     <FormProvider form={form}>
-      <SchemaField
-        schema={{
-          type: 'object',
-          properties: {
-            input: {
-              'type': 'string',
-              'title': '输入框',
-              'x-component': 'SchemaPreview',
+      <SchemaField>
+        <SchemaField.Object
+          name="custom"
+          x-component="Custom"
+          x-component-props={{
+            schema: {
+              type: 'object',
+              properties: {
+                input: {
+                  'type': 'string',
+                  'x-component': 'Custom',
+                },
+              },
             },
-          },
-        }}
-      />
+          }}
+        />
+      </SchemaField>
     </FormProvider>
   )
 }

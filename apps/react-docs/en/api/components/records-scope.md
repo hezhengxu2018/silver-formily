@@ -2,7 +2,15 @@
 
 ## Description
 
-Injects the `$records` variable into the Schema expressions of the subtree, usually used together with [RecordScope](/en/api/components/record-scope) to provide the data source for a whole list.
+Standard scoped injection component, injecting the following built-in variable into the Schema expressions of the subtree:
+
+- `$records` current record list data
+
+Usually used together with [RecordScope](/en/api/components/record-scope): RecordsScope provides the data source for the whole list, and RecordScope injects the current row record when each row is rendered.
+
+## Usage Convention
+
+Any auto-incrementing list extension component should use RecordsScope internally to pass record scope variables.
 
 ## Usage
 
@@ -16,9 +24,3 @@ api/components/records-scope.tsx
 | ---------- | --------------------------------------------------- | ------------------------ | ------- |
 | getRecords | Function that returns the current record collection | ^[Function]`() => any[]` | -       |
 | children   | Child nodes                                         | `React.ReactNode`        | -       |
-
-Injected expression variables:
-
-| Variable   | Description                                                        |
-| ---------- | ------------------------------------------------------------------ |
-| `$records` | Return value of `getRecords()`, defaults to `[]` when not provided |
