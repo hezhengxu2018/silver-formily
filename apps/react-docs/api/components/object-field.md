@@ -1,0 +1,23 @@
+---
+order: 2
+---
+
+# ObjectField
+
+## 描述
+
+作为 `@silver-formily/core` 中 [createObjectField](https://core.silver-formily.org/api/models/Form#createobjectfield) 的 React 实现，它是专门用于将 ViewModel 与输入控件做绑定的桥接组件，ObjectField 组件属性参考 [IFieldFactoryProps](https://core.silver-formily.org/api/models/Form#ifieldfactoryprops)
+
+name 属性必填。子字段直接写在 children 中即可。
+
+## 用例
+
+:::demo
+api/components/object-field.tsx
+:::
+
+## API
+
+与Field组件的[API](/api/components/field.html#api)完全一致
+
+<!--@include: ./field.md{16,}-->
