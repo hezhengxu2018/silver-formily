@@ -1,0 +1,91 @@
+import type { DocsThemeConfig } from '@silver-formily/docs-toolkit'
+import type { LocaleConfig } from 'vitepress'
+
+export const zhSidebar: DocsThemeConfig['sidebar'] = {
+  '/guide/': [
+    {
+      text: '指南',
+      items: [
+        { text: '介绍', link: '/guide/' },
+      ],
+    },
+  ],
+  '/api/': [
+    {
+      text: 'Components',
+      items: [
+        { text: 'Field', link: '/api/components/field' },
+        { text: 'ArrayField', link: '/api/components/array-field' },
+        { text: 'ObjectField', link: '/api/components/object-field' },
+        { text: 'VoidField', link: '/api/components/void-field' },
+        { text: 'SchemaField', link: '/api/components/schema-field' },
+        { text: 'RecursionField', link: '/api/components/recursion-field' },
+        { text: 'FormProvider', link: '/api/components/form-provider' },
+        { text: 'FormConsumer', link: '/api/components/form-consumer' },
+        { text: 'ExpressionScope', link: '/api/components/expression-scope' },
+        { text: 'RecordScope', link: '/api/components/record-scope' },
+        { text: 'RecordsScope', link: '/api/components/records-scope' },
+      ],
+    },
+    {
+      text: 'Hooks',
+      items: [
+        { text: 'useField', link: '/api/hooks/use-field' },
+        { text: 'useFieldSchema', link: '/api/hooks/use-field-schema' },
+        { text: 'useForm', link: '/api/hooks/use-form' },
+        { text: 'useFormEffects', link: '/api/hooks/use-form-effects' },
+        { text: 'useParentForm', link: '/api/hooks/use-parent-form' },
+        { text: 'useExpressionScope', link: '/api/hooks/use-expression-scope' },
+      ],
+    },
+    {
+      text: 'Shared',
+      items: [
+        { text: 'connect', link: '/api/shared/connect' },
+        { text: 'mapProps', link: '/api/shared/map-props' },
+        { text: 'mapReadPretty', link: '/api/shared/map-read-pretty' },
+        { text: 'observer', link: '/api/shared/observer' },
+        { text: 'context', link: '/api/shared/context' },
+        { text: 'Schema', link: '/api/shared/schema' },
+      ],
+    },
+  ],
+  '/types/': [
+    {
+      text: '类型声明',
+      items: [
+        { text: '总览', link: '/types/' },
+        { text: 'Field', link: '/types/field' },
+        { text: 'Path', link: '/types/path' },
+        { text: 'Validator', link: '/types/validator' },
+      ],
+    },
+  ],
+}
+
+export const zhLocale: LocaleConfig<DocsThemeConfig>['root'] = {
+  label: '简体中文',
+  lang: 'zh-CN',
+  title: 'Silver Formily React',
+  description: 'Formily 的 React 18/19 封装',
+  themeConfig: {
+    nav: [
+      {
+        text: '指南',
+        link: '/guide/',
+        activeMatch: '^/guide/',
+      },
+      {
+        text: 'API',
+        link: '/api/components/field',
+        activeMatch: '^/api/',
+      },
+      {
+        text: '类型声明',
+        link: '/types/',
+        activeMatch: '^/types/',
+      },
+    ],
+    sidebar: zhSidebar,
+  },
+}

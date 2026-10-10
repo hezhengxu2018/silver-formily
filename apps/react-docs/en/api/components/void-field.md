@@ -1,0 +1,41 @@
+# VoidField
+
+## Description
+
+As the React implementation of [createVoidField](https://core.silver-formily.org/api/models/Form#createvoidfield) from `@silver-formily/core`, it is a bridge component dedicated to binding a ViewModel to virtual layout controls. It can be used to control the display state, interaction pattern, etc. of data fields. See [IVoidFieldFactoryProps](https://core.silver-formily.org/api/models/Form#ivoidfieldfactoryprops) for the VoidField component props.
+
+## Usage
+
+This example demonstrates how to use VoidField to control the visibility of child nodes. Note that when VoidField is hidden, the data of its child nodes is cleared at the same time, because `visible` being `false` means the display is `none`, and this kind of hiding does not preserve field values.
+
+However, when it is shown again, the previous state is restored. This is an internal feature of Formily Core, which supports fully restoring the previous state.
+
+:::demo
+api/components/void-field.tsx
+:::
+
+## Properties
+
+::: tip
+This section is copied from the [official definition](https://core.silver-formily.org/api/models/Form#ivoidfieldfactoryprops). In practice, since VoidField does not carry form values, it does not track changes of inner field values, so functions defined in `reaction` should never be triggered.
+:::
+
+| Attribute                 | Description                                                                                                                          | Type                                                                                                                                                                 | Default           |
+| ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
+| name                      | Path of the node in the Form, must be unique                                                                                         | [FormPathPattern](/en/types/path.html#formpathpattern)                                                                                                               | —                 |
+| basePath                  | Base path used to resolve `name`, suitable for reuse in array/nested structures                                                      | [FormPathPattern](/en/types/path.html#formpathpattern)                                                                                                               | current base path |
+| title                     | Layout node title, usually mapped to the `label` of the decorator component                                                          | `string` \| `React.ReactNode`                                                                                                                                        | —                 |
+| description               | Layout node description                                                                                                              | `string` \| `React.ReactNode`                                                                                                                                        | —                 |
+| display                   | Display state: `visible`, `hidden` or `none`                                                                                         | ^[enum]`'visible' \| 'hidden' \| 'none'`                                                                                                                             | `visible`         |
+| pattern                   | Interaction pattern: `editable`, `disabled`, `readOnly`, `readPretty`                                                                | ^[enum]`'editable' \| 'readOnly' \| 'disabled' \| 'readPretty'`                                                                                                      | `editable`        |
+| hidden                    | Whether hidden, equivalent to `display: none`                                                                                        | `boolean`                                                                                                                                                            | `false`           |
+| visible                   | Whether rendered in the DOM                                                                                                          | `boolean`                                                                                                                                                            | `true`            |
+| editable                  | Whether editing is allowed (usually affects child nodes)                                                                             | `boolean`                                                                                                                                                            | `true`            |
+| disabled                  | Whether interaction is disabled                                                                                                      | `boolean`                                                                                                                                                            | `false`           |
+| readOnly                  | Whether to enter read-only mode                                                                                                      | `boolean`                                                                                                                                                            | `false`           |
+| readPretty                | Whether to render with the read-pretty component                                                                                     | `boolean`                                                                                                                                                            | `false`           |
+| decorator                 | Decorator component and its props, in the form `[Decorator, props]`                                                                  | `[Component, Props?]` \| `false`                                                                                                                                     | `false`           |
+| component                 | Layout rendering component and its props, in the form `[Component, props]`                                                           | `[Component, Props?]` \| `false`                                                                                                                                     | `false`           |
+| reactions                 | Reaction responders, supports a single function or an array of functions                                                             | [FieldReaction[]](https://core.silver-formily.org/api/models/Field#fieldreaction) \| [FieldReaction](https://core.silver-formily.org/api/models/Field#fieldreaction) | —                 |
+| mountedReactions ^(3.2.0) | Reaction responders that start once the first batch of form fields has fully mounted, and stop automatically when the field unmounts | [FieldReaction[]](https://core.silver-formily.org/api/models/Field#fieldreaction) \| [FieldReaction](https://core.silver-formily.org/api/models/Field#fieldreaction) | —                 |
+| children                  | Child nodes or render function                                                                                                       | `React.ReactNode` ^[Function]`(field: VoidField, form: Form) => React.ReactNode`                                                                                     | —                 |

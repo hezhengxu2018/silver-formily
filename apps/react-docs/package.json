@@ -1,0 +1,35 @@
+{
+  "name": "react-docs",
+  "type": "module",
+  "private": true,
+  "description": "Documentation site for @silver-formily/react",
+  "scripts": {
+    "dev": "vitepress dev .",
+    "preview": "vitepress preview .",
+    "lint": "eslint .",
+    "format": "eslint . --fix",
+    "check-types": "vue-tsc --noEmit",
+    "docs:build": "vitepress build ."
+  },
+  "dependencies": {
+    "@silver-formily/core": "workspace:*",
+    "@silver-formily/docs-toolkit": "workspace:*",
+    "@silver-formily/json-schema": "workspace:*",
+    "@silver-formily/path": "workspace:*",
+    "@silver-formily/react": "workspace:*",
+    "@silver-formily/reactive": "workspace:*",
+    "@silver-formily/reactive-react": "workspace:*",
+    "@silver-formily/shared": "workspace:*",
+    "react": "catalog:",
+    "react-dom": "catalog:",
+    "vue": "catalog:"
+  },
+  "devDependencies": {
+    "@silver-formily/typescript-config": "workspace:*",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "typescript": "catalog:",
+    "vitepress": "catalog:",
+    "vue-tsc": "catalog:"
+  }
+}
