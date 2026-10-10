@@ -31,12 +31,15 @@ export type RenderPropsChildren<Payload>
   = | ((field: Payload, form: Form) => React.ReactNode)
     | React.ReactNode
 
+export type DecoratorContent = React.ReactNode | Record<string, React.ReactNode>
+
 export interface IFieldProps<
   D extends JSXComponent,
   C extends JSXComponent,
   Field = FieldType,
 > extends IFieldFactoryProps<D, C> {
   children?: RenderPropsChildren<Field>
+  decoratorContent?: DecoratorContent
   decorator?: [] | [D] | [D, React.ComponentProps<D>] | any[]
   component?: [] | [C] | [C, React.ComponentProps<C>] | any[]
 }
@@ -47,6 +50,7 @@ export interface IVoidFieldProps<
   Field = VoidField,
 > extends IVoidFieldFactoryProps<D, C> {
   children?: RenderPropsChildren<Field>
+  decoratorContent?: DecoratorContent
   decorator?: [] | [D] | [D, React.ComponentProps<D>] | any[]
   component?: [] | [C] | [C, React.ComponentProps<C>] | any[]
 }

@@ -5,8 +5,8 @@ import { isVoidField } from '@silver-formily/core'
 import { Path as FormPath } from '@silver-formily/path'
 import { toJS } from '@silver-formily/reactive'
 import { observer } from '@silver-formily/reactive-react'
-import { isFn } from '@silver-formily/shared'
-import { createElement, Fragment, useContext } from 'react'
+import { isFn, isNum, isPlainObj, isStr } from '@silver-formily/shared'
+import { createElement, Fragment, isValidElement, useContext } from 'react'
 import { SchemaComponentsContext } from '../shared'
 
 interface IReactiveFieldProps {
@@ -34,6 +34,18 @@ function mergeChildren(children: RenderPropsChildren<GeneralField>, content: Rea
 
 function isValidComponent(target: any) {
   return target && (typeof target === 'object' || typeof target === 'function')
+}
+
+// decoratorContent 的消费方式与 x-content 对齐：纯内容（字符串/数字/ReactNode）
+// 收敛为约定 prop content，对象映射展开为 decorator 的多个 props（对应 Vue 版
+// 具名插槽语义，渲染位置由 decorator 组件自行决定），同名时优先于 decoratorProps。
+function resolveDecoratorContentProps(field: GeneralField): Record<string, any> | null {
+  const content = toJS(field.decoratorContent)
+  if (isStr(content) || isNum(content) || isValidElement(content))
+    return { content }
+  if (isPlainObj(content))
+    return content
+  return null
 }
 
 function renderChildren(children: RenderPropsChildren<GeneralField>, field?: GeneralField, form?: Form) {
@@ -125,7 +137,10 @@ function ReactiveInternal(props: IReactiveFieldProps) {
 
     return createElement(
       getComponent(field.decoratorType),
-      toJS(field.decoratorProps),
+      {
+        ...toJS(field.decoratorProps),
+        ...resolveDecoratorContentProps(field),
+      },
       children,
     )
   }
