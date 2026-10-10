@@ -2,7 +2,15 @@
 
 ## 描述
 
-向子树的 Schema 表达式注入 `$records` 变量，通常与 [RecordScope](/api/components/record-scope) 搭配使用，为整张列表提供数据源。
+标准作用域注入组件，向子树的 Schema 表达式注入以下内置变量：
+
+- `$records` 当前记录列表数据
+
+通常与 [RecordScope](/api/components/record-scope) 搭配使用：RecordsScope 为整张列表提供数据源，RecordScope 在渲染每一行时注入当前行记录。
+
+## 使用约定
+
+任何自增列表扩展组件，内部都应该使用 RecordsScope，用于传递记录作用域变量。
 
 ## 用例
 
@@ -16,9 +24,3 @@ api/components/records-scope.tsx
 | ---------- | ---------------------- | ------------------------ | ------ |
 | getRecords | 返回当前记录集合的函数 | ^[Function]`() => any[]` | -      |
 | children   | 子节点                 | `React.ReactNode`        | -      |
-
-注入的表达式变量：
-
-| 变量       | 说明                                     |
-| ---------- | ---------------------------------------- |
-| `$records` | `getRecords()` 的返回值，未提供时为 `[]` |

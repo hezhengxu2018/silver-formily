@@ -1,44 +1,62 @@
-import { createForm } from '@silver-formily/core'
-import { connect, Field, FormProvider, mapProps, observer, useForm } from '@silver-formily/react'
-import '../../demoStyles.css'
+import { createForm, isVoidField, setValidateLanguage } from '@silver-formily/core'
+import { connect, Field, FormConsumer, FormProvider, mapProps } from '@silver-formily/react'
+import { Button, Form, Input } from 'antd'
 
-const form = createForm()
+setValidateLanguage('en')
 
-// 第三方组件的受控属性不叫 value 而是 text，通过 mapProps 把字段值映射过去
-function ThirdPartyInput(props: { text?: string, onChange?: (value: string) => void }) {
-  return (
-    <input
-      className="demoInput"
-      value={props.text ?? ''}
-      onChange={(event) => {
-        props.onChange?.(event.target.value)
-      }}
-    />
-  )
-}
-
-const ConnectedInput = connect(
-  ThirdPartyInput,
-  mapProps({
-    value: 'text',
-  }),
+// Form.Item 的错误文案/help 不叫 selfErrors，用 connect + mapProps 把字段状态映射过去
+const FormItem = connect(
+  Form.Item,
+  mapProps(
+    {
+      title: 'label',
+      description: 'extra',
+      required: true,
+      validateStatus: true,
+    },
+    (props, field) => ({
+      ...props,
+      help: !isVoidField(field) && field.selfErrors.length
+        ? field.selfErrors.join(', ')
+        : undefined,
+    }),
+  ),
 )
 
-const FormPreview = observer(() => {
-  const form = useForm()
-  return (
-    <div className="demoPreview">
-      表单值：
-      {String(form.values.input ?? '空')}
-    </div>
-  )
-})
+const form = createForm({ validateFirst: true })
+
+function log(...args: unknown[]) {
+  console.log(...args)
+}
+
+function handleSubmit() {
+  form.submit(log)
+}
 
 export default function Demo() {
   return (
     <FormProvider form={form}>
-      <Field name="input" component={[ConnectedInput]} />
-      <FormPreview />
+      <Form layout="vertical">
+        <Field
+          name="name"
+          title="Name"
+          required
+          decorator={[FormItem]}
+          component={[Input, { placeholder: 'Please Input' }]}
+        />
+        <FormConsumer>
+          {_form => (
+            <>
+              <div style={{ whiteSpace: 'pre', marginBottom: 16 }}>
+                {JSON.stringify(_form.values, null, 2)}
+              </div>
+              <Button type="primary" onClick={handleSubmit}>
+                Submit
+              </Button>
+            </>
+          )}
+        </FormConsumer>
+      </Form>
     </FormProvider>
   )
 }

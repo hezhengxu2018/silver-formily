@@ -20,7 +20,7 @@ This workspace hosts `react.silver-formily.org`, the documentation site for `@si
 - Demos import from `@silver-formily/react`, which is aliased to `packages/react/src` for hot reloads in `.vitepress/config.ts`.
 - Demos are statically imported during SSG; keep module top-level code free of `window`/`document` access.
 - `vite.esbuild.jsx` is pinned to `automatic` so `.tsx` demos compile without importing React.
-- Demos use plain HTML elements with `demos/demoStyles.css` instead of a UI library; field components receive `value`/`onChange` from the field model.
+- Demos use `antd` components (mirroring how `apps/vue-docs` demos use `element-plus`) and keep their interactions aligned with the Vue counterparts; field components receive `value`/`onChange` from the field model, and core normalizes `event.target.value` automatically.
 - When documenting API changes from `packages/react`, update both this site and the package changelog. Keep signatures in sync with `packages/react/src/types.ts` and the `src/components/*` / `src/hooks/*` implementations.
 
 ## Workflow Tips

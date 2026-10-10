@@ -1,55 +1,48 @@
+import type { ObjectField as ObjectFieldType } from '@silver-formily/core'
 import { createForm } from '@silver-formily/core'
-import { Field, FormProvider } from '@silver-formily/react'
-import '../../demoStyles.css'
+import { Field, FormProvider, ObjectField } from '@silver-formily/react'
+import { Button, Input, Space } from 'antd'
 
 const form = createForm()
 
-function ObjectBlock(props: { children?: React.ReactNode }) {
-  return <div style={{ padding: '8px 12px', border: '1px dashed var(--vp-c-border)', borderRadius: 8 }}>{props.children}</div>
-}
-
-function FormItem(props: { label?: string, children?: React.ReactNode }) {
-  return (
-    <div className="demoFormItem">
-      <span className="demoFormItemLabel">{props.label}</span>
-      {props.children}
-    </div>
-  )
-}
-
-function Input(props: { value?: string, onChange?: (value: string) => void }) {
-  return (
-    <input
-      className="demoInput"
-      value={props.value ?? ''}
-      onChange={(event) => {
-        props.onChange?.(event.target.value)
-      }}
-    />
-  )
-}
-
-function Textarea(props: { value?: string, onChange?: (value: string) => void }) {
-  return (
-    <textarea
-      className="demoInput"
-      rows={3}
-      value={props.value ?? ''}
-      onChange={(event) => {
-        props.onChange?.(event.target.value)
-      }}
-    />
-  )
+function addPropertyToField(field: ObjectFieldType) {
+  const name = form.values.propertyName
+  if (name && !form.existValuesIn(`object.${name}`)) {
+    field.addProperty(name, '')
+    form.deleteValuesIn('propertyName')
+  }
 }
 
 export default function Demo() {
   return (
     <FormProvider form={form}>
-      {/* ObjectField 本身不渲染输入组件，只为子字段提供命名空间 */}
-      <Field name="object" component={[ObjectBlock]}>
-        <Field name="input" component={[Input]} decorator={[FormItem, { label: '输入框' }]} />
-        <Field name="textarea" component={[Textarea]} decorator={[FormItem, { label: '多行输入' }]} />
-      </Field>
+      <ObjectField name="object">
+        {field => (
+          <div>
+            {Object.keys(field.value || {}).map(key => (
+              <div key={key} style={{ marginBottom: 10 }}>
+                <Space>
+                  <Field name={key} component={[Input, { placeholder: key }]} />
+                  <Button onClick={() => field.removeProperty(key)}>
+                    Remove
+                  </Button>
+                </Space>
+              </div>
+            ))}
+            <Space>
+              <Field
+                name="propertyName"
+                basePath=""
+                required
+                component={[Input, { placeholder: 'Property Name' }]}
+              />
+              <Button onClick={() => addPropertyToField(field)}>
+                Add
+              </Button>
+            </Space>
+          </div>
+        )}
+      </ObjectField>
     </FormProvider>
   )
 }

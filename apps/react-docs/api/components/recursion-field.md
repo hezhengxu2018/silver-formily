@@ -15,7 +15,7 @@ outline: [2, 3]
 
 ## 简易递归
 
-可以从组件属性中读取独立的 schema 对象，传给 RecursionField 渲染。独立使用时没有组件注册表，`x-component` 需要直接传组件引用。
+可以从组件属性中读取独立的 schema 对象，传给 RecursionField 渲染。自定义组件中配合 `onlyRenderProperties` 可以只渲染 schema 的 properties 部分。
 
 :::demo
 api/components/recursion-field.tsx

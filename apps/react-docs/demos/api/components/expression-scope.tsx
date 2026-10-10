@@ -4,46 +4,39 @@ import {
   ExpressionScope,
   FormProvider,
 } from '@silver-formily/react'
-import '../../demoStyles.css'
 
 const form = createForm()
 
-// schema 表达式可以读取作用域中的变量，注意表达式需要占满整个属性值
-function Text(props: { prefix?: string, text?: string }) {
+// 自定义容器组件：为子树注入局部表达式作用域
+function Container(props: { children?: React.ReactNode }) {
   return (
-    <div className="demoPreview">
-      {props.prefix}
-      {props.text}
-    </div>
+    <ExpressionScope value={{ $innerScope: 'inner scope value' }}>
+      {props.children}
+    </ExpressionScope>
   )
 }
 
-// scope 的键名需要与表达式中的变量名完全一致
-const SchemaField = createSchemaField({
-  components: { Text },
-})
-
-// 顶层 schema 需要是 object 容器，实际渲染的节点写在 properties 中
-const schema = {
-  type: 'object',
-  properties: {
-    text: {
-      'type': 'void',
-      'x-component': 'Text',
-      'x-component-props': { prefix: '读取：', text: '{{ $prefix }}' },
-    },
-  },
+// schema 表达式可以读取作用域中的变量，注意表达式需要占满整个属性值
+function Text(props: { text?: string }) {
+  return <div>{props.text}</div>
 }
+
+const SchemaField = createSchemaField({
+  components: { Container, Text },
+})
 
 export default function Demo() {
   return (
     <FormProvider form={form}>
-      {/* 两处 SchemaField 用不同的 name 隔离字段命名空间 */}
-      <SchemaField schema={schema} name="global" scope={{ $prefix: '全局作用域' }} />
-      {/* ExpressionScope 注入的局部作用域会与外层 scope 合并，同名变量取局部值 */}
-      <ExpressionScope value={{ $prefix: '局部作用域' }}>
-        <SchemaField schema={schema} name="local" />
-      </ExpressionScope>
+      <SchemaField scope={{ $outerScope: 'outer scope value' }}>
+        <SchemaField.Void x-component="Container">
+          <SchemaField.Void
+            name="div"
+            x-component="Text"
+            x-component-props={{ text: '{{ $innerScope + \' \' + $outerScope }}' }}
+          />
+        </SchemaField.Void>
+      </SchemaField>
     </FormProvider>
   )
 }

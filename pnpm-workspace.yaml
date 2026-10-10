@@ -42,6 +42,7 @@ catalog:
   '@vue/reactivity': ^3.5.32
   '@vue/shared': ^3.5.27
   '@vueuse/core': ^14.2.1
+  antd: ^6.6.5
   class-variance-authority: ^0.7.1
   clsx: ^2.1.1
   consola: ^3.4.2
