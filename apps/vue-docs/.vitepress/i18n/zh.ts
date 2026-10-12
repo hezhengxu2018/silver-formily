@@ -23,6 +23,8 @@ export const zhSidebar: DocsThemeConfig['sidebar'] = {
         { text: 'FormProvider', link: '/api/components/form-provider' },
         { text: 'FormConsumer', link: '/api/components/form-consumer' },
         { text: 'ExpressionScope', link: '/api/components/expression-scope' },
+        { text: 'RecordScope', link: '/api/components/record-scope' },
+        { text: 'RecordsScope', link: '/api/components/records-scope' },
       ],
     },
     {

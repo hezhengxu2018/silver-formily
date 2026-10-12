@@ -13,6 +13,7 @@ const FormItem = observer(
     setup(_props, { slots }) {
       const fieldRef = useField<FieldType>()
       return () => {
+        // ElFormItem 的 validateStatus 不支持 warning，与 antd 的差异在此收敛
         const validateStatus
           = fieldRef.value?.validateStatus === 'warning'
             ? ''
@@ -47,7 +48,7 @@ function log(values: string) {
         title="Name"
         required
         :decorator="[FormItem]"
-        :component="[ElInput, { placeholder: 'Please ElInput' }]"
+        :component="[ElInput, { placeholder: 'Please Input' }]"
       />
       <FormConsumer>
         <template #default="{ form: _form }">
