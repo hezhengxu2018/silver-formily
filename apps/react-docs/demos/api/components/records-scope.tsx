@@ -1,4 +1,3 @@
-/* eslint-disable no-template-curly-in-string */
 import { createForm } from '@silver-formily/core'
 import { createSchemaField, FormProvider, RecordsScope } from '@silver-formily/react'
 import { Input } from 'antd'
@@ -41,11 +40,7 @@ export default () => (
               input: {
                 'type': 'string',
                 'x-component': 'Input',
-                'x-value':
-                  '{{`'
-                  + '${$records[0].name} '
-                  + '${$records[0].code} '
-                  + '`}}',
+                'x-value': `{{\`\${$records[0].name} \${$records[0].code} \`}}`,
               },
             },
           },

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-/* eslint-disable no-template-curly-in-string */
 import { createForm } from '@silver-formily/core'
 import { createSchemaField, FormProvider, RecordsScope } from '@silver-formily/vue'
 import { ElInput } from 'element-plus'
@@ -46,11 +45,7 @@ const schema = {
         input: {
           'type': 'string',
           'x-component': 'ElInput',
-          'x-value':
-            '{{`'
-            + '${$records[0].name} '
-            + '${$records[0].code} '
-            + '`}}',
+          'x-value': `{{\`\${$records[0].name} \${$records[0].code} \`}}`,
         },
       },
     },
