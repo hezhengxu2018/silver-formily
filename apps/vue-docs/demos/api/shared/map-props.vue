@@ -47,7 +47,7 @@ function handleSubmit() {
         title="Name"
         required
         :decorator="[FormItem]"
-        :component="[ElInput, { placeholder: 'Please ElInput' }]"
+        :component="[ElInput, { placeholder: 'Please Input' }]"
       />
       <FormConsumer>
         <template #default="{ form: _form }">

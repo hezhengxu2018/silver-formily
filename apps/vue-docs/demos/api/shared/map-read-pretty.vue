@@ -53,7 +53,7 @@ const form = createForm({ validateFirst: true, readPretty: true })
         required
         initial-value="Hello world"
         :decorator="[FormItem]"
-        :component="[Input, { placeholder: 'Please ElInput' }]"
+        :component="[Input, { placeholder: 'Please Input' }]"
       />
     </ElForm>
   </FormProvider>

@@ -25,7 +25,7 @@ const form = createForm({ validateFirst: true })
         name="name"
         title="Name"
         required
-        :component="[ElInput, { placeholder: 'Please ElInput' }]"
+        :component="[ElInput, { placeholder: 'Please Input' }]"
       />
       <FormPreviewer />
     </ElSpace>

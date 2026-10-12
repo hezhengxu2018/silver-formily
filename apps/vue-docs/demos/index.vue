@@ -65,14 +65,14 @@ export default {
       title="Name"
       required
       :decorator="[FormItem]"
-      :component="[ElInput, { placeholder: 'Please ElInput' }]"
+      :component="[ElInput, { placeholder: 'Please Input' }]"
     />
     <Field
       name="password"
       title="Password"
       required
       :decorator="[FormItem]"
-      :component="[ElInput, { type: 'password', placeholder: 'Please ElInput' }]"
+      :component="[ElInput, { type: 'password', placeholder: 'Please Input' }]"
       :reactions="createPasswordEqualValidate('confirm_password')"
     />
     <Field
@@ -80,7 +80,7 @@ export default {
       title="Confirm Password"
       required
       :decorator="[FormItem]"
-      :component="[ElInput, { type: 'password', placeholder: 'Please ElInput' }]"
+      :component="[ElInput, { type: 'password', placeholder: 'Please Input' }]"
       :reactions="createPasswordEqualValidate('password')"
     />
     <FormConsumer>

@@ -23,6 +23,8 @@ export const enSidebar: DocsThemeConfig['sidebar'] = {
         { text: 'FormProvider', link: '/en/api/components/form-provider' },
         { text: 'FormConsumer', link: '/en/api/components/form-consumer' },
         { text: 'ExpressionScope', link: '/en/api/components/expression-scope' },
+        { text: 'RecordScope', link: '/en/api/components/record-scope' },
+        { text: 'RecordsScope', link: '/en/api/components/records-scope' },
       ],
     },
     {
