@@ -220,4 +220,13 @@ export interface IExpressionScopeProps {
   value: SchemaExpressionScope
 }
 
+export interface IRecordScopeProps {
+  getIndex?: () => number
+  getRecord: () => any
+}
+
+export interface IRecordsScopeProps {
+  getRecords: () => any[]
+}
+
 export type { FormilyValidator }

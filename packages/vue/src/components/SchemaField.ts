@@ -1,5 +1,5 @@
 import type { ISchema, SchemaTypes } from '@silver-formily/json-schema'
-import type { VNode } from 'vue'
+import type { Ref, VNode } from 'vue'
 import type {
   ISchemaFieldVueFactoryOptions,
   SchemaExpressionScope,
@@ -40,9 +40,17 @@ export function createSchemaField<Components extends SchemaVueComponents = Schem
               ...props.schema,
             }),
       )
-
+      const parentScopeRef = inject<Ref<SchemaExpressionScope> | null>(
+        SchemaExpressionScopeSymbol,
+        null,
+      )
       const scopeRef = computed<SchemaExpressionScope>(() =>
-        lazyMerge({} as SchemaExpressionScope, options.scope ?? {}, props.scope ?? {}),
+        lazyMerge(
+          {} as SchemaExpressionScope,
+          parentScopeRef?.value ?? {},
+          options.scope ?? {},
+          props.scope ?? {},
+        ),
       )
 
       const optionsRef = computed<ISchemaFieldVueFactoryOptions>(() => ({
