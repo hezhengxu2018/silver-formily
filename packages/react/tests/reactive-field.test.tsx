@@ -1,7 +1,8 @@
+import type { Field as FieldType } from '@silver-formily/core'
 import { createForm } from '@silver-formily/core'
 import { afterEach, expect, it, vi } from 'vitest'
 import { cleanup, render } from 'vitest-browser-react'
-import { Field, FormProvider } from '../src'
+import { Field, FormProvider, observer, useField } from '../src'
 
 afterEach(cleanup)
 
@@ -64,6 +65,75 @@ it('更新字段值时只刷新 component，decorator 属性变化时仍刷新 d
     .toHaveAttribute('data-title', 'Updated')
   expect(decoratorRender.mock.calls.length).toBeGreaterThan(initialDecoratorRenders)
   expect(componentRender).toHaveBeenCalledTimes(componentRendersAfterValue)
+})
+
+it('decorator 通过 useField 消费字段状态时，reactions 切换 required 仍会刷新 decorator', async () => {
+  const form = createForm()
+
+  // formily 官方 FormItem 的模式：decorator 自身是 observer，
+  // 内部 useField 读取字段状态，刷新不依赖渲染层
+  const FormItem = observer((props: { children?: React.ReactNode }) => {
+    const field = useField<FieldType>()
+    return (
+      <section data-testid="required-item" data-required={String(!!field?.required)}>
+        {props.children}
+      </section>
+    )
+  })
+
+  function Input(props: { value?: string, onChange?: (value: string) => void }) {
+    return (
+      <input
+        data-testid="required-input"
+        value={props.value ?? ''}
+        onChange={(event) => {
+          props.onChange?.(event.target.value)
+        }}
+      />
+    )
+  }
+
+  function Toggle(props: { value?: boolean, onChange?: (value: boolean) => void }) {
+    return (
+      <input
+        type="checkbox"
+        data-testid="required-toggle"
+        checked={!!props.value}
+        onChange={(event) => {
+          props.onChange?.(event.target.checked)
+        }}
+      />
+    )
+  }
+
+  const { getByTestId } = await render(
+    <FormProvider form={form}>
+      <Field name="toggle" component={[Toggle]} />
+      <Field
+        name="input"
+        decorator={[FormItem]}
+        component={[Input]}
+        reactions={(field) => {
+          const toggle = field.query('.toggle').get('value')
+          ;(field as FieldType).required = !!toggle
+        }}
+      />
+    </FormProvider>,
+  )
+
+  await expect
+    .element(getByTestId('required-item'))
+    .toHaveAttribute('data-required', 'false')
+
+  await getByTestId('required-toggle').click()
+  await expect
+    .element(getByTestId('required-item'))
+    .toHaveAttribute('data-required', 'true')
+
+  await getByTestId('required-toggle').click()
+  await expect
+    .element(getByTestId('required-item'))
+    .toHaveAttribute('data-required', 'false')
 })
 
 it('decoratorContent 的字符串内容作为约定 prop content 传给装饰器，setDecoratorContent 更新后自动刷新', async () => {
