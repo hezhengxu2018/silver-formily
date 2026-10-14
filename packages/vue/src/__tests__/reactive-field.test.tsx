@@ -1,4 +1,6 @@
+import type { Field as FieldType } from '@silver-formily/core'
 import { createForm } from '@silver-formily/core'
+import { observer } from '@silver-formily/reactive-vue'
 import { describe, expect, it, vi } from 'vitest'
 import { render } from 'vitest-browser-vue'
 import { defineComponent, ref } from 'vue'
@@ -6,6 +8,7 @@ import ArrayField from '../components/ArrayField'
 import Field from '../components/Field'
 import FormProvider from '../components/FormProvider'
 import ReactiveField from '../components/ReactiveField'
+import { useField } from '../hooks'
 
 const ArrayProbe = defineComponent({
   name: 'ArrayProbe',
@@ -80,6 +83,84 @@ const SwitchProbe = defineComponent({
 })
 
 describe('reactive field branches', () => {
+  it('decorator 通过 useField 消费字段状态时，reactions 切换 required 仍会刷新 decorator', async () => {
+    const form = createForm()
+
+    // formily 官方 FormItem 的模式：decorator 自身是 observer，
+    // 内部 useField 读取字段状态，刷新不依赖渲染层
+    const RequiredFormItem = observer(
+      defineComponent({
+        name: 'RequiredFormItem',
+        setup(_, { slots }) {
+          const fieldRef = useField<FieldType>()
+          return () => (
+            <section data-testid="required-item" data-required={String(!!fieldRef.value?.required)}>
+              {slots.default?.()}
+            </section>
+          )
+        },
+      }),
+    )
+
+    const Toggle = defineComponent({
+      name: 'Toggle',
+      props: { modelValue: Boolean },
+      emits: ['update:modelValue'],
+      setup(props, { emit }) {
+        return () => (
+          <input
+            type="checkbox"
+            data-testid="required-toggle"
+            checked={!!props.modelValue}
+            onChange={(event: Event) => {
+              emit('update:modelValue', (event.target as HTMLInputElement).checked)
+            }}
+          />
+        )
+      },
+    })
+
+    const PlainInput = defineComponent({
+      name: 'PlainInput',
+      props: { modelValue: String },
+      emits: ['update:modelValue'],
+      setup(props, { emit }) {
+        return () => (
+          <input
+            data-testid="required-input"
+            value={props.modelValue ?? ''}
+            onInput={(event: Event) => {
+              emit('update:modelValue', (event.target as HTMLInputElement).value)
+            }}
+          />
+        )
+      },
+    })
+
+    const screen = await render(() => (
+      <FormProvider form={form}>
+        <Field name="toggle" component={[Toggle]} />
+        <Field
+          name="input"
+          decorator={[RequiredFormItem]}
+          component={[PlainInput]}
+          reactions={(field) => {
+            const toggle = field.query('.toggle').get('value')
+            ;(field as any).required = !!toggle
+          }}
+        />
+      </FormProvider>
+    ))
+
+    await expect.element(screen.getByTestId('required-item')).toHaveAttribute('data-required', 'false')
+
+    await screen.getByTestId('required-toggle').click()
+    await expect.element(screen.getByTestId('required-item')).toHaveAttribute('data-required', 'true')
+
+    await screen.getByTestId('required-toggle').click()
+    await expect.element(screen.getByTestId('required-item')).toHaveAttribute('data-required', 'false')
+  })
+
   it('更新字段值时只刷新内容，decorator 属性变化时仍刷新 decorator', async () => {
     const form = createForm({ values: { choice: 'first' } })
     const decoratorRender = vi.fn()
