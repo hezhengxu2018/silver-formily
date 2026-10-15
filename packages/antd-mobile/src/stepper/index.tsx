@@ -1,11 +1,9 @@
-import type { StepperProps } from 'antd-mobile/es/components/stepper'
-import type React from 'react'
 import { connect, mapProps, mapReadPretty } from '@silver-formily/react'
 import { isFn, isValid } from '@silver-formily/shared'
 import { Stepper as AntdStepper } from 'antd-mobile'
 import { PreviewText } from '../preview-text'
 
-export const Stepper: React.FC<StepperProps> = connect(
+export const Stepper = connect(
   AntdStepper,
   mapReadPretty(PreviewText.Input),
 )
@@ -18,7 +16,7 @@ function formatValue(v: string | number, digits?: number): number {
   return value
 }
 
-export const InputNumber: React.FC<StepperProps> = connect(AntdStepper, mapProps(
+export const InputNumber = connect(AntdStepper, mapProps(
   (props: any) => {
     const onChange = props.onChange
     const parser = props.parser

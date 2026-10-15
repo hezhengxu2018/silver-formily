@@ -2,18 +2,18 @@ import type { DatePickerProps as AntdDatePickerProps } from 'antd-mobile/es/comp
 import type { PickerValue } from 'antd-mobile/es/components/picker'
 import type { QuarterPrecision } from './date-quarter-utils'
 import { Picker } from 'antd-mobile'
-import React, { useCallback, useMemo } from 'react'
+import { useCallback, useMemo } from 'react'
 import { useCreation } from '../__builtins__'
 import * as quarterUtils from './date-quarter-utils'
 
 const thisYear = new Date().getFullYear()
 
-export const QuarterDatePicker: React.FC<AntdDatePickerProps> = ({
+export function QuarterDatePicker({
   min = new Date(new Date().setFullYear(thisYear - 10)),
   max = new Date(new Date().setFullYear(thisYear + 10)),
-  renderLabel = quarterUtils.defaultRenderLabel,
+  renderLabel = quarterUtils.defaultRenderLabel as AntdDatePickerProps['renderLabel'],
   ...props
-}) => {
+}: AntdDatePickerProps) {
   const pickerValue = useMemo(
     () => quarterUtils.convertDateToStringArray(props.value),
     [props.value],

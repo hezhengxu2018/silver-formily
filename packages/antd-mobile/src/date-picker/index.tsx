@@ -5,8 +5,7 @@ import { connect, mapReadPretty } from '@silver-formily/react'
 import { DatePicker as AntdDatePicker, VirtualInput } from 'antd-mobile'
 import { CloseCircleFill } from 'antd-mobile-icons'
 import cls from 'classnames'
-
-import React, { useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import { dayjsable, formatDayjsValue, usePrefixCls } from '../__builtins__'
 import { PreviewText } from '../preview-text'
 import QuarterDatePicker from './quarter-picker'
@@ -32,10 +31,6 @@ export type IDatePickerProps<PickerProps> = Exclude<
 }
 
 export type RangePickerProps = Record<string, never>
-
-type ComposedDatePicker = React.FC<AntdDatePickerProps> & {
-  RangePicker?: React.FC<RangePickerProps>
-}
 
 function mapDateFormat<T>() {
   const getDefaultFormat = (props: IDatePickerProps<T>) => {
@@ -70,9 +65,7 @@ function mapDateFormat<T>() {
   }
 }
 
-export const BaseDatePicker: React.FC<IDatePickerProps<AntdDatePickerProps>> = (
-  props,
-) => {
+export function BaseDatePicker(props: IDatePickerProps<AntdDatePickerProps>) {
   const prefix = usePrefixCls('formily-date-picker')
   const {
     onChange,
@@ -138,10 +131,10 @@ export const BaseDatePicker: React.FC<IDatePickerProps<AntdDatePickerProps>> = (
   )
 }
 
-export const DatePicker: ComposedDatePicker = connect(
+export const DatePicker = connect(
   BaseDatePicker,
   mapReadPretty(PreviewText.DatePicker),
-) as ComposedDatePicker
+)
 
 /*
  DatePicker.RangePicker = connect(

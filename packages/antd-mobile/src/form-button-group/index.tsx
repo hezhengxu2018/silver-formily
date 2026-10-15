@@ -40,15 +40,6 @@ type IFormButtonGroupProps = Omit<SpaceProps, 'align' | 'size'> & {
   gutter?: number
 }
 
-type ComposedButtonGroup = React.FC<IFormButtonGroupProps> & {
-  Sticky: React.FC<IStickyProps>
-  FormItem: React.FC<
-    IFormItemProps & {
-      gutter?: number
-    }
-  >
-}
-
 function getInheritedBackgroundColor(el: HTMLElement) {
   // get default style for current browser
   const defaultStyle = getDefaultBackground() // typically "rgba(0, 0, 0, 0)"
@@ -77,112 +68,111 @@ function getDefaultBackground() {
   return bg
 }
 
-export const FormButtonGroup: ComposedButtonGroup = ({
-  align = 'center',
-  gutter,
-  ...props
-}) => {
-  const prefixCls = usePrefixCls('formily-button-group')
-  const gap = (gutter ?? 0) > 0 ? `${gutter}px` : 'var(--gap)'
-  return React.Children.count(props.children) > 0
-    ? (
-        <Space
-          {...props}
-          className={cls(prefixCls, props.className)}
-          style={{
-            ...props.style,
-            '--gap-horizontal': gap,
-            'alignItems':
-          align === 'left'
-            ? 'flex-start'
-            : align === 'right'
-              ? 'flex-end'
-              : 'center',
-            'display': 'flex',
-          }}
-        >
-          {props.children}
-        </Space>
-      )
-    : (
-        <div className={cls(prefixCls, props.className)} style={props.style}>
-          {props.children}
-        </div>
-      )
-}
-
-FormButtonGroup.FormItem = ({ gutter, ...props }) => {
-  const gap = (gutter ?? 0) > 0 ? `${gutter}px` : 'var(--gap)'
-  return (
-    <BaseItem
-      {...props}
-      label=" "
-      style={{
-        margin: 0,
-        padding: 0,
-        ...props.style,
-        width: '100%',
-      }}
-    >
-      {React.Children.count(props.children) > 0
-        ? (
-            <Space style={{ '--gap-horizontal': gap }}>{props.children}</Space>
-          )
-        : (
-            props.children
-          )}
-    </BaseItem>
-  )
-}
-
-FormButtonGroup.Sticky = ({
-  align = 'center',
-  offsetTop,
-  offsetBottom,
-  onChangeMode: _onChangeMode,
-  padding: _padding,
-  ...props
-}) => {
-  const ref = useRef<HTMLDivElement>(null)
-  const [color, setColor] = useState('transparent')
-  const prefixCls = usePrefixCls('formily-button-group')
-
-  useLayoutEffect(() => {
-    if (ref.current) {
-      const computed = getInheritedBackgroundColor(ref.current)
-      if (computed !== color) {
-        setColor(computed)
-      }
-    }
-  })
-  return (
-    <StickyBox
-      offsetTop={offsetTop}
-      offsetBottom={offsetBottom}
-      className={cls(`${prefixCls}-sticky`, props.className)}
-      style={{
-        backgroundColor: color,
-        ...props.style,
-      }}
-      bottom
-    >
-      <div
-        ref={ref}
-        className={`${prefixCls}-sticky-inner`}
-        style={{
-          ...props.style,
-          justifyContent:
+export const FormButtonGroup = Object.assign(
+  ({ align = 'center', gutter, ...props }: IFormButtonGroupProps) => {
+    const prefixCls = usePrefixCls('formily-button-group')
+    const gap = (gutter ?? 0) > 0 ? `${gutter}px` : 'var(--gap)'
+    return React.Children.count(props.children) > 0
+      ? (
+          <Space
+            {...props}
+            className={cls(prefixCls, props.className)}
+            style={{
+              ...props.style,
+              '--gap-horizontal': gap,
+              'alignItems':
             align === 'left'
               ? 'flex-start'
               : align === 'right'
                 ? 'flex-end'
                 : 'center',
-        }}
-      >
-        {props.children}
-      </div>
-    </StickyBox>
-  )
-}
+              'display': 'flex',
+            }}
+          >
+            {props.children}
+          </Space>
+        )
+      : (
+          <div className={cls(prefixCls, props.className)} style={props.style}>
+            {props.children}
+          </div>
+        )
+  },
+  {
+    FormItem: ({ gutter, ...props }: IFormItemProps & { gutter?: number }) => {
+      const gap = (gutter ?? 0) > 0 ? `${gutter}px` : 'var(--gap)'
+      return (
+        <BaseItem
+          {...props}
+          label=" "
+          style={{
+            margin: 0,
+            padding: 0,
+            ...props.style,
+            width: '100%',
+          }}
+        >
+          {React.Children.count(props.children) > 0
+            ? (
+                <Space style={{ '--gap-horizontal': gap }}>{props.children}</Space>
+              )
+            : (
+                props.children
+              )}
+        </BaseItem>
+      )
+    },
+
+    Sticky: ({
+      align = 'center',
+      offsetTop,
+      offsetBottom,
+      onChangeMode: _onChangeMode,
+      padding: _padding,
+      ...props
+    }: IStickyProps) => {
+      const ref = useRef<HTMLDivElement>(null)
+      const [color, setColor] = useState('transparent')
+      const prefixCls = usePrefixCls('formily-button-group')
+
+      useLayoutEffect(() => {
+        if (ref.current) {
+          const computed = getInheritedBackgroundColor(ref.current)
+          if (computed !== color) {
+            setColor(computed)
+          }
+        }
+      })
+      return (
+        <StickyBox
+          offsetTop={offsetTop}
+          offsetBottom={offsetBottom}
+          className={cls(`${prefixCls}-sticky`, props.className)}
+          style={{
+            backgroundColor: color,
+            ...props.style,
+          }}
+          bottom
+        >
+          <div
+            ref={ref}
+            className={`${prefixCls}-sticky-inner`}
+            style={{
+              ...props.style,
+              justifyContent:
+            align === 'left'
+              ? 'flex-start'
+              : align === 'right'
+                ? 'flex-end'
+                : 'center',
+            }}
+          >
+            {props.children}
+          </div>
+        </StickyBox>
+      )
+    },
+  },
+)
 
 export default FormButtonGroup

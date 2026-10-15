@@ -30,7 +30,7 @@ function defaultDisplayRender(label: ReactNode[]) {
   return label?.join(' / ')
 }
 
-export const BasePicker: React.FC<ICascadePickerProps> = ({
+export function BasePicker({
   placeholder,
   className,
   displayRender = defaultDisplayRender,
@@ -39,7 +39,7 @@ export const BasePicker: React.FC<ICascadePickerProps> = ({
   clearable,
   style,
   ...props
-}) => {
+}: ICascadePickerProps) {
   const prefix = usePrefixCls('formily-cascade-picker')
   const inputRef = useRef<VirtualInputRef>(null)
   const labelItems = useRef<PickerColumnItem[]>([])
