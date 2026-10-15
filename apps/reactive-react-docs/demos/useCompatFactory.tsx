@@ -1,5 +1,6 @@
 import { observable, Tracker } from '@silver-formily/reactive'
-import { useCompatFactory, useForceUpdate } from '@silver-formily/reactive-react'
+import { useCompatFactory } from '@silver-formily/reactive-react'
+import { useReducer } from 'react'
 import './demoStyles.css'
 
 const obs = observable({
@@ -9,7 +10,7 @@ const obs = observable({
 // useCompatFactory 是 useObserver 的内部实现：组件真实卸载时自动 dispose
 // 出去的实例，StrictMode 重放渲染不会销毁它
 function TrackerCounter() {
-  const forceUpdate = useForceUpdate()
+  const [, forceUpdate] = useReducer((version: number) => version + 1, 0)
   const tracker = useCompatFactory(() => new Tracker(forceUpdate))
 
   // 每次渲染时收集 view 函数读取的响应式字段

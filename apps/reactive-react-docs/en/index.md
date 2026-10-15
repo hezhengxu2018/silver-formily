@@ -39,3 +39,10 @@ const Counter = observer(() => (
 ```
 
 Components wrapped with `observer` collect the reactive fields they read on every render. When a field changes, only the components that depend on it re-render.
+
+## Choosing an API
+
+- Reactive rendering: prefer [`observer`](./api#observer); use [`Observer`](./api#observer-component) for a JSX subtree.
+- Derived values: [`useComputed`](./api#usecomputed) returns an expression's result. Declare props/state inputs through `deps`.
+- Side effects: [`useAutorunEffect`](./api#useautoruneffect) runs automatically; [`useReactionWatch`](./api#usereactionwatch) watches value changes.
+- See the [API reference](./api) for React 18/19 refs and subscription lifecycles. `useComputed` no longer accepts `fireImmediately`; `useReactionWatch` still supports it.

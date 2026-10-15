@@ -39,7 +39,7 @@ describe('observer', () => {
       ),
       { forwardRef: true },
     )
-    const ref: React.RefObject<HTMLDivElement | null> = { current: null }
+    const ref = createRef<HTMLDivElement>()
     const screen = await render(<App ref={ref} text={obs.text} />)
     await expect
       .element(screen.getByTestId('text'))
@@ -58,7 +58,7 @@ describe('observer', () => {
       return component
     })()
     const Wrapped = observer(Base)
-    expect((Wrapped as unknown as { title: string }).title).toBe('base-title')
+    expect(Wrapped.title).toBe('base-title')
   })
 
   it('accepts object and callback refs when original props omit ref', async () => {
