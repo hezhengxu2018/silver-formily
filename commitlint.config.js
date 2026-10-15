@@ -97,6 +97,7 @@ export default {
       { value: 'apps/path-docs', name: 'apps/path-docs' },
       { value: 'apps/validator-docs', name: 'apps/validator-docs' },
       { value: 'apps/element-plus-designable', name: 'apps/element-plus-designable' },
+      { value: 'packages/antd-mobile', name: 'packages/antd-mobile' },
       { value: 'packages/core', name: 'packages/core' },
       { value: 'packages/designer-core', name: 'packages/designer-core' },
       { value: 'packages/designer-shared', name: 'packages/designer-shared' },
