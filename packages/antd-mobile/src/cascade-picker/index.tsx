@@ -13,6 +13,7 @@ import cls from 'classnames'
 import React, { useEffect, useRef, useState } from 'react'
 import { usePrefixCls, usePropsValue } from '../__builtins__'
 import PreviewText from '../preview-text'
+import './style.less'
 
 export interface ICascadePickerProps extends AntCascadePickerProps {
   className?: string

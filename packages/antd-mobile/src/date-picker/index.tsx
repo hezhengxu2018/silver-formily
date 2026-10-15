@@ -9,6 +9,7 @@ import { useRef, useState } from 'react'
 import { dayjsable, formatDayjsValue, usePrefixCls } from '../__builtins__'
 import { PreviewText } from '../preview-text'
 import QuarterDatePicker from './quarter-picker'
+import './style.less'
 
 type DateValue = string | Date | Dayjs | Dayjs[]
 

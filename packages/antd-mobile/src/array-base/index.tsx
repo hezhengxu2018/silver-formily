@@ -21,6 +21,7 @@ import {
 import cls from 'classnames'
 import React, { createContext, useContext } from 'react'
 import { usePrefixCls } from '../__builtins__'
+import './style.less'
 
 export * from './utils'
 

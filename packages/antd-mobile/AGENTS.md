@@ -13,9 +13,10 @@
 ## 目录与样式约定
 
 - `src/` 为组件封装源码，对外导出统一由 `src/index.ts` 汇总；`esm/` 为构建产物，禁止手动修改。
-- 样式保留 **less**（与 element-plus/vant 的 scss 惯例不同，为有意决策）：每个组件目录包含 `style.less`（formily 覆盖样式）与 `style.ts`（透传 `antd-mobile/es/components/<name>/<name>.css` + 引入本地 less），全局 token 变量在 `src/global/global.less`。
-- 禁止在 less 中使用 `~antd-mobile/...` 波浪号导入（webpack 专属约定，less/rolldown 不解析）；需要引用 antd-mobile 样式时通过 `style.ts` 透传。
-- `src/index.ts` 入口仅引入 `./style`（less 覆盖样式聚合）；antd-mobile 自身组件样式由各组件 `style.ts` 按需透传给消费方。
+- 样式保留 **less**（与 element-plus/vant 的 scss 惯例不同，为有意决策）：组件如有覆盖样式，目录内提供 `style.less`，并由组件入口 `index.tsx` 直接 `import './style.less'`（与 element-plus 封装引入 `style.scss` 的做法一致）；全局 token 变量在 `src/global/global.less`。tsdown 会在构建时提取 CSS 并在产物 `index.mjs` 中自动添加引入，无需 `style.ts` 中间层。
+- antd-mobile ≥ 5.38 会在组件入口自动加载自身样式（含包入口的 `global.css`），勿手动透传 `antd-mobile/es/components/<name>/<name>.css`。
+- 禁止在 less 中使用 `~antd-mobile/...` 波浪号导入（webpack 专属约定，less/rolldown 不解析）。
+- `src/index.ts` 入口仅汇总组件导出；样式随各组件入口的 `style.less` 引入自动进入产物。
 
 ## 常用命令
 

@@ -7,6 +7,7 @@ import { connect, mapProps, observer, useField } from '@silver-formily/react'
 import { Checkbox as AntdCheckbox, Space } from 'antd-mobile'
 import React from 'react'
 import { useFormLayout } from '../form-layout'
+import './style.less'
 
 export interface ICheckboxOption {
   label: string

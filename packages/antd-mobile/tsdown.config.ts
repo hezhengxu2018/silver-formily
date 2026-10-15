@@ -1,9 +1,7 @@
 import { defineConfig } from 'tsdown'
 
 export default defineConfig({
-  // src/*/style.ts 透传 antd-mobile 组件样式 + 本地 less 覆盖样式，
-  // 供消费者按需引入：import '@silver-formily/antd-mobile/esm/<component>/style'
-  entry: ['src/index.ts', 'src/*/style.ts'],
+  entry: ['src/index.ts'],
   format: ['esm'],
   outDir: 'esm',
   platform: 'neutral',
