@@ -1,0 +1,58 @@
+[
+  {
+    "text": "Overview 总览",
+    "items": [
+      {
+        "text": "Quick Start 快速开始",
+        "link": "/component/quick-start"
+      }
+    ]
+  },
+  {
+    "text": "Layout 布局组件",
+    "items": [
+      {
+        "text": "FormLayout 表单布局",
+        "link": "/component/form-layout"
+      },
+      {
+        "text": "FormItem 表单项",
+        "link": "/component/form-item"
+      }
+    ]
+  },
+  {
+    "text": "Input 输入组件",
+    "items": [
+      {
+        "text": "Input 输入框",
+        "link": "/component/input"
+      },
+      {
+        "text": "Checkbox 复选框",
+        "link": "/component/checkbox"
+      },
+      {
+        "text": "Switch 开关",
+        "link": "/component/switch"
+      },
+      {
+        "text": "DatePicker 日期选择器",
+        "link": "/component/date-picker"
+      }
+    ]
+  },
+  {
+    "text": "Action 动作组件",
+    "items": [
+      {
+        "text": "Submit 提交按钮",
+        "link": "/component/submit"
+      },
+      {
+        "text": "Reset 重置按钮",
+        "link": "/component/reset"
+      }
+    ]
+  }
+]
