@@ -53,6 +53,7 @@ export const silverFormilyUiFooterLinks = [
   createLocalizedLink('Grid', 'https://grid.silver-formily.org/', { en: 'https://grid.silver-formily.org/en/' }),
   createLocalizedLink('Element Plus', 'https://element-plus.silver-formily.org/', { en: 'https://element-plus.silver-formily.org/en/' }),
   createLocalizedLink('Vant', 'https://vant.silver-formily.org/', { en: 'https://vant.silver-formily.org/en/' }),
+  createLocalizedLink('Antd Mobile', 'https://antd-mobile.silver-formily.org/', { en: 'https://antd-mobile.silver-formily.org/en/' }),
 ]
 
 export const silverFormilyFooterLinks = [
