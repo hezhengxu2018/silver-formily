@@ -138,7 +138,8 @@ const props = {
 | 属性名               | 说明                                                          | 类型                                                         | 默认值               |
 | -------------------- | ------------------------------------------------------------- | ------------------------------------------------------------ | -------------------- |
 | `itemText`           | 必填，用于决定每一项显示的文字内容                            | ^[Function]`(item: QueryFormItemSelectedListItem) => string` | -                    |
-| `width`              | 列表宽度                                                      | `number`                                                     | `200`                |
+| `width`              | 列表宽度                                                      | `number`                                                     | `250`                |
+| `maxHeight`          | 列表最大高度；超出后滚动。默认跟随 `QueryFormItem` 内容区高度 | `number \| string`                                           | -                    |
 | `selectionText`      | 已选数量文案；传入字符串时可使用 `{count}` 作为已选数量占位符 | `string \| ((count: number) => string)`                      | 根据当前语言自动生成 |
 | `clearSelectionText` | 清空全部选择的操作文案                                        | `string`                                                     | 根据当前语言自动生成 |
 

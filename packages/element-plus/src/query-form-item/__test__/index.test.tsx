@@ -7,6 +7,7 @@ import { render } from 'vitest-browser-vue'
 import { userEvent } from 'vitest/browser'
 import { defineComponent, ref } from 'vue'
 import { ensureDomElement, queryElement } from '../../../test-utils/dom'
+import { stylePrefix } from '../../__builtins__'
 import { QueryFormItem, QueryFormItemSelectedList, SelectTable } from '../../index'
 import 'element-plus/theme-chalk/index.css'
 
@@ -56,12 +57,14 @@ function formilyWrapperFactoryWithSelectedList(
   request?: (params: Record<string, any>) => Promise<any>,
   decoratorProps: Record<string, any> = {},
   fieldProps: Record<string, any> = {},
+  selectedListProps: Record<string, any> = {},
 ) {
   const SelectedListExtra = defineComponent({
     setup() {
       return () => (
         <QueryFormItemSelectedList
           itemText={(item: QueryFormItemSelectedListItem) => `Selected: ${item.record?.name ?? item.value}`}
+          {...selectedListProps}
         />
       )
     },
@@ -225,6 +228,69 @@ describe('queryFormItem', () => {
     await expect.element(screen.getByText('Selected: Row-18')).not.toBeInTheDocument()
     await screen.getByText('Clear selection').click()
     expect(form.query('selected').get('value')).toEqual([])
+  })
+
+  it('caps selected-list height with the maxHeight prop when explicitly set', async () => {
+    const data = Array.from({ length: 30 }, (_, index) => ({
+      id: `row-${index}`,
+      name: `Row-${index}`,
+    }))
+    const form = createForm({
+      values: {
+        selected: data,
+      },
+    })
+    const request = vi.fn<QueryFormItemRequest>(async () => ({
+      data,
+      success: true,
+      total: data.length,
+    }))
+
+    const screen = render(formilyWrapperFactoryWithSelectedList(form, request, {
+      pagination: false,
+    }, {}, { maxHeight: 300 }))
+
+    await vi.waitFor(() => {
+      expect(request).toHaveBeenCalled()
+    })
+
+    const listTable = queryElement(screen.container, `.${stylePrefix}-query-form-item__selected-list-table`)
+    const scrollWrap = queryElement(listTable, '.el-scrollbar__wrap')
+
+    expect(listTable.querySelectorAll(`.${stylePrefix}-query-form-item__selected-list-row`).length).toBe(30)
+    expect(scrollWrap.scrollHeight).toBeGreaterThan(scrollWrap.clientHeight)
+    expect(listTable.getBoundingClientRect().height).toBeLessThanOrEqual(301)
+  })
+
+  it('keeps selected-list aligned with the content column and scrolls when overflowing it', async () => {
+    const data = Array.from({ length: 30 }, (_, index) => ({
+      id: `row-${index}`,
+      name: `Row-${index}`,
+    }))
+    const form = createForm({
+      values: {
+        selected: data,
+      },
+    })
+    const request = vi.fn<QueryFormItemRequest>(async () => ({
+      data,
+      success: true,
+      total: data.length,
+    }))
+
+    const screen = render(formilyWrapperFactoryWithSelectedList(form, request))
+
+    await vi.waitFor(() => {
+      expect(request).toHaveBeenCalled()
+    })
+
+    const listWrapper = queryElement(screen.container, `.${stylePrefix}-query-form-item__selected-list-wrapper`)
+    const contentWrapper = queryElement(screen.container, `.${stylePrefix}-query-form-item__content-wrapper`)
+    const scrollWrap = queryElement(listWrapper, '.el-scrollbar__wrap')
+
+    expect(Math.abs(listWrapper.getBoundingClientRect().bottom - contentWrapper.getBoundingClientRect().bottom)).toBeLessThanOrEqual(1)
+    expect(scrollWrap.scrollHeight).toBeGreaterThan(scrollWrap.clientHeight)
+    expect(listWrapper.getBoundingClientRect().height).toBeLessThan(scrollWrap.scrollHeight)
   })
 
   it('should clear field value after dataSource update when enabled', async () => {

@@ -135,12 +135,13 @@ const props = {
 
 ### SelectedList Props
 
-| Prop                 | Description                                                                        | Type                                                         | Default                           |
-| -------------------- | ---------------------------------------------------------------------------------- | ------------------------------------------------------------ | --------------------------------- |
-| `itemText`           | Required. Returns the display text for each selected item                          | ^[Function]`(item: QueryFormItemSelectedListItem) => string` | -                                 |
-| `width`              | List width                                                                         | `number`                                                     | `200`                             |
-| `selectionText`      | Selected-count text. When a string is provided, `{count}` is replaced by the count | `string \| ((count: number) => string)`                      | Generated from the current locale |
-| `clearSelectionText` | Text for the clear-all action                                                      | `string`                                                     | Generated from the current locale |
+| Prop                 | Description                                                                         | Type                                                         | Default                           |
+| -------------------- | ----------------------------------------------------------------------------------- | ------------------------------------------------------------ | --------------------------------- |
+| `itemText`           | Required. Returns the display text for each selected item                           | ^[Function]`(item: QueryFormItemSelectedListItem) => string` | -                                 |
+| `width`              | List width                                                                          | `number`                                                     | `250`                             |
+| `maxHeight`          | Max list height before scrolling. Defaults to the content height of `QueryFormItem` | `number \| string`                                           | -                                 |
+| `selectionText`      | Selected-count text. When a string is provided, `{count}` is replaced by the count  | `string \| ((count: number) => string)`                      | Generated from the current locale |
+| `clearSelectionText` | Text for the clear-all action                                                       | `string`                                                     | Generated from the current locale |
 
 ### QueryFormItemSelectedListItem
 

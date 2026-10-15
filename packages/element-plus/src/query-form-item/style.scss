@@ -26,12 +26,15 @@ $query-form-item-prefix-cls: '#{$formily-prefix}-query-form-item';
 }
 
 .#{$query-form-item-prefix-cls}__selected-list-wrapper {
-  align-self: flex-start;
   display: flex;
   grid-column: 2;
   justify-content: flex-end;
   margin-left: 8px;
   max-width: 100%;
+  // 高度贡献为 0，行高完全由左侧内容列决定；再撑满行高，
+  // 使列表最大高度与 __content-wrapper 保持一致
+  height: 0;
+  min-height: 100%;
 
   &:empty {
     display: none;
@@ -43,13 +46,27 @@ $query-form-item-prefix-cls: '#{$formily-prefix}-query-form-item';
   flex: 0 0 auto;
   flex-direction: column;
   max-width: 100%;
+  max-height: 100%;
+
+  > .#{$formily-prefix}-select-table-alert-container {
+    flex-shrink: 0;
+  }
 }
 
 .#{$query-form-item-prefix-cls}__selected-list-table {
+  // 覆盖 ElScrollbar 默认的 height:100%，内容少时收缩、超出可用高度时才滚动
+  height: auto;
+  flex: 0 1 auto;
+  min-height: 0;
   overflow: hidden;
   border-radius: var(--el-border-radius-base);
   background-color: var(--el-bg-color);
   color: var(--el-text-color-regular);
+
+  .el-scrollbar__wrap {
+    height: auto;
+    max-height: 100%;
+  }
 }
 
 .#{$query-form-item-prefix-cls}__selected-list-row {

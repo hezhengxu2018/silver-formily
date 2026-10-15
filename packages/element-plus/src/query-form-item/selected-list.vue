@@ -8,13 +8,14 @@ import { Close } from '@element-plus/icons-vue'
 import { reactiveComputed } from '@silver-formily/reactive-vue'
 import { isFn, isValid } from '@silver-formily/shared'
 import { useField } from '@silver-formily/vue'
-import { ElIcon, ElLink, useLocale, version } from 'element-plus'
+import { ElIcon, ElLink, ElScrollbar, useLocale, version } from 'element-plus'
 import { computed } from 'vue'
 import { lt, stylePrefix } from '../__builtins__'
 
 const props = withDefaults(defineProps<{
   itemText: QueryFormItemSelectedListText
   width?: number
+  maxHeight?: number | string
   selectionText?: string | ((count: number) => string)
   clearSelectionText?: string
 }>(), {
@@ -147,7 +148,10 @@ function onRemoveSelectedItemClick(item: QueryFormItemSelectedListItem) {
         {{ clearSelectionText }}
       </ElLink>
     </div>
-    <div :class="`${prefixCls}__selected-list-table`">
+    <ElScrollbar
+      :class="`${prefixCls}__selected-list-table`"
+      :max-height="props.maxHeight"
+    >
       <div
         v-for="item of selectedDisplayItems"
         :key="`${item.index}-${item.value}`"
@@ -170,6 +174,6 @@ function onRemoveSelectedItemClick(item: QueryFormItemSelectedListItem) {
           </ElIcon>
         </button>
       </div>
-    </div>
+    </ElScrollbar>
   </div>
 </template>
