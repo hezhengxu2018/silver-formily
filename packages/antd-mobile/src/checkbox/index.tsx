@@ -3,7 +3,6 @@ import type {
   CheckboxGroupProps,
   CheckboxProps,
 } from 'antd-mobile/es/components/checkbox'
-import type { FunctionComponent } from 'react'
 import { connect, mapProps, observer, useField } from '@silver-formily/react'
 import { Checkbox as AntdCheckbox, Space } from 'antd-mobile'
 import React from 'react'
@@ -25,23 +24,18 @@ export interface ICheckboxProps extends Props, CheckboxProps {}
 
 export interface ICheckboxGroupProps extends Props, CheckboxGroupProps {}
 
-type ComposedCheckbox = React.FC<ICheckboxProps> & {
-  Group?: React.FC<ICheckboxGroupProps>
-  __ANTD_MOBILE_CHECKBOX?: boolean
-}
-
 function isCheckbox(node: any) {
   return (
     React.isValidElement(node)
-    && !!(node.type as FunctionComponent).displayName?.includes('Checkbox')
+    && !!(node.type as React.ComponentType<any>).displayName?.includes('Checkbox')
   )
 }
 
-export const BaseCheckbox: React.FC<ICheckboxProps> = ({
+export function BaseCheckbox({
   children,
   options,
   ...rest
-}) => {
+}: ICheckboxProps) {
   const props = { block: true, ...rest }
   const layout = useFormLayout()
   const field = useField<DataField>()
@@ -94,8 +88,8 @@ export const BaseCheckbox: React.FC<ICheckboxProps> = ({
   )
 }
 
-export const CheckboxGroup: React.FC<ICheckboxGroupProps> = observer(
-  ({ value, defaultValue, disabled, onChange, ...props }) => {
+export const CheckboxGroup = observer(
+  ({ value, defaultValue, disabled, onChange, ...props }: ICheckboxGroupProps) => {
     return (
       <AntdCheckbox.Group
         value={value}
@@ -108,11 +102,10 @@ export const CheckboxGroup: React.FC<ICheckboxGroupProps> = observer(
     )
   },
 )
-export const Checkbox: ComposedCheckbox = connect(BaseCheckbox, mapProps({}))
-
-Checkbox.displayName = 'Checkbox'
-Checkbox.__ANTD_MOBILE_CHECKBOX = true
-Checkbox.Group = CheckboxGroup
-Checkbox.Group.displayName = 'Checkbox.Group'
+export const Checkbox = Object.assign(connect(BaseCheckbox, mapProps({})), {
+  displayName: 'Checkbox',
+  __ANTD_MOBILE_CHECKBOX: true,
+  Group: Object.assign(CheckboxGroup, { displayName: 'Checkbox.Group' }),
+})
 
 export default Checkbox

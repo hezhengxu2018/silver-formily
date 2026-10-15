@@ -47,10 +47,6 @@ export interface IFormItemProps extends ListItemProps {
   __layout__?: boolean
 }
 
-type ComposeFormItem = React.FC<IFormItemProps> & {
-  BaseItem?: React.FC<IFormItemProps>
-}
-
 function useFormItemLayout(props: IFormItemProps) {
   const layout = useFormLayout()
   return {
@@ -114,7 +110,7 @@ const ICON_MAP = {
   warning: <ExclamationCircleOutline />,
 }
 
-export const BaseItem: React.FC<IFormItemProps> = ({ children, ...props }) => {
+export function BaseItem({ children, ...props }: IFormItemProps) {
   const [active, setActive] = useState(false)
   const formLayout = useFormItemLayout(props)
 
@@ -340,63 +336,64 @@ export const BaseItem: React.FC<IFormItemProps> = ({ children, ...props }) => {
 }
 
 // 适配
-export const FormItem: ComposeFormItem = connect(
-  BaseItem,
-  mapProps((props, field) => {
-    if (isVoidField(field)) {
+export const FormItem = Object.assign(
+  connect(
+    BaseItem,
+    mapProps((props, field) => {
+      if (isVoidField(field)) {
+        return {
+          label: field.title || props.label,
+          asterisk: props.asterisk,
+          extra: props.extra || field.description,
+        }
+      }
+      if (!field)
+        return props
+      const takeFeedbackStatus = () => {
+        if (field.validating)
+          return 'pending'
+        return field.decoratorProps.feedbackStatus || field.validateStatus
+      }
+      const takeMessage = () => {
+        const split = (messages: any[]) => {
+          return messages.reduce((buf, text, index) => {
+            if (!text)
+              return buf
+            return index < messages.length - 1
+              ? buf.concat([text, ', '])
+              : buf.concat([text])
+          }, [])
+        }
+        if (field.validating)
+          return
+        if (props.feedbackText)
+          return props.feedbackText
+        if (field.selfErrors.length)
+          return split(field.selfErrors)
+        if (field.selfWarnings.length)
+          return split(field.selfWarnings)
+        if (field.selfSuccesses.length)
+          return split(field.selfSuccesses)
+      }
+      const takeAsterisk = () => {
+        if (field.required && field.pattern !== 'readPretty') {
+          return true
+        }
+        if ('asterisk' in props) {
+          return props.asterisk
+        }
+        return false
+      }
       return {
         label: field.title || props.label,
-        asterisk: props.asterisk,
+        feedbackStatus: takeFeedbackStatus(),
+        feedbackText: takeMessage(),
+        asterisk: takeAsterisk(),
         extra: props.extra || field.description,
       }
-    }
-    if (!field)
-      return props
-    const takeFeedbackStatus = () => {
-      if (field.validating)
-        return 'pending'
-      return field.decoratorProps.feedbackStatus || field.validateStatus
-    }
-    const takeMessage = () => {
-      const split = (messages: any[]) => {
-        return messages.reduce((buf, text, index) => {
-          if (!text)
-            return buf
-          return index < messages.length - 1
-            ? buf.concat([text, ', '])
-            : buf.concat([text])
-        }, [])
-      }
-      if (field.validating)
-        return
-      if (props.feedbackText)
-        return props.feedbackText
-      if (field.selfErrors.length)
-        return split(field.selfErrors)
-      if (field.selfWarnings.length)
-        return split(field.selfWarnings)
-      if (field.selfSuccesses.length)
-        return split(field.selfSuccesses)
-    }
-    const takeAsterisk = () => {
-      if (field.required && field.pattern !== 'readPretty') {
-        return true
-      }
-      if ('asterisk' in props) {
-        return props.asterisk
-      }
-      return false
-    }
-    return {
-      label: field.title || props.label,
-      feedbackStatus: takeFeedbackStatus(),
-      feedbackText: takeMessage(),
-      asterisk: takeAsterisk(),
-      extra: props.extra || field.description,
-    }
-  }),
+    }),
+  ),
+  { BaseItem },
 )
-
-FormItem.BaseItem = BaseItem
 
 export default FormItem

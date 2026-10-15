@@ -1,9 +1,6 @@
 import type { ArrayField } from '@silver-formily/core'
 import type { ListItemProps, ListProps } from 'antd-mobile/es/components/list'
 import type { NativeProps } from 'antd-mobile/es/utils/native-props'
-import type {
-  ArrayBaseMixins,
-} from '../array-base'
 import {
   observer,
   RecursionField,
@@ -46,18 +43,12 @@ const listComponentMap = {
   [listPropsMap.children]: 'ItemChildren',
 }
 
-type ComposedList = React.FC<IListProps>
-  & ArrayBaseMixins & {
-    Item?: React.FC<IListItemProps>
-    ItemTitle?: React.FC<IListItemProps['title']>
-    ItemPrefix?: React.FC<IListItemProps['prefix']>
-    ItemDescription?: React.FC<IListItemProps['description']>
-    ItemExtra?: React.FC<IListItemProps['extra']>
-    ItemChildren?: React.FC<IListItemProps['children']>
-  }
+function baseItemComponent() {
+  return null
+}
 
-export const List: ComposedList = observer(
-  ({ className, style, title, mode, renderFooter, renderHeader, ...props }) => {
+export const List = Object.assign(
+  observer(({ className, style, title, mode, renderFooter, renderHeader, ...props }: IListProps) => {
     const field = useField<ArrayField>()
     const schema = useFieldSchema()
     const options = Array.isArray(field?.value) ? field?.value : []
@@ -109,37 +100,34 @@ export const List: ComposedList = observer(
         </div>
       </ArrayBase>
     )
+  }),
+  {
+    Item: observer((props: IListItemProps) => {
+      const schema = useFieldSchema()
+      const components = useArrayItemComponent(
+        schema,
+        Object.values(listComponentMap),
+      )
+      return (
+        <AntdList.Item
+          title={components?.get(listPropsMap.title)}
+          prefix={components?.get(listPropsMap.prefix)}
+          description={components?.get(listPropsMap.description)}
+          extra={components?.get(listPropsMap.extra)}
+          {...props}
+        >
+          {components?.get(listPropsMap.children) || props.children}
+        </AntdList.Item>
+      )
+    }),
+
+    ItemPrefix: baseItemComponent,
+    ItemTitle: baseItemComponent,
+    ItemDescription: baseItemComponent,
+    ItemChildren: baseItemComponent,
+    ItemExtra: baseItemComponent,
+    displayName: 'List',
   },
 )
-List.Item = observer((props) => {
-  const schema = useFieldSchema()
-  const components = useArrayItemComponent(
-    schema,
-    Object.values(listComponentMap),
-  )
-  return (
-    <AntdList.Item
-      title={components?.get(listPropsMap.title)}
-      prefix={components?.get(listPropsMap.prefix)}
-      description={components?.get(listPropsMap.description)}
-      extra={components?.get(listPropsMap.extra)}
-      {...props}
-    >
-      {components?.get(listPropsMap.children) || props.children}
-    </AntdList.Item>
-  )
-})
-
-function baseItemComponent() {
-  return null
-}
-
-List.ItemPrefix = baseItemComponent
-List.ItemTitle = baseItemComponent
-List.ItemDescription = baseItemComponent
-List.ItemChildren = baseItemComponent
-List.ItemExtra = baseItemComponent
-
-List.displayName = 'List'
 
 export default List

@@ -7,7 +7,6 @@ import type { IListItemProps } from '../list'
 import { connect, mapProps, useField } from '@silver-formily/react'
 import { CheckList as AntdCheckList } from 'antd-mobile'
 import cls from 'classnames'
-import React from 'react'
 import { usePrefixCls } from '../__builtins__'
 
 export interface ICheckListOption {
@@ -29,18 +28,13 @@ export interface ICheckListItemProps
   CheckListItemProps,
   IListItemProps {}
 
-type ComposedCheckList = React.FC<ICheckListProps> & {
-  Item?: React.FC<ICheckListItemProps>
-  __ANTD_MOBILE_CHECKLIST?: boolean
-}
-
-export const BaseCheckList: React.FC<ICheckListProps> = ({
+export function BaseCheckList({
   className,
   style,
   children,
   options,
   ...props
-}) => {
+}: ICheckListProps) {
   const prefixCls = usePrefixCls('formily-check-list')
   const field = useField<DataField>()
   const dataSource = field?.dataSource.length
@@ -76,10 +70,10 @@ export const BaseCheckList: React.FC<ICheckListProps> = ({
   )
 }
 
-export const CheckList: ComposedCheckList = connect(BaseCheckList, mapProps({}))
-
-CheckList.displayName = 'CheckList'
-CheckList.__ANTD_MOBILE_CHECKLIST = true
-CheckList.Item = AntdCheckList.Item
+export const CheckList = Object.assign(connect(BaseCheckList, mapProps({})), {
+  displayName: 'CheckList',
+  __ANTD_MOBILE_CHECKLIST: true,
+  Item: AntdCheckList.Item,
+})
 
 export default CheckList

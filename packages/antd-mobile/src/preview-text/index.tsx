@@ -24,10 +24,7 @@ function usePlaceholder(value?: any) {
   return isValid(value) && value !== '' ? value : placeholder
 }
 
-const Input: React.FC<InputProps & IPreviewTextProps> = ({
-  className,
-  ...props
-}) => {
+function Input({ className, ...props }: InputProps & IPreviewTextProps) {
   const prefixCls = usePrefixCls('form-text', props)
   return (
     <div className={cls(prefixCls, className)}>
@@ -46,8 +43,8 @@ function Text(props: React.PropsWithChildren<any>) {
   )
 }
 
-const Selector: React.FC<SelectorProps<any> & IPreviewTextProps> = observer(
-  (props) => {
+const Selector = observer(
+  (props: SelectorProps<any> & IPreviewTextProps) => {
     const field = useField<Field>()
     const prefixCls = usePrefixCls('form-text', props)
     const dataSource: any[] = field?.dataSource?.length
@@ -88,9 +85,7 @@ const Selector: React.FC<SelectorProps<any> & IPreviewTextProps> = observer(
   },
 )
 
-const DatePicker: React.FC<IDatePickerProps<any> & IPreviewTextProps> = (
-  props,
-) => {
+function DatePicker(props: IDatePickerProps<any> & IPreviewTextProps) {
   const placeholder = usePlaceholder()
   const prefixCls = usePrefixCls('form-text', props)
   const getLabels = () => {
@@ -100,8 +95,8 @@ const DatePicker: React.FC<IDatePickerProps<any> & IPreviewTextProps> = (
   return <div className={cls(prefixCls, props.className)}>{getLabels()}</div>
 }
 
-const Cascader: React.FC<CascaderProps & IPreviewTextProps> = observer(
-  (props) => {
+const Cascader = observer(
+  (props: CascaderProps & IPreviewTextProps) => {
     const field = useField<Field>()
     const placeholder = usePlaceholder()
     const prefixCls = usePrefixCls('form-text', props)
@@ -148,13 +143,13 @@ const Cascader: React.FC<CascaderProps & IPreviewTextProps> = observer(
   },
 )
 
-Text.Input = Input
-Text.Selector = Selector
-Text.Placeholder = Placeholder
-Text.DatePicker = DatePicker
-Text.Cascader = Cascader
-Text.usePlaceholder = usePlaceholder
-
-export const PreviewText = Text
+export const PreviewText = Object.assign(Text, {
+  Input,
+  Selector,
+  Placeholder,
+  DatePicker,
+  Cascader,
+  usePlaceholder,
+})
 
 export default PreviewText

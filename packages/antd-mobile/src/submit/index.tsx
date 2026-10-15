@@ -12,7 +12,7 @@ export interface ISubmitProps extends ButtonProps {
   children?: React.ReactNode
 }
 
-export const Submit: React.FC<ISubmitProps> = observer(
+export const Submit = observer(
   ({ onSubmit, onSubmitFailed, onSubmitSuccess, ...props }: ISubmitProps) => {
     const form = useParentForm()
     return (

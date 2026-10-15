@@ -17,7 +17,7 @@ function getNumberSize(size?: ISpaceProps['size'] | 'mini') {
   return typeof size === 'string' ? spaceSize[size as keyof typeof spaceSize] : size || 0
 }
 
-export const Space: React.FC<ISpaceProps> = ({ direction, size, ...props }) => {
+export function Space({ direction, size, ...props }: ISpaceProps) {
   const layout = useFormLayout()
   const numberSize = getNumberSize(size ?? layout.size ?? 'small')
   return React.createElement(AntdSpace, {

@@ -45,14 +45,14 @@ export interface IArrayBaseItemProps {
 }
 
 export type ArrayBaseMixins = {
-  Addition?: React.FC<IArrayBaseAdditionProps>
-  Remove?: React.FC<IconProps & { index?: number }>
-  MoveUp?: React.FC<IconProps & { index?: number }>
-  MoveDown?: React.FC<IconProps & { index?: number }>
-  SortHandle?: React.FC<IconProps & { index?: number }>
-  Copy?: React.FC<IconProps & { index?: number }>
-  Index?: React.FC
-  Empty?: React.FC
+  Addition?: (props: IArrayBaseAdditionProps) => React.ReactNode
+  Remove?: (props: IconProps & { index?: number }) => React.ReactNode
+  MoveUp?: (props: IconProps & { index?: number }) => React.ReactNode
+  MoveDown?: (props: IconProps & { index?: number }) => React.ReactNode
+  SortHandle?: (props: IconProps & { index?: number }) => React.ReactNode
+  Copy?: (props: IconProps & { index?: number }) => React.ReactNode
+  Index?: (props: React.HTMLAttributes<HTMLSpanElement>) => React.ReactNode
+  Empty?: (props: { children?: React.ReactNode }) => React.ReactNode
   useArray?: () => IArrayBaseContext
   useIndex?: () => number
   useRecord?: () => any
@@ -67,24 +67,6 @@ export interface IArrayBaseProps {
   onMoveUp?: (index: number) => void
   children?: React.ReactNode
 }
-
-type ComposedArrayBase = React.FC<IArrayBaseProps>
-  & ArrayBaseMixins & {
-    // ArrayBase 在模块加载时挂载以下全部成员，声明为必有以便作为 JSX 使用
-    Item: React.FC<IArrayBaseItemProps>
-    Addition: React.FC<IArrayBaseAdditionProps>
-    Remove: React.FC<IconProps & { index?: number }>
-    MoveUp: React.FC<IconProps & { index?: number }>
-    MoveDown: React.FC<IconProps & { index?: number }>
-    SortHandle: React.FC<IconProps & { index?: number }>
-    Copy: React.FC<IconProps & { index?: number }>
-    Index: React.FC
-    Empty: React.FC
-    useArray: () => IArrayBaseContext
-    useIndex: () => number
-    useRecord: () => any
-    mixin?: <T extends JSXComponent>(target: T) => T & ArrayBaseMixins
-  }
 
 const ArrayBaseContext = createContext<IArrayBaseContext>(null as any)
 
@@ -150,30 +132,6 @@ function getDefaultValue(defaultValue: any, schema: Schema) {
   return getSchemaDefaultValue(schema?.items)
 }
 
-export const ArrayBase: ComposedArrayBase = (props) => {
-  const field = useField<ArrayField>()
-  const schema = useFieldSchema()
-  return (
-    <RecordsScope getRecords={() => field.value}>
-      <ArrayBaseContext.Provider value={{ field, schema: schema as Schema, props }}>
-        {props.children}
-      </ArrayBaseContext.Provider>
-    </RecordsScope>
-  )
-}
-
-ArrayBase.Item = ({ children, ...props }) => {
-  const index = props.index
-  const record = takeRecord(props.record, props.index)
-  return (
-    <ItemContext.Provider value={props}>
-      <RecordScope getIndex={() => index} getRecord={() => record}>
-        {children}
-      </RecordScope>
-    </ItemContext.Provider>
-  )
-}
-
 function SortHandle(props: any) {
   const prefixCls = usePrefixCls('formily-array-base')
   return (
@@ -187,212 +145,243 @@ function SortHandle(props: any) {
   )
 }
 
-ArrayBase.SortHandle = (props) => {
-  const array = useArray()
-  if (!array)
-    return null
-  if (array.field?.pattern !== 'editable')
-    return null
-  return <SortHandle {...props} />
-}
+export const ArrayBase = Object.assign(
+  (props: IArrayBaseProps) => {
+    const field = useField<ArrayField>()
+    const schema = useFieldSchema()
+    return (
+      <RecordsScope getRecords={() => field.value}>
+        <ArrayBaseContext.Provider value={{ field, schema: schema as Schema, props }}>
+          {props.children}
+        </ArrayBaseContext.Provider>
+      </RecordsScope>
+    )
+  },
+  {
+    Item: ({ children, ...props }: IArrayBaseItemProps) => {
+      const index = props.index
+      const record = takeRecord(props.record, props.index)
+      return (
+        <ItemContext.Provider value={props}>
+          <RecordScope getIndex={() => index} getRecord={() => record}>
+            {children}
+          </RecordScope>
+        </ItemContext.Provider>
+      )
+    },
 
-ArrayBase.Index = (props) => {
-  const index = useIndex()
-  const prefixCls = usePrefixCls('formily-array-base')
-  return (
-    <span {...props} className={`${prefixCls}-index`}>
-      #
-      {index + 1}
-      .
-    </span>
-  )
-}
+    SortHandle: (props: IconProps & { index?: number }) => {
+      const array = useArray()
+      if (!array)
+        return null
+      if (array.field?.pattern !== 'editable')
+        return null
+      return <SortHandle {...props} />
+    },
 
-ArrayBase.Empty = (props: { children?: React.ReactNode }) => <>{props.children}</>
+    Index: (props: React.HTMLAttributes<HTMLSpanElement>) => {
+      const index = useIndex()
+      const prefixCls = usePrefixCls('formily-array-base')
+      return (
+        <span {...props} className={`${prefixCls}-index`}>
+          #
+          {index + 1}
+          .
+        </span>
+      )
+    },
 
-ArrayBase.Addition = (props) => {
-  const self = useField()
-  const array = useArray()
-  const prefixCls = usePrefixCls('formily-array-base')
-  if (!array)
-    return null
-  if (
-    array.field?.pattern !== 'editable'
-    && array.field?.pattern !== 'disabled'
-  ) {
-    return null
-  }
-  return (
-    <Button
-      fill="outline"
-      block
-      {...props}
-      disabled={array.field?.disabled}
-      className={cls(`${prefixCls}-addition`, props.className)}
-      onClick={(e) => {
-        if (array.props?.disabled)
-          return
-        const defaultValue = getDefaultValue(props.defaultValue, array.schema)
-        if (props.method === 'unshift') {
-          array.field?.unshift?.(defaultValue)
-          array.props?.onAdd?.(0)
-        }
-        else {
-          array.field?.push?.(defaultValue)
-          array.props?.onAdd?.(array?.field?.value?.length - 1)
-        }
-        if (props.onClick) {
-          props.onClick(e)
-        }
-      }}
-    >
-      <Space>
-        <AddOutline />
-        {props.title || self.title}
-      </Space>
-    </Button>
-  )
-}
+    Empty: (props: { children?: React.ReactNode }) => <>{props.children}</>,
 
-ArrayBase.Copy = React.forwardRef<HTMLSpanElement, IconProps & { index?: number }>((props, ref) => {
-  const self = useField()
-  const array = useArray()
-  const index = useIndex(props.index)
-  const prefixCls = usePrefixCls('formily-array-base')
-  if (!array)
-    return null
-  if (array.field?.pattern !== 'editable')
-    return null
-  return (
-    <CopyOutlined
-      {...props}
-      className={cls(
-        `${prefixCls}-copy`,
-        self?.disabled ? `${prefixCls}-copy-disabled` : '',
-        props.className,
-      )}
-      ref={ref}
-      onClick={(e) => {
-        if (self?.disabled)
-          return
-        e.stopPropagation()
-        if (array.props?.disabled)
-          return
-        const value = clone(array?.field?.value[index])
-        const distIndex = index + 1
-        array.field?.insert?.(distIndex, value)
-        array.props?.onCopy?.(distIndex)
-        if (props.onClick) {
-          props.onClick(e)
-        }
-      }}
-    />
-  )
-})
+    Addition: (props: IArrayBaseAdditionProps) => {
+      const self = useField()
+      const array = useArray()
+      const prefixCls = usePrefixCls('formily-array-base')
+      if (!array)
+        return null
+      if (
+        array.field?.pattern !== 'editable'
+        && array.field?.pattern !== 'disabled'
+      ) {
+        return null
+      }
+      return (
+        <Button
+          fill="outline"
+          block
+          {...props}
+          disabled={array.field?.disabled}
+          className={cls(`${prefixCls}-addition`, props.className)}
+          onClick={(e) => {
+            if (array.props?.disabled)
+              return
+            const defaultValue = getDefaultValue(props.defaultValue, array.schema)
+            if (props.method === 'unshift') {
+              array.field?.unshift?.(defaultValue)
+              array.props?.onAdd?.(0)
+            }
+            else {
+              array.field?.push?.(defaultValue)
+              array.props?.onAdd?.(array?.field?.value?.length - 1)
+            }
+            if (props.onClick) {
+              props.onClick(e)
+            }
+          }}
+        >
+          <Space>
+            <AddOutline />
+            {props.title || self.title}
+          </Space>
+        </Button>
+      )
+    },
 
-ArrayBase.Remove = React.forwardRef<HTMLSpanElement, IconProps & { index?: number }>((props, ref) => {
-  const index = useIndex(props.index)
-  const array = useArray()
-  const prefixCls = usePrefixCls('formily-array-base')
-  if (!array)
-    return null
-  if (array.field?.pattern !== 'editable')
-    return null
-  return (
-    <span
-      {...props}
-      className={cls(`${prefixCls}-remove`, props.className)}
-      ref={ref}
-      onClick={(e) => {
-        if (array.props?.disabled)
-          return
-        e.stopPropagation()
-        array.field?.remove?.(index)
-        array.props?.onRemove?.(index)
-        if (props.onClick) {
-          props.onClick(e)
-        }
-      }}
-    >
-      <DeleteOutline />
-    </span>
-  )
-})
+    Copy: React.forwardRef<HTMLSpanElement, IconProps & { index?: number }>((props, ref) => {
+      const self = useField()
+      const array = useArray()
+      const index = useIndex(props.index)
+      const prefixCls = usePrefixCls('formily-array-base')
+      if (!array)
+        return null
+      if (array.field?.pattern !== 'editable')
+        return null
+      return (
+        <CopyOutlined
+          {...props}
+          className={cls(
+            `${prefixCls}-copy`,
+            self?.disabled ? `${prefixCls}-copy-disabled` : '',
+            props.className,
+          )}
+          ref={ref}
+          onClick={(e) => {
+            if (self?.disabled)
+              return
+            e.stopPropagation()
+            if (array.props?.disabled)
+              return
+            const value = clone(array?.field?.value[index])
+            const distIndex = index + 1
+            array.field?.insert?.(distIndex, value)
+            array.props?.onCopy?.(distIndex)
+            if (props.onClick) {
+              props.onClick(e)
+            }
+          }}
+        />
 
-ArrayBase.MoveDown = React.forwardRef<HTMLSpanElement, IconProps & { index?: number }>((props, ref) => {
-  const index = useIndex(props.index)
-  const array = useArray()
-  const prefixCls = usePrefixCls('formily-array-base')
-  if (!array)
-    return null
-  if (array.field?.pattern !== 'editable')
-    return null
-  return (
-    <span
-      {...props}
-      className={cls(`${prefixCls}-move-down`, props.className)}
-      ref={ref}
-      onClick={(e) => {
-        if (array.props?.disabled)
-          return
-        e.stopPropagation()
-        array.field?.moveDown?.(index)
-        array.props?.onMoveDown?.(index)
-        if (props.onClick) {
-          props.onClick(e)
-        }
-      }}
-    >
-      <DownOutline />
-    </span>
-  )
-})
+      )
+    }),
 
-ArrayBase.MoveUp = React.forwardRef<HTMLSpanElement, IconProps & { index?: number }>((props, ref) => {
-  const index = useIndex(props.index)
-  const array = useArray()
-  const prefixCls = usePrefixCls('formily-array-base')
-  if (!array)
-    return null
-  if (array.field?.pattern !== 'editable')
-    return null
-  return (
-    <span
-      {...props}
-      className={cls(`${prefixCls}-move-up`, props.className)}
-      ref={ref}
-      onClick={(e) => {
-        if (array.props?.disabled)
-          return
-        e.stopPropagation()
-        array?.field?.moveUp(index)
-        array?.props?.onMoveUp?.(index)
-        if (props.onClick) {
-          props.onClick(e)
-        }
-      }}
-    >
-      <UpOutline />
-    </span>
-  )
-})
+    Remove: React.forwardRef<HTMLSpanElement, IconProps & { index?: number }>((props, ref) => {
+      const index = useIndex(props.index)
+      const array = useArray()
+      const prefixCls = usePrefixCls('formily-array-base')
+      if (!array)
+        return null
+      if (array.field?.pattern !== 'editable')
+        return null
+      return (
+        <span
+          {...props}
+          className={cls(`${prefixCls}-remove`, props.className)}
+          ref={ref}
+          onClick={(e) => {
+            if (array.props?.disabled)
+              return
+            e.stopPropagation()
+            array.field?.remove?.(index)
+            array.props?.onRemove?.(index)
+            if (props.onClick) {
+              props.onClick(e)
+            }
+          }}
+        >
+          <DeleteOutline />
+        </span>
+      )
+    }),
 
-ArrayBase.useArray = useArray
-ArrayBase.useIndex = useIndex
-ArrayBase.useRecord = useRecord
-ArrayBase.mixin = (target: any) => {
-  target.Index = ArrayBase.Index
-  target.Empty = ArrayBase.Empty
-  target.SortHandle = ArrayBase.SortHandle
-  target.Addition = ArrayBase.Addition
-  target.Remove = ArrayBase.Remove
-  target.Copy = ArrayBase.Copy
-  target.MoveDown = ArrayBase.MoveDown
-  target.MoveUp = ArrayBase.MoveUp
-  target.useArray = ArrayBase.useArray
-  target.useIndex = ArrayBase.useIndex
-  target.useRecord = ArrayBase.useRecord
-  return target
+    MoveDown: React.forwardRef<HTMLSpanElement, IconProps & { index?: number }>((props, ref) => {
+      const index = useIndex(props.index)
+      const array = useArray()
+      const prefixCls = usePrefixCls('formily-array-base')
+      if (!array)
+        return null
+      if (array.field?.pattern !== 'editable')
+        return null
+      return (
+        <span
+          {...props}
+          className={cls(`${prefixCls}-move-down`, props.className)}
+          ref={ref}
+          onClick={(e) => {
+            if (array.props?.disabled)
+              return
+            e.stopPropagation()
+            array.field?.moveDown?.(index)
+            array.props?.onMoveDown?.(index)
+            if (props.onClick) {
+              props.onClick(e)
+            }
+          }}
+        >
+          <DownOutline />
+        </span>
+      )
+    }),
+
+    MoveUp: React.forwardRef<HTMLSpanElement, IconProps & { index?: number }>((props, ref) => {
+      const index = useIndex(props.index)
+      const array = useArray()
+      const prefixCls = usePrefixCls('formily-array-base')
+      if (!array)
+        return null
+      if (array.field?.pattern !== 'editable')
+        return null
+      return (
+        <span
+          {...props}
+          className={cls(`${prefixCls}-move-up`, props.className)}
+          ref={ref}
+          onClick={(e) => {
+            if (array.props?.disabled)
+              return
+            e.stopPropagation()
+            array?.field?.moveUp(index)
+            array?.props?.onMoveUp?.(index)
+            if (props.onClick) {
+              props.onClick(e)
+            }
+          }}
+        >
+          <UpOutline />
+        </span>
+      )
+    }),
+
+    useArray,
+    useIndex,
+    useRecord,
+    mixin: mixinArrayBase,
+  },
+)
+
+function mixinArrayBase<T extends JSXComponent>(target: T): T & ArrayBaseMixins {
+  const record = target as any
+  record.Index = ArrayBase.Index
+  record.Empty = ArrayBase.Empty
+  record.SortHandle = ArrayBase.SortHandle
+  record.Addition = ArrayBase.Addition
+  record.Remove = ArrayBase.Remove
+  record.Copy = ArrayBase.Copy
+  record.MoveDown = ArrayBase.MoveDown
+  record.MoveUp = ArrayBase.MoveUp
+  record.useArray = ArrayBase.useArray
+  record.useIndex = ArrayBase.useIndex
+  record.useRecord = ArrayBase.useRecord
+  return record as T & ArrayBaseMixins
 }
 
 export default ArrayBase

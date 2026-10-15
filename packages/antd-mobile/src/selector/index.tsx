@@ -3,10 +3,9 @@ import type { SelectorProps } from 'antd-mobile/es/components/selector'
 import { isVoidField } from '@silver-formily/core'
 import { observer, useField } from '@silver-formily/react'
 import { Selector as AntdSelector, Loading } from 'antd-mobile'
-import React from 'react'
 import { PreviewText } from '../preview-text'
 
-export const Selector: React.FC<SelectorProps<any>> = observer((props) => {
+export const Selector = observer((props: SelectorProps<any>) => {
   const field = useField<Field>()
 
   const dataSource: any[] = field?.dataSource?.length
