@@ -8,6 +8,7 @@ import { connect, mapProps, useField } from '@silver-formily/react'
 import { CheckList as AntdCheckList } from 'antd-mobile'
 import cls from 'classnames'
 import { usePrefixCls } from '../__builtins__'
+import './style.less'
 
 export interface ICheckListOption {
   label: string

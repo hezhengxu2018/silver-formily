@@ -1,7 +1,6 @@
 import type { MobilePreviewRegistry } from '@silver-formily/docs-toolkit/theme'
 import Theme, { mobilePreviewRegistryKey } from '@silver-formily/docs-toolkit/theme'
 import { createReactDemoRegistry } from './react-demo'
-import 'antd-mobile/es/global/global.css'
 import './style.css'
 
 if (!import.meta.env.SSR) {

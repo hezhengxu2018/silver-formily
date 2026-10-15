@@ -12,6 +12,7 @@ import React, { useLayoutEffect, useRef, useState } from 'react'
 import StickyBox from 'react-sticky-box'
 import { usePrefixCls } from '../__builtins__'
 import { BaseItem } from '../form-item'
+import './style.less'
 
 /**
  * react-sticky-box v2 不再导出 StickyBoxMode，也不再提供 onChangeMode 回调，

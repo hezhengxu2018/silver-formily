@@ -16,6 +16,7 @@ import {
   isArrayItemComponent,
   useArrayItemComponent,
 } from '../array-base'
+import './style.less'
 
 export interface IListProps
   extends Omit<ListProps, 'style' | 'className'>,

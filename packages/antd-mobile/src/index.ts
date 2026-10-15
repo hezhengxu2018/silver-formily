@@ -1,5 +1,3 @@
-import './style'
-
 export * from './array-base'
 export * from './cascade-picker'
 export * from './cascader'

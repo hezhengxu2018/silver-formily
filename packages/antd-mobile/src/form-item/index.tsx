@@ -11,6 +11,7 @@ import cls from 'classnames'
 import React, { useEffect, useRef, useState } from 'react'
 import { pickDataProps, usePrefixCls } from '../__builtins__'
 import { FormLayoutShallowContext, useFormLayout } from '../form-layout'
+import './style.less'
 
 export interface IFormItemProps extends ListItemProps {
   className?: string

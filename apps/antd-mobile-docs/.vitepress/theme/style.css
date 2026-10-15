@@ -7,26 +7,27 @@
 }
 
 /*
- * antd-mobile 的 global.css（在主题入口引入，提供 --adm-* 变量）
- * 会改写 html / body / a 的元素级样式：恒白的 html 背景、17px 系统字体、
- * antd 品牌蓝的链接色与按压透明度。这里在加载顺序上覆盖回去，
+ * antd-mobile 5.38+ 会在组件入口自动加载样式，global.css（提供 --adm-* 变量）
+ * 随 demo 异步 chunk 注入，晚于本文件。它会改写 html / body / a 的元素级样式：
+ * 恒白的 html 背景、17px 系统字体、antd 品牌蓝的链接色与按压透明度。
+ * 因此这里的覆盖选择器提升 specificity（:root 前缀），不依赖加载顺序，
  * 还原 VitePress 主题自身的配色与字体；--adm-* 变量保留给 demo 组件使用。
  */
-html {
+:root html {
   background-color: transparent;
 }
 
-body {
+:root body {
   color: var(--vp-c-text-1);
   font-size: 16px;
   font-family: var(--vp-font-family-base);
 }
 
-a {
+:root a {
   color: inherit;
   transition: none;
 }
 
-a:active {
+:root a:active {
   opacity: unset;
 }
