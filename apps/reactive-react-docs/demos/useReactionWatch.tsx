@@ -1,20 +1,20 @@
 import { observable } from '@silver-formily/reactive'
-import { reactionWatch } from '@silver-formily/reactive-react'
+import { useReactionWatch } from '@silver-formily/reactive-react'
 import { useState } from 'react'
 import './demoStyles.css'
 
 const obs = observable({ keyword: '' })
 
 function KeywordWatcher({ onLog }: { onLog: (message: string) => void }) {
-  // 只在 tracker 返回值变化时通知，组件卸载时自动销毁
-  reactionWatch(
+  // onLog 使用最新提交的回调；无需因为回调引用改变而重建订阅
+  useReactionWatch(
     () => obs.keyword,
     (value, oldValue) => {
       onLog(`keyword：${oldValue || '（空）'} → ${value || '（空）'}`)
     },
   )
 
-  return <div className="demoText">reactionWatch 挂载中</div>
+  return <div className="demoText">useReactionWatch 挂载中</div>
 }
 
 export default function ReactionWatchDemo() {

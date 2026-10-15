@@ -7,5 +7,5 @@ export interface IObserverOptions {
 }
 
 export interface IObserverProps {
-  children?: (() => React.ReactElement) | React.ReactNode
+  children?: (() => React.ReactNode) | React.ReactNode
 }

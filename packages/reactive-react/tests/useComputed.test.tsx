@@ -1,5 +1,5 @@
 import type { IComputedOptions } from '../src'
-import { observable } from '@silver-formily/reactive'
+import { batch, observable } from '@silver-formily/reactive'
 import { StrictMode } from 'react'
 import { afterEach, describe, expect, it } from 'vitest'
 import { cleanup, render } from 'vitest-browser-react'
@@ -46,8 +46,11 @@ describe('useComputed', () => {
       .element(screen.getByTestId('value'))
       .toHaveTextContent('3')
 
-    obs.a = 2
-    obs.b = 1
+    // Make this one observable transaction; intermediate values otherwise differ.
+    batch(() => {
+      obs.a = 2
+      obs.b = 1
+    })
     await flushAsyncCleanup()
     expect(renderCount()).toBe(1)
   })

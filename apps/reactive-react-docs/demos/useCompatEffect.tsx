@@ -15,8 +15,8 @@ function Subscription(
   return <div className="demoText">子组件挂载中</div>
 }
 
-// useCompatEffect 在 StrictMode 重放 effect 时不会误清理订阅，
-// 只有依赖真实变化或组件卸载时才执行 dispose
+// 同步 StrictMode 重放复用同一份 setup 和 cleanup；
+// 最终卸载的 cleanup 延迟一个微任务
 export default function CompatEffectDemo() {
   const [active, setActive] = useState(true)
   const [status, setStatus] = useState('尚未建立订阅')

@@ -12,9 +12,11 @@ This package provides the React bindings for Silver Formily’s reactivity engin
 
 Deliberate differences from `@formily/reactive-react` — keep them when syncing upstream changes:
 
-- Hooks are exported **without** the `unstable_` prefix (`useObserver`, `useForceUpdate`, `useCompatEffect`, `useCompatFactory`, `useDidUpdate`, `useLayoutEffect`).
-- Peer dependencies are `react`/`react-dom` `^18 || ^19` plus `@silver-formily/shared` (for `isArr`); `react-is` was dropped (it is a transitive dependency of `hoist-non-react-statics`).
-- `isEqualDeps` in `useCompatEffect.ts` intentionally compares entries with `Object.is` to mirror React’s deps semantics, including `NaN` and signed zero. Do **not** swap it for `@silver-formily/shared`’s `isEqual` (deep equality): it would mis-classify recreated-but-equal deps as unchanged and leak disposals. When deps are omitted, distinguish a new render from StrictMode replay so updates clean up the previous effect while replay retains it.
+- Hooks are exported **without** the `unstable_` prefix (`useObserver`, `useCompatEffect`, `useCompatFactory`). `useForceUpdate`, `useDidUpdate`, and `useLayoutEffect` are internal helpers: keep their direct module imports inside the package and do not re-export them or list them in user-facing API documentation.
+- Peer dependencies are `react`/`react-dom` `^18 || ^19` plus the existing `@silver-formily/shared` compatibility peer; `react-is` was dropped (it is a transitive dependency of `hoist-non-react-statics`).
+- `useCompatEffect` retains both setup and cleanup across synchronous StrictMode replay. A per-render token is compared only during effect setup; a new committed setup disposes the previous resource first. Dependency comparison is delegated to React (`Object.is`), including `NaN` and signed zero. Do not read render-written dependency refs during cleanup: abandoned renders must not change committed subscriptions.
+- `useComputed`, `useAutorunEffect`, and `useReactionWatch` establish and dispose reactions in ordinary effects. They do not need render-time GC. Latest callbacks are published after commit; use `deps` to rebuild tracking for non-observable inputs.
+- `observer` supports function components, `memo` (preserving comparators), and `forwardRef`. Keep generic function signatures and custom statics in its public types. React 19 ref props are preserved; React 18 function components receiving refs must use `{ forwardRef: true }` or a `forwardRef` input.
 - `src/shared/global.ts` (`globalThisPolyfill`) was removed—React 18/19 environments all ship native `globalThis`; `gc.ts` reads `globalThis.FinalizationRegistry` directly.
 - `immediate` schedules via native `queueMicrotask` instead of upstream’s `Promise.resolve().then` carrier (the cancel-wrapper semantics are unchanged).
 - ESM-only output in `dist/` (`.mjs` + `.d.ts`), built with tsdown instead of upstream’s `tsc + rollup` combo.
@@ -46,4 +48,4 @@ Deliberate differences from `@formily/reactive-react` — keep them when syncing
 
 ## Docs Dependencies
 
-- No dedicated docs site yet (`apps/reactive-react-docs` is not created). When it is added, public behavior changes must be reflected there.
+- The dedicated docs site lives in `apps/reactive-react-docs`. Public API and behavior changes must update both `api.md` and `en/api.md`, the relevant demos, and this package’s `CHANGELOG.md`.

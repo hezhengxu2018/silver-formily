@@ -1,7 +1,8 @@
 import { StrictMode } from 'react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { cleanup, render } from 'vitest-browser-react'
-import { useCompatEffect, useDidUpdate } from '../src'
+import { useCompatEffect } from '../src'
+import { useDidUpdate } from '../src/hooks/useDidUpdate'
 
 afterEach(cleanup)
 

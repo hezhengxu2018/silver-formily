@@ -18,9 +18,10 @@ The package sits between the reactive engine and the React rendering layer:
 - `observer` — HOC that wraps function components with reactive re-rendering
 - `Observer` — render component accepting a render function or static children
 - `useObserver` — core hook that tracks the reactive dependencies of a view function
-- `useForceUpdate` — batch-safe force update hook
-- `useCompatEffect` / `useCompatFactory` / `useDidUpdate` / `useLayoutEffect` — StrictMode/ConcurrentMode-compatible internal hooks (also exported publicly)
-- Types: `IObserverOptions`, `IObserverProps`, `ReactFC`, etc.
+- `useComputed` — reactive derived values with deps-based tracking rebuilds
+- `useAutorunEffect` / `useReactionWatch` — effect subscriptions and value watchers
+- `useCompatEffect` / `useCompatFactory` — advanced hooks for integration-layer instance lifecycles
+- Types: `IObserverOptions`, `IObserverProps`, `IComputedOptions`, `IAutorunEffectOptions`, `IReactionWatchOptions`
 
 ## Divergence from upstream @formily/reactive-react
 
@@ -47,8 +48,36 @@ const Counter = observer(() => (
 ))
 ```
 
+## Hook and type contracts
+
+- `observer` accepts function components, `memo`, and `forwardRef`, preserving memo comparators. Plain function component generic signatures, custom statics, and declared ref types are retained. React 19 accepts ref props directly; React 18 requires a `forwardRef` input or `{ forwardRef: true }`.
+- `Observer` render functions can return any `ReactNode`, including `null`, strings, and arrays.
+- `useComputed(getter, { deps, equals, name })` returns a reactive expression's current value, including function values. Changes to deps rebuild tracking with the latest getter and options. `fireImmediately` is no longer configurable: rebuilding always synchronizes the current value.
+- `useAutorunEffect(tracker, { name, deps }?)` and `useReactionWatch(tracker, subscriber?, { deps, ...options }?)` subscribe after commit and unsubscribe synchronously during effect cleanup. Callbacks read the latest committed props/state. Pass deps when props/state change the observable or expression being tracked, so tracking is rebuilt immediately. Omitting deps does not rebuild on every render.
+- `useCompatEffect` is for special retained-resource lifecycles: synchronous StrictMode replay reuses both setup and cleanup; final cleanup is deferred by one microtask. Prefer React's `useEffect` for ordinary side effects.
+
+The parent supplies `store` as a Formily observable. All hooks are called inside the component.
+
+```tsx
+import { useComputed, useReactionWatch } from '@silver-formily/reactive-react'
+
+function Price({ store, multiplier, onChange }: {
+  store: { price: number }
+  multiplier: number
+  onChange: (price: number) => void
+}) {
+  useReactionWatch(() => store.price, onChange, { deps: [store] })
+  const total = useComputed(() => store.price * multiplier, {
+    deps: [store, multiplier],
+  })
+  return <output>{total}</output>
+}
+```
+
 ## Documentation
 
+- [English API reference](https://reactive-react.silver-formily.org/en/api)
+- [Changelog](./CHANGELOG.md)
 - Repository: <https://github.com/hezhengxu2018/silver-formily>
 
 ## License

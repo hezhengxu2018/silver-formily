@@ -2,18 +2,18 @@ import { observable } from '@silver-formily/reactive'
 import { StrictMode } from 'react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { cleanup, render } from 'vitest-browser-react'
-import { autorunEffect, reactionWatch } from '../src'
+import { useAutorunEffect, useReactionWatch } from '../src'
 
 afterEach(cleanup)
 
 const flushAsyncCleanup = () => new Promise(resolve => setTimeout(resolve, 0))
 
-describe('autorunEffect', () => {
+describe('useAutorunEffect', () => {
   it('runs the tracker after mount and re-runs on mutation', async () => {
     const obs = observable({ count: 0 })
     const runs: number[] = []
     const Comp = () => {
-      autorunEffect(() => {
+      useAutorunEffect(() => {
         runs.push(obs.count)
       })
       return <div data-testid="count">{obs.count}</div>
@@ -29,7 +29,7 @@ describe('autorunEffect', () => {
     const obs = observable({ count: 0 })
     const runs: number[] = []
     const Comp = () => {
-      autorunEffect(() => {
+      useAutorunEffect(() => {
         runs.push(obs.count)
       })
       return <div>{obs.count}</div>
@@ -50,7 +50,7 @@ describe('autorunEffect', () => {
     const obs = observable({ count: 0 })
     const runs: number[] = []
     const Comp = () => {
-      autorunEffect(() => {
+      useAutorunEffect(() => {
         runs.push(obs.count)
       })
       return <div>{obs.count}</div>
@@ -66,12 +66,12 @@ describe('autorunEffect', () => {
   })
 })
 
-describe('reactionWatch', () => {
+describe('useReactionWatch', () => {
   it('notifies the subscriber with new and old values on mutation', async () => {
     const obs = observable({ count: 0 })
     const received: Array<[number, number]> = []
     const Comp = () => {
-      reactionWatch(
+      useReactionWatch(
         () => obs.count,
         (value, oldValue) => {
           received.push([value, oldValue])
@@ -91,7 +91,7 @@ describe('reactionWatch', () => {
     const obs = observable({ count: 0 })
     const received: number[] = []
     const Comp = () => {
-      reactionWatch(
+      useReactionWatch(
         () => obs.count,
         value => received.push(value),
         { fireImmediately: true },
@@ -106,7 +106,7 @@ describe('reactionWatch', () => {
     const obs = observable({ count: 0 })
     const received: number[] = []
     const Comp = () => {
-      reactionWatch(() => obs.count, value => received.push(value))
+      useReactionWatch(() => obs.count, value => received.push(value))
       return <div>{obs.count}</div>
     }
     const { unmount } = await render(<Comp />)
