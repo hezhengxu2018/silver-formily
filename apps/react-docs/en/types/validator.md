@@ -2,6 +2,8 @@
 
 `@silver-formily/react` does not define its own validation protocol. The `validator` attribute on field components directly uses `FieldValidator` from `@silver-formily/core`, and Core's validation types ultimately come from `@silver-formily/validator`.
 
+## FieldValidator
+
 ## How it is consumed in the React package
 
 - The `validator` attribute type of `IFieldProps` and `IFieldFactoryProps` is `FieldValidator`.

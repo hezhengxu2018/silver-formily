@@ -21,3 +21,5 @@ api/components/form-consumer.tsx
 | Attribute | Description                                         | Type                                         |
 | --------- | --------------------------------------------------- | -------------------------------------------- |
 | children  | Render function, receives the current Form instance | ^[Function]`(form: Form) => React.ReactNode` |
+
+`children` is optional. When provided it must be a render function; its result may be any ReactNode, including null, arrays, text, and elements. It needs FormProvider context and tracks the reactive reads performed inside the callback.

@@ -31,19 +31,23 @@ api/components/recursion-field-with-component.tsx
 
 ## API
 
-| 属性                 | 说明                                                          | 类型                                                                | 默认值        |
-| -------------------- | ------------------------------------------------------------- | ------------------------------------------------------------------- | ------------- |
-| schema               | 要渲染的 Schema 对象                                          | [ISchema](https://json-schema.silver-formily.org/api/types#ischema) | —             |
-| name                 | 渲染时挂载的字段名称，常配合 `basePath` 推导路径              | `string`                                                            | `schema.name` |
-| basePath             | 计算 `name` 的基路径                                          | [FormPathPattern](#FormPathPattern)                                 | 当前字段路径  |
-| propsRecursion       | 递归渲染子节点时是否透传 `mapProperties` / `filterProperties` | `boolean`                                                           | `false`       |
-| onlyRenderProperties | 仅渲染子节点 `properties`，不渲染当前节点                     | `boolean`                                                           | `false`       |
-| onlyRenderSelf       | 仅渲染当前节点，不自动递归子节点                              | `boolean`                                                           | `false`       |
-| mapProperties        | 属性映射函数，可在渲染前改写 schema                           | ^[Function]`(schema: Schema, name: SchemaKey) => Schema`            | —             |
-| filterProperties     | 属性过滤函数，返回 `false` 的节点不会渲染                     | ^[Function]`(schema: Schema, name: SchemaKey) => boolean`           | —             |
+| 属性                 | 说明                                                          | 类型                                                                | 默认值       |
+| -------------------- | ------------------------------------------------------------- | ------------------------------------------------------------------- | ------------ |
+| schema               | 要渲染的 Schema 对象                                          | [ISchema](https://json-schema.silver-formily.org/api/types#ischema) | —            |
+| name                 | 渲染时挂载的字段名称，常配合 `basePath` 推导路径              | `SchemaKey` (`string` \| `number`)                                  | —            |
+| basePath             | 计算 `name` 的基路径                                          | [FormPathPattern](#formpathpattern)                                 | 当前字段路径 |
+| propsRecursion       | 递归渲染子节点时是否透传 `mapProperties` / `filterProperties` | `boolean`                                                           | `false`      |
+| onlyRenderProperties | 仅渲染子节点 `properties`，不渲染当前节点                     | `boolean`                                                           | `false`      |
+| onlyRenderSelf       | 仅渲染当前节点，不自动递归子节点                              | `boolean`                                                           | `false`      |
+| mapProperties        | 属性映射函数，可在渲染前改写 schema                           | ^[Function]`(schema: Schema, name: SchemaKey) => Schema`            | —            |
+| filterProperties     | 属性过滤函数，返回 `false` 的节点不会渲染                     | ^[Function]`(schema: Schema, name: SchemaKey) => boolean`           | —            |
 
 ### FormPathPattern
 
 ```ts
-type FormPathPattern = string | number | Array<string | number> | RegExp
+import type { Pattern as FormPathPattern } from '@silver-formily/path'
 ```
+
+`schema` 必填，其他属性可选。省略 `name` 时仅渲染 properties，不会默认取 `schema.name`。具名 object/void 节点会渲染自身及 properties，除非开启 `onlyRenderSelf`。`onlyRenderProperties` 跳过具名 object/void 包装，但不会把 array 变成 items 渲染器：数组项由数组组件负责渲染。无 name 且开启 `onlyRenderSelf` 时不渲染内容。
+
+`basePath` 默认取父字段 address，开启 `onlyRenderProperties` 时还会拼接当前 `name`。先执行映射再过滤，仅当 `propsRecursion` 为 true 时向后代传递映射和过滤函数。声明中的 `children?: React.ReactNode` 当前未被 RecursionField 消费，请通过 schema 提供内容。独立使用时，创建字段仍需表单上下文，注册名称解析仍需组件映射上下文。

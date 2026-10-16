@@ -21,3 +21,5 @@ api/components/form-provider.tsx
 | Attribute | Description                                                  | Type                                                    | Default |
 | --------- | ------------------------------------------------------------ | ------------------------------------------------------- | ------- |
 | form      | Form instance, the return value of the `createForm` function | [Form](https://core.silver-formily.org/api/models/Form) | -       |
+
+`form` is required and `children?: React.ReactNode` is optional. This component supplies context and lifecycle handling; it does not render an HTML `<form>` or add submit/reset handlers. Mount a form UI component separately when needed.

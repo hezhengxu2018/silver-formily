@@ -24,3 +24,5 @@ api/components/records-scope.tsx
 | ---------- | --------------------------------------------------- | ------------------------ | ------- |
 | getRecords | Function that returns the current record collection | ^[Function]`() => any[]` | -       |
 | children   | Child nodes                                         | `React.ReactNode`        | -       |
+
+`getRecords` is required in the public type; `children` is optional. The `$records` getter returns `[]` when the callback returns a nullish value at runtime.

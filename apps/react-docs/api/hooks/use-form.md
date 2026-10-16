@@ -7,9 +7,9 @@
 ## 签名
 
 ```ts
-interface useForm<T extends object = any> {
-  (): Form<T>
-}
+import type { Form } from '@silver-formily/core'
+
+declare function useForm<T extends object = any>(): Form<T>
 ```
 
 ## 用例
@@ -17,3 +17,5 @@ interface useForm<T extends object = any> {
 :::demo
 api/hooks/use-form.tsx
 :::
+
+该 hook 只读取上下文，不创建模型，也不订阅模型属性。应在对应 Provider 下使用；即使部分签名未声明空值，缺少或被清理的上下文在运行时仍可能返回 null/undefined。

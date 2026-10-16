@@ -21,7 +21,7 @@ The Form context, from which you can get the current Form instance; equivalent t
 import type { Form } from '@silver-formily/core'
 import type { Context } from 'react'
 
-export const FormContext: Context<Form>
+export declare const FormContext: Context<Form>
 ```
 
 ## FieldContext
@@ -36,7 +36,7 @@ The field context, from which you can get the current field instance; equivalent
 import type { GeneralField } from '@silver-formily/core'
 import type { Context } from 'react'
 
-export const FieldContext: Context<GeneralField>
+export declare const FieldContext: Context<GeneralField>
 ```
 
 ## SchemaMarkupContext
@@ -53,7 +53,7 @@ For the complete Schema protocol, property definitions and linkage rules, please
 import type { Schema } from '@silver-formily/json-schema'
 import type { Context } from 'react'
 
-export const SchemaMarkupContext: Context<Schema>
+export declare const SchemaMarkupContext: Context<Schema>
 ```
 
 ## SchemaContext
@@ -70,7 +70,7 @@ The complete API of the `Schema` type has moved to the [JSON Schema documentatio
 import type { Schema } from '@silver-formily/json-schema'
 import type { Context } from 'react'
 
-export const SchemaContext: Context<Schema>
+export declare const SchemaContext: Context<Schema>
 ```
 
 ## SchemaExpressionScopeContext
@@ -84,7 +84,7 @@ The Schema expression scope context; equivalent to [useExpressionScope](/en/api/
 ```ts
 import type { Context } from 'react'
 
-export const SchemaExpressionScopeContext: Context<Record<string, unknown>>
+export declare const SchemaExpressionScopeContext: Context<any>
 ```
 
 ## SchemaComponentsContext
@@ -99,7 +99,7 @@ The Schema component registry context. When `x-component` is passed as a string,
 import type { SchemaReactComponents } from '@silver-formily/react'
 import type { Context } from 'react'
 
-export const SchemaComponentsContext: Context<SchemaReactComponents>
+export declare const SchemaComponentsContext: Context<SchemaReactComponents>
 ```
 
 ## SchemaOptionsContext
@@ -114,7 +114,7 @@ The Schema global options context, mainly used to get the arguments passed to cr
 import type { ISchemaFieldReactFactoryOptions } from '@silver-formily/react'
 import type { Context } from 'react'
 
-export const SchemaOptionsContext: Context<ISchemaFieldReactFactoryOptions>
+export declare const SchemaOptionsContext: Context<ISchemaFieldReactFactoryOptions>
 ```
 
 ## ContextCleaner
@@ -126,11 +126,9 @@ A cleanup component; when rendering, it resets the Field / Schema related Contex
 ### Signature
 
 ```ts
-import type { ComponentType, ReactNode } from 'react'
+import type { ReactNode } from 'react'
 
-interface ContextCleaner {
-  (props: { children?: ReactNode }): ReactNode
-}
-
-export const ContextCleaner: ComponentType<{ children?: ReactNode }>
+declare function ContextCleaner(props: { children?: ReactNode }): ReactNode
 ```
+
+All seven contexts are initialized with `null` at runtime, even where the declarations omit nullability. Read them beneath the corresponding provider. `ContextCleaner` resets the six Field/Schema contexts to `undefined`, but does not reset `FormContext`.

@@ -2,9 +2,16 @@
 
 `@silver-formily/react` 没有定义自己的路径协议。React 包里涉及路径的类型都直接复用 `@silver-formily/path`。
 
+## FormPathPattern
+
 本包最常见的入口是 `IRecursionFieldProps['basePath']`：
 
 ```ts
+import type { ISchema, SchemaKey } from '@silver-formily/json-schema'
+import type { Pattern as FormPathPattern } from '@silver-formily/path'
+import type { ISchemaFilter, ISchemaMapper } from '@silver-formily/react'
+import type React from 'react'
+
 interface IRecursionFieldProps {
   schema: ISchema
   name?: SchemaKey

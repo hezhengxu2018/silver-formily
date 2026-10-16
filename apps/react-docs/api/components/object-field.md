@@ -18,6 +18,11 @@ api/components/object-field.tsx
 
 ## API
 
-与Field组件的[API](/api/components/field.html#api)完全一致
+属性基于 Field，但 children 回调中的字段类型为 `ObjectField`。完整公共属性参见 [Field](/api/components/field#api)。
 
-<!--@include: ./field.md{16,}-->
+```ts
+import type { ObjectField as Model } from '@silver-formily/core'
+import type { IFieldProps, JSXComponent } from '@silver-formily/react'
+
+type Props<D extends JSXComponent, C extends JSXComponent> = IFieldProps<D, C, Model>
+```

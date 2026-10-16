@@ -28,3 +28,5 @@ Internally, `connect` wraps the target component with `forwardRef` and passes th
 :::demo
 api/shared/connect.tsx
 :::
+
+`ConnectedComponent<T>` makes the original props optional, retains the ref target type and hoisted custom statics, and excludes React metadata. Mappers are applied in argument order. `mapProps` / `mapReadPretty` themselves return `ComponentType<any>`; the precise public props of the connected component come from the original target.

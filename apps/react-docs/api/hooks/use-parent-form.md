@@ -7,9 +7,9 @@
 ## 签名
 
 ```ts
-interface useParentForm {
-  (): Form | ObjectField
-}
+import type { Form, ObjectField } from '@silver-formily/core'
+
+declare function useParentForm(): Form | ObjectField
 ```
 
 ## 用例
@@ -17,3 +17,5 @@ interface useParentForm {
 :::demo
 api/hooks/use-parent-form.tsx
 :::
+
+查找从当前字段开始：当前字段本身是 `ObjectField` 时直接返回它，否则沿父链查找最近的 `ObjectField`，最后回退到当前 form。

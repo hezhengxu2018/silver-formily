@@ -9,6 +9,8 @@ Core models such as `Field`, `ArrayField`, `ObjectField`, `VoidField`, `GeneralF
 The unified constraint for all component mappings on the React side; it can be a native tag name or a component constructor:
 
 ```ts
+import type React from 'react'
+
 type JSXComponent
   = | keyof React.JSX.IntrinsicElements
     | React.JSXElementConstructor<any>
@@ -19,8 +21,12 @@ type JSXComponent
 The props of `FormProvider` are very thin; it only provides a `Form` instance to the subtree:
 
 ```ts
-interface IProviderProps {
+import type { Form } from '@silver-formily/core'
+import type React from 'react'
+
+type IProviderProps = {
   form: Form
+  children?: React.ReactNode
 }
 ```
 
@@ -29,6 +35,9 @@ interface IProviderProps {
 The `children` of the React field components supports the render props pattern; the render function receives the field instance and the form instance:
 
 ```ts
+import type { Form } from '@silver-formily/core'
+import type React from 'react'
+
 type RenderPropsChildren<Payload>
   = | ((field: Payload, form: Form) => React.ReactNode)
     | React.ReactNode
@@ -39,6 +48,10 @@ type RenderPropsChildren<Payload>
 The React field props are based on Core's `IFieldFactoryProps` and extend `children` and `decoratorContent` with React semantics:
 
 ```ts
+import type { Field as FieldType, IFieldFactoryProps } from '@silver-formily/core'
+import type { DecoratorContent, JSXComponent, RenderPropsChildren } from '@silver-formily/react'
+import type React from 'react'
+
 interface IFieldProps<
   D extends JSXComponent,
   C extends JSXComponent,
@@ -58,6 +71,10 @@ interface IFieldProps<
 `VoidField` has no value semantics; its props come from Core's `IVoidFieldFactoryProps`:
 
 ```ts
+import type { IVoidFieldFactoryProps, VoidField } from '@silver-formily/core'
+import type { DecoratorContent, JSXComponent, RenderPropsChildren } from '@silver-formily/react'
+import type React from 'react'
+
 interface IVoidFieldProps<
   D extends JSXComponent,
   C extends JSXComponent,
@@ -75,6 +92,9 @@ interface IVoidFieldProps<
 The props of `FormConsumer`; `children` must be a render function that receives the `Form`:
 
 ```ts
+import type { Form } from '@silver-formily/core'
+import type React from 'react'
+
 interface IFormSpyProps {
   children?: (form: Form) => React.ReactNode
 }
@@ -85,6 +105,8 @@ interface IFormSpyProps {
 The mapper signature of `connect`, converting one component into another:
 
 ```ts
+import type { JSXComponent } from '@silver-formily/react'
+
 interface IComponentMapper<T extends JSXComponent> {
   (target: T): JSXComponent
 }
@@ -95,6 +117,8 @@ interface IComponentMapper<T extends JSXComponent> {
 It describes "how to project field state onto component props". It can be a key-mapping object, or a function:
 
 ```ts
+import type { Field as FieldType, GeneralField } from '@silver-formily/core'
+
 type IStateMapper<Props>
   = | {
     [key in keyof FieldType]?: keyof Props | boolean
@@ -103,3 +127,5 @@ type IStateMapper<Props>
 ```
 
 If you need to understand the full attributes of `Field` or `GeneralField`, go back to the [Core Field documentation](https://core.silver-formily.org/api/models/Field). This page only keeps the information about how the React side consumes these models.
+
+Component and decorator tuples accept `[]`, `[Component]`, or `[Component, partialProps]`. Supplied props are checked against the selected component; omitted props may be supplied by the form model. `false` is not part of these declarations. `NoInfer` requires TypeScript 5.4 or newer.

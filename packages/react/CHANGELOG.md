@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Audit both documentation languages against the public entry and implementation, correcting signatures, prop precedence, visibility, recursion, and subscription semantics.
+
 - Consolidate schema field wrappers and align their generic parameter order with `ISchemaMarkupFieldProps` (`Decorator`, then `Component`).
 - Share component resolution and field event binding without changing reactive render boundaries.
 

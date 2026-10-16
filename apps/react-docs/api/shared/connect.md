@@ -28,3 +28,5 @@ declare function connect<T extends JSXComponent>(
 :::demo
 api/shared/connect.tsx
 :::
+
+`ConnectedComponent<T>` 将原组件 props 变为可选，保留 ref 目标类型和提升后的自定义静态成员，排除 React 元信息。映射器按参数顺序应用。`mapProps` / `mapReadPretty` 本身返回 `ComponentType<any>`，连接后公开 props 的精度来自原始目标组件。

@@ -11,9 +11,9 @@
 ## 签名
 
 ```ts
-interface useField<T = GeneralField> {
-  (): T
-}
+import type { GeneralField } from '@silver-formily/core'
+
+declare function useField<T = GeneralField>(): T
 ```
 
 与 Vue 版不同，React 版直接返回字段实例本身，而不是 Ref。
@@ -23,3 +23,5 @@ interface useField<T = GeneralField> {
 :::demo
 api/hooks/use-field.tsx
 :::
+
+该 hook 只读取上下文，不创建模型，也不订阅模型属性。应在对应 Provider 下使用；即使部分签名未声明空值，缺少或被清理的上下文在运行时仍可能返回 null/undefined。

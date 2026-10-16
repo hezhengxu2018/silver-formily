@@ -7,9 +7,9 @@ Used to read the nearest Form or ObjectField instance, mainly making it convenie
 ## Signature
 
 ```ts
-interface useParentForm {
-  (): Form | ObjectField
-}
+import type { Form, ObjectField } from '@silver-formily/core'
+
+declare function useParentForm(): Form | ObjectField
 ```
 
 ## Usage
@@ -17,3 +17,5 @@ interface useParentForm {
 :::demo
 api/hooks/use-parent-form.tsx
 :::
+
+The search starts at the current field: if it is an `ObjectField`, the hook returns that field itself; otherwise it walks up to the nearest `ObjectField` and falls back to the current form.

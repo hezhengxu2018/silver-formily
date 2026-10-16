@@ -11,9 +11,9 @@ Note: to use useField inside a custom component and react to field model changes
 ## Signature
 
 ```ts
-interface useField<T = GeneralField> {
-  (): T
-}
+import type { GeneralField } from '@silver-formily/core'
+
+declare function useField<T = GeneralField>(): T
 ```
 
 Unlike the Vue version, the React version returns the field instance itself, not a Ref.
@@ -23,3 +23,5 @@ Unlike the Vue version, the React version returns the field instance itself, not
 :::demo
 api/hooks/use-field.tsx
 :::
+
+This hook reads context; it does not create a model or subscribe to observable properties. Use the corresponding provider. Although some signatures are non-nullable, missing or cleared context can return null/undefined at runtime.

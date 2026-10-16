@@ -29,3 +29,5 @@ api/components/record-scope.tsx
 | getRecord | Function that returns the current row record | ^[Function]`() => any`    | -       |
 | getIndex  | Function that returns the current row index  | ^[Function]`() => number` | -       |
 | children  | Child nodes                                  | `React.ReactNode`         | -       |
+
+`getRecord` is required; `getIndex` and `children` are optional. Without `getIndex`, `$index` is `undefined`. The getters read current values; non-object records are returned directly without `$lookup` / `$index` properties attached.

@@ -34,8 +34,8 @@ api/components/recursion-field-with-component.tsx
 | Attribute            | Description                                                                                         | Type                                                                | Default            |
 | -------------------- | --------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------- | ------------------ |
 | schema               | The Schema object to render                                                                         | [ISchema](https://json-schema.silver-formily.org/api/types#ischema) | —                  |
-| name                 | Field name used when mounting during rendering, often combined with `basePath` to resolve the path  | `string`                                                            | `schema.name`      |
-| basePath             | Base path for resolving `name`                                                                      | [FormPathPattern](#FormPathPattern)                                 | current field path |
+| name                 | Field name used when mounting during rendering, often combined with `basePath` to resolve the path  | `SchemaKey` (`string` \| `number`)                                  | —                  |
+| basePath             | Base path for resolving `name`                                                                      | [FormPathPattern](#formpathpattern)                                 | current field path |
 | propsRecursion       | Whether to pass `mapProperties` / `filterProperties` through when recursively rendering child nodes | `boolean`                                                           | `false`            |
 | onlyRenderProperties | Only render the child nodes' `properties`, without rendering the current node                       | `boolean`                                                           | `false`            |
 | onlyRenderSelf       | Only render the current node, without automatically recursing into child nodes                      | `boolean`                                                           | `false`            |
@@ -45,5 +45,9 @@ api/components/recursion-field-with-component.tsx
 ### FormPathPattern
 
 ```ts
-type FormPathPattern = string | number | Array<string | number> | RegExp
+import type { Pattern as FormPathPattern } from '@silver-formily/path'
 ```
+
+`schema` is required; other props are optional. If `name` is omitted, only properties are rendered; it does not default to `schema.name`. Named object/void nodes render their properties unless `onlyRenderSelf` is true. `onlyRenderProperties` skips named object/void wrappers, but does not turn an array into an items renderer: array items must be rendered by the array component. `onlyRenderSelf` with no name renders nothing.
+
+`basePath` defaults to the parent field address; with `onlyRenderProperties`, the current `name` is appended. Mapping runs before filtering, and recursive propagation is enabled only by `propsRecursion`. The declared `children?: React.ReactNode` is currently not consumed by RecursionField; supply content through the schema. Direct usage still requires form context when creating fields and a component registry when using registered names.

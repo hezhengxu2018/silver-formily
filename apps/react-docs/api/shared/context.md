@@ -21,7 +21,7 @@ Form 上下文，可以获取当前 Form 实例，等价于 [useForm](/api/hooks
 import type { Form } from '@silver-formily/core'
 import type { Context } from 'react'
 
-export const FormContext: Context<Form>
+export declare const FormContext: Context<Form>
 ```
 
 ## FieldContext
@@ -36,7 +36,7 @@ export const FormContext: Context<Form>
 import type { GeneralField } from '@silver-formily/core'
 import type { Context } from 'react'
 
-export const FieldContext: Context<GeneralField>
+export declare const FieldContext: Context<GeneralField>
 ```
 
 ## SchemaMarkupContext
@@ -53,7 +53,7 @@ Schema 标签上下文，主要用于收集 JSX Markup 写法的 Schema 标签�
 import type { Schema } from '@silver-formily/json-schema'
 import type { Context } from 'react'
 
-export const SchemaMarkupContext: Context<Schema>
+export declare const SchemaMarkupContext: Context<Schema>
 ```
 
 ## SchemaContext
@@ -70,7 +70,7 @@ export const SchemaMarkupContext: Context<Schema>
 import type { Schema } from '@silver-formily/json-schema'
 import type { Context } from 'react'
 
-export const SchemaContext: Context<Schema>
+export declare const SchemaContext: Context<Schema>
 ```
 
 ## SchemaExpressionScopeContext
@@ -84,7 +84,7 @@ Schema 表达式作用域上下文，等价于 [useExpressionScope](/api/hooks/u
 ```ts
 import type { Context } from 'react'
 
-export const SchemaExpressionScopeContext: Context<Record<string, unknown>>
+export declare const SchemaExpressionScopeContext: Context<any>
 ```
 
 ## SchemaComponentsContext
@@ -99,7 +99,7 @@ Schema 组件映射表上下文，`x-component` 传入字符串时会从该映�
 import type { SchemaReactComponents } from '@silver-formily/react'
 import type { Context } from 'react'
 
-export const SchemaComponentsContext: Context<SchemaReactComponents>
+export declare const SchemaComponentsContext: Context<SchemaReactComponents>
 ```
 
 ## SchemaOptionsContext
@@ -114,7 +114,7 @@ Schema 全局参数上下文，主要用于获取从 createSchemaField 传入的
 import type { ISchemaFieldReactFactoryOptions } from '@silver-formily/react'
 import type { Context } from 'react'
 
-export const SchemaOptionsContext: Context<ISchemaFieldReactFactoryOptions>
+export declare const SchemaOptionsContext: Context<ISchemaFieldReactFactoryOptions>
 ```
 
 ## ContextCleaner
@@ -126,11 +126,9 @@ export const SchemaOptionsContext: Context<ISchemaFieldReactFactoryOptions>
 ### 签名
 
 ```ts
-import type { ComponentType, ReactNode } from 'react'
+import type { ReactNode } from 'react'
 
-interface ContextCleaner {
-  (props: { children?: ReactNode }): ReactNode
-}
-
-export const ContextCleaner: ComponentType<{ children?: ReactNode }>
+declare function ContextCleaner(props: { children?: ReactNode }): ReactNode
 ```
+
+这七个 Context 的运行时初始值均为 `null`，即使声明中未包含空值，也应在对应 Provider 下读取。`ContextCleaner` 将六个 Field/Schema 上下文重置为 `undefined`，不清理 `FormContext`。

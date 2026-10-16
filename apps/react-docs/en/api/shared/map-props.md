@@ -7,18 +7,12 @@ An adapter function that maps [Field](https://core.silver-formily.org/api/models
 ## Signature
 
 ```ts
-import type { Field, GeneralField } from '@silver-formily/core'
 import type { IStateMapper, JSXComponent } from '@silver-formily/react'
+import type React from 'react'
 
-type IStateMapper<Props>
-  = | {
-    [key in keyof Field]?: keyof Props | boolean
-  }
-  | ((props: Props, field: GeneralField) => Props)
-
-interface mapProps<T extends JSXComponent> {
-  (...args: IStateMapper<React.ComponentProps<T>>[]): IComponentMapper<T>
-}
+declare function mapProps<T extends JSXComponent>(
+  ...mappers: IStateMapper<React.ComponentProps<T>>[]
+): (target: T) => React.ComponentType<any>
 ```
 
 - The argument can be an object (the key is a field attribute and the value is a component attribute; if the value is `true`, the mapped attribute name is the same)
@@ -29,3 +23,5 @@ interface mapProps<T extends JSXComponent> {
 :::demo
 api/shared/map-props.tsx
 :::
+
+Mappers run left to right against a shallow copy of incoming props. Function results are merged into that copy. Object mappings overwrite the destination with the field value, except when the field value is nullish and the destination already has a non-nullish value. Both boolean values use the source property name: `false` does **not** disable mapping. Mapping `value` to another name removes the original `value` prop. Use this adapter beneath a field context.

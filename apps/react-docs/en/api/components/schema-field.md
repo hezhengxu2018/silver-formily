@@ -12,53 +12,30 @@ The SchemaField component is dedicated to parsing [JSON Schema](https://json-sch
 There are two ways to use SchemaField: MarkupSchema and JSONSchema. MarkupSchema rendering categorizes the different types of Field, which makes it more readable; JSONSchema renders JSON Schema directly, staying closer to the underlying implementation.
 
 ::: tip
-There is no directly importable SchemaField component; both MarkupSchema and JSONSchema require calling `createSchemaField` to obtain the component. Unlike `@formily/react`, `createSchemaField` returns only a single `SchemaField` component, with the Markup sub-components attached to it as static properties (e.g. `SchemaField.String`).
+There is no directly importable SchemaField component; both MarkupSchema and JSONSchema require calling `createSchemaField` to obtain the component. `createSchemaField` returns only a single `SchemaField` component, with the Markup sub-components attached to it as static properties (e.g. `SchemaField.String`).
 :::
 
 ::: tip Schema Protocol Notes
 This page only explains how `@silver-formily/react` consumes Schemas. For the complete `Schema`, `ISchema`, `x-reactions`, `x-component-props` and other protocols, please refer to the [JSON Schema documentation](https://json-schema.silver-formily.org/).
 :::
 
-### Function Definition
+### Factory and return types
+
+The options object is optional. Import the actual API types to preserve registry inference instead of declaring a non-generic `ComponentType` approximation:
 
 ```ts
-interface createSchemaField {
-  (props: ISchemaFieldReactFactoryOptions): SchemaField
-}
+import type {
+  ISchemaFieldReactFactoryOptions,
+  SchemaReactComponents,
+} from '@silver-formily/react'
+import { createSchemaField } from '@silver-formily/react'
+
+type FactoryOptions<C extends SchemaReactComponents> = ISchemaFieldReactFactoryOptions<C>
+type SchemaFieldComponent<C extends SchemaReactComponents> = ReturnType<typeof createSchemaField<C>>
+type MarkupComponent<C extends SchemaReactComponents> = SchemaFieldComponent<C>['Markup']
 ```
 
-### Function Parameters
-
-```ts
-interface ISchemaFieldReactFactoryOptions {
-  components?: {
-    [key: string]: JSXComponent // Component list
-  }
-  scope?: any // Global scope, used for variable injection into protocol expressions
-}
-```
-
-### Function Return Value
-
-The returned `SchemaField` is itself the JSON-Schema rendering component, and it also has a set of MarkupSchema rendering components attached as static properties:
-
-```ts
-interface SchemaField {
-  (props: ISchemaFieldProps): React.ReactNode
-
-  Markup: React.ComponentType<ISchemaMarkupFieldProps> // MarkupSchema rendering component
-  String: React.ComponentType<ISchemaTypeFieldProps> // MarkupSchema rendering component
-  Object: React.ComponentType<ISchemaTypeFieldProps> // MarkupSchema rendering component
-  Array: React.ComponentType<ISchemaTypeFieldProps> // MarkupSchema rendering component
-  Boolean: React.ComponentType<ISchemaTypeFieldProps> // MarkupSchema rendering component
-  Date: React.ComponentType<ISchemaTypeFieldProps> // MarkupSchema rendering component
-  DateTime: React.ComponentType<ISchemaTypeFieldProps> // MarkupSchema rendering component
-  Void: React.ComponentType<ISchemaTypeFieldProps> // MarkupSchema rendering component
-  Number: React.ComponentType<ISchemaTypeFieldProps> // MarkupSchema rendering component
-}
-```
-
-Markup components preserve inference from the component registry: `x-component-props` and `x-decorator-props` use their respective component props. Explicit type arguments follow `<Decorator, Component>`, matching `ISchemaMarkupFieldProps`; for example, `<SchemaField.String<'FormItem', 'Input'> ... />`. Explicit type arguments are usually unnecessary.
+Factory options are `components?: Components` and `scope?: any`. The returned component has `Markup`, `String`, `Object`, `Array`, `Boolean`, `Number`, `Date`, `DateTime`, and `Void` statics. Markup preserves registry inference and supports explicit `<Decorator, Component>` type arguments. Typed statics set their own schema type, overriding a supplied `type`.
 
 ## MarkupSchema
 
@@ -78,12 +55,12 @@ api/components/schema-field-with-schema.tsx
 
 ## API
 
-SchemaField's types inherit from Field, so most attributes can be found in the [Field component API](/en/api/components/field.html#api)
+```ts
+import type { ISchemaFieldProps, JSXComponent } from '@silver-formily/react'
 
-SchemaField additionally supports the following attributes:
+type SchemaProps<D extends JSXComponent, C extends JSXComponent> = ISchemaFieldProps<D, C>
+```
 
-| Attribute  | Description                                      | Type                                                                | Default |
-| ---------- | ------------------------------------------------ | ------------------------------------------------------------------- | ------- |
-| schema     | Field schema                                     | [ISchema](https://json-schema.silver-formily.org/api/types#ischema) | -       |
-| components | Local component list, merged with the global one | ^[object]`Record<string, JSXComponent>`                             | -       |
-| scope      | Injects variables into Schema expressions        | ^[object]`Record<string, unknown>`                                  | -       |
+All props are optional. `schema?: ISchema`, `name?: SchemaKey`, `components?: SchemaReactComponents`, `scope?: any`, and `children?: React.ReactNode` form the main rendering API. Without `schema`, children describe Markup schemas; when `schema` is supplied, Markup children are ignored. Markup nodes without a truthy name receive a generated name.
+
+Local component and scope entries override matching factory entries through lazy merging. Field configuration is produced from the schema by `toFieldProps`; although the declaration inherits Core factory props (except required `name`), this is not the same as forwarding every Field prop to rendered fields. Put field configuration in the schema. Omitting `name` renders root properties; it does not create an implicit root field.
