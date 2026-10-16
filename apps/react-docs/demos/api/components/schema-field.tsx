@@ -1,6 +1,6 @@
 import { createForm } from '@silver-formily/core'
 import { createSchemaField, FormProvider } from '@silver-formily/react'
-import { Input } from 'antd'
+import { Form, Input } from 'antd'
 
 const form = createForm()
 
@@ -8,6 +8,7 @@ const form = createForm()
 const SchemaField = createSchemaField({
   components: {
     Input,
+    FormItem: Form.Item,
   },
 })
 
@@ -15,7 +16,13 @@ export default function Demo() {
   return (
     <FormProvider form={form}>
       <SchemaField>
-        <SchemaField.String name="input" x-component="Input" />
+        <SchemaField.String
+          name="input"
+          x-decorator="FormItem"
+          x-decorator-props={{ label: '输入' }}
+          x-component="Input"
+          x-component-props={{ placeholder: '请输入' }}
+        />
       </SchemaField>
     </FormProvider>
   )

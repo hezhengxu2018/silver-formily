@@ -18,6 +18,6 @@ api/components/form-consumer.tsx
 
 ### FormConsumer children
 
-| Attribute | Description                                         | Type                                            |
-| --------- | --------------------------------------------------- | ----------------------------------------------- |
-| children  | Render function, receives the current Form instance | ^[Function]`(form: Form) => React.ReactElement` |
+| Attribute | Description                                         | Type                                         |
+| --------- | --------------------------------------------------- | -------------------------------------------- |
+| children  | Render function, receives the current Form instance | ^[Function]`(form: Form) => React.ReactNode` |

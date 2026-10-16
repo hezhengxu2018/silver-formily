@@ -80,7 +80,7 @@ it('render field', async () => {
       <Field
         name="kk"
         decorator={[Decorator]}
-        component={[Input, { onChange: null }]}
+        component={[Input, { onChange: null as any }]}
       />
     </FormProvider>,
   )

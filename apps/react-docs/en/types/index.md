@@ -25,7 +25,7 @@ If a type already belongs to `@silver-formily/core`, `@silver-formily/path`, `@s
 
 - `JSXComponent`: the React-side component type constraint, `keyof React.JSX.IntrinsicElements` or a component constructor.
 - `IProviderProps`: the props of `FormProvider`, exposing only `form`.
-- `IFormSpyProps`: the props of `FormConsumer`, where `children` is `(form: Form) => ReactChild`.
+- `IFormSpyProps`: the props of `FormConsumer`, where `children` is `(form: Form) => React.ReactNode`.
 - `RenderPropsChildren<Payload>`: the `children` of field components, either a render function `(field, form) => ReactNode` or a plain `ReactNode`.
 - `DecoratorContent`: decorator content (for `x-decorator-content`), either plain content or a named prop map.
 - `IFieldProps<D, C>`: field component props; extends Core's `IFieldFactoryProps` with the React-semantic `children`, `decoratorContent`, `decorator` and `component`.

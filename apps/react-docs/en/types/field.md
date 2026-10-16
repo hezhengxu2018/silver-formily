@@ -46,8 +46,8 @@ interface IFieldProps<
 > extends IFieldFactoryProps<D, C> {
   children?: RenderPropsChildren<Field>
   decoratorContent?: DecoratorContent
-  decorator?: [] | [D] | [D, React.ComponentProps<D>] | any[]
-  component?: [] | [C] | [C, React.ComponentProps<C>] | any[]
+  decorator?: [] | [D] | [D, Partial<React.ComponentProps<NoInfer<D>>>]
+  component?: [] | [C] | [C, Partial<React.ComponentProps<NoInfer<C>>>]
 }
 ```
 
@@ -65,8 +65,8 @@ interface IVoidFieldProps<
 > extends IVoidFieldFactoryProps<D, C> {
   children?: RenderPropsChildren<Field>
   decoratorContent?: DecoratorContent
-  decorator?: [] | [D] | [D, React.ComponentProps<D>] | any[]
-  component?: [] | [C] | [C, React.ComponentProps<C>] | any[]
+  decorator?: [] | [D] | [D, Partial<React.ComponentProps<NoInfer<D>>>]
+  component?: [] | [C] | [C, Partial<React.ComponentProps<NoInfer<C>>>]
 }
 ```
 
@@ -76,7 +76,7 @@ The props of `FormConsumer`; `children` must be a render function that receives 
 
 ```ts
 interface IFormSpyProps {
-  children?: (form: Form) => ReactChild
+  children?: (form: Form) => React.ReactNode
 }
 ```
 

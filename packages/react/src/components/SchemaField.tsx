@@ -1,4 +1,5 @@
-import type { ISchema } from '@silver-formily/json-schema'
+import type { ISchema, SchemaKey } from '@silver-formily/json-schema'
+import type { ReactNode } from 'react'
 import type {
   ISchemaFieldProps,
   ISchemaFieldReactFactoryOptions,
@@ -52,18 +53,14 @@ export function createSchemaField<Components extends SchemaReactComponents>(
       )
     }
 
-    const renderChildren = () => {
-      return <RecursionField {...props} schema={schema} />
-    }
-
     return (
       <SchemaOptionsContext.Provider value={options}>
         <SchemaComponentsContext.Provider
-          value={lazyMerge(options.components as any, props.components)}
+          value={lazyMerge(options.components ?? {}, props.components ?? {})}
         >
           <ExpressionScope value={lazyMerge(options.scope, props.scope)}>
             {renderMarkup()}
-            {renderChildren()}
+            <RecursionField {...props} schema={schema} />
           </ExpressionScope>
         </SchemaComponentsContext.Provider>
       </SchemaOptionsContext.Provider>
@@ -72,13 +69,10 @@ export function createSchemaField<Components extends SchemaReactComponents>(
 
   SchemaField.displayName = 'SchemaField'
 
-  function MarkupRender(props: any) {
+  function MarkupRender(props: ISchema & { name: SchemaKey, children?: ReactNode }) {
     const parent = useContext(SchemaMarkupContext)
     if (!parent)
       return <Fragment />
-    const renderChildren = () => {
-      return <Fragment>{props.children}</Fragment>
-    }
     const appendArraySchema = (schema: ISchema) => {
       const items = parent.items as Schema
       if (items && items.name !== props.name) {
@@ -92,7 +86,7 @@ export function createSchemaField<Components extends SchemaReactComponents>(
       const schema = parent.addProperty(props.name, props)
       return (
         <SchemaMarkupContext.Provider value={schema}>
-          {renderChildren()}
+          {props.children}
         </SchemaMarkupContext.Provider>
       )
     }
@@ -107,100 +101,39 @@ export function createSchemaField<Components extends SchemaReactComponents>(
       )
     }
     else {
-      return renderChildren()
+      return <Fragment>{props.children}</Fragment>
     }
   }
 
   function MarkupField<
     Decorator extends ReactComponentPath<Components>,
     Component extends ReactComponentPath<Components>,
-  >(props: ISchemaMarkupFieldProps<Components, Component, Decorator>) {
+  >(props: ISchemaMarkupFieldProps<Components, Decorator, Component>) {
     return <MarkupRender {...props} name={props.name || getRandomName()} />
   }
 
   MarkupField.displayName = 'MarkupField'
 
-  function StringField<
-    Decorator extends ReactComponentPath<Components>,
-    Component extends ReactComponentPath<Components>,
-  >(props: ISchemaTypeFieldProps<Components, Component, Decorator>) {
-    return <MarkupField {...props} type="string" />
+  function createTypedField(type: ISchema['type'], displayName: string) {
+    function TypedField<
+      Decorator extends ReactComponentPath<Components>,
+      Component extends ReactComponentPath<Components>,
+    >(props: ISchemaTypeFieldProps<Components, Decorator, Component>) {
+      return <MarkupField {...props} type={type} />
+    }
+    TypedField.displayName = displayName
+    return TypedField
   }
-
-  StringField.displayName = 'StringField'
-
-  function ObjectField<
-    Decorator extends ReactComponentPath<Components>,
-    Component extends ReactComponentPath<Components>,
-  >(props: ISchemaTypeFieldProps<Components, Component, Decorator>) {
-    return <MarkupField {...props} type="object" />
-  }
-
-  ObjectField.displayName = 'ObjectField'
-
-  function ArrayField<
-    Decorator extends ReactComponentPath<Components>,
-    Component extends ReactComponentPath<Components>,
-  >(props: ISchemaTypeFieldProps<Components, Component, Decorator>) {
-    return <MarkupField {...props} type="array" />
-  }
-
-  ArrayField.displayName = 'ArrayField'
-
-  function BooleanField<
-    Decorator extends ReactComponentPath<Components>,
-    Component extends ReactComponentPath<Components>,
-  >(props: ISchemaTypeFieldProps<Components, Component, Decorator>) {
-    return <MarkupField {...props} type="boolean" />
-  }
-
-  BooleanField.displayName = 'BooleanField'
-
-  function NumberField<
-    Decorator extends ReactComponentPath<Components>,
-    Component extends ReactComponentPath<Components>,
-  >(props: ISchemaTypeFieldProps<Components, Component, Decorator>) {
-    return <MarkupField {...props} type="number" />
-  }
-
-  NumberField.displayName = 'NumberField'
-
-  function DateField<
-    Decorator extends ReactComponentPath<Components>,
-    Component extends ReactComponentPath<Components>,
-  >(props: ISchemaTypeFieldProps<Components, Component, Decorator>) {
-    return <MarkupField {...props} type="date" />
-  }
-
-  DateField.displayName = 'DateField'
-
-  function DateTimeField<
-    Decorator extends ReactComponentPath<Components>,
-    Component extends ReactComponentPath<Components>,
-  >(props: ISchemaTypeFieldProps<Components, Component, Decorator>) {
-    return <MarkupField {...props} type="datetime" />
-  }
-
-  DateTimeField.displayName = 'DateTimeField'
-
-  function VoidField<
-    Decorator extends ReactComponentPath<Components>,
-    Component extends ReactComponentPath<Components>,
-  >(props: ISchemaTypeFieldProps<Components, Component, Decorator>) {
-    return <MarkupField {...props} type="void" />
-  }
-
-  VoidField.displayName = 'VoidField'
 
   SchemaField.Markup = MarkupField
-  SchemaField.String = StringField
-  SchemaField.Object = ObjectField
-  SchemaField.Array = ArrayField
-  SchemaField.Boolean = BooleanField
-  SchemaField.Date = DateField
-  SchemaField.DateTime = DateTimeField
-  SchemaField.Void = VoidField
-  SchemaField.Number = NumberField
+  SchemaField.String = createTypedField('string', 'StringField')
+  SchemaField.Object = createTypedField('object', 'ObjectField')
+  SchemaField.Array = createTypedField('array', 'ArrayField')
+  SchemaField.Boolean = createTypedField('boolean', 'BooleanField')
+  SchemaField.Date = createTypedField('date', 'DateField')
+  SchemaField.DateTime = createTypedField('datetime', 'DateTimeField')
+  SchemaField.Void = createTypedField('void', 'VoidField')
+  SchemaField.Number = createTypedField('number', 'NumberField')
 
   return SchemaField
 }

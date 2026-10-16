@@ -7,7 +7,7 @@
 ## 签名
 
 ```ts
-import type { IComponentMapper, JSXComponent } from '@silver-formily/react'
+import type { ConnectedComponent, JSXComponent } from '@silver-formily/react'
 
 interface IComponentMapper<T extends JSXComponent> {
   (target: T): JSXComponent
@@ -16,7 +16,7 @@ interface IComponentMapper<T extends JSXComponent> {
 declare function connect<T extends JSXComponent>(
   target: T,
   ...args: IComponentMapper<T>[]
-): React.ComponentType<Partial<React.ComponentProps<T>>>
+): ConnectedComponent<T>
 ```
 
 入参传入第一个参数是要接入的组件，后面的参数都是组件映射器，每个映射器都是一个函数，通常我们会使用内置的[mapProps](/api/shared/map-props)和[mapReadPretty](/api/shared/map-read-pretty)映射器

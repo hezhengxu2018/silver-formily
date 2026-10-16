@@ -19,7 +19,7 @@
 - 组件：`FormProvider`、`FormConsumer`、`Field`、`ArrayField`、`ObjectField`、`VoidField`、`RecursionField`、`createSchemaField`（含 `SchemaField.String/Object/Array/...` 标记语法）、`ExpressionScope`、`RecordScope`、`RecordsScope`
 - Hooks：`useForm`、`useField`、`useFieldSchema`、`useFormEffects`、`useParentForm`、`useExpressionScope`
 - 共享能力：`connect`、`mapProps`、`mapReadPretty`、`observer` / `Observer` 再导出，以及 `FormContext` 等 7 个 Context
-- 再导出 `@silver-formily/json-schema` 全量导出（`Schema`、`ISchema` 等）
+- 不再导出 `@silver-formily/json-schema`；`Schema`、`ISchema` 等请直接从 `@silver-formily/json-schema` 导入
 - 类型：`IFieldProps`、`ISchemaFieldProps`、`IComponentMapper`、`IStateMapper`、`JSXComponent` 等
 
 ## 与上游 @formily/react 的差异
@@ -56,6 +56,10 @@ export default () => (
   </FormProvider>
 )
 ```
+
+## 更换表单实例
+
+`FormProvider` 在一次挂载期间应持有同一个 form 实例。更换整个 form 时，应重新挂载 `FormProvider` 及其子树，例如使用 `<FormProvider key={form.id} form={form}>`。不要仅替换现有 Provider 的 `form` 属性并复用子树：`useFormEffects` 只在组件挂载时注册，不会随 form 属性变化重新绑定。旧子树卸载时清理订阅，新子树挂载时重新注册。
 
 ## 文档
 

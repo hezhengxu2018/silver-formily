@@ -2,7 +2,7 @@ import type { Field as FieldType } from '@silver-formily/core'
 import { createForm } from '@silver-formily/core'
 import { afterEach, expect, it, vi } from 'vitest'
 import { cleanup, render } from 'vitest-browser-react'
-import { Field, FormProvider, observer, useField } from '../src'
+import { Field, FormProvider, observer, useField, VoidField } from '../src'
 
 afterEach(cleanup)
 
@@ -226,4 +226,64 @@ it('decoratorContent 的对象映射展开为装饰器 props，与 x-decorator-p
   await expect.element(getByTestId('mapped-decorator')).toHaveAttribute('data-title', '来自 decoratorProps')
   // 同名时 decoratorContent 优先
   await expect.element(getByTestId('mapped-decorator')).toHaveAttribute('data-extra', '来自 decoratorContent')
+})
+
+
+it('field events update the model before invoking the latest component callback', async () => {
+  const form = createForm()
+  type Events = {
+    onChange?: (...args: any[]) => void
+    onFocus?: (...args: any[]) => void
+    onBlur?: (...args: any[]) => void
+  }
+  let handlers: Events = {}
+  function Input(props: Events) {
+    handlers = props
+    return null
+  }
+  const changes: unknown[] = []
+  const focusStates: (boolean | undefined)[] = []
+  await render(
+    <FormProvider form={form}>
+      <Field
+        name="input"
+        component={[Input, {
+          onChange: () => changes.push('old'),
+          onFocus: () => focusStates.push(form.query('input').get('active')),
+          onBlur: () => focusStates.push(form.query('input').get('active')),
+        }]}
+      />
+    </FormProvider>,
+  )
+  const field = form.query('input').take()!
+  // A handler retained by the input must read current props, not a stale closure.
+  const change = handlers.onChange!
+  field.setComponentProps({ onChange: (...args: unknown[]) => changes.push([form.values.input, ...args]) })
+  change('updated', 'extra')
+  expect(changes).toEqual([['updated', 'updated', 'extra']])
+  handlers.onFocus!()
+  handlers.onBlur!()
+  expect(focusStates).toEqual([true, false])
+})
+
+it('void fields pass event callbacks through without adding value or pattern state', async () => {
+  const onChange = vi.fn()
+  const onFocus = vi.fn()
+  const onBlur = vi.fn()
+  let received: Record<string, unknown> = {}
+  function Content(props: Record<string, unknown>) {
+    received = props
+    return null
+  }
+  await render(
+    <FormProvider form={createForm()}>
+      <VoidField name="layout" pattern="disabled" component={[Content, { onChange, onFocus, onBlur }]} />
+    </FormProvider>,
+  )
+  expect(received.onChange).toBe(onChange)
+  expect(received.onFocus).toBe(onFocus)
+  expect(received.onBlur).toBe(onBlur)
+  expect(received.value).toBeUndefined()
+  expect(received.disabled).toBeUndefined()
+  expect(received.readOnly).toBeUndefined()
 })

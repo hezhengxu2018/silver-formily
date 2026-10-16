@@ -1,6 +1,7 @@
 import { createForm, isField, onFieldReact } from '@silver-formily/core'
 import { Field, FormConsumer, FormProvider, useFormEffects } from '@silver-formily/react'
-import { Form, Input } from 'antd'
+import { Button, Form, Input } from 'antd'
+import { useState } from 'react'
 
 function Custom() {
   // 通过 useFormEffects 往当前 Form 注入副作用逻辑，组件卸载时自动清理
@@ -28,19 +29,23 @@ function Custom() {
   )
 }
 
-const form = createForm({
-  effects() {
-    onFieldReact('custom.aa', (field) => {
-      if (!isField(field))
-        return
-      field.value = field.query('input').get('value')
-    })
-  },
-})
+function createDemoForm() {
+  return createForm({
+    effects() {
+      onFieldReact('custom.aa', (field) => {
+        if (!isField(field))
+          return
+        field.value = field.query('input').get('value')
+      })
+    },
+  })
+}
 
 export default function Demo() {
+  const [form, setForm] = useState(createDemoForm)
   return (
-    <FormProvider form={form}>
+    <FormProvider key={form.id} form={form}>
+      <Button onClick={() => setForm(createDemoForm())}>重新挂载新表单</Button>
       <Field
         name="input"
         decorator={[Form.Item]}

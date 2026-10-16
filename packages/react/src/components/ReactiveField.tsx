@@ -1,11 +1,11 @@
 import type { Form, GeneralField } from '@silver-formily/core'
 import type { ReactNode } from 'react'
-import type { RenderPropsChildren } from '../types'
+import type { JSXComponent, RenderPropsChildren, SchemaReactComponents } from '../types'
 import { isVoidField } from '@silver-formily/core'
 import { Path as FormPath } from '@silver-formily/path'
 import { toJS } from '@silver-formily/reactive'
 import { observer } from '@silver-formily/reactive-react'
-import { isFn, isNum, isPlainObj, isStr } from '@silver-formily/shared'
+import { isFn, isPlainObj } from '@silver-formily/shared'
 import { createElement, Fragment, isValidElement, useContext } from 'react'
 import { SchemaComponentsContext } from '../shared'
 
@@ -14,15 +14,13 @@ interface IReactiveFieldProps {
   children?: RenderPropsChildren<GeneralField>
 }
 
-interface IReactiveFieldContentProps {
-  field: GeneralField
-  children?: RenderPropsChildren<GeneralField>
+function isEmptyContent(value: ReactNode) {
+  return value == null || typeof value === 'boolean' || value === ''
 }
 
-function mergeChildren(children: RenderPropsChildren<GeneralField>, content: ReactNode) {
-  if (!children && !content)
-    return
-  if (isFn(children))
+function mergeChildren(children: ReactNode, content: ReactNode) {
+  // Void DOM elements must receive no children when both sources are empty.
+  if (isEmptyContent(children) && isEmptyContent(content))
     return
   return (
     <Fragment>
@@ -32,8 +30,21 @@ function mergeChildren(children: RenderPropsChildren<GeneralField>, content: Rea
   )
 }
 
-function isValidComponent(target: any) {
-  return target && (typeof target === 'object' || typeof target === 'function')
+function resolveComponent(target: JSXComponent, components: SchemaReactComponents) {
+  return typeof target === 'string' ? FormPath.getIn(components, target) ?? target : target
+}
+
+type ComponentEvent = 'onChange' | 'onFocus' | 'onBlur'
+type FieldEvent = 'onInput' | 'onFocus' | 'onBlur'
+
+function bindFieldEvent(field: GeneralField, event: ComponentEvent, action: FieldEvent) {
+  if (isVoidField(field))
+    return field.componentProps?.[event]
+  return (...args: any[]) => {
+    field[action](...args)
+    // Read the latest callback after the field action, which may update props.
+    field.componentProps?.[event]?.(...args)
+  }
 }
 
 // decoratorContent 的消费方式与 x-content 对齐：纯内容（字符串/数字/ReactNode）
@@ -41,11 +52,16 @@ function isValidComponent(target: any) {
 // 具名插槽语义，渲染位置由 decorator 组件自行决定），同名时优先于 decoratorProps。
 function resolveDecoratorContentProps(field: GeneralField): Record<string, any> | null {
   const content = toJS(field.decoratorContent)
-  if (isStr(content) || isNum(content) || isValidElement(content))
-    return { content }
-  if (isPlainObj(content))
+  if (content == null)
+    return null
+  // React elements, portals and iterable nodes are content, not prop maps.
+  if (isPlainObj(content)
+    && !isValidElement(content)
+    && !('$$typeof' in content && content.$$typeof === Symbol.for('react.portal'))
+    && !(Symbol.iterator in content && typeof content[Symbol.iterator] === 'function')) {
     return content
-  return null
+  }
+  return { content }
 }
 
 function renderChildren(children: RenderPropsChildren<GeneralField>, field?: GeneralField, form?: Form) {
@@ -55,7 +71,7 @@ function renderChildren(children: RenderPropsChildren<GeneralField>, field?: Gen
 // component 侧的响应式读取（value/componentProps/pattern）收敛在独立的
 // observer 子组件中，字段值变化只重渲染当前内容，不波及外层的 decorator
 const ReactiveFieldContent = observer(
-  (props: IReactiveFieldContentProps) => {
+  (props: IReactiveFieldProps) => {
     const components = useContext(SchemaComponentsContext)
     const field = props.field
     const content = mergeChildren(
@@ -65,47 +81,17 @@ const ReactiveFieldContent = observer(
     if (!field.componentType)
       return <Fragment>{content}</Fragment>
 
-    const getComponent = (target: any) => {
-      return isValidComponent(target)
-        ? target
-        : FormPath.getIn(components, target) ?? target
-    }
-
-    const value = !isVoidField(field) ? field.value : undefined
-    const onChange = !isVoidField(field)
-      ? (...args: any[]) => {
-          field.onInput(...args)
-          field.componentProps?.onChange?.(...args)
-        }
-      : field.componentProps?.onChange
-    const onFocus = !isVoidField(field)
-      ? (...args: any[]) => {
-          field.onFocus(...args)
-          field.componentProps?.onFocus?.(...args)
-        }
-      : field.componentProps?.onFocus
-    const onBlur = !isVoidField(field)
-      ? (...args: any[]) => {
-          field.onBlur(...args)
-          field.componentProps?.onBlur?.(...args)
-        }
-      : field.componentProps?.onBlur
-    const disabled = !isVoidField(field)
-      ? field.pattern === 'disabled' || field.pattern === 'readPretty'
-      : undefined
-    const readOnly = !isVoidField(field)
-      ? field.pattern === 'readOnly'
-      : undefined
+    const dataField = isVoidField(field) ? undefined : field
     return createElement(
-      getComponent(field.componentType),
+      resolveComponent(field.componentType, components),
       {
-        disabled,
-        readOnly,
+        disabled: dataField ? field.pattern === 'disabled' || field.pattern === 'readPretty' : undefined,
+        readOnly: dataField ? field.pattern === 'readOnly' : undefined,
         ...toJS(field.componentProps),
-        value,
-        onChange,
-        onFocus,
-        onBlur,
+        value: dataField?.value,
+        onChange: bindFieldEvent(field, 'onChange', 'onInput'),
+        onFocus: bindFieldEvent(field, 'onFocus', 'onFocus'),
+        onBlur: bindFieldEvent(field, 'onBlur', 'onBlur'),
       },
       content,
     )
@@ -124,19 +110,13 @@ function ReactiveInternal(props: IReactiveFieldProps) {
   if (field.display !== 'visible')
     return null
 
-  const getComponent = (target: any) => {
-    return isValidComponent(target)
-      ? target
-      : FormPath.getIn(components, target) ?? target
-  }
-
   const renderDecorator = (children: ReactNode) => {
     if (!field.decoratorType) {
       return <Fragment>{children}</Fragment>
     }
 
     return createElement(
-      getComponent(field.decoratorType),
+      resolveComponent(field.decoratorType, components),
       {
         ...toJS(field.decoratorProps),
         ...resolveDecoratorContentProps(field),

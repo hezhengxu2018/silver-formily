@@ -2,6 +2,8 @@ import type { Form } from '@silver-formily/core'
 import type React from 'react'
 import {
   createForm,
+  onFieldMount,
+  onFieldUnmount,
   onFormMount,
   onFormUnmount,
   onFormValuesChange,
@@ -9,7 +11,7 @@ import {
 import { StrictMode, useMemo } from 'react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { cleanup, render } from 'vitest-browser-react'
-import { createSchemaField, FormProvider, useFormEffects } from '../src'
+import { createSchemaField, Field, FormProvider, useFormEffects } from '../src'
 
 afterEach(cleanup)
 
@@ -104,8 +106,7 @@ describe('react StrictMode (ref: alibaba/formily#4361)', () => {
     await getByTestId('input').fill('hello')
     expect(form.values.input).toBe('hello')
     expect(onValuesChange).toHaveBeenCalled()
-    // StrictMode 下 Field 用原生 useEffect,清理阶段会真实执行一次 field.onUnmount
-    // 但组件必须能恢复（重新 onMount），这里只断言恢复后的可用状态
+    // Field 与其他字段统一通过 useAttach 保留 StrictMode 重放期间的挂载状态
     expect(form.query('input').take()?.mounted).toBe(true)
   })
 
@@ -148,7 +149,7 @@ describe('react StrictMode (ref: alibaba/formily#4361)', () => {
     expect(capturedForm!.mounted).toBe(true)
     expect(onFormUnmountFn).not.toHaveBeenCalled()
 
-    unmount()
+    await unmount()
     await settle()
     expect(capturedForm!.mounted).toBe(false)
     expect(capturedForm!.unmounted).toBe(true)
@@ -199,8 +200,57 @@ describe('react StrictMode (ref: alibaba/formily#4361)', () => {
     await getByTestId('input').fill('world')
     expect(capturedForm!.values.input).toBe('world')
 
-    unmount()
+    await unmount()
     await settle()
     expect(capturedForm!.mounted).toBe(false)
   })
+})
+
+
+it('field retains its lifecycle through StrictMode replay and cleans up replaced or removed fields', async () => {
+  const mounted = vi.fn()
+  const unmounted = vi.fn()
+  const form = createForm({
+    effects() {
+      onFieldMount('*', mounted)
+      onFieldUnmount('*', unmounted)
+    },
+  })
+  function App({ name }: { name?: string }) {
+    return (
+      <StrictMode>
+        <FormProvider form={form}>
+          {name && <Field name={name} component={[Input]} />}
+        </FormProvider>
+      </StrictMode>
+    )
+  }
+  const screen = await render(<App name="first" />)
+  await settle()
+  const first = form.query('first').take()!
+  expect(mounted).toHaveBeenCalledTimes(1)
+  expect(unmounted).not.toHaveBeenCalled()
+  expect(first.mounted).toBe(true)
+  await screen.getByTestId('input').fill('value')
+  expect(form.values.first).toBe('value')
+
+  await screen.rerender(<App name="second" />)
+  await vi.waitFor(() => expect(unmounted).toHaveBeenCalledTimes(1))
+  expect(unmounted.mock.calls[0][0]).toBe(first)
+  expect(first.unmounted).toBe(true)
+  expect(form.query('second').take()!.mounted).toBe(true)
+  expect(mounted).toHaveBeenCalledTimes(2)
+
+  await screen.rerender(<App />)
+  await vi.waitFor(() => expect(unmounted).toHaveBeenCalledTimes(2))
+  expect(form.query('second').take()!.unmounted).toBe(true)
+
+  await screen.rerender(<App name="third" />)
+  const third = form.query('third').take()!
+  const cleanup = vi.spyOn(third, 'onUnmount')
+  expect(mounted).toHaveBeenCalledTimes(3)
+  expect(unmounted).toHaveBeenCalledTimes(2)
+  await screen.unmount()
+  await vi.waitFor(() => expect(cleanup).toHaveBeenCalledTimes(1))
+  expect(third.unmounted).toBe(true)
 })

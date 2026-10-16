@@ -24,7 +24,7 @@ export type IProviderProps = {
 }
 
 export interface IFormSpyProps {
-  children?: (form: Form) => ReactChild
+  children?: (form: Form) => React.ReactNode
 }
 
 export type RenderPropsChildren<Payload>
@@ -40,8 +40,8 @@ export interface IFieldProps<
 > extends IFieldFactoryProps<D, C> {
   children?: RenderPropsChildren<Field>
   decoratorContent?: DecoratorContent
-  decorator?: [] | [D] | [D, React.ComponentProps<D>] | any[]
-  component?: [] | [C] | [C, React.ComponentProps<C>] | any[]
+  decorator?: [] | [D] | [D, Partial<React.ComponentProps<NoInfer<D>>>]
+  component?: [] | [C] | [C, Partial<React.ComponentProps<NoInfer<C>>>]
 }
 
 export interface IVoidFieldProps<
@@ -51,8 +51,8 @@ export interface IVoidFieldProps<
 > extends IVoidFieldFactoryProps<D, C> {
   children?: RenderPropsChildren<Field>
   decoratorContent?: DecoratorContent
-  decorator?: [] | [D] | [D, React.ComponentProps<D>] | any[]
-  component?: [] | [C] | [C, React.ComponentProps<C>] | any[]
+  decorator?: [] | [D] | [D, Partial<React.ComponentProps<NoInfer<D>>>]
+  component?: [] | [C] | [C, Partial<React.ComponentProps<NoInfer<C>>>]
 }
 
 export interface IComponentMapper<T extends JSXComponent> {
@@ -203,4 +203,5 @@ export interface IRecordsScopeProps {
   children?: React.ReactNode
 }
 
+/** @deprecated Use React.ReactNode for renderable content. */
 export type ReactChild = React.ReactElement | string | number

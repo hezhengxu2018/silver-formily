@@ -25,7 +25,7 @@
 
 - `JSXComponent`：React 侧的组件类型约束，`keyof React.JSX.IntrinsicElements` 或组件构造器。
 - `IProviderProps`：`FormProvider` 的 props，仅暴露 `form`。
-- `IFormSpyProps`：`FormConsumer` 的 props，`children` 是 `(form: Form) => ReactChild`。
+- `IFormSpyProps`：`FormConsumer` 的 props，`children` 是 `(form: Form) => React.ReactNode`。
 - `RenderPropsChildren<Payload>`：字段组件的 `children`，是渲染函数 `(field, form) => ReactNode` 或普通 `ReactNode`。
 - `DecoratorContent`：装饰器内容（对应 `x-decorator-content`），纯内容或具名 prop 映射。
 - `IFieldProps<D, C>`：字段组件 props，在 Core 的 `IFieldFactoryProps` 基础上扩展了 React 语义的 `children`、`decoratorContent`、`decorator`、`component`。

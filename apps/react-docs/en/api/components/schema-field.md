@@ -23,7 +23,7 @@ This page only explains how `@silver-formily/react` consumes Schemas. For the co
 
 ```ts
 interface createSchemaField {
-  (props: ISchemaFieldFactoryProps): SchemaField
+  (props: ISchemaFieldReactFactoryOptions): SchemaField
 }
 ```
 
@@ -57,6 +57,8 @@ interface SchemaField {
   Number: React.ComponentType<ISchemaTypeFieldProps> // MarkupSchema rendering component
 }
 ```
+
+Markup components preserve inference from the component registry: `x-component-props` and `x-decorator-props` use their respective component props. Explicit type arguments follow `<Decorator, Component>`, matching `ISchemaMarkupFieldProps`; for example, `<SchemaField.String<'FormItem', 'Input'> ... />`. Explicit type arguments are usually unnecessary.
 
 ## MarkupSchema
 
