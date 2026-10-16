@@ -1,17 +1,33 @@
+import type { ReactNode } from 'react'
 import { createForm } from '@silver-formily/core'
 import { Field, FormProvider } from '@silver-formily/react'
 import { Input } from 'antd'
+import { StrictMode, useState } from 'react'
 
-const form = createForm({
-  initialValues: {
-    input: '初始值',
-  },
-})
+function Decorator({ content, children }: { content?: ReactNode, children?: ReactNode }) {
+  return (
+    <label>
+      {children}
+      <small>{content}</small>
+    </label>
+  )
+}
 
 export default function Demo() {
+  const [form] = useState(() => createForm({
+    initialValues: { input: '初始值' },
+  }))
   return (
-    <FormProvider form={form}>
-      <Field name="input" component={[Input, { placeholder: '请输入' }]} />
-    </FormProvider>
+    <StrictMode>
+      <FormProvider form={form}>
+        <Field
+          name="input"
+          component={[Input, { placeholder: '请输入' }]}
+          decorator={[Decorator]}
+          decoratorContent={['提示：', <span key="help">请输入内容</span>]}
+        />
+        <Field name="zero" content={0} />
+      </FormProvider>
+    </StrictMode>
   )
 }

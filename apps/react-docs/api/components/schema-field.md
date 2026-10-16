@@ -23,7 +23,7 @@ SchemaField 有两种使用方式，一种是MarkupSchema，一种是JSONSchema�
 
 ```ts
 interface createSchemaField {
-  (props: ISchemaFieldFactoryProps): SchemaField
+  (props: ISchemaFieldReactFactoryOptions): SchemaField
 }
 ```
 
@@ -57,6 +57,8 @@ interface SchemaField {
   Number: React.ComponentType<ISchemaTypeFieldProps> // MarkupSchema 渲染组件
 }
 ```
+
+Markup 子组件保留组件注册表的类型推断，`x-component-props` 与 `x-decorator-props` 会分别匹配对应组件的 props。显式指定泛型时，参数顺序为 `<Decorator, Component>`，与 `ISchemaMarkupFieldProps` 一致；例如 `<SchemaField.String<'FormItem', 'Input'> ... />`。通常无需显式传入泛型。
 
 ## MarkupSchema
 

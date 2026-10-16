@@ -18,6 +18,6 @@ api/components/form-consumer.tsx
 
 ### FormConsumer children
 
-| 属性     | 说明                         | 类型                                            |
-| -------- | ---------------------------- | ----------------------------------------------- |
-| children | 渲染函数，接收当前 Form 实例 | ^[Function]`(form: Form) => React.ReactElement` |
+| 属性     | 说明                         | 类型                                         |
+| -------- | ---------------------------- | -------------------------------------------- |
+| children | 渲染函数，接收当前 Form 实例 | ^[Function]`(form: Form) => React.ReactNode` |

@@ -6,6 +6,8 @@
 
 name 属性必填。
 
+`Field` 与 `ArrayField`、`ObjectField`、`VoidField` 使用相同的挂载生命周期处理。StrictMode 同步重放 effect 时，不会额外触发字段的 `onFieldMount` / `onFieldUnmount`；字段实例变化或真正卸载时仍正常清理。真正卸载的清理延迟到微任务执行，因此不要在移除组件后立即同步读取 `unmounted` 来判断清理是否完成。
+
 ## 用例
 
 :::demo

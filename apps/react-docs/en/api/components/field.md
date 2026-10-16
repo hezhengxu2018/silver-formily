@@ -6,6 +6,8 @@ As the React implementation of [createField](https://core.silver-formily.org/api
 
 The name attribute is required.
 
+`Field` uses the same lifecycle handling as `ArrayField`, `ObjectField`, and `VoidField`. Synchronous StrictMode effect replay does not emit extra `onFieldMount` / `onFieldUnmount` events. Replacing the field instance or actually unmounting it still performs cleanup. Real unmount cleanup is deferred to a microtask, so do not synchronously read `unmounted` immediately after removing the component to determine whether cleanup has finished.
+
 ## Usage
 
 :::demo

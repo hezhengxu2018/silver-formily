@@ -71,24 +71,41 @@ export function mapReadPretty<T extends JSXComponent, C extends JSXComponent>(
   }
 }
 
+// Keep emitted declarations independent of @types/hoist-non-react-statics.
+// These are the React/function metadata keys excluded by the runtime hoister.
+type ReactStatics
+  = | 'childContextTypes' | 'contextType' | 'contextTypes' | 'defaultProps'
+    | 'displayName' | 'getDefaultProps' | 'getDerivedStateFromError'
+    | 'getDerivedStateFromProps' | 'mixins' | 'propTypes' | 'type'
+type FunctionStatics
+  = | 'name' | 'length' | 'prototype' | 'caller' | 'callee' | 'arguments' | 'arity'
+type NonHoistedStatics<T> = T extends React.MemoExoticComponent<any>
+  ? '$$typeof' | 'compare' | 'defaultProps' | 'displayName' | 'propTypes' | 'type'
+  : T extends React.ForwardRefExoticComponent<any>
+    ? '$$typeof' | 'render' | 'defaultProps' | 'displayName' | 'propTypes'
+    : ReactStatics | FunctionStatics
+type ConnectedStatics<T> = T extends string ? unknown : Pick<T, Exclude<keyof T, NonHoistedStatics<T>>>
+
+export type ConnectedComponent<T extends JSXComponent> = React.ForwardRefExoticComponent<
+  React.PropsWithoutRef<Partial<React.ComponentProps<T>>>
+  & React.RefAttributes<React.ComponentRef<T>>
+> & ConnectedStatics<T>
+
 export function connect<T extends JSXComponent>(
   target: T,
   ...args: IComponentMapper<T>[]
-) {
+): ConnectedComponent<T> {
   const Target = args.reduce((target, mapper) => {
     return mapper(target as T) as T
   }, target)
 
-  const Destination = forwardRef<unknown, Partial<React.ComponentProps<T>>>(
+  const Destination = forwardRef<React.ComponentRef<T>, Partial<React.ComponentProps<T>>>(
     (props, ref) => {
       return createElement(Target as any, { ...props, ref })
     },
   )
 
-  if (target)
-    hoistNonReactStatics(Destination, target as any)
-
-  return Destination
+  return hoistNonReactStatics(Destination, target) as ConnectedComponent<T>
 }
 
 export { observer, Observer }

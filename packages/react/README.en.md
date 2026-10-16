@@ -19,7 +19,7 @@ The package sits between the form kernel and business components:
 - Components: `FormProvider`, `FormConsumer`, `Field`, `ArrayField`, `ObjectField`, `VoidField`, `RecursionField`, `createSchemaField` (with `SchemaField.String/Object/Array/...` markup syntax), `ExpressionScope`, `RecordScope`, `RecordsScope`
 - Hooks: `useForm`, `useField`, `useFieldSchema`, `useFormEffects`, `useParentForm`, `useExpressionScope`
 - Shared utilities: `connect`, `mapProps`, `mapReadPretty`, re-exported `observer` / `Observer`, plus 7 React contexts such as `FormContext`
-- Re-exports everything from `@silver-formily/json-schema` (`Schema`, `ISchema`, ...)
+- Does not re-export `@silver-formily/json-schema`; import `Schema`, `ISchema`, and related APIs directly from `@silver-formily/json-schema`
 - Types: `IFieldProps`, `ISchemaFieldProps`, `IComponentMapper`, `IStateMapper`, `JSXComponent`, etc.
 
 ## Differences from upstream @formily/react
@@ -56,6 +56,10 @@ export default () => (
   </FormProvider>
 )
 ```
+
+## Replacing the form instance
+
+Keep the same form instance for the lifetime of a mounted `FormProvider`. To replace the entire form, remount `FormProvider` and its subtree, for example with `<FormProvider key={form.id} form={form}>`. Do not only replace the existing provider's `form` prop while reusing its subtree: `useFormEffects` registers on mount and does not rebind when that prop changes. Unmounting the old subtree cleans up its subscriptions; mounting the new subtree registers new ones.
 
 ## Documentation
 
