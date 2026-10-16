@@ -21,7 +21,7 @@ features:
     details: 迁移自 @formily/react 并围绕 @silver-formily/* 命名空间重构，与 Silver Formily 生态的 core、json-schema、reactive 协作。
   - title: 📝 JSON Schema 驱动
     details: 支持 Markup Schema 与 JSON Schema 两种渲染方式，配合 RecursionField 可以构建任意递归的自定义组件。
-  - title: ✅ StrictMode / ConcurrentMode 友好
+  - title: ✅ StrictMode 生命周期兼容
     details: 字段挂载与副作用订阅基于 @silver-formily/reactive-react 的兼容层实现，在 React 18/19 严格模式下行为正确。
 ---
 

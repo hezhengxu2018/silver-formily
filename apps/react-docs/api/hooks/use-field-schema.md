@@ -11,9 +11,9 @@
 ## 签名
 
 ```ts
-interface useFieldSchema {
-  (): Schema
-}
+import type { Schema } from '@silver-formily/json-schema'
+
+declare function useFieldSchema(): Schema
 ```
 
 `Schema` 类型桥接说明见 [Schema](/api/shared/schema)，完整 API 请查看 [JSON Schema](https://json-schema.silver-formily.org/)。
@@ -23,3 +23,5 @@ interface useFieldSchema {
 :::demo
 api/hooks/use-field-schema.tsx
 :::
+
+该 hook 只读取上下文，不创建模型，也不订阅模型属性。应在对应 Provider 下使用；即使部分签名未声明空值，缺少或被清理的上下文在运行时仍可能返回 null/undefined。

@@ -24,7 +24,7 @@ If a type already belongs to `@silver-formily/core`, `@silver-formily/path`, `@s
 ### Fields and Contexts
 
 - `JSXComponent`: the React-side component type constraint, `keyof React.JSX.IntrinsicElements` or a component constructor.
-- `IProviderProps`: the props of `FormProvider`, exposing only `form`.
+- `IProviderProps`: the props of `FormProvider`, with required `form` and optional `children`.
 - `IFormSpyProps`: the props of `FormConsumer`, where `children` is `(form: Form) => React.ReactNode`.
 - `RenderPropsChildren<Payload>`: the `children` of field components, either a render function `(field, form) => ReactNode` or a plain `ReactNode`.
 - `DecoratorContent`: decorator content (for `x-decorator-content`), either plain content or a named prop map.
@@ -52,7 +52,7 @@ If a type already belongs to `@silver-formily/core`, `@silver-formily/path`, `@s
 - `ReactComponentPath<T>`: extracts the usable string keys from a component mapping object.
 - `ReactComponentPropsByPathValue<T, P>`: infers a component's props from its key.
 - `Path<T>` / `PathValue<T, P>`: generics for deep object paths and value lookup.
-- `ReactChild`: `React.ReactElement | string | number`.
+- `ReactChild`: deprecated compatibility alias `React.ReactElement | string | number`; use `React.ReactNode` in new code.
 
 ## Types Not Covered Here
 
@@ -80,3 +80,11 @@ import type { ISchema } from '@silver-formily/json-schema'
 import type { Pattern } from '@silver-formily/path'
 import type { Validator } from '@silver-formily/validator'
 ```
+
+## Additional public types
+
+- `ConnectedComponent<T>`: the return type of `connect`, preserving ref types and custom statics.
+- `ISchemaFieldOptionContext`: `{ components: SchemaReactComponents }`; this compatibility type is exported, but `SchemaOptionsContext` actually uses `ISchemaFieldReactFactoryOptions`.
+- `ObjectKey`: `string | number | boolean | symbol`.
+
+`Path<T>` is a TypeScript utility, not the runtime `Path` class from `@silver-formily/path`. The React entry does not re-export JSON Schema APIs, reactive-react hooks, or `IObserverProps` / `IObserverOptions`; only `observer` and `Observer` are re-exported from reactive-react. Internal `ReactiveField`, `useAttach`, and the portal `render` helper are not public entry exports.

@@ -11,9 +11,9 @@ This page only explains how to read the current field's Schema in `@silver-formi
 ## Signature
 
 ```ts
-interface useFieldSchema {
-  (): Schema
-}
+import type { Schema } from '@silver-formily/json-schema'
+
+declare function useFieldSchema(): Schema
 ```
 
 See [Schema](/en/api/shared/schema) for the `Schema` type bridging notes, and the [JSON Schema](https://json-schema.silver-formily.org/) documentation for the full API.
@@ -23,3 +23,5 @@ See [Schema](/en/api/shared/schema) for the `Schema` type bridging notes, and th
 :::demo
 api/hooks/use-field-schema.tsx
 :::
+
+This hook reads context; it does not create a model or subscribe to observable properties. Use the corresponding provider. Although some signatures are non-nullable, missing or cleared context can return null/undefined at runtime.

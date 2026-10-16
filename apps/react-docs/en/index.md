@@ -21,7 +21,7 @@ features:
     details: Migrated from @formily/react and refactored around the @silver-formily/* namespace, working with core, json-schema and reactive from the Silver Formily ecosystem.
   - title: 📝 JSON Schema driven
     details: Supports both Markup Schema and JSON Schema rendering, and with RecursionField you can build arbitrary recursive custom components.
-  - title: ✅ StrictMode / ConcurrentMode friendly
+  - title: ✅ StrictMode lifecycle compatibility
     details: Field mounting and effect subscriptions are built on the compatibility layer of @silver-formily/reactive-react, behaving correctly under React 18/19 Strict Mode.
 ---
 

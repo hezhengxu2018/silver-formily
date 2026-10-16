@@ -29,3 +29,5 @@ api/components/record-scope.tsx
 | getRecord | 返回当前行记录的函数 | ^[Function]`() => any`    | -      |
 | getIndex  | 返回当前行索引的函数 | ^[Function]`() => number` | -      |
 | children  | 子节点               | `React.ReactNode`         | -      |
+
+`getRecord` 必填，`getIndex` 与 `children` 可选。未提供 `getIndex` 时 `$index` 为 `undefined`。这些变量通过 getter 读取最新值；非对象记录直接返回，不会附加 `$lookup` / `$index` 属性。

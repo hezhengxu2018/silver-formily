@@ -34,7 +34,7 @@ The package sits between the form kernel and business components:
 ## Install
 
 ```bash
-pnpm add @silver-formily/react @silver-formily/core react react-dom
+pnpm add @silver-formily/react @silver-formily/core react@19 react-dom@19
 ```
 
 ## Quick Start
@@ -42,19 +42,21 @@ pnpm add @silver-formily/react @silver-formily/core react react-dom
 ```tsx
 import { createForm } from '@silver-formily/core'
 import { connect, Field, FormProvider, mapProps } from '@silver-formily/react'
-
-const form = createForm()
+import { useState } from 'react'
 
 const Input = connect(
   props => <input {...props} />,
   mapProps({ value: true, onChange: true }),
 )
 
-export default () => (
-  <FormProvider form={form}>
-    <Field name="name" component={[Input]} />
-  </FormProvider>
-)
+export default function App() {
+  const [form] = useState(() => createForm())
+  return (
+    <FormProvider form={form}>
+      <Field name="name" component={[Input]} />
+    </FormProvider>
+  )
+}
 ```
 
 ## Replacing the form instance

@@ -24,7 +24,7 @@
 ### 字段与上下文
 
 - `JSXComponent`：React 侧的组件类型约束，`keyof React.JSX.IntrinsicElements` 或组件构造器。
-- `IProviderProps`：`FormProvider` 的 props，仅暴露 `form`。
+- `IProviderProps`：`FormProvider` 的 props，包含必填的 `form` 与可选的 `children`。
 - `IFormSpyProps`：`FormConsumer` 的 props，`children` 是 `(form: Form) => React.ReactNode`。
 - `RenderPropsChildren<Payload>`：字段组件的 `children`，是渲染函数 `(field, form) => ReactNode` 或普通 `ReactNode`。
 - `DecoratorContent`：装饰器内容（对应 `x-decorator-content`），纯内容或具名 prop 映射。
@@ -52,7 +52,7 @@
 - `ReactComponentPath<T>`：从组件映射对象里提取可用的字符串 key。
 - `ReactComponentPropsByPathValue<T, P>`：根据组件 key 反推出该组件 props。
 - `Path<T>` / `PathValue<T, P>`：对象深层路径与取值泛型。
-- `ReactChild`：`React.ReactElement | string | number`。
+- `ReactChild`：已弃用的兼容别名 `React.ReactElement | string | number`，新代码使用 `React.ReactNode`。
 
 ## 不在这里展开的类型
 
@@ -80,3 +80,11 @@ import type { ISchema } from '@silver-formily/json-schema'
 import type { Pattern } from '@silver-formily/path'
 import type { Validator } from '@silver-formily/validator'
 ```
+
+## 其他公开类型与导出边界
+
+- `ConnectedComponent<T>`：`connect` 的返回类型，保留 ref 类型和自定义静态成员。
+- `ISchemaFieldOptionContext`：`{ components: SchemaReactComponents }`；该兼容类型仍导出，但 `SchemaOptionsContext` 实际使用 `ISchemaFieldReactFactoryOptions`。
+- `ObjectKey`：`string | number | boolean | symbol`。
+
+`Path<T>` 是 TypeScript 工具类型，不是 `@silver-formily/path` 的运行时 `Path` 类。React 入口不再导出 JSON Schema API、reactive-react 的 hooks 或 `IObserverProps` / `IObserverOptions`，仅从 reactive-react 再导出 `observer` 和 `Observer`。内部 `ReactiveField`、`useAttach` 和 portal `render` 帮助函数不是公开入口导出。

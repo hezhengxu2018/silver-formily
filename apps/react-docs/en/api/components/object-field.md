@@ -18,6 +18,11 @@ api/components/object-field.tsx
 
 ## API
 
-Exactly the same as the [API](/en/api/components/field.html#api) of the Field component
+Props follow Field, but the children callback receives `ObjectField`. See the [Field API](/en/api/components/field#api) for shared props.
 
-<!--@include: ./field.md{16,}-->
+```ts
+import type { ObjectField as Model } from '@silver-formily/core'
+import type { IFieldProps, JSXComponent } from '@silver-formily/react'
+
+type Props<D extends JSXComponent, C extends JSXComponent> = IFieldProps<D, C, Model>
+```

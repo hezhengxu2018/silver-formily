@@ -2,6 +2,8 @@
 
 `@silver-formily/react` 没有定义自己的校验协议。字段组件上的 `validator` 属性直接使用 `@silver-formily/core` 的 `FieldValidator`，而 Core 的校验类型最终来自 `@silver-formily/validator`。
 
+## FieldValidator
+
 ## 在 React 包里如何消费
 
 - `IFieldProps` 与 `IFieldFactoryProps` 的 `validator` 属性类型是 `FieldValidator`。

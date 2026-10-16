@@ -24,3 +24,5 @@ api/components/records-scope.tsx
 | ---------- | ---------------------- | ------------------------ | ------ |
 | getRecords | 返回当前记录集合的函数 | ^[Function]`() => any[]` | -      |
 | children   | 子节点                 | `React.ReactNode`        | -      |
+
+公开类型要求 `getRecords` 必填，`children` 可选。运行时回调返回空值时，`$records` getter 回退为 `[]`。

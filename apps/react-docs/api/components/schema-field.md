@@ -12,53 +12,30 @@ SchemaField 组件是专门用于解析 [JSON Schema](https://json-schema.silver
 SchemaField 有两种使用方式，一种是MarkupSchema，一种是JSONSchema。MarkupSchema的渲染将不同类型的 Field 做了分类，在可读性上更好；JSONSchema直接渲染JSON-Schema，更贴近底层实现。
 
 ::: tip 提示
-没有直接可以引用的SchemaField组件，无论是MarkupSchema还是JSONSchema都需要调用`createSchemaField`来获取组件。与 `@formily/react` 不同，`createSchemaField` 只返回一个 `SchemaField` 组件，Markup 子组件以静态属性的形式挂载在它上面（如 `SchemaField.String`）。
+没有直接可以引用的SchemaField组件，无论是MarkupSchema还是JSONSchema都需要调用`createSchemaField`来获取组件。`createSchemaField` 只返回一个 `SchemaField` 组件，Markup 子组件以静态属性的形式挂载在它上面（如 `SchemaField.String`）。
 :::
 
 ::: tip Schema 协议说明
 本页只说明 `@silver-formily/react` 如何消费 Schema。`Schema`、`ISchema`、`x-reactions`、`x-component-props` 等完整协议请查看 [JSON Schema 文档](https://json-schema.silver-formily.org/)。
 :::
 
-### 函数定义
+### 工厂与返回类型
+
+options 参数可省略。使用真实 API 派生返回类型，避免用非泛型 `ComponentType` 简写丢失注册表推断：
 
 ```ts
-interface createSchemaField {
-  (props: ISchemaFieldReactFactoryOptions): SchemaField
-}
+import type {
+  ISchemaFieldReactFactoryOptions,
+  SchemaReactComponents,
+} from '@silver-formily/react'
+import { createSchemaField } from '@silver-formily/react'
+
+type FactoryOptions<C extends SchemaReactComponents> = ISchemaFieldReactFactoryOptions<C>
+type SchemaFieldComponent<C extends SchemaReactComponents> = ReturnType<typeof createSchemaField<C>>
+type MarkupComponent<C extends SchemaReactComponents> = SchemaFieldComponent<C>['Markup']
 ```
 
-### 函数入参
-
-```ts
-interface ISchemaFieldReactFactoryOptions {
-  components?: {
-    [key: string]: JSXComponent // 组件列表
-  }
-  scope?: any // 全局作用域，用于实现协议表达式变量注入
-}
-```
-
-### 函数返回
-
-返回的 `SchemaField` 本身是 JSON-Schema 渲染组件，同时以静态属性挂载了一组 MarkupSchema 渲染组件：
-
-```ts
-interface SchemaField {
-  (props: ISchemaFieldProps): React.ReactNode
-
-  Markup: React.ComponentType<ISchemaMarkupFieldProps> // MarkupSchema 渲染组件
-  String: React.ComponentType<ISchemaTypeFieldProps> // MarkupSchema 渲染组件
-  Object: React.ComponentType<ISchemaTypeFieldProps> // MarkupSchema 渲染组件
-  Array: React.ComponentType<ISchemaTypeFieldProps> // MarkupSchema 渲染组件
-  Boolean: React.ComponentType<ISchemaTypeFieldProps> // MarkupSchema 渲染组件
-  Date: React.ComponentType<ISchemaTypeFieldProps> // MarkupSchema 渲染组件
-  DateTime: React.ComponentType<ISchemaTypeFieldProps> // MarkupSchema 渲染组件
-  Void: React.ComponentType<ISchemaTypeFieldProps> // MarkupSchema 渲染组件
-  Number: React.ComponentType<ISchemaTypeFieldProps> // MarkupSchema 渲染组件
-}
-```
-
-Markup 子组件保留组件注册表的类型推断，`x-component-props` 与 `x-decorator-props` 会分别匹配对应组件的 props。显式指定泛型时，参数顺序为 `<Decorator, Component>`，与 `ISchemaMarkupFieldProps` 一致；例如 `<SchemaField.String<'FormItem', 'Input'> ... />`。通常无需显式传入泛型。
+工厂参数包含 `components?: Components` 与 `scope?: any`。返回组件带有 `Markup`、`String`、`Object`、`Array`、`Boolean`、`Number`、`Date`、`DateTime`、`Void` 静态成员。Markup 保留注册表推断，显式泛型顺序为 `<Decorator, Component>`。各类型静态组件设置自身 schema type，覆盖传入的 `type`。
 
 ## MarkupSchema
 
@@ -78,12 +55,12 @@ api/components/schema-field-with-schema.tsx
 
 ## API
 
-SchemaField 的类型继承自 Field，因此大部分属性可以参考[Field组件的API](/api/components/field.html#api)
+```ts
+import type { ISchemaFieldProps, JSXComponent } from '@silver-formily/react'
 
-SchemaField 额外支持以下属性：
+type SchemaProps<D extends JSXComponent, C extends JSXComponent> = ISchemaFieldProps<D, C>
+```
 
-| 属性       | 说明                       | 类型                                                                | 默认值 |
-| ---------- | -------------------------- | ------------------------------------------------------------------- | ------ |
-| schema     | 字段schema                 | [ISchema](https://json-schema.silver-formily.org/api/types#ischema) | -      |
-| components | 局部组件列表，会与全局合并 | ^[object]`Record<string, JSXComponent>`                             | -      |
-| scope      | 向 Schema 表达式注入变量   | ^[object]`Record<string, unknown>`                                  | -      |
+所有属性均可省略。主要渲染参数为 `schema?: ISchema`、`name?: SchemaKey`、`components?: SchemaReactComponents`、`scope?: any`、`children?: React.ReactNode`。未传 schema 时通过 children 收集 Markup schema；传入 schema 后忽略 Markup children。Markup 节点未提供真值 name 时会生成名称。
+
+局部 components 和 scope 与工厂参数惰性合并，同名时局部值优先。字段配置从 schema 的 `toFieldProps` 生成；虽然声明继承 Core 工厂 props（去掉必填 name），但不代表所有 Field props 都会透传给渲染字段，请将字段配置写入 schema。省略 name 时渲染根 properties，不会隐式创建根字段。

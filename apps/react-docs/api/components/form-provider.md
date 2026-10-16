@@ -21,3 +21,5 @@ api/components/form-provider.tsx
 | 属性 | 说明                                 | 类型                                                    | 默认值 |
 | ---- | ------------------------------------ | ------------------------------------------------------- | ------ |
 | form | Form 实例, `createForm` 函数的返回值 | [Form](https://core.silver-formily.org/api/models/Form) | -      |
+
+`form` 必填，`children?: React.ReactNode` 可选。该组件仅提供上下文与生命周期管理，不渲染 HTML `<form>`，也不添加 submit/reset 事件处理；需要表单 UI 时另外使用相应组件。

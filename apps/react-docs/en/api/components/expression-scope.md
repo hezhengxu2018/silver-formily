@@ -16,7 +16,9 @@ api/components/expression-scope.tsx
 
 ## API
 
-| Attribute | Description                 | Type                  | Default |
-| --------- | --------------------------- | --------------------- | ------- |
-| value     | Value of the injected scope | `Record<string, any>` | -       |
-| children  | Child nodes                 | `React.ReactNode`     | -       |
+| Attribute | Description                 | Type              | Default |
+| --------- | --------------------------- | ----------------- | ------- |
+| value     | Value of the injected scope | `any`             | -       |
+| children  | Child nodes                 | `React.ReactNode` | -       |
+
+`value` and `children` are optional. The scope is lazily merged with the parent scope; local values override matching parent keys.

@@ -4,7 +4,7 @@
 
 As the React implementation of [createArrayField](https://core.silver-formily.org/api/models/Form#createarrayfield) from `@silver-formily/core`, it is a bridge component dedicated to binding a ViewModel to an input control. See [IFieldFactoryProps](https://core.silver-formily.org/api/models/Form#ifieldfactoryprops) for the ArrayField component props.
 
-The name attribute is required. Render props are required to render the list.
+The name attribute is required. Use render props or a custom component to render the list; plain ReactNode children are also accepted.
 
 ## Usage
 
@@ -14,6 +14,11 @@ api/components/array-field.tsx
 
 ## API
 
-Exactly the same as the [API](/en/api/components/field.html#api) of the Field component
+Props follow Field, but the children callback receives `ArrayField`. See the [Field API](/en/api/components/field#api) for shared props.
 
-<!--@include: ./field.md{16,}-->
+```ts
+import type { ArrayField as Model } from '@silver-formily/core'
+import type { IFieldProps, JSXComponent } from '@silver-formily/react'
+
+type Props<D extends JSXComponent, C extends JSXComponent> = IFieldProps<D, C, Model>
+```

@@ -2,9 +2,16 @@
 
 `@silver-formily/react` does not define its own path protocol. All path-related types in the React package directly reuse `@silver-formily/path`.
 
+## FormPathPattern
+
 The most common entry point in this package is `IRecursionFieldProps['basePath']`:
 
 ```ts
+import type { ISchema, SchemaKey } from '@silver-formily/json-schema'
+import type { Pattern as FormPathPattern } from '@silver-formily/path'
+import type { ISchemaFilter, ISchemaMapper } from '@silver-formily/react'
+import type React from 'react'
+
 interface IRecursionFieldProps {
   schema: ISchema
   name?: SchemaKey
