@@ -1,5 +1,20 @@
 # 更新日志
 
+## 6.1.0
+
+### Minor Changes
+
+- 473329b: 统一 Select、TreeSelect、Cascader、Radio.Group、Checkbox.Group、Segmented、Tree、SelectTable 和 PickerSelect 的 optionAsValue 与 optionValueKeys 配置。属性筛选仅作用于输出，标识字段需要显式保留。
+
+  破坏性变更：移除 Tree 的 optionFormatter，请迁移到 optionValueKeys，例如 ['id', 'label']。Tree 的 valueType='path' 保留树形输出，不应用属性筛选。
+
+  补齐对象值回显、只读展示、懒加载和跨页选择；仅 Select 按 options 展开分组选项，其他组件保留同名业务字段。
+
+### Patch Changes
+
+- 07e946d: PreviewText 多选预览（Select、TreeSelect、Cascader 等）在选中项过多时默认换行，不再撑出横向滚动。ElSpace 的 spaceProps 现在默认带 `wrap: true`，可通过全局 previewTextConfig 的 spaceProps 覆盖（如显式传 `wrap: false` 关闭）；同时预览容器增加 `min-width: 0`，保证在 flex 布局中能正常收缩换行。
+- 5c97fa5: QueryFormItemSelectedList 选中项过多时列表不再无限撑高，改用 ElScrollbar 滚动展示；列表区域默认与 QueryFormItem 内容区等高且底部对齐，超出后滚动。新增 `maxHeight` 属性（`number | string`）可显式限制滚动区域最大高度。
+
 ## 6.0.0
 
 ### Major Changes
