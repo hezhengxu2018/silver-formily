@@ -19,7 +19,7 @@ export default function FormItemValidation() {
             return '用户名至少 3 个字符'
         }}
         decorator={[FormItem]}
-        component={[Input]}
+        component={[Input, { placeholder: '请输入至少 3 个字符的用户名' }]}
       />
       <Field
         name="email"
@@ -27,7 +27,7 @@ export default function FormItemValidation() {
         required
         validator="email"
         decorator={[FormItem]}
-        component={[Input]}
+        component={[Input, { placeholder: '请输入邮箱地址' }]}
       />
       <FormButtonGroup>
         <Submit onSubmit={showDemoResult}>提交</Submit>
