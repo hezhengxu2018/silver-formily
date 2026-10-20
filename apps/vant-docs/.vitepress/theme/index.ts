@@ -1,5 +1,5 @@
 import type { MobilePreviewRegistry } from '@silver-formily/docs-toolkit/theme'
-import Theme, { mobilePreviewRegistryKey } from '@silver-formily/docs-toolkit/theme'
+import Theme, { mobilePreviewRegistryKey, withThemeSync } from '@silver-formily/docs-toolkit/theme'
 import DocsDemoRenderer from './components/docs-demo-renderer.vue'
 import MobileDemoSection from './components/mobile-demo-section.vue'
 import { docsDemoRegistryKey } from './docs-demo-registry'
@@ -19,6 +19,10 @@ const demoRegistry = Object.fromEntries(
 
 export default {
   ...Theme,
+  Layout: withThemeSync(Theme.Layout, (isDark, root) => {
+    if (root.classList.contains('van-theme-dark') !== isDark)
+      root.classList.toggle('van-theme-dark', isDark)
+  }),
   enhanceApp(ctx) {
     Theme.enhanceApp?.(ctx)
     ctx.app.component('DocsDemoRenderer', DocsDemoRenderer)

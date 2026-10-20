@@ -102,7 +102,7 @@ catalog:
   vitepress-better-demo-plugin: ^0.7.1
   vitepress-plugin-group-icons: ^1.7.1
   vitepress-plugin-nprogress: ^0.1.1
-  vitepress-theme-element-plus: ^1.4.2
+  vitepress-theme-element-plus: 1.4.3
   vitest: ^4.1.4
   vitest-browser-react: ^2.3.0
   vitest-browser-vue: ^2.0.2
