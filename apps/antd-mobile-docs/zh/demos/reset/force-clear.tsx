@@ -34,7 +34,7 @@ export default function ResetForceClear() {
           decorator={[FormItem]}
           component={[Input]}
         />
-        <FormButtonGroup>
+        <FormButtonGroup layout="horizontal">
           <Reset forceClear validate>
             强制清空
           </Reset>

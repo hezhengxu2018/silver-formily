@@ -52,7 +52,6 @@ export default createDocsConfig({
       noExternal: [
         'antd-mobile',
         'antd-mobile-icons',
-        'react-sticky-box',
       ],
     },
     optimizeDeps: {

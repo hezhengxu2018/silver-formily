@@ -29,3 +29,9 @@ mobileDemo: reset/index.tsx
 | `onClick`                | ^[Function]`(e: MouseEvent) => any`               | 点击回调，返回 `false` 可阻止重置 | -       |
 
 继承 antd-mobile `Button` 的所有配置项（`color`、`size`、`block`、`disabled` 等），请参考 [Button 官方文档](https://mobile.ant.design/zh/components/button)。
+
+### 按钮组配置
+
+在 FormButtonGroup 内，Reset 默认满宽、直角，显式 `block={false}` 可使用内容宽度。形状优先级为 **按钮组显式 shape → Reset 自身 shape → rectangular**，经过自定义组件或 Formily 字段包装后同样有效。
+
+独立使用 Reset 时，保留 antd-mobile Button 的默认宽度和形状。

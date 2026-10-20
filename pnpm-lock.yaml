@@ -27,6 +27,9 @@ catalogs:
     '@eslint/markdown':
       specifier: ^6.6.0
       version: 6.6.0
+    '@floating-ui/dom':
+      specifier: ^1.7.6
+      version: 1.7.6
     '@lucide/vue':
       specifier: ^1.20.0
       version: 1.20.0
@@ -201,9 +204,6 @@ catalogs:
     react-dom:
       specifier: ^19.0.0
       version: 19.3.0
-    react-sticky-box:
-      specifier: ^2.0.5
-      version: 2.0.5
     reka-ui:
       specifier: ^2.9.10
       version: 2.9.10
@@ -1064,12 +1064,12 @@ importers:
 
   packages/antd-mobile:
     dependencies:
+      '@floating-ui/dom':
+        specifier: 'catalog:'
+        version: 1.7.6
       classnames:
         specifier: 'catalog:'
         version: 2.5.1
-      react-sticky-box:
-        specifier: 'catalog:'
-        version: 2.0.5(react@19.3.0)
     devDependencies:
       '@silver-formily/core':
         specifier: workspace:*
@@ -7239,11 +7239,6 @@ packages:
 
   react-is@19.3.0:
     resolution: {integrity: sha512-UpMYezM4v5/18F28aC66AEsjXIgE02kyEMH6yLdgLXu/UTfa1Ntwck/nNLrbqJsEXW7gPb0coNO9FQse9WTovA==}
-
-  react-sticky-box@2.0.5:
-    resolution: {integrity: sha512-JEIuN7Q3razU1NNS0vddC12GXCUkj7T4aCpC9ZSTjgBddFsBdTcN1RhYXFLjCE/KDOQqX2Ix308BcdrqtSJbkQ==}
-    peerDependencies:
-      react: '>=16.8.0'
 
   react@19.3.0:
     resolution: {integrity: sha512-E8LUcbtBWt20bbl2YoHfx4ZDBdxVTfOKtCZn9cDSJ4l6/nuoApcpIBcj47t2wZoVX8g2ZHuMHbiShgCR1T5Sog==}
@@ -14441,10 +14436,6 @@ snapshots:
   react-is@18.3.1: {}
 
   react-is@19.3.0: {}
-
-  react-sticky-box@2.0.5(react@19.3.0):
-    dependencies:
-      react: 19.3.0
 
   react@19.3.0: {}
 

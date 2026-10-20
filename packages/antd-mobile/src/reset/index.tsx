@@ -3,6 +3,7 @@ import type { ButtonProps } from 'antd-mobile/es/components/button'
 import { useParentForm } from '@silver-formily/react'
 import { Button } from 'antd-mobile'
 import React from 'react'
+import { useFormButtonGroup } from '../form-button-group/context'
 
 export interface IResetProps extends IFieldResetOptions, ButtonProps {
   onClick?: (e: React.MouseEvent<Element, MouseEvent>) => any
@@ -11,6 +12,8 @@ export interface IResetProps extends IFieldResetOptions, ButtonProps {
 }
 
 export function Reset({
+  shape,
+  block,
   forceClear,
   validate,
   onResetValidateSuccess,
@@ -18,10 +21,13 @@ export function Reset({
   ...props
 }: IResetProps) {
   const form = useParentForm()
+  const group = useFormButtonGroup()
 
   return (
     <Button
       {...props}
+      block={block ?? (group ? true : undefined)}
+      shape={group?.shape ?? shape ?? (group ? 'rectangular' : undefined)}
       onClick={(e) => {
         if (props.onClick) {
           if (props.onClick(e) === false)

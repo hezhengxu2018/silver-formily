@@ -18,6 +18,18 @@
       {
         "text": "FormItem 表单项",
         "link": "/component/form-item"
+      },
+      {
+        "text": "FormButtonGroup 按钮组",
+        "link": "/component/form-button-group"
+      },
+      {
+        "text": "Submit 提交按钮",
+        "link": "/component/submit"
+      },
+      {
+        "text": "Reset 重置按钮",
+        "link": "/component/reset"
       }
     ]
   },
@@ -39,19 +51,6 @@
       {
         "text": "DatePicker 日期选择器",
         "link": "/component/date-picker"
-      }
-    ]
-  },
-  {
-    "text": "Action 动作组件",
-    "items": [
-      {
-        "text": "Submit 提交按钮",
-        "link": "/component/submit"
-      },
-      {
-        "text": "Reset 重置按钮",
-        "link": "/component/reset"
       }
     ]
   }
