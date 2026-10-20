@@ -34,7 +34,7 @@ export default function ResetBasic() {
           decorator={[FormItem]}
           component={[Input]}
         />
-        <FormButtonGroup>
+        <FormButtonGroup layout="horizontal">
           <Reset>重置</Reset>
           <Submit onSubmit={showDemoResult}>提交</Submit>
         </FormButtonGroup>

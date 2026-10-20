@@ -74,8 +74,8 @@
     }
   },
   "dependencies": {
-    "classnames": "catalog:",
-    "react-sticky-box": "catalog:"
+    "@floating-ui/dom": "catalog:",
+    "classnames": "catalog:"
   },
   "devDependencies": {
     "@silver-formily/core": "workspace:*",

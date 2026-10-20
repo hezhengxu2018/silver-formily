@@ -1,8 +1,9 @@
-import type { ListProps } from 'antd-mobile/es/components/list'
+import type { ListProps, ListRef } from 'antd-mobile/es/components/list'
 import { List } from 'antd-mobile'
 import cls from 'classnames'
-import React, { createContext, useContext } from 'react'
+import React, { createContext, useContext, useRef } from 'react'
 import { usePrefixCls } from '../__builtins__'
+import { FormLayoutRootContext } from './root-context'
 
 export interface IFormLayoutProps extends ListProps {
   prefixCls?: string
@@ -42,6 +43,7 @@ export function useFormLayout() {
 
 export const FormLayout = Object.assign(
   ({ shallow = true, children, prefixCls, className, style, ...props }: IFormLayoutProps) => {
+    const rootRef = useRef<ListRef>(null)
     const deepLayout = useFormDeepLayout()
     const formPrefixCls = usePrefixCls('form', { prefixCls })
     const layoutPrefixCls = usePrefixCls('formily-layout', { prefixCls })
@@ -76,9 +78,11 @@ export const FormLayout = Object.assign(
     }
 
     return (
-      <List className={layoutClassName} style={style} mode={props.mode}>
-        {renderChildren()}
-      </List>
+      <FormLayoutRootContext.Provider value={rootRef}>
+        <List ref={rootRef} className={layoutClassName} style={style} mode={props.mode}>
+          {renderChildren()}
+        </List>
+      </FormLayoutRootContext.Provider>
     )
   },
   { useFormLayout, useFormDeepLayout, useFormShallowLayout },
