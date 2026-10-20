@@ -1,7 +1,7 @@
 import { NavBar } from 'antd-mobile'
 import { DemoSection } from '../_components/demo-section'
 import BasicDemo from './basic'
-import FeedbackDemo from './feedback'
+import SettingsDemo from './settings'
 import VerticalDemo from './vertical'
 import '../_components/demo-page.css'
 
@@ -24,9 +24,9 @@ export default function FormLayoutDemo() {
         </DemoSection>
         <DemoSection
           title="全局配置下发"
-          description="labelWidth、labelAlign、feedbackLayout、size 等属性会批量下发给内部的 FormItem。"
+          description="labelWidth、labelAlign、tooltipLayout 等属性会批量下发给内部的 FormItem。"
         >
-          <FeedbackDemo />
+          <SettingsDemo />
         </DemoSection>
       </div>
     </div>

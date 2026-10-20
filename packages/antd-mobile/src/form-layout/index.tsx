@@ -10,13 +10,12 @@ export interface IFormLayoutProps extends ListProps {
   className?: string
   style?: React.CSSProperties
   layout?: 'vertical' | 'horizontal'
-  labelAlign?: 'right' | 'left' | ('right' | 'left')[]
-  wrapperAlign?: 'right' | 'left' | ('right' | 'left')[]
+  labelAlign?: 'right' | 'left'
+  wrapperAlign?: 'right' | 'left'
   labelWrap?: boolean
-  labelWidth?: number
-  wrapperWidth?: number
+  labelWidth?: number | string
+  wrapperWidth?: number | string
   wrapperWrap?: boolean
-  inset?: boolean
   shallow?: boolean
   bordered?: boolean
   spaceGap?: number
@@ -24,14 +23,11 @@ export interface IFormLayoutProps extends ListProps {
   gridRowGap?: number
   tooltipLayout?: 'icon' | 'text'
   tooltipIcon?: React.ReactNode
-  feedbackLayout?: 'loose' | 'terse' | 'popover' | 'none'
-  size?: 'mini' | 'small' | 'middle' | 'large'
-  __layout__?: boolean
 }
 
 export type IFormLayoutContext = IFormLayoutProps
-export const FormLayoutDeepContext = createContext<IFormLayoutContext>(null as any)
-export const FormLayoutShallowContext = createContext<IFormLayoutContext>(null as any)
+export const FormLayoutDeepContext = createContext<IFormLayoutContext | null>(null)
+export const FormLayoutShallowContext = createContext<IFormLayoutContext | null>(null)
 export const useFormDeepLayout = () => useContext(FormLayoutDeepContext)
 export const useFormShallowLayout = () => useContext(FormLayoutShallowContext)
 export function useFormLayout() {
@@ -51,26 +47,19 @@ export const FormLayout = Object.assign(
       layoutPrefixCls,
       {
         [`${formPrefixCls}-${props.layout}`]: true,
-        [`${formPrefixCls}-${props.size}`]: props.size,
       },
       className,
     )
     const renderChildren = () => {
       const newDeepLayout = {
         ...deepLayout,
-        __layout__: true,
       }
       if (!shallow) {
         Object.assign(newDeepLayout, props)
       }
-      else {
-        if (props.size) {
-          newDeepLayout.size = props.size
-        }
-      }
       return (
         <FormLayoutDeepContext.Provider value={newDeepLayout}>
-          <FormLayoutShallowContext.Provider value={shallow ? props : (null as any)}>
+          <FormLayoutShallowContext.Provider value={shallow ? props : null}>
             {children}
           </FormLayoutShallowContext.Provider>
         </FormLayoutDeepContext.Provider>

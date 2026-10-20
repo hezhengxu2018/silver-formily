@@ -16,27 +16,26 @@ const form = createForm({
   },
 })
 
-export default function FormLayoutFeedback() {
+export default function FormLayoutSettings() {
   return (
     <FormProvider form={form}>
       <FormLayout
-        labelWidth={96}
-        labelAlign="left"
-        feedbackLayout="terse"
-        size="small"
+        labelWidth={120}
+        labelAlign="right"
+        tooltipLayout="text"
       >
         <Field
           name="username"
           title="用户名"
           required
-          decorator={[FormItem]}
-          component={[Input]}
+          decorator={[FormItem, { tooltip: '该信息将用于填写个人资料' }]}
+          component={[Input, { placeholder: '请输入用户名' }]}
         />
         <Field
           name="address"
           title="地址"
-          decorator={[FormItem]}
-          component={[Input]}
+          decorator={[FormItem, { tooltip: '该信息将用于填写个人资料' }]}
+          component={[Input, { placeholder: '请输入地址' }]}
         />
         <FormButtonGroup>
           <Submit onSubmit={showDemoResult}>提交</Submit>
