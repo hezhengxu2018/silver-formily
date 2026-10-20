@@ -1,5 +1,5 @@
 import type { MobilePreviewRegistry } from '@silver-formily/docs-toolkit/theme'
-import Theme, { mobilePreviewRegistryKey } from '@silver-formily/docs-toolkit/theme'
+import Theme, { mobilePreviewRegistryKey, withThemeSync } from '@silver-formily/docs-toolkit/theme'
 import { createReactDemoRegistry } from './react-demo'
 import './style.css'
 
@@ -17,6 +17,9 @@ const demoRegistry = createReactDemoRegistry(
 
 export default {
   ...Theme,
+  Layout: withThemeSync(Theme.Layout, (isDark, root) => {
+    root.dataset.prefersColorScheme = isDark ? 'dark' : 'light'
+  }),
   enhanceApp(ctx) {
     Theme.enhanceApp?.(ctx)
     ctx.app.provide(mobilePreviewRegistryKey, demoRegistry)

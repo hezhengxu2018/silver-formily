@@ -23,3 +23,4 @@ export default {
 }
 
 export { mobilePreviewRegistryKey }
+export { withThemeSync } from './with-theme-sync.js'
