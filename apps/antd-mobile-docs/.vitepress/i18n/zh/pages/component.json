@@ -16,6 +16,10 @@
         "link": "/component/form-layout"
       },
       {
+        "text": "FormGrid 网格布局",
+        "link": "/component/form-grid"
+      },
+      {
         "text": "FormItem 表单项",
         "link": "/component/form-item"
       },

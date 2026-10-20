@@ -28,21 +28,12 @@ function useFormGrid(props: IFormGridProps) {
     rowGap: layout?.gridRowGap ?? 4,
     ...props,
   }
-  return useMemo(() => new Grid(options), [Grid.id(options)])
-}
-
-/**
- * @deprecated
- */
-export function useGridSpan(gridSpan = 1) {
-  return gridSpan
-}
-
-/**
- * @deprecated
- */
-export function useGridColumn(gridSpan = 1) {
-  return gridSpan
+  return useMemo(() => new Grid(options), [
+    Grid.id(options),
+    options.shouldVisible,
+    options.onDigest,
+    options.onInitialized,
+  ])
 }
 
 export const GridColumn = observer(
@@ -93,7 +84,7 @@ export const FormGrid = Object.assign(
       forwardRef: true,
     },
   ),
-  { useGridSpan, GridColumn },
+  { GridColumn },
 )
 
 export default FormGrid
