@@ -4,6 +4,7 @@ import { useFormLayout } from '../form-layout'
 export function useFormItemLayout(props: IFormItemProps) {
   const context = useFormLayout()
   return {
+    colon: props.colon ?? context.colon ?? false,
     layout: props.layout ?? context.layout ?? 'horizontal',
     labelAlign: props.labelAlign ?? context.labelAlign ?? 'left',
     wrapperAlign: props.wrapperAlign ?? context.wrapperAlign ?? 'left',

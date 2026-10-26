@@ -9,6 +9,7 @@ export interface IFormItemProps extends Omit<ListItemProps, 'title' | 'prefix' |
   label?: React.ReactNode
   labelStyle?: React.CSSProperties
   labelAlign?: 'left' | 'right'
+  colon?: boolean
   labelWrap?: boolean
   labelWidth?: number | string
   wrapperWidth?: number | string

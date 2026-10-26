@@ -1,6 +1,7 @@
 import { NavBar } from 'antd-mobile'
 import { DemoSection } from '../_components/demo-section'
 import BasicDemo from './basic'
+import ColonDemo from './colon'
 import SettingsDemo from './settings'
 import VerticalDemo from './vertical'
 import '../_components/demo-page.css'
@@ -21,6 +22,12 @@ export default function FormLayoutDemo() {
           description="layout 属性设为 vertical，标签与控件上下排布，适合窄屏表单。"
         >
           <VerticalDemo />
+        </DemoSection>
+        <DemoSection
+          title="标签冒号"
+          description="FormLayout 开启 colon 后，用户名显示冒号；地址通过 FormItem 的 colon: false 单独关闭。"
+        >
+          <ColonDemo />
         </DemoSection>
         <DemoSection
           title="全局配置下发"

@@ -29,6 +29,7 @@ export function BaseItem(props: IFormItemProps) {
     gridSpan,
     className,
     style,
+    colon: _colon,
     layout: _layout,
     labelAlign: _labelAlign,
     wrapperAlign: _wrapperAlign,
@@ -51,6 +52,7 @@ export function BaseItem(props: IFormItemProps) {
         <FormItemLabel
           prefixCls={prefixCls}
           label={label}
+          colon={resolved.colon}
           labelAlign={labelAlign}
           labelStyle={{ ...labelStyle, ...widthStyle(labelWidth) }}
           asterisk={asterisk}
