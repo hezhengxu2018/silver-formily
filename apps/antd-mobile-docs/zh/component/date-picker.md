@@ -18,7 +18,7 @@ mobileDemo: date-picker/index.tsx
 
 ## 周与季度 ^(new)
 
-`picker` 额外支持 `week`（周）与 `quarter`（季度）精度，值格式自动匹配（如 `2024-09-1w`、`2024-Q1`）。
+`picker` 额外支持 `week`（周）与 `quarter`（季度）精度，值格式自动匹配（如 `2024-W09`、`2024-Q1`）。周使用 ISO 周年与周数（`GGGG-[W]WW`），与选择器的周列保持一致。
 
 <<< @/zh/demos/date-picker/week-quarter.tsx
 

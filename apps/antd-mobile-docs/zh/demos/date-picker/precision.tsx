@@ -18,22 +18,19 @@ export default function DatePickerPrecision() {
         name="month"
         title="选择月份"
         decorator={[FormItem]}
-        component={[DatePicker]}
-        x-component-props={{ picker: 'month' }}
+        component={[DatePicker, { picker: 'month' }]}
       />
       <Field
         name="year"
         title="选择年份"
         decorator={[FormItem]}
-        component={[DatePicker]}
-        x-component-props={{ picker: 'year' }}
+        component={[DatePicker, { picker: 'year' }]}
       />
       <Field
         name="time"
         title="日期时间"
         decorator={[FormItem]}
-        component={[DatePicker]}
-        x-component-props={{ showTime: true }}
+        component={[DatePicker, { showTime: true }]}
       />
       <FormButtonGroup>
         <Submit onSubmit={showDemoResult}>提交</Submit>
