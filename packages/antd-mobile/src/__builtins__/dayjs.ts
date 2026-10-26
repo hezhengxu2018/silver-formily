@@ -2,6 +2,7 @@ import { isArr, isFn } from '@silver-formily/shared'
 import dayjs from 'dayjs'
 import advancedFormat from 'dayjs/plugin/advancedFormat'
 import customParseFormat from 'dayjs/plugin/customParseFormat'
+import isoWeek from 'dayjs/plugin/isoWeek'
 import quarterOfYear from 'dayjs/plugin/quarterOfYear'
 import weekOfYear from 'dayjs/plugin/weekOfYear'
 import weekYear from 'dayjs/plugin/weekYear'
@@ -11,6 +12,7 @@ dayjs.extend(quarterOfYear)
 dayjs.extend(advancedFormat)
 dayjs.extend(weekOfYear)
 dayjs.extend(weekYear)
+dayjs.extend(isoWeek)
 
 export { dayjs }
 

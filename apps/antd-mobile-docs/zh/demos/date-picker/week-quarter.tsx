@@ -5,7 +5,7 @@ import { showDemoResult } from '../shared'
 
 const form = createForm({
   initialValues: {
-    week: '2024-09-1w',
+    week: '2024-W09',
     quarter: '2024-Q1',
   },
 })
@@ -17,15 +17,13 @@ export default function DatePickerWeekQuarter() {
         name="week"
         title="选择周"
         decorator={[FormItem]}
-        component={[DatePicker]}
-        x-component-props={{ picker: 'week' }}
+        component={[DatePicker, { picker: 'week' }]}
       />
       <Field
         name="quarter"
         title="选择季度"
         decorator={[FormItem]}
-        component={[DatePicker]}
-        x-component-props={{ picker: 'quarter' }}
+        component={[DatePicker, { picker: 'quarter' }]}
       />
       <FormButtonGroup>
         <Submit onSubmit={showDemoResult}>提交</Submit>

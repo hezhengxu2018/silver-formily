@@ -3,7 +3,6 @@ import type { PickerValue } from 'antd-mobile/es/components/picker'
 import type { QuarterPrecision } from './date-quarter-utils'
 import { Picker } from 'antd-mobile'
 import { useCallback, useMemo } from 'react'
-import { useCreation } from '../__builtins__'
 import * as quarterUtils from './date-quarter-utils'
 
 const thisYear = new Date().getFullYear()
@@ -29,23 +28,25 @@ export function QuarterDatePicker({
         renderLabel as any,
         props.filter,
       ),
-    [min, max, props.precision, renderLabel],
+    [min, max, props.precision, renderLabel, props.filter],
   )
 
   const onConfirm = useCallback((val: PickerValue[]) => {
     props.onConfirm?.(quarterUtils.convertStringArrayToDate(val))
-  }, [])
+  }, [props.onConfirm])
 
-  const onSelect = useCreation(
-    () => (val: PickerValue[]) => {
+  const onSelect = useCallback(
+    (val: PickerValue[]) => {
       const date = quarterUtils.convertStringArrayToDate(val)
       props.onSelect?.(date)
     },
-    [],
+    [props.onSelect],
   )
 
   return (
     <Picker
+      {...props}
+      defaultValue={undefined}
       columns={columns}
       value={pickerValue}
       onCancel={props.onCancel}
