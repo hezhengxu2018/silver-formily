@@ -43,6 +43,10 @@ export default createDocsConfig({
     },
   },
   vite: {
+    build: {
+      // Keep preview-only CSS in its lazy chunks instead of the site stylesheet.
+      cssCodeSplit: true,
+    },
     esbuild: {
       jsx: 'automatic',
     },

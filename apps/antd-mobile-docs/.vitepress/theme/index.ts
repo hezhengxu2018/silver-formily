@@ -1,7 +1,6 @@
 import type { MobilePreviewRegistry } from '@silver-formily/docs-toolkit/theme'
 import Theme, { mobilePreviewRegistryKey, withThemeSync } from '@silver-formily/docs-toolkit/theme'
 import { createReactDemoRegistry } from './react-demo'
-import './style.css'
 
 if (!import.meta.env.SSR) {
   import('@vant/touch-emulator')

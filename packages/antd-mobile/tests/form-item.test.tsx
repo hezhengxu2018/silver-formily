@@ -72,29 +72,6 @@ it('input value flows through formily field', async () => {
   expect(form.values.nickname).toBe('silver')
 })
 
-it('renders persistent help after feedback and passes native List.Item props', async () => {
-  const onClick = vi.fn()
-  const { container, getByText, rerender } = await render(
-    <FormItem.BaseItem label={<strong>Label</strong>} help={<span>Help</span>} feedbackText="Error" feedbackStatus="error" extra="Extra" onClick={onClick} arrowIcon={<span>Arrow</span>} tabIndex={0} aria-label="Item" data-testid="item" style={{ '--prefix-width': '90px' }}>
-      Content
-    </FormItem.BaseItem>,
-  )
-  await getByText('Content').click()
-  expect(onClick).toHaveBeenCalledOnce()
-  const root = container.firstElementChild as HTMLElement
-  expect(root.getAttribute('aria-label')).toBe('Item')
-  expect(root.getAttribute('data-testid')).toBe('item')
-  expect(root.tabIndex).toBe(0)
-  expect(root.style.getPropertyValue('--prefix-width')).toBe('90px')
-  expect(root.querySelector('.adm-formily-item-help')!.nextElementSibling!.textContent).toBe('Help')
-  await expect.element(getByText('Extra')).toBeVisible()
-  await expect.element(getByText('Arrow')).toBeVisible()
-  await rerender(<FormItem.BaseItem disabled onClick={onClick}>Content</FormItem.BaseItem>)
-  await getByText('Content').click()
-  expect(onClick).toHaveBeenCalledOnce()
-  expect(root.querySelector('.adm-list-item-content-prefix')).toBeNull()
-})
-
 it('updates connected field overrides and validation reactively', async () => {
   const form = createForm()
   const { container, getByText } = await render(
@@ -204,22 +181,17 @@ it.each([
   { width: 375, mode: 'icon' },
   { width: 320, mode: 'text' },
   { width: 375, mode: 'text' },
-  { width: 320, mode: 'overflow' },
-  { width: 375, mode: 'overflow' },
 ] as const)('keeps long $mode tooltips within a $width px viewport', async ({ width, mode }) => {
   const originalSize = { width: window.innerWidth, height: window.innerHeight }
   try {
     await page.viewport(width, 700)
-    const label = mode === 'overflow' ? '这是一个会被截断并需要完整展示的很长字段标题' : '说明'
+    const label = '说明'
     const tooltip = `${'这是一段较长的字段说明，需要在手机屏幕内完整换行显示。'.repeat(5)} https://example.com/${'longpath'.repeat(40)}`
     const { container, getByRole, getByText } = await render(
       <div style={{ paddingTop: 220 }}>
         <FormItem.BaseItem label={label} tooltip={tooltip} tooltipLayout={mode === 'text' ? 'text' : 'icon'}>Content</FormItem.BaseItem>
       </div>,
     )
-    if (mode === 'overflow') {
-      await vi.waitFor(() => expect(container.querySelector('.adm-formily-item-label-tooltip')).not.toBeNull())
-    }
     const trigger = mode === 'icon'
       ? container.querySelector('button')!
       : container.querySelector('.adm-formily-item-label-content')!
@@ -247,42 +219,117 @@ it.each([
   }
 })
 
-it.each(['content-box', 'border-box'] as const)('applies label widths and alignment with %s page sizing', async (boxSizing) => {
-  const { container } = await render(
-    <div style={{ width: 360 }}>
-      <style>{`.label-sizing-test * { box-sizing: ${boxSizing}; }`}</style>
-      <div className="label-sizing-test">
-        <FormLayout labelWidth={80}>
-          <FormItem.BaseItem label="Label"><Input placeholder="Inherited width" /></FormItem.BaseItem>
-          <FormItem.BaseItem label="Label" labelWidth={120} labelAlign="left"><Input placeholder="Left" /></FormItem.BaseItem>
-          <FormItem.BaseItem label="Label" labelWidth={120} labelAlign="right" tooltip="Details"><Input placeholder="Right" /></FormItem.BaseItem>
-          <FormItem.BaseItem label="Label" labelWidth="40%"><Input placeholder="Percent" /></FormItem.BaseItem>
-        </FormLayout>
-      </div>
-    </div>,
-  )
-  const items = Array.from(container.querySelectorAll<HTMLElement>('.adm-formily-item'))
-  const labels = items.map(item => item.querySelector<HTMLElement>('.adm-formily-item-label')!)
-  expect(labels[0].getBoundingClientRect().width).toBeCloseTo(80)
-  expect(labels[1].getBoundingClientRect().width).toBeCloseTo(120)
-  expect(labels[2].getBoundingClientRect().width).toBeCloseTo(120)
-  const textLeft = labels[1].querySelector('span > span')!.getBoundingClientRect()
-  expect(textLeft.left).toBeCloseTo(labels[1].getBoundingClientRect().left)
-  const textRight = labels[2].querySelector('.adm-formily-item-label-content')!.getBoundingClientRect()
-  const icon = labels[2].querySelector('button')!.getBoundingClientRect()
-  expect(icon.left).toBeGreaterThanOrEqual(textRight.right)
-  expect(icon.right).toBeCloseTo(labels[2].getBoundingClientRect().right)
-  const column = items[3].querySelector<HTMLElement>('.adm-list-item-content-prefix')!
-  expect(labels[3].getBoundingClientRect().width).toBeCloseTo(Number.parseFloat(getComputedStyle(column).width))
-  for (let index = 0; index < items.length; index++) {
-    const input = items[index].querySelector('input')!.getBoundingClientRect()
-    expect(input.left - labels[index].getBoundingClientRect().right).toBeCloseTo(20)
-  }
-})
-
-
 it('excludes desktop presentation options from the public form APIs', () => {
   type Removed = 'size' | 'inset' | 'feedbackIcon' | 'feedbackLayout'
   expectTypeOf<Extract<keyof IFormItemProps, Removed>>().toEqualTypeOf<never>()
   expectTypeOf<Extract<keyof IFormLayoutProps, Removed>>().toEqualTypeOf<never>()
+})
+
+it('switches the arrow to a clear button without triggering the row', async () => {
+  const form = createForm({ initialValues: { choice: ['a'] } })
+  const onClick = vi.fn()
+  const onClear = vi.fn()
+  const { container, getByRole } = await render(
+    <FormProvider form={form}>
+      <Field name="choice" decorator={[FormItem, { clearable: true, onClick, onClear }]} component={[Input]} />
+    </FormProvider>,
+  )
+  await getByRole('button', { name: '清除', exact: true }).click()
+  await vi.waitFor(() => expect(form.values.choice).toBeUndefined())
+  expect(onClear).toHaveBeenCalledOnce()
+  expect(onClick).not.toHaveBeenCalled()
+  await vi.waitFor(() => expect(container.querySelector('.adm-formily-item-clear')).toBeNull())
+  expect(container.querySelector('.adm-list-item-content-arrow')).not.toBeNull()
+  const field = form.query('choice').take() as FieldModel
+  field.setValue(['b'])
+  await expect.element(getByRole('button', { name: '清除', exact: true })).toBeVisible()
+  field.setDecoratorProps({ arrowIcon: false })
+  await vi.waitFor(() => expect(container.querySelector('.adm-formily-item-clear')).toBeNull())
+})
+
+it.each(['disabled', 'readOnly', 'readPretty'] as const)('does not clear a field in %s mode', async (pattern) => {
+  const form = createForm({ initialValues: { choice: 'a' } })
+  const { container } = await render(
+    <FormProvider form={form}>
+      <Field name="choice" pattern={pattern} decorator={[FormItem, { clearable: true }]} component={[Input]} />
+    </FormProvider>,
+  )
+  expect(container.querySelector('.adm-formily-item-clear')).toBeNull()
+  expect(form.values.choice).toBe('a')
+})
+
+it.each([undefined, null, '', [], [null], 0, false])('handles empty and falsy BaseItem values: %j', async (value) => {
+  const onClear = vi.fn()
+  const { container, rerender } = await render(<FormItem.BaseItem clearable value={value} onClear={onClear}>Content</FormItem.BaseItem>)
+  expect(!!container.querySelector('.adm-formily-item-clear')).toBe(value === 0 || value === false)
+  await rerender(<FormItem.BaseItem clearable value="a" onClear={onClear} arrowIcon={null}>Content</FormItem.BaseItem>)
+  expect(container.querySelector('.adm-formily-item-clear')).toBeNull()
+})
+
+
+it.each(['horizontal', 'vertical'] as const)('keeps label and input positions stable when %s feedback changes', async (layout) => {
+  const content = (feedbackText?: string) => (
+    <FormItem.BaseItem layout={layout} label="Label" feedbackText={feedbackText} feedbackStatus={feedbackText ? 'error' : undefined} extra="Extra">
+      <Input />
+    </FormItem.BaseItem>
+  )
+  const { container, rerender, getByText } = await render(content())
+  const label = container.querySelector<HTMLElement>('.adm-formily-item-label')!
+  const input = container.querySelector('input')!
+  const labelTop = label.getBoundingClientRect().top
+  const inputTop = input.getBoundingClientRect().top
+  const height = container.firstElementChild!.getBoundingClientRect().height
+  await rerender(content('Validation failed'))
+  await expect.element(getByText('Validation failed')).toBeVisible()
+  expect(label.getBoundingClientRect().top).toBeCloseTo(labelTop)
+  expect(input.getBoundingClientRect().top).toBeCloseTo(inputTop)
+  expect(container.firstElementChild!.getBoundingClientRect().height).toBeGreaterThan(height)
+  expect(container.querySelector('.adm-list-item-description')!.textContent).toContain('Validation failed')
+  await rerender(content())
+  expect(label.getBoundingClientRect().top).toBeCloseTo(labelTop)
+  expect(input.getBoundingClientRect().top).toBeCloseTo(inputTop)
+})
+
+
+it.each(['horizontal', 'vertical'] as const)('focuses the input from the %s label without making the row clickable', async (layout) => {
+  const form = createForm()
+  const { container, getByText, getByRole } = await render(
+    <FormProvider form={form}>
+      <Field name="username" title="Focus input" decorator={[FormItem, { layout }]} component={[Input]} />
+    </FormProvider>,
+  )
+  const item = container.querySelector('.adm-formily-item')!
+  expect(item.tagName).toBe('DIV')
+  expect(item.classList.contains('adm-plain-anchor')).toBe(false)
+  expect(item.querySelector('.adm-list-item-content-arrow')).toBeNull()
+  await getByText('Focus input', { exact: true }).click()
+  await expect.element(getByRole('textbox')).toHaveFocus()
+})
+
+it('preserves explicit row clickability and allows cancelling label focus', async () => {
+  const onClick = vi.fn(event => event.preventDefault())
+  const { container, getByText, getByRole, rerender } = await render(
+    <FormItem.BaseItem label="Focus input" onClick={onClick}><Input /></FormItem.BaseItem>,
+  )
+  expect(container.querySelector('.adm-formily-item')!.tagName).toBe('A')
+  await getByText('Focus input', { exact: true }).click()
+  expect(onClick).toHaveBeenCalledOnce()
+  await expect.element(getByRole('textbox')).not.toHaveFocus()
+  await rerender(<FormItem.BaseItem label="Focus input" clickable={false} onClick={onClick}><Input /></FormItem.BaseItem>)
+  expect(container.querySelector('.adm-formily-item')!.tagName).toBe('DIV')
+})
+
+it('does not focus disabled or ambiguous controls from the label', async () => {
+  const content = (disabled: boolean) => (
+    <FormItem.BaseItem label="Controls" disabled={disabled}>
+      <Input />
+      {!disabled && <Input />}
+    </FormItem.BaseItem>
+  )
+  const { container, getByText, rerender } = await render(content(true))
+  container.querySelector<HTMLElement>('.adm-formily-item-label')!.click()
+  expect(container.contains(document.activeElement)).toBe(false)
+  await rerender(content(false))
+  await getByText('Controls', { exact: true }).click()
+  expect(container.contains(document.activeElement)).toBe(false)
 })

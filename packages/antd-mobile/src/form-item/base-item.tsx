@@ -1,6 +1,8 @@
 import type { IFormItemProps } from './types'
 import { List } from 'antd-mobile'
+import { CloseCircleFill } from 'antd-mobile-icons'
 import cls from 'classnames'
+import { useRef } from 'react'
 import { usePrefixCls } from '../__builtins__'
 import { FormLayoutShallowContext } from '../form-layout'
 import { FormItemFeedback } from './feedback'
@@ -8,9 +10,13 @@ import { FormItemLabel } from './label'
 import { useFormItemLayout, widthStyle } from './layout'
 
 export function BaseItem(props: IFormItemProps) {
+  const contentRef = useRef<HTMLDivElement>(null)
   const resolved = useFormItemLayout(props)
   const {
     children,
+    clearable,
+    value,
+    onClear,
     label,
     labelStyle,
     wrapperStyle,
@@ -54,14 +60,60 @@ export function BaseItem(props: IFormItemProps) {
         />
       )
     : undefined
+  const empty = value === undefined || value === null || value === ''
+    || (Array.isArray(value) && (value.length === 0 || value.every(item => item === null || item === undefined)))
+  const arrowIcon = props.arrowIcon !== undefined
+    ? props.arrowIcon
+    : clearable && !props.disabled && !empty && onClear
+      ? (
+          <button
+            type="button"
+            className={`${prefixCls}-clear`}
+            aria-label="清除"
+            onClick={(event) => {
+              event.stopPropagation()
+              onClear()
+            }}
+          >
+            <CloseCircleFill />
+          </button>
+        )
+      : props.arrow !== undefined ? props.arrow : clearable || props.clickable || props.onClick ? undefined : false
   const control = (
-    <div className={`${prefixCls}-control-content-component`} style={{ ...wrapperStyle, ...widthStyle(resolved.wrapperWidth) }}>
-      <FormLayoutShallowContext.Provider value={null}>{children}</FormLayoutShallowContext.Provider>
+    <div ref={contentRef} className={`${prefixCls}-control-content-component`} style={{ ...wrapperStyle, ...widthStyle(resolved.wrapperWidth) }}>
+      <FormLayoutShallowContext.Provider value={null}>
+        {children}
+      </FormLayoutShallowContext.Provider>
     </div>
   )
   return (
     <List.Item
       {...nativeProps}
+      data-form-item=""
+      arrowIcon={arrowIcon}
+      clickable={props.clickable ?? !!props.onClick}
+      onClick={!props.disabled
+        ? (event) => {
+            const target = event.target
+            if (target instanceof Element && (target.closest('[data-form-item]') !== event.currentTarget.closest('[data-form-item]') || target.closest('button, a[href], input, select, textarea, [role="button"], [data-form-item-trigger], [data-popup-field-ignore]')))
+              return
+            props.onClick?.(event)
+            if (event.defaultPrevented)
+              return
+            const triggers = Array.from(contentRef.current?.querySelectorAll<HTMLElement>('[data-form-item-trigger]') ?? [])
+              .filter(trigger => trigger.closest('[data-form-item]') === event.currentTarget.closest('[data-form-item]'))
+            if (triggers.length === 1) {
+              triggers[0].click()
+              return
+            }
+            if (triggers.length || !(target instanceof Element) || !target.closest(`.${prefixCls}-label`))
+              return
+            const inputs = Array.from(contentRef.current?.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>('input:not([type="hidden"]):not(:disabled), textarea:not(:disabled)') ?? [])
+              .filter(input => input.closest('[data-form-item]') === event.currentTarget.closest('[data-form-item]'))
+            if (inputs.length === 1)
+              inputs[0].focus()
+          }
+        : undefined}
       style={{
         ...(resolved.labelWidth !== undefined && layout === 'horizontal' ? { '--prefix-width': typeof resolved.labelWidth === 'number' ? `${resolved.labelWidth}px` : resolved.labelWidth } : {}),
         ...style,
@@ -76,14 +128,20 @@ export function BaseItem(props: IFormItemProps) {
       title={layout === 'vertical' ? labelNode : undefined}
       prefix={layout === 'horizontal' ? labelNode : undefined}
       extra={extra !== undefined && extra !== null && extra !== false && extra !== '' ? <div className={`${prefixCls}-extra`}>{extra}</div> : undefined}
+      description={feedbackText || (help !== undefined && help !== null && help !== false && help !== '')
+        ? (
+            <>
+              {!!feedbackText && <FormItemFeedback prefixCls={prefixCls} feedbackStatus={feedbackStatus} feedbackText={feedbackText} />}
+              {help !== undefined && help !== null && help !== false && help !== '' && <div className={`${prefixCls}-help-text`}>{help}</div>}
+            </>
+          )
+        : undefined}
       data-grid-span={gridSpan}
     >
       <div className={`${prefixCls}-control`}>
         <div className={`${prefixCls}-control-content`}>
           {control}
         </div>
-        {!!feedbackText && <FormItemFeedback prefixCls={prefixCls} feedbackStatus={feedbackStatus} feedbackText={feedbackText} />}
-        {help !== undefined && help !== null && help !== false && help !== '' && <div className={`${prefixCls}-help-text`}>{help}</div>}
       </div>
     </List.Item>
   )
