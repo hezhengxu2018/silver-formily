@@ -20,7 +20,7 @@ export default function FormGridSchema() {
               grid: {
                 'type': 'void',
                 'x-component': 'FormGrid',
-                'x-component-props': { minColumns: 2, maxColumns: 2 },
+                'x-component-props': { columns: 2 },
                 'properties': {
                   name: {
                     'type': 'string',

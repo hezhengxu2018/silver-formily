@@ -386,9 +386,6 @@ importers:
       '@silver-formily/docs-toolkit':
         specifier: workspace:*
         version: link:../../packages/docs-toolkit
-      '@silver-formily/grid':
-        specifier: workspace:*
-        version: link:../../packages/grid
       '@silver-formily/json-schema':
         specifier: workspace:*
         version: link:../../packages/json-schema
@@ -1074,9 +1071,6 @@ importers:
       '@silver-formily/core':
         specifier: workspace:*
         version: link:../core
-      '@silver-formily/grid':
-        specifier: workspace:*
-        version: link:../grid
       '@silver-formily/json-schema':
         specifier: workspace:*
         version: link:../json-schema

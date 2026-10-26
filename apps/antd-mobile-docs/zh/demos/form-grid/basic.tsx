@@ -9,7 +9,7 @@ const cards = [
 
 export default function FormGridBasic() {
   return (
-    <FormGrid minColumns={2} maxColumns={2} columnGap={8} rowGap={8} style={{ padding: 16 }}>
+    <FormGrid columns={2} columnGap={8} rowGap={8} style={{ padding: 16 }}>
       {cards.map(card => (
         <article key={card.title} style={{ padding: 12, borderRadius: 12, background: 'var(--adm-color-box)' }}>
           <strong>{card.title}</strong>

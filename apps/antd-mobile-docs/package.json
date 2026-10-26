@@ -15,7 +15,6 @@
     "@silver-formily/antd-mobile": "workspace:*",
     "@silver-formily/core": "workspace:*",
     "@silver-formily/docs-toolkit": "workspace:*",
-    "@silver-formily/grid": "workspace:*",
     "@silver-formily/json-schema": "workspace:*",
     "@silver-formily/path": "workspace:*",
     "@silver-formily/react": "workspace:*",

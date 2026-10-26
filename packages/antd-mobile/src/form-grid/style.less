@@ -4,4 +4,14 @@
 
 .@{form-grid-prefix-cls}-layout {
   display: grid;
+
+  > [data-grid-span='-1'] {
+    grid-column: 1 / -1;
+  }
+
+  each(range(24), {
+    > [data-grid-span='@{value}'] {
+      grid-column: span @value / auto;
+    }
+  });
 }
