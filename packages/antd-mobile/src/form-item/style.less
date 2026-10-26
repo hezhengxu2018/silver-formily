@@ -143,9 +143,24 @@
     }
 
     .@{form-item-cls}-label {
+      display: block;
       min-height: @height-base - 10;
       line-height: 1.5715;
       margin-bottom: 10px;
+    }
+
+    .@{form-item-cls}-label-content {
+      max-width: 100%;
+      vertical-align: middle;
+    }
+
+    &.@{form-item-cls}-label-wrap .@{form-item-cls}-label-content {
+      display: inline;
+    }
+
+    .@{form-item-cls}-label-tooltip-icon {
+      display: inline-flex;
+      vertical-align: middle;
     }
   }
 }
