@@ -25,7 +25,7 @@ it('uses field initialValue, opens from the row once and commits native confirma
     </FormProvider>,
   )
   await expect.element(screen.getByRole('button', { name: '水果', exact: true })).toHaveTextContent('梨')
-  expect(document.querySelector('.adm-list-item-content-arrow')).toBeNull()
+  expect(document.querySelector('.adm-list-item-content-arrow')).not.toBeNull()
   await screen.getByText('水果', { exact: true }).click()
   document.querySelector<HTMLButtonElement>('.adm-formily-picker-trigger')!.click()
   await vi.waitFor(() => expect(afterShow).toHaveBeenCalledOnce())
@@ -64,7 +64,7 @@ it('does not expose a row action in disabled mode', async () => {
   const form = createForm({ initialValues: { fruit: ['apple'] } })
   const screen = await render(<FormProvider form={form}><Field name="fruit" title="水果" pattern="disabled" dataSource={columns} decorator={[FormItem]} component={[Picker]} /></FormProvider>)
   await expect.element(screen.getByRole('button', { name: '水果', exact: true })).toBeDisabled()
-  expect(document.querySelector('.adm-list-item-content-arrow')).toBeNull()
+  expect(document.querySelector('.adm-list-item-content-arrow')).not.toBeNull()
   expect(document.querySelector('.adm-picker-popup')).toBeNull()
 })
 
@@ -83,7 +83,7 @@ it('keeps the Picker openable but immutable in readOnly mode', async () => {
   const onChange = vi.fn()
   const screen = await render(<FormProvider form={form}><Field name="fruit" title="水果" pattern="readOnly" dataSource={columns} decorator={[FormItem]} component={[Picker, { displayRender: () => <strong>自定义展示</strong>, onChange }]} /></FormProvider>)
   await expect.element(screen.getByText('自定义展示')).toBeInTheDocument()
-  expect(document.querySelector('.adm-list-item-content-arrow')).toBeNull()
+  expect(document.querySelector('.adm-list-item-content-arrow')).not.toBeNull()
   await screen.getByText('水果', { exact: true }).click()
   await vi.waitFor(() => expect(document.querySelector('.adm-picker-popup')).not.toBeNull())
   expect(document.querySelectorAll('.adm-picker-view-column-item')).toHaveLength(2)
@@ -216,7 +216,7 @@ it('does not choose between multiple marked triggers', async () => {
   )
   await screen.getByText('多个控件', { exact: true }).click()
   expect(onTrigger).not.toHaveBeenCalled()
-  expect(document.querySelector('.adm-list-item-content-arrow')).toBeNull()
+  expect(document.querySelector('.adm-list-item-content-arrow')).not.toBeNull()
 })
 
 it('looks up the current trigger only when the row is clicked', async () => {
@@ -251,4 +251,24 @@ it('reacts to Field disabled and title changes without observing DOM attributes'
   await expect.element(screen.getByRole('button', { name: '选择水果', exact: true })).toBeEnabled()
   await screen.getByText('选择水果', { exact: true }).click()
   await vi.waitFor(() => expect(afterShow).toHaveBeenCalledOnce())
+})
+
+it.each([true, false])('detects the trigger once on mount (present: %s)', async (present) => {
+  await render(
+    <FormItem.BaseItem label="入口">
+      {present && <button type="button" data-form-item-trigger="">打开</button>}
+    </FormItem.BaseItem>,
+  )
+  expect(document.querySelectorAll('.adm-list-item-content-arrow')).toHaveLength(present ? 1 : 0)
+})
+
+it('respects explicit arrow overrides and ignores nested FormItem triggers', async () => {
+  const screen = await render(<FormItem.BaseItem arrowIcon={false}><button type="button" data-form-item-trigger="">打开</button></FormItem.BaseItem>)
+  expect(document.querySelector('.adm-list-item-content-arrow')).toBeNull()
+  await screen.rerender(<FormItem.BaseItem arrow={false}><button type="button" data-form-item-trigger="">打开</button></FormItem.BaseItem>)
+  expect(document.querySelector('.adm-list-item-content-arrow')).toBeNull()
+  await cleanup()
+  await render(<FormItem.BaseItem><FormItem.BaseItem><button type="button" data-form-item-trigger="">打开</button></FormItem.BaseItem></FormItem.BaseItem>)
+  await vi.waitFor(() => expect(document.querySelectorAll('.adm-list-item-content-arrow')).toHaveLength(1))
+  expect(document.querySelector('[data-form-item]')?.querySelector(':scope > .adm-list-item-content > .adm-list-item-content-arrow')).toBeNull()
 })

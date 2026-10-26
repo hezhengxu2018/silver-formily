@@ -4,7 +4,7 @@ mobileDemo: picker/index.tsx
 
 # Picker
 
-`Picker` 是 antd-mobile 多列选择器的 Formily 适配，内部使用声明式原生 `Picker`。点击 FormItem 标签、内容或行内空白打开选择器，右侧箭头可通过 FormItem 的 `clickable` / `arrowIcon` 显式配置；确认后写回数组值，滚动和取消不提交草稿。
+`Picker` 是 antd-mobile 多列选择器的 Formily 适配，内部使用声明式原生 `Picker`。点击 FormItem 标签、内容或行内空白打开选择器，FormItem 检测到 `data-form-item-trigger` 后自动显示右侧箭头，也可通过 `clickable` / `arrowIcon` 显式配置；确认后写回数组值，滚动和取消不提交草稿。
 
 ## 基础使用
 
@@ -53,4 +53,4 @@ mobileDemo: picker/index.tsx
 - FormItem 的 `onClick` 仅处理整行点击，可通过 `event.preventDefault()` 阻止整行打开；Picker 按钮阻止事件冒泡，直接点击时独立打开，不经过 FormItem 的回调。行内其他按钮和链接不会误打开。
 - Picker 的按钮通过 `data-form-item-trigger` 标记为整行点击入口，FormItem 查找唯一标记元素并调用其 `click()`，无需 Context 注册。自定义控件也可在触发按钮上添加此属性；多个标记元素时不自动决定整行入口。没有 FormItem 时，可通过受控底层组件自身入口打开。
 
-FormItem 不监听 DOM 属性变化。禁用状态通过 Field 模型映射到 FormItem 和 Picker；独立使用时由组件 props 控制。
+FormItem 在挂载后检测一次 `data-form-item-trigger` 以决定是否自动展示箭头，不监听内部 DOM 变化。禁用状态通过 Field 模型映射到 FormItem 和 Picker；独立使用时由组件 props 控制。

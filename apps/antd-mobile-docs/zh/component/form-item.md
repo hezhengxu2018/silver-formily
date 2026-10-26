@@ -60,6 +60,8 @@ mobileDemo: form-item/index.tsx
 
 ## 箭头与清除按钮
 
+控件区内存在带 `data-form-item-trigger` 属性的入口时，自动显示右侧箭头，适用于 Picker、DatePicker、CascadePicker 及自定义控件。挂载后检测一次入口，不监听后续 DOM 变化；嵌套 FormItem 的入口只影响其自身。禁用态保留箭头，纯预览无入口时不自动显示。显式 `arrow` / `arrowIcon` 配置优先，例如 `arrowIcon: false` 可隐藏箭头。
+
 设置 `decorator={[FormItem, { clearable: true }]}` 后，字段为空时显示箭头，有值时切换为清除按钮。点击清除会将字段值设为 `undefined`，并触发字段输入流程；不会触发行点击或打开选择器。禁用、只读和阅读态不显示清除按钮。
 
 显式传入 `arrowIcon` 时优先使用自定义内容，包括 `null` 和 `false`。`clearable` 默认关闭。

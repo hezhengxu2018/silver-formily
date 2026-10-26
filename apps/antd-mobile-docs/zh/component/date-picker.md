@@ -22,6 +22,10 @@ mobileDemo: date-picker/index.tsx
 
 <<< @/zh/demos/date-picker/week-quarter.tsx
 
+## 清空
+
+清空能力统一由 FormItem 提供：设置 `decorator={[FormItem, { clearable: true }]}`，或在 Schema 中配置 `x-decorator-props: { clearable: true }`。有值时右侧箭头切换为清除按钮，清空后字段值为 `undefined`，恢复箭头且不会打开选择器。组件本身不提供 `clearable` 属性。
+
 ## API
 
 ### 属性
@@ -32,6 +36,5 @@ mobileDemo: date-picker/index.tsx
 | `format`      | ^[string \| Function]`string \| ((value: Dayjs) => string) \| (string \| ((value: Dayjs) => string))[]` | 值的序列化格式，缺省时按精度自动推导    | -        |
 | `showTime`    | ^[boolean]                                                                                              | 是否包含时间选择                        | `false`  |
 | `placeholder` | ^[string]                                                                                               | 占位提示文案                            | -        |
-| `clearable`   | ^[boolean]                                                                                              | 是否可清空                              | `false`  |
 
 继承 antd-mobile `DatePicker` 的所有配置项（`precision`、`min`、`max`、`filter`、`renderLabel` 等），请参考 [DatePicker 官方文档](https://mobile.ant.design/zh/components/date-picker)。

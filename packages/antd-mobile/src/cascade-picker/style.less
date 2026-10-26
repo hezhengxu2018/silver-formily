@@ -8,22 +8,22 @@
   align-items: center;
   position: relative;
 
-  --placeholder-color: var(--adm-color-light);
+  width: 100%;
 
-  .@{ant-prefix}-virtual-input {
+  &-trigger {
     flex: 1;
+    min-width: 0;
+    min-height: 24px;
+    border: 0;
+    padding: 0;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    text-align: inherit;
+    cursor: pointer;
   }
 
-  &-clear {
-    flex: none;
-    margin-left: 8px;
-    color: var(--placeholder-color);
-    padding: 3px;
-    cursor: pointer;
-
-    .antd-mobile-icon {
-      display: block;
-      font-size: 14px;
-    }
+  &-readonly-popup .adm-picker-view {
+    pointer-events: none;
   }
 }
