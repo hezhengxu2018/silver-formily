@@ -12,6 +12,10 @@
     "text": "Layout 布局组件",
     "items": [
       {
+        "text": "Form 表单",
+        "link": "/component/form"
+      },
+      {
         "text": "FormLayout 表单布局",
         "link": "/component/form-layout"
       },
