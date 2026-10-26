@@ -1,0 +1,24 @@
+@import '../global/global';
+.@{ant-prefix}-formily-picker {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  gap: 8px;
+  &-trigger {
+    border: 0;
+    padding: 0;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    cursor: pointer;
+  }
+  &-trigger {
+    flex: 1;
+    min-width: 0;
+    text-align: inherit;
+    min-height: 24px;
+  }
+  &-readonly-popup .adm-picker-view {
+    pointer-events: none;
+  }
+}

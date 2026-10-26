@@ -61,3 +61,21 @@ export default () => (
 - 函数组件不使用 `defaultProps`（React 19 已移除支持）。
 - `ArrayBase.SortHandle` 仅为图标占位，不提供拖拽排序。
 - 详细约定见本包 `AGENTS.md`。
+
+## createPopup
+
+`createPopup` 是独立的函数式弹层工厂，不依赖 Formily 上下文：
+
+```tsx
+const popup = createPopup(ThemeContent, { closeOnMaskClick: true })
+const result = await popup.prompt({ defaultValue: currentTheme })
+if (result !== null)
+  setTheme(result)
+popup.close()
+```
+
+内容组件通过 `PopupContentCallbacks<TResult>` 声明 `onConfirm(value)` 和 `onCancel()`。
+确认返回结果，取消或主动关闭返回 `null`；同一工厂的活动会话复用同一个 Promise。
+关闭动画结束后自动卸载内容和挂载节点。独立 React root 不会继承调用位置的 Context。
+
+`Picker` 使用 antd-mobile 声明式 `Picker`，支持打开期间刷新数据源且不自动写回字段，由 Formily 管理字段值，点击 FormItem 整行打开并联动右侧箭头。

@@ -53,8 +53,21 @@
         "link": "/component/switch"
       },
       {
+        "text": "Picker 选择器",
+        "link": "/component/picker"
+      },
+      {
         "text": "DatePicker 日期选择器",
         "link": "/component/date-picker"
+      }
+    ]
+  },
+  {
+    "text": "Utilities 工具函数",
+    "items": [
+      {
+        "text": "createPopup 弹层工厂",
+        "link": "/component/create-popup"
       }
     ]
   }

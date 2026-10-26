@@ -2,6 +2,9 @@ import type { ListItemProps } from 'antd-mobile/es/components/list'
 import type React from 'react'
 
 export interface IFormItemProps extends Omit<ListItemProps, 'title' | 'prefix' | 'description'> {
+  clearable?: boolean
+  value?: unknown
+  onClear?: () => void
   className?: string
   label?: React.ReactNode
   labelStyle?: React.CSSProperties

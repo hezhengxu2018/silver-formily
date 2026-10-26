@@ -58,12 +58,23 @@ mobileDemo: form-item/index.tsx
 
 <<< @/zh/demos/form-item/appearance.tsx
 
+## 箭头与清除按钮
+
+设置 `decorator={[FormItem, { clearable: true }]}` 后，字段为空时显示箭头，有值时切换为清除按钮。点击清除会将字段值设为 `undefined`，并触发字段输入流程；不会触发行点击或打开选择器。禁用、只读和阅读态不显示清除按钮。
+
+显式传入 `arrowIcon` 时优先使用自定义内容，包括 `null` 和 `false`。`clearable` 默认关闭。
+
+独立使用 `FormItem.BaseItem` 时，通过 `value` 和 `onClear` 提供受控值及清除处理；作为字段装饰器使用时由 Formily 自动提供，`onClear` 可用作清除后的通知。
+
 ## API
 
 ### 属性
 
 | 属性名          | 类型                                | 描述                                     | 默认值   |
 | --------------- | ----------------------------------- | ---------------------------------------- | -------- |
+| `clearable`     | ^[boolean]                          | 自动切换箭头与清除按钮                   | `false`  |
+| `value`         | ^[unknown]                          | BaseItem 的受控值，装饰器自动读取字段值  | -        |
+| `onClear`       | ^[() => void]                       | 清除回调                                 | -        |
 | `label`         | ^[ReactNode]                        | 标签内容                                 | -        |
 | `labelStyle`    | ^[CSSProperties]                    | 标签样式                                 | -        |
 | `labelAlign`    | ^[enum]`'left' \| 'right'`          | 标签文本对齐方式                         | -        |
