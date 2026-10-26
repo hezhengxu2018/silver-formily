@@ -333,3 +333,26 @@ it('does not focus disabled or ambiguous controls from the label', async () => {
   await getByText('Controls', { exact: true }).click()
   expect(container.contains(document.activeElement)).toBe(false)
 })
+
+it.each(['horizontal', 'vertical'] as const)('inherits and updates colon settings in %s layout', async (layout) => {
+  const content = (colon?: boolean, shallow = true) => (
+    <FormLayout layout={layout} colon={colon} shallow={shallow}>
+      <FormItem.BaseItem label="Inherited">
+        <FormItem.BaseItem label="Nested">Content</FormItem.BaseItem>
+      </FormItem.BaseItem>
+      <FormItem.BaseItem label="Disabled" colon={false}>Content</FormItem.BaseItem>
+      <FormItem.BaseItem label={<strong>Enabled</strong>} colon>Content</FormItem.BaseItem>
+      <FormItem.BaseItem colon>Content</FormItem.BaseItem>
+    </FormLayout>
+  )
+  const { container, rerender } = await render(content())
+  const labels = () => Array.from(container.querySelectorAll('.adm-formily-item-label-content'), node => node.textContent)
+  expect(labels()).toEqual(['Inherited', 'Nested', 'Disabled', 'Enabled:'])
+  await rerender(content(true))
+  expect(labels()).toEqual(['Inherited:', 'Nested', 'Disabled', 'Enabled:'])
+  await rerender(content(true, false))
+  expect(labels()).toEqual(['Inherited:', 'Nested:', 'Disabled', 'Enabled:'])
+  await rerender(content(false, false))
+  expect(labels()).toEqual(['Inherited', 'Nested', 'Disabled', 'Enabled:'])
+  expect(container.querySelector('[colon]')).toBeNull()
+})

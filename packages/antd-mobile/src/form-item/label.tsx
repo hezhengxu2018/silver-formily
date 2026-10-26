@@ -4,10 +4,17 @@ import { ExclamationCircleOutline } from 'antd-mobile-icons'
 import cls from 'classnames'
 import { useOverflow } from './use-overflow'
 
-export function FormItemLabel({ prefixCls, label, labelStyle, labelAlign, asterisk, tooltip, tooltipLayout, tooltipIcon }: Pick<IFormItemProps, 'label' | 'labelStyle' | 'labelAlign' | 'asterisk' | 'tooltip' | 'tooltipLayout' | 'tooltipIcon'> & { prefixCls: string }) {
+export function FormItemLabel({ prefixCls, label, colon, labelStyle, labelAlign, asterisk, tooltip, tooltipLayout, tooltipIcon }: Pick<IFormItemProps, 'label' | 'colon' | 'labelStyle' | 'labelAlign' | 'asterisk' | 'tooltip' | 'tooltipLayout' | 'tooltipIcon'> & { prefixCls: string }) {
   const { containerRef, contentRef, overflow } = useOverflow()
   const textTooltip = overflow || (tooltipLayout === 'text' && !!tooltip)
-  const text = <span className={`${prefixCls}-label-content`} ref={containerRef}><span ref={contentRef}>{label}</span></span>
+  const text = (
+    <span className={`${prefixCls}-label-content`} ref={containerRef}>
+      <span ref={contentRef}>
+        {label}
+        {colon && <span>:</span>}
+      </span>
+    </span>
+  )
   return (
     <div className={cls(`${prefixCls}-label`, `${prefixCls}-label-align-${labelAlign}`, { [`${prefixCls}-label-tooltip`]: textTooltip })} style={labelStyle}>
       {asterisk && <span className={`${prefixCls}-asterisk`}>*</span>}

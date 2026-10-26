@@ -12,6 +12,7 @@ export interface IFormLayoutProps extends ListProps {
   layout?: 'vertical' | 'horizontal'
   labelAlign?: 'right' | 'left'
   wrapperAlign?: 'right' | 'left'
+  colon?: boolean
   labelWrap?: boolean
   labelWidth?: number | string
   wrapperWidth?: number | string
