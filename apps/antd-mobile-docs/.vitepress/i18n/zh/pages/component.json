@@ -61,6 +61,10 @@
         "link": "/component/picker"
       },
       {
+        "text": "CascadePicker 级联选择器",
+        "link": "/component/cascade-picker"
+      },
+      {
         "text": "DatePicker 日期选择器",
         "link": "/component/date-picker"
       }

@@ -2,7 +2,6 @@ import type { DatePickerProps as AntdDatePickerProps } from 'antd-mobile/es/comp
 import type { Dayjs } from 'dayjs'
 import { connect, mapProps, mapReadPretty } from '@silver-formily/react'
 import { DatePicker as AntdDatePicker } from 'antd-mobile'
-import { CloseCircleFill } from 'antd-mobile-icons'
 import cls from 'classnames'
 import { useCallback, useRef, useState } from 'react'
 import { dayjs, dayjsable, formatDayjsValue, usePrefixCls } from '../__builtins__'
@@ -19,7 +18,6 @@ export type IDatePickerProps<PickerProps> = Omit<
   'value' | 'defaultValue' | 'visible' | 'children' | 'onChange'
 > & {
   placeholder?: string
-  clearable?: boolean
   picker?: PickerMode
   format?:
     | string
@@ -83,7 +81,6 @@ export function BaseDatePicker(props: IDatePickerProps<AntdDatePickerProps>) {
     placeholder,
     value,
     format,
-    clearable,
     style,
     className,
     disabled = false,
@@ -151,19 +148,6 @@ export function BaseDatePicker(props: IDatePickerProps<AntdDatePickerProps>) {
       >
         {val ? Array.isArray(val) ? val.join('~') : val : placeholder ?? '请选择'}
       </button>
-      {clearable && value && !disabled && !readOnly && (
-        <button
-          type="button"
-          className={`${prefix}-clear`}
-          aria-label="清空日期"
-          onClick={(event) => {
-            event.stopPropagation()
-            onChange?.('')
-          }}
-        >
-          <CloseCircleFill />
-        </button>
-      )}
     </div>
   )
 }

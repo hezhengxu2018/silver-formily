@@ -67,9 +67,9 @@ it('opens from the row, confirms formatted values and restores focus', async () 
 it.each(['disabled', 'readOnly', 'readPretty'] as const)('protects the value in %s mode', async (pattern) => {
   const form = createForm({ initialValues: { date: '2024-03' } })
   const onChange = vi.fn()
-  const screen = await render(<FormProvider form={form}><Field name="date" title="日期" pattern={pattern} decorator={[FormItem]} component={[DatePicker, { picker: 'month', clearable: true, onChange }]} /></FormProvider>)
+  const screen = await render(<FormProvider form={form}><Field name="date" title="日期" pattern={pattern} decorator={[FormItem, { clearable: true }]} component={[DatePicker, { picker: 'month', onChange }]} /></FormProvider>)
   await expect.element(screen.getByText('2024-03', { exact: true })).toBeInTheDocument()
-  expect(document.querySelector('.adm-formily-date-picker-clear')).toBeNull()
+  expect(document.querySelector('.adm-formily-item-clear')).toBeNull()
   if (pattern === 'readOnly') {
     await screen.getByRole('button', { name: '日期', exact: true }).click()
     await vi.waitFor(() => expect(document.querySelector('.adm-formily-date-picker-readonly-popup')).not.toBeNull())
@@ -87,8 +87,12 @@ it.each(['disabled', 'readOnly', 'readPretty'] as const)('protects the value in 
 
 it('clears without opening the popup', async () => {
   const form = createForm({ initialValues: { date: '2024-03-15' } })
-  const screen = await render(<FormProvider form={form}><Field name="date" title="日期" decorator={[FormItem]} component={[DatePicker, { clearable: true }]} /></FormProvider>)
-  await screen.getByRole('button', { name: '清空日期' }).click()
+  const screen = await render(<FormProvider form={form}><Field name="date" title="日期" decorator={[FormItem, { clearable: true }]} component={[DatePicker]} /></FormProvider>)
+  expect(document.querySelectorAll('.adm-list-item-content-arrow')).toHaveLength(1)
+  expect(document.querySelector('.adm-list-item-content-arrow .adm-formily-item-clear')).not.toBeNull()
+  await screen.getByRole('button', { name: '清除' }).click()
+  await vi.waitFor(() => expect(document.querySelector('.adm-formily-item-clear')).toBeNull())
+  expect(document.querySelectorAll('.adm-list-item-content-arrow')).toHaveLength(1)
   expect(form.values.date).toBeUndefined()
   expect(document.querySelector('.adm-picker-popup')).toBeNull()
 })

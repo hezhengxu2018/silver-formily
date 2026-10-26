@@ -2,7 +2,7 @@ import type { IFormItemProps } from './types'
 import { List } from 'antd-mobile'
 import { CloseCircleFill } from 'antd-mobile-icons'
 import cls from 'classnames'
-import { useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { usePrefixCls } from '../__builtins__'
 import { FormLayoutShallowContext } from '../form-layout'
 import { FormItemFeedback } from './feedback'
@@ -11,6 +11,15 @@ import { useFormItemLayout, widthStyle } from './layout'
 
 export function BaseItem(props: IFormItemProps) {
   const contentRef = useRef<HTMLDivElement>(null)
+  const [hasTrigger, setHasTrigger] = useState(false)
+  useEffect(() => {
+    const content = contentRef.current
+    if (!content)
+      return
+    const item = content.closest('[data-form-item]')
+    setHasTrigger(Array.from(content.querySelectorAll('[data-form-item-trigger]'))
+      .some(trigger => trigger.closest('[data-form-item]') === item))
+  }, [])
   const resolved = useFormItemLayout(props)
   const {
     children,
@@ -80,7 +89,7 @@ export function BaseItem(props: IFormItemProps) {
             <CloseCircleFill />
           </button>
         )
-      : props.arrow !== undefined ? props.arrow : clearable || props.clickable || props.onClick ? undefined : false
+      : props.arrow !== undefined ? props.arrow : hasTrigger ? true : clearable || props.clickable || props.onClick ? undefined : false
   const control = (
     <div ref={contentRef} className={`${prefixCls}-control-content-component`} style={{ ...wrapperStyle, ...widthStyle(resolved.wrapperWidth) }}>
       <FormLayoutShallowContext.Provider value={null}>
