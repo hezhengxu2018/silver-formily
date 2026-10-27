@@ -9,8 +9,11 @@ import type {
   IFormGridProps,
   IGridColumnProps,
   IInputProps,
+  IPasscodeInputProps,
   IPreviewTextProps,
+  ISegmentedProps,
   ISelectorProps,
+  ISliderProps,
   ISpaceProps,
   IStepperProps,
   ISwitchProps,
@@ -75,4 +78,10 @@ it('infers popup results from optional confirmation callbacks', () => {
   }
   expectTypeOf<PopupResult<typeof _Content>>().toEqualTypeOf<number>()
   expectTypeOf<PopupResult<typeof _NoCallback>>().toBeUnknown()
+})
+
+it('exports input control props with upstream value contracts', () => {
+  expectTypeOf<IPasscodeInputProps['value']>().toEqualTypeOf<string | undefined>()
+  expectTypeOf<ISliderProps['value']>().toEqualTypeOf<number | [number, number] | undefined>()
+  expectTypeOf<NonNullable<ISegmentedProps['onChange']>>().parameter(0).toEqualTypeOf<string | number>()
 })

@@ -91,6 +91,18 @@
       {
         "text": "Cascader 级联选择",
         "link": "/component/cascader"
+      },
+      {
+        "text": "PasscodeInput 密码输入框",
+        "link": "/component/passcode-input"
+      },
+      {
+        "text": "Slider 滑动输入条",
+        "link": "/component/slider"
+      },
+      {
+        "text": "Segmented 分段控制器",
+        "link": "/component/segmented"
       }
     ]
   },
