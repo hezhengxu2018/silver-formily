@@ -2,78 +2,61 @@ import type { DataField } from '@silver-formily/core'
 import type {
   CheckListItemProps,
   CheckListProps,
+  CheckListValue,
 } from 'antd-mobile/es/components/check-list'
-import type { IListItemProps } from '../list'
-import { connect, mapProps, useField } from '@silver-formily/react'
+import type { ReactNode } from 'react'
+import { observer, useField } from '@silver-formily/react'
 import { CheckList as AntdCheckList } from 'antd-mobile'
 import cls from 'classnames'
 import { usePrefixCls } from '../__builtins__'
 import './style.less'
 
-export interface ICheckListOption {
-  label: string
-  value: string
-  disabled?: boolean
+export interface ICheckListOption extends Omit<CheckListItemProps, 'children'> {
+  label: ReactNode
 }
 
-interface Props {
-  options?: string[] | ICheckListOption[]
-  layout?: 'vertical' | 'horizontal'
-  layoutBlock?: boolean
+export interface ICheckListProps extends CheckListProps {
+  options?: (CheckListValue | ICheckListOption)[]
 }
 
-export interface ICheckListProps extends Props, CheckListProps {}
+export type ICheckListItemProps = CheckListItemProps
 
-export interface ICheckListItemProps
-  extends Props,
-  CheckListItemProps,
-  IListItemProps {}
-
-export function BaseCheckList({
+const BaseCheckList = observer(({
   className,
   style,
   children,
   options,
   ...props
-}: ICheckListProps) {
+}: ICheckListProps) => {
   const prefixCls = usePrefixCls('formily-check-list')
   const field = useField<DataField>()
   const dataSource = field?.dataSource?.length
     ? field.dataSource
-    : options?.length
-      ? options
-      : []
-
-  if (children && dataSource.length === 0) {
-    // 原生jsx模式
-    return <AntdCheckList {...props}>{children}</AntdCheckList>
-  }
+    : options ?? []
 
   return (
-    <div className={cls(prefixCls, className)} style={style}>
-      <AntdCheckList {...props}>
-        {dataSource.map((item) => {
-          const option
-            = typeof item === 'string' ? { label: item, value: item } : item
-          return (
-            <AntdCheckList.Item
-              {...option}
-              disabled={option.disabled}
-              value={option.value}
-              key={option.value}
-            >
-              {option.label}
-            </AntdCheckList.Item>
-          )
-        })}
-      </AntdCheckList>
-    </div>
+    <AntdCheckList {...props} className={cls(prefixCls, className)} style={style}>
+      {dataSource.length > 0
+        ? dataSource.map((item) => {
+            const { label, ...itemProps }
+              = typeof item === 'object' ? item : { label: item, value: item }
+            return (
+              <AntdCheckList.Item
+                {...itemProps}
+                value={itemProps.value}
+                key={`${typeof itemProps.value}:${itemProps.value}`}
+              >
+                {label}
+              </AntdCheckList.Item>
+            )
+          })
+        : children}
+    </AntdCheckList>
   )
-}
+})
 
-export const CheckList = Object.assign(connect(BaseCheckList, mapProps({})), {
+export const CheckList = Object.assign(BaseCheckList, {
   displayName: 'CheckList',
-  __ANTD_MOBILE_CHECKLIST: true,
   Item: AntdCheckList.Item,
 })
 
