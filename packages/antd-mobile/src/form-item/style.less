@@ -1,6 +1,6 @@
-@import '../global/global';
-
-@form-item-cls: ~'@{ant-prefix}-formily-item';
+@font-size: 17px;
+@height-base: @font-size + 6;
+@form-item-cls: ~'adm-formily-item';
 @form-item-margin-bottom: 0px;
 
 .@{form-item-cls} {
@@ -14,16 +14,16 @@
     min-height: @height-base - 2;
   }
 
-  &.@{ant-prefix}-list-item {
+  &.adm-list-item {
     padding-left: 20px;
     padding-right: 20px;
   }
 
-  .@{ant-prefix}-list-item {
+  .adm-list-item {
     padding-left: 0;
   }
 
-  .@{ant-prefix}-list-item-content {
+  .adm-list-item-content {
     &-prefix {
       box-sizing: content-box;
     }
@@ -35,7 +35,7 @@
     }
   }
 
-  .@{ant-prefix}-list-card {
+  .adm-list-card {
     border-radius: 0;
     margin: 4px;
   }
@@ -116,16 +116,16 @@
 
 .@{form-item-cls} {
   &-layout-horizontal {
-    &.@{ant-prefix}-list-item {
+    &.adm-list-item {
       --align-items: stretch;
     }
 
-    > .@{ant-prefix}-list-item-content > .@{ant-prefix}-list-item-content-prefix {
+    > .adm-list-item-content > .adm-list-item-content-prefix {
       padding-top: 12px;
       padding-bottom: 12px;
     }
 
-    > .@{ant-prefix}-list-item-content > .@{ant-prefix}-list-item-content-extra {
+    > .adm-list-item-content > .adm-list-item-content-extra {
       align-self: center;
     }
   }
@@ -133,7 +133,7 @@
   &-layout-vertical {
     display: block;
 
-    .@{ant-prefix}-list-item-content {
+    .adm-list-item-content {
       align-items: flex-start;
     }
 
@@ -197,7 +197,7 @@
 }
 
 .@{form-item-cls}-asterisk {
-  color: @error-color;
+  color: var(--adm-color-danger);
   user-select: none;
   margin-left: -12px;
   display: inline-block;
@@ -221,17 +221,17 @@
 }
 
 .@{form-item-cls}-error-help {
-  color: @error-color !important;
+  color: var(--adm-color-danger) !important;
   font-size: var(--adm-font-size-main);
 }
 
 .@{form-item-cls}-warning-help {
-  color: @warning-color !important;
+  color: var(--adm-color-warning) !important;
   font-size: var(--adm-font-size-main);
 }
 
 .@{form-item-cls}-success-help {
-  color: @success-color !important;
+  color: var(--adm-color-success) !important;
   font-size: var(--adm-font-size-main);
 }
 
@@ -254,11 +254,11 @@
 
 // Popover is mounted outside the form item, so scope the portal directly.
 .@{form-item-cls}-tooltip {
-  .@{ant-prefix}-popover-inner {
+  .adm-popover-inner {
     max-width: min(320px, calc(100vw - 24px));
   }
 
-  .@{ant-prefix}-popover-inner-content {
+  .adm-popover-inner-content {
     overflow-wrap: anywhere;
   }
 }
@@ -269,7 +269,7 @@
   line-height: 22px;
 }
 
-.@{form-item-cls}-bordered-none > .@{ant-prefix}-list-item-content {
+.@{form-item-cls}-bordered-none > .adm-list-item-content {
   border-top: none;
 }
 
