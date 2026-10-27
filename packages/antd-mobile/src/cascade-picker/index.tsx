@@ -4,8 +4,8 @@ import { isField } from '@silver-formily/core'
 import { connect, mapProps, mapReadPretty } from '@silver-formily/react'
 import { CascadePicker as AntCascadePicker } from 'antd-mobile'
 import cls from 'classnames'
-import { Fragment, useCallback, useRef, useState } from 'react'
-import { usePrefixCls } from '../__builtins__'
+import { Fragment } from 'react'
+import { usePopupPicker, usePrefixCls } from '../__builtins__'
 import { PreviewText } from '../preview-text'
 import './style.less'
 
@@ -54,20 +54,9 @@ function PickerPreview(props: ICascadePickerProps) {
 
 export function BasePicker(props: ICascadePickerProps) {
   const prefix = usePrefixCls('formily-cascade-picker')
-  const button = useRef<HTMLButtonElement>(null)
   const value = props.value ?? []
   const disabled = !!props.disabled
   const readOnly = !!props.readOnly
-  const [visible, setVisible] = useState(false)
-  const active = useRef(false)
-  const latest = useRef({ props, disabled, readOnly })
-  latest.current = { props, disabled, readOnly }
-  const open = useCallback(() => {
-    if (latest.current.disabled || active.current)
-      return
-    active.current = true
-    setVisible(true)
-  }, [])
   const {
     value: _value,
     onChange: _onChange,
@@ -82,6 +71,16 @@ export function BasePicker(props: ICascadePickerProps) {
     afterClose,
     ...nativeProps
   } = props
+  const popup = usePopupPicker({
+    disabled,
+    readOnly,
+    onClose,
+    afterClose,
+    onConfirm: (next: PickerValue[], extend: PickerValueExtend) => {
+      props.onChange?.(next, extend)
+      props.onConfirm?.(next, extend)
+    },
+  })
   const display = displayValue(value, props)
   const empty = value.length === 0 || value.every(item => item === null)
   return (
@@ -90,26 +89,13 @@ export function BasePicker(props: ICascadePickerProps) {
         {...nativeProps}
         popupClassName={cls(props.popupClassName, readOnly && `${prefix}-readonly-popup`)}
         value={value}
-        visible={visible}
-        onConfirm={(next, extend) => {
-          const current = latest.current
-          if (!current.disabled && !current.readOnly) {
-            current.props.onChange?.(next, extend)
-            current.props.onConfirm?.(next, extend)
-          }
-        }}
-        onClose={() => {
-          setVisible(false)
-          onClose?.()
-        }}
-        afterClose={() => {
-          active.current = false
-          button.current?.focus()
-          afterClose?.()
-        }}
+        visible={popup.visible}
+        onConfirm={popup.onConfirm}
+        onClose={popup.onClose}
+        afterClose={popup.afterClose}
       />
       <button
-        ref={button}
+        ref={popup.button}
         type="button"
         className={`${prefix}-trigger`}
         disabled={disabled}
@@ -118,7 +104,7 @@ export function BasePicker(props: ICascadePickerProps) {
         aria-labelledby={props['aria-labelledby']}
         onClick={(event) => {
           event.stopPropagation()
-          open()
+          popup.open()
         }}
       >
         {empty ? props.placeholder ?? '请选择' : display}
@@ -139,7 +125,6 @@ export const CascadePicker = connect(
       'value': isField(field) ? field.value ?? [] : props.value ?? [],
       'disabled': props.disabled || field?.disabled,
       'readOnly': props.readOnly || field?.readOnly,
-      'readPretty': field?.readPretty,
     }),
   ),
 )

@@ -24,13 +24,19 @@ mobileDemo: checkbox/index.tsx
 
 ## API
 
-### 属性
+### Checkbox.Group 属性
 
-| 属性名        | 类型                                                                         | 描述                             | 默认值       |
-| ------------- | ---------------------------------------------------------------------------- | -------------------------------- | ------------ |
-| `options`     | ^[Array]`(string \| { label: string, value: string, disabled?: boolean })[]` | 选项（与字段 dataSource 二选一） | -            |
-| `layout`      | ^[enum]`'vertical' \| 'horizontal'`                                          | 选项排列方向                     | `'vertical'` |
-| `layoutBlock` | ^[boolean]                                                                   | 横向排列时是否占满整行           | `false`      |
+| 属性名        | 类型                                                                                                | 描述                             | 默认值       |
+| ------------- | --------------------------------------------------------------------------------------------------- | -------------------------------- | ------------ |
+| `options`     | ^[Array]`(string \| number \| { label: ReactNode, value: string \| number, disabled?: boolean })[]` | 选项（与字段 dataSource 二选一） | -            |
+| `layout`      | ^[enum]`'vertical' \| 'horizontal'`                                                                 | 选项排列方向                     | `'vertical'` |
+| `layoutBlock` | ^[boolean]                                                                                          | 横向排列时是否占满整行           | `false`      |
+
+### 独立 Checkbox
+
+独立使用绑定布尔字段，将字段 `value` 映射到 `checked`，标签可通过 `children` 传入，未传入时使用字段标题。选项数据源仅由 `Checkbox.Group` 处理。
+
+`Checkbox.Group` 也支持直接传入多个 `Checkbox` 子项，此时子项的 `value` 表示字符串或数字选项值；子项优先于数据源渲染，不再根据子节点类型自动猜测渲染模式。
 
 ### 实例方法
 

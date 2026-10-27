@@ -1,111 +1,78 @@
 import type { DataField } from '@silver-formily/core'
-import type {
-  CheckboxGroupProps,
-  CheckboxProps,
-} from 'antd-mobile/es/components/checkbox'
-import { connect, mapProps, observer, useField } from '@silver-formily/react'
+import type { CheckboxGroupProps, CheckboxProps, CheckboxValue } from 'antd-mobile/es/components/checkbox'
+import type { ReactNode } from 'react'
+import { observer, useField } from '@silver-formily/react'
 import { Checkbox as AntdCheckbox, Space } from 'antd-mobile'
-import React from 'react'
+import { createContext, useContext } from 'react'
 import { useFormLayout } from '../form-layout'
 import './style.less'
 
 export interface ICheckboxOption {
-  label: string
-  value: string
+  label: ReactNode
+  value: CheckboxValue
   disabled?: boolean
 }
 
-interface Props {
-  options?: string[] | ICheckboxOption[]
+export interface ICheckboxProps extends Omit<CheckboxProps, 'value'> {
+  value?: boolean | CheckboxValue
+}
+
+export interface ICheckboxGroupProps extends CheckboxGroupProps {
+  options?: (CheckboxValue | ICheckboxOption)[]
   layout?: 'vertical' | 'horizontal'
   layoutBlock?: boolean
 }
 
-export interface ICheckboxProps extends Props, CheckboxProps {}
+const GroupContext = createContext(false)
 
-export interface ICheckboxGroupProps extends Props, CheckboxGroupProps {}
-
-function isCheckbox(node: any) {
+export const BaseCheckbox = observer(({ value, checked, children, block = true, ...props }: ICheckboxProps) => {
+  const inGroup = useContext(GroupContext)
+  const field = useField<DataField>()
+  const fieldChecked = !inGroup && field ? Boolean(value) : checked
   return (
-    React.isValidElement(node)
-    && !!(node.type as React.ComponentType<any>).displayName?.includes('Checkbox')
+    <AntdCheckbox
+      {...props}
+      block={block}
+      checked={!inGroup && typeof value === 'boolean' ? value : fieldChecked}
+      value={typeof value === 'boolean' ? undefined : value}
+    >
+      {children ?? (!inGroup ? field?.title : undefined)}
+    </AntdCheckbox>
   )
-}
+})
 
-export function BaseCheckbox({
+export const CheckboxGroup = observer(({
   children,
   options,
-  ...rest
-}: ICheckboxProps) {
-  const props = { block: true, ...rest }
-  const layout = useFormLayout()
+  layout,
+  layoutBlock,
+  ...props
+}: ICheckboxGroupProps) => {
   const field = useField<DataField>()
-
-  const dataSource = field?.dataSource?.length
-    ? field.dataSource
-    : options?.length
-      ? options
-      : []
-
-  if (children) {
-    // 线jsx模式
-    if (Array.isArray(children)) {
-      return <>{children}</>
-    }
-    return !isCheckbox(children)
-      ? (
-          <AntdCheckbox {...props}>{children}</AntdCheckbox>
-        )
-      : (
-          (children as any)
-        )
-  }
-
-  if (dataSource.length === 0) {
-    return <AntdCheckbox {...props}>{field?.title || props.value}</AntdCheckbox>
-  }
-
+  const formLayout = useFormLayout()
+  const dataSource = field?.dataSource?.length ? field.dataSource : options ?? []
   return (
-    <Space
-      direction={props.layout ?? layout.layout ?? 'vertical'}
-      block={props.layoutBlock}
-      wrap={true}
-    >
-      {dataSource.map((item) => {
-        const option
-          = typeof item === 'string' ? { label: item, value: item } : item
-        return (
-          <AntdCheckbox
-            {...props}
-            disabled={option.disabled}
-            value={option.value}
-            key={option.value}
-          >
-            {option.label}
-          </AntdCheckbox>
-        )
-      })}
-    </Space>
-  )
-}
-
-export const CheckboxGroup = observer(
-  ({ value, defaultValue, disabled, onChange, ...props }: ICheckboxGroupProps) => {
-    return (
-      <AntdCheckbox.Group
-        value={value}
-        defaultValue={defaultValue}
-        disabled={disabled}
-        onChange={onChange}
-      >
-        <BaseCheckbox {...props} />
+    <GroupContext.Provider value={true}>
+      <AntdCheckbox.Group {...props}>
+        {children ?? (
+          <Space direction={layout ?? formLayout.layout ?? 'vertical'} block={layoutBlock} wrap>
+            {dataSource.map((item) => {
+              const option = typeof item === 'object' ? item : { label: item, value: item }
+              return (
+                <AntdCheckbox key={option.value} value={option.value} disabled={option.disabled} block>
+                  {option.label}
+                </AntdCheckbox>
+              )
+            })}
+          </Space>
+        )}
       </AntdCheckbox.Group>
-    )
-  },
-)
-export const Checkbox = Object.assign(connect(BaseCheckbox, mapProps({})), {
+    </GroupContext.Provider>
+  )
+})
+
+export const Checkbox = Object.assign(BaseCheckbox, {
   displayName: 'Checkbox',
-  __ANTD_MOBILE_CHECKBOX: true,
   Group: Object.assign(CheckboxGroup, { displayName: 'Checkbox.Group' }),
 })
 

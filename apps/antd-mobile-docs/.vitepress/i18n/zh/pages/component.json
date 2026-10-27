@@ -75,6 +75,22 @@
       {
         "text": "DatePicker 日期选择器",
         "link": "/component/date-picker"
+      },
+      {
+        "text": "Stepper 步进器",
+        "link": "/component/stepper"
+      },
+      {
+        "text": "Selector 选择组",
+        "link": "/component/selector"
+      },
+      {
+        "text": "CheckList 可勾选列表",
+        "link": "/component/check-list"
+      },
+      {
+        "text": "Cascader 级联选择",
+        "link": "/component/cascader"
       }
     ]
   },

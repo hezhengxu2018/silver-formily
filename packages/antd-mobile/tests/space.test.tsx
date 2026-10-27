@@ -24,3 +24,15 @@ it.each([
   expect(second.top - first.bottom).toBe(gap)
   expect(second.left).toBe(first.left)
 })
+
+it('preserves caller styles and lets an explicit CSS gap override size', async () => {
+  const { container } = await render(
+    <Space size="large" style={{ 'color': 'rgb(255, 0, 0)', '--gap': '12px' }}>
+      <span>A</span>
+      <span>B</span>
+    </Space>,
+  )
+  const space = container.querySelector<HTMLElement>('.adm-space')!
+  expect(getComputedStyle(space).color).toBe('rgb(255, 0, 0)')
+  expect(space.style.getPropertyValue('--gap')).toBe('12px')
+})

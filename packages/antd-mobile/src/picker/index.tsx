@@ -3,8 +3,8 @@ import { isField } from '@silver-formily/core'
 import { connect, mapProps, mapReadPretty } from '@silver-formily/react'
 import { Picker as AntPicker } from 'antd-mobile'
 import cls from 'classnames'
-import { Fragment, useCallback, useRef, useState } from 'react'
-import { usePrefixCls } from '../__builtins__'
+import { Fragment } from 'react'
+import { usePopupPicker, usePrefixCls } from '../__builtins__'
 import { PreviewText } from '../preview-text'
 import './style.less'
 
@@ -23,7 +23,7 @@ export type IPickerProps = Omit<AntPickerProps, 'value' | 'defaultValue' | 'visi
 function getSelection(value: PickerValue[], columns: PickerColumn[] | ((value: PickerValue[]) => PickerColumn[])) {
   const raw = typeof columns === 'function' ? columns(value) : columns
   const normalized = (raw ?? []).map(column => column.map(item => typeof item === 'string' ? { label: item, value: item } : item))
-  return { columns: normalized, items: value.map((item, index) => normalized[index]?.find(option => option.value === item) ?? null) }
+  return { items: value.map((item, index) => normalized[index]?.find(option => option.value === item) ?? null) }
 }
 
 function displayValue(value: PickerValue[], props: IPickerProps) {
@@ -47,25 +47,15 @@ function PickerPreview(props: IPickerProps) {
 
 function BasePicker(props: IPickerProps) {
   const prefix = usePrefixCls('formily-picker')
-  const button = useRef<HTMLButtonElement>(null)
   const value = props.value ?? []
   const disabled = !!props.disabled
   const readOnly = !!props.readOnly
-  const [visible, setVisible] = useState(false)
-  const active = useRef(false)
-  const latest = useRef({ props, disabled, readOnly })
-  latest.current = { props, disabled, readOnly }
-  const open = useCallback(() => {
-    if (latest.current.disabled || active.current)
-      return
-    active.current = true
-    setVisible(true)
-  }, [])
   const {
     value: _value,
     onChange: _onChange,
     placeholder: _placeholder,
     disabled: _disabled,
+    readOnly: _readOnly,
     displayRender: _displayRender,
     className: _className,
     style: _style,
@@ -74,6 +64,16 @@ function BasePicker(props: IPickerProps) {
     afterClose,
     ...nativeProps
   } = props
+  const popup = usePopupPicker({
+    disabled,
+    readOnly,
+    onClose,
+    afterClose,
+    onConfirm: (next: PickerValue[], extend: PickerValueExtend) => {
+      props.onChange?.(next)
+      props.onConfirm?.(next, extend)
+    },
+  })
   const display = props.displayRender ? props.displayRender(value, props) : displayValue(value, props)
   const empty = value.length === 0 || value.every(item => item === null)
   return (
@@ -82,26 +82,13 @@ function BasePicker(props: IPickerProps) {
         {...nativeProps}
         popupClassName={cls(props.popupClassName, readOnly && `${prefix}-readonly-popup`)}
         value={value}
-        visible={visible}
-        onConfirm={(next, extend) => {
-          const current = latest.current
-          if (!current.disabled && !current.readOnly) {
-            current.props.onChange?.(next)
-            current.props.onConfirm?.(next, extend)
-          }
-        }}
-        onClose={() => {
-          setVisible(false)
-          onClose?.()
-        }}
-        afterClose={() => {
-          active.current = false
-          button.current?.focus()
-          afterClose?.()
-        }}
+        visible={popup.visible}
+        onConfirm={popup.onConfirm}
+        onClose={popup.onClose}
+        afterClose={popup.afterClose}
       />
       <button
-        ref={button}
+        ref={popup.button}
         type="button"
         className={`${prefix}-trigger`}
         disabled={disabled}
@@ -110,7 +97,7 @@ function BasePicker(props: IPickerProps) {
         aria-labelledby={props['aria-labelledby']}
         onClick={(event) => {
           event.stopPropagation()
-          open()
+          popup.open()
         }}
       >
         {empty ? props.placeholder ?? '请选择' : display}
@@ -132,7 +119,6 @@ export const Picker = connect(
       'value': isField(field) ? field.value ?? [] : props.value ?? [],
       'disabled': props.disabled || field?.disabled,
       'readOnly': props.readOnly || field?.readOnly,
-      'readPretty': field?.readPretty,
     }),
   ),
 )
