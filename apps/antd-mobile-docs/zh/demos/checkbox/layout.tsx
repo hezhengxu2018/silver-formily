@@ -12,8 +12,7 @@ export default function CheckboxLayout() {
         name="city"
         title="所在城市"
         decorator={[FormItem]}
-        component={[Checkbox.Group]}
-        x-component-props={{
+        component={[Checkbox.Group, {
           options: [
             { label: '杭州', value: 'hangzhou' },
             { label: '上海', value: 'shanghai' },
@@ -21,7 +20,7 @@ export default function CheckboxLayout() {
           ],
           layout: 'horizontal',
           layoutBlock: true,
-        }}
+        }]}
       />
       <Field
         name="hobbies"
