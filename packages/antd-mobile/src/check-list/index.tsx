@@ -38,7 +38,7 @@ export function BaseCheckList({
 }: ICheckListProps) {
   const prefixCls = usePrefixCls('formily-check-list')
   const field = useField<DataField>()
-  const dataSource = field?.dataSource.length
+  const dataSource = field?.dataSource?.length
     ? field.dataSource
     : options?.length
       ? options

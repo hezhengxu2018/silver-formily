@@ -3,13 +3,12 @@ import type { Dayjs } from 'dayjs'
 import { connect, mapProps, mapReadPretty } from '@silver-formily/react'
 import { DatePicker as AntdDatePicker } from 'antd-mobile'
 import cls from 'classnames'
-import { useCallback, useRef, useState } from 'react'
-import { dayjs, dayjsable, formatDayjsValue, usePrefixCls } from '../__builtins__'
+import { dayjs, dayjsable, formatDayjsValue, usePopupPicker, usePrefixCls } from '../__builtins__'
 import { PreviewText } from '../preview-text'
 import QuarterDatePicker from './quarter-picker'
 import './style.less'
 
-type DateValue = string | Date | Dayjs | Dayjs[]
+type DateValue = string | Date | Dayjs
 
 type PickerMode = 'date' | 'week' | 'month' | 'quarter' | 'year'
 
@@ -22,15 +21,12 @@ export type IDatePickerProps<PickerProps> = Omit<
   format?:
     | string
     | ((value: Dayjs) => string)
-    | (string | ((value: Dayjs) => string)[])
   showTime?: boolean
   value?: DateValue
   onChange?: (value: DateValue) => void
   disabled?: boolean
   readOnly?: boolean
 }
-
-export type RangePickerProps = Record<string, never>
 
 function mapDateFormat<T>() {
   const getDefaultFormat = (props: IDatePickerProps<T>) => {
@@ -93,17 +89,16 @@ export function BaseDatePicker(props: IDatePickerProps<AntdDatePickerProps>) {
     afterClose,
     ...dateProps
   } = mapDateFormat<AntdDatePickerProps>()(props)
-  const button = useRef<HTMLButtonElement>(null)
-  const [visible, setVisible] = useState(false)
-  const active = useRef(false)
-  const latest = useRef({ disabled, readOnly, onChange, onConfirm })
-  latest.current = { disabled, readOnly, onChange, onConfirm }
-  const open = useCallback(() => {
-    if (latest.current.disabled || active.current)
-      return
-    active.current = true
-    setVisible(true)
-  }, [])
+  const popup = usePopupPicker({
+    disabled,
+    readOnly,
+    onClose,
+    afterClose,
+    onConfirm: (next: Date) => {
+      onChange?.(next)
+      onConfirm?.(next)
+    },
+  })
   const precision = picker ?? _precision ?? (showTime ? 'second' : 'day')
   const NativePicker = precision === 'quarter' ? QuarterDatePicker : AntdDatePicker
   const val = formatDayjsValue(value, format, '')
@@ -115,26 +110,13 @@ export function BaseDatePicker(props: IDatePickerProps<AntdDatePickerProps>) {
         className={cls(readOnly && `${prefix}-readonly-popup`)}
         precision={precision === 'date' ? 'day' : precision as AntdDatePickerProps['precision']}
         value={(value as Dayjs)?.toDate()}
-        visible={visible}
-        onConfirm={(next) => {
-          const current = latest.current
-          if (!current.disabled && !current.readOnly) {
-            current.onChange?.(next)
-            current.onConfirm?.(next)
-          }
-        }}
-        onClose={() => {
-          setVisible(false)
-          onClose?.()
-        }}
-        afterClose={() => {
-          active.current = false
-          button.current?.focus()
-          afterClose?.()
-        }}
+        visible={popup.visible}
+        onConfirm={popup.onConfirm}
+        onClose={popup.onClose}
+        afterClose={popup.afterClose}
       />
       <button
-        ref={button}
+        ref={popup.button}
         type="button"
         className={`${prefix}-trigger`}
         disabled={disabled}
@@ -143,10 +125,10 @@ export function BaseDatePicker(props: IDatePickerProps<AntdDatePickerProps>) {
         aria-labelledby={props['aria-labelledby']}
         onClick={(event) => {
           event.stopPropagation()
-          open()
+          popup.open()
         }}
       >
-        {val ? Array.isArray(val) ? val.join('~') : val : placeholder ?? '请选择'}
+        {val || (placeholder ?? '请选择')}
       </button>
     </div>
   )

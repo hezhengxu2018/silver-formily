@@ -17,7 +17,7 @@ function getNumberSize(size?: ISpaceProps['size']) {
   return typeof size === 'string' ? spaceSize[size as keyof typeof spaceSize] : size || 0
 }
 
-export function Space({ direction, size, ...props }: ISpaceProps) {
+export function Space({ direction, size, style, ...props }: ISpaceProps) {
   const layout = useFormLayout()
   const numberSize = getNumberSize(size ?? 'small')
   return React.createElement(AntdSpace, {
@@ -25,6 +25,7 @@ export function Space({ direction, size, ...props }: ISpaceProps) {
     ...props,
     style: {
       '--gap': `${numberSize}px`,
+      ...style,
     },
   })
 }
