@@ -2,7 +2,6 @@ import type { ArrayField } from '@silver-formily/core'
 import type { Schema } from '@silver-formily/json-schema'
 import type { JSXComponent } from '@silver-formily/react'
 import type { ButtonProps } from 'antd-mobile/es/components/button'
-import type { HTMLProps } from 'react'
 import {
   RecordScope,
   RecordsScope,
@@ -25,12 +24,14 @@ import './style.less'
 
 export * from './utils'
 
-export type IconProps = HTMLProps<any> & React.SVGProps<SVGSVGElement>
+export interface IArrayBaseOperationProps extends React.HTMLAttributes<HTMLSpanElement> {
+  index?: number
+}
 
 export interface IArrayBaseAdditionProps extends ButtonProps {
   title?: string
   method?: 'push' | 'unshift'
-  defaultValue?: any
+  defaultValue?: unknown
 }
 
 export interface IArrayBaseContext {
@@ -41,23 +42,12 @@ export interface IArrayBaseContext {
 
 export interface IArrayBaseItemProps {
   index: number
-  record: any
+  record: unknown
   children?: React.ReactNode
 }
 
-export type ArrayBaseMixins = {
-  Addition?: (props: IArrayBaseAdditionProps) => React.ReactNode
-  Remove?: (props: IconProps & { index?: number }) => React.ReactNode
-  MoveUp?: (props: IconProps & { index?: number }) => React.ReactNode
-  MoveDown?: (props: IconProps & { index?: number }) => React.ReactNode
-  SortHandle?: (props: IconProps & { index?: number }) => React.ReactNode
-  Copy?: (props: IconProps & { index?: number }) => React.ReactNode
-  Index?: (props: React.HTMLAttributes<HTMLSpanElement>) => React.ReactNode
-  Empty?: (props: { children?: React.ReactNode }) => React.ReactNode
-  useArray?: () => IArrayBaseContext
-  useIndex?: () => number
-  useRecord?: () => any
-}
+export type ArrayBaseMixins = Pick<typeof ArrayBase, | 'Addition' | 'Remove' | 'MoveUp' | 'MoveDown' | 'SortHandle' | 'Copy'
+  | 'Index' | 'Empty' | 'useArray' | 'useIndex' | 'useRecord'>
 
 export interface IArrayBaseProps {
   disabled?: boolean
@@ -69,9 +59,9 @@ export interface IArrayBaseProps {
   children?: React.ReactNode
 }
 
-const ArrayBaseContext = createContext<IArrayBaseContext>(null as any)
+const ArrayBaseContext = createContext<IArrayBaseContext | null>(null)
 
-const ItemContext = createContext<IArrayBaseItemProps>(null as any)
+const ItemContext = createContext<IArrayBaseItemProps | null>(null)
 
 function CopyOutlined(
   props: React.HTMLAttributes<HTMLSpanElement>
@@ -94,7 +84,7 @@ function CopyOutlined(
   )
 }
 
-function takeRecord(val: any, index?: number) {
+function takeRecord(val: unknown, index?: number): unknown {
   return typeof val === 'function' ? val(index) : val
 }
 
@@ -107,11 +97,11 @@ function useIndex(index?: number) {
   return ctx ? ctx.index : index ?? 0
 }
 
-function useRecord(record?: number) {
+function useRecord(record?: unknown) {
   const ctx = useContext(ItemContext)
   return takeRecord(ctx ? ctx.record : record, ctx?.index)
 }
-function getSchemaDefaultValue(schema?: Schema): any {
+function getSchemaDefaultValue(schema?: Schema): unknown {
   if (schema?.type === 'array')
     return []
   if (schema?.type === 'object')
@@ -125,7 +115,7 @@ function getSchemaDefaultValue(schema?: Schema): any {
   }
 }
 
-function getDefaultValue(defaultValue: any, schema: Schema) {
+function getDefaultValue(defaultValue: unknown, schema: Schema) {
   if (isValid(defaultValue))
     return clone(defaultValue)
   if (Array.isArray(schema?.items))
@@ -133,7 +123,7 @@ function getDefaultValue(defaultValue: any, schema: Schema) {
   return getSchemaDefaultValue(schema?.items)
 }
 
-function SortHandle(props: any) {
+function SortHandle(props: IArrayBaseOperationProps) {
   const prefixCls = usePrefixCls('formily-array-base')
   return (
     <span
@@ -171,7 +161,7 @@ export const ArrayBase = Object.assign(
       )
     },
 
-    SortHandle: (props: IconProps & { index?: number }) => {
+    SortHandle: (props: IArrayBaseOperationProps) => {
       const array = useArray()
       if (!array)
         return null
@@ -238,7 +228,7 @@ export const ArrayBase = Object.assign(
       )
     },
 
-    Copy: React.forwardRef<HTMLSpanElement, IconProps & { index?: number }>((props, ref) => {
+    Copy: React.forwardRef<HTMLSpanElement, IArrayBaseOperationProps>((props, ref) => {
       const self = useField()
       const array = useArray()
       const index = useIndex(props.index)
@@ -275,7 +265,7 @@ export const ArrayBase = Object.assign(
       )
     }),
 
-    Remove: React.forwardRef<HTMLSpanElement, IconProps & { index?: number }>((props, ref) => {
+    Remove: React.forwardRef<HTMLSpanElement, IArrayBaseOperationProps>((props, ref) => {
       const index = useIndex(props.index)
       const array = useArray()
       const prefixCls = usePrefixCls('formily-array-base')
@@ -304,7 +294,7 @@ export const ArrayBase = Object.assign(
       )
     }),
 
-    MoveDown: React.forwardRef<HTMLSpanElement, IconProps & { index?: number }>((props, ref) => {
+    MoveDown: React.forwardRef<HTMLSpanElement, IArrayBaseOperationProps>((props, ref) => {
       const index = useIndex(props.index)
       const array = useArray()
       const prefixCls = usePrefixCls('formily-array-base')
@@ -333,7 +323,7 @@ export const ArrayBase = Object.assign(
       )
     }),
 
-    MoveUp: React.forwardRef<HTMLSpanElement, IconProps & { index?: number }>((props, ref) => {
+    MoveUp: React.forwardRef<HTMLSpanElement, IArrayBaseOperationProps>((props, ref) => {
       const index = useIndex(props.index)
       const array = useArray()
       const prefixCls = usePrefixCls('formily-array-base')
@@ -370,19 +360,19 @@ export const ArrayBase = Object.assign(
 )
 
 function mixinArrayBase<T extends JSXComponent>(target: T): T & ArrayBaseMixins {
-  const record = target as any
-  record.Index = ArrayBase.Index
-  record.Empty = ArrayBase.Empty
-  record.SortHandle = ArrayBase.SortHandle
-  record.Addition = ArrayBase.Addition
-  record.Remove = ArrayBase.Remove
-  record.Copy = ArrayBase.Copy
-  record.MoveDown = ArrayBase.MoveDown
-  record.MoveUp = ArrayBase.MoveUp
-  record.useArray = ArrayBase.useArray
-  record.useIndex = ArrayBase.useIndex
-  record.useRecord = ArrayBase.useRecord
-  return record as T & ArrayBaseMixins
+  return Object.assign(target, {
+    Index: ArrayBase.Index,
+    Empty: ArrayBase.Empty,
+    SortHandle: ArrayBase.SortHandle,
+    Addition: ArrayBase.Addition,
+    Remove: ArrayBase.Remove,
+    Copy: ArrayBase.Copy,
+    MoveDown: ArrayBase.MoveDown,
+    MoveUp: ArrayBase.MoveUp,
+    useArray: ArrayBase.useArray,
+    useIndex: ArrayBase.useIndex,
+    useRecord: ArrayBase.useRecord,
+  })
 }
 
 export default ArrayBase

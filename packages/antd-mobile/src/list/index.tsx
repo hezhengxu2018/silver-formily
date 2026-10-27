@@ -73,10 +73,13 @@ export const List = Object.assign(
           ? schema.items[index] || schema.items[0]
           : schema.items
 
+        if (!items)
+          return null
+
         return (
           <ArrayBase.Item key={index} index={index} record={item}>
             <RecursionField
-              schema={items as any}
+              schema={items}
               name={index}
               filterProperties={(sc) => {
                 return !isArrayItemComponent(

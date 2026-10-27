@@ -9,12 +9,8 @@ import { usePopupPicker, usePrefixCls } from '../__builtins__'
 import { PreviewText } from '../preview-text'
 import './style.less'
 
-export type ICascadePickerProps = Omit<AntCascadePickerProps, 'value' | 'defaultValue' | 'visible' | 'children'> & {
-  value?: PickerValue[]
-  onChange?: (value: PickerValue[], extend: PickerValueExtend) => void
-  onConfirm?: (value: PickerValue[], extend: PickerValueExtend) => void
-  onCancel?: () => void
-  onClose?: () => void
+export interface ICascadePickerProps extends Omit<AntCascadePickerProps, 'defaultValue' | 'visible' | 'children'> {
+  onChange?: AntCascadePickerProps['onConfirm']
   placeholder?: React.ReactNode
   disabled?: boolean
   readOnly?: boolean

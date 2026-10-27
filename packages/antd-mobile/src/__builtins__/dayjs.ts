@@ -1,4 +1,5 @@
-import { isArr, isFn } from '@silver-formily/shared'
+import type { Dayjs } from 'dayjs'
+import type { ReactNode } from 'react'
 import dayjs from 'dayjs'
 import advancedFormat from 'dayjs/plugin/advancedFormat'
 import customParseFormat from 'dayjs/plugin/customParseFormat'
@@ -16,41 +17,22 @@ dayjs.extend(isoWeek)
 
 export { dayjs }
 
-export function dayjsable(value: any, format?: string) {
-  return Array.isArray(value)
-    ? value.map(val => dayjs(val, format))
-    : value
-      ? dayjs(value, format)
-      : value
+type DateInput = string | Date | Dayjs
+type DateFormat = string | ((value: Dayjs) => string)
+
+export function dayjsable(value: DateInput | undefined, format?: string): Dayjs | undefined {
+  return value ? dayjs(value, format) : undefined
 }
 
-export function formatDayjsValue(value: any, format: any, placeholder?: string): string | string[] {
-  const formatDate = (date: any, format: any, i = 0) => {
-    if (!date)
-      return placeholder
-    if (!dayjs.isDayjs(date)) {
-      date = dayjs(date)
-    }
-    if (isArr(format)) {
-      const _format = format[i]
-      if (isFn(_format)) {
-        return _format(date)
-      }
-      return date?.format ? date.format(_format) : date
-    }
-    else {
-      if (isFn(format)) {
-        return format(date)
-      }
-      return date?.format ? date.format(format) : date
-    }
-  }
-  if (isArr(value)) {
-    return value.map((val, index) => {
-      return formatDate(val, format, index)
-    })
-  }
-  else {
-    return value ? formatDate(value, format) : value || placeholder
-  }
+export function formatDayjsValue(value: DateInput | undefined, format?: DateFormat): string | undefined
+export function formatDayjsValue<P extends ReactNode>(value: DateInput | undefined, format: DateFormat | undefined, placeholder: P): string | P
+export function formatDayjsValue(
+  value: DateInput | undefined,
+  format?: DateFormat,
+  placeholder?: ReactNode,
+): ReactNode {
+  if (!value)
+    return placeholder
+  const parsed = dayjs.isDayjs(value) ? value : dayjs(value)
+  return typeof format === 'function' ? format(parsed) : parsed.format(format)
 }

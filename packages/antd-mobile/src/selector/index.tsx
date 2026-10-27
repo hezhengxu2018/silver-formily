@@ -1,20 +1,24 @@
 import type { Field } from '@silver-formily/core'
-import type { SelectorProps } from 'antd-mobile/es/components/selector'
+import type { SelectorOption, SelectorProps } from 'antd-mobile/es/components/selector'
 import { isVoidField } from '@silver-formily/core'
 import { observer, useField } from '@silver-formily/react'
 import { Selector as AntdSelector, Loading } from 'antd-mobile'
 import { PreviewText } from '../preview-text'
 
-export const Selector = observer((props: SelectorProps<any>) => {
+export type ISelectorValue = string | number
+export type ISelectorOption<V extends ISelectorValue = ISelectorValue> = SelectorOption<V>
+export type ISelectorProps<V extends ISelectorValue = ISelectorValue> = SelectorProps<V>
+
+export const Selector = observer(<V extends ISelectorValue,>(props: ISelectorProps<V>) => {
   const field = useField<Field>()
 
-  const dataSource: any[] = field?.dataSource?.length
+  const dataSource: ISelectorOption<V>[] = field?.dataSource?.length
     ? field.dataSource
     : props?.options?.length
       ? props.options
       : []
 
-  if (field.loading) {
+  if (field?.loading) {
     return <Loading />
   }
 
@@ -24,6 +28,5 @@ export const Selector = observer((props: SelectorProps<any>) => {
 
   return <AntdSelector {...props} options={dataSource} />
 })
-
 
 export default Selector

@@ -5,6 +5,7 @@ import { useFormLayout } from '../form-layout'
 import './style.less'
 
 export interface IFormGridProps {
+  children?: React.ReactNode
   columns?: number
   columnGap?: number
   rowGap?: number
@@ -14,6 +15,7 @@ export interface IFormGridProps {
 }
 
 export interface IGridColumnProps {
+  children?: React.ReactNode
   gridSpan?: number
   style?: React.CSSProperties
   className?: string
@@ -23,7 +25,7 @@ function normalizeGap(gap: number | undefined, fallback: number) {
   return typeof gap === 'number' && Number.isFinite(gap) && gap >= 0 ? gap : fallback
 }
 
-export function GridColumn({ gridSpan = 1, children, ...props }: React.PropsWithChildren<IGridColumnProps>) {
+export function GridColumn({ gridSpan = 1, children, ...props }: IGridColumnProps) {
   return (
     <div
       {...props}
@@ -39,7 +41,7 @@ export function GridColumn({ gridSpan = 1, children, ...props }: React.PropsWith
 }
 
 export const FormGrid = Object.assign(
-  ({ columns = 1, columnGap, rowGap, children, className, style, ...props }: React.PropsWithChildren<IFormGridProps>) => {
+  ({ columns = 1, columnGap, rowGap, children, className, style, ...props }: IFormGridProps) => {
     const layout = useFormLayout()
     const prefixCls = usePrefixCls('formily-grid', props)
     const count = Number.isFinite(columns) ? Math.max(1, Math.round(columns)) : 1

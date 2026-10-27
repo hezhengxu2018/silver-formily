@@ -2,12 +2,12 @@ import type { IFormFeedback } from '@silver-formily/core'
 import type { ButtonProps, ButtonRef } from 'antd-mobile/es/components/button'
 import { observer, useParentForm } from '@silver-formily/react'
 import { Button } from 'antd-mobile'
-import React, { forwardRef, useRef } from 'react'
+import { forwardRef, useRef } from 'react'
 
 import { useFormButtonGroup } from '../form-button-group/context'
 
 export interface ISubmitProps extends Omit<ButtonProps, 'type' | 'loading' | 'onClick'> {
-  onClick?: (e: React.MouseEvent<HTMLButtonElement>) => any
+  onClick?: (event: Parameters<NonNullable<ButtonProps['onClick']>>[0]) => ReturnType<NonNullable<ButtonProps['onClick']>> | boolean
   onSubmit?: (values: any) => any
   onSubmitSuccess?: (payload: any) => void
   onSubmitFailed?: (feedbacks: IFormFeedback[]) => void

@@ -11,12 +11,14 @@ import cls from 'classnames'
 import { usePrefixCls } from '../__builtins__'
 import './style.less'
 
+export type ICheckListValue = CheckListValue
+
 export interface ICheckListOption extends Omit<CheckListItemProps, 'children'> {
   label: ReactNode
 }
 
 export interface ICheckListProps extends CheckListProps {
-  options?: (CheckListValue | ICheckListOption)[]
+  options?: (ICheckListValue | ICheckListOption)[]
 }
 
 export type ICheckListItemProps = CheckListItemProps
@@ -30,8 +32,12 @@ const BaseCheckList = observer(({
 }: ICheckListProps) => {
   const prefixCls = usePrefixCls('formily-check-list')
   const field = useField<DataField>()
-  const dataSource = field?.dataSource?.length
-    ? field.dataSource
+  const dataSource: (ICheckListValue | ICheckListOption)[] = field?.dataSource?.length
+    ? field.dataSource.flatMap((item): ICheckListOption[] => {
+        if (typeof item.value !== 'string' && typeof item.value !== 'number')
+          return []
+        return [{ ...item, label: item.label, value: item.value }]
+      })
     : options ?? []
 
   return (

@@ -6,7 +6,7 @@ import { usePrefixCls } from '../__builtins__'
 import { FormLayoutRootContext } from '../form-layout/root-context'
 import { FormButtonGroupStickyContext } from './context'
 
-export interface IStickyProps extends HTMLAttributes<HTMLDivElement> {
+export interface IFormButtonGroupStickyProps extends HTMLAttributes<HTMLDivElement> {
   position?: 'top' | 'bottom'
   offsetTop?: number | string
   offsetBottom?: number | string
@@ -34,7 +34,7 @@ export function FormButtonGroupSticky({
   style,
   children,
   ...props
-}: IStickyProps) {
+}: IFormButtonGroupStickyProps) {
   const prefixCls = usePrefixCls('formily-button-group')
   const layoutRoot = useContext(FormLayoutRootContext)
   const rootRef = useRef<HTMLDivElement>(null)

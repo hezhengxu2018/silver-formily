@@ -18,7 +18,7 @@ export interface IFormButtonGroupProps extends HTMLAttributes<HTMLDivElement> {
   safeAreaInsetBottom?: boolean
 }
 
-export type { IStickyProps } from './sticky'
+export type { IFormButtonGroupStickyProps } from './sticky'
 
 // Default direct native buttons to full width without adding layout wrappers.
 function normalizeButtons(children: ReactNode, shape: ButtonProps['shape']): ReactNode {
