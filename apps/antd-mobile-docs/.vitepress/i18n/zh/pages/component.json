@@ -73,6 +73,10 @@
         "link": "/component/cascade-picker"
       },
       {
+        "text": "CalendarPicker 日历选择器",
+        "link": "/component/calendar-picker"
+      },
+      {
         "text": "DatePicker 日期选择器",
         "link": "/component/date-picker"
       },
