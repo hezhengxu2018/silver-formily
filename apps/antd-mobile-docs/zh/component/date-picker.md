@@ -38,3 +38,7 @@ mobileDemo: date-picker/index.tsx
 | `placeholder` | ^[string]                                                                                               | 占位提示文案                            | -        |
 
 继承 antd-mobile `DatePicker` 的所有配置项（`precision`、`min`、`max`、`filter`、`renderLabel` 等），请参考 [DatePicker 官方文档](https://mobile.ant.design/zh/components/date-picker)。
+
+## 触发内容布局
+
+`triggerWrap` 默认为 `false`：已选内容保持单行，超出字段宽度后可水平滚动。设置 `triggerWrap: true` 后按字段宽度换行显示。

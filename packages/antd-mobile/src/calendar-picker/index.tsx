@@ -5,13 +5,15 @@ import { connect, mapProps, mapReadPretty } from '@silver-formily/react'
 import { CalendarPicker as NativeCalendarPicker } from 'antd-mobile'
 import cls from 'classnames'
 import { useState } from 'react'
-import { dayjsable, formatDayjsValue, usePopupPicker, usePrefixCls } from '../__builtins__'
+import { dayjsable, formatDayjsValue, PopupTrigger, usePopupPicker, usePrefixCls } from '../__builtins__'
 import { PreviewText } from '../preview-text'
 import './style.less'
 
 export type ICalendarPickerValue = string | Date | Dayjs
 
 interface CalendarPickerCommonProps extends Omit<NativeProps, 'selectionMode' | 'value' | 'defaultValue' | 'onChange' | 'onConfirm' | 'visible'> {
+  /** Allow trigger content to wrap instead of scrolling horizontally. */
+  triggerWrap?: boolean
   placeholder?: ReactNode
   format?: string | ((value: Dayjs) => string)
   disabled?: boolean
@@ -59,6 +61,7 @@ export function BaseCalendarPicker(props: ICalendarPickerProps) {
     className,
     style,
     onClose,
+    triggerWrap: _triggerWrap,
     ...nativeProps
   } = props
   const [draft, setDraft] = useState<Date | [Date, Date] | null>(null)
@@ -97,7 +100,8 @@ export function BaseCalendarPicker(props: ICalendarPickerProps) {
           popup.afterClose()
         }}
       />
-      <button
+      <PopupTrigger
+        triggerWrap={props.triggerWrap}
         ref={popup.button}
         type="button"
         className={`${prefix}-trigger`}
@@ -113,7 +117,7 @@ export function BaseCalendarPicker(props: ICalendarPickerProps) {
         }}
       >
         {displayValue(props) || placeholder}
-      </button>
+      </PopupTrigger>
     </div>
   )
 }

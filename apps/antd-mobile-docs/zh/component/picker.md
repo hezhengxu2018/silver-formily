@@ -54,3 +54,7 @@ mobileDemo: picker/index.tsx
 - Picker 的按钮通过 `data-form-item-trigger` 标记为整行点击入口，FormItem 查找唯一标记元素并调用其 `click()`，无需 Context 注册。自定义控件也可在触发按钮上添加此属性；多个标记元素时不自动决定整行入口。没有 FormItem 时，可通过受控底层组件自身入口打开。
 
 FormItem 在挂载后检测一次 `data-form-item-trigger` 以决定是否自动展示箭头，不监听内部 DOM 变化。禁用状态通过 Field 模型映射到 FormItem 和 Picker；独立使用时由组件 props 控制。
+
+## 触发内容布局
+
+`triggerWrap` 默认为 `false`：已选内容保持单行，超出字段宽度后可水平滚动。设置 `triggerWrap: true` 后按字段宽度换行显示。

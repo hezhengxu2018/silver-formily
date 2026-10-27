@@ -5,12 +5,14 @@ import { connect, mapProps, mapReadPretty } from '@silver-formily/react'
 import { CascadePicker as AntCascadePicker } from 'antd-mobile'
 import cls from 'classnames'
 import { Fragment } from 'react'
-import { usePopupPicker, usePrefixCls } from '../__builtins__'
+import { PopupTrigger, usePopupPicker, usePrefixCls } from '../__builtins__'
 import { PreviewText } from '../preview-text'
 import './style.less'
 
 export interface ICascadePickerProps extends Omit<AntCascadePickerProps, 'defaultValue' | 'visible' | 'children'> {
   onChange?: AntCascadePickerProps['onConfirm']
+  /** Allow trigger content to wrap instead of scrolling horizontally. */
+  triggerWrap?: boolean
   placeholder?: React.ReactNode
   disabled?: boolean
   readOnly?: boolean
@@ -60,6 +62,7 @@ export function BasePicker(props: ICascadePickerProps) {
     disabled: _disabled,
     readOnly: _readOnly,
     displayRender: _displayRender,
+    triggerWrap: _triggerWrap,
     className: _className,
     style: _style,
     onConfirm: _onConfirm,
@@ -90,7 +93,8 @@ export function BasePicker(props: ICascadePickerProps) {
         onClose={popup.onClose}
         afterClose={popup.afterClose}
       />
-      <button
+      <PopupTrigger
+        triggerWrap={props.triggerWrap}
         ref={popup.button}
         type="button"
         className={`${prefix}-trigger`}
@@ -104,7 +108,7 @@ export function BasePicker(props: ICascadePickerProps) {
         }}
       >
         {empty ? props.placeholder ?? '请选择' : display}
-      </button>
+      </PopupTrigger>
     </div>
   )
 }

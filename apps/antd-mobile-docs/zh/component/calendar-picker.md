@@ -57,3 +57,7 @@ mobileDemo: calendar-picker/index.tsx
 `visible` 由封装内部管理，不提供 `defaultValue` 或 `children`；初始值请使用表单的 `initialValues`。`onChange` 在确认时触发，选择过程不会更新表单。
 
 包根入口同时导出 `ICalendarPickerProps` 与 `ICalendarPickerValue`。自定义 `format` 函数时，应确保输出仍可被解析为日期，以便再次打开选择器。
+
+## 触发内容布局
+
+`triggerWrap` 默认为 `false`：已选内容保持单行，超出字段宽度后可水平滚动。设置 `triggerWrap: true` 后按字段宽度换行显示。
