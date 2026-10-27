@@ -1,4 +1,5 @@
 export * from './array-base'
+export * from './calendar-picker'
 export * from './cascade-picker'
 export * from './cascader'
 export * from './check-list'

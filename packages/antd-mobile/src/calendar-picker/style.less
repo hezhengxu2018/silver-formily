@@ -1,0 +1,27 @@
+@calendar-picker-cls: ~'adm-formily-calendar-picker';
+
+.@{calendar-picker-cls} {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+
+  width: 100%;
+
+  &-trigger {
+    flex: 1;
+    min-width: 0;
+    min-height: 24px;
+    border: 0;
+    padding: 0;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    text-align: inherit;
+    cursor: pointer;
+  }
+
+  &-readonly-popup .adm-calendar-picker-view {
+    pointer-events: none;
+  }
+}
