@@ -11,7 +11,7 @@ export default function Demo() {
       <Field
         name="plan"
         title="套餐"
-        decorator={[FormItem]}
+        decorator={[FormItem, { layout: 'vertical' }]}
         component={[CheckList]}
       >
         <CheckList.Item value="standard" description="适合日常使用">标准套餐</CheckList.Item>

@@ -87,6 +87,7 @@ export default {
       { value: 'apps/core-docs', name: 'apps/core-docs' },
       { value: 'apps/element-plus-docs', name: 'apps/element-plus-docs' },
       { value: 'apps/vant-docs', name: 'apps/vant-docs' },
+      { value: 'apps/antd-mobile-docs', name: 'apps/antd-mobile-docs' },
       { value: 'apps/reactive-vue-docs', name: 'apps/reactive-vue-docs' },
       { value: 'apps/react-docs', name: 'apps/react-docs' },
       { value: 'apps/reactive-react-docs', name: 'apps/reactive-react-docs' },

@@ -12,11 +12,35 @@ mobileDemo: check-list/index.tsx
 
 <<< @/zh/demos/check-list/basic.tsx
 
-## 多选与只读
+## 多选
 
-设置 `multiple` 开启多选，也可以通过 `options` 直接传入字符串选项。非空的字段 `dataSource` 优先于 `options`。字段支持 `disabled` 和 `readOnly`；阅读态保留列表外观，并以禁用状态展示。
+设置 `multiple` 开启多选，也可以通过 `options` 直接传入字符串选项。非空的字段 `dataSource` 优先于 `options`。
 
 <<< @/zh/demos/check-list/multiple.tsx
+
+## 自定义选中图标
+
+通过 `activeIcon` 替换默认选中图标，未选中时不显示该图标。
+
+<<< @/zh/demos/check-list/active-icon.tsx
+
+## 自定义列表右侧区域
+
+通过 `extra` 自定义右侧区域，回调接收当前项的选中状态 `active`。此示例分别使用实心和空心圆形图标展示选中与未选中状态；设置 `extra` 后不再使用 `activeIcon`。
+
+<<< @/zh/demos/check-list/extra.tsx
+
+## 整组只读
+
+通过字段 `readOnly` 设置整组只读，保留选中值，无法修改选择。Formily 阅读态保留列表外观，并以禁用状态展示。
+
+<<< @/zh/demos/check-list/read-only.tsx
+
+## 禁用
+
+在字段 `dataSource` 的选项中设置 `disabled` 可禁用单项，其余选项仍可选择；在字段上设置 `disabled` 可禁用整个列表。
+
+<<< @/zh/demos/check-list/disabled.tsx
 
 ## 自定义列表项
 
@@ -26,15 +50,17 @@ mobileDemo: check-list/index.tsx
 
 ## API
 
-| 属性名     | 类型                                       | 描述                             | 默认值  |
-| ---------- | ------------------------------------------ | -------------------------------- | ------- |
-| `value`    | `(string \| number)[]`                     | 已选值，单选也是数组             | -       |
-| `options`  | `(string \| number \| ICheckListOption)[]` | 选项，可由字段 `dataSource` 提供 | -       |
-| `multiple` | `boolean`                                  | 是否多选                         | `false` |
-| `disabled` | `boolean`                                  | 禁用整个列表                     | `false` |
-| `readOnly` | `boolean`                                  | 整个列表只读                     | `false` |
-| `onChange` | `(value: (string \| number)[]) => void`    | 选择变化回调                     | -       |
-| `children` | `ReactNode`                                | 自定义列表项                     | -       |
+| 属性名       | 类型                                       | 描述                                    | 默认值             |
+| ------------ | ------------------------------------------ | --------------------------------------- | ------------------ |
+| `value`      | `(string \| number)[]`                     | 已选值，单选也是数组                    | -                  |
+| `options`    | `(string \| number \| ICheckListOption)[]` | 选项，可由字段 `dataSource` 提供        | -                  |
+| `activeIcon` | `ReactNode`                                | 自定义选中图标                          | `<CheckOutline />` |
+| `extra`      | `(active: boolean) => ReactNode`           | 自定义列表右侧区域，优先于 `activeIcon` | -                  |
+| `multiple`   | `boolean`                                  | 是否多选                                | `false`            |
+| `disabled`   | `boolean`                                  | 禁用整个列表                            | `false`            |
+| `readOnly`   | `boolean`                                  | 整个列表只读                            | `false`            |
+| `onChange`   | `(value: (string \| number)[]) => void`    | 选择变化回调                            | -                  |
+| `children`   | `ReactNode`                                | 自定义列表项                            | -                  |
 
 `ICheckListOption` 使用 `label: ReactNode` 作为列表项内容，`value` 支持字符串和数字，其余属性与 `CheckList.Item` 一致，例如 `title`、`description`、`prefix`、`disabled`、`readOnly`、`onClick`、`className` 和 `style`。基础值与对象选项可以混用，值需唯一，数字 `0` 与字符串 `"0"` 为不同选项。
 

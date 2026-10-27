@@ -11,7 +11,7 @@ export default function Demo() {
       <Field
         name="delivery"
         title="配送方式"
-        decorator={[FormItem]}
+        decorator={[FormItem, { layout: 'vertical' }]}
         component={[CheckList]}
         dataSource={[{ label: '快递配送', value: 'express' }, { label: '到店自提', value: 'pickup' }, { label: '当日送达', value: 'today', disabled: true }]}
       />
