@@ -4,6 +4,7 @@ import type {
   ArrayBaseMixins,
   ICheckListItemProps,
   ICheckListOption,
+  ICheckListPickerProps,
   ICheckListValue,
   IDatePickerProps,
   IFormGridProps,
@@ -84,4 +85,9 @@ it('exports input control props with upstream value contracts', () => {
   expectTypeOf<IPasscodeInputProps['value']>().toEqualTypeOf<string | undefined>()
   expectTypeOf<ISliderProps['value']>().toEqualTypeOf<number | [number, number] | undefined>()
   expectTypeOf<NonNullable<ISegmentedProps['onChange']>>().parameter(0).toEqualTypeOf<string | number>()
+})
+
+it('exports CheckListPicker value and callback types', () => {
+  expectTypeOf<ICheckListPickerProps['value']>().toEqualTypeOf<(string | number)[] | undefined>()
+  expectTypeOf<NonNullable<ICheckListPickerProps['onConfirm']>>().toEqualTypeOf<(value: (string | number)[]) => void>()
 })

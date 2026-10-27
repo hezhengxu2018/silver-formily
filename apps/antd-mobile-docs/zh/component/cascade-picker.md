@@ -52,3 +52,7 @@ mobileDemo: cascade-picker/index.tsx
 - 选择草稿由原生选择器管理，仅确认后提交。取消保留字段值，重置恢复初始值。
 - 关闭动画结束后将焦点恢复到触发按钮；关闭完成前不重复打开。
 - FormItem 的 `onClick` 可通过 `event.preventDefault()` 阻止整行打开。直接点击触发按钮独立打开，清空按钮不会触发行点击或打开弹层。
+
+## 触发内容布局
+
+`triggerWrap` 默认为 `false`：已选内容保持单行，超出字段宽度后可水平滚动。设置 `triggerWrap: true` 后按字段宽度换行显示。

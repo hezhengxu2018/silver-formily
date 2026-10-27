@@ -65,3 +65,7 @@ mobileDemo: cascader/index.tsx
 - 关闭动画结束前不会重复打开，关闭动画结束后焦点回到入口按钮。
 - FormItem 通过唯一的 `data-form-item-trigger` 按钮转发整行点击。FormItem 的 `onClick` 可以调用 `event.preventDefault()` 阻止整行打开；直接点击 Cascader 按钮独立打开，不触发 FormItem 的点击回调。
 - 没有 FormItem 时，Cascader 自身的按钮仍可打开选择器。
+
+## 触发内容布局
+
+`triggerWrap` 默认为 `false`：已选内容保持单行，超出字段宽度后可水平滚动。设置 `triggerWrap: true` 后按字段宽度换行显示。

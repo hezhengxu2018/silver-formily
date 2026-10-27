@@ -93,6 +93,10 @@
         "link": "/component/check-list"
       },
       {
+        "text": "CheckListPicker 列表选择器",
+        "link": "/component/check-list-picker"
+      },
+      {
         "text": "Cascader 级联选择",
         "link": "/component/cascader"
       },

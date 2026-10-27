@@ -3,7 +3,7 @@ import type { Dayjs } from 'dayjs'
 import { connect, mapProps, mapReadPretty } from '@silver-formily/react'
 import { DatePicker as AntdDatePicker } from 'antd-mobile'
 import cls from 'classnames'
-import { dayjs, dayjsable, formatDayjsValue, usePopupPicker, usePrefixCls } from '../__builtins__'
+import { dayjs, dayjsable, formatDayjsValue, PopupTrigger, usePopupPicker, usePrefixCls } from '../__builtins__'
 import { PreviewText } from '../preview-text'
 import QuarterDatePicker from './quarter-picker'
 import './style.less'
@@ -16,6 +16,8 @@ export interface IDatePickerProps extends Omit<
   AntdDatePickerProps,
   'value' | 'defaultValue' | 'visible' | 'children' | 'onChange'
 > {
+  /** Allow trigger content to wrap instead of scrolling horizontally. */
+  triggerWrap?: boolean
   placeholder?: string
   picker?: DatePickerMode
   format?:
@@ -87,6 +89,7 @@ export function BaseDatePicker(props: IDatePickerProps) {
     readOnly = false,
     picker,
     showTime,
+    triggerWrap: _triggerWrap,
     precision: _precision,
     onConfirm,
     onClose,
@@ -119,7 +122,8 @@ export function BaseDatePicker(props: IDatePickerProps) {
         onClose={popup.onClose}
         afterClose={popup.afterClose}
       />
-      <button
+      <PopupTrigger
+        triggerWrap={props.triggerWrap}
         ref={popup.button}
         type="button"
         className={`${prefix}-trigger`}
@@ -133,7 +137,7 @@ export function BaseDatePicker(props: IDatePickerProps) {
         }}
       >
         {val || (placeholder ?? '请选择')}
-      </button>
+      </PopupTrigger>
     </div>
   )
 }

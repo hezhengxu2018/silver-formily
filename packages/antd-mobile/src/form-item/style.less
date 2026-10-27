@@ -23,6 +23,10 @@
     padding-left: 0;
   }
 
+  > .adm-list-item-content > .adm-list-item-content-main {
+    min-width: 0;
+  }
+
   .adm-list-item-content {
     &-prefix {
       box-sizing: content-box;
@@ -101,6 +105,7 @@
 
     .@{form-item-cls}-control-content-component {
       width: 100%;
+      min-width: 0;
       min-height: @height-base - 2;
       line-height: @height-base + 2;
     }

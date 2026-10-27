@@ -4,12 +4,14 @@ import { connect, mapProps, mapReadPretty } from '@silver-formily/react'
 import { Picker as AntPicker } from 'antd-mobile'
 import cls from 'classnames'
 import { Fragment } from 'react'
-import { usePopupPicker, usePrefixCls } from '../__builtins__'
+import { PopupTrigger, usePopupPicker, usePrefixCls } from '../__builtins__'
 import { PreviewText } from '../preview-text'
 import './style.less'
 
 export interface IPickerProps extends Omit<AntPickerProps, 'defaultValue' | 'visible' | 'children'> {
   onChange?: (value: PickerValue[]) => void
+  /** Allow trigger content to wrap instead of scrolling horizontally. */
+  triggerWrap?: boolean
   placeholder?: React.ReactNode
   disabled?: boolean
   readOnly?: boolean
@@ -53,6 +55,7 @@ function BasePicker(props: IPickerProps) {
     disabled: _disabled,
     readOnly: _readOnly,
     displayRender: _displayRender,
+    triggerWrap: _triggerWrap,
     className: _className,
     style: _style,
     onConfirm: _onConfirm,
@@ -83,7 +86,8 @@ function BasePicker(props: IPickerProps) {
         onClose={popup.onClose}
         afterClose={popup.afterClose}
       />
-      <button
+      <PopupTrigger
+        triggerWrap={props.triggerWrap}
         ref={popup.button}
         type="button"
         className={`${prefix}-trigger`}
@@ -97,7 +101,7 @@ function BasePicker(props: IPickerProps) {
         }}
       >
         {empty ? props.placeholder ?? '请选择' : display}
-      </button>
+      </PopupTrigger>
     </div>
   )
 }
