@@ -26,16 +26,20 @@ mobileDemo: check-list/index.tsx
 
 ## API
 
-| 属性名     | 类型                                                                 | 描述                             | 默认值  |
-| ---------- | -------------------------------------------------------------------- | -------------------------------- | ------- |
-| `value`    | `(string \| number)[]`                                               | 已选值，单选也是数组             | -       |
-| `options`  | `string[] \| { label: string, value: string, disabled?: boolean }[]` | 选项，可由字段 `dataSource` 提供 | -       |
-| `multiple` | `boolean`                                                            | 是否多选                         | `false` |
-| `disabled` | `boolean`                                                            | 禁用整个列表                     | `false` |
-| `readOnly` | `boolean`                                                            | 整个列表只读                     | `false` |
-| `onChange` | `(value: (string \| number)[]) => void`                              | 选择变化回调                     | -       |
-| `children` | `ReactNode`                                                          | 自定义列表项                     | -       |
+| 属性名     | 类型                                       | 描述                             | 默认值  |
+| ---------- | ------------------------------------------ | -------------------------------- | ------- |
+| `value`    | `(string \| number)[]`                     | 已选值，单选也是数组             | -       |
+| `options`  | `(string \| number \| ICheckListOption)[]` | 选项，可由字段 `dataSource` 提供 | -       |
+| `multiple` | `boolean`                                  | 是否多选                         | `false` |
+| `disabled` | `boolean`                                  | 禁用整个列表                     | `false` |
+| `readOnly` | `boolean`                                  | 整个列表只读                     | `false` |
+| `onChange` | `(value: (string \| number)[]) => void`    | 选择变化回调                     | -       |
+| `children` | `ReactNode`                                | 自定义列表项                     | -       |
 
-`CheckList.Item` 透传原生列表项组件，可配置 `value`、`disabled`、`readOnly`、`description` 等。封装类型中虽保留 `layout` 和 `layoutBlock`，当前实现没有将其用于排列布局，不建议使用。
+`ICheckListOption` 使用 `label: ReactNode` 作为列表项内容，`value` 支持字符串和数字，其余属性与 `CheckList.Item` 一致，例如 `title`、`description`、`prefix`、`disabled`、`readOnly`、`onClick`、`className` 和 `style`。基础值与对象选项可以混用，值需唯一，数字 `0` 与字符串 `"0"` 为不同选项。
+
+`CheckList.Item` 直接使用原生列表项组件，`ICheckListItemProps` 对应其原生类型。`className`、`style` 和原生属性在选项模式与自定义列表项模式下均应用于列表根节点，支持原生 CSS 变量。列表使用原生纵向布局。
+
+可脱离 Formily 独立使用：通过 `value` / `onChange` 受控，或使用 `defaultValue` 设置非受控初始值。单选时再次点击已选项会取消选择。字段 `dataSource` 动态更新会同步刷新列表；清空后回退到 `options`，两者均为空时显示 `children`。
 
 其余配置参考 [antd-mobile CheckList 官方文档](https://mobile.ant.design/zh/components/check-list)。
