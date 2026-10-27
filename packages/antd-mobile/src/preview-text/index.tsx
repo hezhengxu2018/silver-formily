@@ -1,8 +1,9 @@
 import type { Field } from '@silver-formily/core'
 import type { CascaderProps } from 'antd-mobile/es/components/cascader'
 import type { InputProps } from 'antd-mobile/es/components/input'
-import type { SelectorProps } from 'antd-mobile/es/components/selector'
+import type { SelectorOption, SelectorProps } from 'antd-mobile/es/components/selector'
 import type { IDatePickerProps } from '../date-picker'
+import type { ISelectorValue } from '../selector'
 import { observer, useField } from '@silver-formily/react'
 import { isArr, isFn, isValid } from '@silver-formily/shared'
 import { Tag } from 'antd-mobile'
@@ -10,21 +11,30 @@ import cls from 'classnames'
 import React, { createContext, useContext } from 'react'
 import { formatDayjsValue, usePrefixCls } from '../__builtins__'
 
-interface IPreviewTextProps {
+export interface IPreviewTextProps {
+  value?: React.ReactNode
+  children?: React.ReactNode
+  className?: string
+  style?: React.CSSProperties
   prefixCls?: string
-  renderText?: (value: any) => React.ReactNode
+  renderText?: (value: React.ReactNode[]) => React.ReactNode
 }
+
+export type IPreviewTextInputProps = Omit<InputProps, 'value'> & IPreviewTextProps
+export type IPreviewTextSelectorProps<V extends ISelectorValue = ISelectorValue> = SelectorProps<V> & Omit<IPreviewTextProps, 'value'>
+export type IPreviewTextDatePickerProps = Omit<IDatePickerProps, 'onChange'> & Omit<IPreviewTextProps, 'value'>
+export type IPreviewTextCascaderProps = CascaderProps & Omit<IPreviewTextProps, 'value'>
 
 const PlaceholderContext = createContext<React.ReactNode>('N/A')
 
 const Placeholder = PlaceholderContext.Provider
 
-function usePlaceholder(value?: any) {
+function usePlaceholder(value?: React.ReactNode): React.ReactNode {
   const placeholder = useContext(PlaceholderContext) || 'N/A'
   return isValid(value) && value !== '' ? value : placeholder
 }
 
-function Input({ className, ...props }: InputProps & IPreviewTextProps) {
+function Input({ className, ...props }: IPreviewTextInputProps) {
   const prefixCls = usePrefixCls('form-text', props)
   return (
     <div className={cls(prefixCls, className)}>
@@ -33,7 +43,7 @@ function Input({ className, ...props }: InputProps & IPreviewTextProps) {
   )
 }
 
-function Text(props: React.PropsWithChildren<any>) {
+function Text(props: IPreviewTextProps) {
   const prefixCls = usePrefixCls('form-text', props)
 
   return (
@@ -44,10 +54,10 @@ function Text(props: React.PropsWithChildren<any>) {
 }
 
 const Selector = observer(
-  (props: SelectorProps<any> & IPreviewTextProps) => {
+  <V extends ISelectorValue,>(props: IPreviewTextSelectorProps<V>) => {
     const field = useField<Field>()
     const prefixCls = usePrefixCls('form-text', props)
-    const dataSource: any[] = field?.dataSource?.length
+    const dataSource: SelectorOption<V>[] = field?.dataSource?.length
       ? field.dataSource
       : props?.options?.length
         ? props.options
@@ -57,7 +67,7 @@ const Selector = observer(
       return props.value || []
     }
 
-    const getLabel = (target: any) => {
+    const getLabel = (target: V) => {
       return (
         dataSource?.find(item => String(item.value) === String(target))?.label || placeholder
       )
@@ -85,22 +95,21 @@ const Selector = observer(
   },
 )
 
-function DatePicker(props: IDatePickerProps<any> & IPreviewTextProps) {
+function DatePicker(props: IPreviewTextDatePickerProps) {
   const placeholder = usePlaceholder()
   const prefixCls = usePrefixCls('form-text', props)
   const getLabels = () => {
-    const labels = formatDayjsValue(props.value, props.format, placeholder)
-    return isArr(labels) ? labels.join('~') : labels
+    return formatDayjsValue(props.value, props.format, placeholder)
   }
   return <div className={cls(prefixCls, props.className)}>{getLabels()}</div>
 }
 
 const Cascader = observer(
-  (props: CascaderProps & IPreviewTextProps) => {
+  (props: IPreviewTextCascaderProps) => {
     const field = useField<Field>()
     const placeholder = usePlaceholder()
     const prefixCls = usePrefixCls('form-text', props)
-    const dataSource: any[] = field?.dataSource?.length
+    const dataSource: CascaderProps['options'] = field?.dataSource?.length
       ? field.dataSource
       : props?.options?.length
         ? props.options
@@ -108,7 +117,7 @@ const Cascader = observer(
     const getSelected = () => {
       return isArr(props.value) ? props.value : []
     }
-    const findLabel = (value: any, dataSource: any[]): any => {
+    const findLabel = (value: NonNullable<CascaderProps['value']>[number], dataSource: CascaderProps['options']): React.ReactNode => {
       for (let i = 0; i < dataSource?.length; i++) {
         const item = dataSource[i]
         if (item?.value === value) {

@@ -3,7 +3,7 @@ import { Space as AntdSpace } from 'antd-mobile'
 import React from 'react'
 import { useFormLayout } from '../form-layout'
 
-interface ISpaceProps extends SpaceProps {
+export interface ISpaceProps extends SpaceProps {
   size?: 'small' | 'middle' | 'large' | number
 }
 
@@ -14,7 +14,7 @@ const spaceSize = {
 }
 
 function getNumberSize(size?: ISpaceProps['size']) {
-  return typeof size === 'string' ? spaceSize[size as keyof typeof spaceSize] : size || 0
+  return typeof size === 'string' ? spaceSize[size] : size || 0
 }
 
 export function Space({ direction, size, style, ...props }: ISpaceProps) {

@@ -8,7 +8,7 @@ export interface PopupContentCallbacks<TResult> {
 
 export type PopupOptions = Omit<PopupProps, 'visible' | 'children' | 'onMaskClick' | 'forceRender' | 'destroyOnClose' | 'onClose'> & { safeArea?: boolean }
 export type PopupResult<TComponent extends ComponentType<any>>
-  = ComponentProps<TComponent> extends { onConfirm: (value: infer TResult) => void } ? Exclude<TResult, null> : unknown
+  = NonNullable<ComponentProps<TComponent>['onConfirm']> extends (value: infer TResult) => void ? Exclude<TResult, null> : unknown
 
 export type PopupPromptProps<TComponent extends ComponentType<any>, TResult = PopupResult<TComponent>>
   = Omit<ComponentProps<TComponent>, keyof PopupContentCallbacks<TResult> | 'onClose'>

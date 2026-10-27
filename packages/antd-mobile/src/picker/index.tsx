@@ -8,12 +8,8 @@ import { usePopupPicker, usePrefixCls } from '../__builtins__'
 import { PreviewText } from '../preview-text'
 import './style.less'
 
-export type IPickerProps = Omit<AntPickerProps, 'value' | 'defaultValue' | 'visible' | 'children'> & {
-  value?: PickerValue[]
+export interface IPickerProps extends Omit<AntPickerProps, 'defaultValue' | 'visible' | 'children'> {
   onChange?: (value: PickerValue[]) => void
-  onConfirm?: (value: PickerValue[], extend: PickerValueExtend) => void
-  onCancel?: () => void
-  onClose?: () => void
   placeholder?: React.ReactNode
   disabled?: boolean
   readOnly?: boolean

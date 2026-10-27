@@ -5,6 +5,7 @@ import { cleanup, render } from 'vitest-browser-react'
 import PrecisionDemo from '../../../apps/antd-mobile-docs/zh/demos/date-picker/precision'
 import WeekQuarterDemo from '../../../apps/antd-mobile-docs/zh/demos/date-picker/week-quarter'
 import { DatePicker, FormItem } from '../src'
+import { generateDatePickerColumns } from '../src/date-picker/date-quarter-utils'
 
 afterEach(cleanup)
 
@@ -136,4 +137,22 @@ it.each([
   await expect.element(trigger).toHaveTextContent(value)
   await trigger.click()
   await vi.waitFor(() => expect(document.querySelectorAll('.adm-picker-view-column')).toHaveLength(columns))
+})
+
+
+it('passes selection metadata to quarter renderLabel callbacks', () => {
+  const renderLabel = vi.fn((type, value, info) => `${type}:${value}:${info.selected}`)
+  const columns = generateDatePickerColumns(
+    ['2024', '2'],
+    new Date(2024, 0, 1),
+    new Date(2024, 11, 31),
+    'quarter',
+    renderLabel,
+    undefined,
+  )
+  expect(columns).toEqual([
+    [{ label: 'year:2024:true', value: '2024' }],
+    [1, 2, 3, 4].map(value => ({ label: `quarter:${value}:${value === 2}`, value: String(value) })),
+  ])
+  expect(renderLabel).toHaveBeenCalledWith('quarter', 2, { selected: true })
 })

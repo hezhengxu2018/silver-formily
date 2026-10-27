@@ -1,12 +1,11 @@
+import type { DatePickerProps } from 'antd-mobile/es/components/date-picker'
 import type {
   DatePickerFilter,
-  Precision,
 } from 'antd-mobile/es/components/date-picker/date-picker-utils'
 import type {
   PickerColumn,
   PickerColumnItem,
 } from 'antd-mobile/es/components/picker'
-import type { ReactNode } from 'react'
 import { dayjs } from '../__builtins__'
 
 export type QuarterPrecision = 'year' | 'quarter'
@@ -17,13 +16,13 @@ const precisionRankRecord: Record<QuarterPrecision, number> = {
 }
 
 export function defaultRenderLabel(
-  type: Precision | QuarterPrecision,
+  type: Parameters<NonNullable<DatePickerProps['renderLabel']>>[0],
   data: number,
 ) {
   return data.toString()
 }
 
-export function generateDatePickerColumns(selected: string[], min: Date, max: Date, precision: QuarterPrecision, renderLabel: (type: Precision | QuarterPrecision, data: number) => ReactNode, filter: DatePickerFilter | undefined) {
+export function generateDatePickerColumns(selected: string[], min: Date, max: Date, precision: QuarterPrecision, renderLabel: NonNullable<DatePickerProps['renderLabel']>, filter: DatePickerFilter | undefined) {
   const ret: PickerColumn[] = []
 
   const minYear = min.getFullYear()
@@ -36,7 +35,7 @@ export function generateDatePickerColumns(selected: string[], min: Date, max: Da
     for (let i = minYear; i <= maxYear; i++) {
       const value = i.toString()
       years.push({
-        label: renderLabel ? renderLabel('year', i) : value,
+        label: renderLabel ? renderLabel('year', i, { selected: Number.parseInt(selected[0]) === i }) : value,
         value,
       })
     }
@@ -87,7 +86,7 @@ export function generateDatePickerColumns(selected: string[], min: Date, max: Da
     ret.push(
       months.map((v) => {
         return {
-          label: renderLabel('quarter', v),
+          label: renderLabel('quarter', v, { selected: Number.parseInt(selected[1]) === v }),
           value: v.toString(),
         }
       }),

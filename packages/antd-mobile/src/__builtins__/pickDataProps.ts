@@ -1,9 +1,9 @@
-export function pickDataProps(props: any = {}) {
-  const results: Record<string, any> = {}
+export function pickDataProps(props: object = {}) {
+  const results: Record<string, unknown> = {}
 
   for (const key in props) {
     if (key.includes('data-')) {
-      results[key] = props[key]
+      results[key] = (props as Record<string, unknown>)[key]
     }
   }
 

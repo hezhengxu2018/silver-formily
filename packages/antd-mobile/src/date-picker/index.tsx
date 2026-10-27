@@ -8,69 +8,73 @@ import { PreviewText } from '../preview-text'
 import QuarterDatePicker from './quarter-picker'
 import './style.less'
 
-type DateValue = string | Date | Dayjs
+export type IDatePickerValue = string | Date | Dayjs
 
-type PickerMode = 'date' | 'week' | 'month' | 'quarter' | 'year'
+export type DatePickerMode = 'date' | 'week' | 'month' | 'quarter' | 'year'
 
-export type IDatePickerProps<PickerProps> = Omit<
-  PickerProps,
+export interface IDatePickerProps extends Omit<
+  AntdDatePickerProps,
   'value' | 'defaultValue' | 'visible' | 'children' | 'onChange'
-> & {
+> {
   placeholder?: string
-  picker?: PickerMode
+  picker?: DatePickerMode
   format?:
     | string
     | ((value: Dayjs) => string)
   showTime?: boolean
-  value?: DateValue
-  onChange?: (value: DateValue) => void
+  value?: IDatePickerValue
+  onChange?: (value: string) => void
   disabled?: boolean
   readOnly?: boolean
 }
 
-function mapDateFormat<T>() {
-  const getDefaultFormat = (props: IDatePickerProps<T>) => {
-    const picker = props.picker
-    if (picker === 'month') {
-      return 'YYYY-MM'
-    }
-    else if (picker === 'quarter') {
-      return 'YYYY-[Q]Q'
-    }
-    else if (picker === 'year') {
-      return 'YYYY'
-    }
-    else if (picker === 'week') {
-      return 'GGGG-[W]WW'
-    }
-    return props.showTime ? 'YYYY-MM-DD HH:mm:ss' : 'YYYY-MM-DD'
+type NormalizedDatePickerProps = Omit<IDatePickerProps, 'value' | 'onChange'> & {
+  value?: Dayjs
+  onChange: (value: IDatePickerValue) => void
+}
+
+function getDefaultFormat(props: IDatePickerProps) {
+  const picker = props.picker
+  if (picker === 'month') {
+    return 'YYYY-MM'
   }
-  return (props: any): IDatePickerProps<T> => {
-    const format = props.format || getDefaultFormat(props)
-    const onChange = props.onChange
-    const week = typeof props.value === 'string' && format === 'GGGG-[W]WW'
-      ? /^(\d{4})-W(\d{2})$/.exec(props.value)
-      : null
-    return {
-      ...props,
-      format,
-      value: week
-        ? dayjs(`${week[1]}-01-04`).isoWeek(Number(week[2])).startOf('isoWeek')
-        : dayjsable(props.value, format),
-      onChange: (value: DateValue) => {
-        if (onChange) {
-          onChange(formatDayjsValue(value, format))
-        }
-      },
-    } as IDatePickerProps<T>
+  else if (picker === 'quarter') {
+    return 'YYYY-[Q]Q'
+  }
+  else if (picker === 'year') {
+    return 'YYYY'
+  }
+  else if (picker === 'week') {
+    return 'GGGG-[W]WW'
+  }
+  return props.showTime ? 'YYYY-MM-DD HH:mm:ss' : 'YYYY-MM-DD'
+}
+
+function normalizeDatePickerProps(props: IDatePickerProps): NormalizedDatePickerProps {
+  const format = props.format || getDefaultFormat(props)
+  const onChange = props.onChange
+  const week = typeof props.value === 'string' && format === 'GGGG-[W]WW'
+    ? /^(\d{4})-W(\d{2})$/.exec(props.value)
+    : null
+  return {
+    ...props,
+    format,
+    value: week
+      ? dayjs(`${week[1]}-01-04`).isoWeek(Number(week[2])).startOf('isoWeek')
+      : dayjsable(props.value, typeof format === 'string' ? format : undefined),
+    onChange: (value: IDatePickerValue) => {
+      if (onChange) {
+        onChange(formatDayjsValue(value, format, ''))
+      }
+    },
   }
 }
 
-function DatePickerPreview(props: IDatePickerProps<AntdDatePickerProps>) {
-  return <PreviewText.DatePicker {...mapDateFormat<AntdDatePickerProps>()(props)} />
+function DatePickerPreview(props: IDatePickerProps) {
+  return <PreviewText.DatePicker {...normalizeDatePickerProps(props)} />
 }
 
-export function BaseDatePicker(props: IDatePickerProps<AntdDatePickerProps>) {
+export function BaseDatePicker(props: IDatePickerProps) {
   const prefix = usePrefixCls('formily-date-picker')
   const {
     onChange,
@@ -88,7 +92,7 @@ export function BaseDatePicker(props: IDatePickerProps<AntdDatePickerProps>) {
     onClose,
     afterClose,
     ...dateProps
-  } = mapDateFormat<AntdDatePickerProps>()(props)
+  } = normalizeDatePickerProps(props)
   const popup = usePopupPicker({
     disabled,
     readOnly,
@@ -108,8 +112,8 @@ export function BaseDatePicker(props: IDatePickerProps<AntdDatePickerProps>) {
       <NativePicker
         {...dateProps}
         className={cls(readOnly && `${prefix}-readonly-popup`)}
-        precision={precision === 'date' ? 'day' : precision as AntdDatePickerProps['precision']}
-        value={(value as Dayjs)?.toDate()}
+        precision={precision === 'date' ? 'day' : precision}
+        value={value?.toDate()}
         visible={popup.visible}
         onConfirm={popup.onConfirm}
         onClose={popup.onClose}

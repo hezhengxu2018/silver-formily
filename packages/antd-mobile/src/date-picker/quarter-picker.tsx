@@ -1,4 +1,4 @@
-import type { DatePickerProps as AntdDatePickerProps } from 'antd-mobile/es/components/date-picker/date-picker'
+import type { DatePickerProps as AntdDatePickerProps } from 'antd-mobile/es/components/date-picker'
 import type { PickerValue } from 'antd-mobile/es/components/picker'
 import type { QuarterPrecision } from './date-quarter-utils'
 import { Picker } from 'antd-mobile'
@@ -10,7 +10,7 @@ const thisYear = new Date().getFullYear()
 export function QuarterDatePicker({
   min = new Date(new Date().setFullYear(thisYear - 10)),
   max = new Date(new Date().setFullYear(thisYear + 10)),
-  renderLabel = quarterUtils.defaultRenderLabel as AntdDatePickerProps['renderLabel'],
+  renderLabel = quarterUtils.defaultRenderLabel,
   ...props
 }: AntdDatePickerProps) {
   const pickerValue = useMemo(
@@ -21,11 +21,11 @@ export function QuarterDatePicker({
   const columns = useCallback(
     (selected: PickerValue[]) =>
       quarterUtils.generateDatePickerColumns(
-        selected as string[],
+        selected.map(value => String(value ?? '')),
         min,
         max,
         props.precision as QuarterPrecision,
-        renderLabel as any,
+        renderLabel,
         props.filter,
       ),
     [min, max, props.precision, renderLabel, props.filter],

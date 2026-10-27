@@ -1,4 +1,5 @@
 import type { ISchema, Schema } from '@silver-formily/json-schema'
+import type { ReactNode } from 'react'
 import { RecursionField } from '@silver-formily/react'
 
 export function isAdditionComponent(schema: ISchema) {
@@ -37,7 +38,7 @@ export function isOperationComponent(schema: ISchema) {
 
 export function useArrayItemComponent(schema: Schema, name: string | string[]) {
   const names = Array.isArray(name) ? name : [name]
-  const result = new Map()
+  const result = new Map<string, ReactNode>()
   return schema?.reduceProperties((res, sc, key) => {
     names.forEach((n) => {
       if (isArrayItemComponent(sc, n) && !res.has(n)) {

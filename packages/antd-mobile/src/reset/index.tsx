@@ -2,12 +2,11 @@ import type { IFieldResetOptions, IFormFeedback } from '@silver-formily/core'
 import type { ButtonProps } from 'antd-mobile/es/components/button'
 import { useParentForm } from '@silver-formily/react'
 import { Button } from 'antd-mobile'
-import React from 'react'
 import { useFormButtonGroup } from '../form-button-group/context'
 
-export interface IResetProps extends IFieldResetOptions, ButtonProps {
-  onClick?: (e: React.MouseEvent<Element, MouseEvent>) => any
-  onResetValidateSuccess?: (payload: any) => void
+export interface IResetProps extends IFieldResetOptions, Omit<ButtonProps, 'onClick'> {
+  onClick?: (event: Parameters<NonNullable<ButtonProps['onClick']>>[0]) => ReturnType<NonNullable<ButtonProps['onClick']>> | boolean
+  onResetValidateSuccess?: () => void
   onResetValidateFailed?: (feedbacks: IFormFeedback[]) => void
 }
 
