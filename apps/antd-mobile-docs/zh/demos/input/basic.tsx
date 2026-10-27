@@ -23,11 +23,10 @@ export default function InputBasic() {
         name="phone"
         title="手机号"
         decorator={[FormItem]}
-        component={[Input]}
-        x-component-props={{
+        component={[Input, {
           type: 'tel',
           placeholder: '请输入手机号',
-        }}
+        }]}
       />
       <FormButtonGroup>
         <Submit onSubmit={showDemoResult}>提交</Submit>

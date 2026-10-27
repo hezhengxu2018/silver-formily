@@ -49,8 +49,16 @@
         "link": "/component/input"
       },
       {
+        "text": "Radio 单选框",
+        "link": "/component/radio"
+      },
+      {
         "text": "Checkbox 复选框",
         "link": "/component/checkbox"
+      },
+      {
+        "text": "Rate 评分",
+        "link": "/component/rate"
       },
       {
         "text": "Switch 开关",

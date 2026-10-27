@@ -16,13 +16,12 @@ export default function InputTextArea() {
         name="remark"
         title="备注"
         decorator={[FormItem]}
-        component={[Input.TextArea]}
-        x-component-props={{
+        component={[Input.TextArea, {
           placeholder: '请输入备注信息',
           maxLength: 100,
           showCount: true,
           autoSize: true,
-        }}
+        }]}
       />
       <FormButtonGroup>
         <Submit onSubmit={showDemoResult}>提交</Submit>

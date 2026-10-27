@@ -6,6 +6,7 @@ import { showDemoResult } from '../shared'
 const form = createForm({
   initialValues: {
     username: '张三',
+    disabled: '不可编辑',
   },
 })
 
@@ -16,8 +17,7 @@ export default function InputStatus() {
         name="username"
         title="可清除"
         decorator={[FormItem]}
-        component={[Input]}
-        x-component-props={{ clearable: true }}
+        component={[Input, { clearable: true }]}
       />
       <Field
         name="readonly"
@@ -32,7 +32,6 @@ export default function InputStatus() {
         decorator={[FormItem]}
         component={[Input]}
         disabled
-        x-component-props={{ value: '不可编辑' }}
       />
       <FormButtonGroup>
         <Submit onSubmit={showDemoResult}>提交</Submit>
