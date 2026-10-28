@@ -56,6 +56,10 @@ it('uses single selection by default and preserves zero and missing values in pr
   const screen = await render(<CheckListPicker options={options} value={['apple']} onChange={onChange} />)
   await screen.getByRole('button', { name: '苹果', exact: true }).click()
   expect(document.querySelector('.adm-picker-header-button')).toBeNull()
+  const body = document.querySelector('.adm-picker-popup .adm-popup-body')!
+  expect(getComputedStyle(body).borderTopLeftRadius).toBe('8px')
+  expect(getComputedStyle(body).borderTopRightRadius).toBe('8px')
+  expect(getComputedStyle(body).overflow).toBe('hidden')
   await screen.getByText('梨', { exact: true }).click()
   await closed()
   expect(onChange).toHaveBeenCalledWith(['pear'])
