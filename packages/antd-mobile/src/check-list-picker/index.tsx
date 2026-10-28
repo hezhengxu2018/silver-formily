@@ -127,7 +127,7 @@ function BaseCheckListPicker(props: ICheckListPickerProps) {
     if (!popup.visible)
       return
     const picker = latest.current
-    const controller = createPopup(PopupContent, { ...picker.popupProps, className: cls('adm-picker-popup', picker.popupProps?.className), afterClose: popup.afterClose })
+    const controller = createPopup(PopupContent, { ...picker.popupProps, className: cls('adm-picker-popup', 'adm-formily-check-list-picker-popup-container', picker.popupProps?.className), afterClose: popup.afterClose })
     let disposed = false
     // createPopup uses flushSync, so mount its root outside React's commit phase.
     queueMicrotask(() => {
