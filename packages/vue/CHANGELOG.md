@@ -1,5 +1,11 @@
 # 更新日志
 
+## 4.0.1
+
+### Patch Changes
+
+- 4f4ded0: Fix unnecessary decorator re-renders when the field component updates.
+
 ## 4.0.0
 
 ### Major Changes
