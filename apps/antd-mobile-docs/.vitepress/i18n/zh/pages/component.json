@@ -115,6 +115,15 @@
     ]
   },
   {
+    "text": "Scenario 场景组件",
+    "items": [
+      {
+        "text": "FormPopup 表单弹层",
+        "link": "/component/form-popup"
+      }
+    ]
+  },
+  {
     "text": "Utilities 工具函数",
     "items": [
       {

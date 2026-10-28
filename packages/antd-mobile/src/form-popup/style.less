@@ -1,0 +1,31 @@
+.adm-formily-form-popup {
+  display: flex;
+  flex-direction: column;
+  max-height: 90vh;
+  background: var(--adm-color-background);
+
+  &-header {
+    flex-shrink: 0;
+    padding: 16px;
+    text-align: center;
+    font-size: var(--adm-font-size-9);
+    font-weight: 500;
+  }
+
+  &-body {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+  }
+
+  &-footer {
+    display: flex;
+    flex-shrink: 0;
+    gap: 12px;
+    padding: 12px 16px;
+
+    > .adm-button {
+      flex: 1;
+    }
+  }
+}
