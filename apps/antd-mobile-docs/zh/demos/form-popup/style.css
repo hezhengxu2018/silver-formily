@@ -1,0 +1,50 @@
+.form-popup-demo-header {
+  display: grid;
+  gap: 6px;
+}
+
+.form-popup-demo-header-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--adm-color-text);
+}
+
+.form-popup-demo-header-description {
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--adm-color-weak);
+}
+
+.form-popup-demo-actions {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  width: 100%;
+}
+
+.form-popup-demo-picker-like .adm-formily-form-popup-header {
+  padding: 0;
+}
+
+.form-popup-demo-picker-like .adm-formily-form-popup-body {
+  padding-top: 12px;
+}
+
+.form-popup-demo-picker-like .adm-formily-form-popup-footer {
+  display: none;
+}
+
+.form-popup-demo-toolbar {
+  display: flex;
+  align-items: center;
+  min-height: 48px;
+}
+
+.form-popup-demo-toolbar-title {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  font-size: 16px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
