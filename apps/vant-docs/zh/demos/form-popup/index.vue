@@ -24,6 +24,10 @@ import { NavBar } from 'vant'
         <DocsDemoRenderer path="@/zh/demos/form-popup/loading.vue" />
       </MobileDemoSection>
 
+      <MobileDemoSection title="提交 Loading" description="点击保存后模拟 2 秒异步提交，确认按钮显示 Loading，取消按钮禁用。">
+        <DocsDemoRenderer path="@/zh/demos/form-popup/submit-loading.vue" />
+      </MobileDemoSection>
+
       <MobileDemoSection
         title="Picker 风格头部"
         description="通过 header 插槽把取消和确定都挪到顶部，可以封装出更接近 Vant Picker 工具栏的交互形态。"
