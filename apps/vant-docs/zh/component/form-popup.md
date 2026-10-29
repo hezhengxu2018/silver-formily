@@ -22,6 +22,14 @@ mobileDemo: form-popup/index.vue
 
 <<< @/zh/demos/form-popup/loading.vue
 
+## 提交 Loading
+
+点击“保存”并通过校验后，`forConfirm` 模拟 2 秒的异步提交。等待期间，默认确认按钮跟随 `form.submitting` 显示 Loading，取消按钮禁用；提交完成后关闭弹层并展示提交结果。清空必填项再保存，可以观察校验失败时弹层保持打开。
+
+请在 `forConfirm` 中 `await` 或返回提交请求的 Promise，才能让 Loading 覆盖整个请求过程。默认按钮区已处理提交状态，无需手动设置 `loading`。
+
+<<< @/zh/demos/form-popup/submit-loading.vue
+
 ## Picker 风格头部
 
 <<< @/zh/demos/form-popup/picker-like.vue
