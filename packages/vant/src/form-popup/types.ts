@@ -5,6 +5,7 @@ import type { Component, SlotsType, VNode } from 'vue'
 
 // #region props
 export type FormPopupProps = Partial<VanPopupProps> & Record<string, any> & {
+  loadingText?: string
   title?: string
   cancelText?: string
   cancelButtonProps?: Partial<ButtonProps>

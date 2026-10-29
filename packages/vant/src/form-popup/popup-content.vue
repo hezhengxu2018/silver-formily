@@ -49,6 +49,7 @@ const popupBindings = computed(() => {
   const {
     show: _show,
     title: _title,
+    loadingText: _loadingText,
     cancelText: _cancelText,
     cancelButtonProps: _cancelButtonProps,
     okText: _okText,

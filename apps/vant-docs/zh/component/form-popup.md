@@ -14,6 +14,14 @@ mobileDemo: form-popup/index.vue
 
 <<< @/zh/demos/form-popup/middleware.vue
 
+## 打开前异步加载
+
+`forOpen` 支持返回 Promise 的中间件。执行超过 100ms 时自动展示 Loading，并阻止点击背景；完成后关闭 Loading，再展示表单。快速完成时不会闪烁，中间件失败或等待期间调用 `close()` 也会清理 Loading。
+
+通过 `loadingText` 自定义提示文案，默认是 `'Loading...'`。下面模拟 1.5 秒的数据请求，并将结果作为表单初始值。
+
+<<< @/zh/demos/form-popup/loading.vue
+
 ## Picker 风格头部
 
 <<< @/zh/demos/form-popup/picker-like.vue
@@ -66,13 +74,14 @@ const result = await popup
 
 除了官方 `Popup` 属性外，`FormPopup` 还固定支持以下壳层配置：
 
-| 属性名              | 类型                   | 说明                 | 默认值   |
-| ------------------- | ---------------------- | -------------------- | -------- |
-| `title`             | `string`               | 默认头部标题         | `-`      |
-| `cancelText`        | `string`               | 默认取消按钮文案     | `'取消'` |
-| `okText`            | `string`               | 默认确认按钮文案     | `'确定'` |
-| `cancelButtonProps` | `Partial<ButtonProps>` | 默认取消按钮属性透传 | `-`      |
-| `okButtonProps`     | `Partial<ButtonProps>` | 默认确认按钮属性透传 | `-`      |
+| 属性名              | 类型                   | 说明                   | 默认值         |
+| ------------------- | ---------------------- | ---------------------- | -------------- |
+| `loadingText`       | `string`               | 打开前异步加载提示文案 | `'Loading...'` |
+| `title`             | `string`               | 默认头部标题           | `-`            |
+| `cancelText`        | `string`               | 默认取消按钮文案       | `'取消'`       |
+| `okText`            | `string`               | 默认确认按钮文案       | `'确定'`       |
+| `cancelButtonProps` | `Partial<ButtonProps>` | 默认取消按钮属性透传   | `-`            |
+| `okButtonProps`     | `Partial<ButtonProps>` | 默认确认按钮属性透传   | `-`            |
 
 #### FormPopupProps 默认值
 

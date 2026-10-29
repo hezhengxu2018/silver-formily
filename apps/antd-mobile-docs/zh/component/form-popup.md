@@ -18,6 +18,14 @@ mobileDemo: form-popup/index.tsx
 
 <<< @/zh/demos/form-popup/middleware.tsx
 
+## 打开前异步加载
+
+`forOpen` 支持返回 Promise 的中间件。执行超过 100ms 时自动展示 Loading，并阻止点击背景；完成后关闭 Loading，再展示表单。快速完成时不会闪烁，中间件失败或等待期间调用 `close()` 也会清理 Loading。
+
+通过 `loadingText` 自定义提示文案，默认是 `'Loading...'`。下面模拟 1.5 秒的数据请求，并将结果作为表单初始值。
+
+<<< @/zh/demos/form-popup/loading.tsx
+
 ## Picker 风格头部
 
 将取消和确定放在头部，通过 `footer: () => null` 和局部样式隐藏默认底部区域。必填项校验失败时保持弹层打开。
@@ -42,6 +50,7 @@ popup.close()
 
 | 属性                                  | 说明                                                    |
 | ------------------------------------- | ------------------------------------------------------- |
+| `loadingText`                         | 打开前异步加载提示文案，默认 `'Loading...'`             |
 | `title`                               | 默认头部内容，支持 ReactNode                            |
 | `okText` / `cancelText`               | 按钮文案，默认「确定」/「取消」                         |
 | `okButtonProps` / `cancelButtonProps` | antd-mobile Button 属性；点击行为和按钮 type 由封装管理 |

@@ -61,3 +61,5 @@ pnpm add @silver-formily/vant @silver-formily/vue @silver-formily/core @silver-f
 ## License
 
 MIT
+
+`FormPopup` 的 `forOpen` 异步中间件执行超过 100ms 时自动显示 Loading，可通过 `loadingText` 自定义文案；完成、失败或等待期间关闭弹层时自动清理。
