@@ -80,3 +80,5 @@ popup.close()
 关闭动画结束后自动卸载内容和挂载节点。独立 React root 不会继承调用位置的 Context。
 
 `Picker` 使用 antd-mobile 声明式 `Picker`，支持打开期间刷新数据源且不自动写回字段，由 Formily 管理字段值，点击 FormItem 整行打开并联动右侧箭头。
+
+`FormPopup` 的 `forOpen` 异步中间件执行超过 100ms 时自动显示 Loading，可通过 `loadingText` 自定义文案；完成、失败或等待期间关闭弹层时自动清理。

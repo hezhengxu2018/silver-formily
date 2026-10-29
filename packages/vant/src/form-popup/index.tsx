@@ -18,6 +18,7 @@ import {
   createDetachedRenderer,
   normalizeDynamicMiddlewareNames,
 } from '../__builtins__/shared/popup-runtime'
+import { startOpenLoading } from './loading'
 import PopupContent from './popup-content.vue'
 import './style.scss'
 
@@ -60,6 +61,7 @@ export function FormPopup<
   }
 
   const env: {
+    stopOpenLoading?: () => void
     form?: Form<TValues>
     promise?: Promise<any>
     resolvePromise?: (value: any) => void
@@ -181,6 +183,8 @@ export function FormPopup<
   })
 
   function resetRuntimeState() {
+    env.stopOpenLoading?.()
+    env.stopOpenLoading = undefined
     env.form = undefined
     env.pendingOutcome = undefined
     env.promise = undefined
@@ -338,6 +342,9 @@ export function FormPopup<
         env.rejectPromise = reject
       })
 
+      const openingPromise = env.promise
+      const stopOpenLoading = startOpenLoading(formPopupProps.loadingText)
+      env.stopOpenLoading = stopOpenLoading
       const initialPayload = cloneDeep(payload ?? {}) as IFormProps<TValues>
 
       applyMiddlewareWithFallback<IFormProps<TValues>>(
@@ -345,11 +352,16 @@ export function FormPopup<
         env.openMiddlewares,
         initialPayload,
       )
+        .finally(stopOpenLoading)
         .then((nextPayload) => {
+          if (env.promise !== openingPromise)
+            return
           env.form = createForm<TValues>(nextPayload)
           renderPopup(true)
         })
         .catch((error) => {
+          if (env.promise !== openingPromise)
+            return
           renderer.dispose()
           env.pendingOutcome = {
             status: 'reject',
@@ -364,6 +376,12 @@ export function FormPopup<
     close() {
       if (!env.promise) {
         renderer.dispose()
+        resetRuntimeState()
+        return
+      }
+
+      if (!env.form) {
+        env.rejectPromise?.(new Error('cancel'))
         resetRuntimeState()
         return
       }

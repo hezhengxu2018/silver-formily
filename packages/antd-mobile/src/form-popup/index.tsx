@@ -10,6 +10,7 @@ import { Button, Popup, SafeArea } from 'antd-mobile'
 import { createElement, isValidElement } from 'react'
 import { flushSync } from 'react-dom'
 import { createRoot } from 'react-dom/client'
+import { startOpenLoading } from './loading'
 import { applyMiddlewareWithFallback, normalizeDynamicMiddlewareNames } from './middleware'
 import './style.less'
 
@@ -39,6 +40,7 @@ interface Session<TValues extends object> {
   close: () => void
   settled: boolean
   busy: boolean
+  stopOpenLoading?: () => void
 }
 
 export function FormPopup<
@@ -62,6 +64,7 @@ export function FormPopup<
   function settle(session: Session<TValues>, outcome: { value: any } | { error: unknown }) {
     if (session.settled)
       return
+    session.stopOpenLoading?.()
     session.settled = true
     if (active === session)
       active = undefined
@@ -123,7 +126,7 @@ export function FormPopup<
         host.remove()
       })
     }
-    const { title, cancelText, cancelButtonProps, okText, okButtonProps, safeArea = true, afterClose, onClose, ...nativeProps } = props
+    const { loadingText: _loadingText, title, cancelText, cancelButtonProps, okText, okButtonProps, safeArea = true, afterClose, onClose, ...nativeProps } = props
     const bindings = {
       form: session.form!,
       resolve: (type?: string) => confirm(session, type),
@@ -212,10 +215,12 @@ export function FormPopup<
       })
       const session: Session<TValues> = { promise, resolve, reject, settled: false, busy: false, close() {} }
       active = session
+      const stopOpenLoading = startOpenLoading(props.loadingText)
+      session.stopOpenLoading = stopOpenLoading
       void Promise.resolve().then(() => {
         const initial = clone(payload ?? {}) as IFormProps<TValues>
         return applyMiddlewareWithFallback<IFormProps<TValues>>(initial, openMiddlewares, current => current ?? initial)
-      }).then((nextPayload) => {
+      }).finally(stopOpenLoading).then((nextPayload) => {
         if (session.settled)
           return
         session.form = createForm<TValues>(nextPayload)

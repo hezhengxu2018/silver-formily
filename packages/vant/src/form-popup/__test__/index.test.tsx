@@ -334,3 +334,54 @@ describe('form-popup', () => {
     })
   })
 })
+
+it.each(['success', 'failure', 'close'] as const)('cleans up open Loading on %s and prevents late mounting', async (outcome) => {
+  let finish!: () => void
+  let fail!: (error: Error) => void
+  const request = new Promise<void>((resolve, reject) => {
+    finish = resolve
+    fail = reject
+  })
+  const popup = FormPopup({ title: '异步表单', loadingText: '正在读取数据' })
+    .forOpen(async () => {
+      await request
+      return { initialValues: { name: 'loaded' } }
+    })
+  const result = popup.open().catch(error => error)
+  await vi.waitFor(() => {
+    expect(document.querySelector('.van-toast')?.textContent).toContain('正在读取数据')
+  })
+  expect(document.querySelector('.silver-formily-vant-form-popup')).toBeNull()
+  if (outcome === 'success') {
+    finish()
+    await vi.waitFor(() => expect(document.querySelector('.silver-formily-vant-form-popup')).not.toBeNull())
+    document.querySelector<HTMLButtonElement>('.silver-formily-vant-form-popup__footer .van-button--primary')!.click()
+    await expect(result).resolves.toEqual({ name: 'loaded' })
+  }
+  else if (outcome === 'failure') {
+    fail(new Error('load failed'))
+    await expect(result).resolves.toMatchObject({ message: 'load failed' })
+  }
+  else {
+    popup.close()
+    await expect(result).resolves.toMatchObject({ message: 'cancel' })
+    finish()
+    await new Promise(resolve => setTimeout(resolve, 0))
+  }
+  await vi.waitFor(() => {
+    const toast = document.querySelector<HTMLElement>('.van-toast')
+    expect(!toast || getComputedStyle(toast).display === 'none').toBe(true)
+    const popupElement = document.querySelector('.silver-formily-vant-form-popup')?.closest<HTMLElement>('.van-popup')
+    expect(!popupElement || getComputedStyle(popupElement).display === 'none').toBe(true)
+  })
+})
+
+it('does not flash open Loading for fast middleware', async () => {
+  const popup = FormPopup({ loadingText: '不应出现的加载提示' }).forOpen(async props => props)
+  const result = popup.open().catch(error => error)
+  await vi.waitFor(() => expect(document.querySelector('.silver-formily-vant-form-popup')).not.toBeNull())
+  popup.close()
+  await result
+  await new Promise(resolve => setTimeout(resolve, 150))
+  expect(document.body.textContent).not.toContain('不应出现的加载提示')
+})

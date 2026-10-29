@@ -4,6 +4,7 @@ import type { ButtonProps, PopupProps } from 'antd-mobile'
 import type { ComponentType, ReactNode } from 'react'
 
 export interface IFormPopupProps extends Omit<PopupProps, 'visible' | 'children' | 'forceRender' | 'destroyOnClose'> {
+  loadingText?: string
   title?: ReactNode
   cancelText?: ReactNode
   cancelButtonProps?: ButtonProps

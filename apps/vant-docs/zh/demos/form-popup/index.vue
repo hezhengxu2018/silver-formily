@@ -20,6 +20,10 @@ import { NavBar } from 'vant'
         <DocsDemoRenderer path="@/zh/demos/form-popup/middleware.vue" />
       </MobileDemoSection>
 
+      <MobileDemoSection title="打开前异步加载" description="等待超过 100ms 自动展示 Loading，加载完成后打开表单。">
+        <DocsDemoRenderer path="@/zh/demos/form-popup/loading.vue" />
+      </MobileDemoSection>
+
       <MobileDemoSection
         title="Picker 风格头部"
         description="通过 header 插槽把取消和确定都挪到顶部，可以封装出更接近 Vant Picker 工具栏的交互形态。"
