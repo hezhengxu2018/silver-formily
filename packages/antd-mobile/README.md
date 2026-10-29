@@ -20,6 +20,7 @@
 - 选择类组件：`DatePicker`（支持 quarter 精度）、`Cascader`、`CascadePicker`
 - 结构组件：`FormLayout`、`FormItem`、`FormGrid`、`FormButtonGroup`、`List`、`Space`
 - 数组组件：`ArrayBase` 及其 `Addition` / `Remove` / `Copy` / `MoveUp` / `MoveDown` / `Index` 等 mixin
+- 分步表单：`FormStep`（含 `StepPane`、`createFormStep`、`useFormStep`）
 - 动作组件：`Submit`、`Reset`
 - 预览态组件：`PreviewText.*`
 

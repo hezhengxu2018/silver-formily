@@ -2,12 +2,16 @@ import type { CheckListItemProps, InputProps, SpaceProps, StepperProps, SwitchPr
 import type { ComponentProps, ReactNode } from 'react'
 import type {
   ArrayBaseMixins,
+  FormStep,
   ICheckListItemProps,
   ICheckListOption,
   ICheckListPickerProps,
   ICheckListValue,
   IDatePickerProps,
   IFormGridProps,
+  IFormStep,
+  IFormStepPaneProps,
+  IFormStepProps,
   IGridColumnProps,
   IInputProps,
   IPasscodeInputProps,
@@ -20,6 +24,7 @@ import type {
   ISwitchProps,
   ITextAreaProps,
   PopupResult,
+  useFormStep,
 } from '../src'
 import { expectTypeOf, it } from 'vitest'
 import { ArrayBase, CheckList, DatePicker, PreviewText, Selector } from '../src'
@@ -90,4 +95,11 @@ it('exports input control props with upstream value contracts', () => {
 it('exports CheckListPicker value and callback types', () => {
   expectTypeOf<ICheckListPickerProps['value']>().toEqualTypeOf<(string | number)[] | undefined>()
   expectTypeOf<NonNullable<ICheckListPickerProps['onConfirm']>>().toEqualTypeOf<(value: (string | number)[]) => void>()
+})
+
+it('exports FormStep props and controller types', () => {
+  expectTypeOf<ReturnType<typeof FormStep.createFormStep>>().toEqualTypeOf<IFormStep>()
+  expectTypeOf<ReturnType<typeof useFormStep>>().toEqualTypeOf<IFormStep>()
+  expectTypeOf<IFormStepPaneProps>().toEqualTypeOf<Parameters<typeof FormStep.StepPane>[0]>()
+  expectTypeOf<IFormStepProps['current']>().toEqualTypeOf<number | undefined>()
 })
