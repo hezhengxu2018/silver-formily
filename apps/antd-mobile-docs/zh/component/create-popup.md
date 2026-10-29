@@ -22,6 +22,16 @@ mobileDemo: create-popup/index.tsx
 
 <<< @/zh/demos/create-popup/children.tsx
 
+## 结合 FormStep
+
+参考 Vant 的弹出式分步表单，将联系信息、配送信息和确认提交放进同一个弹层。内容组件内部创建独立的 `Form` 和 `FormStep` 控制器，通过 `FormConsumer` 更新底部操作按钮。
+
+点击“下一步”先校验当前步骤，返回上一步保留已填数据；最后通过 `Submit` 提交并调用 `onConfirm(values)`，由 `prompt()` 返回完整表单值。首步可取消，返回 `null`；每次重新打开都会重置表单和步骤。
+
+`createPopup` 只管理弹层会话，不会自动注入表单上下文或执行表单校验。这里禁用遮罩关闭，表单上下文由内容中的 `Form` 提供。
+
+<<< @/zh/demos/create-popup/form-step.tsx
+
 ## API
 
 ```tsx
@@ -76,7 +86,3 @@ interface PopupContentCallbacks<TResult> {
 - 每次新会话重新初始化内容；动画结束后卸载 React root 并移除宿主节点。
 - 独立 React root 不会继承调用位置的 Context。需要 Formily 或其他 Provider 时，在内容组件内部显式包裹。
 - 不再支持旧签名、`open`、`onFinish`、属性 getter 或 `slots`。
-
-::: warning Picker 迁移状态
-现有 Picker 封装尚未迁移，仍依赖旧接口，因此暂时不可用且会导致类型检查失败。本次仅更新 createPopup，Picker 将在后续单独重构。
-:::
