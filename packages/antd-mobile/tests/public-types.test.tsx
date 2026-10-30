@@ -110,3 +110,29 @@ it('exports FormStep props and controller types', () => {
   expectTypeOf<IFormStepPaneProps>().toEqualTypeOf<Parameters<typeof FormStep.StepPane>[0]>()
   expectTypeOf<IFormStepProps['current']>().toEqualTypeOf<number | undefined>()
 })
+
+it('exports ArrayItems props and compound components', async () => {
+  const { ArrayItems } = await import('../src')
+  type Props = import('../src').IArrayItemsProps
+  type ItemProps = import('../src').IArrayItemsItemProps
+  expectTypeOf<Props>().toEqualTypeOf<ComponentProps<typeof ArrayItems>>()
+  expectTypeOf<ItemProps>().toEqualTypeOf<ComponentProps<typeof ArrayItems.Item>>()
+  expectTypeOf<typeof ArrayItems.Remove>().toEqualTypeOf<typeof ArrayBase.Remove>()
+  expectTypeOf<typeof ArrayItems.useRecord>().toEqualTypeOf<typeof ArrayBase.useRecord>()
+  if (false) {
+    const array = <ArrayItems onAdd={index => expectTypeOf(index).toEqualTypeOf<number>()} className="array" />
+    const item = <ArrayItems.Item title={<b>标题</b>} extra={<ArrayItems.Remove />} mode="default">内容</ArrayItems.Item>
+    // @ts-expect-error Copy has been removed
+    void ArrayBase.Copy
+    // @ts-expect-error SortHandle has been removed
+    void ArrayItems.SortHandle
+    // @ts-expect-error array copy callback has been removed
+    const copyProps: import('../src').IArrayBaseProps = { onCopy: () => {} }
+    void copyProps
+    // @ts-expect-error unsupported list mode
+    const invalid = <ArrayItems.Item mode="divide" />
+    // @ts-expect-error no renderItem API
+    const jsx = <ArrayItems renderItem={() => null} />
+    void [array, item, invalid, jsx]
+  }
+})

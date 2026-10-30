@@ -19,7 +19,7 @@
 - 基础字段组件：`Input`（含 `Input.TextArea`）、`Checkbox`、`CheckList`、`Switch`、`Stepper`、`Selector`
 - 选择类组件：`DatePicker`（支持 quarter 精度）、`Cascader`、`CascadePicker`
 - 结构组件：`FormLayout`、`FormItem`、`FormGrid`、`FormButtonGroup`、`List`、`Space`
-- 数组组件：`ArrayBase` 及其 `Addition` / `Remove` / `Copy` / `MoveUp` / `MoveDown` / `Index` 等 mixin
+- 数组组件：`ArrayBase` 及其 `Addition` / `Remove` / `MoveUp` / `MoveDown` / `Index` 等 mixin
 - 分步表单：`FormStep`（含 `StepPane`、`createFormStep`、`useFormStep`）
 - 动作组件：`Submit`、`Reset`
 - 预览态组件：`PreviewText.*`
@@ -54,7 +54,6 @@ export default () => (
 ## 维护说明
 
 - 函数组件不使用 `defaultProps`（React 19 已移除支持）。
-- `ArrayBase.SortHandle` 仅为图标占位，不提供拖拽排序。
 - 详细约定见本包 `AGENTS.md`。
 
 ## createPopup
