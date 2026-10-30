@@ -63,24 +63,19 @@ const ArrayBaseContext = createContext<IArrayBaseContext | null>(null)
 
 const ItemContext = createContext<IArrayBaseItemProps | null>(null)
 
-function CopyOutlined(
-  props: React.HTMLAttributes<HTMLSpanElement>
-    & { ref?: React.Ref<HTMLSpanElement> },
-) {
+function CopyIcon() {
   return (
-    <span {...props}>
-      <svg
-        viewBox="64 64 896 896"
-        focusable="false"
-        data-icon="copy"
-        width="1em"
-        height="1em"
-        fill="currentColor"
-        aria-hidden="true"
-      >
-        <path d="M832 64H296c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h496v688c0 4.4 3.6 8 8 8h56c4.4 0 8-3.6 8-8V96c0-17.7-14.3-32-32-32zM704 192H192c-17.7 0-32 14.3-32 32v530.7c0 8.5 3.4 16.6 9.4 22.6l173.3 173.3c2.2 2.2 4.7 4 7.4 5.5v1.9h4.2c3.5 1.3 7.2 2 11 2H704c17.7 0 32-14.3 32-32V224c0-17.7-14.3-32-32-32zM350 856.2L263.9 770H350v86.2zM664 888H414V746c0-22.1-17.9-40-40-40H232V264h432v624z"></path>
-      </svg>
-    </span>
+    <svg
+      viewBox="64 64 896 896"
+      focusable="false"
+      data-icon="copy"
+      width="1em"
+      height="1em"
+      fill="currentColor"
+      aria-hidden="true"
+    >
+      <path d="M832 64H296c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h496v688c0 4.4 3.6 8 8 8h56c4.4 0 8-3.6 8-8V96c0-17.7-14.3-32-32-32zM704 192H192c-17.7 0-32 14.3-32 32v530.7c0 8.5 3.4 16.6 9.4 22.6l173.3 173.3c2.2 2.2 4.7 4 7.4 5.5v1.9h4.2c3.5 1.3 7.2 2 11 2H704c17.7 0 32-14.3 32-32V224c0-17.7-14.3-32-32-32zM350 856.2L263.9 770H350v86.2zM664 888H414V746c0-22.1-17.9-40-40-40H232V264h432v624z"></path>
+    </svg>
   )
 }
 
@@ -136,6 +131,73 @@ function SortHandle(props: IArrayBaseOperationProps) {
   )
 }
 
+type ArrayOperationName = 'copy' | 'remove' | 'move-down' | 'move-up'
+
+const operationIcons = {
+  'copy': CopyIcon,
+  'remove': DeleteOutline,
+  'move-down': DownOutline,
+  'move-up': UpOutline,
+}
+
+function performArrayOperation(operation: ArrayOperationName, array: IArrayBaseContext, index: number) {
+  switch (operation) {
+    case 'copy': {
+      const destination = index + 1
+      array.field.insert(destination, clone(array.field.value[index]))
+      array.props.onCopy?.(destination)
+      break
+    }
+    case 'remove':
+      array.field.remove(index)
+      array.props.onRemove?.(index)
+      break
+    case 'move-down':
+      array.field.moveDown(index)
+      array.props.onMoveDown?.(index)
+      break
+    case 'move-up':
+      array.field.moveUp(index)
+      array.props.onMoveUp?.(index)
+      break
+  }
+}
+
+function createArrayOperation(operation: ArrayOperationName) {
+  return React.forwardRef<HTMLSpanElement, IArrayBaseOperationProps>((props, ref) => {
+    const array = useArray()
+    const self = useField()
+    const index = useIndex(props.index)
+    const prefixCls = usePrefixCls('formily-array-base')
+    if (!array || array.field.pattern !== 'editable')
+      return null
+    const Icon = operationIcons[operation]
+    const copyDisabled = operation === 'copy' && self?.disabled
+    return (
+      <span
+        {...props}
+        ref={ref}
+        className={cls(`${prefixCls}-${operation}`, copyDisabled && `${prefixCls}-copy-disabled`, props.className)}
+        onClick={(event) => {
+          if (operation === 'copy' && self?.disabled)
+            return
+          // Copy historically stops propagation even when the array is disabled.
+          if (operation === 'copy')
+            event.stopPropagation()
+          if (array.props.disabled)
+            return
+          if (operation !== 'copy')
+            event.stopPropagation()
+          performArrayOperation(operation, array, index)
+          props.onClick?.(event)
+        }}
+      >
+        <Icon />
+      </span>
+    )
+  })
+}
+
 export const ArrayBase = Object.assign(
   (props: IArrayBaseProps) => {
     const field = useField<ArrayField>()
@@ -165,7 +227,7 @@ export const ArrayBase = Object.assign(
       const array = useArray()
       if (!array)
         return null
-      if (array.field?.pattern !== 'editable')
+      if (array.field.pattern !== 'editable')
         return null
       return <SortHandle {...props} />
     },
@@ -191,8 +253,8 @@ export const ArrayBase = Object.assign(
       if (!array)
         return null
       if (
-        array.field?.pattern !== 'editable'
-        && array.field?.pattern !== 'disabled'
+        array.field.pattern !== 'editable'
+        && array.field.pattern !== 'disabled'
       ) {
         return null
       }
@@ -201,19 +263,19 @@ export const ArrayBase = Object.assign(
           fill="outline"
           block
           {...props}
-          disabled={array.field?.disabled}
+          disabled={array.field.disabled}
           className={cls(`${prefixCls}-addition`, props.className)}
           onClick={(e) => {
-            if (array.props?.disabled)
+            if (array.props.disabled)
               return
             const defaultValue = getDefaultValue(props.defaultValue, array.schema)
             if (props.method === 'unshift') {
-              array.field?.unshift?.(defaultValue)
-              array.props?.onAdd?.(0)
+              array.field.unshift(defaultValue)
+              array.props.onAdd?.(0)
             }
             else {
-              array.field?.push?.(defaultValue)
-              array.props?.onAdd?.(array?.field?.value?.length - 1)
+              array.field.push(defaultValue)
+              array.props.onAdd?.(array.field.value.length - 1)
             }
             if (props.onClick) {
               props.onClick(e)
@@ -228,129 +290,10 @@ export const ArrayBase = Object.assign(
       )
     },
 
-    Copy: React.forwardRef<HTMLSpanElement, IArrayBaseOperationProps>((props, ref) => {
-      const self = useField()
-      const array = useArray()
-      const index = useIndex(props.index)
-      const prefixCls = usePrefixCls('formily-array-base')
-      if (!array)
-        return null
-      if (array.field?.pattern !== 'editable')
-        return null
-      return (
-        <CopyOutlined
-          {...props}
-          className={cls(
-            `${prefixCls}-copy`,
-            self?.disabled ? `${prefixCls}-copy-disabled` : '',
-            props.className,
-          )}
-          ref={ref}
-          onClick={(e) => {
-            if (self?.disabled)
-              return
-            e.stopPropagation()
-            if (array.props?.disabled)
-              return
-            const value = clone(array?.field?.value[index])
-            const distIndex = index + 1
-            array.field?.insert?.(distIndex, value)
-            array.props?.onCopy?.(distIndex)
-            if (props.onClick) {
-              props.onClick(e)
-            }
-          }}
-        />
-
-      )
-    }),
-
-    Remove: React.forwardRef<HTMLSpanElement, IArrayBaseOperationProps>((props, ref) => {
-      const index = useIndex(props.index)
-      const array = useArray()
-      const prefixCls = usePrefixCls('formily-array-base')
-      if (!array)
-        return null
-      if (array.field?.pattern !== 'editable')
-        return null
-      return (
-        <span
-          {...props}
-          className={cls(`${prefixCls}-remove`, props.className)}
-          ref={ref}
-          onClick={(e) => {
-            if (array.props?.disabled)
-              return
-            e.stopPropagation()
-            array.field?.remove?.(index)
-            array.props?.onRemove?.(index)
-            if (props.onClick) {
-              props.onClick(e)
-            }
-          }}
-        >
-          <DeleteOutline />
-        </span>
-      )
-    }),
-
-    MoveDown: React.forwardRef<HTMLSpanElement, IArrayBaseOperationProps>((props, ref) => {
-      const index = useIndex(props.index)
-      const array = useArray()
-      const prefixCls = usePrefixCls('formily-array-base')
-      if (!array)
-        return null
-      if (array.field?.pattern !== 'editable')
-        return null
-      return (
-        <span
-          {...props}
-          className={cls(`${prefixCls}-move-down`, props.className)}
-          ref={ref}
-          onClick={(e) => {
-            if (array.props?.disabled)
-              return
-            e.stopPropagation()
-            array.field?.moveDown?.(index)
-            array.props?.onMoveDown?.(index)
-            if (props.onClick) {
-              props.onClick(e)
-            }
-          }}
-        >
-          <DownOutline />
-        </span>
-      )
-    }),
-
-    MoveUp: React.forwardRef<HTMLSpanElement, IArrayBaseOperationProps>((props, ref) => {
-      const index = useIndex(props.index)
-      const array = useArray()
-      const prefixCls = usePrefixCls('formily-array-base')
-      if (!array)
-        return null
-      if (array.field?.pattern !== 'editable')
-        return null
-      return (
-        <span
-          {...props}
-          className={cls(`${prefixCls}-move-up`, props.className)}
-          ref={ref}
-          onClick={(e) => {
-            if (array.props?.disabled)
-              return
-            e.stopPropagation()
-            array?.field?.moveUp(index)
-            array?.props?.onMoveUp?.(index)
-            if (props.onClick) {
-              props.onClick(e)
-            }
-          }}
-        >
-          <UpOutline />
-        </span>
-      )
-    }),
+    Copy: createArrayOperation('copy'),
+    Remove: createArrayOperation('remove'),
+    MoveDown: createArrayOperation('move-down'),
+    MoveUp: createArrayOperation('move-up'),
 
     useArray,
     useIndex,

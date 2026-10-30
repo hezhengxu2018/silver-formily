@@ -20,14 +20,14 @@ export function QuarterDatePicker({
 
   const columns = useCallback(
     (selected: PickerValue[]) =>
-      quarterUtils.generateDatePickerColumns(
-        selected.map(value => String(value ?? '')),
+      quarterUtils.generateDatePickerColumns({
+        selected: selected.map(value => String(value ?? '')),
         min,
         max,
-        props.precision as QuarterPrecision,
+        precision: props.precision as QuarterPrecision,
         renderLabel,
-        props.filter,
-      ),
+        filter: props.filter,
+      }),
     [min, max, props.precision, renderLabel, props.filter],
   )
 

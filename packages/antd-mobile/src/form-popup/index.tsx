@@ -8,8 +8,7 @@ import { toJS } from '@silver-formily/reactive'
 import { camelCase, clone, pascalCase } from '@silver-formily/shared'
 import { Button, Popup, SafeArea } from 'antd-mobile'
 import { createElement, isValidElement } from 'react'
-import { flushSync } from 'react-dom'
-import { createRoot } from 'react-dom/client'
+import { createPopupRoot } from '../__builtins__/popup-root'
 import { startOpenLoading } from './loading'
 import { applyMiddlewareWithFallback, normalizeDynamicMiddlewareNames } from './middleware'
 import './style.less'
@@ -112,20 +111,7 @@ export function FormPopup<
   }
 
   function mount(session: Session<TValues>) {
-    const host = document.createElement('div')
-    host.className = 'adm-formily-form-popup-root'
-    document.body.append(host)
-    const root = createRoot(host)
-    let disposed = false
-    function dispose() {
-      if (disposed)
-        return
-      disposed = true
-      queueMicrotask(() => {
-        root.unmount()
-        host.remove()
-      })
-    }
+    const popupRoot = createPopupRoot('adm-formily-form-popup-root')
     const { loadingText: _loadingText, title, cancelText, cancelButtonProps, okText, okButtonProps, safeArea = true, afterClose, onClose, ...nativeProps } = props
     const bindings = {
       form: session.form!,
@@ -140,7 +126,7 @@ export function FormPopup<
       return typeof value === 'function' ? createElement(value, bindings) : value
     }
     function render(visible: boolean) {
-      flushSync(() => root.render(
+      popupRoot.render(
         <Popup
           position="bottom"
           getContainer={null}
@@ -157,7 +143,7 @@ export function FormPopup<
               afterClose?.()
             }
             finally {
-              dispose()
+              popupRoot.dispose()
             }
           }}
         >
@@ -172,21 +158,15 @@ export function FormPopup<
             </div>
           </FormProvider>
         </Popup>,
-      ))
+      )
     }
-    // A same-tick reversal can leave the spring at rest without afterClose.
-    session.close = () => {
-      requestAnimationFrame(() => requestAnimationFrame(() => {
-        if (!disposed)
-          render(false)
-      }))
-    }
+    session.close = () => popupRoot.scheduleClose(() => render(false))
     try {
       render(false)
       render(true)
     }
     catch (error) {
-      dispose()
+      popupRoot.dispose()
       throw error
     }
   }
