@@ -3,7 +3,7 @@ import { List } from 'antd-mobile'
 import { CloseCircleFill } from 'antd-mobile-icons'
 import cls from 'classnames'
 import { useEffect, useRef, useState } from 'react'
-import { usePrefixCls } from '../__builtins__'
+import { FormItemWrapperWrapContext, usePrefixCls } from '../__builtins__'
 import { FormLayoutShallowContext } from '../form-layout'
 import { FormItemFeedback } from './feedback'
 import { FormItemLabel } from './label'
@@ -93,7 +93,9 @@ export function BaseItem(props: IFormItemProps) {
   const control = (
     <div ref={contentRef} className={`${prefixCls}-control-content-component`} style={{ ...wrapperStyle, ...widthStyle(resolved.wrapperWidth) }}>
       <FormLayoutShallowContext.Provider value={null}>
-        {children}
+        <FormItemWrapperWrapContext.Provider value={wrapperWrap ?? false}>
+          {children}
+        </FormItemWrapperWrapContext.Provider>
       </FormLayoutShallowContext.Provider>
     </div>
   )

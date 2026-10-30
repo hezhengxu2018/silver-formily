@@ -5,8 +5,8 @@ import { isField } from '@silver-formily/core'
 import { connect, mapProps, mapReadPretty } from '@silver-formily/react'
 import { Tag } from 'antd-mobile'
 import cls from 'classnames'
-import { Fragment, useEffect, useRef, useState } from 'react'
-import { PopupTrigger, usePopupPicker, usePrefixCls } from '../__builtins__'
+import { Fragment, useContext, useEffect, useRef, useState } from 'react'
+import { FormItemWrapperWrapContext, PopupTrigger, usePopupPicker, usePrefixCls } from '../__builtins__'
 import { CheckList } from '../check-list'
 import { createPopup } from '../create-popup'
 import { PreviewText } from '../preview-text'
@@ -15,8 +15,6 @@ import 'antd-mobile/es/components/picker'
 import './style.less'
 
 export interface ICheckListPickerProps extends Omit<ICheckListProps, 'defaultValue' | 'children'> {
-  /** Allow trigger content to wrap instead of scrolling horizontally. */
-  triggerWrap?: boolean
   placeholder?: ReactNode
   confirmText?: ReactNode
   cancelText?: ReactNode
@@ -27,7 +25,8 @@ export interface ICheckListPickerProps extends Omit<ICheckListProps, 'defaultVal
   displayRender?: (value: ICheckListValue[], props: ICheckListPickerProps) => ReactNode
 }
 
-function displayValue(props: ICheckListPickerProps) {
+function DisplayValue(props: ICheckListPickerProps) {
+  const wrapperWrap = useContext(FormItemWrapperWrapContext)
   const value = props.value ?? []
   if (props.displayRender)
     return props.displayRender(value, props)
@@ -37,7 +36,7 @@ function displayValue(props: ICheckListPickerProps) {
     return props.multiple ? <Tag key={`${typeof item}:${item}`} style={{ fontSize: 'inherit' }}>{label}</Tag> : label
   })
   return props.multiple
-    ? <Space direction="horizontal" wrap={props.triggerWrap ?? false} size={4}>{labels}</Space>
+    ? <Space direction="horizontal" wrap={wrapperWrap} size={4}>{labels}</Space>
     : labels.map((label, index) => (
         <Fragment key={index}>
           {index > 0 && ' / '}
@@ -48,7 +47,7 @@ function displayValue(props: ICheckListPickerProps) {
 
 function PickerPreview(props: ICheckListPickerProps) {
   const placeholder = PreviewText.usePlaceholder()
-  return <span className={props.className} style={props.style}>{props.value?.length ? displayValue(props) : placeholder}</span>
+  return <span className={props.className} style={props.style}>{props.value?.length ? <DisplayValue {...props} /> : placeholder}</span>
 }
 
 function PopupContent({ picker, onConfirm, onCancel }: { picker: ICheckListPickerProps } & PopupContentCallbacks<ICheckListValue[]>) {
@@ -148,7 +147,6 @@ function BaseCheckListPicker(props: ICheckListPickerProps) {
   return (
     <div className={cls(prefix, { 'adm-list-item-disabled': props.disabled }, props.className)} style={props.style}>
       <PopupTrigger
-        triggerWrap={props.triggerWrap}
         ref={popup.button}
         type="button"
         className={`${prefix}-trigger`}
@@ -161,7 +159,7 @@ function BaseCheckListPicker(props: ICheckListPickerProps) {
           popup.open()
         }}
       >
-        {props.value?.length ? displayValue(props) : props.placeholder ?? '请选择'}
+        {props.value?.length ? <DisplayValue {...props} /> : props.placeholder ?? '请选择'}
       </PopupTrigger>
     </div>
   )

@@ -5,16 +5,16 @@ import { CalendarPicker, CascadePicker, Cascader, CheckListPicker, DatePicker, F
 afterEach(cleanup)
 
 it.each([false, true])('shares trigger scrolling and wrapping across every picker (wrap: %s)', async (triggerWrap) => {
-  const props = { triggerWrap, placeholder: '很长的选项名称用于检查是否自动换行显示'.repeat(5), style: { width: 120 } }
+  const props = { placeholder: '很长的选项名称用于检查是否自动换行显示'.repeat(5), style: { width: 120 } }
   await render(
-    <>
+    <FormItem.BaseItem wrapperWrap={triggerWrap}>
       <Picker {...props} columns={[]} />
       <CascadePicker {...props} options={[]} />
       <Cascader {...props} options={[]} />
       <DatePicker {...props} />
       <CalendarPicker {...props} />
       <CheckListPicker {...props} />
-    </>,
+    </FormItem.BaseItem>,
   )
   const triggers = document.querySelectorAll<HTMLButtonElement>('[data-form-item-trigger]')
   expect(triggers).toHaveLength(6)
@@ -28,7 +28,7 @@ it.each([false, true])('shares trigger scrolling and wrapping across every picke
 })
 
 it.each([false, true])('lays out multiple selections as tags (wrap: %s)', async (triggerWrap) => {
-  await render(<CheckListPicker multiple triggerWrap={triggerWrap} value={[1, 2, 3, 4]} options={[1, 2, 3, 4].map(value => ({ value, label: `选项 ${value}` }))} style={{ width: 120 }} />)
+  await render(<FormItem.BaseItem wrapperWrap={triggerWrap}><CheckListPicker multiple value={[1, 2, 3, 4]} options={[1, 2, 3, 4].map(value => ({ value, label: `选项 ${value}` }))} style={{ width: 120 }} /></FormItem.BaseItem>)
   const button = document.querySelector<HTMLButtonElement>('[data-form-item-trigger]')!
   expect(button.querySelectorAll('.adm-space .adm-tag')).toHaveLength(4)
   expect(button.textContent).not.toContain('/')
@@ -41,8 +41,8 @@ it.each([false, true])('lays out multiple selections as tags (wrap: %s)', async 
 it.each([false, true])('keeps the FormItem arrow in bounds with long tags (wrap: %s)', async (triggerWrap) => {
   await render(
     <div style={{ width: 360 }}>
-      <FormItem.BaseItem label="多选">
-        <CheckListPicker multiple triggerWrap={triggerWrap} value={Array.from({ length: 20 }, (_, index) => index)} options={Array.from({ length: 20 }, (_, value) => ({ value, label: `长选项 ${value}` }))} />
+      <FormItem.BaseItem label="多选" wrapperWrap={triggerWrap}>
+        <CheckListPicker multiple value={Array.from({ length: 20 }, (_, index) => index)} options={Array.from({ length: 20 }, (_, value) => ({ value, label: `长选项 ${value}` }))} />
       </FormItem.BaseItem>
     </div>,
   )

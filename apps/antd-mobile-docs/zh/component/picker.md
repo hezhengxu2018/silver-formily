@@ -57,4 +57,4 @@ FormItem 在挂载后检测一次 `data-form-item-trigger` 以决定是否自动
 
 ## 触发内容布局
 
-`triggerWrap` 默认为 `false`：已选内容保持单行，超出字段宽度后可水平滚动。设置 `triggerWrap: true` 后按字段宽度换行显示。
+通过 FormItem 的 `wrapperWrap` 控制已选内容布局，默认 `false`：保持单行，超出字段宽度后可水平滚动。设置 `x-decorator-props: { wrapperWrap: true }` 后按字段宽度换行显示。

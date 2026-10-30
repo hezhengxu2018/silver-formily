@@ -10,8 +10,6 @@ import './style.less'
 
 export interface IPickerProps extends Omit<AntPickerProps, 'defaultValue' | 'visible' | 'children'> {
   onChange?: (value: PickerValue[]) => void
-  /** Allow trigger content to wrap instead of scrolling horizontally. */
-  triggerWrap?: boolean
   placeholder?: React.ReactNode
   disabled?: boolean
   readOnly?: boolean
@@ -55,7 +53,6 @@ function BasePicker(props: IPickerProps) {
     disabled: _disabled,
     readOnly: _readOnly,
     displayRender: _displayRender,
-    triggerWrap: _triggerWrap,
     className: _className,
     style: _style,
     onConfirm: _onConfirm,
@@ -87,7 +84,6 @@ function BasePicker(props: IPickerProps) {
         afterClose={popup.afterClose}
       />
       <PopupTrigger
-        triggerWrap={props.triggerWrap}
         ref={popup.button}
         type="button"
         className={`${prefix}-trigger`}

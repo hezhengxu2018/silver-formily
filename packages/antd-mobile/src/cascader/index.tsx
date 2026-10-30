@@ -11,8 +11,6 @@ import './style.less'
 
 export interface ICascaderProps extends Omit<AntCascaderProps, 'defaultValue' | 'visible' | 'children'> {
   onChange?: AntCascaderProps['onConfirm']
-  /** Allow trigger content to wrap instead of scrolling horizontally. */
-  triggerWrap?: boolean
   disabled?: boolean
   readOnly?: boolean
   displayRender?: (labels: React.ReactNode[], selectedOptions: (CascaderOption | null)[]) => React.ReactNode
@@ -83,7 +81,6 @@ function BaseCascader(props: ICascaderProps) {
     disabled: _disabled,
     readOnly: _readOnly,
     displayRender: _displayRender,
-    triggerWrap: _triggerWrap,
     className: _className,
     style: _style,
     onConfirm: _onConfirm,
@@ -116,7 +113,6 @@ function BaseCascader(props: ICascaderProps) {
         afterClose={popup.afterClose}
       />
       <PopupTrigger
-        triggerWrap={props.triggerWrap}
         ref={popup.button}
         type="button"
         className={`${prefix}-trigger`}

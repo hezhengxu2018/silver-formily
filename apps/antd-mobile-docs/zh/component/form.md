@@ -8,9 +8,7 @@ mobileDemo: form/index.tsx
 
 ## 基础使用
 
-通过 `form` 传入 `createForm()` 创建的实例，无需再包裹 `FormProvider`。点击 `Submit` 会先触发整表校验，通过后调用 `onAutoSubmit`，并传入当前表单值。回调可以返回 Promise，`Submit` 会在提交期间显示加载状态。
-
-下面的示例支持提交与重置。清空用户名再提交，会显示必填校验反馈，并调用 `onAutoSubmitFailed`。
+通过 `form` 传入 `createForm()` 创建的实例，无需再包裹 `FormProvider`。整体的封装逻辑与其他组件库封装保持一致。
 
 <<< @/zh/demos/form/basic.tsx
 

@@ -11,8 +11,6 @@ import './style.less'
 
 export interface ICascadePickerProps extends Omit<AntCascadePickerProps, 'defaultValue' | 'visible' | 'children'> {
   onChange?: AntCascadePickerProps['onConfirm']
-  /** Allow trigger content to wrap instead of scrolling horizontally. */
-  triggerWrap?: boolean
   placeholder?: React.ReactNode
   disabled?: boolean
   readOnly?: boolean
@@ -62,7 +60,6 @@ export function BasePicker(props: ICascadePickerProps) {
     disabled: _disabled,
     readOnly: _readOnly,
     displayRender: _displayRender,
-    triggerWrap: _triggerWrap,
     className: _className,
     style: _style,
     onConfirm: _onConfirm,
@@ -94,7 +91,6 @@ export function BasePicker(props: ICascadePickerProps) {
         afterClose={popup.afterClose}
       />
       <PopupTrigger
-        triggerWrap={props.triggerWrap}
         ref={popup.button}
         type="button"
         className={`${prefix}-trigger`}

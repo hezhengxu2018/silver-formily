@@ -16,8 +16,6 @@ export interface IDatePickerProps extends Omit<
   AntdDatePickerProps,
   'value' | 'defaultValue' | 'visible' | 'children' | 'onChange'
 > {
-  /** Allow trigger content to wrap instead of scrolling horizontally. */
-  triggerWrap?: boolean
   placeholder?: string
   picker?: DatePickerMode
   format?:
@@ -89,7 +87,6 @@ export function BaseDatePicker(props: IDatePickerProps) {
     readOnly = false,
     picker,
     showTime,
-    triggerWrap: _triggerWrap,
     precision: _precision,
     onConfirm,
     onClose,
@@ -125,7 +122,6 @@ export function BaseDatePicker(props: IDatePickerProps) {
         afterClose={popup.afterClose}
       />
       <PopupTrigger
-        triggerWrap={props.triggerWrap}
         ref={popup.button}
         type="button"
         className={`${prefix}-trigger`}
