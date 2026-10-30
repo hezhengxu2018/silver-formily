@@ -83,6 +83,7 @@ export function traverse(target: any, visitor: (value: any, path: Array<string |
       seenObjects.push(target)
       if (isNoNeedCompileObject(target) && root !== target) {
         visitor(target, path)
+        seenObjects.splice(addIndex, 1)
         return
       }
       each(target, (value, key) => {
@@ -137,6 +138,7 @@ export function traverseSchema(schema: ISchema, visitor: (value: any, path: any[
       seenObjects.push(target)
       if (isNoNeedCompileObject(target) && root !== target) {
         visitor(target, path)
+        seenObjects.splice(addIndex, 1)
         return
       }
       each(target, (value, key) => {
@@ -152,7 +154,8 @@ export function traverseSchema(schema: ISchema, visitor: (value: any, path: any[
 }
 
 export function isNoNeedCompileObject(source: any) {
-  if ('$$typeof' in source && '_owner' in source) {
+  // React 19 production elements omit _owner; preserve their props as well.
+  if ('$$typeof' in source && ('_owner' in source || 'props' in source)) {
     return true
   }
   if (source._isAMomentObject) {
