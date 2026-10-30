@@ -23,6 +23,7 @@ const schema = {
     multiple: {
       'type': 'array',
       'title': '长列表多选',
+      'x-decorator-props': { wrapperWrap: true },
       'enum': options,
       'x-decorator': 'FormItem',
       'x-component': 'CheckListPicker',

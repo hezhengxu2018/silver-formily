@@ -8,6 +8,10 @@ mobileDemo: form-item/index.tsx
 
 在 `Field` 中通过 `decorator={[FormItem]}` 使用。
 
+::: tip 提示
+`FormItem` 关于右侧箭头的显示添加了内置逻辑，详情请参考[箭头与清除按钮](#箭头与清除按钮)。
+:::
+
 ## 基础使用
 
 通过 `help` 展示常驻帮助文案，`extra` 展示右侧补充内容。
@@ -68,6 +72,10 @@ mobileDemo: form-item/index.tsx
 
 独立使用 `FormItem.BaseItem` 时，通过 `value` 和 `onClear` 提供受控值及清除处理；作为字段装饰器使用时由 Formily 自动提供，`onClear` 可用作清除后的通知。
 
+## 已选内容布局
+
+`wrapperWrap` 同时控制普通文本换行及 Picker、CascadePicker、Cascader、DatePicker、CalendarPicker、CheckListPicker 的已选内容布局，默认 `false`（选择器保持单行横向滚动），设为 `true` 时按字段宽度换行，多选标签也会换行。通过 `x-decorator-props: { wrapperWrap: true }` 配置，不影响弹层选项区域的滚动。
+
 ## API
 
 ### 属性
@@ -100,21 +108,3 @@ mobileDemo: form-item/index.tsx
 | `gridSpan`      | ^[number]                           | 栅格占位数（配合 FormGrid）                      | -        |
 
 继承 antd-mobile `List.Item` 中除 `title`、`prefix`、`description` 以外的配置项（这些区域由装饰器管理），包括 `onClick`、`clickable`、`arrowIcon`、`disabled`、`tabIndex`、`aria-*`、`data-*` 和 CSS 变量，请参考 [List.Item 官方文档](https://mobile.ant.design/zh/components/list)。
-
-## 映射与布局规则
-
-- 显式 `label`、`extra` 优先于字段推导，只有 `undefined` 才回退；可用 `null` 或空字符串隐藏文案。
-- `asterisk` 优先于 `required` 和字段必填状态，因此 `asterisk={false}` 可隐藏必填星号；读取态默认隐藏星号，仍允许显式开启。
-- 校验由字段的 `required`、`validator` 配置驱动，校验错误自动显示在控件下方，无需手动配置反馈状态或文案。
-- `help` 是常驻帮助，位于校验反馈之后。`extra` 位于右侧，默认使用字段 `description`。
-- 标签提示使用点击触发，默认向上并与触发元素起点对齐（`top-start`），空间不足时自动调整；气泡宽度不超过 320px 或视口宽度减去 24px，长文本及 URL 自动换行。标签截断时展示完整标签，文本变化和容器缩放后自动重新检测。`labelWrap` 开启时优先换行。
-- `bordered={false}` 移除列表项分隔线。需要自定义外观时使用 `style`、`labelStyle`、`wrapperStyle`，输入控件自身样式通过组件属性设置。
-- `FormItem.BaseItem`（也可直接导入 `BaseItem`）只负责展示，不读取字段；可独立传入 `required`、标签和帮助文案。
-
-## 迁移说明
-
-本次接口收敛为破坏性变更：删除原本未生效的 `hasFeedback`、`noStyle`、`hidden` 和内部标记 `__layout__`。通过 Formily 字段的 `display`、`pattern` 管理可见性和编辑状态；不需要装饰器时直接省略 `decorator`。
-
-不再接受原生 `title`、`prefix`、`description`，分别使用 `label`、`help` 或 `extra` 表达装饰器内容。显式属性改为优先于字段推导，空值不会再被字段标题或描述覆盖。
-
-移除封装层的 `size`、`inset`、`feedbackIcon`、`feedbackLayout`，以及 FormLayout 对应的布局配置。这些并非 antd-mobile 原生 FormItem 属性。表单项不再提供尺寸分档、内嵌外框、独立反馈图标或反馈气泡布局，校验错误由字段自动映射展示。标签说明的 `tooltip`、`tooltipIcon`、`tooltipLayout` 继续支持。

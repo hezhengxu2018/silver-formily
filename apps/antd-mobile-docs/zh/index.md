@@ -17,12 +17,10 @@ hero:
       link: ./component/quick-start
 
 features:
-  - title: 🤝 兼容的封装设计
-    details: 代码的风格保证和大部分 formily 组件库一致。拆分了 FormItem 组件作为 decorator，更符合常规组件库的封装逻辑。
-  - title: 🧩 统一的封装模式
-    details: 在一些接口设计细节上与 formily 和 element-plus 封装库保持一致，降低了开发时的心智负担。
-  - title: 📱 移动端优先
-    details: 基于 antd-mobile v5 与 React 18/19，日期能力基于 dayjs，面向 H5 与触控优先的表单场景。
+  - title: 🤝 统一的封装设计
+    details: 代码的风格保证和大部分 formily 组件库一致。
+  - title: ⭐ 现代化的封装
+    details: 基于 antd-mobile v5 与 React 18/19 封装，没有历史包袱。
 ---
 
 <style>

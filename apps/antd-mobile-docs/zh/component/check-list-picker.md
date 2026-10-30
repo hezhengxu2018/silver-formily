@@ -20,7 +20,7 @@ mobileDemo: check-list-picker/index.tsx
 
 ## 超长滚动列表
 
-下面提供 100 个选项，分别演示单选与多选。选项区域最大高度为 `60vh`，超出后在弹层内独立滚动；多选时顶部取消、确认按钮保持可见。滚动至末尾选择选项后，可以通过提交查看结果，或重置清空选择。
+下面提供 100 个选项，分别演示单选与多选。多选通过 FormItem 的 `wrapperWrap: true` 展示已选标签换行。选项区域最大高度为 `60vh`，超出后在弹层内独立滚动；多选时顶部取消、确认按钮保持可见。滚动至末尾选择选项后，可以通过提交查看结果，或重置清空选择。
 
 <<< @/zh/demos/check-list-picker/long-list.tsx
 
@@ -59,4 +59,4 @@ mobileDemo: check-list-picker/index.tsx
 
 ## 触发内容布局
 
-`triggerWrap` 默认为 `false`：已选内容保持单行，超出字段宽度后可水平滚动。设置 `triggerWrap: true` 后按字段宽度换行显示。
+通过 FormItem 的 `wrapperWrap` 控制已选内容布局，默认 `false`：保持单行，超出字段宽度后可水平滚动。设置 `x-decorator-props: { wrapperWrap: true }` 后按字段宽度换行显示。
