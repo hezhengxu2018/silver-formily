@@ -24,6 +24,8 @@ mobileDemo: switch/index.tsx
 
 <<< @/zh/demos/switch/list.tsx
 
+Formily 字段设置 `readOnly` 时保留开关状态，并禁用交互。
+
 ## API
 
 ### 属性

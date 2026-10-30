@@ -6,7 +6,7 @@ export type ISwitchProps = SwitchProps
 
 export const Switch = connect(
   AntdSwitch,
-  mapProps({ value: 'checked' }),
+  mapProps({ value: 'checked' }, (props, field) => ({ disabled: props.disabled || field?.readOnly })),
 )
 
 export default Switch

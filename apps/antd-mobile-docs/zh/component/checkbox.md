@@ -22,6 +22,8 @@ mobileDemo: checkbox/index.tsx
 
 <<< @/zh/demos/checkbox/disabled.tsx
 
+Formily 字段设置 `readOnly` 时保留选中值，并禁用交互；组组件会同时禁用所有选项。
+
 ## API
 
 ### Checkbox.Group 属性

@@ -30,13 +30,7 @@
 pnpm add @silver-formily/antd-mobile antd-mobile antd-mobile-icons dayjs
 ```
 
-样式随组件自动注入（less 覆盖样式构建进产物）；antd-mobile 自身样式通过各组件的 `style` 子路径透传，按需引入：
-
-```ts
-import { FormItem, Input } from '@silver-formily/antd-mobile'
-// 如需按需引入样式：
-import '@silver-formily/antd-mobile/esm/input/style'
-```
+组件样式和 antd-mobile 自身样式会随组件自动加载，无需额外导入样式文件。
 
 ## 基本用法
 

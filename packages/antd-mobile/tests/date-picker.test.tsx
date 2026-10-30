@@ -156,3 +156,37 @@ it('passes selection metadata to quarter renderLabel callbacks', () => {
   ])
   expect(renderLabel).toHaveBeenCalledWith('quarter', 2, { selected: true })
 })
+
+it.each([undefined, 'date'] as const)('shows time columns with showTime and picker=%s', async (picker) => {
+  const form = createForm({ initialValues: { date: '2024-03-01 10:30:45' } })
+  const screen = await render(<FormProvider form={form}><Field name="date" component={[DatePicker, { picker, showTime: true }]} /></FormProvider>)
+  await screen.getByRole('button').click()
+  await vi.waitFor(() => expect(document.querySelectorAll('.adm-picker-view-column')).toHaveLength(6))
+  document.querySelectorAll<HTMLElement>('.adm-picker-header-button')[1].click()
+  expect(form.values.date).toBe('2024-03-01 10:30:45')
+})
+
+it('applies year and quarter filters with candidate dates and min/max bounds', () => {
+  const yearFilter = vi.fn((year: number, { date }: { date: Date }) => {
+    expect(date.getFullYear()).toBe(year)
+    return year === 2024
+  })
+  const quarterFilter = vi.fn((quarter: number, { date }: { date: Date }) => {
+    expect(Math.floor(date.getMonth() / 3) + 1).toBe(quarter)
+    return quarter !== 3
+  })
+  const columns = generateDatePickerColumns(
+    ['2024', '2'],
+    new Date(2023, 0, 1),
+    new Date(2024, 8, 30),
+    'quarter',
+    (type, value) => `${type}:${value}`,
+    { year: yearFilter, quarter: quarterFilter },
+  )
+  expect(columns).toEqual([
+    [{ label: 'year:2024', value: '2024' }],
+    [{ label: 'quarter:1', value: '1' }, { label: 'quarter:2', value: '2' }],
+  ])
+  expect(yearFilter).toHaveBeenCalledTimes(2)
+  expect(quarterFilter).toHaveBeenCalledTimes(3)
+})

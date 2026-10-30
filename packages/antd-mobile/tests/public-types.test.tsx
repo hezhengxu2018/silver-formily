@@ -27,7 +27,7 @@ import type {
   useFormStep,
 } from '../src'
 import { expectTypeOf, it } from 'vitest'
-import { ArrayBase, CheckList, DatePicker, PreviewText, Selector } from '../src'
+import { ArrayBase, CheckList, DatePicker, PreviewText, Radio, Selector, Switch } from '../src'
 
 it('exports reusable props and preserves compound component types', () => {
   expectTypeOf<IInputProps>().toEqualTypeOf<InputProps>()
@@ -71,6 +71,13 @@ it('preserves selector generics and rejects invalid component props', () => {
     const badPreview = <PreviewText value={{ arbitrary: true }} />
     // @ts-expect-error Item does not support the parent's options prop
     const badItem = <CheckList.Item value={1} options={[]} />
+    // @ts-expect-error readOnly belongs to the Formily field, not Radio props
+    const badRadio = <Radio readOnly />
+    // @ts-expect-error readOnly belongs to the Formily field, not Switch props
+    const badSwitch = <Switch readOnly />
+    // @ts-expect-error readOnly belongs to the Formily field, not Selector props
+    const badReadOnlySelector = <Selector options={[]} readOnly />
+    void [badRadio, badSwitch, badReadOnlySelector]
     void [selector, preview, dateElement, checklist, remove, badSelector, badProps, badPreview, badItem]
   }
 })

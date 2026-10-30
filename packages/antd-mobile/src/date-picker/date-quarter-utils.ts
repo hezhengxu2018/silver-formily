@@ -30,18 +30,6 @@ export function generateDatePickerColumns(selected: string[], min: Date, max: Da
 
   const rank = precisionRankRecord[precision]
 
-  if (rank >= precisionRankRecord.year) {
-    const years: PickerColumnItem[] = []
-    for (let i = minYear; i <= maxYear; i++) {
-      const value = i.toString()
-      years.push({
-        label: renderLabel ? renderLabel('year', i, { selected: Number.parseInt(selected[0]) === i }) : value,
-        value,
-      })
-    }
-    ret.push(years)
-  }
-
   const selectedYear = Number.parseInt(selected[0])
   const isInMinYear = selectedYear === minYear
   const isInMaxYear = selectedYear === maxYear
@@ -50,10 +38,6 @@ export function generateDatePickerColumns(selected: string[], min: Date, max: Da
   const maxDay = dayjs(max)
   const minQuarter = minDay.quarter()
   const maxQuarter = maxDay.quarter()
-
-  // const selectedQuarter = parseInt(selected[1])
-  // const isInMinQuarter = isInMinYear && selectedQuarter === minQuarter
-  // const isInMaxQuarter = isInMaxYear && selectedQuarter === maxQuarter
 
   const generateColumn = (
     from: number,
@@ -77,6 +61,14 @@ export function generateDatePickerColumns(selected: string[], min: Date, max: Da
       )
     }
     return column
+  }
+
+  if (rank >= precisionRankRecord.year) {
+    const years: PickerColumnItem[] = generateColumn(minYear, maxYear, 'year').map(year => ({
+      label: renderLabel('year', year, { selected: Number.parseInt(selected[0]) === year }),
+      value: year.toString(),
+    }))
+    ret.push(years)
   }
 
   if (rank >= precisionRankRecord.quarter) {

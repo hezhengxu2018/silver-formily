@@ -1,7 +1,7 @@
 import type { DataField } from '@silver-formily/core'
 import type { CheckboxGroupProps, CheckboxProps, CheckboxValue } from 'antd-mobile/es/components/checkbox'
 import type { ReactNode } from 'react'
-import { observer, useField } from '@silver-formily/react'
+import { connect, mapProps, observer, useField } from '@silver-formily/react'
 import { Checkbox as AntdCheckbox, Space } from 'antd-mobile'
 import { createContext, useContext } from 'react'
 import { useFormLayout } from '../form-layout'
@@ -25,7 +25,7 @@ export interface ICheckboxGroupProps extends CheckboxGroupProps {
 
 const GroupContext = createContext(false)
 
-export const BaseCheckbox = observer(({ value, checked, children, block = true, ...props }: ICheckboxProps) => {
+export const BaseCheckbox = connect(observer(({ value, checked, children, block = true, ...props }: ICheckboxProps) => {
   const inGroup = useContext(GroupContext)
   const field = useField<DataField>()
   const fieldChecked = !inGroup && field ? Boolean(value) : checked
@@ -39,9 +39,9 @@ export const BaseCheckbox = observer(({ value, checked, children, block = true, 
       {children ?? (!inGroup ? field?.title : undefined)}
     </AntdCheckbox>
   )
-})
+}), mapProps((props, field) => ({ disabled: props.disabled || field?.readOnly })))
 
-export const CheckboxGroup = observer(({
+export const CheckboxGroup = connect(observer(({
   children,
   options,
   layout,
@@ -69,7 +69,7 @@ export const CheckboxGroup = observer(({
       </AntdCheckbox.Group>
     </GroupContext.Provider>
   )
-})
+}), mapProps((props, field) => ({ disabled: props.disabled || field?.readOnly })))
 
 export const Checkbox = Object.assign(BaseCheckbox, {
   displayName: 'Checkbox',
