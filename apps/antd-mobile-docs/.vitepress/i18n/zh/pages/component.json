@@ -118,6 +118,14 @@
     "text": "Scenario 场景组件",
     "items": [
       {
+        "text": "ArrayBase 数组操作",
+        "link": "/component/array-base"
+      },
+      {
+        "text": "ArrayItems 自增列表",
+        "link": "/component/array-items"
+      },
+      {
         "text": "FormStep 分步表单",
         "link": "/component/form-step"
       },

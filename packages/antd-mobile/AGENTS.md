@@ -6,7 +6,6 @@
 
 - 源码迁移自 formilyjs/antd-mobile（`@formily/antd-mobile` v1.0.0-beta.3）的 `packages/components`，所有 formily 依赖已替换为 `@silver-formily/*` fork。
 - 日期库使用 **dayjs**（上游为 moment）：`src/__builtins__/dayjs.ts` 导出 `dayjsable` / `formatDayjsValue`，并统一注册 `customParseFormat`、`quarterOfYear`、`advancedFormat`、`weekOfYear`、`weekYear` 插件；组件内如需 dayjs 实例请从该模块导入，勿直接 `import dayjs from 'dayjs'`，否则季度等格式不可用。
-- `ArrayBase.SortHandle` 仅为图标占位（上游的 react-sortable-hoc 拖拽在上游就未接线，且该库依赖 React 19 已移除的 `findDOMNode`，已整体移除）。
 - 不保留没有调用方的历史 hooks 和 portal 工具；弹层选择器的开关、确认保护及焦点恢复统一使用内部 `usePopupPicker`。
 - 函数组件一律不使用 `defaultProps`（React 19 已移除支持），默认值通过解构参数提供。
 

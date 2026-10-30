@@ -63,29 +63,8 @@ it('remove and index mixins operate on the array field', async () => {
   expect(form.values.items).toEqual(['b'])
 })
 
-it('sort handle renders as icon placeholder without drag', async () => {
-  const form = createForm({ initialValues: { items: ['a'] } })
-  const { container } = await render(
-    <FormProvider form={form}>
-      <ArrayField name="items">
-        <ArrayBase>
-          {form.values.items.map((item: any, index: number) => (
-            <ArrayBase.Item key={index} index={index} record={item}>
-              <ArrayBase.SortHandle />
-            </ArrayBase.Item>
-          ))}
-        </ArrayBase>
-      </ArrayField>
-    </FormProvider>,
-  )
-
-  expect(container.innerHTML).toContain('adm-formily-array-base-sort-handle')
-})
-
-
-it('copies, removes and moves records while preserving callbacks and span refs', async () => {
-  const form = createForm({ initialValues: { items: [{ name: 'a' }, { name: 'b' }] } })
-  const onCopy = vi.fn()
+it('removes and moves records while preserving callbacks and span refs', async () => {
+  const form = createForm({ initialValues: { items: [{ name: 'a' }, { name: 'discard' }, { name: 'b' }] } })
   const onRemove = vi.fn()
   const onMoveDown = vi.fn()
   const onMoveUp = vi.fn()
@@ -93,20 +72,15 @@ it('copies, removes and moves records while preserving callbacks and span refs',
   const screen = await render(
     <FormProvider form={form}>
       <ArrayField name="items">
-        <ArrayBase onCopy={onCopy} onRemove={onRemove} onMoveDown={onMoveDown} onMoveUp={onMoveUp}>
-          <ArrayBase.Copy index={0} ref={ref} data-testid="copy" />
-          <ArrayBase.Remove index={1} data-testid="remove" />
+        <ArrayBase onRemove={onRemove} onMoveDown={onMoveDown} onMoveUp={onMoveUp}>
+          <ArrayBase.Remove index={1} ref={ref} data-testid="remove" />
           <ArrayBase.MoveDown index={0} data-testid="down" />
           <ArrayBase.MoveUp index={1} data-testid="up" />
         </ArrayBase>
       </ArrayField>
     </FormProvider>,
   )
-  expect(ref.current).toBe(screen.getByTestId('copy').element())
-  await screen.getByTestId('copy').click()
-  expect(form.values.items).toEqual([{ name: 'a' }, { name: 'a' }, { name: 'b' }])
-  expect(form.values.items[0]).not.toBe(form.values.items[1])
-  expect(onCopy).toHaveBeenCalledWith(1)
+  expect(ref.current).toBe(screen.getByTestId('remove').element())
   await screen.getByTestId('remove').click()
   expect(form.values.items).toEqual([{ name: 'a' }, { name: 'b' }])
   expect(onRemove).toHaveBeenCalledWith(1)
@@ -116,4 +90,38 @@ it('copies, removes and moves records while preserving callbacks and span refs',
   await screen.getByTestId('up').click()
   expect(form.values.items).toEqual([{ name: 'a' }, { name: 'b' }])
   expect(onMoveUp).toHaveBeenCalledWith(1)
+})
+
+
+it('updates move boundaries when an array grows and shrinks without remounting operations', async () => {
+  const form = createForm()
+  const { container, getByTestId, getByRole } = await render(
+    <FormProvider form={form}>
+      <ArrayField name="items">
+        <ArrayBase>
+          <ArrayBase.MoveUp index={0} data-testid="up-0" />
+          <ArrayBase.MoveDown index={0} data-testid="down-0" />
+          <ArrayBase.MoveUp index={1} data-testid="up-1" />
+          <ArrayBase.MoveDown index={1} data-testid="down-1" />
+          <ArrayBase.Remove index={0} data-testid="remove" />
+          <ArrayBase.Addition title="新增" defaultValue="a" />
+        </ArrayBase>
+      </ArrayField>
+    </FormProvider>,
+  )
+  expect(container.querySelector('[data-testid="up-0"]')).toBeNull()
+  expect(container.querySelector('[data-testid="down-0"]')).toBeNull()
+  await getByRole('button', { name: '新增' }).click()
+  expect(container.querySelector('[data-testid="up-0"]')).toBeNull()
+  expect(container.querySelector('[data-testid="down-0"]')).toBeNull()
+  await getByRole('button', { name: '新增' }).click()
+  await expect.element(getByTestId('down-0')).toBeVisible()
+  await expect.element(getByTestId('up-1')).toBeVisible()
+  expect(container.querySelector('[data-testid="down-1"]')).toBeNull()
+  await getByTestId('remove').click()
+  await expect.element(getByTestId('down-0')).not.toBeInTheDocument()
+  expect(container.querySelector('[data-testid="up-0"]')).toBeNull()
+  await getByTestId('remove').click()
+  expect(form.values.items).toEqual([])
+  expect(container.querySelector('[data-testid="down-0"]')).toBeNull()
 })

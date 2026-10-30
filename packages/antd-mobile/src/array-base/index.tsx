@@ -3,18 +3,18 @@ import type { Schema } from '@silver-formily/json-schema'
 import type { JSXComponent } from '@silver-formily/react'
 import type { ButtonProps } from 'antd-mobile/es/components/button'
 import {
+  observer,
   RecordScope,
   RecordsScope,
   useField,
   useFieldSchema,
 } from '@silver-formily/react'
 import { clone, isValid } from '@silver-formily/shared'
-import { Button, Space } from 'antd-mobile'
+import { Button, List, Space } from 'antd-mobile'
 import {
-  AddOutline,
+  AddCircleOutline,
   DeleteOutline,
   DownOutline,
-  UnorderedListOutline,
   UpOutline,
 } from 'antd-mobile-icons'
 import cls from 'classnames'
@@ -46,14 +46,13 @@ export interface IArrayBaseItemProps {
   children?: React.ReactNode
 }
 
-export type ArrayBaseMixins = Pick<typeof ArrayBase, | 'Addition' | 'Remove' | 'MoveUp' | 'MoveDown' | 'SortHandle' | 'Copy'
+export type ArrayBaseMixins = Pick<typeof ArrayBase, | 'Addition' | 'Remove' | 'MoveUp' | 'MoveDown'
   | 'Index' | 'Empty' | 'useArray' | 'useIndex' | 'useRecord'>
 
 export interface IArrayBaseProps {
   disabled?: boolean
   onAdd?: (index: number) => void
   onRemove?: (index: number) => void
-  onCopy?: (index: number) => void
   onMoveDown?: (index: number) => void
   onMoveUp?: (index: number) => void
   children?: React.ReactNode
@@ -62,22 +61,6 @@ export interface IArrayBaseProps {
 const ArrayBaseContext = createContext<IArrayBaseContext | null>(null)
 
 const ItemContext = createContext<IArrayBaseItemProps | null>(null)
-
-function CopyIcon() {
-  return (
-    <svg
-      viewBox="64 64 896 896"
-      focusable="false"
-      data-icon="copy"
-      width="1em"
-      height="1em"
-      fill="currentColor"
-      aria-hidden="true"
-    >
-      <path d="M832 64H296c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h496v688c0 4.4 3.6 8 8 8h56c4.4 0 8-3.6 8-8V96c0-17.7-14.3-32-32-32zM704 192H192c-17.7 0-32 14.3-32 32v530.7c0 8.5 3.4 16.6 9.4 22.6l173.3 173.3c2.2 2.2 4.7 4 7.4 5.5v1.9h4.2c3.5 1.3 7.2 2 11 2H704c17.7 0 32-14.3 32-32V224c0-17.7-14.3-32-32-32zM350 856.2L263.9 770H350v86.2zM664 888H414V746c0-22.1-17.9-40-40-40H232V264h432v624z"></path>
-    </svg>
-  )
-}
 
 function takeRecord(val: unknown, index?: number): unknown {
   return typeof val === 'function' ? val(index) : val
@@ -118,23 +101,9 @@ function getDefaultValue(defaultValue: unknown, schema: Schema) {
   return getSchemaDefaultValue(schema?.items)
 }
 
-function SortHandle(props: IArrayBaseOperationProps) {
-  const prefixCls = usePrefixCls('formily-array-base')
-  return (
-    <span
-      className={cls(`${prefixCls}-sort-handle`, props.className)}
-      {...props}
-      style={{ ...props.style }}
-    >
-      <UnorderedListOutline />
-    </span>
-  )
-}
-
-type ArrayOperationName = 'copy' | 'remove' | 'move-down' | 'move-up'
+type ArrayOperationName = 'remove' | 'move-down' | 'move-up'
 
 const operationIcons = {
-  'copy': CopyIcon,
   'remove': DeleteOutline,
   'move-down': DownOutline,
   'move-up': UpOutline,
@@ -142,12 +111,6 @@ const operationIcons = {
 
 function performArrayOperation(operation: ArrayOperationName, array: IArrayBaseContext, index: number) {
   switch (operation) {
-    case 'copy': {
-      const destination = index + 1
-      array.field.insert(destination, clone(array.field.value[index]))
-      array.props.onCopy?.(destination)
-      break
-    }
     case 'remove':
       array.field.remove(index)
       array.props.onRemove?.(index)
@@ -164,30 +127,26 @@ function performArrayOperation(operation: ArrayOperationName, array: IArrayBaseC
 }
 
 function createArrayOperation(operation: ArrayOperationName) {
-  return React.forwardRef<HTMLSpanElement, IArrayBaseOperationProps>((props, ref) => {
+  return observer(React.forwardRef<HTMLSpanElement, IArrayBaseOperationProps>((props, ref) => {
     const array = useArray()
-    const self = useField()
     const index = useIndex(props.index)
     const prefixCls = usePrefixCls('formily-array-base')
     if (!array || array.field.pattern !== 'editable')
       return null
+    if (operation === 'move-up' && index <= 0)
+      return null
+    if (operation === 'move-down' && index >= (array.field.value?.length ?? 0) - 1)
+      return null
     const Icon = operationIcons[operation]
-    const copyDisabled = operation === 'copy' && self?.disabled
     return (
       <span
         {...props}
         ref={ref}
-        className={cls(`${prefixCls}-${operation}`, copyDisabled && `${prefixCls}-copy-disabled`, props.className)}
+        className={cls(`${prefixCls}-${operation}`, props.className)}
         onClick={(event) => {
-          if (operation === 'copy' && self?.disabled)
-            return
-          // Copy historically stops propagation even when the array is disabled.
-          if (operation === 'copy')
-            event.stopPropagation()
           if (array.props.disabled)
             return
-          if (operation !== 'copy')
-            event.stopPropagation()
+          event.stopPropagation()
           performArrayOperation(operation, array, index)
           props.onClick?.(event)
         }}
@@ -195,7 +154,7 @@ function createArrayOperation(operation: ArrayOperationName) {
         <Icon />
       </span>
     )
-  })
+  }))
 }
 
 export const ArrayBase = Object.assign(
@@ -221,15 +180,6 @@ export const ArrayBase = Object.assign(
           </RecordScope>
         </ItemContext.Provider>
       )
-    },
-
-    SortHandle: (props: IArrayBaseOperationProps) => {
-      const array = useArray()
-      if (!array)
-        return null
-      if (array.field.pattern !== 'editable')
-        return null
-      return <SortHandle {...props} />
     },
 
     Index: (props: React.HTMLAttributes<HTMLSpanElement>) => {
@@ -259,38 +209,40 @@ export const ArrayBase = Object.assign(
         return null
       }
       return (
-        <Button
-          fill="outline"
-          block
-          {...props}
-          disabled={array.field.disabled}
-          className={cls(`${prefixCls}-addition`, props.className)}
-          onClick={(e) => {
-            if (array.props.disabled)
-              return
-            const defaultValue = getDefaultValue(props.defaultValue, array.schema)
-            if (props.method === 'unshift') {
-              array.field.unshift(defaultValue)
-              array.props.onAdd?.(0)
-            }
-            else {
-              array.field.push(defaultValue)
-              array.props.onAdd?.(array.field.value.length - 1)
-            }
-            if (props.onClick) {
-              props.onClick(e)
-            }
-          }}
-        >
-          <Space>
-            <AddOutline />
-            {props.title || self.title}
-          </Space>
-        </Button>
+        <List mode="card" className={`${prefixCls}-addition-list`}>
+          <Button
+            color="primary"
+            fill="none"
+            block
+            {...props}
+            disabled={array.field.disabled}
+            className={cls(`${prefixCls}-addition`, props.className)}
+            onClick={(e) => {
+              if (array.props.disabled)
+                return
+              const defaultValue = getDefaultValue(props.defaultValue, array.schema)
+              if (props.method === 'unshift') {
+                array.field.unshift(defaultValue)
+                array.props.onAdd?.(0)
+              }
+              else {
+                array.field.push(defaultValue)
+                array.props.onAdd?.(array.field.value.length - 1)
+              }
+              if (props.onClick) {
+                props.onClick(e)
+              }
+            }}
+          >
+            <Space align="center" style={{ '--gap': '4px' }}>
+              <AddCircleOutline />
+              {props.title || self.title}
+            </Space>
+          </Button>
+        </List>
       )
     },
 
-    Copy: createArrayOperation('copy'),
     Remove: createArrayOperation('remove'),
     MoveDown: createArrayOperation('move-down'),
     MoveUp: createArrayOperation('move-up'),
@@ -306,10 +258,8 @@ function mixinArrayBase<T extends JSXComponent>(target: T): T & ArrayBaseMixins 
   return Object.assign(target, {
     Index: ArrayBase.Index,
     Empty: ArrayBase.Empty,
-    SortHandle: ArrayBase.SortHandle,
     Addition: ArrayBase.Addition,
     Remove: ArrayBase.Remove,
-    Copy: ArrayBase.Copy,
     MoveDown: ArrayBase.MoveDown,
     MoveUp: ArrayBase.MoveUp,
     useArray: ArrayBase.useArray,
