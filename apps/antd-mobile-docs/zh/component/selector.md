@@ -18,9 +18,9 @@ mobileDemo: selector/index.tsx
 
 <<< @/zh/demos/selector/multiple.tsx
 
-## 禁用与阅读态
+## 禁用、只读与阅读态
 
-字段 `disabled` 禁用整个选择组；`readPretty` 使用 `PreviewText.Selector` 展示已选标签。字段处于 `loading` 状态时显示加载指示器。原生 Selector 不支持 `readOnly`，需要阻止修改时使用 `disabled` 或阅读态。
+字段 `disabled` 禁用整个选择组；`readPretty` 使用 `PreviewText.Selector` 展示已选标签。字段处于 `loading` 状态时显示加载指示器。封装将 Formily 字段的 `readOnly` 状态映射为禁用交互，保留选中值。
 
 <<< @/zh/demos/selector/status.tsx
 

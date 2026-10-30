@@ -106,7 +106,9 @@ export function BaseDatePicker(props: IDatePickerProps) {
       onConfirm?.(next)
     },
   })
-  const precision = picker ?? _precision ?? (showTime ? 'second' : 'day')
+  const precision = picker === 'date'
+    ? showTime ? 'second' : 'day'
+    : picker ?? _precision ?? (showTime ? 'second' : 'day')
   const NativePicker = precision === 'quarter' ? QuarterDatePicker : AntdDatePicker
   const val = formatDayjsValue(value, format, '')
 
@@ -115,7 +117,7 @@ export function BaseDatePicker(props: IDatePickerProps) {
       <NativePicker
         {...dateProps}
         className={cls(readOnly && `${prefix}-readonly-popup`)}
-        precision={precision === 'date' ? 'day' : precision}
+        precision={precision}
         value={value?.toDate()}
         visible={popup.visible}
         onConfirm={popup.onConfirm}
