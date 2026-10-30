@@ -89,3 +89,23 @@ describe('traverse helpers', () => {
     ).toBe(true)
   })
 })
+
+it('preserves React 19 production elements with empty props during schema compilation', async () => {
+  const { traverse, traverseSchema } = await loadShared()
+  const { compile } = await import('../compiler')
+  const element = {
+    $$typeof: Symbol.for('react.transitional.element'),
+    type: () => null,
+    key: null,
+    props: {},
+  }
+  for (const visit of [traverse, traverseSchema]) {
+    const props: Record<string, unknown> = {}
+    visit({ 'x-component-props': { title: element, extra: element } }, (value, path) => {
+      FormPath.setIn(props, path, compile(value))
+    })
+    expect(FormPath.getIn(props, 'x-component-props.title')).toBe(element)
+    expect(FormPath.getIn(props, 'x-component-props.extra')).toBe(element)
+  }
+  expect(compile(element)).toBe(element)
+})
