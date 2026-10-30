@@ -1,7 +1,8 @@
-import type { DataField } from '@silver-formily/core'
 import type { RadioGroupProps, RadioProps, RadioValue } from 'antd-mobile/es/components/radio'
 import type { ReactNode } from 'react'
-import { connect, mapProps, observer, useField } from '@silver-formily/react'
+import { isVoidField } from '@silver-formily/core'
+import { connect, mapProps } from '@silver-formily/react'
+import { toJS } from '@silver-formily/reactive'
 import { Radio as AntdRadio, Space } from 'antd-mobile'
 import { useFormLayout } from '../form-layout'
 
@@ -23,16 +24,15 @@ export interface IRadioProps extends Omit<RadioProps, 'value'> {
 
 export interface IRadioGroupProps extends Props, RadioGroupProps {}
 
-export const RadioGroup = connect(observer(({
+export const RadioGroup = connect(({
   children,
   options,
   layout,
   layoutBlock,
   ...props
 }: IRadioGroupProps) => {
-  const field = useField<DataField>()
   const formLayout = useFormLayout()
-  const dataSource = field?.dataSource?.length ? field.dataSource : options ?? []
+  const dataSource = options ?? []
 
   return (
     <AntdRadio.Group {...props}>
@@ -50,7 +50,12 @@ export const RadioGroup = connect(observer(({
       )}
     </AntdRadio.Group>
   )
-}), mapProps((props, field) => ({ disabled: props.disabled || field?.readOnly })))
+}, mapProps((props, field) => ({
+  disabled: props.disabled || field?.readOnly,
+  options: !isVoidField(field) && field?.dataSource?.length
+    ? toJS(field.dataSource).map(option => ({ ...option, label: option.label, value: option.value }))
+    : toJS(props.options ?? []),
+})))
 
 export const Radio = Object.assign(
   connect(({ value, ...props }: IRadioProps) => (

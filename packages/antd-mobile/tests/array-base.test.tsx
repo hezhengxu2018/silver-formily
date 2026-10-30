@@ -1,6 +1,7 @@
 import { createForm } from '@silver-formily/core'
 import { ArrayField, Field, FormProvider } from '@silver-formily/react'
-import { afterEach, expect, it } from 'vitest'
+import { createRef } from 'react'
+import { afterEach, expect, it, vi } from 'vitest'
 import { cleanup, render } from 'vitest-browser-react'
 import { ArrayBase, Input } from '../src'
 
@@ -79,4 +80,40 @@ it('sort handle renders as icon placeholder without drag', async () => {
   )
 
   expect(container.innerHTML).toContain('adm-formily-array-base-sort-handle')
+})
+
+
+it('copies, removes and moves records while preserving callbacks and span refs', async () => {
+  const form = createForm({ initialValues: { items: [{ name: 'a' }, { name: 'b' }] } })
+  const onCopy = vi.fn()
+  const onRemove = vi.fn()
+  const onMoveDown = vi.fn()
+  const onMoveUp = vi.fn()
+  const ref = createRef<HTMLSpanElement>()
+  const screen = await render(
+    <FormProvider form={form}>
+      <ArrayField name="items">
+        <ArrayBase onCopy={onCopy} onRemove={onRemove} onMoveDown={onMoveDown} onMoveUp={onMoveUp}>
+          <ArrayBase.Copy index={0} ref={ref} data-testid="copy" />
+          <ArrayBase.Remove index={1} data-testid="remove" />
+          <ArrayBase.MoveDown index={0} data-testid="down" />
+          <ArrayBase.MoveUp index={1} data-testid="up" />
+        </ArrayBase>
+      </ArrayField>
+    </FormProvider>,
+  )
+  expect(ref.current).toBe(screen.getByTestId('copy').element())
+  await screen.getByTestId('copy').click()
+  expect(form.values.items).toEqual([{ name: 'a' }, { name: 'a' }, { name: 'b' }])
+  expect(form.values.items[0]).not.toBe(form.values.items[1])
+  expect(onCopy).toHaveBeenCalledWith(1)
+  await screen.getByTestId('remove').click()
+  expect(form.values.items).toEqual([{ name: 'a' }, { name: 'b' }])
+  expect(onRemove).toHaveBeenCalledWith(1)
+  await screen.getByTestId('down').click()
+  expect(form.values.items).toEqual([{ name: 'b' }, { name: 'a' }])
+  expect(onMoveDown).toHaveBeenCalledWith(0)
+  await screen.getByTestId('up').click()
+  expect(form.values.items).toEqual([{ name: 'a' }, { name: 'b' }])
+  expect(onMoveUp).toHaveBeenCalledWith(1)
 })

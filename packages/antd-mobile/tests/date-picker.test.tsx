@@ -142,14 +142,13 @@ it.each([
 
 it('passes selection metadata to quarter renderLabel callbacks', () => {
   const renderLabel = vi.fn((type, value, info) => `${type}:${value}:${info.selected}`)
-  const columns = generateDatePickerColumns(
-    ['2024', '2'],
-    new Date(2024, 0, 1),
-    new Date(2024, 11, 31),
-    'quarter',
+  const columns = generateDatePickerColumns({
+    selected: ['2024', '2'],
+    min: new Date(2024, 0, 1),
+    max: new Date(2024, 11, 31),
+    precision: 'quarter',
     renderLabel,
-    undefined,
-  )
+  })
   expect(columns).toEqual([
     [{ label: 'year:2024:true', value: '2024' }],
     [1, 2, 3, 4].map(value => ({ label: `quarter:${value}:${value === 2}`, value: String(value) })),
@@ -175,14 +174,14 @@ it('applies year and quarter filters with candidate dates and min/max bounds', (
     expect(Math.floor(date.getMonth() / 3) + 1).toBe(quarter)
     return quarter !== 3
   })
-  const columns = generateDatePickerColumns(
-    ['2024', '2'],
-    new Date(2023, 0, 1),
-    new Date(2024, 8, 30),
-    'quarter',
-    (type, value) => `${type}:${value}`,
-    { year: yearFilter, quarter: quarterFilter },
-  )
+  const columns = generateDatePickerColumns({
+    selected: ['2024', '2'],
+    min: new Date(2023, 0, 1),
+    max: new Date(2024, 8, 30),
+    precision: 'quarter',
+    renderLabel: (type, value) => `${type}:${value}`,
+    filter: { year: yearFilter, quarter: quarterFilter },
+  })
   expect(columns).toEqual([
     [{ label: 'year:2024', value: '2024' }],
     [{ label: 'quarter:1', value: '1' }, { label: 'quarter:2', value: '2' }],

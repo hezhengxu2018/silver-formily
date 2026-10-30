@@ -1,10 +1,11 @@
 import type { CSSProperties, HTMLAttributes } from 'react'
-import { autoUpdate, computePosition } from '@floating-ui/dom'
+import { computePosition } from '@floating-ui/dom'
 import cls from 'classnames'
 import { useContext, useEffect, useRef, useState } from 'react'
 import { usePrefixCls } from '../__builtins__'
 import { FormLayoutRootContext } from '../form-layout/root-context'
 import { FormButtonGroupStickyContext } from './context'
+import { getStickyAnchor, observeStickyElements } from './sticky-utils'
 
 export interface IFormButtonGroupStickyProps extends HTMLAttributes<HTMLDivElement> {
   position?: 'top' | 'bottom'
@@ -86,9 +87,16 @@ export function FormButtonGroupSticky({
       contentSize ??= inner.getBoundingClientRect()
       const { height } = contentSize
       const offsetPx = typeof offset === 'number' ? offset : probe.getBoundingClientRect().top
-      const edge = position === 'top' ? offsetPx : viewportHeight - offsetPx
-      const fixed = position === 'top' ? rootRect.top < edge : rootRect.top + height > edge
-      if (!fixed) {
+      const anchorY = getStickyAnchor({
+        position,
+        offset: offsetPx,
+        viewportHeight,
+        rootTop: rootRect.top,
+        boundaryTop: boundaryRect.top,
+        boundaryBottom: boundaryRect.bottom,
+        contentHeight: height,
+      })
+      if (anchorY === undefined) {
         reset()
         return
       }
@@ -103,9 +111,6 @@ export function FormButtonGroupSticky({
           return
         }
       }
-      const anchorY = position === 'top'
-        ? Math.min(edge, boundaryRect.bottom - height)
-        : Math.max(edge, boundaryRect.top + height)
       const anchor = {
         contextElement: root,
         getBoundingClientRect: () => new DOMRect(rootRect.left, anchorY, rootRect.width, 0),
@@ -131,32 +136,13 @@ export function FormButtonGroupSticky({
     }
     const startUpdates = () => {
       contentSize = null
-      // Share one size observer instead of duplicating autoUpdate's observers.
-      const sizeObserver = new ResizeObserver((entries) => {
-        for (const entry of entries) {
-          if (entry.target === inner) {
-            const size = entry.borderBoxSize[0]
-            contentSize = size
-              ? { width: size.inlineSize, height: size.blockSize }
-              : null
-          }
-        }
-        schedule()
+      stopUpdates = observeStickyElements({
+        root,
+        inner,
+        boundary,
+        onResize: (size) => { contentSize = size },
+        onUpdate: schedule,
       })
-      sizeObserver.observe(root)
-      sizeObserver.observe(inner)
-      sizeObserver.observe(boundary)
-      const stopRootUpdates = autoUpdate(root, inner, schedule, { elementResize: false })
-      const stopBoundaryUpdates = autoUpdate(boundary, null, schedule, {
-        ancestorScroll: false,
-        ancestorResize: false,
-        elementResize: false,
-      })
-      stopUpdates = () => {
-        sizeObserver.disconnect()
-        stopRootUpdates()
-        stopBoundaryUpdates()
-      }
     }
     const pauseUpdates = () => {
       revision++

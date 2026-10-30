@@ -1,110 +1,72 @@
 import type { DatePickerProps } from 'antd-mobile/es/components/date-picker'
-import type {
-  DatePickerFilter,
-} from 'antd-mobile/es/components/date-picker/date-picker-utils'
-import type {
-  PickerColumn,
-  PickerColumnItem,
-} from 'antd-mobile/es/components/picker'
+import type { DatePickerFilter } from 'antd-mobile/es/components/date-picker/date-picker-utils'
+import type { PickerColumn, PickerColumnItem } from 'antd-mobile/es/components/picker'
 import { dayjs } from '../__builtins__'
 
 export type QuarterPrecision = 'year' | 'quarter'
+type RenderLabel = NonNullable<DatePickerProps['renderLabel']>
 
-const precisionRankRecord: Record<QuarterPrecision, number> = {
-  year: 0,
-  quarter: 1,
+interface QuarterColumnsOptions {
+  selected: string[]
+  min: Date
+  max: Date
+  precision: QuarterPrecision
+  renderLabel: RenderLabel
+  filter?: DatePickerFilter
 }
 
-export function defaultRenderLabel(
-  type: Parameters<NonNullable<DatePickerProps['renderLabel']>>[0],
-  data: number,
-) {
-  return data.toString()
+export function defaultRenderLabel(_type: Parameters<RenderLabel>[0], value: number) {
+  return value.toString()
 }
 
-export function generateDatePickerColumns(selected: string[], min: Date, max: Date, precision: QuarterPrecision, renderLabel: NonNullable<DatePickerProps['renderLabel']>, filter: DatePickerFilter | undefined) {
-  const ret: PickerColumn[] = []
+function filterRange(from: number, to: number, filter: (value: number) => boolean) {
+  const values: number[] = []
+  for (let value = from; value <= to; value++) {
+    if (filter(value))
+      values.push(value)
+  }
+  return values
+}
 
+export function generateDatePickerColumns({ selected, min, max, precision, renderLabel, filter }: QuarterColumnsOptions): PickerColumn[] {
+  const selectedYear = Number.parseInt(selected[0])
+  const selectedQuarter = Number.parseInt(selected[1])
   const minYear = min.getFullYear()
   const maxYear = max.getFullYear()
 
-  const rank = precisionRankRecord[precision]
-
-  const selectedYear = Number.parseInt(selected[0])
-  const isInMinYear = selectedYear === minYear
-  const isInMaxYear = selectedYear === maxYear
-
-  const minDay = dayjs(min)
-  const maxDay = dayjs(max)
-  const minQuarter = minDay.quarter()
-  const maxQuarter = maxDay.quarter()
-
-  const generateColumn = (
-    from: number,
-    to: number,
-    precision: QuarterPrecision,
-  ) => {
-    let column: number[] = []
-    for (let i = from; i <= to; i++) {
-      column.push(i)
-    }
-    const prefix = selected.slice(0, precisionRankRecord[precision])
-    const currentFilter = filter?.[precision]
-    if (currentFilter && typeof currentFilter === 'function') {
-      column = column.filter(i =>
-        currentFilter(i, {
-          get date() {
-            const stringArray = [...prefix, i.toString()]
-            return convertStringArrayToDate(stringArray)
-          },
-        }),
-      )
-    }
-    return column
-  }
-
-  if (rank >= precisionRankRecord.year) {
-    const years: PickerColumnItem[] = generateColumn(minYear, maxYear, 'year').map(year => ({
-      label: renderLabel('year', year, { selected: Number.parseInt(selected[0]) === year }),
-      value: year.toString(),
+  function generateColumn(from: number, to: number, type: QuarterPrecision, selectedValue: number): PickerColumnItem[] {
+    const currentFilter = filter?.[type]
+    const prefix = type === 'quarter' ? selected.slice(0, 1) : []
+    const values = filterRange(from, to, value => !currentFilter || currentFilter(value, {
+      get date() {
+        return convertStringArrayToDate([...prefix, value.toString()])
+      },
     }))
-    ret.push(years)
+    return values.map(value => ({
+      label: renderLabel(type, value, { selected: selectedValue === value }),
+      value: value.toString(),
+    }))
   }
 
-  if (rank >= precisionRankRecord.quarter) {
-    const lower = isInMinYear ? minQuarter : 1
-    const upper = isInMaxYear ? maxQuarter : 4
-    const months = generateColumn(lower, upper, 'quarter')
-    ret.push(
-      months.map((v) => {
-        return {
-          label: renderLabel('quarter', v, { selected: Number.parseInt(selected[1]) === v }),
-          value: v.toString(),
-        }
-      }),
-    )
-  }
+  const years = generateColumn(minYear, maxYear, 'year', selectedYear)
+  if (precision === 'year')
+    return [years]
 
-  return ret
+  const lower = selectedYear === minYear ? dayjs(min).quarter() : 1
+  const upper = selectedYear === maxYear ? dayjs(max).quarter() : 4
+  const quarters = generateColumn(lower, upper, 'quarter', selectedQuarter)
+  return [years, quarters]
 }
 
-export function convertDateToStringArray(
-  date: Date | undefined | null,
-): string[] {
+export function convertDateToStringArray(date: Date | undefined | null): string[] {
   if (!date)
     return []
   const day = dayjs(date)
   return [day.year().toString(), day.quarter().toString()]
 }
 
-export function convertStringArrayToDate(
-  value: (string | number | null | undefined)[],
-): Date {
-  const yearString = String(value[0] ?? '1900')
-  const quarterString = String(value[1] ?? '1') // 季度
-
-  const day = dayjs()
-    .year(Number.parseInt(yearString))
-    .quarter(Number.parseInt(quarterString))
-  return day.toDate()
+export function convertStringArrayToDate(value: (string | number | null | undefined)[]): Date {
+  const year = Number.parseInt(String(value[0] ?? '1900'))
+  const quarter = Number.parseInt(String(value[1] ?? '1'))
+  return dayjs().year(year).quarter(quarter).toDate()
 }

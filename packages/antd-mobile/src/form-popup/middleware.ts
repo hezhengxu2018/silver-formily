@@ -5,7 +5,7 @@ const DEFAULT_RESERVED_MIDDLEWARE_NAMES = ['open', 'confirm', 'cancel', 'form', 
 
 export async function applyMiddlewareWithFallback<TPayload, TResult = TPayload>(
   payload: TPayload,
-  middlewares: IMiddleware[] | undefined,
+  middlewares: IMiddleware<TPayload>[] | undefined,
   fallback: TResult | ((payload: TPayload | undefined) => TResult),
 ) {
   const queue = middlewares ?? []
@@ -15,7 +15,7 @@ export async function applyMiddlewareWithFallback<TPayload, TResult = TPayload>(
       : fallback
   }
 
-  async function dispatch(index: number, currentPayload: TPayload | undefined): Promise<unknown> {
+  async function dispatch(index: number, currentPayload: TPayload): Promise<unknown> {
     if (index >= queue.length) {
       return resolveFallback(currentPayload)
     }
@@ -30,7 +30,7 @@ export async function applyMiddlewareWithFallback<TPayload, TResult = TPayload>(
       return nextResult
     }
 
-    const result = await middleware(currentPayload, next as any)
+    const result = await middleware(currentPayload, next)
 
     if (!nextCalled) {
       return result === undefined
