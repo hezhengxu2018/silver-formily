@@ -125,7 +125,7 @@ function BaseCascader(props: ICascaderProps) {
           popup.open()
         }}
       >
-        {empty ? props.placeholder ?? '请选择' : display}
+        {empty ? <span className={`${prefix}-placeholder`}>{props.placeholder ?? '请选择'}</span> : display}
       </PopupTrigger>
     </div>
   )

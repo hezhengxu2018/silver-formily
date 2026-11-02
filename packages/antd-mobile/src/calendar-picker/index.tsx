@@ -116,7 +116,7 @@ export function BaseCalendarPicker(props: ICalendarPickerProps) {
           popup.open()
         }}
       >
-        {displayValue(props) ?? placeholder}
+        {displayValue(props) ?? <span className={`${prefix}-placeholder`}>{placeholder}</span>}
       </PopupTrigger>
     </div>
   )

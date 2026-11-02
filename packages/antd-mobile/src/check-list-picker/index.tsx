@@ -155,7 +155,9 @@ function BaseCheckListPicker(props: ICheckListPickerProps) {
           popup.open()
         }}
       >
-        {props.value?.length ? <DisplayValue {...props} /> : props.placeholder ?? '请选择'}
+        {props.value?.length
+          ? <DisplayValue {...props} />
+          : <span className={`${prefix}-placeholder`}>{props.placeholder ?? '请选择'}</span>}
       </PopupTrigger>
     </div>
   )

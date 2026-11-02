@@ -142,7 +142,7 @@ export function BaseDatePicker(props: IDatePickerProps) {
           popup.open()
         }}
       >
-        {val ?? (placeholder ?? '请选择')}
+        {val ?? <span className={`${prefix}-placeholder`}>{placeholder ?? '请选择'}</span>}
       </PopupTrigger>
     </div>
   )
