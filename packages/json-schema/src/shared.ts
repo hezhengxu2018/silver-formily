@@ -154,6 +154,10 @@ export function traverseSchema(schema: ISchema, visitor: (value: any, path: any[
 }
 
 export function isNoNeedCompileObject(source: any) {
+  // Preserve Vue 3 VNodes without compiling their internal props or children.
+  if (source.__v_isVNode === true) {
+    return true
+  }
   // React 19 production elements omit _owner; preserve their props as well.
   if ('$$typeof' in source && ('_owner' in source || 'props' in source)) {
     return true

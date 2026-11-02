@@ -109,3 +109,39 @@ it('preserves React 19 production elements with empty props during schema compil
   }
   expect(compile(element)).toBe(element)
 })
+
+it('preserves Vue 3 VNodes and leaves their internal expressions untouched', async () => {
+  const { traverse, traverseSchema } = await loadShared()
+  const { compile } = await import('../compiler')
+  const vnode = {
+    __v_isVNode: true,
+    type: 'span',
+    props: { title: '{{ username }}' },
+    children: '{{ username }}',
+  }
+  const scope = { username: 'Alice' }
+  const source = {
+    'x-component-props': {
+      title: vnode,
+      extra: vnode,
+      label: '{{ username }}',
+      config: { props: { title: '{{ username }}' } },
+    },
+  }
+  const compiled = compile(source, scope)
+  expect(compiled['x-component-props'].title).toBe(vnode)
+  expect(compiled['x-component-props'].extra).toBe(vnode)
+  expect(compile(vnode, scope)).toBe(vnode)
+  for (const visit of [traverse, traverseSchema]) {
+    const result: Record<string, unknown> = {}
+    visit(source, (value, path) => {
+      FormPath.setIn(result, path, compile(value, scope))
+    })
+    expect(FormPath.getIn(result, 'x-component-props.title')).toBe(vnode)
+    expect(FormPath.getIn(result, 'x-component-props.extra')).toBe(vnode)
+    expect(FormPath.getIn(result, 'x-component-props.label')).toBe('Alice')
+    expect(FormPath.getIn(result, 'x-component-props.config.props.title')).toBe('Alice')
+  }
+  expect(vnode.props.title).toBe('{{ username }}')
+  expect(vnode.children).toBe('{{ username }}')
+})
