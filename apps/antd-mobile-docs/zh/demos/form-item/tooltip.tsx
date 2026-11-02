@@ -18,7 +18,7 @@ export default function FormItemTooltip() {
         <Field
           name="account"
           title="文字提示"
-          decorator={[FormItem, { tooltipLayout: 'text', tooltip: '点击带虚线的标签文字，也可以展开提示。' }]}
+          decorator={[FormItem, { tooltipLayout: 'text', tooltip: '长按带虚线的标签文字查看说明；短按仍聚焦输入框。' }]}
           component={[Input, { placeholder: '请输入账号' }]}
         />
         <Field

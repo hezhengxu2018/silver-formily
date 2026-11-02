@@ -1,5 +1,6 @@
 import { NavBar } from 'antd-mobile'
 import { DemoSection } from '../_components/demo-section'
+import AsyncDemo from './async'
 import BasicDemo from './basic'
 import ListDemo from './list'
 import StatusDemo from './status'
@@ -21,6 +22,12 @@ export default function SwitchDemo() {
           description="支持 disabled、loading 状态，以及 checkedText / uncheckedText 开关文案。"
         >
           <StatusDemo />
+        </DemoSection>
+        <DemoSection
+          title="异步切换"
+          description="点击后模拟 1.5 秒请求，成功后切换，失败时保持原状态。"
+        >
+          <AsyncDemo />
         </DemoSection>
         <DemoSection
           title="搭配列表使用"

@@ -8,19 +8,13 @@ mobileDemo: selector/index.tsx
 
 ## 单选与选项禁用
 
-默认单选，初始值也需写成数组，例如 `['standard']`。通过字段 `dataSource` 提供选项，单项可设置 `disabled`。
-
 <<< @/zh/demos/selector/basic.tsx
 
 ## 多选与描述
 
-`multiple` 开启多选，`columns` 设置列数。也可通过组件属性 `options` 提供带描述的选项；非空字段 `dataSource` 优先于 `options`。
-
 <<< @/zh/demos/selector/multiple.tsx
 
 ## 禁用、只读与阅读态
-
-字段 `disabled` 禁用整个选择组；`readPretty` 使用 `PreviewText.Selector` 展示已选标签。字段处于 `loading` 状态时显示加载指示器。封装将 Formily 字段的 `readOnly` 状态映射为禁用交互，保留选中值。
 
 <<< @/zh/demos/selector/status.tsx
 

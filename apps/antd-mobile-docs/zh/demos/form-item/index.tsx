@@ -4,6 +4,7 @@ import AppearanceDemo from './appearance'
 import BasicDemo from './basic'
 import LabelDemo from './label'
 import LongTextDemo from './long-text'
+import NonBlockingDemo from './non-blocking'
 import StatesDemo from './states'
 import TooltipDemo from './tooltip'
 import ValidationDemo from './validation'
@@ -27,13 +28,16 @@ export default function FormItemDemo() {
         >
           <ValidationDemo />
         </DemoSection>
+        <DemoSection title="非阻塞校验" description="ab c 同时显示错误和告警；hello world 仅告警但可提交；helloworld 正常提交。">
+          <NonBlockingDemo />
+        </DemoSection>
         <DemoSection
           title="标签配置"
           description="对照 80px 与 120px 标签宽度、左右对齐，通过 placeholder 观察输入区位置。"
         >
           <LabelDemo />
         </DemoSection>
-        <DemoSection title="长文本：省略与换行" description="对照标签单行省略、完整换行，以及阅读内容保留换行；点击省略的标签查看全文。">
+        <DemoSection title="长文本：省略与换行" description="对照标签省略与换行、已选长地址的单行滚动与换行，以及阅读内容保留换行。">
           <LongTextDemo />
         </DemoSection>
         <DemoSection title="禁用与只读" description="对照正常输入、禁用、只读输入框和纯文本阅读状态。">
@@ -42,7 +46,7 @@ export default function FormItemDemo() {
         <DemoSection title="垂直布局" description="标签与控件上下排列，长标签可换行；单个表单项也可覆盖为横向布局。">
           <VerticalDemo />
         </DemoSection>
-        <DemoSection title="提示说明" description="点击图标或标签文字展开说明，长文本与连续链接在窄屏内自动换行。">
+        <DemoSection title="提示说明" description="点击图标或长按标签文字展开说明，长文本与连续链接在窄屏内自动换行。">
           <TooltipDemo />
         </DemoSection>
         <DemoSection title="外观与控件布局" description="对照分隔线、固定宽度控件靠右，以及隐藏标签后的整行输入。">

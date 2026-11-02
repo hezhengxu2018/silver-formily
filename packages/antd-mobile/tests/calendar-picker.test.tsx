@@ -61,3 +61,17 @@ it('preserves mode-specific public value and callback types', () => {
   expect(range).toBeDefined()
   expect(invalid).toBeDefined()
 })
+
+it.each(['editable', 'readPretty'] as const)('customizes %s display without changing serialized values', async (pattern) => {
+  const value = '2024/03/15'
+  const form = createForm({ initialValues: { date: value } })
+  const displayRender = vi.fn((date: ICalendarPickerProps['value'], props: ICalendarPickerProps) => <strong>{`${props.placeholder}：${date}`}</strong>)
+  const screen = await render(<FormProvider form={form}><Field name="date" pattern={pattern} component={[CalendarPicker, { format: 'YYYY/MM/DD', placeholder: '预约', displayRender, confirmText: '确认日期' }]} /></FormProvider>)
+  await expect.element(screen.getByText('预约：2024/03/15', { exact: true })).toBeInTheDocument()
+  expect(displayRender).toHaveBeenCalledWith(value, expect.objectContaining({ format: 'YYYY/MM/DD' }))
+  if (pattern === 'editable') {
+    await screen.getByRole('button', { name: '预约：2024/03/15', exact: true }).click()
+    await screen.getByRole('button', { name: '确认日期', exact: true }).click()
+  }
+  expect(form.values.date).toBe(value)
+})

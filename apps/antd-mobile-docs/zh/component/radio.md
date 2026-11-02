@@ -4,7 +4,7 @@ mobileDemo: radio/index.tsx
 
 # Radio
 
-> `Radio` 是对 antd-mobile `Radio` 的 Formily 适配。单选场景使用 `Radio.Group`，字段值为选中项的字符串或数字，不是数组。
+> `Radio` 是对 antd-mobile `Radio` 的 Formily 适配。单选场景应使用 `Radio.Group`。
 
 ## 基础使用
 

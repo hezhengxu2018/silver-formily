@@ -14,6 +14,7 @@ export type ICalendarPickerValue = string | Date | Dayjs
 interface CalendarPickerCommonProps extends Omit<NativeProps, 'selectionMode' | 'value' | 'defaultValue' | 'onChange' | 'onConfirm' | 'visible'> {
   placeholder?: ReactNode
   format?: string | ((value: Dayjs) => string)
+  displayRender?: (value: ICalendarPickerProps['value'], props: ICalendarPickerProps) => ReactNode
   disabled?: boolean
   readOnly?: boolean
 }
@@ -31,9 +32,11 @@ export type ICalendarPickerProps = CalendarPickerCommonProps & ({
 })
 
 function displayValue(props: ICalendarPickerProps) {
+  if (props.displayRender)
+    return props.displayRender(props.value, props)
   const format = props.format ?? 'YYYY-MM-DD'
   if (!props.value)
-    return ''
+    return null
   const display = (value: ICalendarPickerValue) => formatDayjsValue(dayjsable(value, typeof format === 'string' ? format : undefined), format, '')
   return props.selectionMode === 'range'
     ? props.value.map(display).join(' ~ ')
@@ -42,7 +45,7 @@ function displayValue(props: ICalendarPickerProps) {
 
 function CalendarPickerPreview(props: ICalendarPickerProps) {
   const placeholder = PreviewText.usePlaceholder()
-  return <span className={props.className} style={props.style}>{displayValue(props) || placeholder}</span>
+  return <span className={props.className} style={props.style}>{displayValue(props) ?? placeholder}</span>
 }
 
 export function BaseCalendarPicker(props: ICalendarPickerProps) {
@@ -54,6 +57,7 @@ export function BaseCalendarPicker(props: ICalendarPickerProps) {
     onConfirm: _onConfirm,
     placeholder = '请选择',
     format = 'YYYY-MM-DD',
+    displayRender: _displayRender,
     disabled = false,
     readOnly = false,
     className,
@@ -112,7 +116,7 @@ export function BaseCalendarPicker(props: ICalendarPickerProps) {
           popup.open()
         }}
       >
-        {displayValue(props) || placeholder}
+        {displayValue(props) ?? placeholder}
       </PopupTrigger>
     </div>
   )

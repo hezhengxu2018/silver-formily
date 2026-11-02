@@ -89,5 +89,3 @@ const componentProps = {
 // dataSource: [{ id: 1, label: 'One', extra: 'Business data' }]
 // Form value: { id: 1 }
 ```
-
-**Breaking change:** `optionFormatter` has been removed. Use `optionValueKeys`, for example `['id', 'label']`. `valueType="path"` retains its tree output and does not apply the allowlist.

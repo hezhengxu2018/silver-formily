@@ -47,9 +47,3 @@ mobileDemo: form-layout/index.tsx
 | `tooltipLayout` | ^[enum]`'icon' \| 'text'`           | 问号提示布局                                 | `'icon'`       |
 
 继承 antd-mobile `List` 的所有配置项，请参考 [List 官方文档](https://mobile.ant.design/zh/components/list)。
-
-`FormItem` 的显式配置优先于布局配置。`shallow` 默认为 `true`，表单项内部不继续继承浅层配置；`shallow={false}` 时嵌套表单项也会继承布局。
-
-`labelWidth`、`wrapperWidth` 支持数字（像素）、CSS 长度和 `'auto'`；对齐属性只接受 `'left'` 或 `'right'`，不再接受原本没有响应式实现的数组。边框和标签提示遵循 FormItem 的同名属性语义。
-
-已移除 `size`、`inset`、`feedbackLayout` 配置。校验反馈由 FormItem 在控件下方统一展示。`Space` 不再从 FormLayout 继承 `size`；间距默认 8px，需要调整时在 Space 自身设置 `size`。

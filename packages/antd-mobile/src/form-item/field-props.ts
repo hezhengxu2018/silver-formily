@@ -1,14 +1,15 @@
 import type { GeneralField } from '@silver-formily/core'
 import type { ReactNode } from 'react'
+import type { FeedbackMessage, InternalFeedbackProps } from './feedback'
 import type { IFormItemProps } from './types'
 import { isVoidField } from '@silver-formily/core'
 
-function joinMessages(messages: ReactNode[]) {
+function collectMessages(type: FeedbackMessage['type'], messages: ReactNode[]): FeedbackMessage[] {
   const content = messages.filter(message => message !== undefined && message !== null && message !== false && message !== '')
-  return content.length ? content.flatMap((message, index) => index ? [', ', message] : [message]) : undefined
+  return content.map(message => ({ type, message }))
 }
 
-export function mapFieldProps(props: IFormItemProps, field?: GeneralField): IFormItemProps {
+export function mapFieldProps(props: IFormItemProps, field?: GeneralField): IFormItemProps & InternalFeedbackProps {
   if (!field)
     return props
   const common = {
@@ -19,9 +20,12 @@ export function mapFieldProps(props: IFormItemProps, field?: GeneralField): IFor
   if (isVoidField(field))
     return { ...common, asterisk: props.asterisk ?? (field.pattern !== 'readPretty' && (props.required ?? false)) }
   const onClear = props.onClear
-  const messages = joinMessages(field.selfErrors)
-    ?? joinMessages(field.selfWarnings)
-    ?? joinMessages(field.selfSuccesses)
+  const messages = [
+    ...collectMessages('error', field.selfErrors),
+    ...collectMessages('warning', field.selfWarnings),
+  ]
+  if (!messages.length)
+    messages.push(...collectMessages('success', field.selfSuccesses))
   return {
     ...common,
     ...(props.clearable
@@ -40,8 +44,7 @@ export function mapFieldProps(props: IFormItemProps, field?: GeneralField): IFor
     feedbackStatus: props.feedbackStatus !== undefined
       ? props.feedbackStatus
       : field.validating ? 'pending' : field.validateStatus,
-    feedbackText: props.feedbackText !== undefined
-      ? props.feedbackText
-      : field.validating ? undefined : messages,
+    feedbackText: props.feedbackText,
+    feedbackMessages: props.feedbackText !== undefined || field.validating || !messages.length ? undefined : messages,
   }
 }

@@ -30,6 +30,7 @@ it('stages multiple selection, cancels without writing and commits confirmation'
   expect(form.values.fruit).toEqual(['apple', 'pear'])
   expect(onChange).toHaveBeenCalledOnce()
   await expect.element(screen.getByRole('button', { name: '水果', exact: true })).toHaveTextContent('苹果梨')
+  expect(document.querySelector('.adm-tag')).toBeNull()
 })
 
 it('supports disabled, readOnly and readPretty patterns', async () => {
@@ -64,7 +65,7 @@ it('uses single selection by default and preserves zero and missing values in pr
   await closed()
   expect(onChange).toHaveBeenCalledWith(['pear'])
   await screen.rerender(<CheckListPicker options={[{ label: '零', value: 0 }]} value={[0, 'missing']} />)
-  await expect.element(screen.getByRole('button')).toHaveTextContent('零 / missing')
+  await expect.element(screen.getByRole('button')).toHaveTextContent('零missing')
 })
 
 it('closes an unmounted field without submitting its draft', async () => {
@@ -75,4 +76,15 @@ it('closes an unmounted field without submitting its draft', async () => {
   await cleanup()
   await closed()
   expect(onChange).not.toHaveBeenCalled()
+})
+
+it('uses displayRender for multiple selection in edit and preview modes', async () => {
+  const form = createForm({ initialValues: { fruit: ['apple', 'pear'] } })
+  const displayRender = vi.fn((value: (string | number)[]) => <span data-testid="custom-display">{`已选 ${value.length} 项`}</span>)
+  const screen = await render(<FormProvider form={form}><Field name="fruit" dataSource={options} component={[CheckListPicker, { multiple: true, displayRender }]} /></FormProvider>)
+  await expect.element(screen.getByRole('button')).toHaveTextContent('已选 2 项')
+  expect(displayRender).toHaveBeenCalledWith(['apple', 'pear'], expect.objectContaining({ multiple: true, options }))
+  form.setFieldState('fruit', { pattern: 'readPretty' })
+  await expect.element(screen.getByTestId('custom-display')).toHaveTextContent('已选 2 项')
+  await vi.waitFor(() => expect(document.querySelector('[data-form-item-trigger]')).toBeNull())
 })

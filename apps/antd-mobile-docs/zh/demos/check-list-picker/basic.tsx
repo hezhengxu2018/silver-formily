@@ -24,7 +24,7 @@ const schema = {
 }
 
 export default function BasicDemo() {
-  const form = useMemo(() => createForm({ initialValues: { fruit: ['apple'] } }), [])
+  const form = useMemo(() => createForm({ initialValues: { fruit: ['apple', 'pear'] } }), [])
   return (
     <FormProvider form={form}>
       <SchemaField schema={schema} />

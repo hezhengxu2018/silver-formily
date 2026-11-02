@@ -8,6 +8,10 @@ mobileDemo: form-grid/index.tsx
 
 普通 HTML 节点、`FormItem` 或 Schema 生成的节点都可以参与布局。它不依赖 antd-mobile 的 `Grid.Item`，也不需要 `FormProvider`，只有绑定表单字段时才需要表单上下文。
 
+::: tip 提示
+由于移动端不会有窗口尺寸变化的问题，因此没有引入比较重的 `@silver-formily/grid`, 使用了基于纯CSS的轻量的封装，配置项与`@silver-formily/grid`并不完全相同。
+:::
+
 ## 基础使用
 
 使用 `columns={2}` 创建两列布局，列宽自动均分容器可用空间。默认只有一列。
@@ -45,8 +49,6 @@ mobileDemo: form-grid/index.tsx
 
 未显式设置间距时继承 FormLayout 的配置；负数或非有限间距回退为默认值，支持零间距。
 
-从旧版迁移：固定列数改用 `columns`，移除 `minColumns`、`maxColumns`、列宽、断点、自动适配和折叠等布局引擎选项，以及 `shouldVisible`、`onDigest`、`onInitialized` 回调。节点显示由 React 条件渲染或字段的 `visible` / `display` 控制。`gridSpan={-1}` 从填满剩余列调整为独占整行。
-
 ### FormGrid.GridColumn
 
 也可以从 `@silver-formily/antd-mobile` 单独导入 `GridColumn`。
@@ -56,12 +58,3 @@ mobileDemo: form-grid/index.tsx
 | `gridSpan`  | `number`              | 占用列数，使用正整数；`-1` 独占整行 | `1`    |
 | `className` | `string`              | 网格项类名                          | -      |
 | `style`     | `React.CSSProperties` | 网格项样式                          | -      |
-
-### 使用约定
-
-- 布局以容器的直接 DOM 子节点为网格项；额外的包装节点会作为一个整体参与布局。
-- `GridColumn` 渲染为 `div`，需要放在 `FormGrid` 内参与布局。
-- `FormItem` 的 `gridSpan`、`GridColumn` 的 `gridSpan` 和普通节点的 `data-grid-span` 使用相同的跨度规则。
-- 普通节点及 FormItem 的 `data-grid-span` 支持 1–24 和 -1；GridColumn 通过内联样式支持任意正整数跨度。
-- 子节点增删、跨度和列数变化由浏览器的 CSS Grid 自动排版，无需 DOM 观察器。
-- `useGridSpan`、`useGridColumn` 为已废弃的兼容方法，不用于新代码。

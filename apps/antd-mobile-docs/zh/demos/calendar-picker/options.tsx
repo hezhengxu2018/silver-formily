@@ -1,3 +1,4 @@
+import type { ICalendarPickerProps } from '@silver-formily/antd-mobile'
 import { CalendarPicker, FormButtonGroup, FormItem, Submit } from '@silver-formily/antd-mobile'
 import { createForm } from '@silver-formily/core'
 import { Field, FormProvider } from '@silver-formily/react'
@@ -18,6 +19,12 @@ export default function CalendarPickerOptions() {
         decorator={[FormItem]}
         component={[CalendarPicker, {
           format: 'YYYY/MM/DD',
+          displayRender: (value: ICalendarPickerProps['value']) => (
+            <span>
+              预约：
+              {String(value ?? '')}
+            </span>
+          ),
           min: new Date(2026, 9, 1),
           max: new Date(2026, 9, 31),
           weekStartsOn: 'Monday',

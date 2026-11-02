@@ -4,11 +4,13 @@ mobileDemo: form-step/index.tsx
 
 # FormStep 分步表单
 
-参考 Vant FormStep，将 Schema 拆分为多个步骤，使用 antd-mobile Steps 展示进度。仅支持 Schema 场景，步骤必须为 `FormStep` 的直接子级，并使用 `FormStep.StepPane`。
+> 分步表单组件
+
+::: tip 提示
+可以参考 [createPopup文档中的例子](/component/create-popup#结合-formstep) 创建一个弹出层式的分步表单
+:::
 
 ## Markup Schema
-
-通过 `FormStep.createFormStep()` 创建控制器，按钮区使用 `FormConsumer` 响应步骤状态。点击下一步先校验表单当前可见字段，校验失败时停留在当前步骤；返回上一步会保留填写的数据。
 
 <<< @/zh/demos/form-step/basic.tsx
 

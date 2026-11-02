@@ -32,7 +32,8 @@ import { ArrayBase, CheckList, DatePicker, PreviewText, Radio, Selector, Switch 
 it('exports reusable props and preserves compound component types', () => {
   expectTypeOf<IInputProps>().toEqualTypeOf<InputProps>()
   expectTypeOf<ITextAreaProps>().toEqualTypeOf<TextAreaProps>()
-  expectTypeOf<ISwitchProps>().toEqualTypeOf<SwitchProps>()
+  expectTypeOf<Omit<ISwitchProps, 'beforeChange'>>().toEqualTypeOf<Omit<SwitchProps, 'beforeChange'>>()
+  expectTypeOf<ISwitchProps['beforeChange']>().toEqualTypeOf<((checked: boolean) => Promise<boolean | void>) | undefined>()
   expectTypeOf<IStepperProps>().toEqualTypeOf<StepperProps>()
   expectTypeOf<ISpaceProps>().toExtend<SpaceProps>()
   expectTypeOf<ICheckListValue>().toEqualTypeOf<string | number>()

@@ -4,29 +4,33 @@ mobileDemo: check-list-picker/index.tsx
 
 # CheckListPicker 列表选择器
 
-`CheckListPicker` 使用 `createPopup` 打开 `CheckList`，提供与 Picker 一致的表单触发入口。点击 FormItem 整行或按钮打开，单选时点选立即写入并关闭；多选时选择暂存在弹层内，点击确定后写入字段，取消或点击遮罩保留原值。
+> `CheckList` 组件的弹出层式。
+
+::: tip 提示
+`antd-mobile`本身并没有提供这个组件，该组件是`CheckList`和`createPopup`结合，实际需要开发业务组件的Picker时也可以通过`createPopup`快速完成一个封装。
+:::
 
 ## 多选
 
-使用字段 `dataSource` 或 Schema `enum` 提供一维选项，也可以通过 `options` 直接传入。选项支持字符串、数字或 `{ label, value, disabled, description }` 对象。默认单选，设置 `multiple: true` 开启多选，单选与多选的值均为数组。
-
 <<< @/zh/demos/check-list-picker/basic.tsx
 
-## 单选
+## 自定义标签展示
 
-默认单选，不显示取消和确认按钮，点选后立即回写并关闭弹层。可以点击遮罩退出而不修改字段。多选弹层复用 Picker 的圆角与头部样式。
+默认使用 Space 组件分隔展示已选项，不包裹 Tag。需要标签效果时，可通过 `displayRender` 自定义展示，编辑态与预览态均生效。搭配 FormItem 的 `wrapperWrap: true` 和 Space 的 `wrap` 可让标签换行。
+
+<<< @/zh/demos/check-list-picker/display.tsx
+
+## 单选
 
 <<< @/zh/demos/check-list-picker/single.tsx
 
 ## 超长滚动列表
 
-下面提供 100 个选项，分别演示单选与多选。多选通过 FormItem 的 `wrapperWrap: true` 展示已选标签换行。选项区域最大高度为 `60vh`，超出后在弹层内独立滚动；多选时顶部取消、确认按钮保持可见。滚动至末尾选择选项后，可以通过提交查看结果，或重置清空选择。
+下面提供 100 个选项，分别演示单选与多选。多选通过 FormItem 的 `wrapperWrap: true` 展示已选文本换行。选项区域最大高度为 `60vh`，超出后在弹层内独立滚动；多选时顶部取消、确认按钮保持可见。滚动至末尾选择选项后，可以通过提交查看结果，或重置清空选择。
 
 <<< @/zh/demos/check-list-picker/long-list.tsx
 
 ## API
-
-从包根入口导出 `CheckListPicker` 和 `ICheckListPickerProps`。
 
 | 属性                             | 说明                                                                       |
 | -------------------------------- | -------------------------------------------------------------------------- |
@@ -47,16 +51,4 @@ mobileDemo: check-list-picker/index.tsx
 
 同时支持 CheckList 的 `mode`、`activeIcon`、`extra`。不支持 `defaultValue`、`children` 或外部控制弹层可见性。
 
-## 行为说明
-
-- 默认按已选值顺序展示标签，多选使用 Space + Tag 展示独立选项；找不到选项时显示原值，数字 `0` 可以正常展示。
-- `readPretty` 仅展示文本，空值使用 PreviewText 占位；`readOnly` 保留查看入口。
-- 每次打开使用当时的字段值与选项作为弹层快照；弹层打开期间的数据源变化在下次打开时生效。
-- FormItem 自动识别触发按钮并展示箭头，支持通过 `event.preventDefault()` 阻止整行打开。关闭动画结束后恢复按钮焦点，并允许再次打开。
-- 字段卸载时自动关闭弹层，不提交草稿。重置由 Formily 管理。
-
 底层选项接口参考 [antd-mobile CheckList 文档](https://mobile.ant.design/components/check-list/)。
-
-## 触发内容布局
-
-通过 FormItem 的 `wrapperWrap` 控制已选内容布局，默认 `false`：保持单行，超出字段宽度后可水平滚动。设置 `x-decorator-props: { wrapperWrap: true }` 后按字段宽度换行显示。

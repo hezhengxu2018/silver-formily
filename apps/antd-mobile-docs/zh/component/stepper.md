@@ -4,7 +4,7 @@ mobileDemo: stepper/index.tsx
 
 # Stepper
 
-> `Stepper` 是对 antd-mobile 步进器的 Formily 适配，默认绑定数字字段，阅读态使用 `PreviewText.Input` 展示。
+> 主要用于数值输入的表单控件
 
 ## 基础使用
 
@@ -21,8 +21,6 @@ mobileDemo: stepper/index.tsx
 <<< @/zh/demos/stepper/precision.tsx
 
 ## 状态控制
-
-字段 `disabled` 禁用整个步进器；`inputReadOnly` 仅禁止键盘输入，加减按钮仍可操作；`readPretty` 展示字段文本。原生步进器没有禁止所有操作的 `readOnly` 属性，需要禁止修改时使用 `disabled`。
 
 <<< @/zh/demos/stepper/status.tsx
 

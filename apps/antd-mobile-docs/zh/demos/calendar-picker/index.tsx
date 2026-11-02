@@ -1,6 +1,7 @@
 import { NavBar } from 'antd-mobile'
 import { DemoSection } from '../_components/demo-section'
 import BasicDemo from './basic'
+import DisplayDemo from './display'
 import OptionsDemo from './options'
 import RangeDemo from './range'
 import StatusDemo from './status'
@@ -22,6 +23,9 @@ export default function CalendarPickerDemo() {
         </DemoSection>
         <DemoSection title="字段状态" description="对比禁用、只读与阅读态。">
           <StatusDemo />
+        </DemoSection>
+        <DemoSection title="自定义展示" description="编辑态和阅读态共享 displayRender，提交值仍为原始日期字符串。">
+          <DisplayDemo />
         </DemoSection>
       </div>
     </div>

@@ -18,6 +18,14 @@ mobileDemo: switch/index.tsx
 
 <<< @/zh/demos/switch/status.tsx
 
+## 异步切换
+
+设置 `beforeChange(checked)`，在点击时返回新的 Promise：resolve 后更新开关和表单值，返回 `false` 或 reject 时保持原值。等待期间自动显示加载状态并阻止重复点击。拒绝的 Promise 会被组件捕获，如需提示失败原因，可在回调内处理。
+
+示例模拟 1.5 秒请求，分别展示成功与失败两种结果。点击“查看结果”可检查实际表单值。
+
+<<< @/zh/demos/switch/async.tsx
+
 ## 搭配列表使用
 
 将开关放入 `List` 场景，形成贴近系统设置页的布局。
@@ -30,9 +38,10 @@ Formily 字段设置 `readOnly` 时保留开关状态，并禁用交互。
 
 ### 属性
 
-| 属性名     | 类型                                    | 描述                              | 默认值 |
-| ---------- | --------------------------------------- | --------------------------------- | ------ |
-| `value`    | ^[boolean]                              | 字段值，`true` 为开，`false` 为关 | -      |
-| `onChange` | ^[Function]`(checked: boolean) => void` | 切换时触发                        | -      |
+| 属性名         | 类型                                                            | 描述                                                         | 默认值 |
+| -------------- | --------------------------------------------------------------- | ------------------------------------------------------------ | ------ |
+| `value`        | ^[boolean]                                                      | 字段值，`true` 为开，`false` 为关                            | -      |
+| `onChange`     | ^[Function]`(checked: boolean) => void`                         | 切换时触发                                                   | -      |
+| `beforeChange` | ^[Function]`(checked: boolean) => Promise<boolean &#124; void>` | 切换前的异步任务；resolve 允许切换，false 或 reject 阻止切换 | -      |
 
 继承 antd-mobile `Switch` 的所有配置项（`disabled`、`loading`、`checkedText`、`uncheckedText`、`onClick` 等），请参考 [Switch 官方文档](https://mobile.ant.design/zh/components/switch)。

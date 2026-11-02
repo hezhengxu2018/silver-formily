@@ -1,3 +1,4 @@
+import type { IDatePickerProps } from '../src'
 import { createForm } from '@silver-formily/core'
 import { Field, FormProvider } from '@silver-formily/react'
 import { afterEach, expect, it, vi } from 'vitest'
@@ -188,4 +189,19 @@ it('applies year and quarter filters with candidate dates and min/max bounds', (
   ])
   expect(yearFilter).toHaveBeenCalledTimes(2)
   expect(quarterFilter).toHaveBeenCalledTimes(3)
+})
+
+it.each(['editable', 'readPretty'] as const)('customizes %s display without changing serialized values', async (pattern) => {
+  const value = '2024/03/15'
+  const form = createForm({ initialValues: { date: value } })
+  const displayRender = vi.fn((date: IDatePickerProps['value'], props: IDatePickerProps) => <strong>{`${props.placeholder}：${date}`}</strong>)
+  const screen = await render(<FormProvider form={form}><Field name="date" pattern={pattern} component={[DatePicker, { format: 'YYYY/MM/DD', placeholder: '预约', displayRender }]} /></FormProvider>)
+  await expect.element(screen.getByText('预约：2024/03/15', { exact: true })).toBeInTheDocument()
+  expect(displayRender).toHaveBeenCalledWith(value, expect.objectContaining({ format: 'YYYY/MM/DD' }))
+  if (pattern === 'editable') {
+    await screen.getByRole('button', { name: '预约：2024/03/15', exact: true }).click()
+    await vi.waitFor(() => expect(document.querySelector('.adm-picker-popup')).not.toBeNull())
+    document.querySelectorAll<HTMLElement>('.adm-picker-header-button')[1].click()
+  }
+  expect(form.values.date).toBe(value)
 })

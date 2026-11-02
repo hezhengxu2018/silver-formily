@@ -1,5 +1,6 @@
 import type { DatePickerProps as AntdDatePickerProps } from 'antd-mobile/es/components/date-picker'
 import type { Dayjs } from 'dayjs'
+import type { ReactNode } from 'react'
 import { connect, mapProps, mapReadPretty } from '@silver-formily/react'
 import { DatePicker as AntdDatePicker } from 'antd-mobile'
 import cls from 'classnames'
@@ -21,6 +22,7 @@ export interface IDatePickerProps extends Omit<
   format?:
     | string
     | ((value: Dayjs) => string)
+  displayRender?: (value: IDatePickerProps['value'], props: IDatePickerProps) => ReactNode
   showTime?: boolean
   value?: IDatePickerValue
   onChange?: (value: string) => void
@@ -71,6 +73,9 @@ function normalizeDatePickerProps(props: IDatePickerProps): NormalizedDatePicker
 }
 
 function DatePickerPreview(props: IDatePickerProps) {
+  const placeholder = PreviewText.usePlaceholder()
+  if (props.displayRender)
+    return <span className={props.className} style={props.style}>{props.displayRender(props.value, props) ?? placeholder}</span>
   return <PreviewText.DatePicker {...normalizeDatePickerProps(props)} />
 }
 
@@ -81,6 +86,7 @@ export function BaseDatePicker(props: IDatePickerProps) {
     placeholder,
     value,
     format,
+    displayRender,
     style,
     className,
     disabled = false,
@@ -107,7 +113,9 @@ export function BaseDatePicker(props: IDatePickerProps) {
     ? showTime ? 'second' : 'day'
     : picker ?? _precision ?? (showTime ? 'second' : 'day')
   const NativePicker = precision === 'quarter' ? QuarterDatePicker : AntdDatePicker
-  const val = formatDayjsValue(value, format, '')
+  const val = displayRender
+    ? displayRender(props.value, props)
+    : formatDayjsValue(value, format, '') || undefined
 
   return (
     <div className={cls(prefix, { 'adm-list-item-disabled': disabled }, className)} style={style}>
@@ -134,7 +142,7 @@ export function BaseDatePicker(props: IDatePickerProps) {
           popup.open()
         }}
       >
-        {val || (placeholder ?? '请选择')}
+        {val ?? (placeholder ?? '请选择')}
       </PopupTrigger>
     </div>
   )

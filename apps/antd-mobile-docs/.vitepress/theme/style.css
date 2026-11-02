@@ -6,7 +6,7 @@
   margin-bottom: 8px;
 }
 
-/* VitePress 的 SVG 块级重置会让Slider组件图标的上外边距折叠，恢复原生行内布局。 */
-.react-demo-island .adm-slider-thumb-icon {
-  display: inline;
+/* 仅在移动端预览页恢复 SVG 行内布局，同时覆盖挂载在 body 下的弹层。 */
+body:has(.VPMobilePreviewLayout) svg {
+  display: inline-block !important;
 }

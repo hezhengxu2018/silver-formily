@@ -3,7 +3,6 @@ import type { ICheckListProps, ICheckListValue } from '../check-list'
 import type { PopupContentCallbacks, PopupOptions } from '../create-popup'
 import { isField } from '@silver-formily/core'
 import { connect, mapProps, mapReadPretty } from '@silver-formily/react'
-import { Tag } from 'antd-mobile'
 import cls from 'classnames'
 import { Fragment, useContext, useEffect, useRef, useState } from 'react'
 import { FormItemWrapperWrapContext, PopupTrigger, usePopupPicker, usePrefixCls } from '../__builtins__'
@@ -33,16 +32,13 @@ function DisplayValue(props: ICheckListPickerProps) {
   const labels = value.map((item) => {
     const option = props.options?.find(option => (typeof option === 'object' ? option.value : option) === item)
     const label = typeof option === 'object' ? option.label : option ?? item
-    return props.multiple ? <Tag key={`${typeof item}:${item}`} style={{ fontSize: 'inherit' }}>{label}</Tag> : label
+    return label
   })
-  return props.multiple
-    ? <Space direction="horizontal" wrap={wrapperWrap} size={4}>{labels}</Space>
-    : labels.map((label, index) => (
-        <Fragment key={index}>
-          {index > 0 && ' / '}
-          {label}
-        </Fragment>
-      ))
+  return (
+    <Space direction="horizontal" wrap={wrapperWrap} size={4}>
+      {labels.map((label, index) => <Fragment key={index}>{label}</Fragment>)}
+    </Space>
+  )
 }
 
 function PickerPreview(props: ICheckListPickerProps) {

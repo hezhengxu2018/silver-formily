@@ -4,7 +4,7 @@ mobileDemo: create-popup/index.tsx
 
 # createPopup
 
-创建可复用的函数式弹层，通过 `prompt(props)` 打开并等待结果。确认返回业务值，取消返回 `null`，正常取消无需 `try/catch`。
+> 创建可复用的函数式弹层，通过 `prompt(props)` 打开并等待结果。确认返回业务值，取消返回 `null`，正常取消无需 `try/catch`。
 
 ## 选择主题色
 
@@ -23,10 +23,6 @@ mobileDemo: create-popup/index.tsx
 <<< @/zh/demos/create-popup/children.tsx
 
 ## 结合 FormStep
-
-参考 Vant 的弹出式分步表单，将联系信息、配送信息和确认提交放进同一个弹层。内容组件内部创建独立的 `Form` 和 `FormStep` 控制器，通过 `FormConsumer` 更新底部操作按钮。
-
-点击“下一步”先校验当前步骤，返回上一步保留已填数据；最后通过 `Submit` 提交并调用 `onConfirm(values)`，由 `prompt()` 返回完整表单值。首步可取消，返回 `null`；每次重新打开都会重置表单和步骤。
 
 `createPopup` 只管理弹层会话，不会自动注入表单上下文或执行表单校验。这里禁用遮罩关闭，表单上下文由内容中的 `Form` 提供。
 

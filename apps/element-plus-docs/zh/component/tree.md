@@ -89,5 +89,3 @@ const componentProps = {
 // dataSource: [{ id: 1, label: '选项一', extra: '业务属性' }]
 // 表单值: { id: 1 }
 ```
-
-**破坏性变更：** 已移除 `optionFormatter`，请改用 `optionValueKeys`，例如 `['id', 'label']`。`valueType="path"` 保留树形输出，不应用白名单。

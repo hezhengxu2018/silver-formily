@@ -14,8 +14,6 @@ mobileDemo: check-list/index.tsx
 
 ## 多选
 
-设置 `multiple` 开启多选，也可以通过 `options` 直接传入字符串选项。非空的字段 `dataSource` 优先于 `options`。
-
 <<< @/zh/demos/check-list/multiple.tsx
 
 ## 自定义选中图标
@@ -50,17 +48,16 @@ mobileDemo: check-list/index.tsx
 
 ## API
 
-| 属性名       | 类型                                       | 描述                                    | 默认值             |
-| ------------ | ------------------------------------------ | --------------------------------------- | ------------------ |
-| `value`      | `(string \| number)[]`                     | 已选值，单选也是数组                    | -                  |
-| `options`    | `(string \| number \| ICheckListOption)[]` | 选项，可由字段 `dataSource` 提供        | -                  |
-| `activeIcon` | `ReactNode`                                | 自定义选中图标                          | `<CheckOutline />` |
-| `extra`      | `(active: boolean) => ReactNode`           | 自定义列表右侧区域，优先于 `activeIcon` | -                  |
-| `multiple`   | `boolean`                                  | 是否多选                                | `false`            |
-| `disabled`   | `boolean`                                  | 禁用整个列表                            | `false`            |
-| `readOnly`   | `boolean`                                  | 整个列表只读                            | `false`            |
-| `onChange`   | `(value: (string \| number)[]) => void`    | 选择变化回调                            | -                  |
-| `children`   | `ReactNode`                                | 自定义列表项                            | -                  |
+| 属性名       | 类型                                    | 描述                                    | 默认值             |
+| ------------ | --------------------------------------- | --------------------------------------- | ------------------ |
+| `value`      | `(string \| number)[]`                  | 已选值，单选也是数组                    | -                  |
+| `activeIcon` | `ReactNode`                             | 自定义选中图标                          | `<CheckOutline />` |
+| `extra`      | `(active: boolean) => ReactNode`        | 自定义列表右侧区域，优先于 `activeIcon` | -                  |
+| `multiple`   | `boolean`                               | 是否多选                                | `false`            |
+| `disabled`   | `boolean`                               | 禁用整个列表                            | `false`            |
+| `readOnly`   | `boolean`                               | 整个列表只读                            | `false`            |
+| `onChange`   | `(value: (string \| number)[]) => void` | 选择变化回调                            | -                  |
+| `children`   | `ReactNode`                             | 自定义列表项                            | -                  |
 
 `ICheckListOption` 使用 `label: ReactNode` 作为列表项内容，`value` 支持字符串和数字，其余属性与 `CheckList.Item` 一致，例如 `title`、`description`、`prefix`、`disabled`、`readOnly`、`onClick`、`className` 和 `style`。基础值与对象选项可以混用，值需唯一，数字 `0` 与字符串 `"0"` 为不同选项。
 

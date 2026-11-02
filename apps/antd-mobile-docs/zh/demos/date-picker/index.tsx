@@ -1,6 +1,7 @@
 import { NavBar } from 'antd-mobile'
 import { DemoSection } from '../_components/demo-section'
 import BasicDemo from './basic'
+import DisplayDemo from './display'
 import PrecisionDemo from './precision'
 import WeekQuarterDemo from './week-quarter'
 import '../_components/demo-page.css'
@@ -27,6 +28,9 @@ export default function DatePickerDemo() {
           description="picker 支持扩展的 week 与 quarter 精度，值格式自动匹配。"
         >
           <WeekQuarterDemo />
+        </DemoSection>
+        <DemoSection title="自定义展示" description="编辑态和阅读态共享 displayRender，提交值仍为原始日期字符串。">
+          <DisplayDemo />
         </DemoSection>
       </div>
     </div>

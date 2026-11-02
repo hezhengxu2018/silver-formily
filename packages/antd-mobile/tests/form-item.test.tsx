@@ -5,9 +5,26 @@ import { Field, FormProvider } from '@silver-formily/react'
 import { afterEach, expect, expectTypeOf, it, vi } from 'vitest'
 import { cleanup, render } from 'vitest-browser-react'
 import { page } from 'vitest/browser'
-import { FormItem, FormLayout, Input } from '../src'
+import { FormItem, FormLayout, Input, Picker } from '../src'
 
 afterEach(cleanup)
+
+function touchLabel(element: Element, type: string, x = 0, y = 0) {
+  const touch = new Touch({ identifier: 1, target: element, clientX: x, clientY: y })
+  element.dispatchEvent(new TouchEvent(type, {
+    bubbles: true,
+    cancelable: true,
+    touches: type === 'touchend' || type === 'touchcancel' ? [] : [touch],
+    changedTouches: [touch],
+  }))
+}
+
+async function longPressLabel(element: HTMLElement) {
+  touchLabel(element, 'touchstart')
+  await vi.waitFor(() => expect(document.querySelector('.adm-popover:not(.adm-popover-hidden)')).not.toBeNull())
+  touchLabel(element, 'touchend')
+  element.click()
+}
 
 it('renders form item with input and label', async () => {
   const form = createForm()
@@ -143,11 +160,13 @@ it('updates overflow on text changes, resize and wrapping, and opens touch toolt
   await vi.waitFor(() => expect(label().classList.contains('adm-formily-item-label-tooltip')).toBe(false))
 })
 
-it('opens text tooltips by click and supports hidden labels becoming visible', async () => {
+it('opens text tooltips by long press and supports hidden labels becoming visible', async () => {
   const { container, rerender, getByText } = await render(<FormItem.BaseItem label={null}>Content</FormItem.BaseItem>)
   expect(container.querySelector('.adm-list-item-content-prefix')).toBeNull()
   await rerender(<FormItem.BaseItem label="Tap label" tooltip="Text details" tooltipLayout="text">Content</FormItem.BaseItem>)
   await getByText('Tap label').click()
+  expect(document.querySelector('.adm-popover:not(.adm-popover-hidden)')).toBeNull()
+  await longPressLabel(container.querySelector<HTMLElement>('.adm-formily-item-label-content')!)
   await vi.waitFor(() => expect(document.querySelector('.adm-popover:not(.adm-popover-hidden)')?.textContent).toContain('Text details'))
 })
 
@@ -187,7 +206,7 @@ it.each([
     await page.viewport(width, 700)
     const label = '说明'
     const tooltip = `${'这是一段较长的字段说明，需要在手机屏幕内完整换行显示。'.repeat(5)} https://example.com/${'longpath'.repeat(40)}`
-    const { container, getByRole, getByText } = await render(
+    const { container, getByRole } = await render(
       <div style={{ paddingTop: 220 }}>
         <FormItem.BaseItem label={label} tooltip={tooltip} tooltipLayout={mode === 'text' ? 'text' : 'icon'}>Content</FormItem.BaseItem>
       </div>,
@@ -198,7 +217,7 @@ it.each([
     if (mode === 'icon')
       await getByRole('button', { name: '字段说明' }).click()
     else
-      await getByText(label, { exact: true }).click()
+      await longPressLabel(trigger as HTMLElement)
     await vi.waitFor(() => {
       const popover = document.querySelector<HTMLElement>('.adm-popover:not(.adm-popover-hidden)')!
       expect(popover).not.toBeNull()
@@ -355,4 +374,110 @@ it.each(['horizontal', 'vertical'] as const)('inherits and updates colon setting
   await rerender(content(false, false))
   expect(labels()).toEqual(['Inherited', 'Nested', 'Disabled', 'Enabled:'])
   expect(container.querySelector('[colon]')).toBeNull()
+})
+
+it('renders all errors before warnings using theme tokens and inherits description typography', async () => {
+  const form = createForm()
+  const { container, getByText } = await render(
+    <FormProvider form={form}>
+      <Field name="value" decorator={[FormItem, { feedbackStatus: 'success' }]} component={[Input]} />
+    </FormProvider>,
+  )
+  const field = form.query('value').take() as FieldModel
+  field.selfErrors = ['First error', 'Second error']
+  field.selfWarnings = ['Warning']
+  field.selfSuccesses = ['Success']
+  await expect.element(getByText('Warning')).toBeVisible()
+  const messages = Array.from(container.querySelectorAll<HTMLElement>('.adm-formily-item-help'))
+  expect(messages.map(message => message.textContent)).toEqual(['First error', 'Second error', 'Warning'])
+  const item = container.querySelector<HTMLElement>('.adm-formily-item')!
+  item.style.setProperty('--adm-color-danger', 'rgb(123, 12, 34)')
+  item.style.setProperty('--adm-color-warning', 'rgb(234, 123, 12)')
+  expect(getComputedStyle(messages[0]).color).toBe('rgb(123, 12, 34)')
+  expect(getComputedStyle(messages[2]).color).toBe('rgb(234, 123, 12)')
+  const description = container.querySelector('.adm-list-item-description')!
+  for (const message of messages) {
+    expect(getComputedStyle(message).marginTop).toBe('4px')
+    expect(getComputedStyle(message).fontSize).toBe(getComputedStyle(description).fontSize)
+  }
+  expect(messages[1].getBoundingClientRect().top).toBeGreaterThanOrEqual(messages[0].getBoundingClientRect().bottom)
+  expect(messages[2].getBoundingClientRect().top).toBeGreaterThanOrEqual(messages[1].getBoundingClientRect().bottom)
+  field.setDecoratorProps({ feedbackText: 'Custom', feedbackStatus: 'success' })
+  await expect.element(getByText('Custom')).toBeVisible()
+  expect(container.querySelectorAll('.adm-formily-item-help')).toHaveLength(1)
+  expect(container.querySelector('.adm-formily-item-success-help')?.textContent).toBe('Custom')
+  field.setDecoratorProps({ feedbackText: '' })
+  await vi.waitFor(() => expect(container.querySelector('.adm-formily-item-help')).toBeNull())
+})
+
+it('blocks submission for errors but permits warnings and valid values', async () => {
+  const form = createForm()
+  const submit = vi.fn()
+  const { getByRole, getByText, container } = await render(
+    <FormProvider form={form}>
+      <Field
+        name="username"
+        validateFirst={false}
+        validator={[
+          value => String(value ?? '').length < 6 ? 'Too short' : undefined,
+          value => String(value ?? '').includes(' ') ? { type: 'warning', message: 'Contains spaces' } : undefined,
+        ]}
+        decorator={[FormItem]}
+        component={[Input]}
+      />
+    </FormProvider>,
+  )
+  await getByRole('textbox').fill('ab c')
+  await expect(form.submit(submit)).rejects.toBeDefined()
+  await expect.element(getByText('Too short')).toBeVisible()
+  await expect.element(getByText('Contains spaces')).toBeVisible()
+  expect(submit).not.toHaveBeenCalled()
+  await getByRole('textbox').fill('hello world')
+  await form.submit(submit)
+  await expect.element(getByText('Contains spaces')).toBeVisible()
+  expect(container.querySelector('.adm-formily-item-error-help')).toBeNull()
+  expect(submit).toHaveBeenLastCalledWith({ username: 'hello world' })
+  await getByRole('textbox').fill('helloworld')
+  await form.submit(submit)
+  await vi.waitFor(() => expect(container.querySelector('.adm-formily-item-help')).toBeNull())
+  expect(submit).toHaveBeenLastCalledWith({ username: 'helloworld' })
+})
+
+it.each(['input', 'picker'] as const)('separates short taps and long presses on overflowing %s labels', async (control) => {
+  const label = '这是一个超出标签列宽度的完整收件地址标题'
+  const onClick = vi.fn()
+  const { container, getByRole } = await render(
+    <FormItem.BaseItem label={label} labelWidth={80} onClick={onClick}>
+      {control === 'input' ? <Input /> : <Picker columns={[[{ label: '选项', value: 'option' }]]} />}
+    </FormItem.BaseItem>,
+  )
+  const target = container.querySelector<HTMLElement>('.adm-formily-item-label-content')!
+  await vi.waitFor(() => expect(container.querySelector('.adm-formily-item-label-tooltip')).not.toBeNull())
+  await longPressLabel(target)
+  expect(onClick).not.toHaveBeenCalled()
+  expect(container.contains(document.activeElement)).toBe(false)
+  expect(document.querySelector('.adm-picker-popup')).toBeNull()
+  touchLabel(target, 'touchstart')
+  touchLabel(target, 'touchend')
+  target.click()
+  if (control === 'input')
+    await expect.element(getByRole('textbox')).toHaveFocus()
+  else
+    await vi.waitFor(() => expect(document.querySelector('.adm-picker-popup')).not.toBeNull())
+  await vi.waitFor(() => expect(document.querySelector('.adm-popover:not(.adm-popover-hidden)')).toBeNull())
+  expect(onClick).toHaveBeenCalledOnce()
+})
+
+it.each(['touchend', 'touchcancel', 'touchmove', 'unmount'] as const)('cancels a pending long press on %s', async (action) => {
+  const { container, unmount } = await render(
+    <FormItem.BaseItem label="Label" tooltipLayout="text" tooltip="Details"><Input /></FormItem.BaseItem>,
+  )
+  const target = container.querySelector<HTMLElement>('.adm-formily-item-label-content')!
+  touchLabel(target, 'touchstart')
+  if (action === 'unmount')
+    await unmount()
+  else
+    touchLabel(target, action, 20, 0)
+  await new Promise(resolve => setTimeout(resolve, 600))
+  expect(document.querySelector('.adm-popover:not(.adm-popover-hidden)')).toBeNull()
 })

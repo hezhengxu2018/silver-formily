@@ -24,6 +24,18 @@ mobileDemo: form-item/index.tsx
 
 <<< @/zh/demos/form-item/validation.tsx
 
+## 非阻塞校验
+
+validator 返回 `{ type: 'warning', message }` 可产生非阻塞告警，作用类似 antd-mobile 的 `warningOnly`，但使用的是 Formily 校验接口，无需配置 `warningOnly`。
+
+设置 `validateFirst={false}` 让全部规则执行。错误和告警会同时展示，每条消息独占一行，先错误后告警；错误阻塞提交，告警不阻塞提交。
+
+- 输入 `ab c`：少于 6 个字符且包含空格，同时显示错误和告警，无法提交。
+- 输入 `hello world`：仅显示空格告警，仍可提交并弹窗查看结果。
+- 输入 `helloworld`：无校验反馈，正常提交。
+
+<<< @/zh/demos/form-item/non-blocking.tsx
+
 ## 标签配置
 
 `labelWidth`、`labelAlign` 可覆盖 `FormLayout` 下发的布局。下面用户名继承 80px、左对齐；地址覆盖为 120px、右对齐；备注使用 120px、左对齐，并展示点击提示。输入框初始为空，可通过 placeholder 对照控件的起始位置。
@@ -34,7 +46,7 @@ mobileDemo: form-item/index.tsx
 
 ## 长文本：省略与换行
 
-标签默认单行显示，超出 `labelWidth` 时省略；点击带虚线的标签可查看全文。设置 `labelWrap` 后，标签在固定宽度内完整换行。`wrapperWrap` 用于控件区域的文本换行，下面以阅读状态展示包含换行符和连续英文的内容。
+标签默认单行显示，超出 `labelWidth` 时省略；长按带虚线的标签可查看全文。设置 `labelWrap` 后，标签在固定宽度内完整换行。`wrapperWrap` 用于控件区域的文本换行，下面通过相同的已选长地址对照两种模式：`wrapperWrap={false}` 保持单行，可左右滑动查看全文；`wrapperWrap={true}` 完整换行。另以阅读状态展示包含换行符和连续英文的内容。
 
 <<< @/zh/demos/form-item/long-text.tsx
 
@@ -52,7 +64,7 @@ mobileDemo: form-item/index.tsx
 
 ## 提示说明
 
-默认点击图标显示 `tooltip`，`tooltipLayout="text"` 改为点击标签文字触发。可以用 `tooltipIcon` 自定义提示图标。长说明和连续链接都会在手机视口内换行。
+默认点击图标显示 `tooltip`，`tooltipLayout="text"` 改为长按标签文字约 500ms 后触发。短按标签仍聚焦输入框或打开选择器；长按结束不会触发控件。可以用 `tooltipIcon` 自定义提示图标。长说明和连续链接都会在手机视口内换行。
 
 <<< @/zh/demos/form-item/tooltip.tsx
 
@@ -72,39 +84,39 @@ mobileDemo: form-item/index.tsx
 
 独立使用 `FormItem.BaseItem` 时，通过 `value` 和 `onClear` 提供受控值及清除处理；作为字段装饰器使用时由 Formily 自动提供，`onClear` 可用作清除后的通知。
 
-## 已选内容布局
-
-`wrapperWrap` 同时控制普通文本换行及 Picker、CascadePicker、Cascader、DatePicker、CalendarPicker、CheckListPicker 的已选内容布局，默认 `false`（选择器保持单行横向滚动），设为 `true` 时按字段宽度换行，多选标签也会换行。通过 `x-decorator-props: { wrapperWrap: true }` 配置，不影响弹层选项区域的滚动。
-
 ## API
 
 ### 属性
 
-| 属性名          | 类型                                | 描述                                             | 默认值   |
-| --------------- | ----------------------------------- | ------------------------------------------------ | -------- |
-| `clearable`     | ^[boolean]                          | 自动切换箭头与清除按钮                           | `false`  |
-| `value`         | ^[unknown]                          | BaseItem 的受控值，装饰器自动读取字段值          | -        |
-| `onClear`       | ^[() => void]                       | 清除回调                                         | -        |
-| `label`         | ^[ReactNode]                        | 标签内容                                         | -        |
-| `labelStyle`    | ^[CSSProperties]                    | 标签样式                                         | -        |
-| `colon`         | ^[boolean]                          | 是否在标签后显示英文冒号，优先于 FormLayout 配置 | `false`  |
-| `labelAlign`    | ^[enum]`'left' \| 'right'`          | 标签文本对齐方式                                 | -        |
-| `labelWrap`     | ^[boolean]                          | 标签内容超长时是否换行                           | `false`  |
-| `labelWidth`    | ^[number \| string]                 | 标签宽度                                         | -        |
-| `wrapperWidth`  | ^[number \| string]                 | 控件宽度                                         | -        |
-| `wrapperAlign`  | ^[enum]`'left' \| 'right'`          | 控件内容对齐方式                                 | -        |
-| `wrapperWrap`   | ^[boolean]                          | 控件内容超长时是否换行                           | `false`  |
-| `wrapperStyle`  | ^[CSSProperties]                    | 控件样式                                         | -        |
-| `help`          | ^[ReactNode]                        | 帮助文案                                         | -        |
-| `extra`         | ^[ReactNode]                        | 右侧补充内容                                     | -        |
-| `required`      | ^[boolean]                          | 必填星号标记                                     | `false`  |
-| `asterisk`      | ^[boolean]                          | 是否显示星号（优先于 required 推导）             | -        |
-| `tooltip`       | ^[ReactNode]                        | 问号提示内容                                     | -        |
-| `tooltipLayout` | ^[enum]`'icon' \| 'text'`           | 问号提示布局                                     | `'icon'` |
-| `tooltipIcon`   | ^[ReactNode]                        | 自定义问号图标                                   | -        |
-| `disabled`      | ^[boolean]                          | 原生列表项禁用交互（不改变字段 pattern）         | `false`  |
-| `layout`        | ^[enum]`'vertical' \| 'horizontal'` | 布局模式                                         | -        |
-| `bordered`      | ^[boolean]                          | 是否显示边框                                     | -        |
-| `gridSpan`      | ^[number]                           | 栅格占位数（配合 FormGrid）                      | -        |
+| 属性名           | 类型                                | 描述                                                    | 默认值   |
+| ---------------- | ----------------------------------- | ------------------------------------------------------- | -------- |
+| `clearable`      | ^[boolean]                          | 自动切换箭头与清除按钮                                  | `false`  |
+| `value`          | ^[unknown]                          | BaseItem 的受控值，装饰器自动读取字段值                 | -        |
+| `onClear`        | ^[() => void]                       | 清除回调                                                | -        |
+| `label`          | ^[ReactNode]                        | 标签内容                                                | -        |
+| `labelStyle`     | ^[CSSProperties]                    | 标签样式                                                | -        |
+| `colon`          | ^[boolean]                          | 是否在标签后显示英文冒号，优先于 FormLayout 配置        | `false`  |
+| `labelAlign`     | ^[enum]`'left' \| 'right'`          | 标签文本对齐方式                                        | -        |
+| `labelWrap`      | ^[boolean]                          | 标签内容超长时是否换行                                  | `false`  |
+| `labelWidth`     | ^[number \| string]                 | 标签宽度                                                | -        |
+| `wrapperWidth`   | ^[number \| string]                 | 控件宽度                                                | -        |
+| `wrapperAlign`   | ^[enum]`'left' \| 'right'`          | 控件内容对齐方式                                        | -        |
+| `wrapperWrap`    | ^[boolean]                          | 控件内容超长时是否换行                                  | `false`  |
+| `wrapperStyle`   | ^[CSSProperties]                    | 控件样式                                                | -        |
+| `feedbackText`   | ^[ReactNode]                        | 手动反馈文案，优先于字段反馈；`null` 或空字符串隐藏反馈 | -        |
+| `feedbackStatus` | ^[string]                           | 覆盖整体状态及手动反馈样式；自动反馈按消息自身类型着色  | -        |
+| `help`           | ^[ReactNode]                        | 帮助文案                                                | -        |
+| `extra`          | ^[ReactNode]                        | 右侧补充内容                                            | -        |
+| `required`       | ^[boolean]                          | 必填星号标记                                            | `false`  |
+| `asterisk`       | ^[boolean]                          | 是否显示星号（优先于 required 推导）                    | -        |
+| `tooltip`        | ^[ReactNode]                        | 问号提示内容                                            | -        |
+| `tooltipLayout`  | ^[enum]`'icon' \| 'text'`           | 问号提示布局                                            | `'icon'` |
+| `tooltipIcon`    | ^[ReactNode]                        | 自定义问号图标                                          | -        |
+| `disabled`       | ^[boolean]                          | 原生列表项禁用交互（不改变字段 pattern）                | `false`  |
+| `layout`         | ^[enum]`'vertical' \| 'horizontal'` | 布局模式                                                | -        |
+| `bordered`       | ^[boolean]                          | 是否显示边框                                            | -        |
+| `gridSpan`       | ^[number]                           | 栅格占位数（配合 FormGrid）                             | -        |
 
 继承 antd-mobile `List.Item` 中除 `title`、`prefix`、`description` 以外的配置项（这些区域由装饰器管理），包括 `onClick`、`clickable`、`arrowIcon`、`disabled`、`tabIndex`、`aria-*`、`data-*` 和 CSS 变量，请参考 [List.Item 官方文档](https://mobile.ant.design/zh/components/list)。
+
+自动反馈按错误、告警顺序逐条展示；仅在二者均为空时展示成功反馈。校验进行中隐藏旧反馈，默认整体状态为 `pending`。反馈颜色使用 antd-mobile 的设计 token。

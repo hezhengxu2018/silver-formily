@@ -1,3 +1,4 @@
+import type { InternalFeedbackProps } from './feedback'
 import type { IFormItemProps } from './types'
 import { List } from 'antd-mobile'
 import { CloseCircleFill } from 'antd-mobile-icons'
@@ -9,7 +10,7 @@ import { FormItemFeedback } from './feedback'
 import { FormItemLabel } from './label'
 import { useFormItemLayout, widthStyle } from './layout'
 
-export function BaseItem(props: IFormItemProps) {
+export function BaseItem(props: IFormItemProps & InternalFeedbackProps) {
   const contentRef = useRef<HTMLDivElement>(null)
   const [hasTrigger, setHasTrigger] = useState(false)
   useEffect(() => {
@@ -34,6 +35,7 @@ export function BaseItem(props: IFormItemProps) {
     asterisk = required,
     feedbackStatus,
     feedbackText,
+    feedbackMessages,
     extra,
     gridSpan,
     className,
@@ -71,6 +73,7 @@ export function BaseItem(props: IFormItemProps) {
         />
       )
     : undefined
+  const hasFeedback = feedbackText !== undefined ? !!feedbackText : !!feedbackMessages?.length
   const empty = value === undefined || value === null || value === ''
     || (Array.isArray(value) && (value.length === 0 || value.every(item => item === null || item === undefined)))
   const arrowIcon = props.arrowIcon !== undefined
@@ -133,7 +136,7 @@ export function BaseItem(props: IFormItemProps) {
       }}
       className={cls(prefixCls, `${prefixCls}-layout-${layout}`, `${prefixCls}-label-align-${labelAlign}`, `${prefixCls}-control-align-${wrapperAlign}`, {
         [`${prefixCls}-${feedbackStatus}`]: !!feedbackStatus,
-        [`${prefixCls}-feedback-has-text`]: !!feedbackText,
+        [`${prefixCls}-feedback-has-text`]: hasFeedback,
         [`${prefixCls}-label-wrap`]: labelWrap,
         [`${prefixCls}-control-wrap`]: wrapperWrap,
         [`${prefixCls}-bordered-none`]: !bordered,
@@ -141,10 +144,10 @@ export function BaseItem(props: IFormItemProps) {
       title={layout === 'vertical' ? labelNode : undefined}
       prefix={layout === 'horizontal' ? labelNode : undefined}
       extra={extra !== undefined && extra !== null && extra !== false && extra !== '' ? <div className={`${prefixCls}-extra`}>{extra}</div> : undefined}
-      description={feedbackText || (help !== undefined && help !== null && help !== false && help !== '')
+      description={hasFeedback || (help !== undefined && help !== null && help !== false && help !== '')
         ? (
             <>
-              {!!feedbackText && <FormItemFeedback prefixCls={prefixCls} feedbackStatus={feedbackStatus} feedbackText={feedbackText} />}
+              {hasFeedback && <FormItemFeedback feedbackMessages={feedbackMessages} prefixCls={prefixCls} feedbackStatus={feedbackStatus} feedbackText={feedbackText} />}
               {help !== undefined && help !== null && help !== false && help !== '' && <div className={`${prefixCls}-help-text`}>{help}</div>}
             </>
           )

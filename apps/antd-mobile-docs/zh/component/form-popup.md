@@ -4,7 +4,7 @@ mobileDemo: form-popup/index.tsx
 
 # FormPopup 表单弹层
 
-函数式创建带表单上下文的 antd-mobile Popup。调用方式参考 Vant 的 FormPopup，确认前自动校验，通过 Promise 获取提交结果。
+> 参考其他的`formily`组件库封装的弹出式表单封装，在接口设计上几乎一致。
 
 ## 基础表单弹层
 

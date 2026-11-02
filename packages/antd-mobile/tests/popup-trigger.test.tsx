@@ -27,18 +27,21 @@ it.each([false, true])('shares trigger scrolling and wrapping across every picke
   }
 })
 
-it.each([false, true])('lays out multiple selections as tags (wrap: %s)', async (triggerWrap) => {
+it.each([false, true])('lays out multiple selections as separated text (wrap: %s)', async (triggerWrap) => {
   await render(<FormItem.BaseItem wrapperWrap={triggerWrap}><CheckListPicker multiple value={[1, 2, 3, 4]} options={[1, 2, 3, 4].map(value => ({ value, label: `选项 ${value}` }))} style={{ width: 120 }} /></FormItem.BaseItem>)
   const button = document.querySelector<HTMLButtonElement>('[data-form-item-trigger]')!
-  expect(button.querySelectorAll('.adm-space .adm-tag')).toHaveLength(4)
-  expect(button.textContent).not.toContain('/')
+  expect(button.querySelectorAll('.adm-tag')).toHaveLength(0)
+  expect(button.querySelectorAll('.adm-space-item')).toHaveLength(4)
+  const items = button.querySelectorAll('.adm-space-item')
+  expect(items[1]!.getBoundingClientRect().left - items[0]!.getBoundingClientRect().right).toBe(4)
+  expect(button.textContent).toBe('选项 1选项 2选项 3选项 4')
   if (triggerWrap)
     expect(button.clientHeight).toBeGreaterThan(24)
   else
     expect(button.scrollWidth).toBeGreaterThan(button.clientWidth)
 })
 
-it.each([false, true])('keeps the FormItem arrow in bounds with long tags (wrap: %s)', async (triggerWrap) => {
+it.each([false, true])('keeps the FormItem arrow in bounds with long selections (wrap: %s)', async (triggerWrap) => {
   await render(
     <div style={{ width: 360 }}>
       <FormItem.BaseItem label="多选" wrapperWrap={triggerWrap}>

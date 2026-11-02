@@ -1,15 +1,30 @@
+import type { ReactNode } from 'react'
 import type { IFormItemProps } from './types'
 import cls from 'classnames'
 
-type FeedbackProps = Pick<IFormItemProps, 'feedbackStatus' | 'feedbackText'> & { prefixCls: string }
+export interface FeedbackMessage {
+  type: 'error' | 'warning' | 'success'
+  message: ReactNode
+}
 
-export function FormItemFeedback({ prefixCls, feedbackText, feedbackStatus }: FeedbackProps) {
-  return (
-    <div className={cls(`${prefixCls}-help`, {
-      [`${prefixCls}-${feedbackStatus}-help`]: !!feedbackStatus,
-    })}
+export interface InternalFeedbackProps {
+  feedbackMessages?: FeedbackMessage[]
+}
+
+type FeedbackProps = Pick<IFormItemProps, 'feedbackStatus' | 'feedbackText'> & InternalFeedbackProps & { prefixCls: string }
+
+export function FormItemFeedback({ prefixCls, feedbackText, feedbackStatus, feedbackMessages }: FeedbackProps) {
+  const messages = feedbackText !== undefined
+    ? [{ type: feedbackStatus, message: feedbackText }]
+    : feedbackMessages ?? []
+  return messages.map(({ type, message }, index) => (
+    <div
+      key={index}
+      className={cls(`${prefixCls}-help`, {
+        [`${prefixCls}-${type}-help`]: !!type,
+      })}
     >
-      {feedbackText}
+      {message}
     </div>
-  )
+  ))
 }
