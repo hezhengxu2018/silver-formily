@@ -8,10 +8,6 @@ mobileDemo: cascader/index.tsx
 
 ## 基础使用
 
-通过字段 `dataSource` 提供树形选项，封装将其映射为原生 `options`。Schema 中也可使用 `enum` 配置数据源。
-
-使用字段 `initialValue` 或表单 `initialValues` 初始化路径，无需自行管理弹层开关或在确认回调中写回字段。FormItem 检测到组件的触发按钮后自动显示右侧箭头；点击标签、内容或行内空白均可打开选择器。
-
 <<< @/zh/demos/cascader/basic.tsx
 
 选项使用 `{ label, value, disabled?, children? }` 结构。叶子节点应省略 `children`，不要设置 `children: []`，以便原生组件识别最后一级。

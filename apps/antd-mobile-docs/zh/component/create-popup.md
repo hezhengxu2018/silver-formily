@@ -24,7 +24,7 @@ mobileDemo: create-popup/index.tsx
 
 ## 结合 FormStep
 
-`createPopup` 只管理弹层会话，不会自动注入表单上下文或执行表单校验。这里禁用遮罩关闭，表单上下文由内容中的 `Form` 提供。
+`createPopup` 只管理弹层会话，不会自动注入表单上下文或执行表单校验。这里禁用遮罩关闭，表单上下文由内容中的 `Form` 提供。需要由弹层统一管理 Form 实例、重置和异步提交时，参考 [FormPopup 分步表单示例](/component/form-popup#结合-formstep)。
 
 <<< @/zh/demos/create-popup/form-step.tsx
 

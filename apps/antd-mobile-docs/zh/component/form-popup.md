@@ -12,6 +12,16 @@ mobileDemo: form-popup/index.tsx
 
 <<< @/zh/demos/form-popup/basic.tsx
 
+## 结合 FormStep
+
+FormPopup 创建并提供完整的 Form 实例，FormStep 负责步骤切换。自定义 footer 通过 `form.reset()` 重置表单，通过 `formStep.next()` 校验当前步骤并前进，最后调用 `resolve()` 进入 FormPopup 的校验与确认中间件流程。无需再创建 Form 或嵌套 FormProvider。
+
+每次打开都创建新的步骤控制器，从第一步开始。`observer` 让按钮跟随步骤和 `form.submitting` 更新；异步提交期间禁用取消、返回和重置。`forConfirm` 接收完整的 Form，可读取或修改字段状态和值，本例模拟请求并去除备注两端空白，完成后返回表单值。
+
+未激活步骤保留值并跳过校验，因此应使用“下一步”顺序完成必填步骤；最后确认只校验当前可见字段，不会重新校验全部隐藏步骤。
+
+<<< @/zh/demos/form-popup/form-step.tsx
+
 ## 自定义头尾与 middleware
 
 通过 `header` / `footer` 接管头尾区域。发布时执行异步确认中间件，保存草稿时通过 `saveDraft()` 触发动态中间件。自定义操作组件使用 `observer` 跟随 `form.submitting` 更新加载与禁用状态。

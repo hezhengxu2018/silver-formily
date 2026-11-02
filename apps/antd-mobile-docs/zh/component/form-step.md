@@ -7,7 +7,7 @@ mobileDemo: form-step/index.tsx
 > 分步表单组件
 
 ::: tip 提示
-可以参考 [createPopup文档中的例子](/component/create-popup#结合-formstep) 创建一个弹出层式的分步表单
+可以参考 [FormPopup 文档中的例子](/component/form-popup#结合-formstep) 创建一个弹出层式的分步表单
 :::
 
 ## Markup Schema
