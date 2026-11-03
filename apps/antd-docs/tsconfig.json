@@ -1,0 +1,12 @@
+{
+  "extends": "@silver-formily/typescript-config/docs.json",
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "paths": {
+      "@silver-formily/antd": ["../../packages/antd/src"],
+      "@silver-formily/antd/*": ["../../packages/antd/src/*"]
+    }
+  },
+  "include": [".vitepress/**/*.ts", "**/*.ts", "**/*.tsx", "env.d.ts"],
+  "exclude": ["node_modules", ".vitepress/cache", ".vitepress/dist"]
+}

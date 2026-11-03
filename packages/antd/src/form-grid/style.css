@@ -1,0 +1,6 @@
+.sf-grid {
+  display: grid;
+}
+.sf-grid > * {
+  min-width: 0;
+}

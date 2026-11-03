@@ -1,0 +1,95 @@
+{
+  "name": "@silver-formily/antd",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "Ant Design 6 form components for Silver Formily on React",
+  "author": "hezhengxu",
+  "license": "MIT",
+  "homepage": "https://github.com/hezhengxu2018/silver-formily",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hezhengxu2018/silver-formily",
+    "directory": "packages/antd"
+  },
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "exports": {
+    ".": {
+      "types": "./esm/index.d.ts",
+      "import": "./esm/index.mjs",
+      "default": "./esm/index.mjs"
+    },
+    "./*": "./esm/*",
+    "./package.json": "./package.json"
+  },
+  "main": "./esm/index.mjs",
+  "types": "./esm/index.d.ts",
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "LICENSE",
+    "esm"
+  ],
+  "scripts": {
+    "build": "tsdown --tsconfig tsconfig.build.json",
+    "lint": "eslint .",
+    "format": "eslint . --fix",
+    "check-types": "tsc --noEmit --project tsconfig.json && tsc --noEmit --project tsconfig.test.json",
+    "test": "vitest run --reporter=dot",
+    "test:watch": "vitest",
+    "test:browser": "vitest run --browser.headless",
+    "test:coverage": "vitest run --coverage --browser.headless",
+    "prepublishOnly": "pnpm run build"
+  },
+  "peerDependencies": {
+    "@ant-design/icons": "^6",
+    "@silver-formily/core": "workspace:^",
+    "@silver-formily/react": "workspace:^",
+    "@silver-formily/shared": "workspace:^",
+    "@types/react": ">=18",
+    "@types/react-dom": ">=18",
+    "antd": "^6.6.5",
+    "react": "^18 || ^19",
+    "react-dom": "^18 || ^19"
+  },
+  "peerDependenciesMeta": {
+    "@types/react": {
+      "optional": true
+    },
+    "@types/react-dom": {
+      "optional": true
+    }
+  },
+  "dependencies": {
+    "@floating-ui/dom": "catalog:",
+    "@silver-formily/grid": "workspace:^",
+    "@silver-formily/reactive-react": "workspace:^",
+    "classnames": "catalog:"
+  },
+  "devDependencies": {
+    "@ant-design/icons": "catalog:",
+    "@silver-formily/core": "workspace:*",
+    "@silver-formily/react": "workspace:*",
+    "@silver-formily/shared": "workspace:*",
+    "@silver-formily/typescript-config": "workspace:*",
+    "@tsdown/css": "catalog:",
+    "@types/node": "catalog:",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "@vitest/browser": "catalog:",
+    "@vitest/browser-playwright": "catalog:",
+    "@vitest/coverage-istanbul": "catalog:",
+    "antd": "catalog:",
+    "eslint": "catalog:",
+    "playwright": "catalog:",
+    "react": "catalog:",
+    "react-dom": "catalog:",
+    "tsdown": "catalog:",
+    "typescript": "catalog:",
+    "vite": "catalog:",
+    "vitest": "catalog:",
+    "vitest-browser-react": "catalog:"
+  }
+}

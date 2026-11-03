@@ -1,0 +1,39 @@
+import { FormButtonGroup, FormItem, Select, Submit } from '@silver-formily/antd'
+import { createForm } from '@silver-formily/core'
+import { Field, FormProvider } from '@silver-formily/react'
+import React from 'react'
+// Adapted from Alibaba Formily (MIT); see /guide/sources for source and license.
+import { DemoConfig } from '../_shared'
+
+const form = createForm()
+
+function OfficialExample() {
+  return (
+    <FormProvider form={form}>
+      <Field
+        name="select"
+        title="选择框"
+        dataSource={[
+          { label: '选项1', value: 1 },
+          { label: '选项2', value: 2 },
+        ]}
+        decorator={[FormItem]}
+        component={[
+          Select,
+          {
+            style: {
+              width: 120,
+            },
+          },
+        ]}
+      />
+      <FormButtonGroup>
+        <Submit onSubmitFailed={console.log} onSubmit={console.log}>提交</Submit>
+      </FormButtonGroup>
+    </FormProvider>
+  )
+}
+
+export default function Demo() {
+  return <DemoConfig><OfficialExample /></DemoConfig>
+}

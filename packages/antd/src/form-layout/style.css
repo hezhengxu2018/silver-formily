@@ -1,0 +1,16 @@
+.sf-layout {
+  color: var(--sf-color);
+  font-size: var(--sf-font);
+}
+.sf-layout-inline {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 16px;
+  align-items: flex-start;
+}
+.sf-layout-inline > form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 16px;
+  width: 100%;
+}

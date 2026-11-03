@@ -4,7 +4,7 @@
 
 Silver Formily 是一个面向 Vue 3 的表单基础设施 Monorepo。仓库中的核心响应式、路径、校验、Schema、运行时绑定以及 UI 组件适配层，都已经从原有 Formily 依赖迁移为 `@silver-formily/*` 自有实现；当前仓库不再只是“围绕 Formily 的二次封装”，而是一套可独立演进的实现与文档体系。
 
-项目基于 `pnpm`、`Turborepo`、`Vite` 与 `VitePress` 组织，覆盖了核心运行时、Vue 绑定、Element Plus / Vant 组件方案，以及配套的文档站点与内部工具链。
+项目基于 `pnpm`、`Turborepo`、`Vite` 与 `VitePress` 组织，覆盖了核心运行时、Vue / React 绑定、Element Plus / Vant / Ant Design 组件方案，以及配套的文档站点与内部工具链。
 
 ## 文档站点
 
@@ -21,6 +21,9 @@ Silver Formily 是一个面向 Vue 3 的表单基础设施 Monorepo。仓库中�
 
 ## Workspace 包
 
+Ant Design 6 首批迁移 10 项基础表单组件，中文文档源码位于 `apps/antd-docs`。
+运行 `pnpm dev -- antd-docs` 查看示例，使用 `pnpm exec turbo run docs:build --filter=antd-docs` 构建静态站点。
+
 | 包名                                | 说明                               |
 | ----------------------------------- | ---------------------------------- |
 | `@silver-formily/reactive`          | 响应式核心实现                     |
@@ -30,6 +33,7 @@ Silver Formily 是一个面向 Vue 3 的表单基础设施 Monorepo。仓库中�
 | `@silver-formily/core`              | 表单领域模型与运行时内核           |
 | `@silver-formily/json-schema`       | JSON Schema 与表单描述互转能力     |
 | `@silver-formily/react`             | React 运行时绑定与渲染层           |
+| `@silver-formily/antd`              | Ant Design 6 基础表单组件适配      |
 | `@silver-formily/reactive-react`    | React 响应式桥接层                 |
 | `@silver-formily/reactive-vue`      | Vue 响应式桥接层                   |
 | `@silver-formily/vue`               | Vue 3 运行时绑定                   |
@@ -44,6 +48,7 @@ Silver Formily 是一个面向 Vue 3 的表单基础设施 Monorepo。仓库中�
 ```text
 .
 |- apps/                         # VitePress 文档站点
+|  |- antd-docs
 |  |- core-docs
 |  |- element-plus-docs
 |  |- grid-docs
@@ -55,6 +60,7 @@ Silver Formily 是一个面向 Vue 3 的表单基础设施 Monorepo。仓库中�
 |  |- vant-docs
 |  `- vue-docs
 |- packages/                     # 可发布包与内部工具
+|  |- antd
 |  |- core
 |  |- docs-toolkit
 |  |- element-plus
