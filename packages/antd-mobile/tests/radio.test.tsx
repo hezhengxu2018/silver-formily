@@ -65,3 +65,25 @@ it('supports custom Radio children and standalone boolean fields', async () => {
   await screen.getByText('同意').click()
   expect(form.values.agreed).toBe(true)
 })
+
+it('clears selected options only when allowClear is enabled', async () => {
+  const form = createForm({ initialValues: { choice: 0, custom: 'a', frozen: 'a' } })
+  const screen = await render(
+    <FormProvider form={form}>
+      <Field name="choice" component={[Radio.Group, { allowClear: true, options: [{ label: '零', value: 0 }, { label: '一', value: 1 }] }]} />
+      <Field name="custom" component={[Radio.Group, { allowClear: true, children: <Radio value="a">自定义</Radio> }]} />
+      <Field name="frozen" readOnly component={[Radio.Group, { allowClear: true, options: [{ label: '只读', value: 'a' }] }]} />
+    </FormProvider>,
+  )
+  await screen.getByText('零').click()
+  expect(form.values.choice).toBeNull()
+  await expect.element(screen.getByText('零').element().closest('label')!.querySelector('input')!).not.toBeChecked()
+  await screen.getByText('一').click()
+  expect(form.values.choice).toBe(1)
+  await screen.getByText('零').click()
+  expect(form.values.choice).toBe(0)
+  await screen.getByText('自定义').click()
+  expect(form.values.custom).toBeNull()
+  await expect.element(screen.getByText('只读').element().closest('label')!.querySelector('input')!).toBeDisabled()
+  expect(form.values.frozen).toBe('a')
+})

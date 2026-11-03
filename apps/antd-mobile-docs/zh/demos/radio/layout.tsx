@@ -37,7 +37,7 @@ export default function RadioLayout() {
         name="agree"
         title="协议"
         decorator={[FormItem]}
-        component={[Radio.Group]}
+        component={[Radio.Group, { allowClear: true }]}
         dataSource={[
           { label: '已阅读并同意用户协议', value: 'yes' },
         ]}
