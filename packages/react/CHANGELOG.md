@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.0.0-alpha.1
+
+### Patch Changes
+
+- 9ce3fb3: 发布 alpha 预览包，用于验证 npm Trusted Publisher 发布流程。
+
 ## Unreleased
 
 - Audit both documentation languages against the public entry and implementation, correcting signatures, prop precedence, visibility, recursion, and subscription semantics.

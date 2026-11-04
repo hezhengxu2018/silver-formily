@@ -26,6 +26,7 @@
   "changesets": [
     "react19-schema-elements",
     "reactive-strict-types",
+    "trusted-publisher-alpha",
     "vue-record-scope",
     "vue-vnode-schema-compilation"
   ]
