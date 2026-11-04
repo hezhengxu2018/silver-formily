@@ -3,8 +3,6 @@ import { createForm } from '@silver-formily/core'
 import { Field, FormProvider } from '@silver-formily/react'
 import { afterEach, expect, it, vi } from 'vitest'
 import { cleanup, render } from 'vitest-browser-react'
-import PrecisionDemo from '../../../apps/antd-mobile-docs/zh/demos/date-picker/precision'
-import WeekQuarterDemo from '../../../apps/antd-mobile-docs/zh/demos/date-picker/week-quarter'
 import { DatePicker, FormItem } from '../src'
 import { generateDatePickerColumns } from '../src/date-picker/date-quarter-utils'
 
@@ -127,13 +125,18 @@ it.each([
 
 
 it.each([
-  ['选择月份', '2024-03', 2],
-  ['选择年份', '2024', 1],
-  ['日期时间', '2024-03-01 10:30:00', 6],
-  ['选择周', '2024-W09', 2],
-  ['选择季度', '2024-Q1', 2],
-] as const)('opens the actual %s demo with the correct precision', async (title, value, columns) => {
-  const screen = await render(title === '选择周' || title === '选择季度' ? <WeekQuarterDemo /> : <PrecisionDemo />)
+  ['选择月份', '2024-03', { picker: 'month' }, 2],
+  ['选择年份', '2024', { picker: 'year' }, 1],
+  ['日期时间', '2024-03-01 10:30:00', { showTime: true }, 6],
+  ['选择周', '2024-W09', { picker: 'week' }, 2],
+  ['选择季度', '2024-Q1', { picker: 'quarter' }, 2],
+] as const)('opens the %s field from its form item with the correct precision', async (title, value, props, columns) => {
+  const form = createForm({ initialValues: { date: value } })
+  const screen = await render(
+    <FormProvider form={form}>
+      <Field name="date" title={title} decorator={[FormItem]} component={[DatePicker, props]} />
+    </FormProvider>,
+  )
   const trigger = screen.getByRole('button', { name: title, exact: true })
   await expect.element(trigger).toHaveTextContent(value)
   await trigger.click()
