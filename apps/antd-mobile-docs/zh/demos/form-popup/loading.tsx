@@ -1,7 +1,10 @@
 import { FormItem, FormLayout, FormPopup, Input } from '@silver-formily/antd-mobile'
 import { Field } from '@silver-formily/react'
 import { Button } from 'antd-mobile'
-import { showDemoResult } from '../shared'
+
+function onSubmit(values: unknown) {
+  return Prompts.alert(JSON.stringify(values, null, 2))
+}
 
 export default function LoadingDemo() {
   async function handleOpen() {
@@ -20,7 +23,7 @@ export default function LoadingDemo() {
           return { ...props, initialValues: { name: '张三' } }
         })
         .open()
-      showDemoResult(result)
+      await onSubmit(result)
     }
     catch (error) {
       if (!(error instanceof Error && error.message === 'cancel'))

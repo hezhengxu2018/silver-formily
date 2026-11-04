@@ -38,14 +38,12 @@ mobileDemo: form-grid/index.tsx
 
 ### FormGrid
 
-| 属性名      | 类型                  | 描述                                               | 默认值               |
-| ----------- | --------------------- | -------------------------------------------------- | -------------------- |
-| `columns`   | `number`              | 固定列数，四舍五入且至少为 1；非有限值回退为 1     | `1`                  |
-| `columnGap` | `number`              | 列间距（px），优先于 FormLayout 的 `gridColumnGap` | `8`                  |
-| `rowGap`    | `number`              | 行间距（px），优先于 FormLayout 的 `gridRowGap`    | `4`                  |
-| `className` | `string`              | 容器类名                                           | -                    |
-| `style`     | `React.CSSProperties` | 容器样式，列模板和间距由上述属性决定               | -                    |
-| `prefixCls` | `string`              | 自定义样式前缀，需自行提供布局及跨度样式           | `'adm-formily-grid'` |
+| 属性名      | 类型     | 描述                                               | 默认值               |
+| ----------- | -------- | -------------------------------------------------- | -------------------- |
+| `columns`   | `number` | 固定列数，四舍五入且至少为 1；非有限值回退为 1     | `1`                  |
+| `columnGap` | `number` | 列间距（px），优先于 FormLayout 的 `gridColumnGap` | `8`                  |
+| `rowGap`    | `number` | 行间距（px），优先于 FormLayout 的 `gridRowGap`    | `4`                  |
+| `prefixCls` | `string` | 自定义样式前缀，需自行提供布局及跨度样式           | `'adm-formily-grid'` |
 
 未显式设置间距时继承 FormLayout 的配置；负数或非有限间距回退为默认值，支持零间距。
 
@@ -53,8 +51,6 @@ mobileDemo: form-grid/index.tsx
 
 也可以从 `@silver-formily/antd-mobile` 单独导入 `GridColumn`。
 
-| 属性名      | 类型                  | 描述                                | 默认值 |
-| ----------- | --------------------- | ----------------------------------- | ------ |
-| `gridSpan`  | `number`              | 占用列数，使用正整数；`-1` 独占整行 | `1`    |
-| `className` | `string`              | 网格项类名                          | -      |
-| `style`     | `React.CSSProperties` | 网格项样式                          | -      |
+| 属性名     | 类型     | 描述                                | 默认值 |
+| ---------- | -------- | ----------------------------------- | ------ |
+| `gridSpan` | `number` | 占用列数，使用正整数；`-1` 独占整行 | `1`    |

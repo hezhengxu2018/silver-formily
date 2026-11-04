@@ -4,7 +4,7 @@ mobileDemo: segmented/index.tsx
 
 # Segmented
 
-字段值为字符串或数字。通过 `options` 或字段 `dataSource` 配置选项；支持原始值和带 label、value 的对象。只读映射为禁用交互，阅读态显示所选标签。
+字段值为字符串或数字。通过字段 `dataSource` 配置选项；支持原始值和带 label、value 的对象。只读映射为禁用交互，阅读态显示所选标签。
 
 ## 基础使用
 

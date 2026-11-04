@@ -1,9 +1,12 @@
 import { FormButtonGroup, FormItem, Selector, Submit } from '@silver-formily/antd-mobile'
 import { createForm } from '@silver-formily/core'
 import { Field, FormProvider } from '@silver-formily/react'
-import { showDemoResult } from '../shared'
 
 const form = createForm({ initialValues: { frozen: ['standard'], preview: ['premium'] } })
+
+function onSubmit(values: unknown) {
+  return Prompts.alert(JSON.stringify(values, null, 2))
+}
 
 export default function Demo() {
   return (
@@ -25,7 +28,7 @@ export default function Demo() {
         dataSource={[{ label: '标准', value: 'standard' }, { label: '高级', value: 'premium' }, { label: '旗舰', value: 'ultimate', disabled: true }]}
       />
       <FormButtonGroup>
-        <Submit onSubmit={showDemoResult}>查看结果</Submit>
+        <Submit onSubmit={onSubmit}>查看结果</Submit>
       </FormButtonGroup>
     </FormProvider>
   )

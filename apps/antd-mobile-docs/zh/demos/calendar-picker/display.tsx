@@ -2,7 +2,6 @@ import type { ICalendarPickerProps } from '@silver-formily/antd-mobile'
 import { CalendarPicker, FormButtonGroup, FormItem, Submit } from '@silver-formily/antd-mobile'
 import { createForm } from '@silver-formily/core'
 import { Field, FormProvider } from '@silver-formily/react'
-import { showDemoResult } from '../shared'
 
 const form = createForm({
   initialValues: {
@@ -16,6 +15,10 @@ const displayRender: ICalendarPickerProps['displayRender'] = (value) => {
     return undefined
   const text = Array.isArray(value) ? value.map(date => String(date).replaceAll('-', '/')).join(' 至 ') : String(value ?? '').replaceAll('-', '/')
   return <span style={{ color: 'var(--adm-color-primary)' }}>{text}</span>
+}
+
+function onSubmit(values: unknown) {
+  return Prompts.alert(JSON.stringify(values, null, 2))
 }
 
 export default function CalendarPickerDisplay() {
@@ -35,7 +38,7 @@ export default function CalendarPickerDisplay() {
         component={[CalendarPicker, { selectionMode: 'range', displayRender }]}
       />
       <FormButtonGroup>
-        <Submit onSubmit={showDemoResult}>提交</Submit>
+        <Submit onSubmit={onSubmit}>提交</Submit>
       </FormButtonGroup>
     </FormProvider>
   )

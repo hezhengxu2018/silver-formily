@@ -33,6 +33,7 @@ export default createDocsConfig({
   socialLinks: [
     { icon: 'github', link: 'https://github.com/hezhengxu2018/silver-formily' },
   ],
+  head: [['script', { src: 'https://cdn.jsdelivr.net/npm/prompts-js' }]],
   themeConfig: {
     outline: [2, 4],
     mobilePreview: {

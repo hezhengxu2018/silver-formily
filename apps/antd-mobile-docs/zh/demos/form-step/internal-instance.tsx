@@ -3,7 +3,6 @@ import { createForm } from '@silver-formily/core'
 import { createSchemaField, observer } from '@silver-formily/react'
 import { Button } from 'antd-mobile'
 import { useState } from 'react'
-import { showDemoResult } from '../shared'
 
 const Actions = observer(() => {
   const step = useFormStep()
@@ -12,11 +11,15 @@ const Actions = observer(() => {
       <Button disabled={!step.allowBack} onClick={() => step.back()}>上一步</Button>
       {step.allowNext
         ? <Button color="primary" onClick={() => step.next()}>下一步</Button>
-        : <Submit onSubmit={showDemoResult}>提交</Submit>}
+        : <Submit onSubmit={onSubmit}>提交</Submit>}
     </FormButtonGroup>
   )
 })
 const SchemaField = createSchemaField({ components: { FormStep, FormItem, Input, Actions } })
+
+function onSubmit(values: unknown) {
+  return Prompts.alert(JSON.stringify(values, null, 2))
+}
 
 export default function InternalInstanceDemo() {
   const [form] = useState(() => createForm())

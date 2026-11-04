@@ -4,10 +4,13 @@ import { createForm } from '@silver-formily/core'
 import { Field, FormProvider } from '@silver-formily/react'
 import { Cascader as AntCascader } from 'antd-mobile'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { showDemoResult } from '../shared'
 
 // undefined: not loaded; null: a leaf node; array: cached children.
 type OptionsCache = Record<string, CascaderOption[] | null>
+
+function onSubmit(values: unknown) {
+  return Prompts.alert(JSON.stringify(values, null, 2))
+}
 
 export default function Demo() {
   const form = useMemo(() => createForm({ initialValues: { region: [] } }), [])
@@ -87,7 +90,7 @@ export default function Demo() {
         }]}
       />
       <FormButtonGroup>
-        <Submit onSubmit={showDemoResult}>查看结果</Submit>
+        <Submit onSubmit={onSubmit}>查看结果</Submit>
       </FormButtonGroup>
     </FormProvider>
   )

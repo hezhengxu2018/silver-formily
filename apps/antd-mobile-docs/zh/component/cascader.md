@@ -10,7 +10,7 @@ mobileDemo: cascader/index.tsx
 
 <<< @/zh/demos/cascader/basic.tsx
 
-选项使用 `{ label, value, disabled?, children? }` 结构。叶子节点应省略 `children`，不要设置 `children: []`，以便原生组件识别最后一级。
+字段 `dataSource` 中的选项使用 `{ label, value, disabled?, children? }` 结构。叶子节点应省略 `children`，不要设置 `children: []`，以便原生组件识别最后一级。
 
 ## 异步层级加载
 
@@ -23,6 +23,8 @@ mobileDemo: cascader/index.tsx
 选择选项只更新弹层草稿并触发加载，确认后才提交字段值。取消不会写回字段，已获取的选项仍保留在缓存中。实际接口返回空子级时也应将该节点标记为叶子；请求失败时应提供错误提示及重试处理。
 
 ## 禁用、只读与阅读态
+
+通过 Field 模型设置字段状态：
 
 - `disabled`：入口禁用，无法打开弹层或写回值。
 - `readOnly`：保留入口，可以打开查看完整选项并切换层级 Tab；所有选项显示为禁用，禁止更改选择和确认写回。
@@ -38,21 +40,12 @@ mobileDemo: cascader/index.tsx
 
 | 属性                             | 说明                                                                                              |
 | -------------------------------- | ------------------------------------------------------------------------------------------------- |
-| 字段 `dataSource` / `options`    | `CascaderOption[]`，树形选项；推荐通过字段数据源提供                                              |
-| `value`                          | `(string \| number)[]`，当前路径值，默认为 `[]`                                                   |
-| `onChange`                       | `(value, extend) => void`，确认时写回字段的事件，由 Formily 注入                                  |
 | `placeholder`                    | `string`，入口空值占位及弹层待选择提示，默认入口显示“请选择”                                      |
-| `disabled`                       | `boolean`，禁止打开和写回                                                                         |
-| `readOnly`                       | `boolean`，允许打开查看，禁止修改和写回                                                           |
 | `displayRender`                  | `(labels: ReactNode[], selectedOptions: (CascaderOption \| null)[]) => ReactNode`，自定义路径展示 |
-| `fieldNames`                     | 自定义选项的 `label`、`value`、`children` 字段名，展示标签也遵循此配置                            |
-| `className` / `style`            | 字段外壳样式                                                                                      |
 | `aria-label` / `aria-labelledby` | 触发按钮的无障碍名称；`aria-label` 默认使用 Field 的字符串标题                                    |
 | `onConfirm`                      | `(value, extend) => void`，字段写回后通知；保留原生 `items`、`isLeaf` 附加信息                    |
-| `onSelect`                       | `(value, extend) => void`，弹层内选项变化回调，不写回字段                                         |
-| `onCancel` / `onClose`           | 取消与关闭通知，无需手动修改弹层状态                                                              |
 
-其余原生配置直接透传，包括 `title`、`confirmText`、`cancelText`、`loading`、`activeIcon`、`optionRender`、`onTabsChange`、`getContainer`、`afterShow` 和 `afterClose`。详见 [antd-mobile Cascader 官方文档](https://mobile.ant.design/zh/components/cascader)。
+其余配置参考 [antd-mobile Cascader 官方文档](https://mobile.ant.design/zh/components/cascader)。
 
 ## 行为说明
 

@@ -2,7 +2,6 @@ import { ArrayBase, Form, FormButtonGroup, FormItem, FormLayout, Input, Submit }
 import { createForm } from '@silver-formily/core'
 import { ArrayField, Field } from '@silver-formily/react'
 import { useState } from 'react'
-import { showDemoResult } from '../shared'
 
 function ItemHeader() {
   const index = ArrayBase.useIndex()
@@ -17,6 +16,10 @@ function ItemHeader() {
       <ArrayBase.Remove aria-label="删除" />
     </div>
   )
+}
+
+function onSubmit(values: unknown) {
+  return Prompts.alert(JSON.stringify(values, null, 2))
 }
 
 export default function BasicDemo() {
@@ -38,7 +41,7 @@ export default function BasicDemo() {
           </ArrayBase>
         )}
       </ArrayField>
-      <FormButtonGroup><Submit onSubmit={showDemoResult}>提交</Submit></FormButtonGroup>
+      <FormButtonGroup><Submit onSubmit={onSubmit}>提交</Submit></FormButtonGroup>
     </Form>
   )
 }

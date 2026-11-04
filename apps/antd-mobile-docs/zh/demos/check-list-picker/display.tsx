@@ -4,7 +4,6 @@ import { createForm } from '@silver-formily/core'
 import { createSchemaField, FormProvider } from '@silver-formily/react'
 import { Tag } from 'antd-mobile'
 import { useMemo } from 'react'
-import { showDemoResult } from '../shared'
 
 const SchemaField = createSchemaField({ components: { FormItem, CheckListPicker } })
 const displayRender: ICheckListPickerProps['displayRender'] = (value, props) => (
@@ -37,13 +36,17 @@ const schema = {
   },
 }
 
+function onSubmit(values: unknown) {
+  return Prompts.alert(JSON.stringify(values, null, 2))
+}
+
 export default function DisplayDemo() {
   const form = useMemo(() => createForm({ initialValues: { fruit: ['apple', 'pear'] } }), [])
   return (
     <FormProvider form={form}>
       <SchemaField schema={schema} />
       <FormButtonGroup>
-        <Submit onSubmit={showDemoResult}>提交</Submit>
+        <Submit onSubmit={onSubmit}>提交</Submit>
         <Reset>重置</Reset>
       </FormButtonGroup>
     </FormProvider>

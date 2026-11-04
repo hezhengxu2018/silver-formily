@@ -1,9 +1,12 @@
 import { FormButtonGroup, FormItem, Rate, Submit } from '@silver-formily/antd-mobile'
 import { createForm } from '@silver-formily/core'
 import { Field, FormProvider } from '@silver-formily/react'
-import { showDemoResult } from '../shared'
 
 const form = createForm({ initialValues: { disabled: 3, readOnly: 4, readPretty: 4.5 } })
+
+function onSubmit(values: unknown) {
+  return Prompts.alert(JSON.stringify(values, null, 2))
+}
 
 export default function RateStatus() {
   return (
@@ -30,7 +33,7 @@ export default function RateStatus() {
         component={[Rate, { allowHalf: true }]}
       />
       <FormButtonGroup>
-        <Submit onSubmit={showDemoResult}>查看结果</Submit>
+        <Submit onSubmit={onSubmit}>查看结果</Submit>
       </FormButtonGroup>
     </FormProvider>
   )

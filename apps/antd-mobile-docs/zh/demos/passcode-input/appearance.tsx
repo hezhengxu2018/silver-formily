@@ -2,7 +2,10 @@ import { FormButtonGroup, FormItem, PasscodeInput, Reset, Submit } from '@silver
 import { createForm } from '@silver-formily/core'
 import { Field, FormProvider } from '@silver-formily/react'
 import { useState } from 'react'
-import { showDemoResult } from '../shared'
+
+function onSubmit(values: unknown) {
+  return Prompts.alert(JSON.stringify(values, null, 2))
+}
 
 export default function PasscodeInputAppearance() {
   const [form] = useState(() => createForm({ initialValues: { code: '' } }))
@@ -15,7 +18,7 @@ export default function PasscodeInputAppearance() {
         component={[PasscodeInput, { length: 4, plain: true, seperated: true }]}
       />
       <FormButtonGroup>
-        <Submit onSubmit={showDemoResult}>查看结果</Submit>
+        <Submit onSubmit={onSubmit}>查看结果</Submit>
         <Reset>重置</Reset>
       </FormButtonGroup>
     </FormProvider>

@@ -1,9 +1,12 @@
 import { FormButtonGroup, FormItem, FormLayout, Input, Submit } from '@silver-formily/antd-mobile'
 import { createForm } from '@silver-formily/core'
 import { Field, FormProvider } from '@silver-formily/react'
-import { showDemoResult } from '../shared'
 
 const form = createForm()
+
+function onSubmit(values: unknown) {
+  return Prompts.alert(JSON.stringify(values, null, 2))
+}
 
 export default function FormItemLabel() {
   return (
@@ -38,7 +41,7 @@ export default function FormItemLabel() {
         />
       </FormLayout>
       <FormButtonGroup>
-        <Submit onSubmit={showDemoResult}>提交</Submit>
+        <Submit onSubmit={onSubmit}>提交</Submit>
       </FormButtonGroup>
     </FormProvider>
   )

@@ -2,7 +2,6 @@ import { CheckListPicker, FormButtonGroup, FormItem, Reset, Submit } from '@silv
 import { createForm } from '@silver-formily/core'
 import { createSchemaField, FormProvider } from '@silver-formily/react'
 import { useMemo } from 'react'
-import { showDemoResult } from '../shared'
 
 const SchemaField = createSchemaField({ components: { FormItem, CheckListPicker } })
 const options = Array.from({ length: 100 }, (_, index) => ({
@@ -32,13 +31,17 @@ const schema = {
   },
 }
 
+function onSubmit(values: unknown) {
+  return Prompts.alert(JSON.stringify(values, null, 2))
+}
+
 export default function LongListDemo() {
   const form = useMemo(() => createForm(), [])
   return (
     <FormProvider form={form}>
       <SchemaField schema={schema} />
       <FormButtonGroup>
-        <Submit onSubmit={showDemoResult}>提交</Submit>
+        <Submit onSubmit={onSubmit}>提交</Submit>
         <Reset>重置</Reset>
       </FormButtonGroup>
     </FormProvider>

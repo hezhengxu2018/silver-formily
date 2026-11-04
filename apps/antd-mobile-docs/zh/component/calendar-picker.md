@@ -42,17 +42,11 @@ mobileDemo: calendar-picker/index.tsx
 
 ### 属性
 
-| 属性名          | 类型                                                                               | 描述                                                           | 默认值         |
-| --------------- | ---------------------------------------------------------------------------------- | -------------------------------------------------------------- | -------------- |
-| `selectionMode` | `'single' \| 'range'`                                                              | 单日或日期范围选择                                             | `'single'`     |
-| `value`         | `string \| Date \| Dayjs \| null` 或上述日期类型组成的二元组                       | 单日模式接收单个日期，范围模式接收起止日期；表单场景由字段管理 | -              |
-| `format`        | `string \| ((value: Dayjs) => string)`                                             | 日期值的序列化格式及默认展示格式；字符串格式也用于解析输入值   | `'YYYY-MM-DD'` |
-| `displayRender` | `(value: ICalendarPickerProps['value'], props: ICalendarPickerProps) => ReactNode` | 自定义编辑态和阅读态展示，不影响提交值                         | -              |
-| `placeholder`   | `ReactNode`                                                                        | 空值占位内容                                                   | `'请选择'`     |
-| `disabled`      | `boolean`                                                                          | 禁止打开选择器                                                 | `false`        |
-| `readOnly`      | `boolean`                                                                          | 允许查看弹层，禁止修改和提交                                   | `false`        |
-| `onChange`      | `(value: string \| null) => void` 或 `(value: [string, string] \| null) => void`   | 确认时触发，返回格式化后的表单值，类型随选择模式变化           | -              |
-| `onConfirm`     | `(value: Date \| null) => void` 或 `(value: [Date, Date] \| null) => void`         | 确认时触发，保留上游原生日期值，类型随选择模式变化             | -              |
-| `onClose`       | `() => void`                                                                       | 弹层关闭时触发                                                 | -              |
+| 属性名          | 类型                                                                               | 描述                                                         | 默认值         |
+| --------------- | ---------------------------------------------------------------------------------- | ------------------------------------------------------------ | -------------- |
+| `selectionMode` | `'single' \| 'range'`                                                              | 单日或日期范围选择；封装默认启用单日选择                     | `'single'`     |
+| `format`        | `string \| ((value: Dayjs) => string)`                                             | 日期值的序列化格式及默认展示格式；字符串格式也用于解析输入值 | `'YYYY-MM-DD'` |
+| `displayRender` | `(value: ICalendarPickerProps['value'], props: ICalendarPickerProps) => ReactNode` | 自定义编辑态和阅读态展示，不影响提交值                       | -              |
+| `placeholder`   | `ReactNode`                                                                        | 空值占位内容                                                 | `'请选择'`     |
 
 透传上游配置，参见 [CalendarPicker 官方文档](https://mobile.ant.design/zh/components/calendar-picker)。

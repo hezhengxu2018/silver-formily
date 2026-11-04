@@ -52,7 +52,7 @@ compact 使用原生 antd-mobile Button，无间距、等宽，默认直角；�
 | inset               | `boolean`                                 | `true`                                  | 上 12px、左右 16px、下 16px 留白         |
 | safeAreaInsetBottom | `boolean`                                 | 底部 Sticky 内为 `true`，其他为 `false` | 所有布局均支持；显式设置优先             |
 
-支持 `className`、`style`、children、ARIA、data 属性和常规 div 事件。布局针对直接渲染的按钮元素；自定义组件应直接返回按钮，避免额外宽度包装。
+布局针对直接渲染的按钮元素；自定义组件应直接返回按钮，避免额外宽度包装。
 
 ### FormButtonGroup.Sticky
 

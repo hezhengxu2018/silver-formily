@@ -24,20 +24,17 @@ mobileDemo: form-step/index.tsx
 
 ### FormStep
 
-| 属性        | 类型                         | 说明                                      |
-| ----------- | ---------------------------- | ----------------------------------------- |
-| `formStep`  | `IFormStep`                  | 外部控制器，默认内部创建                  |
-| `current`   | `number`                     | 受控步骤索引，从 0 开始，优先于控制器状态 |
-| `hideSteps` | `boolean`                    | 隐藏步骤条，默认 false                    |
-| `direction` | `'horizontal' \| 'vertical'` | 步骤条方向                                |
-| `className` | `string`                     | 外层容器类名                              |
-| `style`     | `StepsProps['style']`        | 步骤条样式与 CSS 变量                     |
+| 属性        | 类型        | 说明                                      |
+| ----------- | ----------- | ----------------------------------------- |
+| `formStep`  | `IFormStep` | 外部控制器，默认内部创建                  |
+| `current`   | `number`    | 受控步骤索引，从 0 开始，优先于控制器状态 |
+| `hideSteps` | `boolean`   | 隐藏步骤条，默认 false                    |
 
 其余步骤条属性参考 [antd-mobile Steps](https://mobile.ant.design/zh/components/steps)。超出范围的索引会限制在有效步骤内，非有限数值归零。受控模式需由调用方更新 `current`，通常建议使用控制器驱动步骤。
 
 ### FormStep.StepPane
 
-面板属性 `IFormStepPaneProps` 继承 antd-mobile `StepProps`，支持 `title`、`description`、`icon`、`status` 等属性，展示内容可传 ReactNode。Schema 的 `title` 作为默认步骤标题，`x-component-props.title` 可覆盖。面板仅作为 Schema 容器，子字段由 FormStep 按当前步骤渲染。
+面板属性 `IFormStepPaneProps` 参考 [antd-mobile Step 官方文档](https://mobile.ant.design/zh/components/steps)。Schema 的 `title` 作为默认步骤标题，`x-component-props.title` 可覆盖。面板仅作为 Schema 容器，子字段由 FormStep 按当前步骤渲染。
 
 ### 控制器
 

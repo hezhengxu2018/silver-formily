@@ -2,8 +2,11 @@ import { CascadePicker, FormButtonGroup, FormItem, Submit } from '@silver-formil
 import { createForm } from '@silver-formily/core'
 import { Field, FormProvider } from '@silver-formily/react'
 import { useMemo } from 'react'
-import { showDemoResult } from '../shared'
 import { options } from './_options'
+
+function onSubmit(values: unknown) {
+  return Prompts.alert(JSON.stringify(values, null, 2))
+}
 
 export default function PatternsDemo() {
   const form = useMemo(() => createForm({ initialValues: {
@@ -17,7 +20,7 @@ export default function PatternsDemo() {
       <Field name="readOnly" title="只读" pattern="readOnly" dataSource={options} decorator={[FormItem, { clearable: true }]} component={[CascadePicker]} />
       <Field name="preview" title="自定义预览" pattern="readPretty" dataSource={options} decorator={[FormItem]} component={[CascadePicker, { displayRender: labels => labels.join(' > ') }]} />
       <FormButtonGroup>
-        <Submit onSubmit={showDemoResult}>提交</Submit>
+        <Submit onSubmit={onSubmit}>提交</Submit>
       </FormButtonGroup>
     </FormProvider>
   )

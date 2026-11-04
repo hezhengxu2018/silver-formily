@@ -4,7 +4,7 @@ mobileDemo: switch/index.tsx
 
 # Switch
 
-> `Switch` 是对 antd-mobile `Switch` 的 Formily 适配，字段值为布尔值，通过 `value → checked` 映射控制开关状态。
+> `Switch` 是对 antd-mobile `Switch` 的 Formily 适配，字段值为布尔值。
 
 ## 基础使用
 
@@ -14,7 +14,7 @@ mobileDemo: switch/index.tsx
 
 ## 状态与文案
 
-支持 `disabled`、`loading` 状态，以及 `checkedText` / `uncheckedText` 开关文案。
+支持字段禁用状态、`loading` 状态，以及 `checkedText` / `uncheckedText` 开关文案。
 
 <<< @/zh/demos/switch/status.tsx
 
@@ -40,8 +40,6 @@ Formily 字段设置 `readOnly` 时保留开关状态，并禁用交互。
 
 | 属性名         | 类型                                                            | 描述                                                         | 默认值 |
 | -------------- | --------------------------------------------------------------- | ------------------------------------------------------------ | ------ |
-| `value`        | ^[boolean]                                                      | 字段值，`true` 为开，`false` 为关                            | -      |
-| `onChange`     | ^[Function]`(checked: boolean) => void`                         | 切换时触发                                                   | -      |
 | `beforeChange` | ^[Function]`(checked: boolean) => Promise<boolean &#124; void>` | 切换前的异步任务；resolve 允许切换，false 或 reject 阻止切换 | -      |
 
-继承 antd-mobile `Switch` 的所有配置项（`disabled`、`loading`、`checkedText`、`uncheckedText`、`onClick` 等），请参考 [Switch 官方文档](https://mobile.ant.design/zh/components/switch)。
+其余配置参考 [Switch 官方文档](https://mobile.ant.design/zh/components/switch)。

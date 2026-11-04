@@ -2,7 +2,10 @@ import { FormButtonGroup, FormItem, Reset, Slider, Submit } from '@silver-formil
 import { createForm } from '@silver-formily/core'
 import { Field, FormProvider } from '@silver-formily/react'
 import { useState } from 'react'
-import { showDemoResult } from '../shared'
+
+function onSubmit(values: unknown) {
+  return Prompts.alert(JSON.stringify(values, null, 2))
+}
 
 export default function SliderAppearance() {
   const [form] = useState(() => createForm({ initialValues: { price: [20, 80] } }))
@@ -15,7 +18,7 @@ export default function SliderAppearance() {
         component={[Slider, { range: true, min: 0, max: 100, step: 10, ticks: true, marks: { 0: '0', 50: '50', 100: '100' } }]}
       />
       <FormButtonGroup>
-        <Submit onSubmit={showDemoResult}>查看结果</Submit>
+        <Submit onSubmit={onSubmit}>查看结果</Submit>
         <Reset>重置</Reset>
       </FormButtonGroup>
     </FormProvider>

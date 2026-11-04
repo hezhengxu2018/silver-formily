@@ -26,27 +26,4 @@ mobileDemo: stepper/index.tsx
 
 ## API
 
-| 属性名          | 类型                              | 描述                                | 默认值  |
-| --------------- | --------------------------------- | ----------------------------------- | ------- |
-| `value`         | `number`                          | 字段当前值                          | -       |
-| `min` / `max`   | `number`                          | 数值范围                            | -       |
-| `step`          | `number`                          | 每次增减幅度                        | `1`     |
-| `digits`        | `number`                          | 小数位数                            | -       |
-| `allowEmpty`    | `boolean`                         | 允许为空，启用后字段值可能为 `null` | `false` |
-| `inputReadOnly` | `boolean`                         | 仅输入框只读                        | `false` |
-| `disabled`      | `boolean`                         | 禁用整个组件                        | `false` |
-| `onChange`      | `(value: number \| null) => void` | 值变化回调                          | -       |
-
-`Stepper` 的 `stringMode` 开启后，值及相关范围、步长参数使用字符串。
-
-### 格式化与高精度
-
-| 属性名       | 类型                         | 描述                   | 默认值  |
-| ------------ | ---------------------------- | ---------------------- | ------- |
-| `formatter`  | `(value?: number) => string` | 格式化输入框展示文本   | -       |
-| `parser`     | `(text: string) => number`   | 将输入文本解析为数值   | -       |
-| `stringMode` | `boolean`                    | 使用字符串保存高精度值 | `false` |
-
-字符串模式下，`formatter` 与 `parser` 的值类型也相应变为 `string`。小数位数统一使用 `digits`。
-
-其余配置参考 [antd-mobile Stepper 官方文档](https://mobile.ant.design/zh/components/stepper)。
+参考 [antd-mobile Stepper 官方文档](https://mobile.ant.design/zh/components/stepper)。

@@ -2,7 +2,10 @@ import { FormButtonGroup, Reset, Submit } from '@silver-formily/antd-mobile'
 import { createForm } from '@silver-formily/core'
 import { FormProvider } from '@silver-formily/react'
 import { useMemo } from 'react'
-import { showDemoResult } from '../shared'
+
+function onSubmit(values: unknown) {
+  return Prompts.alert(JSON.stringify(values, null, 2))
+}
 
 export default function Demo() {
   const form = useMemo(() => createForm({ initialValues: { username: '张三' } }), [])
@@ -10,7 +13,7 @@ export default function Demo() {
     <FormProvider form={form}>
       <FormButtonGroup layout="vertical">
         <Reset>重置</Reset>
-        <Submit onSubmit={showDemoResult} />
+        <Submit onSubmit={onSubmit} />
       </FormButtonGroup>
     </FormProvider>
   )

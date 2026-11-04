@@ -2,7 +2,6 @@ import { CascadePicker, FormButtonGroup, FormItem, Reset, Submit } from '@silver
 import { createForm } from '@silver-formily/core'
 import { createSchemaField, FormProvider } from '@silver-formily/react'
 import { useMemo } from 'react'
-import { showDemoResult } from '../shared'
 import { options } from './_options'
 
 const SchemaField = createSchemaField({ components: { CascadePicker, FormItem } })
@@ -22,13 +21,17 @@ const schema = {
   },
 }
 
+function onSubmit(values: unknown) {
+  return Prompts.alert(JSON.stringify(values, null, 2))
+}
+
 export default function BasicDemo() {
   const form = useMemo(() => createForm({ initialValues: { address: ['zhejiang', 'hangzhou', 'xihu'] } }), [])
   return (
     <FormProvider form={form}>
       <SchemaField schema={schema} />
       <FormButtonGroup>
-        <Submit onSubmit={showDemoResult}>提交</Submit>
+        <Submit onSubmit={onSubmit}>提交</Submit>
         <Reset>重置</Reset>
       </FormButtonGroup>
     </FormProvider>

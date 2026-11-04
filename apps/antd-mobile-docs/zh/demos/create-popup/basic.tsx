@@ -2,7 +2,6 @@ import type { PopupContentCallbacks } from '@silver-formily/antd-mobile'
 import { createPopup, FormButtonGroup, Submit } from '@silver-formily/antd-mobile'
 import { Button } from 'antd-mobile'
 import { useMemo, useState } from 'react'
-import { showDemoResult } from '../shared'
 
 type Color = 'blue' | 'green'
 
@@ -21,6 +20,10 @@ function ColorContent({ onConfirm, onCancel, options }: ColorContentProps) {
 export default function BasicDemo() {
   const [value, setValue] = useState<Color>('blue')
   const popup = useMemo(() => createPopup(ColorContent, { bodyStyle: { padding: 20 } }), [])
+  function onSubmit() {
+    return Prompts.alert(JSON.stringify({ color: value }, null, 2))
+  }
+
   return (
     <>
       <Button
@@ -33,7 +36,7 @@ export default function BasicDemo() {
         选择主题色：
         {value === 'blue' ? '蓝色' : '绿色'}
       </Button>
-      <FormButtonGroup><Submit onSubmit={() => showDemoResult({ color: value })}>提交</Submit></FormButtonGroup>
+      <FormButtonGroup><Submit onSubmit={onSubmit}>提交</Submit></FormButtonGroup>
     </>
   )
 }

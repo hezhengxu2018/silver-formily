@@ -2,7 +2,6 @@ import { ArrayItems, Form, FormButtonGroup, FormItem, Input, Submit } from '@sil
 import { createForm } from '@silver-formily/core'
 import { createSchemaField } from '@silver-formily/react'
 import { useState } from 'react'
-import { showDemoResult } from '../shared'
 
 function Actions() {
   return (
@@ -15,6 +14,10 @@ function Actions() {
 }
 
 const SchemaField = createSchemaField({ components: { ArrayItems, FormItem, Input } })
+
+function onSubmit(values: unknown) {
+  return Prompts.alert(JSON.stringify(values, null, 2))
+}
 
 export default function PrimitiveDemo() {
   const [form] = useState(() => createForm({ initialValues: { tags: ['工作', '生活'] } }))
@@ -37,7 +40,7 @@ export default function PrimitiveDemo() {
           <SchemaField.Void title="添加标签" x-component="ArrayItems.Addition" x-component-props={{ defaultValue: '新标签' }} />
         </SchemaField.Array>
       </SchemaField>
-      <FormButtonGroup><Submit onSubmit={showDemoResult}>提交</Submit></FormButtonGroup>
+      <FormButtonGroup><Submit onSubmit={onSubmit}>提交</Submit></FormButtonGroup>
     </Form>
   )
 }

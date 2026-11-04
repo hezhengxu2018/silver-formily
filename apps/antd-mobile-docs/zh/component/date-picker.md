@@ -46,4 +46,4 @@ mobileDemo: date-picker/index.tsx
 | `showTime`      | ^[boolean]                                                                 | 是否包含时间选择                        | `false`  |
 | `placeholder`   | ^[string]                                                                  | 占位提示文案                            | -        |
 
-继承 antd-mobile `DatePicker` 的所有配置项（`precision`、`min`、`max`、`filter`、`renderLabel` 等），请参考 [DatePicker 官方文档](https://mobile.ant.design/zh/components/date-picker)。
+其余配置参考 [DatePicker 官方文档](https://mobile.ant.design/zh/components/date-picker)。

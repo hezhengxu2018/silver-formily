@@ -2,11 +2,14 @@ import { FormButtonGroup, FormGrid, FormItem, FormLayout, Input, Submit } from '
 import { createForm } from '@silver-formily/core'
 import { createSchemaField, FormProvider } from '@silver-formily/react'
 import { useMemo } from 'react'
-import { showDemoResult } from '../shared'
 
 const SchemaField = createSchemaField({
   components: { FormGrid, FormItem, Input },
 })
+
+function onSubmit(values: unknown) {
+  return Prompts.alert(JSON.stringify(values, null, 2))
+}
 
 export default function FormGridSchema() {
   const form = useMemo(() => createForm(), [])
@@ -48,7 +51,7 @@ export default function FormGridSchema() {
           }}
         />
         <FormButtonGroup>
-          <Submit onSubmit={showDemoResult}>提交</Submit>
+          <Submit onSubmit={onSubmit}>提交</Submit>
         </FormButtonGroup>
       </FormLayout>
     </FormProvider>

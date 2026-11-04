@@ -11,6 +11,10 @@ import { Toast } from 'antd-mobile'
 
 const form = createForm()
 
+function onSubmit(values: unknown) {
+  return Prompts.alert(JSON.stringify(values, null, 2))
+}
+
 export default function SubmitValidate() {
   return (
     <FormProvider form={form}>
@@ -32,9 +36,7 @@ export default function SubmitValidate() {
         />
         <FormButtonGroup>
           <Submit
-            onSubmit={values => Toast.show({
-              content: `校验通过：${values.username}`,
-            })}
+            onSubmit={onSubmit}
             onSubmitFailed={() => Toast.show({
               content: '校验未通过，请检查表单',
             })}

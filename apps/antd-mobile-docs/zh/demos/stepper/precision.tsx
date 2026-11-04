@@ -1,9 +1,12 @@
 import { FormButtonGroup, FormItem, Stepper, Submit } from '@silver-formily/antd-mobile'
 import { createForm } from '@silver-formily/core'
 import { Field, FormProvider } from '@silver-formily/react'
-import { showDemoResult } from '../shared'
 
 const form = createForm({ initialValues: { weight: 1.5, price: 2.35, precise: '0.123456789012345678' } })
+
+function onSubmit(values: unknown) {
+  return Prompts.alert(JSON.stringify(values, null, 2))
+}
 
 export default function Demo() {
   return (
@@ -33,7 +36,7 @@ export default function Demo() {
         component={[Stepper, { stringMode: true, step: '0.000000000000000001' }]}
       />
       <FormButtonGroup>
-        <Submit onSubmit={showDemoResult}>查看结果</Submit>
+        <Submit onSubmit={onSubmit}>查看结果</Submit>
       </FormButtonGroup>
     </FormProvider>
   )

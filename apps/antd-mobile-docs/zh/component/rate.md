@@ -26,21 +26,4 @@ mobileDemo: rate/index.tsx
 
 ## API
 
-### 属性
-
-| 属性名       | 类型                      | 描述                         | 默认值  |
-| ------------ | ------------------------- | ---------------------------- | ------- |
-| `value`      | `number`                  | 当前评分，由字段值控制       | -       |
-| `onChange`   | `(value: number) => void` | 评分变化回调                 | -       |
-| `count`      | `number`                  | 星星总数                     | `5`     |
-| `allowHalf`  | `boolean`                 | 是否允许半星                 | `false` |
-| `allowClear` | `boolean`                 | 是否允许再次点击清空         | `true`  |
-| `character`  | `ReactNode`               | 自定义评分字符               | 星形    |
-| `disabled`   | `boolean`                 | 禁止修改，映射为原生只读状态 | `false` |
-| `readOnly`   | `boolean`                 | 是否只读                     | `false` |
-
-### CSS 变量
-
-通过 `style` 设置 `--star-size`、`--active-color`、`--inactive-color` 和 `--inactive-color-half`。
-
-其余属性参考 [antd-mobile Rate 官方文档](https://mobile.ant.design/zh/components/rate)。
+参考 [antd-mobile Rate 官方文档](https://mobile.ant.design/zh/components/rate)。

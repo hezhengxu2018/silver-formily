@@ -8,7 +8,6 @@ import {
 } from '@silver-formily/antd-mobile'
 import { createForm } from '@silver-formily/core'
 import { Field, FormProvider } from '@silver-formily/react'
-import { showDemoResult } from '../shared'
 
 const form = createForm({
   initialValues: {
@@ -16,6 +15,10 @@ const form = createForm({
     nickname: '三三',
   },
 })
+
+function onSubmit(values: unknown) {
+  return Prompts.alert(JSON.stringify(values, null, 2))
+}
 
 export default function ResetForceClear() {
   return (
@@ -38,7 +41,7 @@ export default function ResetForceClear() {
           <Reset forceClear validate>
             强制清空
           </Reset>
-          <Submit onSubmit={showDemoResult}>提交</Submit>
+          <Submit onSubmit={onSubmit}>提交</Submit>
         </FormButtonGroup>
       </FormLayout>
     </FormProvider>

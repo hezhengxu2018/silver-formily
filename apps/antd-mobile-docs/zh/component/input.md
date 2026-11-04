@@ -18,7 +18,7 @@ mobileDemo: input/index.tsx
 
 ## 状态控制
 
-`clearable` 提供一键清空；`readOnly` 与 `disabled` 分别控制只读和禁用状态。
+`clearable` 提供一键清空；只读和禁用状态通过 Field 模型设置。
 
 ::: tip 提示
 和Picker类型的`clearable`不一样，这里的`clearable`是`antd-mobile`的配置项，Input组件应避免使用 FormItem 的`clearable`配置项。
@@ -28,4 +28,4 @@ mobileDemo: input/index.tsx
 
 ## API
 
-继承 antd-mobile `Input` 的所有配置项（`type`、`placeholder`、`clearable`、`maxLength` 等），请参考 [Input 官方文档](https://mobile.ant.design/zh/components/input)；`Input.TextArea` 参考 [TextArea 官方文档](https://mobile.ant.design/zh/components/text-area)。
+其余配置参考 [Input 官方文档](https://mobile.ant.design/zh/components/input)；`Input.TextArea` 参考 [TextArea 官方文档](https://mobile.ant.design/zh/components/text-area)。

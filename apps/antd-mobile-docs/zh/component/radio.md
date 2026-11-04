@@ -14,7 +14,7 @@ mobileDemo: radio/index.tsx
 
 ## 排列方向
 
-`layout` 控制排列方向，未设置时继承 `FormLayout` 的方向，默认纵向排列。也可以通过 `options` 直接传入选项；非空的字段 `dataSource` 优先。
+`layout` 控制排列方向，未设置时继承 `FormLayout` 的方向，默认纵向排列。
 
 协议示例通过 `allowClear: true` 开启再次点击取消选中，取消后字段值为 `null`。默认不开启，多选项组同样支持此配置。
 
@@ -22,28 +22,17 @@ mobileDemo: radio/index.tsx
 
 ## 禁用状态
 
-选项的 `disabled` 禁用单项，字段级 `disabled` 禁用整个组。
-
 <<< @/zh/demos/radio/disabled.tsx
-
-Formily 字段设置 `readOnly` 时保留选中值，并禁用交互；组组件会同时禁用所有选项。
 
 ## API
 
 ### Radio.Group
 
-| 属性名        | 类型                                                                                        | 描述                                                            | 默认值       |
-| ------------- | ------------------------------------------------------------------------------------------- | --------------------------------------------------------------- | ------------ |
-| `allowClear`  | `boolean`                                                                                   | 是否允许再次点击当前选项取消选中，取消时 `onChange` 接收 `null` | `false`      |
-| `options`     | `(string \| number \| { label: ReactNode, value: string \| number, disabled?: boolean })[]` | 选项                                                            | -            |
-| `layout`      | `'vertical' \| 'horizontal'`                                                                | 选项排列方向                                                    | `'vertical'` |
-| `layoutBlock` | `boolean`                                                                                   | 选项容器是否占满整行                                            | `false`      |
-| `children`    | `ReactNode`                                                                                 | 自定义选项，提供时优先于数据源渲染                              | -            |
-
-继承 antd-mobile `Radio.Group` 的 `value`、`defaultValue` 和 `disabled` 属性。`onChange` 类型为 `(value: string | number | null) => void`。
-
-### Radio
-
-单独使用时将字段 `value` 映射到 `checked`，字段值为布尔值，标签通过 `children` 传入。在 `Radio.Group` 内自定义选项时，每个 `Radio` 的 `value` 表示选项值，选中状态由组控制。
+| 属性名        | 类型                         | 描述                                                    | 默认值       |
+| ------------- | ---------------------------- | ------------------------------------------------------- | ------------ |
+| `allowClear`  | `boolean`                    | 是否允许再次点击当前选项取消选中，取消后字段值为 `null` | `false`      |
+| `layout`      | `'vertical' \| 'horizontal'` | 选项排列方向                                            | `'vertical'` |
+| `layoutBlock` | `boolean`                    | 选项容器是否占满整行                                    | `false`      |
+| `children`    | `ReactNode`                  | 自定义选项，提供时优先于数据源渲染                      | -            |
 
 其余属性参考 [antd-mobile Radio 官方文档](https://mobile.ant.design/zh/components/radio)。

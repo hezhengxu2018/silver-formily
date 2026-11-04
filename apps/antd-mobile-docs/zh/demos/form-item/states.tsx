@@ -1,7 +1,6 @@
 import { FormButtonGroup, FormItem, FormLayout, Input, Submit } from '@silver-formily/antd-mobile'
 import { createForm } from '@silver-formily/core'
 import { Field, FormProvider } from '@silver-formily/react'
-import { showDemoResult } from '../shared'
 
 const form = createForm({
   initialValues: {
@@ -10,6 +9,10 @@ const form = createForm({
     preview: '已保存的资料',
   },
 })
+
+function onSubmit(values: unknown) {
+  return Prompts.alert(JSON.stringify(values, null, 2))
+}
 
 export default function FormItemStates() {
   return (
@@ -39,7 +42,7 @@ export default function FormItemStates() {
         />
       </FormLayout>
       <FormButtonGroup>
-        <Submit onSubmit={showDemoResult}>提交</Submit>
+        <Submit onSubmit={onSubmit}>提交</Submit>
       </FormButtonGroup>
     </FormProvider>
   )

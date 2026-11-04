@@ -4,7 +4,6 @@ import { createForm } from '@silver-formily/core'
 import { createSchemaField, FormConsumer } from '@silver-formily/react'
 import { Button } from 'antd-mobile'
 import { useState } from 'react'
-import { showDemoResult } from '../shared'
 
 interface StepFormValues {
   name: string
@@ -82,11 +81,15 @@ const stepFormPopup = createPopup(StepFormContent, {
   bodyStyle: { maxHeight: '90vh', overflowY: 'auto' },
 })
 
+function onSubmit(values: unknown) {
+  return Prompts.alert(JSON.stringify(values, null, 2))
+}
+
 export default function FormStepDemo() {
   async function handleOpen() {
     const result = await stepFormPopup.prompt({ defaultValues })
     if (result !== null)
-      showDemoResult(result)
+      await onSubmit(result)
   }
 
   return (

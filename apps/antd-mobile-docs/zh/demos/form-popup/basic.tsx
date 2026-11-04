@@ -1,7 +1,6 @@
 import { FormItem, FormLayout, FormPopup, Input } from '@silver-formily/antd-mobile'
 import { Field } from '@silver-formily/react'
 import { Button } from 'antd-mobile'
-import { showDemoResult } from '../shared'
 
 interface ContactValues {
   name: string
@@ -17,13 +16,17 @@ function BasicContent() {
   )
 }
 
+function onSubmit(values: unknown) {
+  return Prompts.alert(JSON.stringify(values, null, 2))
+}
+
 export default function BasicDemo() {
   async function handleOpen() {
     try {
       const result = await FormPopup<ContactValues>({ title: '编辑联系人', okText: '保存' }, BasicContent).open({
         values: { name: '张三', phone: '13800000000' },
       })
-      showDemoResult(result)
+      await onSubmit(result)
     }
     catch (error) {
       if (!(error instanceof Error && error.message === 'cancel'))

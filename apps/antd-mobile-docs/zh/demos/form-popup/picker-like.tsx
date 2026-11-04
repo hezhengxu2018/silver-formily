@@ -2,7 +2,6 @@ import type { FormPopupContentProps } from '@silver-formily/antd-mobile'
 import { FormItem, FormLayout, FormPopup, Input } from '@silver-formily/antd-mobile'
 import { Field, observer } from '@silver-formily/react'
 import { Button } from 'antd-mobile'
-import { showDemoResult } from '../shared'
 import './style.css'
 
 interface AddressValues {
@@ -17,6 +16,10 @@ const PickerHeader = observer(({ form, reject, resolve }: FormPopupContentProps<
     <Button fill="none" color="primary" disabled={form.submitting} onClick={() => resolve()}>确定</Button>
   </div>
 ))
+
+function onSubmit(values: unknown) {
+  return Prompts.alert(JSON.stringify(values, null, 2))
+}
 
 export default function PickerLikeDemo() {
   async function handleOpen() {
@@ -43,7 +46,7 @@ export default function PickerLikeDemo() {
         ),
         footer: () => null,
       }).open({ values: { receiver: '张三', phone: '13800000000' } })
-      showDemoResult(result)
+      await onSubmit(result)
     }
     catch (error) {
       if (!(error instanceof Error && error.message === 'cancel'))

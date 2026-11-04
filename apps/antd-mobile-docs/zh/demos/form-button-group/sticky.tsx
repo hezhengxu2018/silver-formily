@@ -2,7 +2,10 @@ import { FormButtonGroup, FormItem, FormLayout, Input, Reset, Submit } from '@si
 import { createForm } from '@silver-formily/core'
 import { Field, FormProvider } from '@silver-formily/react'
 import { useMemo } from 'react'
-import { showDemoResult } from '../shared'
+
+function onSubmit(values: unknown) {
+  return Prompts.alert(JSON.stringify(values, null, 2))
+}
 
 export default function StickyDemo() {
   const form = useMemo(() => createForm({ initialValues: { username: '张三' } }), [])
@@ -17,7 +20,7 @@ export default function StickyDemo() {
         <FormButtonGroup.Sticky zIndex={10}>
           <FormButtonGroup layout="compact">
             <Reset>重置</Reset>
-            <Submit onSubmit={showDemoResult} />
+            <Submit onSubmit={onSubmit} />
           </FormButtonGroup>
         </FormButtonGroup.Sticky>
       </FormLayout>

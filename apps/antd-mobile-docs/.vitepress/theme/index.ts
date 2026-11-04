@@ -10,7 +10,6 @@ const demoRegistry = createReactDemoRegistry(
   import.meta.glob([
     '../../zh/demos/**/*.tsx',
     '!../../zh/demos/_**',
-    '!../../zh/demos/shared.tsx',
   ]),
 ) as MobilePreviewRegistry
 

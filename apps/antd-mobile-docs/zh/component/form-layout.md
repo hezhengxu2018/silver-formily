@@ -6,6 +6,10 @@ mobileDemo: form-layout/index.tsx
 
 > `FormLayout` 是表单布局容器，基于 antd-mobile 的 `List` 实现，负责统一下发表单项的布局配置。
 
+::: tip 提示
+推荐直接使用 [Form](/component/form)， FormLayout 是其内部的实现。
+:::
+
 ## 基础使用
 
 <<< @/zh/demos/form-layout/basic.tsx

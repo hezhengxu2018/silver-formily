@@ -32,7 +32,6 @@ mobileDemo: array-items/index.tsx
 | onAdd                 | (index: number) => void | 新增后的索引                                            |
 | onRemove              | (index: number) => void | 删除的索引                                              |
 | onMoveUp / onMoveDown | (index: number) => void | 移动前的索引                                            |
-| className / style     | div 对应属性            | 外层容器样式                                            |
 
 支持对象数组、基础类型数组和 tuple Schema；tuple 超出声明长度时回退使用第一个 items Schema。
 
@@ -40,13 +39,12 @@ mobileDemo: array-items/index.tsx
 
 `ArrayItems.Item` 作为 VoidField 的 component 使用。`IArrayItemsItemProps` 为每项提供独立的 FormLayout，并继承外层表单布局。
 
-| 属性              | 类型                   | 说明                                       |
-| ----------------- | ---------------------- | ------------------------------------------ |
-| title             | ReactNode              | 标题，不自动生成；可组合 useIndex 或 Index |
-| extra             | ReactNode              | 标题右侧操作区，不自动添加删除按钮         |
-| mode              | 'card' \| 'default'    | 默认 card                                  |
-| children          | ReactNode              | 项内字段                                   |
-| className / style | string / CSSProperties | 项容器样式                                 |
+| 属性     | 类型                | 说明                                       |
+| -------- | ------------------- | ------------------------------------------ |
+| title    | ReactNode           | 标题，不自动生成；可组合 useIndex 或 Index |
+| extra    | ReactNode           | 标题右侧操作区，不自动添加删除按钮         |
+| mode     | 'card' \| 'default' | 默认 card                                  |
+| children | ReactNode           | 项内字段                                   |
 
 未设置 title 和 extra 时不显示标题区。
 

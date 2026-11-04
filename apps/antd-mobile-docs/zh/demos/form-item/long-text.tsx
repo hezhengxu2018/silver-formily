@@ -1,7 +1,6 @@
 import { FormButtonGroup, FormItem, FormLayout, Input, Picker, Submit } from '@silver-formily/antd-mobile'
 import { createForm } from '@silver-formily/core'
 import { Field, FormProvider } from '@silver-formily/react'
-import { showDemoResult } from '../shared'
 
 const addressOptions = [[{ label: '上海市浦东新区张江高科技园区祖冲之路 123 号研发中心 A 栋 1208 室', value: 'office' }]]
 
@@ -12,6 +11,10 @@ const form = createForm({
     instructions: '第一行：请核对收件信息。\n第二行：配送前会通过电话联系。\nOrderReferenceWithoutSpaces012345678901234567890123456789',
   },
 })
+
+function onSubmit(values: unknown) {
+  return Prompts.alert(JSON.stringify(values, null, 2))
+}
 
 export default function FormItemLongText() {
   return (
@@ -52,7 +55,7 @@ export default function FormItemLongText() {
         />
       </FormLayout>
       <FormButtonGroup>
-        <Submit onSubmit={showDemoResult}>提交</Submit>
+        <Submit onSubmit={onSubmit}>提交</Submit>
       </FormButtonGroup>
     </FormProvider>
   )

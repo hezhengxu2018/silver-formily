@@ -2,7 +2,6 @@ import type { FormPopupContentProps, IFormStep } from '@silver-formily/antd-mobi
 import { FormItem, FormLayout, FormPopup, FormStep, Input } from '@silver-formily/antd-mobile'
 import { createSchemaField, observer } from '@silver-formily/react'
 import { Button } from 'antd-mobile'
-import { showDemoResult } from '../shared'
 import './style.css'
 
 interface StepFormValues {
@@ -45,6 +44,10 @@ const StepFooter = observer(({ form, resolve, reject, formStep }: FormPopupConte
   </div>
 ))
 
+function onSubmit(values: unknown) {
+  return Prompts.alert(JSON.stringify(values, null, 2))
+}
+
 export default function FormStepDemo() {
   async function handleOpen() {
     // 每次打开创建独立的步骤控制器，与本次 FormPopup 的 Form 对应。
@@ -78,7 +81,7 @@ export default function FormStepDemo() {
 
     try {
       const result = await popup.open({ initialValues: { ...defaultValues } })
-      showDemoResult(result)
+      await onSubmit(result)
     }
     catch (error) {
       if (!(error instanceof Error && error.message === 'cancel'))

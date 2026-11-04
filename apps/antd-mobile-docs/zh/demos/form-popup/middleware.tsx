@@ -3,7 +3,6 @@ import { FormItem, FormLayout, FormPopup, Input } from '@silver-formily/antd-mob
 import { Field, observer } from '@silver-formily/react'
 import { toJS } from '@silver-formily/reactive'
 import { Button } from 'antd-mobile'
-import { showDemoResult } from '../shared'
 import './style.css'
 
 interface PublishValues {
@@ -18,6 +17,10 @@ const PublishFooter = observer(({ form, reject, resolve, saveDraft }: FormPopupC
     <Button block color="primary" loading={form.submitting} onClick={() => resolve()}>发布</Button>
   </div>
 ))
+
+function onSubmit(values: unknown) {
+  return Prompts.alert(JSON.stringify(values, null, 2))
+}
 
 export default function MiddlewareDemo() {
   async function handleOpen() {
@@ -56,7 +59,7 @@ export default function MiddlewareDemo() {
           form.setValues({ summary: `${form.values.summary || ''}（草稿）` })
         })
         .open({ values: { title: '华东巡检改版', summary: '先同步到预发布环境，确认券后价和库存展示。' } })
-      showDemoResult(result)
+      await onSubmit(result)
     }
     catch (error) {
       if (!(error instanceof Error && error.message === 'cancel'))

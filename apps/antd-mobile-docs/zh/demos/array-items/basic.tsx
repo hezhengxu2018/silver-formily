@@ -2,7 +2,6 @@ import { ArrayItems, Form, FormButtonGroup, FormItem, Input, Submit } from '@sil
 import { createForm } from '@silver-formily/core'
 import { createSchemaField } from '@silver-formily/react'
 import { useState } from 'react'
-import { showDemoResult } from '../shared'
 
 function ContactTitle() {
   return (
@@ -14,6 +13,10 @@ function ContactTitle() {
 }
 
 const SchemaField = createSchemaField({ components: { ArrayItems, FormItem, Input } })
+
+function onSubmit(values: unknown) {
+  return Prompts.alert(JSON.stringify(values, null, 2))
+}
 
 export default function BasicDemo() {
   const [form] = useState(() => createForm({ initialValues: { contacts: [{}] } }))
@@ -47,7 +50,7 @@ export default function BasicDemo() {
         },
       }}
       />
-      <FormButtonGroup><Submit onSubmit={showDemoResult}>提交</Submit></FormButtonGroup>
+      <FormButtonGroup><Submit onSubmit={onSubmit}>提交</Submit></FormButtonGroup>
     </Form>
   )
 }

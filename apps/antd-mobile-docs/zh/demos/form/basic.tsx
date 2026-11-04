@@ -3,7 +3,10 @@ import { createForm } from '@silver-formily/core'
 import { Field } from '@silver-formily/react'
 import { Toast } from 'antd-mobile'
 import { useMemo } from 'react'
-import { showDemoResult } from '../shared'
+
+function onSubmit(values: unknown) {
+  return Prompts.alert(JSON.stringify(values, null, 2))
+}
 
 export default function FormBasic() {
   const form = useMemo(() => createForm({ initialValues: { username: '张三' } }), [])
@@ -11,7 +14,7 @@ export default function FormBasic() {
   return (
     <Form
       form={form}
-      onAutoSubmit={showDemoResult}
+      onAutoSubmit={onSubmit}
       onAutoSubmitFailed={() => Toast.show({ content: '请填写必填项后再提交' })}
     >
       <Field name="username" title="用户名" required decorator={[FormItem]} component={[Input]} />

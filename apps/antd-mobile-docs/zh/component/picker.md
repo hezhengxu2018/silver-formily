@@ -34,15 +34,11 @@ mobileDemo: picker/index.tsx
 
 导出 `Picker`、`IPickerProps` 和底层受控组件 `BasePopupPicker`。底层组件无本地值状态，也不提供非受控 `defaultValue`；一般应通过 Formily Field 或 Schema 使用 `Picker`。
 
-| 属性                  | 说明                                      |
-| --------------------- | ----------------------------------------- |
-| `columns`             | 原生多列选项或根据选择值生成选项的函数    |
-| `value` / `onChange`  | Formily 注入的当前数组值与写回事件        |
-| `placeholder`         | ReactNode，默认“请选择”                   |
-| `disabled`            | 禁止打开和写回，复用禁用态样式            |
-| `displayRender`       | `(value, props) => ReactNode`，自定义展示 |
-| `className` / `style` | 字段外壳样式                              |
-| `aria-label`          | 入口名称，默认使用 Field 的字符串标题     |
+| 属性            | 说明                                      |
+| --------------- | ----------------------------------------- |
+| `placeholder`   | ReactNode，默认“请选择”                   |
+| `displayRender` | `(value, props) => ReactNode`，自定义展示 |
+| `aria-label`    | 入口名称，默认使用 Field 的字符串标题     |
 
 原生 `Picker` 支持的其余参数与事件直接透传。不支持 `visible`、`children`、`trigger` 或清空配置。
 

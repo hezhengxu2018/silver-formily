@@ -2,13 +2,16 @@ import type { ICalendarPickerProps } from '@silver-formily/antd-mobile'
 import { CalendarPicker, FormButtonGroup, FormItem, Submit } from '@silver-formily/antd-mobile'
 import { createForm } from '@silver-formily/core'
 import { Field, FormProvider } from '@silver-formily/react'
-import { showDemoResult } from '../shared'
 
 const form = createForm({
   initialValues: {
     appointment: '2026/10/15',
   },
 })
+
+function onSubmit(values: unknown) {
+  return Prompts.alert(JSON.stringify(values, null, 2))
+}
 
 export default function CalendarPickerOptions() {
   return (
@@ -32,7 +35,7 @@ export default function CalendarPickerOptions() {
         }]}
       />
       <FormButtonGroup>
-        <Submit onSubmit={showDemoResult}>提交</Submit>
+        <Submit onSubmit={onSubmit}>提交</Submit>
       </FormButtonGroup>
     </FormProvider>
   )

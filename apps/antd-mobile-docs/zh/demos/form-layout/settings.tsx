@@ -7,7 +7,6 @@ import {
 } from '@silver-formily/antd-mobile'
 import { createForm } from '@silver-formily/core'
 import { Field, FormProvider } from '@silver-formily/react'
-import { showDemoResult } from '../shared'
 
 const form = createForm({
   initialValues: {
@@ -15,6 +14,10 @@ const form = createForm({
     address: '杭州市余杭区',
   },
 })
+
+function onSubmit(values: unknown) {
+  return Prompts.alert(JSON.stringify(values, null, 2))
+}
 
 export default function FormLayoutSettings() {
   return (
@@ -38,7 +41,7 @@ export default function FormLayoutSettings() {
           component={[Input, { placeholder: '请输入地址' }]}
         />
         <FormButtonGroup>
-          <Submit onSubmit={showDemoResult}>提交</Submit>
+          <Submit onSubmit={onSubmit}>提交</Submit>
         </FormButtonGroup>
       </FormLayout>
     </FormProvider>

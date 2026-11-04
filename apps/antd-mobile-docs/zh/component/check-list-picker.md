@@ -34,8 +34,6 @@ mobileDemo: check-list-picker/index.tsx
 
 | 属性                             | 说明                                                                       |
 | -------------------------------- | -------------------------------------------------------------------------- |
-| `options`                        | 与 CheckList 相同的选项数组，字段 dataSource 映射到此属性                  |
-| `value` / `onChange`             | 当前值数组与写回事件（单选点选、多选确认时触发）                           |
 | `multiple`                       | 是否多选，默认 false                                                       |
 | `placeholder`                    | 空值占位，默认“请选择”                                                     |
 | `confirmText` / `cancelText`     | 多选按钮文字，默认“确定” / “取消”                                          |
@@ -43,10 +41,7 @@ mobileDemo: check-list-picker/index.tsx
 | `onCancel`                       | 取消按钮或遮罩关闭时通知                                                   |
 | `onClose`                        | 确认、取消或主动关闭时通知                                                 |
 | `popupProps`                     | createPopup 的 PopupOptions，如 bodyStyle、afterShow、afterClose、safeArea |
-| `disabled`                       | 禁止打开及写回                                                             |
-| `readOnly`                       | 允许打开查看，禁止修改和写回                                               |
 | `displayRender`                  | `(value, props) => ReactNode`，自定义编辑态与预览态展示                    |
-| `className` / `style`            | 字段外壳样式                                                               |
 | `aria-label` / `aria-labelledby` | 触发按钮无障碍名称，默认采用字段字符串标题                                 |
 
 同时支持 CheckList 的 `mode`、`activeIcon`、`extra`。不支持 `defaultValue`、`children` 或外部控制弹层可见性。

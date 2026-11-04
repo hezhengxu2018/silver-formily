@@ -26,16 +26,10 @@ mobileDemo: cascade-picker/index.tsx
 
 ## API
 
-| 属性                  | 说明                                                 | 默认值             |
-| --------------------- | ---------------------------------------------------- | ------------------ |
-| `options`             | 树形选项数组；字段 `dataSource` 映射到此属性         | `[]`               |
-| `value`               | 当前路径值数组，按层级排列                           | `[]`               |
-| `onChange`            | `(value, extend) => void`，确认时写回                | -                  |
-| `placeholder`         | ReactNode，空值时的提示                              | `请选择`           |
-| `disabled`            | 禁止打开和写回                                       | `false`            |
-| `readOnly`            | 可打开查看，但不能修改或清空                         | `false`            |
-| `displayRender`       | `(labels, selectedOptions) => ReactNode`，自定义展示 | 标签以 `/` 分隔    |
-| `className` / `style` | 字段外壳样式                                         | -                  |
-| `aria-label`          | 触发按钮名称                                         | Field 的字符串标题 |
+| 属性            | 说明                                                 | 默认值             |
+| --------------- | ---------------------------------------------------- | ------------------ |
+| `placeholder`   | ReactNode，空值时的提示                              | `请选择`           |
+| `displayRender` | `(labels, selectedOptions) => ReactNode`，自定义展示 | 标签以 `/` 分隔    |
+| `aria-label`    | 触发按钮名称                                         | Field 的字符串标题 |
 
-其余原生配置与事件直接透传，，不支持 `defaultValue`、`visible` 或 `children`。原生接口参考 [antd-mobile CascadePicker 文档](https://mobile.ant.design/zh/components/cascade-picker)。
+其余原生配置与事件直接透传，不支持 `defaultValue`、`visible` 或 `children`。原生接口参考 [antd-mobile CascadePicker 文档](https://mobile.ant.design/zh/components/cascade-picker)。
