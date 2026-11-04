@@ -16,6 +16,10 @@ mobileDemo: form-item/index.tsx
 
 通过 `help` 展示常驻帮助文案，字段的 `description` 展示右侧补充内容。
 
+::: tip 提示
+例子中额外传入了`asterisk: false`关闭了必填项星号的显示。
+:::
+
 <<< @/zh/demos/form-item/basic.tsx
 
 ## 表单校验

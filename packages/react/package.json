@@ -1,7 +1,7 @@
 {
   "name": "@silver-formily/react",
   "type": "module",
-  "version": "1.0.0",
+  "version": "0.0.0-alpha.0",
   "description": "React form rendering layer for Silver Formily with field components, schema rendering, and connect utilities",
   "author": "hezhengxu",
   "license": "MIT",

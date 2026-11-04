@@ -1,7 +1,7 @@
 {
   "name": "@silver-formily/reactive-react",
   "type": "module",
-  "version": "1.0.0",
+  "version": "0.0.0-alpha.0",
   "description": "React integration layer for Silver Formily reactive state with observer components and effect tracking hooks",
   "author": "hezhengxu",
   "license": "MIT",
