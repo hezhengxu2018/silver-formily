@@ -8,6 +8,11 @@ import zhNav from './i18n/zh/pages/nav.json'
 const currentDir = dirname(fileURLToPath(import.meta.url))
 const antdMobileSource = `${path.resolve(currentDir, '../../../packages/antd-mobile/src')}/`
 
+// VitePress only links the first CSS asset when rendering HTML. With CSS
+// splitting enabled, collect the app's static CSS without pulling in demo CSS.
+const appStyles = new Set<string>()
+let firstStylesheet: string | undefined
+
 export default createDocsConfig({
   pkg,
   alias: {
@@ -44,6 +49,32 @@ export default createDocsConfig({
     },
   },
   vite: {
+    plugins: [{
+      name: 'antd-mobile-docs:split-styles',
+      apply: (_config, env) => env.command === 'build' && !env.isSsrBuild,
+      enforce: 'post',
+      generateBundle(_options, bundle) {
+        const chunks = Object.values(bundle)
+        const app = chunks.find(chunk => chunk.type === 'chunk' && chunk.isEntry && chunk.facadeModuleId?.endsWith('.js'))
+        if (!app)
+          return
+
+        appStyles.clear()
+        firstStylesheet = chunks.find(chunk => chunk.type === 'asset' && chunk.fileName.endsWith('.css'))?.fileName
+        const visited = new Set<string>()
+        const collect = (fileName: string) => {
+          if (visited.has(fileName))
+            return
+          visited.add(fileName)
+          const chunk = bundle[fileName]
+          if (chunk?.type !== 'chunk')
+            return
+          chunk.imports.forEach(collect)
+          chunk.viteMetadata?.importedCss.forEach(css => appStyles.add(css))
+        }
+        collect(app.fileName)
+      },
+    }],
     build: {
       // Keep preview-only CSS in its lazy chunks instead of the site stylesheet.
       cssCodeSplit: true,
@@ -66,6 +97,15 @@ export default createDocsConfig({
     },
   },
   extra: {
+    transformHtml(html, _id, { siteData }) {
+      if (!firstStylesheet || !appStyles.size)
+        return html
+      const styles = [...appStyles].map(file => `<link rel="stylesheet" href="${siteData.base}${file}">`).join('\n')
+      return html.replace(
+        `<link rel="preload stylesheet" href="${siteData.base}${firstStylesheet}" as="style">`,
+        styles,
+      )
+    },
     rewrites: {
       'zh/:slug*': ':slug*',
     },
