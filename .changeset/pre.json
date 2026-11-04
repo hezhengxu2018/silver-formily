@@ -1,0 +1,32 @@
+{
+  "mode": "pre",
+  "tag": "alpha",
+  "initialVersions": {
+    "@silver-formily/antd": "0.0.0-alpha.0",
+    "@silver-formily/antd-mobile": "0.0.0-alpha.0",
+    "@silver-formily/core": "1.2.1",
+    "@silver-formily/designer-core": "0.0.1",
+    "@silver-formily/designer-shared": "0.0.0",
+    "@silver-formily/designer-vue": "0.0.1",
+    "@silver-formily/docs-toolkit": "0.0.0",
+    "@silver-formily/element-plus": "6.1.0",
+    "@silver-formily/grid": "2.0.0",
+    "@silver-formily/json-schema": "1.2.0",
+    "@silver-formily/path": "1.0.1",
+    "@silver-formily/react": "0.0.0-alpha.0",
+    "@silver-formily/reactive": "1.0.1",
+    "@silver-formily/reactive-react": "0.0.0-alpha.0",
+    "@silver-formily/reactive-vue": "2.0.2",
+    "@silver-formily/shared": "1.0.0",
+    "@silver-formily/typescript-config": "0.0.0",
+    "@silver-formily/validator": "1.0.2",
+    "@silver-formily/vant": "2.0.0",
+    "@silver-formily/vue": "4.0.1"
+  },
+  "changesets": [
+    "react19-schema-elements",
+    "reactive-strict-types",
+    "vue-record-scope",
+    "vue-vnode-schema-compilation"
+  ]
+}
