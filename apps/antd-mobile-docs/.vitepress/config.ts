@@ -11,6 +11,7 @@ const antdMobileSource = `${path.resolve(currentDir, '../../../packages/antd-mob
 // VitePress only links the first CSS asset when rendering HTML. With CSS
 // splitting enabled, collect the app's static CSS without pulling in demo CSS.
 const appStyles = new Set<string>()
+const pageStyles = new Map<string, Set<string>>()
 let firstStylesheet: string | undefined
 
 export default createDocsConfig({
@@ -62,17 +63,26 @@ export default createDocsConfig({
         appStyles.clear()
         firstStylesheet = chunks.find(chunk => chunk.type === 'asset' && chunk.fileName.endsWith('.css'))?.fileName
         const visited = new Set<string>()
-        const collect = (fileName: string) => {
+        const collect = (fileName: string, styles: Set<string>) => {
           if (visited.has(fileName))
             return
           visited.add(fileName)
           const chunk = bundle[fileName]
           if (chunk?.type !== 'chunk')
             return
-          chunk.imports.forEach(collect)
-          chunk.viteMetadata?.importedCss.forEach(css => appStyles.add(css))
+          chunk.imports.forEach(file => collect(file, styles))
+          chunk.viteMetadata?.importedCss.forEach(css => styles.add(css))
         }
-        collect(app.fileName)
+        collect(app.fileName, appStyles)
+        pageStyles.clear()
+        for (const chunk of chunks) {
+          if (chunk.type !== 'chunk' || !chunk.isEntry || !chunk.facadeModuleId?.endsWith('.md'))
+            continue
+          visited.clear()
+          const styles = new Set<string>()
+          collect(chunk.fileName, styles)
+          pageStyles.set(chunk.facadeModuleId, styles)
+        }
       },
     }],
     build: {
@@ -97,10 +107,12 @@ export default createDocsConfig({
     },
   },
   extra: {
-    transformHtml(html, _id, { siteData }) {
+    transformHtml(html, _id, { siteData, siteConfig, page }) {
       if (!firstStylesheet || !appStyles.size)
         return html
-      const styles = [...appStyles].map(file => `<link rel="stylesheet" href="${siteData.base}${file}">`).join('\n')
+      const sourcePage = siteConfig.rewrites.inv[page] ?? page
+      const pageFile = path.resolve(siteConfig.srcDir, sourcePage)
+      const styles = [...new Set([...appStyles, ...(pageStyles.get(pageFile) ?? [])])].map(file => `<link rel="stylesheet" href="${siteData.base}${file}">`).join('\n')
       return html.replace(
         `<link rel="preload stylesheet" href="${siteData.base}${firstStylesheet}" as="style">`,
         styles,
