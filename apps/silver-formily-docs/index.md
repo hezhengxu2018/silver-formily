@@ -4,14 +4,14 @@ pageClass: portal-home
 
 hero:
   name: Silver Formily
-  tagline: 一套独立的Formily封装。
+  tagline: 面向 Vue 3 与 React 18/19 的表单基础设施。
   actions:
     - theme: brand
       text: 快速上手
       link: /guide/
   image:
     src: /logo.svg
-    alt: Silver Formily Element Plus
+    alt: Silver Formily
 ---
 
 <style>

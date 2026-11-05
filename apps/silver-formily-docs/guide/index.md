@@ -8,6 +8,8 @@
 
 简单的来说是一个跨前端框架的表单框架，他的生态非常的复杂，每一个模块都各司其职，如果不对各个模块的职责有了解那学习也无从谈起。
 
+Silver Formily 目前覆盖 Vue 3 与 React 18/19。两套框架绑定共用 `@silver-formily/core`、`@silver-formily/reactive` 和 Schema 协议，UI 层分别提供 Element Plus / Vant 与 Ant Design 6 / Ant Design Mobile 5 适配。
+
 可以先从模块分层来建立整体认知：
 
 ### 基础模块
@@ -44,24 +46,41 @@ formily的写法可以分为两个大类 Template/JSX/TSX 的写法和 Schema �
 
 ### 前端框架绑定
 
-| 模块                                                                       | 职责                                                              |
-| -------------------------------------------------------------------------- | ----------------------------------------------------------------- |
-| [`@silver-formily/vue`](https://vue.silver-formily.org/)                   | Vue 3 渲染层，负责字段组件、Schema 渲染和 Vue 侧适配能力。        |
-| [`@silver-formily/reactive-vue`](https://reactive-vue.silver-formily.org/) | 将响应式内核接入 Vue 3，负责 observer、生命周期联动和副作用绑定。 |
+| 模块                                                                           | 职责                                                              |
+| ------------------------------------------------------------------------------ | ----------------------------------------------------------------- |
+| [`@silver-formily/react`](https://react.silver-formily.org/)                   | React 18/19 渲染层，负责字段组件、Schema 渲染和组件连接工具。     |
+| [`@silver-formily/reactive-react`](https://reactive-react.silver-formily.org/) | 将响应式内核接入 React，提供 observer 和响应式追踪 Hooks。        |
+| [`@silver-formily/vue`](https://vue.silver-formily.org/)                       | Vue 3 渲染层，负责字段组件、Schema 渲染和 Vue 侧适配能力。        |
+| [`@silver-formily/reactive-vue`](https://reactive-vue.silver-formily.org/)     | 将响应式内核接入 Vue 3，负责 observer、生命周期联动和副作用绑定。 |
 
+- `@silver-formily/react` 将表单领域模型接入 React，提供字段与 Schema 渲染能力。
+- `@silver-formily/reactive-react` 将独立响应式状态接入 React 组件。
 - `@silver-formily/vue` 提供了 `@silver-formily/core` 的领域模型的 Vue 的封装。
 - `@silver-formily/reactive-vue` 提供了 `@silver-formily/reactive` 响应式与 Vue 绑定的封装。
 
-这两个包都是属于胶水层，实际开发时存在感会更强一些，因为很少会直接用到 `@silver-formily/core` 或者直接用到 `@silver-formily/reactive`，一般都会通过这前端框架绑定库来使用其能力。
+这些包都属于胶水层，实际开发时存在感会更强一些，因为很少会直接用到 `@silver-formily/core` 或者直接用到 `@silver-formily/reactive`，一般都会通过这前端框架绑定库来使用其能力。
 
 ### UI 绑定
 
 这些模块把核心能力接入具体前端框架和组件库，形成可直接使用的表单界面。
 
-| 模块                                                                       | 职责                                                               |
-| -------------------------------------------------------------------------- | ------------------------------------------------------------------ |
-| [`@silver-formily/element-plus`](https://element-plus.silver-formily.org/) | 提供基于 Element Plus 的桌面端表单组件绑定和场景化封装。           |
-| [`@silver-formily/vant`](https://vant.silver-formily.org/)                 | 提供基于 Vant 的移动端表单组件绑定和场景化封装。                   |
-| [`@silver-formily/grid`](https://grid.silver-formily.org/)                 | 提供响应式栅格布局能力，根据容器尺寸、断点和字段跨度组织表单布局。 |
+| 模块                                                                                               | 职责                                                               |
+| -------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------ |
+| [`@silver-formily/element-plus`](https://element-plus.silver-formily.org/)                         | 提供基于 Element Plus 的桌面端表单组件绑定和场景化封装。           |
+| [`@silver-formily/vant`](https://vant.silver-formily.org/)                                         | 提供基于 Vant 的移动端表单组件绑定和场景化封装。                   |
+| [`@silver-formily/antd`](https://github.com/hezhengxu2018/silver-formily/tree/main/apps/antd-docs) | 基于 Ant Design 6 的 React 桌面端基础表单组件绑定。                |
+| [`@silver-formily/antd-mobile`](https://antd-mobile.silver-formily.org/)                           | 基于 Ant Design Mobile 5 的 React 移动端表单组件与场景封装。       |
+| [`@silver-formily/grid`](https://grid.silver-formily.org/)                                         | 提供响应式栅格布局能力，根据容器尺寸、断点和字段跨度组织表单布局。 |
 
-在实际使用时用的最多的模块（`@silver-formily/grid` 例外，`@silver-formily/grid` 是不同的前端组件库封装中通用的网格布局封装）。可以根据需要选择（目前好像也没得选）。
+实际开发时，可以根据前端框架与目标设备选择 UI 绑定。`@silver-formily/grid` 是多个 UI 适配层复用的布局基础能力。
+
+:::tip Ant Design 6 的组件范围
+`@silver-formily/antd` 当前提供 Form、FormItem、FormLayout、FormGrid、FormButtonGroup、Input、Select、NumberPicker、PreviewText、Submit、Reset。数组、日期时间、上传等组件尚未迁移，选型时请以当前包的导出和文档为准。
+:::
+
+## 从哪里开始
+
+1. 先学习 [Core](https://core.silver-formily.org/)，了解表单、字段、校验与联动。
+2. 根据项目选择 [Vue](https://vue.silver-formily.org/) 或 [React](https://react.silver-formily.org/)，先使用字段组件构建简单表单。
+3. Vue 桌面端选择 [Element Plus](https://element-plus.silver-formily.org/)，移动端选择 [Vant](https://vant.silver-formily.org/)；React 桌面端可参考 [Ant Design 6 文档源码](https://github.com/hezhengxu2018/silver-formily/tree/main/apps/antd-docs)，移动端选择 [Ant Design Mobile](https://antd-mobile.silver-formily.org/)。
+4. 需要配置化表单时，再学习 [JSON Schema](https://json-schema.silver-formily.org/) 与对应框架的 Schema 渲染方式。

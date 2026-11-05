@@ -4,14 +4,14 @@ pageClass: portal-home
 
 hero:
   name: Silver Formily
-  tagline: An independent Formily wrapper.
+  tagline: Form infrastructure for Vue 3 and React 18/19.
   actions:
     - theme: brand
       text: Get Started
       link: /en/guide/
   image:
     src: /logo.svg
-    alt: Silver Formily Element Plus
+    alt: Silver Formily
 ---
 
 <style>

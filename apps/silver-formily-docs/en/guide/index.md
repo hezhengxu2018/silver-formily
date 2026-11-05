@@ -8,6 +8,8 @@ Some people may ask: now that we are in the AI era, why do we still need to writ
 
 In simple terms, Silver Formily is a cross-frontend-framework form framework. Its ecosystem is fairly complex, and each module has a distinct responsibility. If you do not understand what each module is for, it is hard to know where to start learning.
 
+Silver Formily supports Vue 3 and React 18/19. Both framework bindings share `@silver-formily/core`, `@silver-formily/reactive`, and the schema protocol. UI adapters cover Element Plus / Vant for Vue and Ant Design 6 / Ant Design Mobile 5 for React.
+
 A good way to build the overall mental model is to look at the module layering first:
 
 ### Foundation Modules
@@ -44,24 +46,41 @@ The most important package to learn well is `@silver-formily/core`.
 
 ### Frontend Framework Bindings
 
-| Module                                                                        | Responsibility                                                                                                |
-| ----------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
-| [`@silver-formily/vue`](https://vue.silver-formily.org/en/)                   | The Vue 3 rendering layer. It is responsible for field components, schema rendering, and Vue-side adaptation. |
-| [`@silver-formily/reactive-vue`](https://reactive-vue.silver-formily.org/en/) | Connects the reactive core to Vue 3 and handles `observer`, lifecycle coordination, and side-effect binding.  |
+| Module                                                                            | Responsibility                                                                                                |
+| --------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| [`@silver-formily/react`](https://react.silver-formily.org/en/)                   | React 18/19 rendering layer with field components, schema rendering, and component connection utilities.      |
+| [`@silver-formily/reactive-react`](https://reactive-react.silver-formily.org/en/) | Connects the reactive core to React through observer components and reactive tracking hooks.                  |
+| [`@silver-formily/vue`](https://vue.silver-formily.org/en/)                       | The Vue 3 rendering layer. It is responsible for field components, schema rendering, and Vue-side adaptation. |
+| [`@silver-formily/reactive-vue`](https://reactive-vue.silver-formily.org/en/)     | Connects the reactive core to Vue 3 and handles `observer`, lifecycle coordination, and side-effect binding.  |
 
+- `@silver-formily/react` connects the form domain model to React with field and schema rendering.
+- `@silver-formily/reactive-react` connects standalone reactive state to React components.
 - `@silver-formily/vue` provides the Vue-side wrapping for the domain model exposed by `@silver-formily/core`.
 - `@silver-formily/reactive-vue` provides the binding layer between `@silver-formily/reactive` and Vue.
 
-These two packages are essentially glue layers. In day-to-day development they tend to feel more visible, because people rarely use `@silver-formily/core` or `@silver-formily/reactive` directly. In most cases, you use their capabilities through the framework binding packages instead.
+These packages are essentially glue layers. In day-to-day development they tend to feel more visible, because people rarely use `@silver-formily/core` or `@silver-formily/reactive` directly. In most cases, you use their capabilities through the framework binding packages instead.
 
 ### UI Bindings
 
 These modules connect the core capabilities to specific frontend frameworks and component libraries so they become directly usable form UIs.
 
-| Module                                                                        | Responsibility                                                                                                               |
-| ----------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
-| [`@silver-formily/element-plus`](https://element-plus.silver-formily.org/en/) | Provides desktop form component bindings and scenario-focused wrappers based on Element Plus.                                |
-| [`@silver-formily/vant`](https://vant.silver-formily.org/en/)                 | Provides mobile form component bindings and scenario-focused wrappers based on Vant.                                         |
-| [`@silver-formily/grid`](https://grid.silver-formily.org/en/)                 | Provides responsive grid layout capabilities to organize form layouts based on container size, breakpoints, and field spans. |
+| Module                                                                                             | Responsibility                                                                                                               |
+| -------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| [`@silver-formily/element-plus`](https://element-plus.silver-formily.org/en/)                      | Provides desktop form component bindings and scenario-focused wrappers based on Element Plus.                                |
+| [`@silver-formily/vant`](https://vant.silver-formily.org/en/)                                      | Provides mobile form component bindings and scenario-focused wrappers based on Vant.                                         |
+| [`@silver-formily/antd`](https://github.com/hezhengxu2018/silver-formily/tree/main/apps/antd-docs) | React desktop form adapters based on Ant Design 6 (documentation source).                                                    |
+| [`@silver-formily/antd-mobile`](https://antd-mobile.silver-formily.org/)                           | React mobile form components and scenario bindings based on Ant Design Mobile 5 (Chinese documentation).                     |
+| [`@silver-formily/grid`](https://grid.silver-formily.org/en/)                                      | Provides responsive grid layout capabilities to organize form layouts based on container size, breakpoints, and field spans. |
 
-In practice, these are the modules people use most often, with `@silver-formily/grid` being the exception because it is a shared grid layout abstraction used across different frontend component library bindings. You can choose the UI binding that fits your needs, although right now there may not be that many choices.
+Choose UI bindings according to your frontend framework and target devices. `@silver-formily/grid` provides shared layout primitives used by multiple UI adapters.
+
+:::tip Ant Design 6 component scope
+`@silver-formily/antd` currently provides Form, FormItem, FormLayout, FormGrid, FormButtonGroup, Input, Select, NumberPicker, PreviewText, Submit, and Reset. Arrays, date/time controls, and uploads have not been migrated. Check the current package exports and documentation when choosing components.
+:::
+
+## Where to Start
+
+1. Learn [Core](https://core.silver-formily.org/en/) to understand forms, fields, validation, and reactions.
+2. Choose [Vue](https://vue.silver-formily.org/en/) or [React](https://react.silver-formily.org/en/) and build a simple form with field components.
+3. For Vue, choose [Element Plus](https://element-plus.silver-formily.org/en/) on desktop or [Vant](https://vant.silver-formily.org/en/) on mobile. For React, refer to the [Ant Design 6 documentation source](https://github.com/hezhengxu2018/silver-formily/tree/main/apps/antd-docs) on desktop or [Ant Design Mobile](https://antd-mobile.silver-formily.org/) on mobile. The React UI documentation is currently in Chinese.
+4. When you need configuration-driven forms, learn [JSON Schema](https://json-schema.silver-formily.org/en/) and schema rendering for your chosen framework.

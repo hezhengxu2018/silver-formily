@@ -1,59 +1,80 @@
 # Silver Formily
 
+[![CI](https://github.com/hezhengxu2018/silver-formily/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/hezhengxu2018/silver-formily/actions/workflows/ci.yml)
+[![codecov](https://codecov.io/gh/hezhengxu2018/silver-formily/branch/main/graph/badge.svg)](https://codecov.io/gh/hezhengxu2018/silver-formily)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 English | [简体中文](./README.md)
 
-Silver Formily is a Vue 3 form infrastructure monorepo. The core reactive system, path utilities, validation, schema layer, runtime bindings, and UI adapters in this repository have all been migrated from the original Formily dependencies into first-party `@silver-formily/*` implementations. The repository is no longer just a wrapper around Formily; it is now an independently evolving implementation with its own packages, docs, and tooling.
+Silver Formily is a form infrastructure monorepo for Vue 3 and React 18/19. The core reactive system, path utilities, validation, schema layer, runtime bindings, and UI adapters in this repository have all been migrated from the original Formily dependencies into first-party `@silver-formily/*` implementations. The repository is no longer just a wrapper around Formily; it is now an independently evolving implementation with its own packages, docs, and tooling.
 
-The workspace is organized with `pnpm`, `Turborepo`, `Vite`, and `VitePress`, covering core runtime packages, Vue bindings, Element Plus / Vant integrations, documentation sites, and shared internal tooling.
+The workspace is organized with `pnpm`, `Turborepo`, `Vite`, and `VitePress`, covering core runtime packages, Vue / React bindings, Element Plus / Vant / Ant Design 6 / Ant Design Mobile 5 integrations, documentation sites, and shared internal tooling.
 
 ## Documentation Sites
 
+- Project home: <https://silver-formily.org>
 - Reactive: <https://reactive.silver-formily.org>
 - Path: <https://path.silver-formily.org>
 - Validator: <https://validator.silver-formily.org>
 - Core: <https://core.silver-formily.org>
+- React: <https://react.silver-formily.org>
+- Reactive React: <https://reactive-react.silver-formily.org>
 - Vue: <https://vue.silver-formily.org>
 - Reactive Vue: <https://reactive-vue.silver-formily.org>
 - Element Plus: <https://element-plus.silver-formily.org>
 - Vant: <https://vant.silver-formily.org>
+- Ant Design Mobile: <https://antd-mobile.silver-formily.org>
+- Ant Design 6: [Documentation source](./apps/antd-docs)
 - Grid: <https://grid.silver-formily.org>
 - JSON Schema: <https://json-schema.silver-formily.org>
 
 ## Workspace Packages
 
-| Package                             | Purpose                                           |
-| ----------------------------------- | ------------------------------------------------- |
-| `@silver-formily/reactive`          | Reactive core implementation                      |
-| `@silver-formily/path`              | Path parsing and access utilities                 |
-| `@silver-formily/shared`            | Shared cross-package utilities and types          |
-| `@silver-formily/validator`         | Form validation primitives                        |
-| `@silver-formily/core`              | Form domain model and runtime kernel              |
-| `@silver-formily/json-schema`       | JSON Schema conversion and form description layer |
-| `@silver-formily/react`             | React runtime bindings and rendering layer        |
-| `@silver-formily/reactive-vue`      | Vue reactive bridge                               |
-| `@silver-formily/vue`               | Vue 3 runtime bindings                            |
-| `@silver-formily/element-plus`      | Element Plus adapters and scene components        |
-| `@silver-formily/vant`              | Vant adapters and mobile-oriented components      |
-| `@silver-formily/grid`              | Responsive layout and grid primitives             |
-| `@silver-formily/docs-toolkit`      | Shared VitePress theme, plugins, and site config  |
-| `@silver-formily/typescript-config` | Shared TypeScript presets for the workspace       |
+| Package                             | Purpose                                                 |
+| ----------------------------------- | ------------------------------------------------------- |
+| `@silver-formily/reactive`          | Reactive core implementation                            |
+| `@silver-formily/path`              | Path parsing and access utilities                       |
+| `@silver-formily/shared`            | Shared cross-package utilities and types                |
+| `@silver-formily/validator`         | Form validation primitives                              |
+| `@silver-formily/core`              | Form domain model and runtime kernel                    |
+| `@silver-formily/json-schema`       | JSON Schema conversion and form description layer       |
+| `@silver-formily/react`             | React runtime bindings and rendering layer              |
+| `@silver-formily/antd`              | Ant Design 6 basic form component adapters              |
+| `@silver-formily/reactive-react`    | React reactive bridge                                   |
+| `@silver-formily/antd-mobile`       | Ant Design Mobile 5 adapters and mobile form components |
+| `@silver-formily/reactive-vue`      | Vue reactive bridge                                     |
+| `@silver-formily/vue`               | Vue 3 runtime bindings                                  |
+| `@silver-formily/element-plus`      | Element Plus adapters and scene components              |
+| `@silver-formily/vant`              | Vant adapters and mobile-oriented components            |
+| `@silver-formily/grid`              | Responsive layout and grid primitives                   |
+| `@silver-formily/docs-toolkit`      | Shared VitePress theme, plugins, and site config        |
+| `@silver-formily/typescript-config` | Shared TypeScript presets for the workspace             |
+
+The React ecosystem includes reactive bindings, field and Schema rendering, and desktop and mobile UI adapters. `@silver-formily/antd` currently provides Form, FormItem, FormLayout, FormGrid, FormButtonGroup, Input, Select, NumberPicker, PreviewText, Submit, and Reset; see its [package README](./packages/antd/README.md) for exports and migration scope. `@silver-formily/antd-mobile` includes mobile fields, arrays, step forms, popup forms, and preview components; see its [package README](./packages/antd-mobile/README.md).
 
 ## Repository Layout
 
 ```text
 .
 |- apps/                         # VitePress documentation sites
+|  |- antd-docs
+|  |- antd-mobile-docs
 |  |- core-docs
 |  |- element-plus-docs
 |  |- grid-docs
 |  |- json-schema-docs
 |  |- path-docs
+|  |- react-docs
 |  |- reactive-docs
+|  |- reactive-react-docs
 |  |- reactive-vue-docs
+|  |- silver-formily-docs
 |  |- validator-docs
 |  |- vant-docs
 |  `- vue-docs
 |- packages/                     # Publishable packages and internal tooling
+|  |- antd
+|  |- antd-mobile
 |  |- core
 |  |- docs-toolkit
 |  |- element-plus
@@ -62,6 +83,7 @@ The workspace is organized with `pnpm`, `Turborepo`, `Vite`, and `VitePress`, co
 |  |- path
 |  |- react
 |  |- reactive
+|  |- reactive-react
 |  |- reactive-vue
 |  |- shared
 |  |- typescript-config
@@ -108,6 +130,11 @@ pnpm dev
 
 # Start one docs site directly
 pnpm dev -- vue-docs
+
+# Start React / mobile documentation
+pnpm dev -- react-docs
+pnpm dev -- antd-docs
+pnpm dev -- antd-mobile-docs
 
 # Watch one package directly
 pnpm dev -- @silver-formily/grid
