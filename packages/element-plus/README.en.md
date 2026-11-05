@@ -1,26 +1,47 @@
 # @silver-formily/element-plus
 
-[简体中文](./README.md)
+[![npm version](https://img.shields.io/npm/v/@silver-formily/element-plus)](https://www.npmjs.com/package/@silver-formily/element-plus)
+[![npm downloads](https://img.shields.io/npm/dm/@silver-formily/element-plus)](https://www.npmjs.com/package/@silver-formily/element-plus)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-## Overview
+[简体中文](https://github.com/hezhengxu2018/silver-formily/blob/main/packages/element-plus/README.md) | [English](https://github.com/hezhengxu2018/silver-formily/blob/main/packages/element-plus/README.en.md)
 
 `@silver-formily/element-plus` is the Element Plus binding layer and scene-component set for Silver Formily. It aligns field runtime semantics and schema protocols with Element Plus component contracts, and provides higher-level primitives for array fields, form layout, popup-style forms, and preview rendering.
 
-## Runtime Positioning
+## Installation
 
-This package sits at the intersection of the Vue rendering layer and a concrete UI framework:
+```bash
+pnpm add \
+  @silver-formily/element-plus \
+  @silver-formily/core \
+  @silver-formily/grid \
+  @silver-formily/json-schema \
+  @silver-formily/reactive \
+  @silver-formily/reactive-vue \
+  @silver-formily/shared \
+  @silver-formily/vue \
+  @vueuse/core \
+  'element-plus@^2.11.0' \
+  'vue@^3.3.0'
+```
 
-- it builds on top of `@silver-formily/vue`
-- it consumes field semantics from `@silver-formily/core` and `@silver-formily/json-schema`
-- it emits business-ready form primitives through the Element Plus component model
+The command includes required peer dependencies. Existing projects can keep dependencies that satisfy the declared ranges.
 
-## Public Surface
+## Features
 
 - base field components: `Input`, `Select`, `Checkbox`, `Radio`, `Switch`, `DatePicker`, `Upload`, and more
 - array-field components: `ArrayTable`, `ArrayCards`, `ArrayTabs`, `ArrayCollapse`, `ArrayItems`
 - layout and structure components: `FormItem`, `FormLayout`, `FormGrid`, `FormStep`, `FormTab`
 - scene components: `FormDialog`, `FormDrawer`, `QueryForm`, `SelectTable`
 - preview components: `PreviewText.*`
+
+## Positioning
+
+This package sits at the intersection of the Vue rendering layer and a concrete UI framework:
+
+- it builds on top of `@silver-formily/vue`
+- it consumes field semantics from `@silver-formily/core` and `@silver-formily/json-schema`
+- it emits business-ready form primitives through the Element Plus component model
 
 ## TypeScript Types
 
@@ -51,21 +72,17 @@ event, and slot forwarding remains unchanged.
 - ships reusable primitives for array fields and scenario-level form composition
 - acts as the Silver Formily namespace implementation for `@formily/element-plus`
 
-## Installation
+## Selection Object Values
 
-```bash
-pnpm add @silver-formily/element-plus @silver-formily/vue @silver-formily/core @silver-formily/json-schema @silver-formily/reactive @silver-formily/reactive-vue @silver-formily/shared @silver-formily/grid element-plus vue
-```
+All nine selection components support `optionAsValue` and `optionValueKeys`. The latter strictly projects output properties without modifying the data source; retain the identity property for display. Tree `optionFormatter` has been removed; migrate to `optionValueKeys`. Tree path mode does not apply projection.
 
 ## Documentation
 
-- Docs: <https://element-plus.silver-formily.org>
-- Repository: <https://github.com/hezhengxu2018/silver-formily>
+- [Guide](https://element-plus.silver-formily.org/en/)
+- [Project home](https://silver-formily.org/en/)
+- [Source](https://github.com/hezhengxu2018/silver-formily/tree/main/packages/element-plus)
+- [Issues](https://github.com/hezhengxu2018/silver-formily/issues)
 
 ## License
 
-MIT
-
-## Selection object values
-
-All nine selection components support `optionAsValue` and `optionValueKeys`. The latter strictly projects output properties without modifying the data source; retain the identity property for display. Tree `optionFormatter` has been removed; migrate to `optionValueKeys`. Tree path mode does not apply projection.
+[MIT](https://opensource.org/licenses/MIT)

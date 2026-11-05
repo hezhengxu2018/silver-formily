@@ -1,19 +1,27 @@
 # @silver-formily/reactive-react
 
-[English README](./README.en.md)
+[![npm version](https://img.shields.io/npm/v/@silver-formily/reactive-react)](https://www.npmjs.com/package/@silver-formily/reactive-react)
+[![npm downloads](https://img.shields.io/npm/dm/@silver-formily/reactive-react)](https://www.npmjs.com/package/@silver-formily/reactive-react)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-## 概述
+[简体中文](https://github.com/hezhengxu2018/silver-formily/blob/main/packages/reactive-react/README.md) | [English](https://github.com/hezhengxu2018/silver-formily/blob/main/packages/reactive-react/README.en.md)
 
 `@silver-formily/reactive-react` 实现 Silver Formily 响应式引擎与 React 渲染管线之间的桥接层，迁移自 `@formily/reactive-react@2.3.7`。它通过 `observer` 高阶组件与 `useObserver` hooks 将细粒度依赖追踪接入组件渲染。
 
-## 运行时定位
+## 安装
 
-该包位于响应式引擎与 React 渲染层之间：
+```bash
+pnpm add \
+  @silver-formily/reactive-react \
+  @silver-formily/reactive \
+  @silver-formily/shared \
+  'react@^18 || ^19' \
+  'react-dom@^18 || ^19'
+```
 
-- 以下层 `@silver-formily/reactive` 为状态和依赖模型
-- 可直接服务于任何 React 18/19 组件或自定义 renderer
+安装命令包含必需的 peer 依赖；已有项目请保留满足版本范围的现有依赖。
 
-## 公开 API
+## 功能
 
 - `observer` —— 高阶组件，包装函数组件获得响应式重渲染能力
 - `Observer` —— 渲染组件，支持 render 函数或静态 children
@@ -22,18 +30,6 @@
 - `useAutorunEffect` / `useReactionWatch` —— 提交后建立副作用或值监听
 - `useCompatEffect` / `useCompatFactory` —— 用于集成层实例生命周期管理的高级 hooks
 - 类型：`IObserverOptions`、`IObserverProps`、`IComputedOptions`、`IAutorunEffectOptions`、`IReactionWatchOptions`
-
-## 与上游 @formily/reactive-react 的差异
-
-- hooks 导出**不带** `unstable_` 前缀
-- peer 依赖为 `react` / `react-dom` `^18 || ^19`，移除了 `react-is`（`hoist-non-react-statics` 自带）
-- 仅发布 ESM 产物（`dist/index.mjs` + `dist/index.d.ts`）
-
-## 安装
-
-```bash
-pnpm add @silver-formily/reactive-react @silver-formily/reactive react react-dom
-```
 
 ## 快速上手
 
@@ -47,6 +43,19 @@ const Counter = observer(() => (
   <button onClick={() => state.count++}>{state.count}</button>
 ))
 ```
+
+## 定位
+
+该包位于响应式引擎与 React 渲染层之间：
+
+- 以下层 `@silver-formily/reactive` 为状态和依赖模型
+- 可直接服务于任何 React 18/19 组件或自定义 renderer
+
+## 与上游 @formily/reactive-react 的差异
+
+- hooks 导出**不带** `unstable_` 前缀
+- peer 依赖为 `react` / `react-dom` `^18 || ^19`，移除了 `react-is`（`hoist-non-react-statics` 自带）
+- 仅发布 ESM 产物（`dist/index.mjs` + `dist/index.d.ts`）
 
 ## Hooks 与类型约定
 
@@ -76,10 +85,11 @@ function Price({ store, multiplier, onChange }: {
 
 ## 文档
 
-- [中文 API 文档](https://reactive-react.silver-formily.org/api)
-- [变更记录](./CHANGELOG.md)
-- Repository: <https://github.com/hezhengxu2018/silver-formily>
+- [使用指南](https://reactive-react.silver-formily.org/)
+- [项目首页](https://silver-formily.org/)
+- [源码](https://github.com/hezhengxu2018/silver-formily/tree/main/packages/reactive-react)
+- [问题反馈](https://github.com/hezhengxu2018/silver-formily/issues)
 
-## License
+## 许可证
 
-MIT
+[MIT](https://opensource.org/licenses/MIT)

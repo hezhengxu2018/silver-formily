@@ -1,26 +1,45 @@
 # @silver-formily/vue
 
-[English README](./README.en.md)
+[![npm version](https://img.shields.io/npm/v/@silver-formily/vue)](https://www.npmjs.com/package/@silver-formily/vue)
+[![npm downloads](https://img.shields.io/npm/dm/@silver-formily/vue)](https://www.npmjs.com/package/@silver-formily/vue)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-## Overview
+[简体中文](https://github.com/hezhengxu2018/silver-formily/blob/main/packages/vue/README.md) | [English](https://github.com/hezhengxu2018/silver-formily/blob/main/packages/vue/README.en.md)
 
 `@silver-formily/vue` 是 Silver Formily 面向 Vue 3 的表单渲染层。它将核心 runtime、schema 协议与 Vue 组件系统连接起来，暴露字段组件、schema 渲染组件、组合式 API 与组件适配工具。
 
-## Runtime Positioning
+## 安装
 
-该包处于运行时与 UI 组件库之间：
+```bash
+pnpm add \
+  @silver-formily/vue \
+  @silver-formily/core \
+  @silver-formily/json-schema \
+  @silver-formily/path \
+  @silver-formily/reactive \
+  @silver-formily/reactive-vue \
+  @silver-formily/shared \
+  @silver-formily/validator \
+  'vue@^3.3.0'
+```
 
-- 依赖 `@silver-formily/core` 提供表单与字段语义
-- 依赖 `@silver-formily/reactive-vue` 适配 Vue 生命周期
-- 作为 `@silver-formily/element-plus` 与 `@silver-formily/vant` 的上游渲染层
+安装命令包含必需的 peer 依赖；已有项目请保留满足版本范围的现有依赖。
 
-## Public Surface
+## 功能
 
 - 字段组件：`Field`、`ArrayField`、`ObjectField`、`VoidField`
 - 表单上下文组件：`FormProvider`、`FormConsumer`
 - schema 组件：`SchemaField`、`RecursionField`、`ReactiveField`、`ExpressionScope`
 - composables：`useForm`、`useField`、`useFieldSchema`、`useFormEffects`
 - adapter helpers：`connect`、`mapProps`
+
+## 定位
+
+该包处于运行时与 UI 组件库之间：
+
+- 依赖 `@silver-formily/core` 提供表单与字段语义
+- 依赖 `@silver-formily/reactive-vue` 适配 Vue 生命周期
+- 作为 `@silver-formily/element-plus` 与 `@silver-formily/vant` 的上游渲染层
 
 ## 组件类型
 
@@ -44,20 +63,14 @@ const ConnectedInput = connect<typeof ElInput, InputProps>(
 该类型调整只影响 TypeScript 的公开类型推导，不改变 `connect`、`mapProps` 的
 运行时行为或 attrs 转发逻辑。
 
-## Design Characteristics
+## 设计特点
 
 - 纯 Vue 3 运行时路径
 - 对齐 `modelValue` / `onUpdate:modelValue` 契约
 - 面向 schema-driven forms 和组件级字段建模
 - 作为 `@formily/vue` 的 Silver Formily 命名空间替代实现
 
-## Installation
-
-```bash
-pnpm add @silver-formily/vue @silver-formily/core @silver-formily/json-schema @silver-formily/path @silver-formily/reactive @silver-formily/reactive-vue @silver-formily/shared @silver-formily/validator vue
-```
-
-## Related Packages
+## 相关包
 
 - `@silver-formily/core`
 - `@silver-formily/json-schema`
@@ -65,11 +78,13 @@ pnpm add @silver-formily/vue @silver-formily/core @silver-formily/json-schema @s
 - `@silver-formily/element-plus`
 - `@silver-formily/vant`
 
-## Documentation
+## 文档
 
-- Docs: <https://vue.silver-formily.org>
-- Repository: <https://github.com/hezhengxu2018/silver-formily>
+- [使用指南](https://vue.silver-formily.org/)
+- [项目首页](https://silver-formily.org/)
+- [源码](https://github.com/hezhengxu2018/silver-formily/tree/main/packages/vue)
+- [问题反馈](https://github.com/hezhengxu2018/silver-formily/issues)
 
-## License
+## 许可证
 
-MIT
+[MIT](https://opensource.org/licenses/MIT)

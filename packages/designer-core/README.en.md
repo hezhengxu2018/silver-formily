@@ -1,24 +1,24 @@
 # @silver-formily/designer-core
 
-[中文 README](./README.md)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-## Overview
+[简体中文](https://github.com/hezhengxu2018/silver-formily/blob/main/packages/designer-core/README.md) | [English](https://github.com/hezhengxu2018/silver-formily/blob/main/packages/designer-core/README.en.md)
 
 `@silver-formily/designer-core` is the framework-agnostic designer engine for Silver Formily. It owns the designer tree, workspaces, viewports, selection, hover state, drag semantics, history, shortcuts, and component behavior registry.
 
 The package still uses `@silver-formily/reactive` for core state. Vue or React bindings should own rendering, lifecycle integration, and concrete drag or hotkey library adapters.
 
-## Runtime Positioning
+> This is an internal workspace (`private: true`) and is not published to npm.
 
-Think of the designer runtime as three layers:
+## Installation
 
-- `@silver-formily/designer-core`: framework-agnostic models, events, and operations
-- Vue/React binding: context, composables/hooks, component tree rendering, and lifecycle wiring
-- driver / adapter: converts DOM, Pointer Events, or third-party drag library events into core events
+```bash
+pnpm --filter '<workspace-name>' add '@silver-formily/designer-core@workspace:*'
+```
 
-The core package keeps default browser drivers for legacy DOM-driven usage. Modern Vue bindings can disable them and call `engine.drag` from their own adapters.
+Replace `<workspace-name>` with the consuming workspace name.
 
-## Public Surface
+## Features
 
 - `createDesigner`: creates an engine with default browser drivers, effects, and shortcuts
 - `Engine`: main designer entry with `workbench`, `screen`, `cursor`, `keyboard`, and `drag`
@@ -29,6 +29,16 @@ The core package keeps default browser drivers for legacy DOM-driven usage. Mode
 - `GlobalRegistry`: registers designer behaviors, icons, language, and locale packages
 - `createBehavior` / `createResource` / `createLocales`: helpers for materials and locale data
 - `DragStartEvent` / `DragMoveEvent` / `DragStopEvent`: internal semantic drag events
+
+## Positioning
+
+Think of the designer runtime as three layers:
+
+- `@silver-formily/designer-core`: framework-agnostic models, events, and operations
+- Vue/React binding: context, composables/hooks, component tree rendering, and lifecycle wiring
+- driver / adapter: converts DOM, Pointer Events, or third-party drag library events into core events
+
+The core package keeps default browser drivers for legacy DOM-driven usage. Modern Vue bindings can disable them and call `engine.drag` from their own adapters.
 
 ## Default Browser Usage
 
@@ -146,12 +156,6 @@ A Vue binding typically owns:
 
 The Vue binding should not reimplement `Operation`, `Dragon`, node insertion, or history logic. Those belong to the core semantic layer.
 
-## Installation
-
-```bash
-pnpm add @silver-formily/designer-core @silver-formily/reactive @silver-formily/designer-shared
-```
-
 ## Related Packages
 
 - `@silver-formily/reactive`
@@ -159,6 +163,12 @@ pnpm add @silver-formily/designer-core @silver-formily/reactive @silver-formily/
 - `@silver-formily/vue`
 - `@silver-formily/element-plus`
 
+## Documentation
+
+- [Project home](https://silver-formily.org/en/)
+- [Source](https://github.com/hezhengxu2018/silver-formily/tree/main/packages/designer-core)
+- [Issues](https://github.com/hezhengxu2018/silver-formily/issues)
+
 ## License
 
-MIT
+[MIT](https://opensource.org/licenses/MIT)

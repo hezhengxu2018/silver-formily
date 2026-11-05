@@ -1,24 +1,24 @@
 # @silver-formily/designer-core
 
-[English README](./README.en.md)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-## Overview
+[简体中文](https://github.com/hezhengxu2018/silver-formily/blob/main/packages/designer-core/README.md) | [English](https://github.com/hezhengxu2018/silver-formily/blob/main/packages/designer-core/README.en.md)
 
 `@silver-formily/designer-core` 是 Silver Formily 的设计器核心引擎。它负责维护设计器节点树、工作区、视口、选择、悬停、拖拽语义、历史记录、快捷键和组件行为注册，不直接绑定 Vue 或 React 渲染树。
 
 该包仍然使用 `@silver-formily/reactive` 管理核心状态。上层 Vue/React 绑定层应负责组件渲染、生命周期接入和具体拖拽/快捷键库适配。
 
-## Runtime Positioning
+> 本包为仓库内部工作区（`private: true`），不发布到 npm。
 
-推荐把设计器拆成三层理解：
+## 安装
 
-- `@silver-formily/designer-core`：框架无关的设计器模型、事件和操作语义
-- Vue/React binding：提供上下文、组合式 API、组件树渲染和生命周期管理
-- driver / adapter：把 DOM、Pointer Events 或第三方拖拽库事件转换成 core 事件
+```bash
+pnpm --filter '<workspace-name>' add '@silver-formily/designer-core@workspace:*'
+```
 
-core 保留默认浏览器驱动，方便旧式 DOM 事件接入；现代 Vue 绑定可以关闭这些默认驱动，改用自己的 adapter 调用 `engine.drag`。
+将 `<workspace-name>` 替换为消费该包的工作区名称。
 
-## Public Surface
+## 功能
 
 - `createDesigner`：创建设计器引擎，默认加载 legacy browser drivers、effects 和 shortcuts
 - `Engine`：设计器总入口，包含 `workbench`、`screen`、`cursor`、`keyboard`、`drag`
@@ -30,7 +30,17 @@ core 保留默认浏览器驱动，方便旧式 DOM 事件接入；现代 Vue �
 - `createBehavior` / `createResource` / `createLocales`：构建设计器物料和本地化数据
 - `DragStartEvent` / `DragMoveEvent` / `DragStopEvent`：core 内部拖拽语义事件
 
-## Default Browser Usage
+## 定位
+
+推荐把设计器拆成三层理解：
+
+- `@silver-formily/designer-core`：框架无关的设计器模型、事件和操作语义
+- Vue/React binding：提供上下文、组合式 API、组件树渲染和生命周期管理
+- driver / adapter：把 DOM、Pointer Events 或第三方拖拽库事件转换成 core 事件
+
+core 保留默认浏览器驱动，方便旧式 DOM 事件接入；现代 Vue 绑定可以关闭这些默认驱动，改用自己的 adapter 调用 `engine.drag`。
+
+## 默认浏览器接入
 
 最小用法会加载默认 drivers、effects 和 shortcuts：
 
@@ -55,7 +65,7 @@ const workspace = engine.workbench.ensureWorkspace({
 workspace.viewport.onMount(viewportElement, window)
 ```
 
-## Modern Driver Usage
+## 自定义驱动接入
 
 如果 Vue 绑定层要接入自己的拖拽库或快捷键库，推荐关闭默认 browser drivers，并关闭自动 DOM 事件绑定：
 
@@ -93,7 +103,7 @@ engine.drag.stop({
 
 `engine.drag` 会在内部派发 `DragStartEvent`、`DragMoveEvent` 和 `DragStopEvent`，因此现有 `useDragDropEffect`、`Operation.dragWith`、`Dragon` 投放计算仍然可以复用。
 
-## Drag Input Contract
+## 拖拽输入约定
 
 现代 adapter 推荐优先传设计器语义字段，而不是伪造 DOM `target.closest(...)`：
 
@@ -124,7 +134,7 @@ type DesignerDragInput = {
 
 `useDragDropEffect` 会优先读取这些显式字段，只有缺失时才回退到 DOM attribute 查询。这样 Vue 绑定层可以直接把第三方拖拽库的命中结果传给 core。
 
-## Preset Options
+## 预设选项
 
 `createDesigner` 支持以下接入开关：
 
@@ -134,7 +144,7 @@ type DesignerDragInput = {
 - `mountTarget?: EventContainer | false`：`engine.mount()` 的事件挂载目标，默认 `window`，传 `false` 表示不自动挂载
 - `autoAttachEvents?: boolean`：`Viewport` 构造和 `onMount()` 时是否自动绑定事件，默认 `true`
 
-## Vue Binding Guidance
+## Vue 绑定建议
 
 Vue 绑定层通常只需要做这些事：
 
@@ -146,19 +156,19 @@ Vue 绑定层通常只需要做这些事：
 
 不建议 Vue 绑定层重写 `Operation`、`Dragon`、节点插入或历史记录逻辑。它们属于 core 的稳定语义层。
 
-## Installation
-
-```bash
-pnpm add @silver-formily/designer-core @silver-formily/reactive @silver-formily/designer-shared
-```
-
-## Related Packages
+## 相关包
 
 - `@silver-formily/reactive`
 - `@silver-formily/reactive-vue`
 - `@silver-formily/vue`
 - `@silver-formily/element-plus`
 
-## License
+## 文档
 
-MIT
+- [项目首页](https://silver-formily.org/)
+- [源码](https://github.com/hezhengxu2018/silver-formily/tree/main/packages/designer-core)
+- [问题反馈](https://github.com/hezhengxu2018/silver-formily/issues)
+
+## 许可证
+
+[MIT](https://opensource.org/licenses/MIT)

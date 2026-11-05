@@ -1,41 +1,38 @@
 # @silver-formily/react
 
-[English README](./README.en.md)
+[![npm version](https://img.shields.io/npm/v/@silver-formily/react)](https://www.npmjs.com/package/@silver-formily/react)
+[![npm downloads](https://img.shields.io/npm/dm/@silver-formily/react)](https://www.npmjs.com/package/@silver-formily/react)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-## 概述
+[简体中文](https://github.com/hezhengxu2018/silver-formily/blob/main/packages/react/README.md) | [English](https://github.com/hezhengxu2018/silver-formily/blob/main/packages/react/README.en.md)
 
 `@silver-formily/react` 是 Silver Formily 面向 React 18/19 的表单渲染层，迁移自 `@formily/react@2.3.7`。它在 `@silver-formily/core` 的表单领域模型之上提供字段组件、JSON Schema 渲染与组件接入（`connect`）能力。
 
-## 运行时定位
+## 安装
 
-该包位于表单内核与业务组件之间：
+```bash
+pnpm add \
+  @silver-formily/react \
+  @silver-formily/core \
+  @silver-formily/json-schema \
+  @silver-formily/path \
+  @silver-formily/reactive \
+  @silver-formily/reactive-react \
+  @silver-formily/shared \
+  @silver-formily/validator \
+  'react@^18 || ^19' \
+  'react-dom@^18 || ^19'
+```
 
-- 以下层 `@silver-formily/core` / `@silver-formily/json-schema` 为表单模型与 Schema 描述
-- 通过 `@silver-formily/reactive-react` 的 `observer` 接入细粒度响应式更新
-- 对上提供 React 组件与 hooks，可直接对接任意组件库
+安装命令包含必需的 peer 依赖；已有项目请保留满足版本范围的现有依赖。
 
-## 公开 API
+## 功能
 
 - 组件：`FormProvider`、`FormConsumer`、`Field`、`ArrayField`、`ObjectField`、`VoidField`、`RecursionField`、`createSchemaField`（含 `SchemaField.String/Object/Array/...` 标记语法）、`ExpressionScope`、`RecordScope`、`RecordsScope`
 - Hooks：`useForm`、`useField`、`useFieldSchema`、`useFormEffects`、`useParentForm`、`useExpressionScope`
 - 共享能力：`connect`、`mapProps`、`mapReadPretty`、`observer` / `Observer` 再导出，以及 `FormContext` 等 7 个 Context
 - 不再导出 `@silver-formily/json-schema`；`Schema`、`ISchema` 等请直接从 `@silver-formily/json-schema` 导入
 - 类型：`IFieldProps`、`ISchemaFieldProps`、`IComponentMapper`、`IStateMapper`、`JSXComponent` 等
-
-## 与上游 @formily/react 的差异
-
-- 内部依赖全部替换为 `@silver-formily/*`，`FormPath` 从 `@silver-formily/path` 引入
-- `useAttach` / `useFormEffects` 使用 `@silver-formily/reactive-react` 去掉 `unstable_` 前缀的 `useCompatEffect` / `useCompatFactory`
-- peer 依赖为 `react` / `react-dom` `^18 || ^19`，移除了 `react-is`
-- `shared/render.ts` 直接从 `react-dom` 顶层引入 `createPortal`，移除 `globalThisPolyfill` 与 `require` 动态兜底
-- 不再发布 `global.d.ts` 的 `Formily.React` 全局命名空间（无 UMD 产物）
-- 仅发布 ESM 产物（`dist/index.mjs` + `dist/index.d.ts`）
-
-## 安装
-
-```bash
-pnpm add @silver-formily/react @silver-formily/core react@19 react-dom@19
-```
 
 ## 快速上手
 
@@ -59,14 +56,34 @@ export default function App() {
 }
 ```
 
+## 定位
+
+该包位于表单内核与业务组件之间：
+
+- 以下层 `@silver-formily/core` / `@silver-formily/json-schema` 为表单模型与 Schema 描述
+- 通过 `@silver-formily/reactive-react` 的 `observer` 接入细粒度响应式更新
+- 对上提供 React 组件与 hooks，可直接对接任意组件库
+
+## 与上游 @formily/react 的差异
+
+- 内部依赖全部替换为 `@silver-formily/*`，`FormPath` 从 `@silver-formily/path` 引入
+- `useAttach` / `useFormEffects` 使用 `@silver-formily/reactive-react` 去掉 `unstable_` 前缀的 `useCompatEffect` / `useCompatFactory`
+- peer 依赖为 `react` / `react-dom` `^18 || ^19`，移除了 `react-is`
+- `shared/render.ts` 直接从 `react-dom` 顶层引入 `createPortal`，移除 `globalThisPolyfill` 与 `require` 动态兜底
+- 不再发布 `global.d.ts` 的 `Formily.React` 全局命名空间（无 UMD 产物）
+- 仅发布 ESM 产物（`dist/index.mjs` + `dist/index.d.ts`）
+
 ## 更换表单实例
 
 `FormProvider` 在一次挂载期间应持有同一个 form 实例。更换整个 form 时，应重新挂载 `FormProvider` 及其子树，例如使用 `<FormProvider key={form.id} form={form}>`。不要仅替换现有 Provider 的 `form` 属性并复用子树：`useFormEffects` 只在组件挂载时注册，不会随 form 属性变化重新绑定。旧子树卸载时清理订阅，新子树挂载时重新注册。
 
 ## 文档
 
-- Repository: <https://github.com/hezhengxu2018/silver-formily>
+- [使用指南](https://react.silver-formily.org/)
+- [项目首页](https://silver-formily.org/)
+- [源码](https://github.com/hezhengxu2018/silver-formily/tree/main/packages/react)
+- [问题反馈](https://github.com/hezhengxu2018/silver-formily/issues)
 
-## License
+## 许可证
 
-MIT
+[MIT](https://opensource.org/licenses/MIT)

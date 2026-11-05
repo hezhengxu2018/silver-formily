@@ -1,10 +1,24 @@
 # @silver-formily/docs-toolkit
 
-Shared VitePress theme + helpers for Silver Formily documentation sites.
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-## Usage
+[简体中文](https://github.com/hezhengxu2018/silver-formily/blob/main/packages/docs-toolkit/README.md) | [English](https://github.com/hezhengxu2018/silver-formily/blob/main/packages/docs-toolkit/README.en.md)
 
-1. Add the package to docs apps:
+Silver Formily 文档站共用的 VitePress 主题、配置辅助函数与 CLI。
+
+> 本包为仓库内部工作区（`private: true`），不发布到 npm。
+
+## 安装
+
+```bash
+pnpm --filter '<workspace-name>' add '@silver-formily/docs-toolkit@workspace:*'
+```
+
+将 `<workspace-name>` 替换为消费该包的工作区名称。
+
+## 用法
+
+1. 在文档应用中声明工作区依赖：
 
 ```json
 {
@@ -14,7 +28,7 @@ Shared VitePress theme + helpers for Silver Formily documentation sites.
 }
 ```
 
-2. Create your VitePress config with the helper:
+2. 使用辅助函数创建 VitePress 配置：
 
 ```ts
 import path, { dirname } from 'node:path'
@@ -35,10 +49,20 @@ export default createDocsConfig({
 })
 ```
 
-3. Re-export the shared theme:
+3. 重新导出共享主题：
 
 ```ts
 export { default } from '@silver-formily/docs-toolkit/theme'
 ```
 
-The toolkit also ships a `vitepress` binary so existing scripts (`vitepress dev .`) continue to work once the dependency is installed.
+工具包同时提供 `vitepress` 命令，安装依赖后可继续使用 `vitepress dev .` 等脚本。
+
+## 文档
+
+- [项目首页](https://silver-formily.org/)
+- [源码](https://github.com/hezhengxu2018/silver-formily/tree/main/packages/docs-toolkit)
+- [问题反馈](https://github.com/hezhengxu2018/silver-formily/issues)
+
+## 许可证
+
+[MIT](https://opensource.org/licenses/MIT)

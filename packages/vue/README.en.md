@@ -1,26 +1,45 @@
 # @silver-formily/vue
 
-[简体中文](./README.md)
+[![npm version](https://img.shields.io/npm/v/@silver-formily/vue)](https://www.npmjs.com/package/@silver-formily/vue)
+[![npm downloads](https://img.shields.io/npm/dm/@silver-formily/vue)](https://www.npmjs.com/package/@silver-formily/vue)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-## Overview
+[简体中文](https://github.com/hezhengxu2018/silver-formily/blob/main/packages/vue/README.md) | [English](https://github.com/hezhengxu2018/silver-formily/blob/main/packages/vue/README.en.md)
 
 `@silver-formily/vue` is the Vue 3 form rendering layer of Silver Formily. It connects the core runtime, schema protocol, and Vue component system, and exposes field components, schema-rendering components, composables, and adapter helpers.
 
-## Runtime Positioning
+## Installation
 
-This package sits between the runtime kernel and concrete UI libraries:
+```bash
+pnpm add \
+  @silver-formily/vue \
+  @silver-formily/core \
+  @silver-formily/json-schema \
+  @silver-formily/path \
+  @silver-formily/reactive \
+  @silver-formily/reactive-vue \
+  @silver-formily/shared \
+  @silver-formily/validator \
+  'vue@^3.3.0'
+```
 
-- it depends on `@silver-formily/core` for form and field semantics
-- it depends on `@silver-formily/reactive-vue` for Vue lifecycle integration
-- it acts as the upstream rendering layer consumed by `@silver-formily/element-plus` and `@silver-formily/vant`
+The command includes required peer dependencies. Existing projects can keep dependencies that satisfy the declared ranges.
 
-## Public Surface
+## Features
 
 - field components: `Field`, `ArrayField`, `ObjectField`, `VoidField`
 - form-context components: `FormProvider`, `FormConsumer`
 - schema components: `SchemaField`, `RecursionField`, `ReactiveField`, `ExpressionScope`
 - composables: `useForm`, `useField`, `useFieldSchema`, `useFormEffects`
 - adapter helpers: `connect`, `mapProps`
+
+## Positioning
+
+This package sits between the runtime kernel and concrete UI libraries:
+
+- it depends on `@silver-formily/core` for form and field semantics
+- it depends on `@silver-formily/reactive-vue` for Vue lifecycle integration
+- it acts as the upstream rendering layer consumed by `@silver-formily/element-plus` and `@silver-formily/vant`
 
 ## Component Types
 
@@ -52,12 +71,6 @@ including attrs forwarding.
 - intended for schema-driven forms and component-level field modeling
 - serves as the Silver Formily namespace replacement for `@formily/vue`
 
-## Installation
-
-```bash
-pnpm add @silver-formily/vue @silver-formily/core @silver-formily/json-schema @silver-formily/path @silver-formily/reactive @silver-formily/reactive-vue @silver-formily/shared @silver-formily/validator vue
-```
-
 ## Related Packages
 
 - `@silver-formily/core`
@@ -68,9 +81,11 @@ pnpm add @silver-formily/vue @silver-formily/core @silver-formily/json-schema @s
 
 ## Documentation
 
-- Docs: <https://vue.silver-formily.org>
-- Repository: <https://github.com/hezhengxu2018/silver-formily>
+- [Guide](https://vue.silver-formily.org/en/)
+- [Project home](https://silver-formily.org/en/)
+- [Source](https://github.com/hezhengxu2018/silver-formily/tree/main/packages/vue)
+- [Issues](https://github.com/hezhengxu2018/silver-formily/issues)
 
 ## License
 
-MIT
+[MIT](https://opensource.org/licenses/MIT)

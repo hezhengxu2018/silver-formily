@@ -1,19 +1,27 @@
 # @silver-formily/reactive-react
 
-[中文 README](./README.md)
+[![npm version](https://img.shields.io/npm/v/@silver-formily/reactive-react)](https://www.npmjs.com/package/@silver-formily/reactive-react)
+[![npm downloads](https://img.shields.io/npm/dm/@silver-formily/reactive-react)](https://www.npmjs.com/package/@silver-formily/reactive-react)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-## Overview
+[简体中文](https://github.com/hezhengxu2018/silver-formily/blob/main/packages/reactive-react/README.md) | [English](https://github.com/hezhengxu2018/silver-formily/blob/main/packages/reactive-react/README.en.md)
 
 `@silver-formily/reactive-react` bridges Silver Formily's reactive engine with the React render pipeline, migrated from `@formily/reactive-react@2.3.7`. It wires fine-grained dependency tracking into component rendering through the `observer` HOC and the `useObserver` hook.
 
-## Runtime Positioning
+## Installation
 
-The package sits between the reactive engine and the React rendering layer:
+```bash
+pnpm add \
+  @silver-formily/reactive-react \
+  @silver-formily/reactive \
+  @silver-formily/shared \
+  'react@^18 || ^19' \
+  'react-dom@^18 || ^19'
+```
 
-- Depends on `@silver-formily/reactive` for state and dependency tracking
-- Serves any React 18/19 component or custom renderer directly
+The command includes required peer dependencies. Existing projects can keep dependencies that satisfy the declared ranges.
 
-## Public Surface
+## Features
 
 - `observer` — HOC that wraps function components with reactive re-rendering
 - `Observer` — render component accepting a render function or static children
@@ -22,18 +30,6 @@ The package sits between the reactive engine and the React rendering layer:
 - `useAutorunEffect` / `useReactionWatch` — effect subscriptions and value watchers
 - `useCompatEffect` / `useCompatFactory` — advanced hooks for integration-layer instance lifecycles
 - Types: `IObserverOptions`, `IObserverProps`, `IComputedOptions`, `IAutorunEffectOptions`, `IReactionWatchOptions`
-
-## Divergence from upstream @formily/reactive-react
-
-- Hooks are exported **without** the `unstable_` prefix
-- Peer dependencies are `react` / `react-dom` `^18 || ^19`; `react-is` was dropped
-- ESM-only output (`dist/index.mjs` + `dist/index.d.ts`)
-
-## Installation
-
-```bash
-pnpm add @silver-formily/reactive-react @silver-formily/reactive react react-dom
-```
 
 ## Quick Start
 
@@ -48,7 +44,20 @@ const Counter = observer(() => (
 ))
 ```
 
-## Hook and type contracts
+## Positioning
+
+The package sits between the reactive engine and the React rendering layer:
+
+- Depends on `@silver-formily/reactive` for state and dependency tracking
+- Serves any React 18/19 component or custom renderer directly
+
+## Divergence from upstream @formily/reactive-react
+
+- Hooks are exported **without** the `unstable_` prefix
+- Peer dependencies are `react` / `react-dom` `^18 || ^19`; `react-is` was dropped
+- ESM-only output (`dist/index.mjs` + `dist/index.d.ts`)
+
+## Hooks and Types
 
 - `observer` accepts function components, `memo`, and `forwardRef`, preserving memo comparators. Plain function component generic signatures, custom statics, and declared ref types are retained. React 19 accepts ref props directly; React 18 requires a `forwardRef` input or `{ forwardRef: true }`.
 - `Observer` render functions can return any `ReactNode`, including `null`, strings, and arrays.
@@ -76,10 +85,11 @@ function Price({ store, multiplier, onChange }: {
 
 ## Documentation
 
-- [English API reference](https://reactive-react.silver-formily.org/en/api)
-- [Changelog](./CHANGELOG.md)
-- Repository: <https://github.com/hezhengxu2018/silver-formily>
+- [Guide](https://reactive-react.silver-formily.org/en/)
+- [Project home](https://silver-formily.org/en/)
+- [Source](https://github.com/hezhengxu2018/silver-formily/tree/main/packages/reactive-react)
+- [Issues](https://github.com/hezhengxu2018/silver-formily/issues)
 
 ## License
 
-MIT
+[MIT](https://opensource.org/licenses/MIT)
