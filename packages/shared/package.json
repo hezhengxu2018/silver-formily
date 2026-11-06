@@ -45,6 +45,7 @@
     "@vitest/browser": "catalog:",
     "@vitest/browser-playwright": "catalog:",
     "@vitest/coverage-istanbul": "catalog:",
+    "dayjs": "catalog:",
     "es-toolkit": "catalog:",
     "eslint": "catalog:",
     "oxc-resolver": "catalog:",

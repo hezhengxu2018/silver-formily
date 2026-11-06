@@ -1,7 +1,11 @@
 import type { PropsWithChildren } from 'react'
 import { ConfigProvider, theme } from 'antd'
 import zhCN from 'antd/locale/zh_CN'
+import dayjs from 'dayjs'
 import { useEffect, useState } from 'react'
+import 'dayjs/locale/zh-cn'
+
+dayjs.locale('zh-cn')
 
 export function DemoConfig({ children }: PropsWithChildren) {
   const [dark, setDark] = useState(false)

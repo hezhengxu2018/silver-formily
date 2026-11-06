@@ -1,9 +1,14 @@
 import type { Field } from '@silver-formily/core'
 import {
+  Cascader,
+  DatePicker,
   FormItem,
   Input,
   NumberPicker,
+  Radio,
   Select,
+  Switch,
+  TreeSelect,
 } from '@silver-formily/antd'
 import { createForm, onFieldChange } from '@silver-formily/core'
 import { createSchemaField, FormProvider } from '@silver-formily/react'
@@ -17,6 +22,11 @@ const SchemaField = createSchemaField({
   components: {
     Input,
     Select,
+    Radio,
+    DatePicker,
+    TreeSelect,
+    Cascader,
+    Switch,
     NumberPicker,
     FormItem,
     Div,
@@ -46,7 +56,7 @@ function OfficialExample() {
           name="size"
           title="尺寸选择"
           x-decorator="FormItem"
-          x-component="Select"
+          x-component="Radio.Group"
           enum={[
             { value: 'small', label: 'Small' },
             { value: 'default', label: 'Default' },
@@ -109,6 +119,10 @@ function OfficialExample() {
             x-component="NumberPicker"
             required
           />
+          <SchemaField.Object name="date" title="日期" x-decorator="FormItem" x-component="DatePicker" />
+          <SchemaField.String name="tree" title="树选择" x-decorator="FormItem" x-component="TreeSelect" enum={[{ title: '节点', value: 'node' }]} />
+          <SchemaField.Array name="path" title="级联" x-decorator="FormItem" x-component="Cascader" enum={[{ label: '地区', value: 'region', children: [{ label: '城市', value: 'city' }] }]} />
+          <SchemaField.Boolean name="enabled" title="开关" x-decorator="FormItem" x-component="Switch" />
         </SchemaField.Void>
       </SchemaField>
     </FormProvider>

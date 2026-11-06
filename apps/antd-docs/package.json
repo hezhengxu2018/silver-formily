@@ -20,6 +20,7 @@
     "@silver-formily/reactive": "workspace:*",
     "@silver-formily/reactive-react": "workspace:*",
     "antd": "catalog:",
+    "dayjs": "catalog:",
     "react": "catalog:",
     "react-dom": "catalog:",
     "vue": "catalog:"

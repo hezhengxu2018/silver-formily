@@ -1,5 +1,6 @@
 import type { FormProps } from '@silver-formily/antd'
 import {
+  DatePicker,
   Form,
   FormButtonGroup,
   FormGrid,
@@ -126,6 +127,7 @@ const SchemaField = createSchemaField({
   components: {
     QueryForm,
     Input,
+    DatePicker,
     Select,
     FormItem,
   },
@@ -163,15 +165,15 @@ function Example() {
             x-decorator="FormItem"
           />
           <SchemaField.String
-            name="address"
-            title="地址"
-            x-component="Input"
+            name="date"
+            title="日期"
+            x-component="DatePicker"
             x-decorator="FormItem"
           />
           <SchemaField.String
-            name="addressDetail"
-            title="详细地址"
-            x-component="Input"
+            name="dateRange"
+            title="日期范围"
+            x-component="DatePicker.RangePicker"
             x-decorator="FormItem"
             x-decorator-props={{
               gridSpan: 2,

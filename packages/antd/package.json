@@ -41,6 +41,7 @@
     "test:watch": "vitest",
     "test:browser": "vitest run --browser.headless",
     "test:coverage": "vitest run --coverage --browser.headless",
+    "test:ssr": "node tests/ssr.mjs",
     "prepublishOnly": "pnpm run build"
   },
   "peerDependencies": {
@@ -67,6 +68,7 @@
     "@silver-formily/grid": "workspace:^",
     "@silver-formily/reactive-react": "workspace:^",
     "clsx": "catalog:",
+    "dayjs": "catalog:",
     "easy-bem": "catalog:"
   },
   "devDependencies": {

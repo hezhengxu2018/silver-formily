@@ -28,7 +28,7 @@ pnpm add \
 
 提供 Form、FormItem、FormLayout、FormGrid、FormButtonGroup、Input（含 TextArea）、Select、NumberPicker、PreviewText、Submit 和 Reset。
 
-本包按所需范围迁移自 [Alibaba Formily antd 包](https://github.com/alibaba/formily/tree/d9a46442a575aa5f0fc1bd945e34d9a85d191d0e/packages/antd)（`@formily/antd@2.3.7`）。 尚未包含数组、日期时间、上传、树控件及场景组件。
+本包按所需范围迁移自 [Alibaba Formily antd 包](https://github.com/alibaba/formily/tree/d9a46442a575aa5f0fc1bd945e34d9a85d191d0e/packages/antd)（`@formily/antd@2.3.7`）。 新增 Password、Checkbox、Radio、Switch、Cascader、TreeSelect、Transfer、DatePicker、TimePicker、Upload、Slider、Rate，包含 Group、RangePicker 和 Upload.Dragger。尚未包含数组及场景组件。
 
 ## 快速上手
 
@@ -49,7 +49,7 @@ export default function Example() {
 }
 ```
 
-样式随组件自动加载，不支持 Ant Design 4 Less 文件及 `@formily/*` 导入。Vite SSR 项目应配置 `ssr.noExternal: ['@silver-formily/antd', 'antd', '@ant-design/icons']`，由构建工具编译内部 ESM 入口。
+样式随组件自动加载，不支持 Ant Design 4 Less 文件及 `@formily/*` 导入。Vite SSR 项目应配置 `ssr.noExternal: ['@silver-formily/antd', 'antd', /^@ant-design\//, /^@rc-component\//]`，由构建工具编译内部 ESM 入口。
 
 ## 迁移说明
 
@@ -58,7 +58,7 @@ export default function Example() {
 - tsdown 将 ESM 产物和类型声明输出到 `esm/`。
 - 局部 CSS 使用 `ConfigProvider` 主题 token，不依赖旧版 Ant Design Less。
 - FormItem 保留布局与字段映射，通过 Ant Design 原生 context 联动控件反馈。`hasFeedback` 默认关闭，开启后使用原生状态图标；`feedbackIcon` 可自定义图标，显式 `hasFeedback={false}` 可关闭。尺寸与外观继承 ConfigProvider。内部适配基于 Ant Design 6.6.5，升级需运行原生反馈对照测试。
-- PreviewText 仅包含三类已迁移输入组件对应的阅读态及共享占位 API。
+- PreviewText 覆盖已迁移控件的阅读态及共享占位 API；密码遮蔽，上传仅展示。
 - FormLayout 保留响应式、浅层与深层配置语义，包括显式 false 值。
 - FormGrid 与 Element Plus 适配层共用 Grid 运行时，支持容器响应式列数、FormItem/GridColumn 跨列及外部控制的折叠查询表单。`gridSpan={-1}` 填满当前行剩余列。
 - Sticky 默认在所属 Form 底部固定；`position="top"` 或 `bottom={false}` 用于吸顶，显式 `container` 可覆盖表单边界。
@@ -71,6 +71,7 @@ export default function Example() {
 ```sh
 pnpm exec turbo run build --filter=@silver-formily/antd...
 pnpm --filter @silver-formily/antd test:browser
+pnpm --filter @silver-formily/antd test:ssr
 pnpm --filter @silver-formily/antd check-types
 pnpm dev -- antd-docs
 pnpm exec turbo run docs:build --filter=antd-docs
@@ -88,3 +89,5 @@ pnpm exec turbo run docs:build --filter=antd-docs
 [MIT](https://opensource.org/licenses/MIT)
 
 原始 Alibaba MIT 许可证保留在包内 LICENSE 文件中。
+
+日期控件直接使用 Dayjs 值和 antd 6 的原生事件；初始化和提交时的数据转换由业务负责。Upload 的 onChange 保留原生事件对象，字段值为 fileList；不猜测业务响应格式。Password 不提供旧版 checkStrength。Slider 和 Rate 为本项目扩展。

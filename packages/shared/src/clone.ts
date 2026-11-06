@@ -9,6 +9,10 @@ function shouldPreservePlainObject(value: Record<PropertyKey, any>) {
   if (value._isBigNumber) {
     return true
   }
+  // Dayjs is immutable; do not serialize its toJSON() during form cloning.
+  if (value.$isDayjsObject) {
+    return true
+  }
   if (value._isAMomentObject) {
     return true
   }

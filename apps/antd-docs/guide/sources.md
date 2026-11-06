@@ -30,13 +30,13 @@
 
 1. 把 `@formily/*` 导入替换为对应 `@silver-formily/*`，补齐 type-only import 与字段类型标注。
 2. 从官方 TSX 代码块提取独立 demo，通过共享 `DemoConfig` 同步主题和中文 locale，再交给 VitePress 的 React demo 桥接。保留官方 Markup Schema、JSON Schema、纯 JSX 及联动写法；官方 Dumi Alert 转为 VitePress 提示容器，保留原文。
-3. Form 原例使用本包 FormGrid 排版；FormItem 的日期、树选择、级联、Switch 等未迁移控件从原例中裁掉，不伪造本包导出。
-4. FormItem 尺寸切换原例的 Radio.Group 改为已有的 Select；其余尺寸联动逻辑保留。
-5. PreviewText 原例只保留文本和选择项；日期、树选择、级联等未迁移阅读态分支不展示。
+3. Form 原例使用本包 FormGrid 排版；FormItem 的尺寸示例已恢复日期、树选择、级联、Switch 控件。
+4. FormItem 尺寸切换使用 Radio.Group，保留尺寸联动逻辑。
+5. PreviewText 原例已恢复日期、树选择、级联分支；日期初始值改为 Dayjs。
 6. Select 异步搜索原例依赖淘宝 JSONP / mfetch，改为本地候选服务，保留防抖、搜索触发、loading 和数据源更新。联动原例仍保留官方的模拟延迟。
 7. Sticky 原例使用 FormLayout 作为默认边界，并增加最小高度便于观察吸底；本项目另有通过 Form 根节点上下文绑定边界的补充例子。
 8. 提交结果仍按官方写法输出到控制台；为普通提交与重置校验示例补上预期失败的接收回调，页面通过字段反馈展示校验信息。
-9. FormGrid 封装参考本仓库 Element Plus 实现，四个示例沿用官方章节；查询表单中的两个未迁移日期控件替换为地址输入框，保留字段数量、跨列及折叠逻辑。
+9. FormGrid 封装参考本仓库 Element Plus 实现，四个示例沿用官方章节；查询表单已恢复 DatePicker 与 RangePicker，保留跨列及折叠逻辑。
 
 ## 特别说明的含义
 
@@ -51,3 +51,7 @@
 原 FormItem 无边框案例替换为四种原生 variant 外观对比，此对比为本项目补充示例，不计入上表官方原例数量。
 
 FormItem 反馈案例改用 `hasFeedback` 展示 Ant Design 6 原生状态图标，并补充自定义图标及显式关闭的对比；布局仍沿用本包 FormItem。
+
+## Ant Design 6 基础控件补充
+
+新增 Password、Checkbox、Radio、Switch、Cascader、TreeSelect、Transfer、DatePicker、TimePicker、Upload、Slider、Rate 的 12 个基础示例。新增示例按当前原生 API 编写，不计入上表 39 个官方原例；Slider、Rate 是本项目扩展。日期不保留旧字符串协议，Password 不迁移 checkStrength，Upload 不迁移业务响应推断及旧内容属性。每页链接对应官方来源和原生 API。

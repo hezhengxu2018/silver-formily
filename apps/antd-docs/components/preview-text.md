@@ -4,7 +4,7 @@
 
 ::: warning 特别说明：与官方实现的差异
 
-- 本次仅保留通用文本、Input、Select、NumberPicker、Placeholder 和 usePlaceholder。原介绍提及的日期、树选择、级联阅读态尚未迁移；下方原例已移除这些字段。
+- 提供通用文本、Input、Select、NumberPicker、Boolean、Password、Slider、DatePicker、DateRangePicker、TimePicker、TimeRangePicker、TreeSelect、Cascader、Transfer、Upload、Placeholder 和 usePlaceholder。日期值使用 Dayjs，密码始终遮蔽。
 
 - 占位提供器允许显式空字符串、0、false，官方会回退到 N/A；通用 PreviewText 现在允许 children 优先于 value。
 

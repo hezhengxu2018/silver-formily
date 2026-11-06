@@ -6,7 +6,7 @@
 
 - Input / TextArea 通过上下文自动关联标签并继承本包 FormItem 的 status、variant；Input 还继承 size。TextArea 包装层不传递 size 属性，显式控件属性优先。
 
-- Input 的加载 suffix 使用稳定 span，与官方这一主链路一致。额外包装层没有完整复制原生 Input 的静态成员，当前只明确提供 Input.TextArea；Input.Search / Password 等请直接从 antd 使用。
+- Input 的加载 suffix 使用稳定 span，与官方这一主链路一致。额外包装层没有完整复制原生 Input 的静态成员，当前只明确提供 Input.TextArea；Input.Search 请直接从 antd 使用；密码表单字段使用本包独立的 Password 组件。
 
 - 编辑态 props 以 Ant Design 6 为准；阅读态由本页的 PreviewText.Input 实现，DOM、占位和间距的差异见其文档。
 

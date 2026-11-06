@@ -83,7 +83,7 @@ form-item/custom-feedback.tsx
 ## 尺寸控制案例
 
 ::: tip 示例适配说明
-尺寸联动逻辑沿用官方示例；用于切换尺寸的 Radio.Group 改用本次已有的 Select，并去除未迁移控件。
+尺寸联动逻辑沿用官方示例，使用 Radio.Group 切换尺寸，并展示日期、树选择、级联及开关控件。
 :::
 
 :::demo
@@ -137,7 +137,7 @@ form-item/size-control.tsx
 
 原生反馈适配基于 Ant Design 6.6.5，内部 context 与样式入口集中封装。升级 Ant Design 时需要运行包内原生 Form.Item 对照测试，验证主题、前缀、图标、焦点及嵌套隔离。
 
-Vite SSR 项目需将 `@silver-formily/antd`、`antd` 和 `@ant-design/icons` 加入 `ssr.noExternal`，让 Vite 编译内部 ESM 入口，避免 Node 直接加载 Ant Design 的目录导入。本站已配置对应依赖的 SSR 编译。
+Vite SSR 项目需将 `@silver-formily/antd`、`antd`、`@ant-design/*` 和 `@rc-component/*` 加入 `ssr.noExternal`，让 Vite 编译内部 ESM 入口，避免 Node 直接加载 Ant Design 的目录导入。本站已配置对应依赖的 SSR 编译。
 
 ## 文档来源
 
