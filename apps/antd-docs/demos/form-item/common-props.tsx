@@ -136,6 +136,7 @@ function OfficialExample() {
           title="内容左对齐(wrapperAlign=left默认)"
           x-decorator="FormItem"
           x-component="Input"
+          x-component-props={{ style: { width: 160, maxWidth: '100%' } }}
           x-decorator-props={{
             labelWidth: 300,
             wrapperWidth: 240,
@@ -146,6 +147,7 @@ function OfficialExample() {
           title="内容右对齐(wrapperAlign=right)"
           x-decorator="FormItem"
           x-component="Input"
+          x-component-props={{ style: { width: 160, maxWidth: '100%' } }}
           x-decorator-props={{
             labelWidth: 300,
             wrapperWidth: 240,

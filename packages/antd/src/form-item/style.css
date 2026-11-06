@@ -1,4 +1,5 @@
-.sf-item {
+/* Keep the custom layout above the native Form.Item reset specificity. */
+.sf-item.sf-item {
   box-sizing: border-box;
   display: flex;
   position: relative;
@@ -42,8 +43,7 @@
   min-width: 0;
   max-width: 100%;
 }
-.sf-item-fullness .sf-item-component,
-.sf-item-feedback-border .sf-item-component {
+.sf-item-fullness .sf-item-component {
   flex: 1;
 }
 .sf-item-fullness .sf-item-component > :first-child {
@@ -55,7 +55,7 @@
 .sf-item-addon {
   flex-shrink: 0;
 }
-.sf-item-vertical {
+.sf-item.sf-item-vertical {
   display: block;
 }
 .sf-item-vertical > .sf-item-label {
@@ -80,23 +80,23 @@
   color: var(--sf-secondary);
   min-height: 22px;
 }
-.sf-item-error .sf-item-help {
+.sf-item-error > .sf-item-control > .sf-item-help {
   color: var(--sf-error);
 }
-.sf-item-warning .sf-item-help {
+.sf-item-warning > .sf-item-control > .sf-item-help {
   color: var(--sf-warning);
 }
-.sf-item-success .sf-item-help {
+.sf-item-success > .sf-item-control > .sf-item-help {
   color: var(--sf-success);
 }
-.sf-item-feedback-terse,
-.sf-item-feedback-popover {
+.sf-item.sf-item-feedback-terse,
+.sf-item.sf-item-feedback-popover {
   margin-bottom: 8px;
 }
-.sf-item-feedback-none {
+.sf-item.sf-item-feedback-none {
   margin-bottom: 0;
 }
-.sf-item-feedback-visible:not(.sf-item-feedback-popover):not(.sf-item-feedback-none) {
+.sf-item.sf-item-feedback-visible:not(.sf-item-feedback-popover):not(.sf-item-feedback-none) {
   margin-bottom: 0;
 }
 .sf-item-size-small {
@@ -105,18 +105,34 @@
 .sf-item-size-large {
   --sf-height: 40px;
 }
-.sf-item-feedback-border .sf-item-content {
-  padding-inline: 8px;
-  border: 1px solid var(--sf-border);
-  border-radius: var(--sf-radius);
-}
-.sf-item-outline.sf-item-error.sf-item-feedback-border .sf-item-content {
-  border-color: var(--sf-error);
-}
-.sf-item-outline.sf-item-warning.sf-item-feedback-border .sf-item-content {
-  border-color: var(--sf-warning);
-}
 .sf-item-wrapper-wrap .sf-item-component {
   white-space: pre-wrap;
   overflow-wrap: anywhere;
+}
+
+.sf-item-popover-feedback {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+  color: var(--sf-color);
+}
+.sf-item-popover-feedback-error {
+  color: var(--sf-error);
+}
+.sf-item-popover-feedback-warning {
+  color: var(--sf-warning);
+}
+.sf-item-popover-feedback-success {
+  color: var(--sf-success);
+}
+/* Formily's popover success outline; keep native focus/hover and borderless variants. */
+.sf-item-feedback-popover.sf-item-outline
+  > .sf-item-control
+  > .sf-item-content
+  > .sf-item-component
+  > .sf-item-popover-anchor
+  > [class*='-status-success']:is([class*='-outlined'], [class*='-underlined']):not([class*='-disabled']):not(
+    :disabled
+  ):not(:focus-within):not(:hover) {
+  border-color: var(--sf-success);
 }

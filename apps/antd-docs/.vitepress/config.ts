@@ -32,7 +32,13 @@ export default createDocsConfig({
   },
   socialLinks: [{ icon: 'github', link: 'https://github.com/hezhengxu2018/silver-formily' }],
   footer: { message: 'Released under the MIT License.' },
-  vite: { esbuild: { jsx: 'automatic' } },
+  vite: {
+    esbuild: { jsx: 'automatic' },
+    ssr: { noExternal: ['antd', '@ant-design/icons'] },
+    optimizeDeps: {
+      include: ['antd/es/config-provider/hooks/useCSSVarCls', 'antd/es/form/context', 'antd/es/form/style'],
+    },
+  },
   extra: {
     title: 'Silver Formily Antd',
     description: '基于 Ant Design 6 的 React 表单组件',

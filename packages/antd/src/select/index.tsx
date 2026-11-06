@@ -5,9 +5,25 @@ import { connect, mapProps, mapReadPretty } from '@silver-formily/react'
 import { Select as AntdSelect } from 'antd'
 import { forwardRef } from 'react'
 import { useControlProps } from '../__builtins__'
+import { useNativeFeedback } from '../__builtins__/feedback'
 import { PreviewText } from '../preview-text'
 
-const SelectControl = forwardRef<ComponentRef<typeof AntdSelect>, SelectProps>((props, ref) => <AntdSelect {...useControlProps(props)} style={{ width: '100%', ...props.style }} ref={ref} />)
+interface SelectControlProps extends SelectProps {
+  fieldValidating?: boolean
+}
+
+const SelectControl = forwardRef<ComponentRef<typeof AntdSelect>, SelectControlProps>(({ fieldValidating, ...props }, ref) => {
+  const { hasFeedback } = useNativeFeedback()
+  const suffixIcon = fieldValidating && !hasFeedback
+    ? (
+        <>
+          {props.suffixIcon}
+          <LoadingOutlined />
+        </>
+      )
+    : props.suffixIcon
+  return <AntdSelect {...useControlProps(props)} suffixIcon={suffixIcon} style={{ width: '100%', ...props.style }} ref={ref} />
+})
 export const Select = connect(
   SelectControl,
   mapProps((props, field) => {
@@ -15,7 +31,7 @@ export const Select = connect(
     return {
       options: dataSource?.length ? dataSource : props.options ?? dataSource,
       loading: props.loading ?? (field && 'loading' in field ? field.loading : undefined),
-      suffixIcon: field && 'validating' in field && field.validating ? <LoadingOutlined /> : props.suffixIcon,
+      fieldValidating: field && 'validating' in field ? field.validating : undefined,
     }
   }),
   mapReadPretty(PreviewText.Select),

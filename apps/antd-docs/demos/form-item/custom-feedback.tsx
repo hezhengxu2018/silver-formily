@@ -1,4 +1,4 @@
-import { CheckCircleFilled, LoadingOutlined } from '@ant-design/icons'
+import { SmileOutlined } from '@ant-design/icons'
 import {
   FormItem,
   FormLayout,
@@ -58,7 +58,7 @@ function OfficialExample() {
           description="description"
           x-decorator-props={{
             feedbackStatus: 'success',
-            feedbackIcon: <CheckCircleFilled style={{ color: '#52c41a' }} />,
+            hasFeedback: true,
           }}
         />
 
@@ -69,7 +69,7 @@ function OfficialExample() {
           description="description"
           x-decorator-props={{
             feedbackStatus: 'pending',
-            feedbackIcon: <LoadingOutlined style={{ color: '#1890ff' }} />,
+            hasFeedback: true,
           }}
         />
 
@@ -81,6 +81,26 @@ function OfficialExample() {
           x-decorator-props={{
             enableOutlineFeedback: false,
             feedbackStatus: 'error',
+          }}
+        />
+
+        <SchemaField.String
+          title="自定义图标(feedbackIcon)"
+          x-decorator="FormItem"
+          x-component="Input"
+          x-decorator-props={{
+            feedbackStatus: 'warning',
+            feedbackIcon: <SmileOutlined />,
+          }}
+        />
+        <SchemaField.String
+          title="关闭图标(hasFeedback=false)"
+          x-decorator="FormItem"
+          x-component="Input"
+          x-decorator-props={{
+            feedbackStatus: 'warning',
+            feedbackIcon: <SmileOutlined />,
+            hasFeedback: false,
           }}
         />
 
@@ -176,7 +196,7 @@ function OfficialExample() {
             x-component="Select"
             x-decorator-props={{
               feedbackStatus: 'success',
-              feedbackIcon: <CheckCircleFilled style={{ color: '#52c41a' }} />,
+              hasFeedback: true,
             }}
           />
 
@@ -186,7 +206,7 @@ function OfficialExample() {
             x-component="NumberPicker"
             x-decorator-props={{
               feedbackStatus: 'success',
-              feedbackIcon: <CheckCircleFilled style={{ color: '#52c41a' }} />,
+              hasFeedback: true,
             }}
           />
 

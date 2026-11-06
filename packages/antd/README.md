@@ -49,7 +49,7 @@ export default function Example() {
 }
 ```
 
-样式随组件自动加载，不支持 Ant Design 4 Less 文件及 `@formily/*` 导入。
+样式随组件自动加载，不支持 Ant Design 4 Less 文件及 `@formily/*` 导入。Vite SSR 项目应配置 `ssr.noExternal: ['@silver-formily/antd', 'antd', '@ant-design/icons']`，由构建工具编译内部 ESM 入口。
 
 ## 迁移说明
 
@@ -57,7 +57,7 @@ export default function Example() {
 - 状态与 React 绑定统一使用本仓库的 `@silver-formily/*` 包。
 - tsdown 将 ESM 产物和类型声明输出到 `esm/`。
 - 局部 CSS 使用 `ConfigProvider` 主题 token，不依赖旧版 Ant Design Less。
-- FormItem 保留布局与字段映射；输入组件通过上下文获取状态和尺寸，外观继承原生 ConfigProvider variant。
+- FormItem 保留布局与字段映射，通过 Ant Design 原生 context 联动控件反馈。`hasFeedback` 默认关闭，开启后使用原生状态图标；`feedbackIcon` 可自定义图标，显式 `hasFeedback={false}` 可关闭。尺寸与外观继承 ConfigProvider。内部适配基于 Ant Design 6.6.5，升级需运行原生反馈对照测试。
 - PreviewText 仅包含三类已迁移输入组件对应的阅读态及共享占位 API。
 - FormLayout 保留响应式、浅层与深层配置语义，包括显式 false 值。
 - FormGrid 与 Element Plus 适配层共用 Grid 运行时，支持容器响应式列数、FormItem/GridColumn 跨列及外部控制的折叠查询表单。`gridSpan={-1}` 填满当前行剩余列。

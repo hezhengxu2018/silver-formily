@@ -5,8 +5,6 @@ import { createContext, useContext } from 'react'
 export type FormSize = 'small' | 'default' | 'middle' | 'medium' | 'large'
 export interface ControlContextValue {
   id?: string
-  size?: FormSize
-  status?: 'error' | 'warning'
 }
 export const ControlContext = createContext<ControlContextValue>({})
 
@@ -24,8 +22,6 @@ export function useControlProps<T extends { id?: string, size?: string, status?:
   return {
     ...props,
     id: props.id ?? context.id,
-    size: props.size ?? normalizeSize(context.size),
-    status: props.status ?? context.status,
   } as T
 }
 

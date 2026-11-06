@@ -2,6 +2,9 @@ import { playwright } from '@vitest/browser-playwright'
 import { defineConfig } from 'vitest/config'
 
 export default defineConfig({
+  optimizeDeps: {
+    include: ['antd/es/config-provider/hooks/useCSSVarCls', 'antd/es/form/context', 'antd/es/form/style'],
+  },
   test: {
     include: ['tests/**/*.test.{ts,tsx}'],
     setupFiles: ['vitest-browser-react'],

@@ -22,14 +22,14 @@ afterEach(async () => {
   vi.restoreAllMocks()
 })
 
-it('colors feedback borders and honors enableOutlineFeedback=false', async () => {
+it('colors native control borders and honors enableOutlineFeedback=false', async () => {
   const { container } = await render(
     <FormLayout>
       <FormItem.BaseItem feedbackIcon="!" feedbackStatus="error"><Input /></FormItem.BaseItem>
       <FormItem.BaseItem feedbackIcon="!" feedbackStatus="error" enableOutlineFeedback={false}><Input /></FormItem.BaseItem>
     </FormLayout>,
   )
-  const items = container.querySelectorAll('.sf-item-content')
+  const items = container.querySelectorAll('.sf-item-component > :first-child')
   expect(getComputedStyle(items[0]).borderTopColor).toBe('rgb(255, 77, 79)')
   expect(getComputedStyle(items[1]).borderTopColor).toBe('rgb(217, 217, 217)')
 })
@@ -126,4 +126,20 @@ it('can render selected components on the server without browser layout effects'
   )
   expect(html).toContain('SSR')
   expect(html).toContain('sf-buttons-sticky')
+})
+
+it.each(['left', 'right'] as const)('aligns a fixed-width control to the %s edge of its wrapper', async (wrapperAlign) => {
+  const { container } = await render(
+    <FormItem.BaseItem wrapperWidth={240} wrapperAlign={wrapperAlign}>
+      <Input style={{ width: 160 }} />
+    </FormItem.BaseItem>,
+  )
+  const wrapper = container.querySelector('.sf-item-control')!
+  const input = container.querySelector('.sf-item-component > :first-child')!
+  await vi.waitFor(() => {
+    const bounds = input.getBoundingClientRect()
+    const wrapperBounds = wrapper.getBoundingClientRect()
+    expect(bounds.width).toBeCloseTo(160)
+    expect(bounds[wrapperAlign]).toBeCloseTo(wrapperBounds[wrapperAlign])
+  })
 })

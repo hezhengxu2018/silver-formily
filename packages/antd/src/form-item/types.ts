@@ -32,6 +32,7 @@ export interface IFormItemProps {
   feedbackText?: ReactNode
   feedbackLayout?: 'loose' | 'terse' | 'popover' | 'none'
   feedbackStatus?: 'error' | 'warning' | 'success' | 'pending'
+  hasFeedback?: boolean
   feedbackIcon?: ReactNode
   enableOutlineFeedback?: boolean
   getPopupContainer?: (node: HTMLElement) => HTMLElement

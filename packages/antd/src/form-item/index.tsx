@@ -1,17 +1,24 @@
 import type { TooltipProps } from 'antd'
 import type { CSSProperties, ReactNode } from 'react'
 import type { IFormItemProps } from './types'
-import { QuestionCircleOutlined } from '@ant-design/icons'
+import { CheckCircleOutlined, CloseCircleOutlined, ExclamationCircleOutlined, QuestionCircleOutlined } from '@ant-design/icons'
 import { isVoidField } from '@silver-formily/core'
 import { connect, mapProps } from '@silver-formily/react'
 import { ConfigProvider, Popover, Tooltip } from 'antd'
 import cls from 'classnames'
 import { isValidElement, useContext, useEffect, useId, useRef, useState } from 'react'
-import { ControlContext, pickDataProps, usePrefixCls, useTokenStyle } from '../__builtins__'
+import { ControlContext, normalizeSize, pickDataProps, usePrefixCls, useTokenStyle } from '../__builtins__'
+import { NativeFeedbackProvider, useFormItemFeedback } from '../__builtins__/feedback'
 import { FormLayoutShallowContext, useFormLayout } from '../form-layout'
 import './style.css'
 
 export type { IFormItemProps } from './types'
+
+const popoverIcons = {
+  error: CloseCircleOutlined,
+  warning: ExclamationCircleOutlined,
+  success: CheckCircleOutlined,
+}
 
 export function BaseItem({ children, ...props }: IFormItemProps) {
   const inherited = useFormLayout()
@@ -38,7 +45,6 @@ export function BaseItem({ children, ...props }: IFormItemProps) {
     feedbackText,
     feedbackLayout = 'loose',
     feedbackStatus,
-    feedbackIcon,
     enableOutlineFeedback = true,
     tooltip,
     tooltipLayout = 'icon',
@@ -68,7 +74,7 @@ export function BaseItem({ children, ...props }: IFormItemProps) {
     return () => observer.disconnect()
   }, [label, labelWrap, layout])
   const hasLabel = label !== undefined && label !== null && label !== false && label !== ''
-  const feedbackVisible = feedbackText !== undefined && feedbackText !== null && feedbackText !== ''
+  const feedbackVisible = feedbackText !== undefined && feedbackText !== null && feedbackText !== false && feedbackText !== ''
   const tooltipProps: TooltipProps = tooltip && typeof tooltip === 'object' && !isValidElement(tooltip) && !Array.isArray(tooltip)
     ? tooltip as TooltipProps
     : { title: tooltip as ReactNode }
@@ -85,11 +91,14 @@ export function BaseItem({ children, ...props }: IFormItemProps) {
     ...(wrapperWidth !== undefined ? { width: wrapperWidth, flex: 'none' } : {}),
     ...wrapperStyle,
   }
-  const status = enableOutlineFeedback && (feedbackStatus === 'error' || feedbackStatus === 'warning') ? feedbackStatus : undefined
+  const PopoverIcon = feedbackStatus && feedbackStatus !== 'pending' ? popoverIcons[feedbackStatus] : undefined
+  const feedback = useFormItemFeedback(settings)
   const control = (
-    <ControlContext.Provider value={{ id: controlId, size, status }}>
-      <ConfigProvider variant={props.variant ?? (feedbackIcon ? 'borderless' : undefined)}>
-        <FormLayoutShallowContext.Provider value={null}>{children}</FormLayoutShallowContext.Provider>
+    <ControlContext.Provider value={{ id: controlId }}>
+      <ConfigProvider variant={props.variant} componentSize={normalizeSize(size)}>
+        <NativeFeedbackProvider value={feedback.context}>
+          <FormLayoutShallowContext.Provider value={null}>{children}</FormLayoutShallowContext.Provider>
+        </NativeFeedbackProvider>
       </ConfigProvider>
     </ControlContext.Provider>
   )
@@ -106,10 +115,9 @@ export function BaseItem({ children, ...props }: IFormItemProps) {
     <div
       {...pickDataProps(props)}
       data-grid-span={props.gridSpan}
-      className={cls('sf-item', prefix, `sf-item-${layout}`, `sf-item-feedback-${feedbackLayout}`, {
+      className={cls('sf-item', prefix, feedback.className, `sf-item-${layout}`, `sf-item-feedback-${feedbackLayout}`, {
         'sf-item-fullness': fullness,
         'sf-item-outline': enableOutlineFeedback,
-        'sf-item-feedback-border': feedbackIcon,
         'sf-item-label-wrap': labelWrap,
         'sf-item-wrapper-wrap': wrapperWrap,
         'sf-item-feedback-visible': feedbackVisible,
@@ -145,12 +153,26 @@ export function BaseItem({ children, ...props }: IFormItemProps) {
       <div className="sf-item-control" style={controlSizing}>
         <div className="sf-item-content" style={{ justifyContent: wrapperAlign === 'right' ? 'flex-end' : 'flex-start' }}>
           {props.addonBefore !== undefined && <span className="sf-item-addon">{props.addonBefore}</span>}
-          <div className="sf-item-component">
+          <div className="sf-item-component" style={{ textAlign: wrapperAlign }}>
             {feedbackLayout === 'popover'
-              ? <Popover open={feedbackVisible} content={feedbackText} getPopupContainer={getPopupContainer}><div>{control}</div></Popover>
+              ? (
+                  <Popover
+                    open={feedbackVisible}
+                    placement="top"
+                    autoAdjustOverflow
+                    content={(
+                      <div className={cls('sf-item-popover-feedback', feedbackStatus && `sf-item-popover-feedback-${feedbackStatus}`)} style={tokenStyle} role={feedbackStatus === 'error' ? 'alert' : undefined}>
+                        {PopoverIcon && <PopoverIcon />}
+                        <span>{feedbackText}</span>
+                      </div>
+                    )}
+                    getPopupContainer={getPopupContainer}
+                  >
+                    <div className="sf-item-popover-anchor">{control}</div>
+                  </Popover>
+                )
               : control}
           </div>
-          {feedbackIcon && <span className="sf-item-feedback-icon">{feedbackIcon}</span>}
           {props.addonAfter !== undefined && <span className="sf-item-addon">{props.addonAfter}</span>}
         </div>
         {feedbackVisible && feedbackLayout !== 'popover' && feedbackLayout !== 'none' && <div className="sf-item-help" role={feedbackStatus === 'error' ? 'alert' : undefined}>{feedbackText}</div>}

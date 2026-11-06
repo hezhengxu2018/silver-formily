@@ -49,3 +49,5 @@
 已移除 FormItem 的 inset 配置，原文内嵌模式示例不再收录。
 
 原 FormItem 无边框案例替换为四种原生 variant 外观对比，此对比为本项目补充示例，不计入上表官方原例数量。
+
+FormItem 反馈案例改用 `hasFeedback` 展示 Ant Design 6 原生状态图标，并补充自定义图标及显式关闭的对比；布局仍沿用本包 FormItem。
