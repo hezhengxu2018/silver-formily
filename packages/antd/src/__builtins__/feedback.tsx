@@ -5,7 +5,7 @@ import { ConfigProvider } from 'antd'
 import useCSSVarCls from 'antd/es/config-provider/hooks/useCSSVarCls'
 import { FormItemInputContext } from 'antd/es/form/context'
 import useFormStyle from 'antd/es/form/style'
-import cls from 'classnames'
+import cls from 'clsx'
 import { useContext, useMemo } from 'react'
 
 // Ant Design 6.6.5 compatibility boundary. Keep internal context/style imports here

@@ -1,7 +1,7 @@
 import type { ButtonProps } from 'antd-mobile'
 import type { CSSProperties, HTMLAttributes, ReactNode } from 'react'
 import { Button } from 'antd-mobile'
-import cls from 'classnames'
+import cls from 'clsx'
 import React, { useContext, useMemo } from 'react'
 import { usePrefixCls } from '../__builtins__'
 import { FormButtonGroupContext, FormButtonGroupStickyContext } from './context'

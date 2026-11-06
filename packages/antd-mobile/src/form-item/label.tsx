@@ -1,7 +1,7 @@
 import type { IFormItemProps } from './types'
 import { Popover } from 'antd-mobile'
 import { ExclamationCircleOutline } from 'antd-mobile-icons'
-import cls from 'classnames'
+import cls from 'clsx'
 import { useEffect, useRef, useState } from 'react'
 import { useOverflow } from './use-overflow'
 

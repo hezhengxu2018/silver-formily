@@ -66,7 +66,7 @@
     "@floating-ui/dom": "catalog:",
     "@silver-formily/grid": "workspace:^",
     "@silver-formily/reactive-react": "workspace:^",
-    "classnames": "catalog:"
+    "clsx": "catalog:"
   },
   "devDependencies": {
     "@ant-design/icons": "catalog:",

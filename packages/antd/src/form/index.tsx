@@ -1,6 +1,6 @@
 import type { Form as FormType, IFormFeedback } from '@silver-formily/core'
 import type { JSXComponent } from '@silver-formily/react'
-import type { FormEvent, PropsWithChildren, ReactNode } from 'react'
+import type { PropsWithChildren, ReactNode, SyntheticEvent } from 'react'
 import type { IFormLayoutProps } from '../form-layout'
 import { FormProvider, useParentForm } from '@silver-formily/react'
 import { createElement, useRef } from 'react'
@@ -27,7 +27,7 @@ export function Form({ form, component = 'form', onAutoSubmit, onAutoSubmitFaile
       <PreviewText.Placeholder value={previewTextPlaceholder}>
         <FormLayout {...props} ref={rootRef}>
           {createElement(component, {
-            onSubmit(event: FormEvent) {
+            onSubmit(event: SyntheticEvent<HTMLFormElement>) {
               event.preventDefault()
               event.stopPropagation()
               if (pending.current || current.submitting)

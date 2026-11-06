@@ -7,7 +7,7 @@ import type {
 import type { ReactNode } from 'react'
 import { observer, useField } from '@silver-formily/react'
 import { CheckList as AntdCheckList } from 'antd-mobile'
-import cls from 'classnames'
+import cls from 'clsx'
 import { usePrefixCls } from '../__builtins__'
 import './style.less'
 

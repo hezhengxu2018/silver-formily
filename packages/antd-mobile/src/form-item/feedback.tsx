@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
 import type { IFormItemProps } from './types'
-import cls from 'classnames'
+import cls from 'clsx'
 
 export interface FeedbackMessage {
   type: 'error' | 'warning' | 'success'

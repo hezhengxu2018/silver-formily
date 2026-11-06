@@ -5,7 +5,7 @@ import { CheckCircleOutlined, CloseCircleOutlined, ExclamationCircleOutlined, Qu
 import { isVoidField } from '@silver-formily/core'
 import { connect, mapProps } from '@silver-formily/react'
 import { ConfigProvider, Popover, Tooltip } from 'antd'
-import cls from 'classnames'
+import cls from 'clsx'
 import { isValidElement, useContext, useEffect, useId, useRef, useState } from 'react'
 import { ControlContext, normalizeSize, pickDataProps, usePrefixCls, useTokenStyle } from '../__builtins__'
 import { NativeFeedbackProvider, useFormItemFeedback } from '../__builtins__/feedback'

@@ -1,4 +1,4 @@
-import cls from 'classnames'
+import cls from 'clsx'
 import React from 'react'
 import { pickDataProps, usePrefixCls } from '../__builtins__'
 import { useFormLayout } from '../form-layout'

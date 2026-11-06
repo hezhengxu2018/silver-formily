@@ -8,7 +8,7 @@ import {
   useFieldSchema,
 } from '@silver-formily/react'
 import { List as AntdList } from 'antd-mobile'
-import cls from 'classnames'
+import cls from 'clsx'
 import React from 'react'
 import { usePrefixCls } from '../__builtins__'
 import {

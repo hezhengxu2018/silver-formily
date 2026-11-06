@@ -7,7 +7,7 @@ import type { ISelectorValue } from '../selector'
 import { observer, useField } from '@silver-formily/react'
 import { isArr, isFn, isValid } from '@silver-formily/shared'
 import { Tag } from 'antd-mobile'
-import cls from 'classnames'
+import cls from 'clsx'
 import React, { createContext, useContext } from 'react'
 import { formatDayjsValue, usePrefixCls } from '../__builtins__'
 

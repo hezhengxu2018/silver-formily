@@ -1,7 +1,7 @@
 import type { ArrayField } from '@silver-formily/core'
 import type { IArrayBaseProps } from '../array-base'
 import { observer, RecursionField, useField, useFieldSchema } from '@silver-formily/react'
-import cls from 'classnames'
+import cls from 'clsx'
 import React from 'react'
 import { usePrefixCls } from '../__builtins__'
 import { ArrayBase, isAdditionComponent } from '../array-base'

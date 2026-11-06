@@ -3,7 +3,7 @@ import type { PickerValue, PickerValueExtend } from 'antd-mobile/es/components/p
 import { isField } from '@silver-formily/core'
 import { connect, mapProps, mapReadPretty } from '@silver-formily/react'
 import { CascadePicker as AntCascadePicker } from 'antd-mobile'
-import cls from 'classnames'
+import cls from 'clsx'
 import { Fragment } from 'react'
 import { PopupTrigger, usePopupPicker, usePrefixCls } from '../__builtins__'
 import { PreviewText } from '../preview-text'

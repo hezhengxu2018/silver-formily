@@ -1,6 +1,6 @@
 import type { ListProps, ListRef } from 'antd-mobile/es/components/list'
 import { List } from 'antd-mobile'
-import cls from 'classnames'
+import cls from 'clsx'
 import React, { createContext, useContext, useRef } from 'react'
 import { usePrefixCls } from '../__builtins__'
 import { FormLayoutRootContext } from './root-context'

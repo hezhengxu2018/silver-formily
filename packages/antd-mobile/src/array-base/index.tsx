@@ -17,7 +17,7 @@ import {
   DownOutline,
   UpOutline,
 } from 'antd-mobile-icons'
-import cls from 'classnames'
+import cls from 'clsx'
 import React, { createContext, useContext } from 'react'
 import { usePrefixCls } from '../__builtins__'
 import './style.less'

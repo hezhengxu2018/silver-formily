@@ -1,5 +1,5 @@
 import type { ButtonHTMLAttributes } from 'react'
-import cls from 'classnames'
+import cls from 'clsx'
 import { createContext, forwardRef, useContext } from 'react'
 import './style.less'
 

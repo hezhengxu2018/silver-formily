@@ -1,6 +1,6 @@
 import type { CSSProperties, HTMLAttributes } from 'react'
 import { computePosition } from '@floating-ui/dom'
-import cls from 'classnames'
+import cls from 'clsx'
 import { useContext, useEffect, useRef, useState } from 'react'
 import { usePrefixCls } from '../__builtins__'
 import { FormLayoutRootContext } from '../form-layout/root-context'

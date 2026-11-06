@@ -2,7 +2,7 @@ import type { PickerProps as AntPickerProps, PickerColumn, PickerColumnItem, Pic
 import { isField } from '@silver-formily/core'
 import { connect, mapProps, mapReadPretty } from '@silver-formily/react'
 import { Picker as AntPicker } from 'antd-mobile'
-import cls from 'classnames'
+import cls from 'clsx'
 import { Fragment } from 'react'
 import { PopupTrigger, usePopupPicker, usePrefixCls } from '../__builtins__'
 import { PreviewText } from '../preview-text'

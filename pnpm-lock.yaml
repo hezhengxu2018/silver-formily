@@ -108,9 +108,6 @@ catalogs:
     class-variance-authority:
       specifier: ^0.7.1
       version: 0.7.1
-    classnames:
-      specifier: ^2.3.1
-      version: 2.5.1
     clsx:
       specifier: ^2.1.1
       version: 2.1.1
@@ -1128,9 +1125,9 @@ importers:
       '@silver-formily/reactive-react':
         specifier: workspace:^
         version: link:../reactive-react
-      classnames:
+      clsx:
         specifier: 'catalog:'
-        version: 2.5.1
+        version: 2.1.1
     devDependencies:
       '@ant-design/icons':
         specifier: 'catalog:'
@@ -1204,9 +1201,9 @@ importers:
       '@floating-ui/dom':
         specifier: 'catalog:'
         version: 1.7.6
-      classnames:
+      clsx:
         specifier: 'catalog:'
-        version: 2.5.1
+        version: 2.1.1
     devDependencies:
       '@silver-formily/core':
         specifier: workspace:*
@@ -5816,7 +5813,7 @@ packages:
 
   glob@10.5.0:
     resolution: {integrity: sha512-DfXN8DfhJ7NH3Oe7cFmu3NCu1wKbkReJ8TorzSAFbSKrlNaQSKfIzqYqVY8zlbs2NLBbWpRiU52GX2PbaBVNkg==}
-    deprecated: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
+    deprecated: Glob versions prior to v9 are no longer supported
     hasBin: true
 
   glob@7.2.3:

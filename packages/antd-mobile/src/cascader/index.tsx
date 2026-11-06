@@ -3,7 +3,7 @@ import type { CascaderOption, CascaderValue, CascaderValueExtend } from 'antd-mo
 import { isField } from '@silver-formily/core'
 import { connect, mapProps, mapReadPretty } from '@silver-formily/react'
 import { Cascader as AntCascader } from 'antd-mobile'
-import cls from 'classnames'
+import cls from 'clsx'
 import { Fragment, useMemo } from 'react'
 import { PopupTrigger, usePopupPicker, usePrefixCls } from '../__builtins__'
 import { PreviewText } from '../preview-text'
