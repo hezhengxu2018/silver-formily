@@ -1,10 +1,10 @@
-.sf-preview {
+.silver-formily-preview-text {
   display: inline-flex;
   align-items: center;
   flex-wrap: wrap;
   gap: 4px;
-  min-height: var(--sf-height, 32px);
-  color: var(--sf-color);
+  min-height: var(--silver-formily-height, 32px);
+  color: var(--silver-formily-color);
   white-space: pre-wrap;
   overflow-wrap: anywhere;
 }

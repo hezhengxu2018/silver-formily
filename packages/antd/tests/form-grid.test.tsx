@@ -61,7 +61,7 @@ it('supports FormItem spans and reflows when schema fields disappear', async () 
       </FormGrid>
     </Form>,
   )
-  const root = container.querySelector('.sf-grid')!
+  const root = container.querySelector('.silver-formily-form-grid')!
   await vi.waitFor(() => expect(root.children[1].getBoundingClientRect().width).toBe(400))
   form.setFieldState('first', { visible: false })
   await vi.waitFor(() => {

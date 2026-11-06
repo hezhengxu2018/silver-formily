@@ -6,7 +6,6 @@ export interface IFormItemProps {
   children?: ReactNode
   className?: string
   style?: CSSProperties
-  prefixCls?: string
   label?: ReactNode
   colon?: boolean
   tooltip?: ReactNode | TooltipProps

@@ -52,7 +52,7 @@ preview-text.tsx
 | `children`                                   | `ReactNode`                                                               | —      | 仅通用 PreviewText 使用；存在时优先于 value。                              |
 | `prefix / suffix / addonBefore / addonAfter` | `ReactNode`                                                               | —      | Input / NumberPicker 的前后缀及附加内容。                                  |
 | `formatter`                                  | `(value: any, info: { userTyping: boolean; input: string }) => ReactNode` | —      | NumberPicker 阅读态使用；对非空值传入原始值及 userTyping=false、input=''。 |
-| `prefixCls / className / style`              | `string / string / CSSProperties`                                         | —      | 展示根节点配置。                                                           |
+| `className / style`                          | `string / CSSProperties`                                                  | —      | 展示根节点配置。                                                           |
 
 ### PreviewText.Select
 

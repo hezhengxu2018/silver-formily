@@ -4,14 +4,15 @@ import { observer, useField } from '@silver-formily/react'
 import { Tag } from 'antd'
 import cls from 'clsx'
 import { createContext, useContext } from 'react'
-import { usePrefixCls, useTokenStyle } from '../__builtins__'
+import { createBem, useTokenStyle } from '../__builtins__'
 import './style.css'
+
+const b = createBem('preview-text')
 
 export interface IPreviewTextProps {
   value?: any
   className?: string
   style?: CSSProperties
-  prefixCls?: string
   prefix?: ReactNode
   suffix?: ReactNode
   addonBefore?: ReactNode
@@ -31,11 +32,10 @@ export function usePlaceholder(value?: ReactNode) {
   return value === undefined || value === null || value === '' ? placeholder : value
 }
 
-function Text({ value, children, className, style, prefixCls }: PropsWithChildren<IPreviewTextProps>) {
-  const prefix = usePrefixCls('form-text', { prefixCls })
+function Text({ value, children, className, style }: PropsWithChildren<IPreviewTextProps>) {
   const tokens = useTokenStyle()
   const content = usePlaceholder(value)
-  return <span className={cls('sf-preview', prefix, className)} style={{ ...tokens, ...style }}>{children ?? content}</span>
+  return <span className={cls(b(), className)} style={{ ...tokens, ...style }}>{children ?? content}</span>
 }
 function Input(props: IPreviewTextProps) {
   const value = usePlaceholder(props.value)

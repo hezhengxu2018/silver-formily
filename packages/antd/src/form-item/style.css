@@ -1,138 +1,140 @@
 /* Keep the custom layout above the native Form.Item reset specificity. */
-.sf-item.sf-item {
+.silver-formily-form-item.silver-formily-form-item {
   box-sizing: border-box;
   display: flex;
   position: relative;
   gap: 0;
   min-width: 0;
   margin-bottom: 22px;
-  color: var(--sf-color);
-  font-size: var(--sf-font);
+  color: var(--silver-formily-color);
+  font-size: var(--silver-formily-font);
   line-height: 1.5715;
 }
-.sf-item-label {
+.silver-formily-form-item__label {
   box-sizing: border-box;
   padding-inline-end: 8px;
   display: flex;
   align-items: flex-start;
   min-width: 0;
-  min-height: var(--sf-height, 32px);
-  line-height: var(--sf-height, 32px);
+  min-height: var(--silver-formily-height, 32px);
+  line-height: var(--silver-formily-height, 32px);
 }
-.sf-item-label-content {
+.silver-formily-form-item__label-content {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-.sf-item-label-wrap .sf-item-label-content {
+.silver-formily-form-item--label-wrap .silver-formily-form-item__label-content {
   white-space: normal;
   overflow-wrap: anywhere;
 }
-.sf-item-control {
+.silver-formily-form-item__control {
   flex: 1;
   min-width: 0;
 }
-.sf-item-content {
+.silver-formily-form-item__content {
   display: flex;
   align-items: center;
   gap: 8px;
-  min-height: var(--sf-height, 32px);
+  min-height: var(--silver-formily-height, 32px);
 }
-.sf-item-component {
+.silver-formily-form-item__component {
   width: 100%;
   min-width: 0;
   max-width: 100%;
 }
-.sf-item-fullness .sf-item-component {
+.silver-formily-form-item--fullness .silver-formily-form-item__component {
   flex: 1;
 }
-.sf-item-fullness .sf-item-component > :first-child {
+.silver-formily-form-item--fullness .silver-formily-form-item__component > :first-child {
   width: 100%;
 }
-.sf-item-component > textarea {
+.silver-formily-form-item__component > textarea {
   vertical-align: top;
 }
-.sf-item-addon {
+.silver-formily-form-item__addon {
   flex-shrink: 0;
 }
-.sf-item.sf-item-vertical {
+.silver-formily-form-item.silver-formily-form-item--layout_vertical {
   display: block;
 }
-.sf-item-vertical > .sf-item-label {
+.silver-formily-form-item--layout_vertical > .silver-formily-form-item__label {
   padding-bottom: 4px;
   line-height: 1.5715;
   min-height: 0;
 }
-.sf-item-asterisk {
-  color: var(--sf-error);
+.silver-formily-form-item__asterisk {
+  color: var(--silver-formily-error);
   margin-inline-end: 4px;
 }
-.sf-item-optional,
-.sf-item-tooltip {
-  color: var(--sf-secondary);
+.silver-formily-form-item__optional,
+.silver-formily-form-item__tooltip {
+  color: var(--silver-formily-secondary);
   margin-inline-start: 4px;
 }
-.sf-item-colon {
+.silver-formily-form-item__colon {
   margin-inline-start: 2px;
 }
-.sf-item-help,
-.sf-item-extra {
-  color: var(--sf-secondary);
+.silver-formily-form-item__help,
+.silver-formily-form-item__extra {
+  color: var(--silver-formily-secondary);
   min-height: 22px;
 }
-.sf-item-error > .sf-item-control > .sf-item-help {
-  color: var(--sf-error);
+.silver-formily-form-item--status_error > .silver-formily-form-item__control > .silver-formily-form-item__help {
+  color: var(--silver-formily-error);
 }
-.sf-item-warning > .sf-item-control > .sf-item-help {
-  color: var(--sf-warning);
+.silver-formily-form-item--status_warning > .silver-formily-form-item__control > .silver-formily-form-item__help {
+  color: var(--silver-formily-warning);
 }
-.sf-item-success > .sf-item-control > .sf-item-help {
-  color: var(--sf-success);
+.silver-formily-form-item--status_success > .silver-formily-form-item__control > .silver-formily-form-item__help {
+  color: var(--silver-formily-success);
 }
-.sf-item.sf-item-feedback-terse,
-.sf-item.sf-item-feedback-popover {
+.silver-formily-form-item.silver-formily-form-item--feedback-layout_terse,
+.silver-formily-form-item.silver-formily-form-item--feedback-layout_popover {
   margin-bottom: 8px;
 }
-.sf-item.sf-item-feedback-none {
+.silver-formily-form-item.silver-formily-form-item--feedback-layout_none {
   margin-bottom: 0;
 }
-.sf-item.sf-item-feedback-visible:not(.sf-item-feedback-popover):not(.sf-item-feedback-none) {
+.silver-formily-form-item.silver-formily-form-item--feedback-visible:not(
+    .silver-formily-form-item--feedback-layout_popover
+  ):not(.silver-formily-form-item--feedback-layout_none) {
   margin-bottom: 0;
 }
-.sf-item-size-small {
-  --sf-height: 24px;
+.silver-formily-form-item--size_small {
+  --silver-formily-height: 24px;
 }
-.sf-item-size-large {
-  --sf-height: 40px;
+.silver-formily-form-item--size_large {
+  --silver-formily-height: 40px;
 }
-.sf-item-wrapper-wrap .sf-item-component {
+.silver-formily-form-item--wrapper-wrap .silver-formily-form-item__component {
   white-space: pre-wrap;
   overflow-wrap: anywhere;
 }
 
-.sf-item-popover-feedback {
+.silver-formily-form-item__popover-feedback {
   display: flex;
   align-items: baseline;
   gap: 4px;
-  color: var(--sf-color);
+  color: var(--silver-formily-color);
 }
-.sf-item-popover-feedback-error {
-  color: var(--sf-error);
+.silver-formily-form-item__popover-feedback--status_error {
+  color: var(--silver-formily-error);
 }
-.sf-item-popover-feedback-warning {
-  color: var(--sf-warning);
+.silver-formily-form-item__popover-feedback--status_warning {
+  color: var(--silver-formily-warning);
 }
-.sf-item-popover-feedback-success {
-  color: var(--sf-success);
+.silver-formily-form-item__popover-feedback--status_success {
+  color: var(--silver-formily-success);
 }
 /* Formily's popover success outline; keep native focus/hover and borderless variants. */
-.sf-item-feedback-popover.sf-item-outline
-  > .sf-item-control
-  > .sf-item-content
-  > .sf-item-component
-  > .sf-item-popover-anchor
+.silver-formily-form-item--feedback-layout_popover.silver-formily-form-item--outline
+  > .silver-formily-form-item__control
+  > .silver-formily-form-item__content
+  > .silver-formily-form-item__component
+  > .silver-formily-form-item__popover-anchor
   > [class*='-status-success']:is([class*='-outlined'], [class*='-underlined']):not([class*='-disabled']):not(
     :disabled
   ):not(:focus-within):not(:hover) {
-  border-color: var(--sf-success);
+  border-color: var(--silver-formily-success);
 }

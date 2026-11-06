@@ -1,14 +1,14 @@
-.sf-layout {
-  color: var(--sf-color);
-  font-size: var(--sf-font);
+.silver-formily-form-layout {
+  color: var(--silver-formily-color);
+  font-size: var(--silver-formily-font);
 }
-.sf-layout-inline {
+.silver-formily-form-layout--layout_inline {
   display: flex;
   flex-wrap: wrap;
   gap: 0 16px;
   align-items: flex-start;
 }
-.sf-layout-inline > form {
+.silver-formily-form-layout--layout_inline > form {
   display: flex;
   flex-wrap: wrap;
   gap: 0 16px;

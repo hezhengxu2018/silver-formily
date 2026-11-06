@@ -25,8 +25,8 @@ it.each(['top', 'bottom'] as const)('aligns a nested FormItem before and during 
     </>,
   )
   const { root, inner } = elements(container)
-  const inputControl = container.querySelector('.sf-item-control')!
-  const actionItem = inner.querySelector('.sf-item')!
+  const inputControl = container.querySelector('.silver-formily-form-item__control')!
+  const actionItem = inner.querySelector('.silver-formily-form-item')!
   const button = inner.querySelector('button')!
   const expectAligned = () => {
     expect(actionItem.getBoundingClientRect().width).toBe(600)
@@ -63,9 +63,9 @@ it('keeps the placeholder width stable in an inline flex form after fixing', asy
 
 function elements(container: HTMLElement) {
   return {
-    root: container.querySelector<HTMLElement>('.sf-buttons-sticky')!,
-    inner: container.querySelector<HTMLElement>('.sf-buttons-sticky-inner')!,
-    form: container.querySelector<HTMLElement>('.sf-layout')!,
+    root: container.querySelector<HTMLElement>('.silver-formily-form-button-group-sticky')!,
+    inner: container.querySelector<HTMLElement>('.silver-formily-form-button-group-sticky__inner')!,
+    form: container.querySelector<HTMLElement>('.silver-formily-form-layout')!,
   }
 }
 
@@ -166,7 +166,7 @@ it('keeps ownership of the Form when a nested FormLayout has scrolled away', asy
     </>,
   )
   const { inner } = elements(container)
-  const nested = container.querySelectorAll('.sf-layout')[1]
+  const nested = container.querySelectorAll('.silver-formily-form-layout')[1]
   window.scrollTo(0, nested.getBoundingClientRect().bottom + 50)
   await vi.waitFor(() => expect(getComputedStyle(inner).position).toBe('fixed'))
   expect(inner.getBoundingClientRect().top).toBeCloseTo(0)
@@ -209,10 +209,10 @@ it('floats each button group only while its corresponding Form is visible', asyn
       <div style={{ height: '100vh' }} />
     </>,
   )
-  const inners = container.querySelectorAll<HTMLElement>('.sf-buttons-sticky-inner')
+  const inners = container.querySelectorAll<HTMLElement>('.silver-formily-form-button-group-sticky__inner')
   await vi.waitFor(() => expect(getComputedStyle(inners[0]).position).toBe('fixed'))
   expect(getComputedStyle(inners[1]).position).toBe('static')
-  const forms = container.querySelectorAll('.sf-layout')
+  const forms = container.querySelectorAll('.silver-formily-form-layout')
   window.scrollTo(0, forms[1].getBoundingClientRect().top + 100)
   await vi.waitFor(() => {
     expect(getComputedStyle(inners[0]).position).toBe('static')
@@ -270,4 +270,28 @@ it('cleans up listeners and pending measurements under StrictMode', async () => 
   await unmount()
   expect(remove).toHaveBeenCalledWith('scroll', expect.any(Function))
   expect(remove).toHaveBeenCalledWith('resize', expect.any(Function))
+})
+
+it('finds the fixed BEM FormLayout boundary without a Form or explicit container', async () => {
+  const { container } = await render(
+    <>
+      <FormLayout>
+        <div style={{ height: '150vh' }} />
+        <div><FormButtonGroup.Sticky className="caller-sticky">Actions</FormButtonGroup.Sticky></div>
+      </FormLayout>
+      <div style={{ height: '150vh' }} />
+    </>,
+  )
+  const { root, inner } = elements(container)
+  expect(root.classList.contains('caller-sticky')).toBe(true)
+  await vi.waitFor(() => {
+    expect(getComputedStyle(inner).position).toBe('fixed')
+    expect(inner.classList.contains('silver-formily-form-button-group-sticky__inner--fixed')).toBe(true)
+  })
+  const layout = container.querySelector('.silver-formily-form-layout')!
+  window.scrollTo(0, layout.getBoundingClientRect().bottom + 10)
+  await vi.waitFor(() => {
+    expect(getComputedStyle(inner).position).toBe('static')
+    expect(inner.classList.contains('silver-formily-form-button-group-sticky__inner--fixed')).toBe(false)
+  })
 })

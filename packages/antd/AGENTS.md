@@ -9,3 +9,5 @@
 - 保持 React 18/19 与 SSR 安全，不使用函数组件 defaultProps 或顶层 DOM 操作。
 - 测试使用 Vitest 浏览器模式，运行 `pnpm --filter @silver-formily/antd test:browser`。
 - 新增能力同步更新 `apps/antd-docs` 与 changeset；未迁移组件不要添加占位导出。
+
+- 封装样式固定使用 `silver-formily-` BEM 命名空间，由包内 `createBem`（easy-bem）生成，`cls`（clsx）负责合并基础类、修饰符和外部 className。修饰符不自动包含基础类，必须显式合并；不提供封装 prefixCls API。自有 CSS 变量统一使用 `--silver-formily-*`。仅原生 antd 反馈样式继续使用 ConfigProvider 的前缀。

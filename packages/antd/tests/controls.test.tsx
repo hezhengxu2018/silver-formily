@@ -51,12 +51,12 @@ it('displays pending feedback while asynchronous validation runs and clears it a
   const input = container.querySelector('input')!
   await page.getByRole('textbox').click()
   const validation = form.validate()
-  await vi.waitFor(() => expect(container.querySelector('.sf-item-pending')).not.toBeNull())
+  await vi.waitFor(() => expect(container.querySelector('.silver-formily-form-item--status_pending')).not.toBeNull())
   await vi.waitFor(() => expect(container.querySelector('.anticon-loading')).not.toBeNull())
   expect(document.activeElement).toBe(input)
   complete()
   await validation
-  await vi.waitFor(() => expect(container.querySelector('.sf-item-pending')).toBeNull())
+  await vi.waitFor(() => expect(container.querySelector('.silver-formily-form-item--status_pending')).toBeNull())
   expect(document.activeElement).toBe(input)
 })
 
@@ -74,7 +74,7 @@ it.each(['outlined', 'filled', 'borderless', 'underlined'] as const)('uses nativ
       <FormItem.BaseItem label="Number"><NumberPicker /></FormItem.BaseItem>
     </Form>,
   )
-  const controls = container.querySelectorAll('.sf-item-component > :first-child')
+  const controls = container.querySelectorAll('.silver-formily-form-item__component > :first-child')
   expect(controls).toHaveLength(4)
   for (const control of controls)
     expect(control.className).toContain(`-${variant}`)
@@ -90,12 +90,12 @@ it('preserves nested native variant inheritance and explicit component overrides
       </FormLayout>
     </Form>,
   )
-  const controls = container.querySelectorAll('.sf-item-component > :first-child')
+  const controls = container.querySelectorAll('.silver-formily-form-item__component > :first-child')
   expect(controls[0].className).toContain('-filled')
   expect(controls[1].className).toContain('-underlined')
   expect(controls[2].className).toContain('-outlined')
   await rerender(<FormLayout variant="borderless"><FormItem.BaseItem><Input /></FormItem.BaseItem></FormLayout>)
-  expect(container.querySelector('.sf-item-component > :first-child')!.className).toContain('-borderless')
+  expect(container.querySelector('.silver-formily-form-item__component > :first-child')!.className).toContain('-borderless')
 })
 
 it('renders Select dataSource options and writes user choices back to the field', async () => {
@@ -143,7 +143,7 @@ it('maps TextArea and all selected controls to readPretty and preserves explicit
   await expect.element(getByText('new text')).toBeVisible()
   await expect.element(getByText('0', { exact: true })).toBeVisible()
   await expect.element(getByText('Empty')).toBeVisible()
-  await vi.waitFor(() => expect(container.querySelector('.sf-item-asterisk')).toBeNull())
+  await vi.waitFor(() => expect(container.querySelector('.silver-formily-form-item__asterisk')).toBeNull())
   form.setPattern('editable')
   await expect.element(getByRole('textbox')).toHaveValue('new text')
 })

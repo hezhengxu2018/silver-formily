@@ -51,7 +51,7 @@ form-layout/jsx.tsx
 | `tooltipLayout / tooltipIcon`           | `'icon' \| 'text' / ReactNode`                            | —                                     | 表单项提示默认配置。                                                                                  |
 | `feedbackLayout`                        | `'loose' \| 'terse' \| 'popover' \| 'none'`               | —                                     | 表单项反馈布局默认值。                                                                                |
 | `spaceGap / gridColumnGap / gridRowGap` | `number`                                                  | —                                     | 当前仅保留类型和上下文值；本次没有对应 Space / FormGrid 封装消费，不直接产生间距。                    |
-| `prefixCls / className / style`         | `string / string / CSSProperties`                         | —                                     | 根节点前缀、class 和样式。                                                                            |
+| `className / style`                     | `string / CSSProperties`                                  | —                                     | 根节点额外 class 和样式。                                                                             |
 | `children`                              | `ReactNode`                                               | —                                     | 布局内的表单项。                                                                                      |
 | `ref`                                   | `Ref<HTMLDivElement>`                                     | —                                     | 当前外层 div；供 Form 提供 Sticky 边界，也可以读取根节点。                                            |
 | `variant`                               | `ConfigProviderProps['variant']`                          | 继承 Ant Design 配置，最终 `outlined` | 通过原生 ConfigProvider 设置 outlined、filled、borderless、underlined，嵌套区域和显式控件属性可覆盖。 |
@@ -63,3 +63,20 @@ form-layout/jsx.tsx
 ## 文档来源
 
 介绍与原例来自 [Alibaba Formily FormLayout 中文文档](https://github.com/alibaba/formily/blob/d9a46442a575aa5f0fc1bd945e34d9a85d191d0e/packages/antd/docs/components/FormLayout.zh-CN.md)，遵循 [MIT 许可](/licenses/formily-MIT.txt)。依赖命名、Ant Design 6 兼容处理与未迁移组件裁剪见 [来源与示例适配](/guide/sources)。本页 API 按当前源码整理。
+
+## 样式命名与迁移
+
+封装组件使用固定的 `silver-formily-` BEM 类名，与 antd 的 `ConfigProvider.prefixCls` 独立。主题仍通过 antd token 继承。
+
+| 组件                   | Block                                     |
+| ---------------------- | ----------------------------------------- |
+| FormItem               | `silver-formily-form-item`                |
+| FormLayout             | `silver-formily-form-layout`              |
+| FormGrid               | `silver-formily-form-grid`                |
+| FormButtonGroup        | `silver-formily-form-button-group`        |
+| FormButtonGroup.Sticky | `silver-formily-form-button-group-sticky` |
+| PreviewText            | `silver-formily-preview-text`             |
+
+元素使用 `__`，布尔修饰符使用 `--`，枚举修饰符使用 `--名称_值`，例如 `silver-formily-form-item__label`、`silver-formily-form-item--label-wrap`、`silver-formily-form-item--layout_vertical`。
+
+迁移时，请将旧的缩写类名和 antd 前缀封装类替换为上述 BEM 类名；CSS 变量统一使用 `--silver-formily-*`，例如 `--silver-formily-primary` 和 `--silver-formily-height`。不保留旧类名或变量别名。FormItem、FormLayout、FormGrid、PreviewText 不再提供 `prefixCls`，请通过 `className`、`style` 或 CSS 变量扩展样式。antd 原生控件和反馈图标仍遵循 `ConfigProvider.prefixCls`。

@@ -4,12 +4,12 @@ import type { FormSize } from '../__builtins__'
 import { ConfigProvider } from 'antd'
 import cls from 'clsx'
 import { createContext, forwardRef, useContext, useImperativeHandle } from 'react'
-import { normalizeSize, usePrefixCls, useTokenStyle } from '../__builtins__'
+import { normalizeSize, useTokenStyle } from '../__builtins__'
+import { formLayoutBem as b } from './bem'
 import { useResponsiveFormLayout } from './use-responsive-form-layout'
 import './style.css'
 
 export interface IFormLayoutProps {
-  prefixCls?: string
   className?: string
   style?: CSSProperties
   colon?: boolean
@@ -54,7 +54,7 @@ export function useFormLayout(): IFormLayoutContext {
 }
 
 export const FormLayout = Object.assign(
-  forwardRef<HTMLDivElement, PropsWithChildren<IFormLayoutProps>>(({ shallow = true, children, prefixCls, className, style, ...otherProps }, forwardedRef) => {
+  forwardRef<HTMLDivElement, PropsWithChildren<IFormLayoutProps>>(({ shallow = true, children, className, style, ...otherProps }, forwardedRef) => {
     const { ref, props } = useResponsiveFormLayout(otherProps)
     useImperativeHandle(forwardedRef, () => ref.current!)
     const inherited = useFormDeepLayout()
@@ -68,11 +68,10 @@ export const FormLayout = Object.assign(
       if (props.colon !== undefined)
         deep.colon = props.colon
     }
-    const prefix = usePrefixCls('formily-layout', { prefixCls })
     const tokenStyle = useTokenStyle()
     return (
       <ConfigProvider componentSize={normalizeSize(props.size ?? inherited?.size)} direction={props.direction} variant={props.variant}>
-        <div ref={ref} dir={props.direction} className={cls('sf-layout', prefix, `sf-layout-${props.layout ?? 'horizontal'}`, className)} style={{ ...tokenStyle, ...style }}>
+        <div ref={ref} dir={props.direction} className={cls(b(), b({ layout: props.layout ?? 'horizontal' }), className)} style={{ ...tokenStyle, ...style }}>
           <FormLayoutDeepContext.Provider value={deep}>
             <FormLayoutShallowContext.Provider value={shallow ? props : null}>
               {children}

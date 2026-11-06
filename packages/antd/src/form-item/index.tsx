@@ -7,10 +7,12 @@ import { connect, mapProps } from '@silver-formily/react'
 import { ConfigProvider, Popover, Tooltip } from 'antd'
 import cls from 'clsx'
 import { isValidElement, useContext, useEffect, useId, useRef, useState } from 'react'
-import { ControlContext, normalizeSize, pickDataProps, usePrefixCls, useTokenStyle } from '../__builtins__'
+import { ControlContext, createBem, normalizeSize, pickDataProps, useTokenStyle } from '../__builtins__'
 import { NativeFeedbackProvider, useFormItemFeedback } from '../__builtins__/feedback'
 import { FormLayoutShallowContext, useFormLayout } from '../form-layout'
 import './style.css'
+
+const b = createBem('form-item')
 
 export type { IFormItemProps } from './types'
 
@@ -53,7 +55,6 @@ export function BaseItem({ children, ...props }: IFormItemProps) {
     fullness,
     size,
   } = settings
-  const prefix = usePrefixCls('formily-item', props)
   const generatedId = useId()
   const controlId = labelFor ?? generatedId
   const tokenStyle = useTokenStyle(size)
@@ -103,11 +104,11 @@ export function BaseItem({ children, ...props }: IFormItemProps) {
     </ControlContext.Provider>
   )
   const labelContent = (
-    <div className="sf-item-label-content" ref={labelRef}>
+    <div className={b('label-content')} ref={labelRef}>
       <span ref={textRef}>
-        {asterisk && requiredMark === true && <span className="sf-item-asterisk">*</span>}
+        {asterisk && requiredMark === true && <span className={b('asterisk')}>*</span>}
         <label htmlFor={controlId}>{label === ' ' ? '\u00A0' : label}</label>
-        {!asterisk && requiredMark === 'optional' && !optionalMarkHidden && <span className="sf-item-optional">{locale?.Form?.optional ?? '(optional)'}</span>}
+        {!asterisk && requiredMark === 'optional' && !optionalMarkHidden && <span className={b('optional')}>{locale?.Form?.optional ?? '(optional)'}</span>}
       </span>
     </div>
   )
@@ -115,19 +116,21 @@ export function BaseItem({ children, ...props }: IFormItemProps) {
     <div
       {...pickDataProps(props)}
       data-grid-span={props.gridSpan}
-      className={cls('sf-item', prefix, feedback.className, `sf-item-${layout}`, `sf-item-feedback-${feedbackLayout}`, {
-        'sf-item-fullness': fullness,
-        'sf-item-outline': enableOutlineFeedback,
-        'sf-item-label-wrap': labelWrap,
-        'sf-item-wrapper-wrap': wrapperWrap,
-        'sf-item-feedback-visible': feedbackVisible,
-        [`sf-item-${feedbackStatus}`]: feedbackStatus,
-        [`sf-item-size-${size}`]: size,
-      }, props.className)}
+      className={cls(b(), feedback.className, b({
+        layout,
+        'feedback-layout': feedbackLayout,
+        'status': feedbackStatus,
+        size,
+        fullness,
+        'outline': enableOutlineFeedback,
+        'label-wrap': labelWrap,
+        'wrapper-wrap': wrapperWrap,
+        'feedback-visible': feedbackVisible,
+      }), props.className)}
       style={{ ...tokenStyle, ...props.style }}
     >
       {hasLabel && (
-        <div className="sf-item-label" style={{ justifyContent: layout === 'vertical' ? 'flex-start' : labelAlign === 'right' ? 'flex-end' : 'flex-start', ...labelSizing }}>
+        <div className={b('label')} style={{ justifyContent: layout === 'vertical' ? 'flex-start' : labelAlign === 'right' ? 'flex-end' : 'flex-start', ...labelSizing }}>
           {(overflow || (tooltip && tooltipLayout === 'text'))
             ? (
                 <Tooltip
@@ -146,14 +149,14 @@ export function BaseItem({ children, ...props }: IFormItemProps) {
                 </Tooltip>
               )
             : labelContent}
-          {tooltip && tooltipLayout === 'icon' && !overflow && <Tooltip {...tooltipProps} getPopupContainer={getPopupContainer}><span className="sf-item-tooltip">{tooltipIcon ?? <QuestionCircleOutlined />}</span></Tooltip>}
-          {label !== ' ' && colon && <span className="sf-item-colon">:</span>}
+          {tooltip && tooltipLayout === 'icon' && !overflow && <Tooltip {...tooltipProps} getPopupContainer={getPopupContainer}><span className={b('tooltip')}>{tooltipIcon ?? <QuestionCircleOutlined />}</span></Tooltip>}
+          {label !== ' ' && colon && <span className={b('colon')}>:</span>}
         </div>
       )}
-      <div className="sf-item-control" style={controlSizing}>
-        <div className="sf-item-content" style={{ justifyContent: wrapperAlign === 'right' ? 'flex-end' : 'flex-start' }}>
-          {props.addonBefore !== undefined && <span className="sf-item-addon">{props.addonBefore}</span>}
-          <div className="sf-item-component" style={{ textAlign: wrapperAlign }}>
+      <div className={b('control')} style={controlSizing}>
+        <div className={b('content')} style={{ justifyContent: wrapperAlign === 'right' ? 'flex-end' : 'flex-start' }}>
+          {props.addonBefore !== undefined && <span className={b('addon')}>{props.addonBefore}</span>}
+          <div className={b('component')} style={{ textAlign: wrapperAlign }}>
             {feedbackLayout === 'popover'
               ? (
                   <Popover
@@ -161,22 +164,22 @@ export function BaseItem({ children, ...props }: IFormItemProps) {
                     placement="top"
                     autoAdjustOverflow
                     content={(
-                      <div className={cls('sf-item-popover-feedback', feedbackStatus && `sf-item-popover-feedback-${feedbackStatus}`)} style={tokenStyle} role={feedbackStatus === 'error' ? 'alert' : undefined}>
+                      <div className={cls(b('popover-feedback'), b('popover-feedback', { status: feedbackStatus }))} style={tokenStyle} role={feedbackStatus === 'error' ? 'alert' : undefined}>
                         {PopoverIcon && <PopoverIcon />}
                         <span>{feedbackText}</span>
                       </div>
                     )}
                     getPopupContainer={getPopupContainer}
                   >
-                    <div className="sf-item-popover-anchor">{control}</div>
+                    <div className={b('popover-anchor')}>{control}</div>
                   </Popover>
                 )
               : control}
           </div>
-          {props.addonAfter !== undefined && <span className="sf-item-addon">{props.addonAfter}</span>}
+          {props.addonAfter !== undefined && <span className={b('addon')}>{props.addonAfter}</span>}
         </div>
-        {feedbackVisible && feedbackLayout !== 'popover' && feedbackLayout !== 'none' && <div className="sf-item-help" role={feedbackStatus === 'error' ? 'alert' : undefined}>{feedbackText}</div>}
-        {extra !== undefined && <div className="sf-item-extra">{extra}</div>}
+        {feedbackVisible && feedbackLayout !== 'popover' && feedbackLayout !== 'none' && <div className={b('help')} role={feedbackStatus === 'error' ? 'alert' : undefined}>{feedbackText}</div>}
+        {extra !== undefined && <div className={b('extra')}>{extra}</div>}
       </div>
     </div>
   )

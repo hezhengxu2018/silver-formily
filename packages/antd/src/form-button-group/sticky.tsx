@@ -2,9 +2,12 @@ import type { CSSProperties, HTMLAttributes } from 'react'
 import { computePosition } from '@floating-ui/dom'
 import cls from 'clsx'
 import { useContext, useEffect, useRef, useState } from 'react'
-import { usePrefixCls, useTokenStyle } from '../__builtins__'
+import { createBem, useTokenStyle } from '../__builtins__'
+import { formLayoutBem } from '../form-layout/bem'
 import { FormRootContext } from '../form/root-context'
 import { getStickyAnchor, observeStickyElements } from './sticky-utils'
+
+const b = createBem('form-button-group-sticky')
 
 export interface IStickyProps extends HTMLAttributes<HTMLDivElement> {
   align?: CSSProperties['textAlign']
@@ -40,7 +43,6 @@ export function FormButtonGroupSticky({
   ...props
 }: IStickyProps) {
   const position = requestedPosition ?? (bottom ? 'bottom' : 'top')
-  const prefixCls = usePrefixCls('formily-button-group')
   const formRoot = useContext(FormRootContext)
   const tokens = useTokenStyle()
   const rootRef = useRef<HTMLDivElement>(null)
@@ -56,7 +58,7 @@ export function FormButtonGroupSticky({
     if (!root || !inner || !probe)
       return
 
-    const boundary = container ?? formRoot?.current ?? root.closest('form') ?? root.closest<HTMLElement>('.sf-layout') ?? root.parentElement
+    const boundary = container ?? formRoot?.current ?? root.closest('form') ?? root.closest<HTMLElement>(`.${formLayoutBem()}`) ?? root.parentElement
     if (!boundary)
       return
     let frame = 0
@@ -193,7 +195,7 @@ export function FormButtonGroupSticky({
     <div
       {...props}
       ref={rootRef}
-      className={cls('sf-buttons-sticky', `${prefixCls}-sticky`, className)}
+      className={cls(b(), className)}
       style={{ ...tokens, ...style, ...(state.fixed ? { height: state.height } : {}) }}
     >
       <div
@@ -203,7 +205,7 @@ export function FormButtonGroupSticky({
       />
       <div
         ref={innerRef}
-        className={cls('sf-buttons-sticky-inner', `${prefixCls}-sticky-inner`, { 'sf-buttons-sticky-fixed': state.fixed, [`${prefixCls}-sticky-fixed`]: state.fixed })}
+        className={cls(b('inner'), b('inner', { fixed: state.fixed }))}
         style={{
           justifyContent: align === 'left' || align === 'start' ? 'flex-start' : align === 'right' || align === 'end' ? 'flex-end' : 'center',
           background: style?.background,

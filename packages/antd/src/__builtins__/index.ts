@@ -1,5 +1,6 @@
 import type { CSSProperties } from 'react'
-import { ConfigProvider, theme } from 'antd'
+import { theme } from 'antd'
+import bem from 'easy-bem'
 import { createContext, useContext } from 'react'
 
 export type FormSize = 'small' | 'default' | 'middle' | 'medium' | 'large'
@@ -8,9 +9,8 @@ export interface ControlContextValue {
 }
 export const ControlContext = createContext<ControlContextValue>({})
 
-export function usePrefixCls(name: string, props?: { prefixCls?: string }) {
-  const { getPrefixCls } = useContext(ConfigProvider.ConfigContext)
-  return getPrefixCls(name, props?.prefixCls)
+export function createBem(name: string) {
+  return bem(`silver-formily-${name}`)
 }
 
 export function normalizeSize(size?: FormSize) {
@@ -29,17 +29,17 @@ export function useTokenStyle(size?: FormSize): CSSProperties {
   const { token } = theme.useToken()
   const height = size === 'small' ? token.controlHeightSM : size === 'large' ? token.controlHeightLG : token.controlHeight
   return {
-    '--sf-color': token.colorText,
-    '--sf-secondary': token.colorTextSecondary,
-    '--sf-error': token.colorError,
-    '--sf-warning': token.colorWarning,
-    '--sf-success': token.colorSuccess,
-    '--sf-border': token.colorBorder,
-    '--sf-bg': token.colorBgContainer,
-    '--sf-primary': token.colorPrimary,
-    '--sf-radius': `${token.borderRadius}px`,
-    '--sf-font': `${token.fontSize}px`,
-    '--sf-height': `${height}px`,
+    '--silver-formily-color': token.colorText,
+    '--silver-formily-secondary': token.colorTextSecondary,
+    '--silver-formily-error': token.colorError,
+    '--silver-formily-warning': token.colorWarning,
+    '--silver-formily-success': token.colorSuccess,
+    '--silver-formily-border': token.colorBorder,
+    '--silver-formily-bg': token.colorBgContainer,
+    '--silver-formily-primary': token.colorPrimary,
+    '--silver-formily-radius': `${token.borderRadius}px`,
+    '--silver-formily-font': `${token.fontSize}px`,
+    '--silver-formily-height': `${height}px`,
   } as CSSProperties
 }
 

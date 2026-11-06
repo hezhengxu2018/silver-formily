@@ -7,7 +7,7 @@
 - 参考本仓库 Element Plus 的 FormGrid 封装，使用 `@silver-formily/grid` 运行时，默认最小列数为 1；断点按容器宽度计算。
 - `gridSpan={-1}` 表示填满当前行的剩余列，不是始终独占一整行。普通跨列在默认模式下会被限制到当前行剩余列数。
 - 传入 `grid` 时，以该实例的配置为准，其余网格配置不覆盖外部实例。一个实例应只连接一个已挂载的 FormGrid。
-- 内部样式使用 `sf-grid` 和 ConfigProvider 生成的前缀，不兼容旧 Less 样式覆盖。挂载后才连接 DOM 观察器，服务端首屏不会测量容器。
+- 内部样式使用 `silver-formily-form-grid` ，不随 ConfigProvider 的前缀改变，不兼容旧 Less 样式覆盖。挂载后才连接 DOM 观察器，服务端首屏不会测量容器。
 
 :::
 
@@ -45,23 +45,22 @@ form-grid/query-form.tsx
 
 `IFormGridProps` 继承 `@silver-formily/grid` 的 `IGridOptions` 和 React 的 `HTMLAttributes<HTMLDivElement>`，支持 `children`、`className`、`style`、事件以及 `data-*` / `aria-*`。
 
-| 属性          | 类型                                                   | 描述                                                 | 默认值                              |
-| ------------- | ------------------------------------------------------ | ---------------------------------------------------- | ----------------------------------- |
-| minWidth      | `number \| number[]`                                   | 单元格最小宽度，单位 px                              | `100`                               |
-| maxWidth      | `number \| number[]`                                   | 单元格最大宽度                                       | `Infinity`                          |
-| minColumns    | `number \| number[]`                                   | 最小列数                                             | `1`                                 |
-| maxColumns    | `number \| number[]`                                   | 最大列数                                             | `Infinity`                          |
-| breakpoints   | `number[]`                                             | 容器宽度断点                                         | `[720, 1280, 1920]`                 |
-| columnGap     | `number`                                               | 列间距，单位 px                                      | `8`                                 |
-| rowGap        | `number`                                               | 行间距，单位 px                                      | `4`                                 |
-| colWrap       | `boolean`                                              | 是否自动换行；关闭时按子项原始跨列总数布局           | `true`                              |
-| strictAutoFit | `boolean`                                              | 严格按配置的宽度范围布局                             | `false`                             |
-| maxRows       | `number`                                               | 供外部折叠逻辑读取的最大行数；需要配合 shouldVisible | `Infinity`                          |
-| shouldVisible | `(node: GridNode, grid: Grid<HTMLElement>) => boolean` | 按网格节点信息控制显示                               | 不额外隐藏                          |
-| onInitialized | `(grid: Grid<HTMLElement>) => void`                    | 首次连接并初始化后调用                               | —                                   |
-| onDigest      | `(grid: Grid<HTMLElement>) => void`                    | 每次测量、重新计算后调用                             | —                                   |
-| grid          | `Grid<HTMLElement>`                                    | 外部实例，优先于其他网格配置                         | —                                   |
-| prefixCls     | `string`                                               | 自定义前缀 class                                     | ConfigProvider 的 formily-grid 前缀 |
+| 属性          | 类型                                                   | 描述                                                 | 默认值              |
+| ------------- | ------------------------------------------------------ | ---------------------------------------------------- | ------------------- |
+| minWidth      | `number \| number[]`                                   | 单元格最小宽度，单位 px                              | `100`               |
+| maxWidth      | `number \| number[]`                                   | 单元格最大宽度                                       | `Infinity`          |
+| minColumns    | `number \| number[]`                                   | 最小列数                                             | `1`                 |
+| maxColumns    | `number \| number[]`                                   | 最大列数                                             | `Infinity`          |
+| breakpoints   | `number[]`                                             | 容器宽度断点                                         | `[720, 1280, 1920]` |
+| columnGap     | `number`                                               | 列间距，单位 px                                      | `8`                 |
+| rowGap        | `number`                                               | 行间距，单位 px                                      | `4`                 |
+| colWrap       | `boolean`                                              | 是否自动换行；关闭时按子项原始跨列总数布局           | `true`              |
+| strictAutoFit | `boolean`                                              | 严格按配置的宽度范围布局                             | `false`             |
+| maxRows       | `number`                                               | 供外部折叠逻辑读取的最大行数；需要配合 shouldVisible | `Infinity`          |
+| shouldVisible | `(node: GridNode, grid: Grid<HTMLElement>) => boolean` | 按网格节点信息控制显示                               | 不额外隐藏          |
+| onInitialized | `(grid: Grid<HTMLElement>) => void`                    | 首次连接并初始化后调用                               | —                   |
+| onDigest      | `(grid: Grid<HTMLElement>) => void`                    | 每次测量、重新计算后调用                             | —                   |
+| grid          | `Grid<HTMLElement>`                                    | 外部实例，优先于其他网格配置                         | —                   |
 
 数组配置与容器断点对应；高于最后一个断点时，运行时使用数组第一项。数组长度不足时，命中的桶使用数组最后一项。详情见 [Grid 配置与断点文档](https://grid.silver-formily.org/)。
 

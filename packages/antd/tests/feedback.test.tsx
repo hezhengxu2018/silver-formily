@@ -53,7 +53,7 @@ it.each(controls)('matches native Form.Item feedback for %s through every status
       expect(actualIcon.querySelector('[role="img"]')?.getAttribute('aria-label')).toBe(referenceIcon.querySelector('[role="img"]')?.getAttribute('aria-label'))
       expect(actual.firstElementChild!.contains(actualIcon)).toBe(true)
     }
-    expect(getComputedStyle(screen.container.querySelector('.sf-item-content')!).borderTopWidth).toBe('0px')
+    expect(getComputedStyle(screen.container.querySelector('.silver-formily-form-item__content')!).borderTopWidth).toBe('0px')
   }
 })
 
@@ -61,7 +61,7 @@ it.each(['outlined', 'filled', 'borderless', 'underlined'] as const)('matches na
   const view = (dark: boolean, size: 'small' | 'large', disabled: boolean) => (
     <ConfigProvider prefixCls="custom" componentDisabled={disabled} theme={{ algorithm: dark ? theme.darkAlgorithm : theme.defaultAlgorithm, token: { colorPrimary: '#7b31c9', colorSuccess: '#218557', motion: false } }}>
       <button type="button">Unfocus</button>
-      <FormItem.BaseItem prefixCls="local-item" feedbackStatus="success" hasFeedback variant={variant} size={size}>
+      <FormItem.BaseItem className="local-item" feedbackStatus="success" hasFeedback variant={variant} size={size}>
         <div data-testid="adapted"><AntdInput aria-label="adapted" /></div>
       </FormItem.BaseItem>
       <ConfigProvider variant={variant} componentSize={size}>
@@ -81,7 +81,7 @@ it.each(['outlined', 'filled', 'borderless', 'underlined'] as const)('matches na
       expect(appearance(actual)).toEqual(appearance(reference))
       const icon = actual.querySelector('.custom-form-item-feedback-icon')!
       expect(getComputedStyle(icon).color).toBe(getComputedStyle(reference.querySelector('.custom-form-item-feedback-icon')!).color)
-      expect(screen.container.querySelector('.sf-item')!.classList.contains('local-item')).toBe(true)
+      expect(screen.container.querySelector('.silver-formily-form-item')!.classList.contains('local-item')).toBe(true)
       if (!disabled) {
         await page.getByRole('textbox', { name: 'adapted', exact: true }).click()
         const focused = appearance(actual)
@@ -178,17 +178,17 @@ it('maps field errors and explicit message overrides without adding a second for
   const screen = await render(view())
   await form.validate().catch(() => {})
   await vi.waitFor(() => expect(screen.container.querySelector('.ant-input-status-error')).not.toBeNull())
-  expect(screen.container.querySelector('.sf-item-help')!.textContent).toBeTruthy()
-  expect(JSON.parse(screen.container.querySelector('[data-testid="probe"]')!.textContent!).errors).toEqual([screen.container.querySelector('.sf-item-help')!.textContent])
+  expect(screen.container.querySelector('.silver-formily-form-item__help')!.textContent).toBeTruthy()
+  expect(JSON.parse(screen.container.querySelector('[data-testid="probe"]')!.textContent!).errors).toEqual([screen.container.querySelector('.silver-formily-form-item__help')!.textContent])
   form.setFieldState('*', (state) => {
     state.decoratorProps = { ...state.decoratorProps, feedbackText: 'override' }
   })
-  await vi.waitFor(() => expect(screen.container.querySelector('.sf-item-help')!.textContent).toBe('override'))
+  await vi.waitFor(() => expect(screen.container.querySelector('.silver-formily-form-item__help')!.textContent).toBe('override'))
   expect(JSON.parse(screen.container.querySelector('[data-testid="probe"]')!.textContent!).errors).toEqual(['override'])
   form.setFieldState('*', (state) => {
     state.decoratorProps = { ...state.decoratorProps, feedbackText: null }
   })
-  await vi.waitFor(() => expect(screen.container.querySelector('.sf-item-help')).toBeNull())
+  await vi.waitFor(() => expect(screen.container.querySelector('.silver-formily-form-item__help')).toBeNull())
   await page.getByRole('textbox').fill('valid')
   await vi.waitFor(() => expect(form.values.value).toBe('valid'))
   await vi.waitFor(() => expect(form.query('value').get('selfErrors')).toEqual([]))
@@ -203,14 +203,14 @@ it.each(['loose', 'terse', 'none', 'popover'] as const)('preserves %s feedback l
       <Input />
     </FormItem.BaseItem>,
   )
-  expect(container.querySelector('.sf-item-extra')!.textContent).toBe('Extra content')
-  expect(container.querySelectorAll('.sf-item-addon')).toHaveLength(2)
+  expect(container.querySelector('.silver-formily-form-item__extra')!.textContent).toBe('Extra content')
+  expect(container.querySelectorAll('.silver-formily-form-item__addon')).toHaveLength(2)
   expect(container.querySelector('.ant-input-affix-wrapper .ant-form-item-feedback-icon-error')).not.toBeNull()
   if (feedbackLayout === 'loose' || feedbackLayout === 'terse') {
     expect(container.querySelector('[role="alert"]')!.textContent).toBe('Validation message')
   }
   else {
-    expect(container.querySelector('.sf-item-help')).toBeNull()
+    expect(container.querySelector('.silver-formily-form-item__help')).toBeNull()
     if (feedbackLayout === 'popover')
       await expect.element(page.getByText('Validation message', { exact: true })).toBeVisible()
   }
@@ -250,7 +250,7 @@ it.each([
     </ConfigProvider>,
   )
   await expect.element(page.getByText('Popover message', { exact: true })).toBeVisible()
-  const popup = screen.container.querySelector('[data-testid="portal"] .sf-item-popover-feedback')!
+  const popup = screen.container.querySelector('[data-testid="portal"] .silver-formily-form-item__popover-feedback')!
   expect(popup.querySelector(`[aria-label="${icon}"]`)).not.toBeNull()
   const expectedColor = document.createElement('span')
   expectedColor.style.color = color
@@ -258,7 +258,7 @@ it.each([
   expect(getComputedStyle(popup).color).toBe(getComputedStyle(expectedColor).color)
   expect(getComputedStyle(popup.querySelector('.anticon')!).color).toBe(getComputedStyle(expectedColor).color)
   expectedColor.remove()
-  expect(screen.container.querySelector('.sf-item-help')).toBeNull()
+  expect(screen.container.querySelector('.silver-formily-form-item__help')).toBeNull()
   expect(screen.container.querySelector('.custom-input-affix-wrapper .custom-form-item-feedback-icon')).toBeNull()
 })
 
@@ -275,7 +275,7 @@ it('limits the popover success outline to eligible controls and respects native 
   await page.getByRole('button', { name: 'Outside control' }).click()
   const control = () => screen.container.querySelector('.ant-input-affix-wrapper')!
   expect(getComputedStyle(control()).borderTopColor).toBe('rgb(22, 128, 72)')
-  expect(getComputedStyle(screen.container.querySelector('.sf-item-content')!).borderTopWidth).toBe('0px')
+  expect(getComputedStyle(screen.container.querySelector('.silver-formily-form-item__content')!).borderTopWidth).toBe('0px')
   await screen.rerender(view(false, 'outlined'))
   expect(getComputedStyle(control()).borderTopColor).toBe('rgb(217, 217, 217)')
   await screen.rerender(view(true, 'outlined', 'warning'))

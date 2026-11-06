@@ -4,11 +4,12 @@ import { createGrid } from '@silver-formily/grid'
 import { observer } from '@silver-formily/reactive-react'
 import cls from 'clsx'
 import { createContext, useContext, useEffect, useMemo, useRef } from 'react'
-import { usePrefixCls } from '../__builtins__'
+import { createBem } from '../__builtins__'
 import './style.css'
 
+const b = createBem('form-grid')
+
 export interface IFormGridProps extends IGridOptions, HTMLAttributes<HTMLDivElement> {
-  prefixCls?: string
   grid?: Grid<HTMLElement>
 }
 
@@ -48,14 +49,12 @@ export const FormGrid = Object.assign(observer(({
   shouldVisible,
   onDigest,
   onInitialized,
-  prefixCls,
   className,
   style,
   children,
   ...props
 }: IFormGridProps) => {
   const ref = useRef<HTMLDivElement>(null)
-  const prefix = usePrefixCls('formily-grid', { prefixCls })
   const instance = useMemo(() => grid ?? createFormGrid(Object.fromEntries(Object.entries({
     maxRows,
     minColumns,
@@ -82,7 +81,7 @@ export const FormGrid = Object.assign(observer(({
       <div
         {...props}
         ref={ref}
-        className={cls('sf-grid', prefix, className)}
+        className={cls(b(), className)}
         style={{ gridTemplateColumns: instance.templateColumns, gap: instance.gap, ...style }}
       >
         {children}

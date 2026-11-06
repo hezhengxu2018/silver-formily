@@ -1,6 +1,6 @@
-.sf-grid {
+.silver-formily-form-grid {
   display: grid;
 }
-.sf-grid > * {
+.silver-formily-form-grid > * {
   min-width: 0;
 }

@@ -49,7 +49,7 @@ it('shows required validation and prevents submission until valid', async () => 
   await getByRole('button').click()
   await vi.waitFor(() => expect(failed).toHaveBeenCalledOnce())
   expect(submit).not.toHaveBeenCalled()
-  expect(container.querySelector('.sf-item-asterisk')).not.toBeNull()
+  expect(container.querySelector('.silver-formily-form-item__asterisk')).not.toBeNull()
   await expect.element(getByRole('alert')).toBeVisible()
   expect(container.querySelector('.ant-input-affix-wrapper')?.className).toContain('status-error')
   await getByRole('textbox').fill('ok')
