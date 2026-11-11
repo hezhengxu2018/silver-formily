@@ -4,7 +4,6 @@ import { createSchemaField, FormProvider } from '@silver-formily/react'
 import { action } from '@silver-formily/reactive'
 import React from 'react'
 // Adapted from Alibaba Formily (MIT); see /guide/sources for source and license.
-import { DemoConfig } from '../_shared'
 
 const SchemaField = createSchemaField({
   components: {
@@ -94,7 +93,7 @@ const schema = {
   },
 }
 
-function OfficialExample() {
+export default function OfficialExample() {
   return (
     <FormProvider form={form}>
       <SchemaField schema={schema} scope={{ useAsyncDataSource, loadData }} />
@@ -103,8 +102,4 @@ function OfficialExample() {
       </FormButtonGroup>
     </FormProvider>
   )
-}
-
-export default function Demo() {
-  return <DemoConfig><OfficialExample /></DemoConfig>
 }

@@ -2,14 +2,14 @@ import { Form, FormButtonGroup, FormItem, Input, NumberPicker, Select, Submit } 
 import { createForm } from '@silver-formily/core'
 import { createSchemaField } from '@silver-formily/react'
 import { useState } from 'react'
-import { DemoConfig, Result } from './_shared'
+import { Result } from './_shared'
 
 const SchemaField = createSchemaField({ components: { FormItem, Input, Select, NumberPicker } })
 export default function Demo() {
   const [form] = useState(() => createForm())
   const [result, setResult] = useState<unknown>()
   return (
-    <DemoConfig>
+    <>
       <Form form={form} layout="vertical" onAutoSubmit={setResult} onAutoSubmitFailed={() => {}}>
         <SchemaField schema={{
           type: 'object',
@@ -23,6 +23,6 @@ export default function Demo() {
         <FormButtonGroup><Submit /></FormButtonGroup>
       </Form>
       <Result value={result} />
-    </DemoConfig>
+    </>
   )
 }

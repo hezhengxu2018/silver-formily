@@ -14,7 +14,6 @@ import {
 import { Input as AntdInput, Button } from 'antd'
 import React from 'react'
 // Adapted from Alibaba Formily (MIT); see /guide/sources for source and license.
-import { DemoConfig } from '../_shared'
 
 const Input = connect(AntdInput, mapReadPretty(PreviewText.Input))
 
@@ -28,7 +27,7 @@ const SchemaField = createSchemaField({
 
 const form = createForm()
 
-function OfficialExample() {
+export default function OfficialExample() {
   return (
     <PreviewText.Placeholder value="暂无数据">
       <FormLayout labelCol={6} wrapperCol={10}>
@@ -72,8 +71,4 @@ function OfficialExample() {
       </FormLayout>
     </PreviewText.Placeholder>
   )
-}
-
-export default function Demo() {
-  return <DemoConfig><OfficialExample /></DemoConfig>
 }

@@ -15,7 +15,6 @@ import { createSchemaField, FormProvider } from '@silver-formily/react'
 import { observer } from '@silver-formily/reactive-react'
 // Adapted from Alibaba Formily (MIT); see /guide/sources for source and license.
 import React, { Fragment, useMemo } from 'react'
-import { DemoConfig } from '../_shared'
 
 function useCollapseGrid(maxRows: number) {
   const grid = useMemo(
@@ -133,7 +132,7 @@ const SchemaField = createSchemaField({
   },
 })
 
-function Example() {
+export default function Example() {
   const form = useMemo(() => createForm(), [])
   return (
     <FormProvider form={form}>
@@ -190,8 +189,3 @@ function Example() {
     </FormProvider>
   )
 }
-
-export default function Demo() {
-  return <DemoConfig><Example /></DemoConfig>
-}
-

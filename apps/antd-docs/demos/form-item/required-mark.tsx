@@ -5,7 +5,6 @@ import { ConfigProvider, Radio } from 'antd'
 import zhCN from 'antd/locale/zh_CN'
 import React, { useState } from 'react'
 // Adapted from Alibaba Formily (MIT); see /guide/sources for source and license.
-import { DemoConfig } from '../_shared'
 
 const SchemaField = createSchemaField({
   components: {
@@ -16,7 +15,7 @@ const SchemaField = createSchemaField({
 
 const form = createForm()
 
-function OfficialExample() {
+export default function OfficialExample() {
   const [requiredMark, setRequiredMark] = useState(true)
   return (
     <ConfigProvider locale={zhCN}>
@@ -71,8 +70,4 @@ function OfficialExample() {
       </FormProvider>
     </ConfigProvider>
   )
-}
-
-export default function Demo() {
-  return <DemoConfig><OfficialExample /></DemoConfig>
 }

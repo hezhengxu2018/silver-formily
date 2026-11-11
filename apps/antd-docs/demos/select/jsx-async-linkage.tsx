@@ -8,7 +8,6 @@ import { Field, FormProvider } from '@silver-formily/react'
 import { action } from '@silver-formily/reactive'
 import React from 'react'
 // Adapted from Alibaba Formily (MIT); see /guide/sources for source and license.
-import { DemoConfig } from '../_shared'
 
 function useAsyncDataSource(pattern: FormPathPattern, service: (field: FieldType) => Promise<{ label: string, value: any }[]>) {
   onFieldReact(pattern, (field: FieldType) => {
@@ -60,7 +59,7 @@ const form = createForm({
   },
 })
 
-function OfficialExample() {
+export default function OfficialExample() {
   return (
     <FormProvider form={form}>
       <Field
@@ -98,8 +97,4 @@ function OfficialExample() {
       </FormButtonGroup>
     </FormProvider>
   )
-}
-
-export default function Demo() {
-  return <DemoConfig><OfficialExample /></DemoConfig>
 }

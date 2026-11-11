@@ -1,7 +1,6 @@
 import { FormGrid } from '@silver-formily/antd'
 // Adapted from Alibaba Formily (MIT); see /guide/sources for source and license.
 import React from 'react'
-import { DemoConfig } from '../_shared'
 
 const { GridColumn } = FormGrid
 function Cell({ children }: React.PropsWithChildren) {
@@ -20,7 +19,7 @@ function Cell({ children }: React.PropsWithChildren) {
     </div>
   )
 }
-function Example() {
+export default function Example() {
   return (
     <React.Fragment>
       <p>maxColumns 3 + minColumns 2</p>
@@ -164,8 +163,3 @@ function Example() {
     </React.Fragment>
   )
 }
-
-export default function Demo() {
-  return <DemoConfig><Example /></DemoConfig>
-}
-

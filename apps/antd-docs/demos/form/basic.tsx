@@ -11,11 +11,10 @@ import { createForm } from '@silver-formily/core'
 import { Field } from '@silver-formily/react'
 import React from 'react'
 // Adapted from Alibaba Formily (MIT); see /guide/sources for source and license.
-import { DemoConfig } from '../_shared'
 
 const form = createForm()
 
-function OfficialExample() {
+export default function OfficialExample() {
   return (
     <Form
       form={form}
@@ -72,8 +71,4 @@ function OfficialExample() {
       </FormGrid>
     </Form>
   )
-}
-
-export default function Demo() {
-  return <DemoConfig><OfficialExample /></DemoConfig>
 }

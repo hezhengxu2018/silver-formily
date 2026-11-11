@@ -29,7 +29,7 @@
 ## 示例适配规则
 
 1. 把 `@formily/*` 导入替换为对应 `@silver-formily/*`，补齐 type-only import 与字段类型标注。
-2. 从官方 TSX 代码块提取独立 demo，通过共享 `DemoConfig` 同步主题和中文 locale，再交给 VitePress 的 React demo 桥接。保留官方 Markup Schema、JSON Schema、纯 JSX 及联动写法；官方 Dumi Alert 转为 VitePress 提示容器，保留原文。
+2. 从官方 TSX 代码块提取独立 demo，由 VitePress 主题在 React demo 渲染外层统一包裹 `DemoConfig`，同步主题和中文 locale，示例源码只保留业务代码。保留官方 Markup Schema、JSON Schema、纯 JSX 及联动写法；官方 Dumi Alert 转为 VitePress 提示容器，保留原文。
 3. Form 原例使用本包 FormGrid 排版；FormItem 的尺寸示例已恢复日期、树选择、级联、Switch 控件。
 4. FormItem 尺寸切换使用 Radio.Group，保留尺寸联动逻辑。
 5. PreviewText 原例已恢复日期、树选择、级联分支；日期初始值改为 Dayjs。

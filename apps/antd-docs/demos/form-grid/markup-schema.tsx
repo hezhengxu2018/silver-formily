@@ -3,7 +3,6 @@ import { createForm } from '@silver-formily/core'
 import { createSchemaField, FormProvider } from '@silver-formily/react'
 // Adapted from Alibaba Formily (MIT); see /guide/sources for source and license.
 import React from 'react'
-import { DemoConfig } from '../_shared'
 
 const SchemaField = createSchemaField({
   components: {
@@ -15,7 +14,7 @@ const SchemaField = createSchemaField({
 
 const form = createForm()
 
-function Example() {
+export default function Example() {
   return (
     <FormProvider form={form}>
       <SchemaField>
@@ -74,8 +73,3 @@ function Example() {
     </FormProvider>
   )
 }
-
-export default function Demo() {
-  return <DemoConfig><Example /></DemoConfig>
-}
-

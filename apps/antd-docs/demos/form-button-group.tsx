@@ -3,14 +3,14 @@ import { createForm } from '@silver-formily/core'
 import { Field } from '@silver-formily/react'
 import { Button } from 'antd'
 import { useState } from 'react'
-import { DemoConfig, Result } from './_shared'
+import { Result } from './_shared'
 
 export default function Demo() {
   const [form] = useState(() => createForm())
   const [stickyForm] = useState(() => createForm())
   const [result, setResult] = useState<unknown>()
   return (
-    <DemoConfig>
+    <>
       <Form form={form} labelCol={6} wrapperCol={18} onAutoSubmit={setResult}>
         <Field name="name" title="姓名" decorator={[FormItem]} component={[Input]} />
         <FormButtonGroup.FormItem>
@@ -36,6 +36,6 @@ export default function Demo() {
       </Form>
       <div style={{ height: 200, paddingTop: 32 }}>表单结束。继续滚动后，上方操作栏不会跟随到此区域。</div>
       <Result value={result} />
-    </DemoConfig>
+    </>
   )
 }

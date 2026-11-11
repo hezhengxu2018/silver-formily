@@ -9,7 +9,6 @@ import { createSchemaField, FormProvider } from '@silver-formily/react'
 import { action, observable } from '@silver-formily/reactive'
 import React from 'react'
 // Adapted from Alibaba Formily (MIT); see /guide/sources for source and license.
-import { DemoConfig } from '../_shared'
 
 // 官方例子使用淘宝 JSONP 服务；这里用本地数据保持可离线运行。
 let timeout: ReturnType<typeof setTimeout>
@@ -69,7 +68,7 @@ const form = createForm({
   },
 })
 
-function OfficialExample() {
+export default function OfficialExample() {
   return (
     <FormProvider form={form}>
       <SchemaField>
@@ -92,8 +91,4 @@ function OfficialExample() {
       </FormButtonGroup>
     </FormProvider>
   )
-}
-
-export default function Demo() {
-  return <DemoConfig><OfficialExample /></DemoConfig>
 }
