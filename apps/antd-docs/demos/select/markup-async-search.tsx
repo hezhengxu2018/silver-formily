@@ -7,8 +7,6 @@ import {
 } from '@silver-formily/core'
 import { createSchemaField, FormProvider } from '@silver-formily/react'
 import { action, observable } from '@silver-formily/reactive'
-import React from 'react'
-// Adapted from Alibaba Formily (MIT); see /guide/sources for source and license.
 
 // 官方例子使用淘宝 JSONP 服务；这里用本地数据保持可离线运行。
 let timeout: ReturnType<typeof setTimeout>

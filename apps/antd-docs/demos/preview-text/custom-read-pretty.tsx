@@ -12,8 +12,6 @@ import {
   mapReadPretty,
 } from '@silver-formily/react'
 import { Input as AntdInput, Button } from 'antd'
-import React from 'react'
-// Adapted from Alibaba Formily (MIT); see /guide/sources for source and license.
 
 const Input = connect(AntdInput, mapReadPretty(PreviewText.Input))
 

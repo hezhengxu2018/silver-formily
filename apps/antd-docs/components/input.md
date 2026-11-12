@@ -2,13 +2,9 @@
 
 > 文本输入框
 
-::: warning 特别说明：与官方实现的差异
+::: tip 提示
 
-- Input / TextArea 通过上下文自动关联标签并继承本包 FormItem 的 status、variant；Input 还继承 size。TextArea 包装层不传递 size 属性，显式控件属性优先。
-
-- Input 的加载 suffix 使用稳定 span，与官方这一主链路一致。额外包装层没有完整复制原生 Input 的静态成员，当前只明确提供 Input.TextArea；Input.Search 请直接从 antd 使用；密码表单字段使用本包独立的 Password 组件。
-
-- 编辑态 props 以 Ant Design 6 为准；阅读态由本页的 PreviewText.Input 实现，DOM、占位和间距的差异见其文档。
+没有提供 `Input.Search` 的封装，一般来说这不属于表单的范畴。密码或一次性密码请参考 `Password` 与 `OTP` 文档。
 
 :::
 
@@ -48,7 +44,3 @@ input/jsx.tsx
 接收 Ant Design 6 `TextAreaProps`，包括 `rows`、`autoSize`、`showCount`、`maxLength`、`status`、`variant`、`value`、`onChange` 和 textarea ref。自动关联标签并支持阅读态；包装层不会向 textarea 传入 size 属性。
 
 字段 `pattern='readPretty'` 时映射到 `PreviewText.Input`；`readOnly` / `disabled` 仍使用编辑控件。
-
-## 文档来源
-
-介绍与原例来自 [Alibaba Formily Input 中文文档](https://github.com/alibaba/formily/blob/d9a46442a575aa5f0fc1bd945e34d9a85d191d0e/packages/antd/docs/components/Input.zh-CN.md)，遵循 [MIT 许可](/licenses/formily-MIT.txt)。依赖命名、Ant Design 6 兼容处理与未迁移组件裁剪见 [来源与示例适配](/guide/sources)。本页 API 按当前源码整理。

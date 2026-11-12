@@ -1,4 +1,5 @@
 import type { FormProps } from '@silver-formily/antd'
+import type { PropsWithChildren } from 'react'
 import {
   DatePicker,
   Form,
@@ -13,8 +14,7 @@ import {
 import { createForm } from '@silver-formily/core'
 import { createSchemaField, FormProvider } from '@silver-formily/react'
 import { observer } from '@silver-formily/reactive-react'
-// Adapted from Alibaba Formily (MIT); see /guide/sources for source and license.
-import React, { Fragment, useMemo } from 'react'
+import { Fragment, useMemo } from 'react'
 
 function useCollapseGrid(maxRows: number) {
   const grid = useMemo(
@@ -62,7 +62,7 @@ function useCollapseGrid(maxRows: number) {
   }
 }
 
-const QueryForm = observer((props: React.PropsWithChildren<FormProps>) => {
+const QueryForm = observer((props: PropsWithChildren<FormProps>) => {
   const { grid, expanded, toggle, type } = useCollapseGrid(1)
 
   const renderActions = () => {

@@ -13,6 +13,7 @@ const names = [
   ['input', 'Input 输入框'],
   ['select', 'Select 选择器'],
   ['number-picker', 'NumberPicker 数值输入'],
+  ['otp', 'OTP 一次性密码输入'],
   ['password', 'Password 密码输入'],
   ['checkbox', 'Checkbox 复选框'],
   ['radio', 'Radio 单选框'],

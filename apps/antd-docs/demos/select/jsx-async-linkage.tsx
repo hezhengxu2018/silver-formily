@@ -6,8 +6,6 @@ import {
 } from '@silver-formily/core'
 import { Field, FormProvider } from '@silver-formily/react'
 import { action } from '@silver-formily/reactive'
-import React from 'react'
-// Adapted from Alibaba Formily (MIT); see /guide/sources for source and license.
 
 function useAsyncDataSource(pattern: FormPathPattern, service: (field: FieldType) => Promise<{ label: string, value: any }[]>) {
   onFieldReact(pattern, (field: FieldType) => {

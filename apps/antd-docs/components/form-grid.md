@@ -1,15 +1,6 @@
 # FormGrid
 
-> FormGrid 组件
-
-::: warning 特别说明：与官方实现的差异
-
-- 参考本仓库 Element Plus 的 FormGrid 封装，使用 `@silver-formily/grid` 运行时，默认最小列数为 1；断点按容器宽度计算。
-- `gridSpan={-1}` 表示填满当前行的剩余列，不是始终独占一整行。普通跨列在默认模式下会被限制到当前行剩余列数。
-- 传入 `grid` 时，以该实例的配置为准，其余网格配置不覆盖外部实例。一个实例应只连接一个已挂载的 FormGrid。
-- 内部样式使用 `silver-formily-form-grid` ，不随 ConfigProvider 的前缀改变，不兼容旧 Less 样式覆盖。挂载后才连接 DOM 观察器，服务端首屏不会测量容器。
-
-:::
+> Form表单Grid布局组件
 
 ## Markup Schema 案例
 
@@ -30,10 +21,6 @@ form-grid/native.tsx
 :::
 
 ## 查询表单实现案例
-
-::: tip 示例适配说明
-沿用官方的外部网格实例、展开收起和操作栏补位逻辑。日期查询使用 DatePicker 与 RangePicker，字段值为 Dayjs，保留字段数量及跨列配置。隐藏查询项只影响布局，字段值仍保留在表单模型中。
-:::
 
 :::demo
 form-grid/query-form.tsx
@@ -91,11 +78,3 @@ declare function useFormGrid(): Grid<HTMLElement> | undefined
 ```
 
 读取最近一层 FormGrid 的实例，在网格之外返回 undefined。
-
-## SSR 与水合
-
-与 Element Plus 封装一样，布局依赖挂载后的真实容器宽度。需要稳定首屏列数时，同时设置相等的 `minColumns` 和 `maxColumns`。未连接时使用最后一个断点桶作为首屏回退；响应式数组或 `gridSpan={-1}` 的落位可能在测量后改变。
-
-## 文档来源
-
-介绍和示例主体来自 [Alibaba Formily FormGrid 中文文档](https://github.com/alibaba/formily/blob/d9a46442a575aa5f0fc1bd945e34d9a85d191d0e/packages/antd/docs/components/FormGrid.zh-CN.md)，遵循 [MIT 许可](/licenses/formily-MIT.txt)。API 根据本仓库实际实现整理；封装参考 `packages/element-plus/src/form-grid`。

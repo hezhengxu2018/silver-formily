@@ -12,8 +12,6 @@ import {
 } from '@silver-formily/antd'
 import { createForm, onFieldChange } from '@silver-formily/core'
 import { createSchemaField, FormProvider } from '@silver-formily/react'
-import React from 'react'
-// Adapted from Alibaba Formily (MIT); see /guide/sources for source and license.
 
 const Div = props => <div {...props} />
 

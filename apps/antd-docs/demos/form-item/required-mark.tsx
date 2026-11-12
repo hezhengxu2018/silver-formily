@@ -3,8 +3,7 @@ import { createForm } from '@silver-formily/core'
 import { createSchemaField, FormProvider } from '@silver-formily/react'
 import { ConfigProvider, Radio } from 'antd'
 import zhCN from 'antd/locale/zh_CN'
-import React, { useState } from 'react'
-// Adapted from Alibaba Formily (MIT); see /guide/sources for source and license.
+import { useState } from 'react'
 
 const SchemaField = createSchemaField({
   components: {

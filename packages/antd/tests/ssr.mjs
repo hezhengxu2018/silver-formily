@@ -11,7 +11,7 @@ import { Field } from '@silver-formily/react'
 import dayjs from 'dayjs'
 import * as controls from '${root}/src/index.ts'
 export function run() {
-  const names = ['Password', 'Checkbox', 'Radio', 'Switch', 'Cascader', 'TreeSelect', 'Transfer', 'DatePicker', 'TimePicker', 'Upload', 'Slider', 'Rate']
+  const names = ['OTP', 'Password', 'Checkbox', 'Radio', 'Switch', 'Cascader', 'TreeSelect', 'Transfer', 'DatePicker', 'TimePicker', 'Upload', 'Slider', 'Rate']
   const form = createForm({ initialValues: { DatePicker: dayjs('2026-11-06'), TimePicker: dayjs('2026-11-06') } })
   const element = React.createElement(controls.Form, { form }, names.map(name => React.createElement(Field, { key: name, name, component: [controls[name]] })))
   const editable = renderToString(element)

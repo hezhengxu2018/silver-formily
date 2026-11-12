@@ -2,8 +2,6 @@ import { FormItem, FormLayout, PreviewText } from '@silver-formily/antd'
 import { createForm } from '@silver-formily/core'
 import { createSchemaField, FormProvider } from '@silver-formily/react'
 import dayjs from 'dayjs'
-import React from 'react'
-// Adapted from Alibaba Formily (MIT); see /guide/sources for source and license.
 
 const SchemaField = createSchemaField({
   components: {

@@ -2,8 +2,6 @@ import { FormButtonGroup, FormItem, Select, Submit } from '@silver-formily/antd'
 import { createForm } from '@silver-formily/core'
 import { createSchemaField, FormProvider } from '@silver-formily/react'
 import { action } from '@silver-formily/reactive'
-import React from 'react'
-// Adapted from Alibaba Formily (MIT); see /guide/sources for source and license.
 
 const SchemaField = createSchemaField({
   components: {

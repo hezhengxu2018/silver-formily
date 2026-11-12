@@ -7,7 +7,7 @@ import { createRef } from 'react'
 import { afterEach, expect, it, vi } from 'vitest'
 import { cleanup, render } from 'vitest-browser-react'
 import { page } from 'vitest/browser'
-import { Cascader, Checkbox, DatePicker, Form, FormItem, Password, PreviewText, Radio, Rate, Slider, Switch, TimePicker, Transfer, TreeSelect, Upload } from '../src'
+import { Cascader, Checkbox, DatePicker, Form, FormItem, OTP, Password, PreviewText, Radio, Rate, Slider, Switch, TimePicker, Transfer, TreeSelect, Upload } from '../src'
 
 afterEach(cleanup)
 
@@ -278,4 +278,43 @@ it('preserves native option values in standalone and field-bound groups', async 
   expect(form.values.radio).toBe('b')
   form.setPattern('readPretty')
   await expect.element(page.getByText('B', { exact: true })).toBeVisible()
+})
+
+
+it('binds OTP completion, preserves input events and refs, resets and masks readPretty', async () => {
+  const form = createForm({ initialValues: { otp: '1234' } })
+  const ref = createRef<ComponentRef<typeof OTP>>()
+  const onChange = vi.fn()
+  const onInput = vi.fn()
+  const { getByRole, getByText, container } = await render(
+    <Form form={form}>
+      <Field
+        name="otp"
+        decorator={[FormItem]}
+        component={[OTP, { length: 4, ref: (instance) => {
+          ref.current = instance
+        }, onChange, onInput }]}
+      />
+    </Form>,
+  )
+  expect(getByRole('textbox').elements()).toHaveLength(4)
+  ref.current?.focus()
+  expect(document.activeElement).toBe(getByRole('textbox').first().element())
+  await getByRole('textbox').last().fill('5')
+  await vi.waitFor(() => expect(form.values.otp).toBe('1235'))
+  expect(onChange).toHaveBeenLastCalledWith('1235')
+  expect(onInput).toHaveBeenLastCalledWith(['1', '2', '3', '5'])
+  onChange.mockClear()
+  await getByRole('textbox').last().fill('')
+  expect(onChange).not.toHaveBeenCalled()
+  expect(form.values.otp).toBe('1235')
+  expect(onInput).toHaveBeenLastCalledWith(['1', '2', '3'])
+  await form.reset()
+  await expect.element(getByRole('textbox').last()).toHaveValue('4')
+  form.setPattern('disabled')
+  await expect.element(getByRole('textbox').first()).toBeDisabled()
+  form.setPattern('readPretty')
+  await expect.element(getByText('••••••••')).toBeVisible()
+  expect(container.querySelector('input')).toBeNull()
+  expect(form.values.otp).toBe('1234')
 })

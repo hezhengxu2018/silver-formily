@@ -1,9 +1,9 @@
+import type { PropsWithChildren } from 'react'
 import { FormGrid } from '@silver-formily/antd'
-// Adapted from Alibaba Formily (MIT); see /guide/sources for source and license.
-import React from 'react'
+import { Fragment } from 'react'
 
 const { GridColumn } = FormGrid
-function Cell({ children }: React.PropsWithChildren) {
+function Cell({ children }: PropsWithChildren) {
   return (
     <div
       style={{
@@ -21,7 +21,7 @@ function Cell({ children }: React.PropsWithChildren) {
 }
 export default function Example() {
   return (
-    <React.Fragment>
+    <Fragment>
       <p>maxColumns 3 + minColumns 2</p>
       <FormGrid maxColumns={3} minColumns={2} columnGap={4}>
         <GridColumn gridSpan={4}>
@@ -160,6 +160,6 @@ export default function Example() {
           <Cell>3</Cell>
         </GridColumn>
       </FormGrid>
-    </React.Fragment>
+    </Fragment>
   )
 }

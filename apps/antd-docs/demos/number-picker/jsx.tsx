@@ -1,8 +1,6 @@
 import { FormButtonGroup, FormItem, NumberPicker, Submit } from '@silver-formily/antd'
 import { createForm } from '@silver-formily/core'
 import { Field, FormProvider } from '@silver-formily/react'
-import React from 'react'
-// Adapted from Alibaba Formily (MIT); see /guide/sources for source and license.
 
 const form = createForm()
 

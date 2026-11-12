@@ -1,8 +1,6 @@
 import { FormGrid, FormItem, Input } from '@silver-formily/antd'
 import { createForm } from '@silver-formily/core'
 import { createSchemaField, FormProvider } from '@silver-formily/react'
-// Adapted from Alibaba Formily (MIT); see /guide/sources for source and license.
-import React from 'react'
 
 const SchemaField = createSchemaField({
   components: {
