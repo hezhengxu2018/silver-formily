@@ -80,10 +80,10 @@ it('preserves Dayjs values, native callbacks, ranges, multiple selection and cle
   const onChange = vi.fn()
   const { container, getByText } = await render(
     <Form form={form}>
-      <Field name="date" title="Date" decorator={[FormItem]} component={[DatePicker, { format: 'DD/MM/YYYY', onChange }]} />
-      <Field name="range" title="Range" decorator={[FormItem]} component={[DatePicker.RangePicker]} />
-      <Field name="dates" component={[DatePicker, { multiple: true }]} />
-      <Field name="time" component={[TimePicker, { format: 'HH:mm' }]} />
+      <Field name="date" title="Date" decorator={[FormItem]} component={[DatePicker, { valueFormat: false, format: 'DD/MM/YYYY', onChange }]} />
+      <Field name="range" title="Range" decorator={[FormItem]} component={[DatePicker.RangePicker, { valueFormat: false }]} />
+      <Field name="dates" component={[DatePicker, { multiple: true, valueFormat: false }]} />
+      <Field name="time" component={[TimePicker, { valueFormat: false, format: 'HH:mm' }]} />
     </Form>,
   )
   expect(dayjs.isDayjs(form.values.date)).toBe(true)
@@ -192,7 +192,7 @@ it('retains upload errors as native file state and honors LIST_IGNORE', async ()
 it('preserves date types through reset and submit', async () => {
   const initial = dayjs('2026-11-06')
   const form = createForm({ initialValues: { date: initial } })
-  await render(<Form form={form}><Field name="date" component={[DatePicker]} /></Form>)
+  await render(<Form form={form}><Field name="date" component={[DatePicker, { valueFormat: false }]} /></Form>)
   form.setValues({ date: initial.add(1, 'day') })
   await form.reset()
   expect(form.values.date.format('YYYY-MM-DD')).toBe('2026-11-06')
@@ -245,7 +245,7 @@ it('inherits native disabled state, theme and variants for added controls', asyn
     <ConfigProvider theme={{ algorithm: theme.darkAlgorithm }}>
       <Form form={form} size="large" variant="filled">
         <Field name="password" decorator={[FormItem, { feedbackStatus: 'error' }]} component={[Password]} />
-        <Field name="date" component={[DatePicker]} />
+        <Field name="date" component={[DatePicker, { valueFormat: false }]} />
         <Field name="enabled" component={[Switch]} />
         <Field name="rating" component={[Rate]} />
       </Form>

@@ -60,7 +60,7 @@ FormItem 反馈案例改用 `hasFeedback` 展示 Ant Design 6 原生状态图标
 
 ## Ant Design 6 基础控件补充
 
-新增 Password、Checkbox、Radio、Switch、Cascader、TreeSelect、Transfer、DatePicker、TimePicker、Upload、Slider、Rate 的 12 个基础示例。新增示例按当前原生 API 编写，不计入上表 60 个官方原例；Slider、Rate 是本项目扩展。日期不保留旧字符串协议，Password 不迁移 checkStrength，Upload 不迁移业务响应推断及旧内容属性。每页链接对应官方来源和原生 API。
+新增 Password、Checkbox、Radio、Switch、Cascader、TreeSelect、Transfer、DatePicker、TimePicker、Upload、Slider、Rate 的 12 个基础示例。新增示例按当前原生 API 编写，不计入上表 60 个官方原例；Slider、Rate 是本项目扩展。日期与时间默认使用字符串字段值，通过 valueFormat 独立控制提交格式，false 保留 Dayjs，Password 不迁移 checkStrength，Upload 不迁移业务响应推断及旧内容属性。每页链接对应官方来源和原生 API。
 
 Password 补充官方 Markup Schema、JSON Schema 与纯 JSX 三个示例，移除当前未实现的 `checkStrength`，保留布局、提交及必填配置；每个示例在组件内独立创建表单实例。
 
@@ -79,3 +79,5 @@ Cascader 补充官方 Markup Schema、JSON Schema 和纯 JSX 三个地址加载�
 Switch 补充官方 Markup Schema、JSON Schema 与纯 JSX 三个示例，表单实例在组件内创建并以 `false` 初始化。Slider 为本项目扩展，补充三种绑定写法，覆盖单值、范围、步长和离散刻度，示例不计入官方原例数量；基础示例补充范围初始值用于重置演示。
 
 AutoComplete、Mentions 为本项目新增控件，上游基线没有对应章节。每个组件提供基础用法和 JSON Schema 示例，展示 `dataSource` / `enum`、原生字符串值、阅读态和重置；这些示例不计入官方原例数量。
+
+日期与时间基础示例新增字符串初始值、独立展示/提交格式及 `valueFormat={false}` 的 Dayjs 模式；日期、时间文档新增 Schema 配置说明。PreviewText 中原有 Dayjs 示例仍保留。

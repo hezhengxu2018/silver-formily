@@ -12,4 +12,4 @@
 
 - 封装样式固定使用 `silver-formily-` BEM 命名空间，由包内 `createBem`（easy-bem）生成，`cls`（clsx）负责合并基础类、修饰符和外部 className。修饰符不自动包含基础类，必须显式合并；不提供封装 prefixCls API。自有 CSS 变量统一使用 `--silver-formily-*`。仅原生 antd 反馈样式继续使用 ConfigProvider 的前缀。
 
-- 基础控件 API 以 antd 6 为准：日期值保持 Dayjs，Upload 保留原生事件并将 fileList 写入字段；不增加 Moment、字符串日期转换或旧版业务响应协议。新增控件通过 connectControl 保留原生泛型与静态成员，并验证原生事件和阅读态。
+- 基础控件 API 以 antd 6 为准：日期与时间默认使用字符串值，valueFormat 独立于展示 format，设为 false 时保留 Dayjs，Upload 保留原生事件并将 fileList 写入字段；不增加 Moment 或旧版业务响应协议。新增控件通过 connectControl 保留原生泛型与静态成员，并验证原生事件和阅读态。

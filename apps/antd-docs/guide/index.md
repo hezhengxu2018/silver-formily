@@ -26,4 +26,4 @@
 
 介绍和 39 个原例的来源、许可与适配规则见 [来源与示例适配](/guide/sources)。每个组件页顶部单独标出与官方实现的行为差异及已知限制。
 
-日期接口直接使用 antd 6 的 Dayjs 值。Upload 保留原生事件，字段仅保存 fileList；Password 不提供旧版强度检查。Slider、Rate 为本项目扩展。
+日期与时间默认使用字符串字段值，`valueFormat` 独立控制提交格式，`format` 控制展示。迁移此前依赖 Dayjs 值的代码时设置 `valueFormat={false}`；其他日期回调保持原生 Dayjs。Upload 保留原生事件，字段仅保存 fileList；Password 不提供旧版强度检查。Slider、Rate 为本项目扩展。

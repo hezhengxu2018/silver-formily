@@ -90,4 +90,4 @@ pnpm exec turbo run docs:build --filter=antd-docs
 
 原始 Alibaba MIT 许可证保留在包内 LICENSE 文件中。
 
-日期控件直接使用 Dayjs 值和 antd 6 的原生事件；初始化和提交时的数据转换由业务负责。Upload 的 onChange 保留原生事件对象，字段值为 fileList；不猜测业务响应格式。Password 不提供旧版 checkStrength。Slider 和 Rate 为本项目扩展。
+日期与时间控件默认使用字符串字段值，`valueFormat` 独立于展示 `format`，并控制输入解析与 `onChange` 首参。迁移此前依赖 Dayjs 提交值的代码时设置 `valueFormat={false}`；其他日期回调仍遵循 antd 6。Upload 的 onChange 保留原生事件对象，字段值为 fileList；不猜测业务响应格式。Password 不提供旧版 checkStrength。Slider 和 Rate 为本项目扩展。

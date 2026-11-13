@@ -34,11 +34,55 @@ it('retains native generic value and event signatures', () => {
       }}
     />,
     <DatePicker
+      valueFormat={false}
       multiple
       onChange={(values) => {
         expectTypeOf(values).toEqualTypeOf<Dayjs[] | null>()
       }}
     />,
+    <DatePicker
+      value="2026-11-06"
+      onChange={(value) => {
+        expectTypeOf(value).toEqualTypeOf<string | null>()
+      }}
+    />,
+    <DatePicker
+      multiple
+      valueFormat="YYYY/MM/DD"
+      value={['2026/11/06']}
+      onChange={(value, text) => {
+        expectTypeOf(value).toEqualTypeOf<string[] | null>()
+        expectTypeOf(text).toEqualTypeOf<string[] | null>()
+      }}
+    />,
+    <DatePicker.RangePicker onChange={(value) => {
+      expectTypeOf(value).toEqualTypeOf<[string | null, string | null] | null>()
+    }}
+    />,
+    <DatePicker.RangePicker
+      valueFormat={false}
+      onChange={(value) => {
+        expectTypeOf(value).toEqualTypeOf<[Dayjs | null, Dayjs | null] | null>()
+      }}
+    />,
+    <DatePicker.MonthPicker onChange={(value) => {
+      expectTypeOf(value).toEqualTypeOf<string | null>()
+    }}
+    />,
+    <TimePicker onChange={(value) => {
+      expectTypeOf(value).toEqualTypeOf<string | null>()
+    }}
+    />,
+    <TimePicker.RangePicker
+      valueFormat={false}
+      onChange={(value) => {
+        expectTypeOf(value).toEqualTypeOf<[Dayjs | null, Dayjs | null] | null>()
+      }}
+    />,
+    // @ts-expect-error Single selection does not accept arrays.
+    <DatePicker value={['2026-11-06']} />,
+    // @ts-expect-error Multiple selection requires an array.
+    <DatePicker multiple value="2026-11-06" />,
     <Checkbox.Group<number>
       options={[{ label: 'Zero', value: 0 }]}
       onChange={(values) => {
@@ -64,8 +108,8 @@ it('retains native generic value and event signatures', () => {
       expectTypeOf(value).toEqualTypeOf<number>()
     }}
     />,
-    // @ts-expect-error Native date values must be Dayjs, not serialized strings.
-    <TimePicker value="09:00" />,
+    // @ts-expect-error Dayjs mode rejects serialized input.
+    <TimePicker valueFormat={false} value="09:00" />,
     // @ts-expect-error The standalone password wrapper has no legacy strength API.
     <Password checkStrength />,
   ]
