@@ -3,10 +3,10 @@ import { createForm } from '@silver-formily/core'
 import { Field } from '@silver-formily/react'
 import { Button, Space } from 'antd'
 
-import { useState } from 'react'
+
+const form = createForm({ initialValues: { value: [] } })
 
 export default function Demo() {
-  const [form] = useState(() => createForm({ initialValues: { value: [] } }))
   return (
     <Form form={form} labelCol={6} wrapperCol={16}>
       <Field name="value" title="上传" decorator={[FormItem]} component={[Upload, { customRequest: ({ onSuccess }) => { setTimeout(() => onSuccess?.({ ok: true }), 300) }, children: <Button>选择文件（本地模拟）</Button> }]} />

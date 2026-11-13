@@ -2,15 +2,14 @@ import { Form, FormButtonGroup, FormItem, Input, Reset, Submit } from '@silver-f
 import { createForm } from '@silver-formily/core'
 import { Field } from '@silver-formily/react'
 import { Toast } from 'antd-mobile'
-import { useMemo } from 'react'
 
 function onSubmit(values: unknown) {
   return Prompts.alert(JSON.stringify(values, null, 2))
 }
 
-export default function FormBasic() {
-  const form = useMemo(() => createForm({ initialValues: { username: '张三' } }), [])
+const form = createForm({ initialValues: { username: '张三' } })
 
+export default function FormBasic() {
   return (
     <Form
       form={form}

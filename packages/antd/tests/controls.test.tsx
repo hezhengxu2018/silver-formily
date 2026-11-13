@@ -3,7 +3,7 @@ import { Field } from '@silver-formily/react'
 import { afterEach, expect, it, vi } from 'vitest'
 import { cleanup, render } from 'vitest-browser-react'
 import { page } from 'vitest/browser'
-import { Form, FormItem, FormLayout, Input, NumberPicker, PreviewText, Select } from '../src'
+import { Form, FormItem, FormLayout, Input, InputNumber, PreviewText, Select } from '../src'
 
 it('associates all migrated input labels without requiring manual ids', async () => {
   const { getByRole } = await render(
@@ -11,7 +11,7 @@ it('associates all migrated input labels without requiring manual ids', async ()
       <Field name="name" title="Name" decorator={[FormItem]} component={[Input]} />
       <Field name="notes" title="Notes" decorator={[FormItem]} component={[Input.TextArea]} />
       <Field name="role" title="Role" decorator={[FormItem]} component={[Select]} />
-      <Field name="count" title="Count" decorator={[FormItem]} component={[NumberPicker]} />
+      <Field name="count" title="Count" decorator={[FormItem]} component={[InputNumber]} />
     </Form>,
   )
   await expect.element(getByRole('textbox', { name: 'Name' })).toBeVisible()
@@ -71,7 +71,7 @@ it.each(['outlined', 'filled', 'borderless', 'underlined'] as const)('uses nativ
       <FormItem.BaseItem label="Input"><Input /></FormItem.BaseItem>
       <FormItem.BaseItem label="TextArea"><Input.TextArea /></FormItem.BaseItem>
       <FormItem.BaseItem label="Select"><Select /></FormItem.BaseItem>
-      <FormItem.BaseItem label="Number"><NumberPicker /></FormItem.BaseItem>
+      <FormItem.BaseItem label="Number"><InputNumber /></FormItem.BaseItem>
     </Form>,
   )
   const controls = container.querySelectorAll('.silver-formily-form-item__component > :first-child')
@@ -117,12 +117,12 @@ it('preserves Select multiple labelInValue and custom field names in readPretty'
   expect(container.querySelector('input')).toBeNull()
 })
 
-it('keeps zero and string precision values through NumberPicker and formats readPretty', async () => {
+it('keeps zero and string precision values through InputNumber and formats readPretty', async () => {
   const form = createForm({ initialValues: { count: 0, precision: '1.0000000000000001' } })
   const { getByRole, getByText } = await render(
     <Form form={form}>
-      <Field name="count" component={[NumberPicker]} />
-      <Field name="precision" pattern="readPretty" component={[NumberPicker, { stringMode: true, formatter: value => `value:${value}` }]} />
+      <Field name="count" component={[InputNumber]} />
+      <Field name="precision" pattern="readPretty" component={[InputNumber, { stringMode: true, formatter: value => `value:${value}` }]} />
     </Form>,
   )
   await expect.element(getByRole('spinbutton')).toHaveValue('0')
@@ -134,7 +134,7 @@ it('maps TextArea and all selected controls to readPretty and preserves explicit
   const { getByRole, getByText, container } = await render(
     <Form form={form} previewTextPlaceholder="Empty">
       <Field name="text" required decorator={[FormItem]} component={[Input.TextArea]} />
-      <Field name="count" component={[NumberPicker]} />
+      <Field name="count" component={[InputNumber]} />
       <Field name="missing" component={[Select]} />
     </Form>,
   )

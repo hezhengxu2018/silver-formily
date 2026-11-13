@@ -2,7 +2,6 @@ import { FormButtonGroup, FormItem, Submit, Switch } from '@silver-formily/antd-
 import { createForm } from '@silver-formily/core'
 import { Field, FormProvider } from '@silver-formily/react'
 import { Toast } from 'antd-mobile'
-import { useState } from 'react'
 
 // 模拟接口请求：resolve 表示成功，reject 表示失败。
 async function requestSwitch(succeed: boolean) {
@@ -18,14 +17,14 @@ function onSubmit(values: unknown) {
   return Prompts.alert(JSON.stringify(values, null, 2))
 }
 
-export default function SwitchAsync() {
-  const [form] = useState(() => createForm({
-    initialValues: {
-      success: false,
-      failure: true,
-    },
-  }))
+const form = createForm({
+  initialValues: {
+    success: false,
+    failure: true,
+  },
+})
 
+export default function SwitchAsync() {
   return (
     <FormProvider form={form}>
       <Field

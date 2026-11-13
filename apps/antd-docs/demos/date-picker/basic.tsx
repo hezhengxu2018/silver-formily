@@ -3,10 +3,10 @@ import { createForm } from '@silver-formily/core'
 import { Field } from '@silver-formily/react'
 import { Button, Space } from 'antd'
 import dayjs from 'dayjs'
-import { useState } from 'react'
+
+const form = createForm({ initialValues: { value: dayjs('2026-11-06') } })
 
 export default function Demo() {
-  const [form] = useState(() => createForm({ initialValues: { value: dayjs('2026-11-06') } }))
   return (
     <Form form={form} labelCol={6} wrapperCol={16}>
       <Field name="value" title="日期选择" decorator={[FormItem]} component={[DatePicker, { format: 'YYYY-MM-DD' }]} />

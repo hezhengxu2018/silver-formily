@@ -1,5 +1,5 @@
 import type { ComponentRef } from 'react'
-import { createForm } from '@silver-formily/core'
+import { createForm, isField } from '@silver-formily/core'
 import { Field } from '@silver-formily/react'
 import { ConfigProvider, Upload as NativeUpload, theme } from 'antd'
 import dayjs from 'dayjs'
@@ -7,7 +7,7 @@ import { createRef } from 'react'
 import { afterEach, expect, it, vi } from 'vitest'
 import { cleanup, render } from 'vitest-browser-react'
 import { page } from 'vitest/browser'
-import { Cascader, Checkbox, DatePicker, Form, FormItem, OTP, Password, PreviewText, Radio, Rate, Slider, Switch, TimePicker, Transfer, TreeSelect, Upload } from '../src'
+import { Cascader, Checkbox, DatePicker, Form, FormItem, OTP, Password, PreviewText, Radio, Rate, Reset, Slider, Switch, TimePicker, Transfer, TreeSelect, Upload } from '../src'
 
 afterEach(cleanup)
 
@@ -281,7 +281,7 @@ it('preserves native option values in standalone and field-bound groups', async 
 })
 
 
-it('binds OTP completion, preserves input events and refs, resets and masks readPretty', async () => {
+it('binds every OTP input, preserves input events and refs, resets and masks readPretty', async () => {
   const form = createForm({ initialValues: { otp: '1234' } })
   const ref = createRef<ComponentRef<typeof OTP>>()
   const onChange = vi.fn()
@@ -307,7 +307,7 @@ it('binds OTP completion, preserves input events and refs, resets and masks read
   onChange.mockClear()
   await getByRole('textbox').last().fill('')
   expect(onChange).not.toHaveBeenCalled()
-  expect(form.values.otp).toBe('1235')
+  expect(form.values.otp).toBe('123')
   expect(onInput).toHaveBeenLastCalledWith(['1', '2', '3'])
   await form.reset()
   await expect.element(getByRole('textbox').last()).toHaveValue('4')
@@ -317,4 +317,50 @@ it('binds OTP completion, preserves input events and refs, resets and masks read
   await expect.element(getByText('••••••••')).toBeVisible()
   expect(container.querySelector('input')).toBeNull()
   expect(form.values.otp).toBe('1234')
+})
+
+it.each([false, true])('resets password and OTP through the button (forceClear=%s)', async (forceClear) => {
+  const form = createForm({ initialValues: { password: 'secret', otp: '1234' } })
+  const { container, getByRole } = await render(
+    <Form form={form}>
+      <Field name="password" component={[Password]} />
+      <Field name="otp" component={[OTP, { length: 4 }]} />
+      <Reset forceClear={forceClear}>Reset</Reset>
+    </Form>,
+  )
+  const password = page.elementLocator(container.querySelector('input[type=password]')!)
+  await password.fill('changed')
+  await getByRole('textbox').last().fill('5')
+  expect(form.values.password).toBe('changed')
+  expect(form.values.otp).toBe('1235')
+  await getByRole('button', { name: 'Reset', exact: true }).click()
+  await expect.element(password).toHaveValue(forceClear ? '' : 'secret')
+  for (const [index, input] of container.querySelectorAll<HTMLInputElement>('.ant-otp input').entries()) {
+    await expect.element(input).toHaveValue(forceClear ? '' : '1234'[index])
+  }
+})
+
+it('validates partial OTP input and restores it through form and field resets', async () => {
+  const form = createForm({ initialValues: { otp: '1234' } })
+  const onChange = vi.fn()
+  const { getByRole } = await render(
+    <Form form={form}>
+      <Field name="otp" validator={{ len: 4, message: 'Enter four characters' }} component={[OTP, { length: 4, onChange }]} />
+      <Reset>Reset</Reset>
+    </Form>,
+  )
+  await getByRole('textbox').last().fill('')
+  expect(form.values.otp).toBe('123')
+  await expect(form.validate()).rejects.toBeDefined()
+  expect(form.errors[0].messages).toContain('Enter four characters')
+  expect(onChange).not.toHaveBeenCalled()
+  await getByRole('button', { name: 'Reset', exact: true }).click()
+  await expect.element(getByRole('textbox').last()).toHaveValue('4')
+  await getByRole('textbox').last().fill('')
+  const field = form.query('otp').take()!
+  if (!isField(field))
+    throw new Error('Expected an OTP field')
+  await field.reset()
+  await expect.element(getByRole('textbox').last()).toHaveValue('4')
+  expect(onChange).not.toHaveBeenCalled()
 })

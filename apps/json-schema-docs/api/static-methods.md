@@ -209,7 +209,7 @@ import { Schema } from '@silver-formily/json-schema'
 
 Schema.registerTypeDefaultComponents({
   string: 'Input',
-  number: 'NumberPicker',
+  number: 'InputNumber',
   array: 'ArrayTable',
 })
 ```

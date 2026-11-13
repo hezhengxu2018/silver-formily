@@ -1,25 +1,17 @@
-import { FormButtonGroup, FormItem, NumberPicker, Submit } from '@silver-formily/antd'
+import { FormButtonGroup, FormItem, Submit, Switch } from '@silver-formily/antd'
 import { createForm } from '@silver-formily/core'
 import { Field, FormProvider } from '@silver-formily/react'
 
-const form = createForm()
+const form = createForm({ initialValues: { switch: false } })
 
-export default function OfficialExample() {
+export default function Demo() {
   return (
     <FormProvider form={form}>
       <Field
-        name="input"
-        title="输入框"
-        required
+        name="switch"
+        title="开关"
         decorator={[FormItem]}
-        component={[
-          NumberPicker,
-          {
-            style: {
-              width: 240,
-            },
-          },
-        ]}
+        component={[Switch]}
       />
       <FormButtonGroup>
         <Submit onSubmitFailed={console.log} onSubmit={console.log}>提交</Submit>

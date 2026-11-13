@@ -1,14 +1,14 @@
 import { FormButtonGroup, FormItem, PasscodeInput, Reset, Submit } from '@silver-formily/antd-mobile'
 import { createForm } from '@silver-formily/core'
 import { Field, FormProvider } from '@silver-formily/react'
-import { useState } from 'react'
 
 function onSubmit(values: unknown) {
   return Prompts.alert(JSON.stringify(values, null, 2))
 }
 
+const form = createForm({ initialValues: { password: '' } })
+
 export default function PasscodeInputBasic() {
-  const [form] = useState(() => createForm({ initialValues: { password: '' } }))
   return (
     <FormProvider form={form}>
       <Field

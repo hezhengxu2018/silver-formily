@@ -3,10 +3,10 @@ import { createForm } from '@silver-formily/core'
 import { Field } from '@silver-formily/react'
 import { Button, Space } from 'antd'
 import dayjs from 'dayjs'
-import { useState } from 'react'
+
+const form = createForm({ initialValues: { value: dayjs('2026-11-06T09:30:00') } })
 
 export default function Demo() {
-  const [form] = useState(() => createForm({ initialValues: { value: dayjs('2026-11-06T09:30:00') } }))
   return (
     <Form form={form} labelCol={6} wrapperCol={16}>
       <Field name="value" title="时间选择" decorator={[FormItem]} component={[TimePicker, { format: 'HH:mm' }]} />

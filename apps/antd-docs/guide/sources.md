@@ -18,11 +18,17 @@
 | FormButtonGroup | 3            |
 | Input           | 3            |
 | Select          | 7            |
-| NumberPicker    | 3            |
+| InputNumber     | 3            |
 | PreviewText     | 2            |
 | Submit          | 2            |
 | Reset           | 4            |
-| 合计            | 39           |
+| Password        | 3            |
+| Checkbox        | 3            |
+| Radio           | 3            |
+| TreeSelect      | 6            |
+| Cascader        | 3            |
+| Switch          | 3            |
+| 合计            | 60           |
 
 每个组件页末尾都链接到对应官方原文。原文 API 未直接复制，以避免将尚未迁移的组件或 Ant Design 4 配置描述为当前能力。
 
@@ -54,4 +60,20 @@ FormItem 反馈案例改用 `hasFeedback` 展示 Ant Design 6 原生状态图标
 
 ## Ant Design 6 基础控件补充
 
-新增 Password、Checkbox、Radio、Switch、Cascader、TreeSelect、Transfer、DatePicker、TimePicker、Upload、Slider、Rate 的 12 个基础示例。新增示例按当前原生 API 编写，不计入上表 39 个官方原例；Slider、Rate 是本项目扩展。日期不保留旧字符串协议，Password 不迁移 checkStrength，Upload 不迁移业务响应推断及旧内容属性。每页链接对应官方来源和原生 API。
+新增 Password、Checkbox、Radio、Switch、Cascader、TreeSelect、Transfer、DatePicker、TimePicker、Upload、Slider、Rate 的 12 个基础示例。新增示例按当前原生 API 编写，不计入上表 60 个官方原例；Slider、Rate 是本项目扩展。日期不保留旧字符串协议，Password 不迁移 checkStrength，Upload 不迁移业务响应推断及旧内容属性。每页链接对应官方来源和原生 API。
+
+Password 补充官方 Markup Schema、JSON Schema 与纯 JSX 三个示例，移除当前未实现的 `checkStrength`，保留布局、提交及必填配置；每个示例在组件内独立创建表单实例。
+
+Checkbox 补充官方 Markup Schema、JSON Schema 与纯 JSX 三个示例，保留单个复选框和复选框组；Markup 多选字段由 `SchemaField.String` 改为 `SchemaField.Array`，与数组值类型一致。每个示例在组件内独立创建表单实例。
+
+OTP 补充 Markup Schema、JSON Schema 与纯 JSX 三个本项目示例，展示 6 位数字校验；保留原有掩码、阅读态和重置示例。OTP 通过 `onInput` 同步字段值，`onChange` 仅保留完整输入回调。这些示例不计入官方原例数量。
+
+OTP 另参考 Ant Design 官方 Input.OTP 示例补充格式化、长度与外观、自定义分隔符，并新增固定 16 位银行卡号分组输入示例；均不计入 Alibaba Formily 官方原例数量。
+
+Radio 补充官方 Markup Schema、JSON Schema 与纯 JSX 三个示例，保留数字类型选项及 `enum` / `dataSource` 绑定方式；每个示例在组件内独立创建表单实例。原有基础用法和按钮样式示例继续保留，不计入官方原例数量。
+
+TreeSelect 补充官方三种写法的同步数据源、异步联动共六个示例，统一树节点值为字符串，表单实例在组件内独立创建。异步联动清空旧值和数据源，并忽略过期请求。另补充基于 `loadData` / `treeDataSimpleMode` 的异步加载子节点示例，使用本地延迟模拟接口；此例不计入官方原例数量。
+
+Cascader 补充官方 Markup Schema、JSON Schema 和纯 JSX 三个地址加载示例，保留地址树转换逻辑，以本地延迟和部分地址数据替换外部 CDN 请求，字段类型统一为数组。另新增 `loadData` 按需加载城市、区县的例子，使用与 Select 示例一致的 `useAsyncDataSource(pattern, service)` 封装，在 `onFieldInit` 中注入加载回调，展示节点加载状态、已加载分支保留与重复请求防护；此例不计入官方原例数量。
+
+Switch 补充官方 Markup Schema、JSON Schema 与纯 JSX 三个示例，表单实例在组件内创建并以 `false` 初始化。Slider 为本项目扩展，补充三种绑定写法，覆盖单值、范围、步长和离散刻度，示例不计入官方原例数量；基础示例补充范围初始值用于重置演示。

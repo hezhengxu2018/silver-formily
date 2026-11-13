@@ -3,7 +3,6 @@ import { CheckListPicker, FormButtonGroup, FormItem, Reset, Space, Submit } from
 import { createForm } from '@silver-formily/core'
 import { createSchemaField, FormProvider } from '@silver-formily/react'
 import { Tag } from 'antd-mobile'
-import { useMemo } from 'react'
 
 const SchemaField = createSchemaField({ components: { FormItem, CheckListPicker } })
 const displayRender: ICheckListPickerProps['displayRender'] = (value, props) => (
@@ -40,8 +39,9 @@ function onSubmit(values: unknown) {
   return Prompts.alert(JSON.stringify(values, null, 2))
 }
 
+const form = createForm({ initialValues: { fruit: ['apple', 'pear'] } })
+
 export default function DisplayDemo() {
-  const form = useMemo(() => createForm({ initialValues: { fruit: ['apple', 'pear'] } }), [])
   return (
     <FormProvider form={form}>
       <SchemaField schema={schema} />

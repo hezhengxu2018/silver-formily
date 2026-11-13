@@ -1,7 +1,6 @@
 import { FormButtonGroup, FormItem, Picker, Submit } from '@silver-formily/antd-mobile'
 import { createForm } from '@silver-formily/core'
 import { Field, FormProvider } from '@silver-formily/react'
-import { useMemo } from 'react'
 
 const dataSource = [[{ label: '普通配送', value: 'standard' }, { label: '加急配送', value: 'express' }]]
 
@@ -9,8 +8,9 @@ function onSubmit(values: unknown) {
   return Prompts.alert(JSON.stringify(values, null, 2))
 }
 
+const form = createForm({ initialValues: { self: ['standard'], disabled: ['standard'], readOnly: ['express'], preview: ['express'] } })
+
 export default function PatternsDemo() {
-  const form = useMemo(() => createForm({ initialValues: { self: ['standard'], disabled: ['standard'], readOnly: ['express'], preview: ['express'] } }), [])
   return (
     <FormProvider form={form}>
       <Field name="self" title="整行点击 / 清除" decorator={[FormItem, { clearable: true }]} dataSource={dataSource} component={[Picker]} />

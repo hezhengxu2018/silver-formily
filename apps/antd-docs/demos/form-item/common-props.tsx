@@ -1,7 +1,7 @@
 import {
   FormItem,
   Input,
-  NumberPicker,
+  InputNumber,
   Select,
 } from '@silver-formily/antd'
 import { createForm } from '@silver-formily/core'
@@ -13,7 +13,7 @@ const SchemaField = createSchemaField({
   components: {
     Input,
     Select,
-    NumberPicker,
+    InputNumber,
     FormItem,
     Title,
   },

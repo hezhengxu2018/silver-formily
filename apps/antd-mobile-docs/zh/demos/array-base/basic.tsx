@@ -1,7 +1,6 @@
 import { ArrayBase, Form, FormButtonGroup, FormItem, FormLayout, Input, Submit } from '@silver-formily/antd-mobile'
 import { createForm } from '@silver-formily/core'
 import { ArrayField, Field } from '@silver-formily/react'
-import { useState } from 'react'
 
 function ItemHeader() {
   const index = ArrayBase.useIndex()
@@ -22,8 +21,9 @@ function onSubmit(values: unknown) {
   return Prompts.alert(JSON.stringify(values, null, 2))
 }
 
+const form = createForm({ initialValues: { contacts: [{ name: '张三' }] } })
+
 export default function BasicDemo() {
-  const [form] = useState(() => createForm({ initialValues: { contacts: [{ name: '张三' }] } }))
   return (
     <Form form={form}>
       <ArrayField name="contacts">

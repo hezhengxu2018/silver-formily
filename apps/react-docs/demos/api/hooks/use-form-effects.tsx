@@ -41,11 +41,19 @@ function createDemoForm() {
   })
 }
 
+let form = createDemoForm()
+
 export default function Demo() {
-  const [form, setForm] = useState(createDemoForm)
+  const [, setVersion] = useState(0)
   return (
     <FormProvider key={form.id} form={form}>
-      <Button onClick={() => setForm(createDemoForm())}>重新挂载新表单</Button>
+      <Button onClick={() => {
+        form = createDemoForm()
+        setVersion(version => version + 1)
+      }}
+      >
+        重新挂载新表单
+      </Button>
       <Field
         name="input"
         decorator={[Form.Item]}

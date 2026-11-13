@@ -1,7 +1,6 @@
 import { ArrayItems, Form, FormButtonGroup, FormItem, Input, Submit } from '@silver-formily/antd-mobile'
 import { createForm } from '@silver-formily/core'
 import { createSchemaField } from '@silver-formily/react'
-import { useState } from 'react'
 
 function Actions() {
   return (
@@ -19,8 +18,9 @@ function onSubmit(values: unknown) {
   return Prompts.alert(JSON.stringify(values, null, 2))
 }
 
+const form = createForm({ initialValues: { tags: ['工作', '生活'] } })
+
 export default function PrimitiveDemo() {
-  const [form] = useState(() => createForm({ initialValues: { tags: ['工作', '生活'] } }))
   return (
     <Form form={form}>
       <SchemaField>

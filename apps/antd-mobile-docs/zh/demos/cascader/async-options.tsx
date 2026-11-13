@@ -12,8 +12,9 @@ function onSubmit(values: unknown) {
   return Prompts.alert(JSON.stringify(values, null, 2))
 }
 
+const form = createForm({ initialValues: { region: [] } })
+
 export default function Demo() {
-  const form = useMemo(() => createForm({ initialValues: { region: [] } }), [])
   const [cache, setCache] = useState<OptionsCache>({})
   const requested = useRef(new Set<string>())
   const timers = useRef(new Set<ReturnType<typeof setTimeout>>())

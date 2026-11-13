@@ -2,7 +2,7 @@ import type { ReactNode } from 'react'
 import { createForm } from '@silver-formily/core'
 import { Field, FormProvider } from '@silver-formily/react'
 import { Input } from 'antd'
-import { StrictMode, useState } from 'react'
+import { StrictMode } from 'react'
 
 function Decorator({ content, children }: { content?: ReactNode, children?: ReactNode }) {
   return (
@@ -13,10 +13,11 @@ function Decorator({ content, children }: { content?: ReactNode, children?: Reac
   )
 }
 
+const form = createForm({
+  initialValues: { input: '初始值' },
+})
+
 export default function Demo() {
-  const [form] = useState(() => createForm({
-    initialValues: { input: '初始值' },
-  }))
   return (
     <StrictMode>
       <FormProvider form={form}>

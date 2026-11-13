@@ -4,7 +4,7 @@
 
 ## 本次迁移范围
 
-本阶段提供 **Form、FormItem、FormLayout、FormGrid、FormButtonGroup、Input、Select、NumberPicker、PreviewText、Submit、Reset**。
+本阶段提供 **Form、FormItem、FormLayout、FormGrid、FormButtonGroup、Input、Select、InputNumber、PreviewText、Submit、Reset**。
 
 新增 Password、Checkbox、Radio、Switch、Cascader、TreeSelect、Transfer、DatePicker、TimePicker、Upload、Slider、Rate，包含 Group、RangePicker 和 Upload.Dragger。
 

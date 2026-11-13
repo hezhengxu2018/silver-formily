@@ -75,7 +75,7 @@ These modules connect the core capabilities to specific frontend frameworks and 
 Choose UI bindings according to your frontend framework and target devices. `@silver-formily/grid` provides shared layout primitives used by multiple UI adapters.
 
 :::tip Ant Design 6 component scope
-`@silver-formily/antd` currently provides Form, FormItem, FormLayout, FormGrid, FormButtonGroup, Input, Select, NumberPicker, PreviewText, Submit, and Reset. Arrays, date/time controls, and uploads have not been migrated. Check the current package exports and documentation when choosing components.
+`@silver-formily/antd` currently provides Form, FormItem, FormLayout, FormGrid, FormButtonGroup, Input, Select, InputNumber, PreviewText, Submit, and Reset. Arrays, date/time controls, and uploads have not been migrated. Check the current package exports and documentation when choosing components.
 :::
 
 ## Where to Start

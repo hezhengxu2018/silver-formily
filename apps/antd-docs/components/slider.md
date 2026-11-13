@@ -1,16 +1,26 @@
 # Slider 滑块
 
-::: warning 与官方封装的差异
-属性、事件和 ref 遵循 antd 6；Formily 负责字段绑定与阅读态。
+单值滑块使用数字，范围滑块使用数组。以下示例展示 `step: 10` 的固定步长、`range: true` 的范围选择，以及 `step: null` 配合 `marks` 的离散刻度。
+
+## Markup Schema 案例
+
+:::demo
+slider/markup-schema.tsx
 :::
 
-Slider 用于表单中的滑块，支持 Field 与 Schema 绑定。
+## JSON Schema 案例
+
+:::demo
+slider/json-schema.tsx
+:::
+
+## 纯 JSX 案例
+
+:::demo
+slider/jsx.tsx
+:::
 
 ## 基础用法
-
-::: tip 示例适配说明
-本例按 antd 6 API 编写，展示字段绑定、阅读态和重置。
-:::
 
 :::demo
 slider/basic.tsx
@@ -18,13 +28,4 @@ slider/basic.tsx
 
 ## API
 
-| 接口                 | 行为                                                             |
-| -------------------- | ---------------------------------------------------------------- |
-| 组件属性、事件及 ref | 遵循 [Ant Design 6 Slider](https://ant.design/components/slider) |
-| 字段 value           | number / number[]                                                |
-| pattern="readPretty" | 展示当前值，不允许改变字段；空值使用 PreviewText 占位配置        |
-| disabled、校验状态   | 继承字段与 FormItem 的原生反馈上下文；仅应用原生支持的能力       |
-
-## 来源
-
-本项目扩展，无对应上游封装。迁移参考遵循 [MIT 许可](/licenses/formily-MIT.txt)，本页 API 与示例按当前独立封装整理。
+完整API参考 [Ant Design 6 Slider](https://ant.design/components/slider)

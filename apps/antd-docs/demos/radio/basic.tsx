@@ -3,10 +3,10 @@ import { createForm } from '@silver-formily/core'
 import { Field } from '@silver-formily/react'
 import { Button, Space } from 'antd'
 
-import { useState } from 'react'
+
+const form = createForm({ initialValues: { value: 'a' } })
 
 export default function Demo() {
-  const [form] = useState(() => createForm({ initialValues: { value: 'a' } }))
   return (
     <Form form={form} labelCol={6} wrapperCol={16}>
       <Field name="value" title="单选框" decorator={[FormItem]} component={[Radio.Group, { options: [{ label: '选项 A', value: 'a' }, { label: '选项 B', value: 'b' }] }]} />

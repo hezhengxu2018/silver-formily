@@ -1,7 +1,6 @@
 import { CascadePicker, FormButtonGroup, FormItem, Reset, Submit } from '@silver-formily/antd-mobile'
 import { createForm } from '@silver-formily/core'
 import { createSchemaField, FormProvider } from '@silver-formily/react'
-import { useMemo } from 'react'
 import { options } from './_options'
 
 const SchemaField = createSchemaField({ components: { CascadePicker, FormItem } })
@@ -25,8 +24,9 @@ function onSubmit(values: unknown) {
   return Prompts.alert(JSON.stringify(values, null, 2))
 }
 
+const form = createForm({ initialValues: { address: ['zhejiang', 'hangzhou', 'xihu'] } })
+
 export default function BasicDemo() {
-  const form = useMemo(() => createForm({ initialValues: { address: ['zhejiang', 'hangzhou', 'xihu'] } }), [])
   return (
     <FormProvider form={form}>
       <SchemaField schema={schema} />

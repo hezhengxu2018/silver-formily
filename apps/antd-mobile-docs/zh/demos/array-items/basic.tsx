@@ -1,7 +1,6 @@
 import { ArrayItems, Form, FormButtonGroup, FormItem, Input, Submit } from '@silver-formily/antd-mobile'
 import { createForm } from '@silver-formily/core'
 import { createSchemaField } from '@silver-formily/react'
-import { useState } from 'react'
 
 function ContactTitle() {
   return (
@@ -18,8 +17,9 @@ function onSubmit(values: unknown) {
   return Prompts.alert(JSON.stringify(values, null, 2))
 }
 
+const form = createForm({ initialValues: { contacts: [{}] } })
+
 export default function BasicDemo() {
-  const [form] = useState(() => createForm({ initialValues: { contacts: [{}] } }))
   return (
     <Form form={form}>
       <SchemaField schema={{

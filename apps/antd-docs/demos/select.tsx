@@ -5,8 +5,9 @@ import { Button } from 'antd'
 import { useState } from 'react'
 
 const options = [{ label: '管理员', value: 'admin' }, { label: '成员', value: 'member' }]
+const form = createForm({ initialValues: { roles: ['member'] } })
+
 export default function Demo() {
-  const [form] = useState(() => createForm({ initialValues: { roles: ['member'] } }))
   const [preview, setPreview] = useState(false)
   return (
     <>

@@ -4,8 +4,9 @@ import { Field } from '@silver-formily/react'
 import { useState } from 'react'
 import { Result } from './_shared'
 
+const form = createForm()
+
 export default function Demo() {
-  const [form] = useState(() => createForm())
   const [result, setResult] = useState<unknown>()
   return (
     <>

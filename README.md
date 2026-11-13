@@ -50,7 +50,7 @@ Silver Formily 是一个面向 Vue 3 与 React 18/19 的表单基础设施 Monor
 | `@silver-formily/docs-toolkit`      | VitePress 主题、插件与站点共享配置           |
 | `@silver-formily/typescript-config` | 内部 TypeScript 配置共享包                   |
 
-React 生态包含响应式桥接、字段与 Schema 渲染，以及桌面端和移动端 UI 适配。`@silver-formily/antd` 当前提供 Form、FormItem、FormLayout、FormGrid、FormButtonGroup、Input、Select、NumberPicker、PreviewText、Submit、Reset；完整导出与迁移范围见[包说明](./packages/antd/README.md)。`@silver-formily/antd-mobile` 提供移动端字段、数组、分步表单、弹层表单及预览态等能力，见[包说明](./packages/antd-mobile/README.md)。
+React 生态包含响应式桥接、字段与 Schema 渲染，以及桌面端和移动端 UI 适配。`@silver-formily/antd` 当前提供 Form、FormItem、FormLayout、FormGrid、FormButtonGroup、Input、Select、InputNumber、PreviewText、Submit、Reset；完整导出与迁移范围见[包说明](./packages/antd/README.md)。`@silver-formily/antd-mobile` 提供移动端字段、数组、分步表单、弹层表单及预览态等能力，见[包说明](./packages/antd-mobile/README.md)。
 
 ## 仓库结构
 

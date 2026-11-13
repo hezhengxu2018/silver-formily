@@ -1,14 +1,14 @@
 import { FormButtonGroup, FormItem, FormLayout, Input, Reset, Submit } from '@silver-formily/antd-mobile'
 import { createForm } from '@silver-formily/core'
 import { Field, FormProvider } from '@silver-formily/react'
-import { useMemo } from 'react'
 
 function onSubmit(values: unknown) {
   return Prompts.alert(JSON.stringify(values, null, 2))
 }
 
+const form = createForm({ initialValues: { username: '张三' } })
+
 export default function StickyDemo() {
-  const form = useMemo(() => createForm({ initialValues: { username: '张三' } }), [])
   return (
     <FormProvider form={form}>
       <div style={{ height: '100vh', padding: 16 }}>继续向下滚动，表单进入屏幕后才会出现底部提交栏。</div>

@@ -4,8 +4,9 @@ import { Field } from '@silver-formily/react'
 import { Button } from 'antd'
 import { useState } from 'react'
 
+const form = createForm({ initialValues: { name: '张三', notes: '多行文本' } })
+
 export default function Demo() {
-  const [form] = useState(() => createForm({ initialValues: { name: '张三', notes: '多行文本' } }))
   const [preview, setPreview] = useState(false)
   return (
     <>

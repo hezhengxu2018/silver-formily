@@ -23,10 +23,10 @@ npm install @silver-formily/react @silver-formily/core react@19 react-dom@19
 ```tsx
 import { createForm } from '@silver-formily/core'
 import { Field, FormProvider } from '@silver-formily/react'
-import { useState } from 'react'
+
+const form = createForm()
 
 export default function App() {
-  const [form] = useState(() => createForm())
   return (
     <FormProvider form={form}>
       <Field name="input" component={[Input]} />

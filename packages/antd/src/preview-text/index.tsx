@@ -54,7 +54,7 @@ function Input(props: IPreviewTextProps) {
     </Text>
   )
 }
-function NumberPicker(props: IPreviewTextProps) {
+function InputNumber(props: IPreviewTextProps) {
   const value = props.value === undefined || props.value === null || props.value === ''
     ? props.value
     : props.formatter ? props.formatter(props.value, { userTyping: false, input: '' }) : props.value
@@ -219,7 +219,7 @@ function Upload(props: UploadProps) {
 export const PreviewText = Object.assign(Text, {
   Input,
   Select,
-  NumberPicker,
+  InputNumber,
   Boolean: BooleanPreview,
   Password,
   Slider,

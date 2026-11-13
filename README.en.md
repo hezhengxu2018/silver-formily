@@ -50,7 +50,7 @@ The workspace is organized with `pnpm`, `Turborepo`, `Vite`, and `VitePress`, co
 | `@silver-formily/docs-toolkit`      | Shared VitePress theme, plugins, and site config        |
 | `@silver-formily/typescript-config` | Shared TypeScript presets for the workspace             |
 
-The React ecosystem includes reactive bindings, field and Schema rendering, and desktop and mobile UI adapters. `@silver-formily/antd` currently provides Form, FormItem, FormLayout, FormGrid, FormButtonGroup, Input, Select, NumberPicker, PreviewText, Submit, and Reset; see its [package README](./packages/antd/README.md) for exports and migration scope. `@silver-formily/antd-mobile` includes mobile fields, arrays, step forms, popup forms, and preview components; see its [package README](./packages/antd-mobile/README.md).
+The React ecosystem includes reactive bindings, field and Schema rendering, and desktop and mobile UI adapters. `@silver-formily/antd` currently provides Form, FormItem, FormLayout, FormGrid, FormButtonGroup, Input, Select, InputNumber, PreviewText, Submit, and Reset; see its [package README](./packages/antd/README.md) for exports and migration scope. `@silver-formily/antd-mobile` includes mobile fields, arrays, step forms, popup forms, and preview components; see its [package README](./packages/antd-mobile/README.md).
 
 ## Repository Layout
 

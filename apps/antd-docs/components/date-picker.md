@@ -37,7 +37,3 @@ const payload = { date: form.values.date?.format('YYYY-MM-DD') ?? null }
 ```
 
 `RangePicker` 保留原生空端点；`disabledDate`、`onChange` 等接口中的日期仍然是 Dayjs。展示格式支持原生字符串、数组、函数及 mask 配置；阅读态使用首个格式。
-
-## 来源
-
-[Alibaba Formily DatePicker](https://github.com/alibaba/formily/blob/d9a46442a575aa5f0fc1bd945e34d9a85d191d0e/packages/antd/docs/components/DatePicker.zh-CN.md)。迁移参考遵循 [MIT 许可](/licenses/formily-MIT.txt)，本页 API 与示例按当前独立封装整理。

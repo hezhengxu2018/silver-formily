@@ -24,7 +24,3 @@ upload/basic.tsx
 | 字段 value           | UploadFile[]                                                     |
 | pattern="readPretty" | 展示当前值，不允许改变字段；空值使用 PreviewText 占位配置        |
 | disabled、校验状态   | 继承字段与 FormItem 的原生反馈上下文；仅应用原生支持的能力       |
-
-## 来源
-
-[Alibaba Formily Upload](https://github.com/alibaba/formily/blob/d9a46442a575aa5f0fc1bd945e34d9a85d191d0e/packages/antd/docs/components/Upload.zh-CN.md)。迁移参考遵循 [MIT 许可](/licenses/formily-MIT.txt)，本页 API 与示例按当前独立封装整理。

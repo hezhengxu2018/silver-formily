@@ -4,7 +4,7 @@ import {
   DatePicker,
   FormItem,
   Input,
-  NumberPicker,
+  InputNumber,
   Radio,
   Select,
   Switch,
@@ -24,7 +24,7 @@ const SchemaField = createSchemaField({
     TreeSelect,
     Cascader,
     Switch,
-    NumberPicker,
+    InputNumber,
     FormItem,
     Div,
   },
@@ -110,10 +110,10 @@ export default function OfficialExample() {
             required
           />
           <SchemaField.String
-            name="NumberPicker"
-            title="NumberPicker"
+            name="InputNumber"
+            title="InputNumber"
             x-decorator="FormItem"
-            x-component="NumberPicker"
+            x-component="InputNumber"
             required
           />
           <SchemaField.Object name="date" title="日期" x-decorator="FormItem" x-component="DatePicker" />

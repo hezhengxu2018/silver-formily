@@ -2,11 +2,11 @@ import type { InputProps } from 'antd'
 import type { IFormItemProps } from '../src/form-item'
 import { createForm } from '@silver-formily/core'
 import { Field } from '@silver-formily/react'
-import { Form as AntdForm, Input as AntdInput, Select as AntdSelect, ConfigProvider, DatePicker, InputNumber, theme } from 'antd'
+import { Form as AntdForm, Input as AntdInput, InputNumber as AntdInputNumber, Select as AntdSelect, ConfigProvider, DatePicker, theme } from 'antd'
 import { afterEach, expect, it, vi } from 'vitest'
 import { cleanup, render } from 'vitest-browser-react'
 import { page } from 'vitest/browser'
-import { Form, FormItem, Input, NumberPicker, Select } from '../src'
+import { Form, FormItem, Input, InputNumber, Select } from '../src'
 
 afterEach(cleanup)
 
@@ -14,11 +14,11 @@ const controls = [
   ['Input', <Input />],
   ['TextArea', <Input.TextArea />],
   ['Select', <Select />],
-  ['NumberPicker', <NumberPicker />],
+  ['InputNumber', <InputNumber />],
   ['native Input', <AntdInput />],
   ['native TextArea', <AntdInput.TextArea />],
   ['native Select', <AntdSelect />],
-  ['native InputNumber', <InputNumber />],
+  ['native InputNumber', <AntdInputNumber />],
   ['native DatePicker', <DatePicker />],
 ] as const
 const statuses = ['error', 'warning', 'success', 'pending', undefined] as const

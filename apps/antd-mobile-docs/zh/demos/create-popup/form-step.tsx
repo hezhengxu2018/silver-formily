@@ -13,10 +13,6 @@ interface StepFormValues {
   remark: string
 }
 
-interface StepFormContentProps extends PopupContentCallbacks<StepFormValues> {
-  defaultValues: StepFormValues
-}
-
 const defaultValues: StepFormValues = {
   name: '张三',
   mobile: '13800000000',
@@ -27,8 +23,9 @@ const defaultValues: StepFormValues = {
 
 const SchemaField = createSchemaField({ components: { FormStep, FormItem, Input } })
 
-function StepFormContent({ defaultValues, onConfirm, onCancel }: StepFormContentProps) {
-  const [form] = useState(() => createForm<StepFormValues>({ initialValues: { ...defaultValues } }))
+const form = createForm<StepFormValues>({ initialValues: { ...defaultValues } })
+
+function StepFormContent({ onConfirm, onCancel }: PopupContentCallbacks<StepFormValues>) {
   const [formStep] = useState(() => FormStep.createFormStep())
 
   return (
@@ -87,7 +84,8 @@ function onSubmit(values: unknown) {
 
 export default function FormStepDemo() {
   async function handleOpen() {
-    const result = await stepFormPopup.prompt({ defaultValues })
+    await form.reset()
+    const result = await stepFormPopup.prompt({})
     if (result !== null)
       await onSubmit(result)
   }

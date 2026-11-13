@@ -1,10 +1,10 @@
 import { Form, FormItem, Input, Submit } from '@silver-formily/antd'
 import { createForm } from '@silver-formily/core'
 import { Field } from '@silver-formily/react'
-import { useState } from 'react'
+
+const form = createForm()
 
 export default function Demo() {
-  const [form] = useState(() => createForm())
   return (
     <Form form={form} labelWidth={100} fullness onAutoSubmitFailed={() => {}}>
       <Field name="email" title="邮箱" required description="提交时检查邮箱格式" validator={{ format: 'email', message: '请输入有效的邮箱地址' }} decorator={[FormItem, { tooltip: '用于接收通知', labelFor: 'demo-email' }]} component={[Input, { id: 'demo-email', placeholder: 'name@example.com' }]} />

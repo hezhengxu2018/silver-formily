@@ -1,31 +1,25 @@
-import { FormButtonGroup, FormItem, NumberPicker, Submit } from '@silver-formily/antd'
+import { FormButtonGroup, FormItem, Submit, Switch } from '@silver-formily/antd'
 import { createForm } from '@silver-formily/core'
 import { createSchemaField, FormProvider } from '@silver-formily/react'
 
 const SchemaField = createSchemaField({
   components: {
-    NumberPicker,
+    Switch,
     FormItem,
   },
 })
 
-const form = createForm()
+const form = createForm({ initialValues: { switch: false } })
 
-export default function OfficialExample() {
+export default function Demo() {
   return (
     <FormProvider form={form}>
       <SchemaField>
-        <SchemaField.String
-          name="input"
-          title="输入框"
+        <SchemaField.Boolean
+          name="switch"
+          title="开关"
           x-decorator="FormItem"
-          x-component="NumberPicker"
-          required
-          x-component-props={{
-            style: {
-              width: 240,
-            },
-          }}
+          x-component="Switch"
         />
       </SchemaField>
       <FormButtonGroup>

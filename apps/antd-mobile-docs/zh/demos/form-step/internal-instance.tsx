@@ -2,7 +2,6 @@ import { Form, FormButtonGroup, FormItem, FormStep, Input, Submit, useFormStep }
 import { createForm } from '@silver-formily/core'
 import { createSchemaField, observer } from '@silver-formily/react'
 import { Button } from 'antd-mobile'
-import { useState } from 'react'
 
 const Actions = observer(() => {
   const step = useFormStep()
@@ -21,8 +20,9 @@ function onSubmit(values: unknown) {
   return Prompts.alert(JSON.stringify(values, null, 2))
 }
 
+const form = createForm()
+
 export default function InternalInstanceDemo() {
-  const [form] = useState(() => createForm())
   return (
     <Form form={form}>
       <SchemaField schema={{

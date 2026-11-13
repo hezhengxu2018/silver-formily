@@ -75,7 +75,7 @@ formily的写法可以分为两个大类 Template/JSX/TSX 的写法和 Schema �
 实际开发时，可以根据前端框架与目标设备选择 UI 绑定。`@silver-formily/grid` 是多个 UI 适配层复用的布局基础能力。
 
 :::tip Ant Design 6 的组件范围
-`@silver-formily/antd` 当前提供 Form、FormItem、FormLayout、FormGrid、FormButtonGroup、Input、Select、NumberPicker、PreviewText、Submit、Reset。数组、日期时间、上传等组件尚未迁移，选型时请以当前包的导出和文档为准。
+`@silver-formily/antd` 当前提供 Form、FormItem、FormLayout、FormGrid、FormButtonGroup、Input、Select、InputNumber、PreviewText、Submit、Reset。数组、日期时间、上传等组件尚未迁移，选型时请以当前包的导出和文档为准。
 :::
 
 ## 从哪里开始

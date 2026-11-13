@@ -3,10 +3,10 @@ import { createForm } from '@silver-formily/core'
 import { Field } from '@silver-formily/react'
 import { Button, Space } from 'antd'
 
-import { useState } from 'react'
+
+const form = createForm({ initialValues: { value: 'city' } })
 
 export default function Demo() {
-  const [form] = useState(() => createForm({ initialValues: { value: 'city' } }))
   return (
     <Form form={form} labelCol={6} wrapperCol={16}>
       <Field name="value" title="树选择" decorator={[FormItem]} component={[TreeSelect, { treeData: [{ title: '地区', value: 'region', children: [{ title: '城市', value: 'city' }] }], style: { width: 240 } }]} />

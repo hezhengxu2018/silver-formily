@@ -8,7 +8,6 @@ import {
 import { createSchemaField, FormProvider } from '@silver-formily/react'
 import { action, observable } from '@silver-formily/reactive'
 
-// 官方例子使用淘宝 JSONP 服务；这里用本地数据保持可离线运行。
 let timeout: ReturnType<typeof setTimeout>
 let currentValue: string
 function fetchData(value: string, callback: (options: { label: string, value: string }[]) => void) {

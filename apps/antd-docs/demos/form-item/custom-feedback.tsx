@@ -3,7 +3,7 @@ import {
   FormItem,
   FormLayout,
   Input,
-  NumberPicker,
+  InputNumber,
   Select,
 } from '@silver-formily/antd'
 import { createForm } from '@silver-formily/core'
@@ -15,7 +15,7 @@ const SchemaField = createSchemaField({
   components: {
     Input,
     Select,
-    NumberPicker,
+    InputNumber,
     FormItem,
     Title,
     FormLayout,
@@ -198,9 +198,9 @@ export default function OfficialExample() {
           />
 
           <SchemaField.String
-            title="NumberPicker"
+            title="InputNumber"
             x-decorator="FormItem"
-            x-component="NumberPicker"
+            x-component="InputNumber"
             x-decorator-props={{
               feedbackStatus: 'success',
               hasFeedback: true,

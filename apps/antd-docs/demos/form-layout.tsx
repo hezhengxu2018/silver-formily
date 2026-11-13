@@ -4,8 +4,9 @@ import { Field } from '@silver-formily/react'
 import { Slider } from 'antd'
 import { useState } from 'react'
 
+const form = createForm()
+
 export default function Demo() {
-  const [form] = useState(() => createForm())
   const [width, setWidth] = useState(520)
   return (
     <>

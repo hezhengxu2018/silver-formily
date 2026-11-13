@@ -44,7 +44,7 @@ catalog:
   '@vue/reactivity': ^3.5.32
   '@vue/shared': ^3.5.27
   '@vueuse/core': ^14.2.1
-  antd: ^6.6.5
+  antd: 6.6.7
   antd-mobile: ^5.43.0
   antd-mobile-icons: ^0.3.0
   class-variance-authority: ^0.7.1

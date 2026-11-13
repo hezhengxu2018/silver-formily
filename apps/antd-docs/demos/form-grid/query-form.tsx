@@ -132,8 +132,9 @@ const SchemaField = createSchemaField({
   },
 })
 
+const form = createForm()
+
 export default function Example() {
-  const form = useMemo(() => createForm(), [])
   return (
     <FormProvider form={form}>
       <SchemaField>

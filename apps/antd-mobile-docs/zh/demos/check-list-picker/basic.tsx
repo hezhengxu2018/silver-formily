@@ -1,7 +1,6 @@
 import { CheckListPicker, FormButtonGroup, FormItem, Reset, Submit } from '@silver-formily/antd-mobile'
 import { createForm } from '@silver-formily/core'
 import { createSchemaField, FormProvider } from '@silver-formily/react'
-import { useMemo } from 'react'
 
 const SchemaField = createSchemaField({ components: { FormItem, CheckListPicker } })
 const schema = {
@@ -26,8 +25,9 @@ function onSubmit(values: unknown) {
   return Prompts.alert(JSON.stringify(values, null, 2))
 }
 
+const form = createForm({ initialValues: { fruit: ['apple', 'pear'] } })
+
 export default function BasicDemo() {
-  const form = useMemo(() => createForm({ initialValues: { fruit: ['apple', 'pear'] } }), [])
   return (
     <FormProvider form={form}>
       <SchemaField schema={schema} />

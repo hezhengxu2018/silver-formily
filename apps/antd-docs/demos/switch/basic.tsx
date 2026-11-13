@@ -3,10 +3,10 @@ import { createForm } from '@silver-formily/core'
 import { Field } from '@silver-formily/react'
 import { Button, Space } from 'antd'
 
-import { useState } from 'react'
+
+const form = createForm({ initialValues: { value: false } })
 
 export default function Demo() {
-  const [form] = useState(() => createForm({ initialValues: { value: false } }))
   return (
     <Form form={form} labelCol={6} wrapperCol={16}>
       <Field name="value" title="开关" decorator={[FormItem]} component={[Switch, { checkedChildren: '开启', unCheckedChildren: '关闭' }]} />

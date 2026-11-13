@@ -1,32 +1,52 @@
 # Radio 单选框
 
-::: warning 与官方封装的差异
-属性、事件和 ref 遵循 antd 6；Formily 负责字段绑定与阅读态。
+> 单选框，大部分情况下应该使用 `Radio.Group`
+
+## Markup Schema 案例
+
+通过 `enum` 配置单选组选项。选项值为数字时，使用 `SchemaField.Number` 声明字段类型。
+
+:::demo
+radio/markup-schema.tsx
 :::
 
-Radio 用于表单中的单选框，支持 Field 与 Schema 绑定。
+## JSON Schema 案例
+
+通过 JSON Schema 的 `enum` 配置选项，使用 `x-component: 'Radio.Group'` 渲染单选组。
+
+:::demo
+radio/json-schema.tsx
+:::
+
+## 纯 JSX 案例
+
+通过 `Field` 的 `dataSource` 配置选项，选中后提交的是对应选项的 `value`。
+
+:::demo
+radio/jsx.tsx
+:::
 
 ## 基础用法
-
-::: tip 示例适配说明
-本例按 antd 6 API 编写，展示字段绑定、阅读态和重置。
-:::
 
 :::demo
 radio/basic.tsx
 :::
 
+## 按钮样式
+
+通过 `Radio.Group` 的 `optionType: 'button'` 开启按钮风格，选项由 Schema 的 `enum` 或字段的 `dataSource` 提供。切换阅读态可查看选中项标签，点击重置恢复初始值。
+
+:::demo
+radio/button.tsx
+:::
+
 ## API
 
-| 接口                 | 行为                                                           |
-| -------------------- | -------------------------------------------------------------- |
-| 组件属性、事件及 ref | 遵循 [Ant Design 6 Radio](https://ant.design/components/radio) |
-| 字段 value           | boolean（Group 为选项值）                                      |
-| pattern="readPretty" | 展示当前值，不允许改变字段；空值使用 PreviewText 占位配置      |
-| disabled、校验状态   | 继承字段与 FormItem 的原生反馈上下文；仅应用原生支持的能力     |
+### Radio.Group
 
-非空字段 `dataSource` 优先，否则使用显式原生数据源属性。选项值 `0`、标签空字符串和自定义字段名保留原生语义。
+| 属性          | 类型                    | 默认值      | 说明                                   |
+| ------------- | ----------------------- | ----------- | -------------------------------------- |
+| `optionType`  | `'default' \| 'button'` | `'default'` | 选项风格，与 Element Plus 封装保持一致 |
+| `buttonStyle` | `'outline' \| 'solid'`  | `'outline'` | 按钮风格下的外观                       |
 
-## 来源
-
-[Alibaba Formily Radio](https://github.com/alibaba/formily/blob/d9a46442a575aa5f0fc1bd945e34d9a85d191d0e/packages/antd/docs/components/Radio.zh-CN.md)。迁移参考遵循 [MIT 许可](/licenses/formily-MIT.txt)，本页 API 与示例按当前独立封装整理。
+非空字段 `dataSource` 优先，否则使用显式原生数据源属性。其余的属性请参考 [Antd Radio](https://ant.design/components/radio-cn#radioradiobutton)

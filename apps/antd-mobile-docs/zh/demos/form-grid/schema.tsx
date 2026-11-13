@@ -1,7 +1,6 @@
 import { FormButtonGroup, FormGrid, FormItem, FormLayout, Input, Submit } from '@silver-formily/antd-mobile'
 import { createForm } from '@silver-formily/core'
 import { createSchemaField, FormProvider } from '@silver-formily/react'
-import { useMemo } from 'react'
 
 const SchemaField = createSchemaField({
   components: { FormGrid, FormItem, Input },
@@ -11,8 +10,9 @@ function onSubmit(values: unknown) {
   return Prompts.alert(JSON.stringify(values, null, 2))
 }
 
+const form = createForm()
+
 export default function FormGridSchema() {
-  const form = useMemo(() => createForm(), [])
   return (
     <FormProvider form={form}>
       <FormLayout layout="vertical" gridColumnGap={8} gridRowGap={8}>

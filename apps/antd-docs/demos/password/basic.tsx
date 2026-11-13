@@ -3,10 +3,10 @@ import { createForm } from '@silver-formily/core'
 import { Field } from '@silver-formily/react'
 import { Button, Space } from 'antd'
 
-import { useState } from 'react'
+
+const form = createForm({ initialValues: { value: 'secret' } })
 
 export default function Demo() {
-  const [form] = useState(() => createForm({ initialValues: { value: 'secret' } }))
   return (
     <Form form={form} labelCol={6} wrapperCol={16}>
       <Field name="value" title="密码输入" decorator={[FormItem]} component={[Password, { placeholder: '请输入密码' }]} />

@@ -4,7 +4,7 @@ import { createSchemaField, Field, FormProvider } from '@silver-formily/react'
 import { createRef, StrictMode } from 'react'
 import { afterEach, expect, it, vi } from 'vitest'
 import { cleanup, render } from 'vitest-browser-react'
-import { Form, FormButtonGroup, FormItem, Input, NumberPicker, Reset, Select, Submit } from '../src'
+import { Form, FormButtonGroup, FormItem, Input, InputNumber, Reset, Select, Submit } from '../src'
 
 afterEach(async () => {
   await cleanup()
@@ -18,7 +18,7 @@ it('submits edited JSX fields once through a native form and resets initial valu
     <StrictMode>
       <Form form={form} onAutoSubmit={submit}>
         <Field name="name" title="Name" decorator={[FormItem, { labelFor: 'name' }]} component={[Input, { id: 'name' }]} />
-        <Field name="count" component={[NumberPicker, { 'aria-label': 'Count' }]} />
+        <Field name="count" component={[InputNumber, { 'aria-label': 'Count' }]} />
         <FormButtonGroup>
           <Submit />
           <Reset />
@@ -59,7 +59,7 @@ it('shows required validation and prevents submission until valid', async () => 
 
 it('supports JSON Schema with datasource and inherited FormProvider', async () => {
   const form = createForm()
-  const SchemaField = createSchemaField({ components: { FormItem, Input, Select, NumberPicker } })
+  const SchemaField = createSchemaField({ components: { FormItem, Input, Select, InputNumber } })
   const { getByRole } = await render(
     <FormProvider form={form}>
       <Form>
@@ -67,7 +67,7 @@ it('supports JSON Schema with datasource and inherited FormProvider', async () =
           type: 'object',
           properties: {
             name: { 'type': 'string', 'default': 'schema', 'x-decorator': 'FormItem', 'x-component': 'Input' },
-            count: { 'type': 'number', 'default': 0, 'x-component': 'NumberPicker' },
+            count: { 'type': 'number', 'default': 0, 'x-component': 'InputNumber' },
             role: { 'type': 'string', 'default': 'member', 'enum': [{ label: 'Member', value: 'member' }], 'x-component': 'Select' },
           },
         }}

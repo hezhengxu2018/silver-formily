@@ -10,8 +10,9 @@ function onSubmit(values: unknown) {
   return Prompts.alert(JSON.stringify(values, null, 2))
 }
 
+const form = createForm()
+
 export default function BasicDemo() {
-  const [form] = useState(() => createForm())
   const [step] = useState(() => FormStep.createFormStep())
   return (
     <Form form={form}>
