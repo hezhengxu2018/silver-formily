@@ -28,7 +28,7 @@ pnpm add \
 
 提供 Form、FormItem、FormLayout、FormGrid、FormButtonGroup、Input（含 TextArea）、Select、InputNumber、PreviewText、Submit 和 Reset。
 
-本包按所需范围迁移自 [Alibaba Formily antd 包](https://github.com/alibaba/formily/tree/d9a46442a575aa5f0fc1bd945e34d9a85d191d0e/packages/antd)（`@formily/antd@2.3.7`）。 新增 OTP、Password、Checkbox、Radio、Switch、Cascader、TreeSelect、Transfer、DatePicker、TimePicker、Upload、Slider、Rate，包含 Group、RangePicker 和 Upload.Dragger。尚未包含数组及场景组件。
+本包按所需范围迁移自 [Alibaba Formily antd 包](https://github.com/alibaba/formily/tree/d9a46442a575aa5f0fc1bd945e34d9a85d191d0e/packages/antd)（`@formily/antd@2.3.7`）。 新增 AutoComplete、Mentions、OTP、Password、Checkbox、Radio、Switch、Cascader、TreeSelect、Transfer、DatePicker、TimePicker、Upload、Slider、Rate，包含 Group、RangePicker 和 Upload.Dragger。尚未包含数组及场景组件。
 
 ## 快速上手
 

@@ -28,7 +28,7 @@ The command includes required peer dependencies. Existing projects can keep depe
 
 Form, FormItem, FormLayout, FormGrid, FormButtonGroup, Input (including TextArea), Select, InputNumber, PreviewText, Submit and Reset.
 
-This is an intentionally partial migration of [Alibaba Formily's antd package](https://github.com/alibaba/formily/tree/d9a46442a575aa5f0fc1bd945e34d9a85d191d0e/packages/antd) (`@formily/antd@2.3.7`). Also includes Password, Checkbox, Radio, Switch, Cascader, TreeSelect, Transfer, DatePicker, TimePicker, Upload, Slider and Rate, with Group, RangePicker and Dragger members. Arrays and scene components are not included.
+This is an intentionally partial migration of [Alibaba Formily's antd package](https://github.com/alibaba/formily/tree/d9a46442a575aa5f0fc1bd945e34d9a85d191d0e/packages/antd) (`@formily/antd@2.3.7`). Also includes AutoComplete, Mentions, Password, Checkbox, Radio, Switch, Cascader, TreeSelect, Transfer, DatePicker, TimePicker, Upload, Slider and Rate, with Group, RangePicker and Dragger members. Arrays and scene components are not included.
 
 ## Quick Start
 

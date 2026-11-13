@@ -26,6 +26,8 @@ const componentSidebar = [
     items: [
       { text: 'Input 输入框', link: '/components/input' },
       { text: 'InputNumber 数值输入', link: '/components/input-number' },
+      { text: 'AutoComplete 自动完成', link: '/components/auto-complete' },
+      { text: 'Mentions 提及', link: '/components/mentions' },
       { text: 'OTP 一次性密码输入', link: '/components/otp' },
       { text: 'Password 密码输入', link: '/components/password' },
       { text: 'Checkbox 复选框', link: '/components/checkbox' },

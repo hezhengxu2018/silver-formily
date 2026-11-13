@@ -1,7 +1,7 @@
 import type { Dayjs } from 'dayjs'
 import type { IFormGridProps, IFormItemProps, IFormLayoutProps, IPreviewTextProps } from '../src'
 import { expectTypeOf, it } from 'vitest'
-import { Checkbox, DatePicker, OTP, Password, Slider, TimePicker, Transfer, TreeSelect, Upload } from '../src'
+import { AutoComplete, Checkbox, DatePicker, Mentions, OTP, Password, Slider, TimePicker, Transfer, TreeSelect, Upload } from '../src'
 
 it('does not expose prefixCls on wrapper props', () => {
   expectTypeOf<'prefixCls'>().not.toExtend<keyof IFormItemProps>()
@@ -14,6 +14,17 @@ it('does not expose prefixCls on wrapper props', () => {
 // They are type-checked without mounting controls or invoking callbacks.
 it('retains native generic value and event signatures', () => {
   const controls = [
+    <AutoComplete<string, { value: string, label: string, detail: number }>
+      options={[{ value: 'a', label: 'A', detail: 1 }]}
+      onSelect={(value, option) => {
+        expectTypeOf(value).toEqualTypeOf<string>()
+        expectTypeOf(option.detail).toEqualTypeOf<number>()
+      }}
+    />,
+    <Mentions onChange={(value) => {
+      expectTypeOf(value).toEqualTypeOf<string>()
+    }}
+    />,
     <OTP
       onChange={(value) => {
         expectTypeOf(value).toEqualTypeOf<string>()

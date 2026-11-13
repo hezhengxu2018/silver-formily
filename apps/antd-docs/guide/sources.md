@@ -77,3 +77,5 @@ TreeSelect 补充官方三种写法的同步数据源、异步联动共六个示
 Cascader 补充官方 Markup Schema、JSON Schema 和纯 JSX 三个地址加载示例，保留地址树转换逻辑，以本地延迟和部分地址数据替换外部 CDN 请求，字段类型统一为数组。另新增 `loadData` 按需加载城市、区县的例子，使用与 Select 示例一致的 `useAsyncDataSource(pattern, service)` 封装，在 `onFieldInit` 中注入加载回调，展示节点加载状态、已加载分支保留与重复请求防护；此例不计入官方原例数量。
 
 Switch 补充官方 Markup Schema、JSON Schema 与纯 JSX 三个示例，表单实例在组件内创建并以 `false` 初始化。Slider 为本项目扩展，补充三种绑定写法，覆盖单值、范围、步长和离散刻度，示例不计入官方原例数量；基础示例补充范围初始值用于重置演示。
+
+AutoComplete、Mentions 为本项目新增控件，上游基线没有对应章节。每个组件提供基础用法和 JSON Schema 示例，展示 `dataSource` / `enum`、原生字符串值、阅读态和重置；这些示例不计入官方原例数量。
