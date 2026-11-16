@@ -1,5 +1,11 @@
 # @silver-formily/reactive
 
+## 1.1.0
+
+### Minor Changes
+
+- bdae165: 公共类型声明全面去除 any。
+
 ## 1.0.1
 
 ### Patch Changes

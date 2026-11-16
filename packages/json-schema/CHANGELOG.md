@@ -1,5 +1,16 @@
 # @silver-formily/json-schema
 
+## 1.2.1
+
+### Patch Changes
+
+- 49525f4: 修复 React 19 生产环境中不含 `_owner` 的 React 元素被 Schema 编译递归拆解、丢失空 `props`，导致渲染报错的问题。同时清理遍历提前返回时的循环检测记录，确保同一 React 元素在多个属性中被引用时均能正确保留。
+- 50cc1c9: 修复 Schema 编译时递归拆解 Vue 3 VNode 的问题。完整保留 VNode 及其引用，不再对内部 `props`、`children` 中的表达式求值，并确保同一 VNode 在多个属性中被引用时均能正确保留。
+- Updated dependencies [2c0153d]
+- Updated dependencies [bdae165]
+  - @silver-formily/shared@1.0.1
+  - @silver-formily/reactive@1.1.0
+
 ## 1.2.0
 
 ### Minor Changes

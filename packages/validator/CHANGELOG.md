@@ -1,5 +1,13 @@
 # @silver-formily/validator
 
+## 1.0.3
+
+### Patch Changes
+
+- bc132b1: Fix URL validation rejecting internationalized hostnames, Punycode top-level domains, and domain labels containing consecutive hyphens.
+- Updated dependencies [2c0153d]
+  - @silver-formily/shared@1.0.1
+
 ## 1.0.2
 
 ### Patch Changes

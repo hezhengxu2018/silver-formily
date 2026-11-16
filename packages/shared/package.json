@@ -1,7 +1,7 @@
 {
   "name": "@silver-formily/shared",
   "type": "module",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Shared low-level utilities and type helpers for Silver Formily runtime packages",
   "author": "hezhengxu",
   "license": "MIT",
