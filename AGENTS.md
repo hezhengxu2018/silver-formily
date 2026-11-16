@@ -26,7 +26,7 @@ This document defines repository-wide expectations for anyone automating tasks (
 | Test              | `pnpm test`        | Opens a searchable workspace picker; use `pnpm test:all` for full run.                                          |
 | Releases          | `pnpm release`     | Runs `pnpm build:changed` first, then `changeset publish`. Repo must be clean.                                  |
 
-Releases use Changesets CLI v3 with `format: false` so generated files continue to use the repository's ESLint formatting workflow. The manual release workflow versions and commits packages before invoking `changesets/action/publish` v2 to publish and create GitHub releases. Do not replace the publish sub-action with the root action: retained changesets for ignored packages must not trigger version PRs. Check the release plan before versioning because CLI v3 exits with code 1 when there is nothing to version.
+Releases use Changesets CLI v3 with `format: false` so generated files continue to use the repository's ESLint formatting workflow. The manual release workflow versions and commits packages before invoking `changesets/action/publish` v2 to publish and create GitHub releases. Do not replace the publish sub-action with the root action: retained changesets for ignored packages must not trigger version PRs. Check the release plan before versioning because CLI v3 exits with code 1 when there is nothing to version. Publishing must also run when no new version commit is generated so reruns can recover versions committed to Git but not yet published to npm.
 
 ## Docs Apps
 
