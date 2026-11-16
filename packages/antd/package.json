@@ -2,6 +2,7 @@
   "name": "@silver-formily/antd",
   "type": "module",
   "version": "0.0.0-alpha.1",
+  "private": true,
   "description": "Ant Design 6 form components for Silver Formily on React",
   "author": "hezhengxu",
   "license": "MIT",

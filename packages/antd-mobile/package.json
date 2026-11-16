@@ -2,6 +2,7 @@
   "name": "@silver-formily/antd-mobile",
   "type": "module",
   "version": "0.0.0-alpha.1",
+  "private": true,
   "description": "Ant Design Mobile based form components and scene bindings for Silver Formily on React",
   "author": "hezhengxu",
   "license": "MIT",

@@ -5,10 +5,19 @@
   "fixed": [],
   "linked": [],
   "access": "public",
+  "privatePackages": {
+    "version": false,
+    "tag": false
+  },
   "baseBranch": "main",
   "updateInternalDependencies": "patch",
   "___experimentalUnsafeOptions_WILL_CHANGE_IN_PATCH": {
     "onlyUpdatePeerDependentsWhenOutOfRange": true
   },
-  "ignore": []
+  "ignore": [
+    "@silver-formily/react",
+    "@silver-formily/reactive-react",
+    "@silver-formily/antd",
+    "@silver-formily/antd-mobile"
+  ]
 }
