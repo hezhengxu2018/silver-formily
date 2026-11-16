@@ -10,8 +10,9 @@ const currencySymbols = new Set([
   '￥',
 ])
 
-const hostnameLabelPattern = /^[\w\u00A1-\uFFFF]+(?:-[\w\u00A1-\uFFFF]+)*$/
-const topLevelDomainPattern = /^[a-z\u00A1-\uFFFF_]{2,}$/i
+const hostnameLabelPattern = /^[\w\u00A1-\uFFFF]+(?:-+[\w\u00A1-\uFFFF]+)*$/
+// URL parsing converts internationalized hostnames to ASCII Punycode labels.
+const topLevelDomainPattern = /^(?:[a-z\u00A1-\uFFFF_]{2,}|xn--[a-z\d]+(?:-+[a-z\d]+)*)$/i
 const ipv4SegmentPattern = /^\d{1,3}$/
 
 function isIPv4Segment(value: string) {
