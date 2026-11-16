@@ -16,7 +16,7 @@ packages:
 catalog:
   '@ant-design/icons': ^6.0.0
   '@antfu/eslint-config': ^8.2.0
-  '@changesets/cli': ^2.31.1
+  '@changesets/cli': ^3.0.3
   '@commitlint/cli': ^19.8.1
   '@commitlint/config-conventional': ^19.8.1
   '@element-plus/icons-vue': ^2.3.2

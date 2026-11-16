@@ -2,6 +2,10 @@
 
 ## Stable releases and deferred React packages
 
+Release tooling uses Changesets CLI v3. The manual release workflow versions
+packages on `main`, then uses `changesets/action/publish` v2 to publish those
+versions and create GitHub releases without opening a version PR.
+
 Prerelease mode has ended (`pre.json` has been removed).
 The next `pnpm version-packages` prepares stable releases from the retained changesets.
 All remaining alpha versions belong to the four deferred packages below.

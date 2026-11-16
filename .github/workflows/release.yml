@@ -122,7 +122,14 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
       - name: Version packages
-        run: pnpm version-packages
+        run: |
+          # CLI v3 exits with code 1 when there is nothing to version.
+          pnpm exec changeset status --output "$RUNNER_TEMP/changeset-status.json"
+          if node -e "const fs = require('node:fs'); const plan = JSON.parse(fs.readFileSync(process.argv[1], 'utf8')); process.exit(plan.releases.some(release => release.type !== 'none') ? 0 : 1)" "$RUNNER_TEMP/changeset-status.json"; then
+            pnpm version-packages
+          else
+            echo "No packages require versioning."
+          fi
 
       - name: Commit and push version changes
         id: commit
@@ -170,14 +177,14 @@ jobs:
           echo "runner_environment=${RUNNER_ENVIRONMENT}"
           npm owner ls @silver-formily/element-plus
 
+      # Versioning is handled above; retained changesets must not trigger a version PR.
       - name: Publish packages and create GitHub releases
         if: steps.commit.outputs.has_changes == 'true'
-        uses: changesets/action@v1
+        uses: changesets/action/publish@v2.1.2
         with:
-          publish: pnpm release
-          createGithubReleases: true
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          script: pnpm release
+          create-github-releases: true
+          push-git-tags: true
 
       - name: Skip release
         if: steps.commit.outputs.has_changes != 'true'
