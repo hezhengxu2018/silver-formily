@@ -11,6 +11,15 @@ const SchemaField = createSchemaField({
 
 const form = createForm()
 
+async function onSubmit(values: unknown) {
+  await new Promise(resolve => setTimeout(resolve, 2000))
+  return Prompts.alert(JSON.stringify(values, null, 2))
+}
+
+function onSubmitFailed(feedbacks: unknown) {
+  return Prompts.alert(JSON.stringify(feedbacks, null, 2))
+}
+
 export default function OfficialExample() {
   return (
     <FormProvider form={form}>
@@ -33,15 +42,8 @@ export default function OfficialExample() {
       </SchemaField>
       <FormButtonGroup>
         <Submit
-          onSubmit={(values) => {
-            return new Promise<void>((resolve) => {
-              setTimeout(() => {
-                console.log(values)
-                resolve()
-              }, 2000)
-            })
-          }}
-          onSubmitFailed={console.log}
+          onSubmit={onSubmit}
+          onSubmitFailed={onSubmitFailed}
         >
           提交
         </Submit>

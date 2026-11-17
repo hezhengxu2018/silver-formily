@@ -12,14 +12,22 @@ import { Field } from '@silver-formily/react'
 
 const form = createForm()
 
+function onSubmit(values: unknown) {
+  return Prompts.alert(JSON.stringify(values, null, 2))
+}
+
+function onSubmitFailed(feedbacks: unknown) {
+  return Prompts.alert(JSON.stringify(feedbacks, null, 2))
+}
+
 export default function OfficialExample() {
   return (
     <Form
       form={form}
       layout="vertical"
       feedbackLayout="terse"
-      onAutoSubmit={console.log}
-      onAutoSubmitFailed={console.log}
+      onAutoSubmit={onSubmit}
+      onAutoSubmitFailed={onSubmitFailed}
     >
       <FormGrid minWidth={180} maxColumns={3} columnGap={16}>
         <Field
@@ -64,7 +72,7 @@ export default function OfficialExample() {
           component={[Input]}
         />
         <FormButtonGroup.FormItem>
-          <Submit onSubmitFailed={console.log}>查询</Submit>
+          <Submit onSubmitFailed={onSubmitFailed}>查询</Submit>
         </FormButtonGroup.FormItem>
       </FormGrid>
     </Form>

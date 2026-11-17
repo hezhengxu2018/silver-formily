@@ -4,9 +4,13 @@ import { Field } from '@silver-formily/react'
 
 const form = createForm()
 
+function onSubmitFailed(feedbacks: unknown) {
+  return Prompts.alert(JSON.stringify(feedbacks, null, 2))
+}
+
 export default function Demo() {
   return (
-    <Form form={form} labelWidth={100} fullness onAutoSubmitFailed={() => {}}>
+    <Form form={form} labelWidth={100} fullness onAutoSubmitFailed={onSubmitFailed}>
       <Field name="email" title="邮箱" required description="提交时检查邮箱格式" validator={{ format: 'email', message: '请输入有效的邮箱地址' }} decorator={[FormItem, { tooltip: '用于接收通知', labelFor: 'demo-email' }]} component={[Input, { id: 'demo-email', placeholder: 'name@example.com' }]} />
       <Field name="notes" title="长标签会自动省略并提供完整提示" decorator={[FormItem]} component={[Input.TextArea, { placeholder: '补充说明' }]} />
       <Submit>校验并提交</Submit>

@@ -10,6 +10,14 @@ const initialNodes = [
 
 const form = createForm()
 
+function onSubmit(values: unknown) {
+  return Prompts.alert(JSON.stringify(values, null, 2))
+}
+
+function onSubmitFailed(feedbacks: unknown) {
+  return Prompts.alert(JSON.stringify(feedbacks, null, 2))
+}
+
 export default function Demo() {
   const loadData: TreeSelectProps['loadData'] = async (node) => {
     // 用本地延迟模拟接口请求，实际使用时替换为请求子节点的 API。
@@ -52,7 +60,7 @@ export default function Demo() {
         ]}
       />
       <FormButtonGroup>
-        <Submit onSubmitFailed={console.log} onSubmit={console.log}>提交</Submit>
+        <Submit onSubmitFailed={onSubmitFailed} onSubmit={onSubmit}>提交</Submit>
       </FormButtonGroup>
     </FormProvider>
   )

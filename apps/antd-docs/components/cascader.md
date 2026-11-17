@@ -28,7 +28,7 @@ cascader/jsx.tsx
 
 在表单 `effects` 中调用 `useAsyncDataSource(pattern, service)`，通过 `onFieldInit` 给字段注入 `loadData`。加载函数接收当前字段和展开路径，按需加载城市和区县，并更新字段的 `dataSource`。未加载的父级选项设置 `isLeaf: false`，请求期间设置该选项的 `loading`，末级选项设置 `isLeaf: true`。
 
-本例用 800ms 延迟模拟每次请求。依次选择省、市、区后提交，可在控制台查看地址路径；切换省份可以继续加载另一分支，已加载的数据会保留。
+本例用 800ms 延迟模拟每次请求。依次选择省、市、区后提交，可在弹窗中查看地址路径；切换省份可以继续加载另一分支，已加载的数据会保留。
 
 ::: tip loadData 与搜索
 Ant Design Cascader 的 `loadData` 不能与 `showSearch` 同时使用，本例关闭搜索。与前面的整份数据加载不同，此例只在展开选项时请求下一级数据。

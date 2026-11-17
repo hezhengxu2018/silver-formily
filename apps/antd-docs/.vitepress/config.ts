@@ -7,7 +7,7 @@ const currentDir = dirname(fileURLToPath(import.meta.url))
 const componentSidebar = [
   {
     text: 'Overview 总览',
-    items: [{ text: 'Quick Start 快速开始', link: '/guide/quick-start' }],
+    items: [{ text: 'Quick Start 快速开始', link: '/components/quick-start' }],
   },
   {
     text: 'Layout 布局组件',
@@ -57,15 +57,16 @@ const componentSidebar = [
 ]
 export default createDocsConfig({
   pkg,
+  head: [['script', { src: 'https://cdn.jsdelivr.net/npm/prompts-js' }]],
   demoDir: path.resolve(currentDir, '../demos'),
   alias: { '@silver-formily/antd': `${path.resolve(currentDir, '../../../packages/antd/src')}/` },
   locales: { root: { label: '简体中文', lang: 'zh-CN' } },
   sidebar: {
-    '/guide/': [{ text: '指南', items: [{ text: '介绍与迁移范围', link: '/guide/' }, { text: '快速开始', link: '/guide/quick-start' }, { text: '来源与示例适配', link: '/guide/sources' }] }],
+    '/guide/': [{ text: '指南', items: [{ text: '介绍与迁移范围', link: '/guide/' }, { text: '来源与示例适配', link: '/guide/sources' }] }],
     '/components/': componentSidebar,
   },
   themeConfig: {
-    nav: [{ text: '指南', link: '/guide/' }, { text: '组件', link: '/components/form' }],
+    nav: [{ text: '指南', link: '/guide/' }, { text: '组件', link: '/components/quick-start' }],
     outline: [2, 3],
   },
   socialLinks: [{ icon: 'github', link: 'https://github.com/hezhengxu2018/silver-formily' }],

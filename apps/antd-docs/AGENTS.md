@@ -11,3 +11,5 @@
 - 组件章节介绍与示例主体沿用 Alibaba Formily 中文原文，保留来源与 MIT 许可；具体基线和示例适配记录在 guide/sources.md。
 - API 按当前源码整理，不直接照搬上游 API。每页顶部使用 warning 标注与官方实现不同的行为和已知限制；示例裁剪另用 tip 说明。
 - `pnpm dev -- antd-docs` 启动；`pnpm exec turbo run docs:build --filter=antd-docs` 构建静态站点。
+
+- 示例提交结果与失败信息统一使用各示例内的独立回调，通过全局 `Prompts.alert(JSON.stringify(values, null, 2))` 展示；`prompts-js` 由站点 head 加载，类型在 `env.d.ts` 声明。不使用控制台或 `Result` / `pre` 结果区展示，异步提交保留原有等待流程。

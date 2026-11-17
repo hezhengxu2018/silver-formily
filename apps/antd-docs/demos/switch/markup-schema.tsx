@@ -11,6 +11,14 @@ const SchemaField = createSchemaField({
 
 const form = createForm({ initialValues: { switch: false } })
 
+function onSubmit(values: unknown) {
+  return Prompts.alert(JSON.stringify(values, null, 2))
+}
+
+function onSubmitFailed(feedbacks: unknown) {
+  return Prompts.alert(JSON.stringify(feedbacks, null, 2))
+}
+
 export default function Demo() {
   return (
     <FormProvider form={form}>
@@ -23,7 +31,7 @@ export default function Demo() {
         />
       </SchemaField>
       <FormButtonGroup>
-        <Submit onSubmitFailed={console.log} onSubmit={console.log}>提交</Submit>
+        <Submit onSubmitFailed={onSubmitFailed} onSubmit={onSubmit}>提交</Submit>
       </FormButtonGroup>
     </FormProvider>
   )

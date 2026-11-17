@@ -1,7 +1,6 @@
 import { Form, FormItem, Mentions, Submit } from '@silver-formily/antd'
 import { createForm } from '@silver-formily/core'
 import { createSchemaField } from '@silver-formily/react'
-import { useState } from 'react'
 
 const SchemaField = createSchemaField({ components: { Mentions, FormItem } })
 const schema = {
@@ -19,12 +18,21 @@ const schema = {
   },
 }
 
+const form = createForm()
+
+function onSubmit(values: unknown) {
+  return Prompts.alert(JSON.stringify(values, null, 2))
+}
+
+function onSubmitFailed(feedbacks: unknown) {
+  return Prompts.alert(JSON.stringify(feedbacks, null, 2))
+}
+
 export default function Demo() {
-  const [form] = useState(() => createForm())
   return (
     <Form form={form} labelCol={6} wrapperCol={16}>
       <SchemaField schema={schema} />
-      <Submit onSubmit={console.log} onSubmitFailed={console.log}>提交到控制台</Submit>
+      <Submit onSubmit={onSubmit} onSubmitFailed={onSubmitFailed}>提交</Submit>
     </Form>
   )
 }

@@ -68,12 +68,20 @@ function loadAddress(field: FieldType) {
 
 const form = createForm({ effects: () => onFieldReact('address', loadAddress) })
 
+function onSubmit(values: unknown) {
+  return Prompts.alert(JSON.stringify(values, null, 2))
+}
+
+function onSubmitFailed(feedbacks: unknown) {
+  return Prompts.alert(JSON.stringify(feedbacks, null, 2))
+}
+
 export default function Demo() {
   return (
     <FormProvider form={form}>
       <Field name="address" title="地址选择" decorator={[FormItem]} component={[Cascader, { style: { width: 280 } }]} />
       <FormButtonGroup>
-        <Submit onSubmitFailed={console.log} onSubmit={console.log}>提交</Submit>
+        <Submit onSubmitFailed={onSubmitFailed} onSubmit={onSubmit}>提交</Submit>
       </FormButtonGroup>
     </FormProvider>
   )

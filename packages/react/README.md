@@ -39,15 +39,15 @@ pnpm add \
 ```tsx
 import { createForm } from '@silver-formily/core'
 import { connect, Field, FormProvider, mapProps } from '@silver-formily/react'
-import { useState } from 'react'
 
 const Input = connect(
   props => <input {...props} />,
   mapProps({ value: true, onChange: true }),
 )
 
+const form = createForm()
+
 export default function App() {
-  const [form] = useState(() => createForm())
   return (
     <FormProvider form={form}>
       <Field name="name" component={[Input]} />
@@ -55,6 +55,9 @@ export default function App() {
   )
 }
 ```
+
+> [!TIP]
+> 示例统一在组件外调用 `createForm`，避免在每次渲染时重新创建表单。组件外的实例会被共享；如果需要每个组件拥有独立的表单（或在 SSR 中隔离请求），请在组件内使用 `const [form] = useState(() => createForm())`，也可以使用 `const form = useMemo(() => createForm(), [])`，并从 `react` 导入对应 Hook。优先使用 `useState` 保存实例；`useMemo` 是缓存优化，React 在特定情况下可能丢弃缓存。不要直接在组件函数体中调用 `createForm()`。
 
 ## 定位
 

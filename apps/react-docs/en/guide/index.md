@@ -20,6 +20,10 @@ npm install @silver-formily/react @silver-formily/core react@19 react-dom@19
 
 ## Quick Start
 
+::: tip Form instances
+Examples call `createForm` outside the component to avoid recreating the form on every render. This instance is shared; if each component needs its own form (or SSR requests need isolation), use `const [form] = useState(() => createForm())` inside the component, or `const form = useMemo(() => createForm(), [])`, importing the corresponding Hook from `react`. Prefer `useState` for storing the instance; `useMemo` is a cache optimization and React may discard its cache in certain circumstances. Do not call `createForm()` directly in the component body.
+:::
+
 ```tsx
 import { createForm } from '@silver-formily/core'
 import { Field, FormProvider } from '@silver-formily/react'

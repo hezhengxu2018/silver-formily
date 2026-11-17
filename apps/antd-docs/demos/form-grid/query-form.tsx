@@ -68,7 +68,7 @@ const QueryForm = observer((props: PropsWithChildren<FormProps>) => {
   const renderActions = () => {
     return (
       <Fragment>
-        <Submit onSubmit={console.log} onSubmitFailed={console.log}>查询</Submit>
+        <Submit onSubmit={onSubmit} onSubmitFailed={onSubmitFailed}>查询</Submit>
         <Reset>重置</Reset>
       </Fragment>
     )
@@ -133,6 +133,14 @@ const SchemaField = createSchemaField({
 })
 
 const form = createForm()
+
+function onSubmit(values: unknown) {
+  return Prompts.alert(JSON.stringify(values, null, 2))
+}
+
+function onSubmitFailed(feedbacks: unknown) {
+  return Prompts.alert(JSON.stringify(feedbacks, null, 2))
+}
 
 export default function Example() {
   return (

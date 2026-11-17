@@ -11,6 +11,10 @@ const SchemaField = createSchemaField({
 
 const form = createForm()
 
+function onResetValidateFailed(feedbacks: unknown) {
+  return Prompts.alert(JSON.stringify(feedbacks, null, 2))
+}
+
 export default function OfficialExample() {
   return (
     <FormProvider form={form}>
@@ -32,7 +36,7 @@ export default function OfficialExample() {
         />
       </SchemaField>
       <FormButtonGroup>
-        <Reset onResetValidateFailed={console.log} validate>重置</Reset>
+        <Reset onResetValidateFailed={onResetValidateFailed} validate>重置</Reset>
       </FormButtonGroup>
     </FormProvider>
   )

@@ -24,7 +24,7 @@ otp/json-schema.tsx
 
 ## 纯 JSX 案例
 
-直接通过 `Field` 的 `component` 和 `validator` 配置控件与校验。可先输入完整验证码，再删除一位，观察校验反馈；提交成功后结果输出到控制台。
+直接通过 `Field` 的 `component` 和 `validator` 配置控件与校验。可先输入完整验证码，再删除一位，观察校验反馈；提交成功后结果通过弹窗展示。
 
 :::demo
 otp/jsx.tsx

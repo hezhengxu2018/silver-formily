@@ -36,10 +36,10 @@ This is an intentionally partial migration of [Alibaba Formily's antd package](h
 import { Form, FormItem, Input, Submit } from '@silver-formily/antd'
 import { createForm } from '@silver-formily/core'
 import { Field } from '@silver-formily/react'
-import { useState } from 'react'
+
+const form = createForm()
 
 export default function Example() {
-  const [form] = useState(() => createForm())
   return (
     <Form form={form} onAutoSubmit={values => console.log(values)}>
       <Field name="name" title="Name" required decorator={[FormItem]} component={[Input]} />
@@ -48,6 +48,9 @@ export default function Example() {
   )
 }
 ```
+
+> [!TIP]
+> Examples call `createForm` outside the component to avoid recreating the form on every render. This instance is shared; if each component needs its own form (or SSR requests need isolation), use `const [form] = useState(() => createForm())` inside the component, or `const form = useMemo(() => createForm(), [])`, importing the corresponding Hook from `react`. Prefer `useState` for storing the instance; `useMemo` is a cache optimization and React may discard its cache in certain circumstances. Do not call `createForm()` directly in the component body.
 
 Styles load with component imports. Ant Design 4 Less files and `@formily/*` imports are not supported. For Vite SSR, configure `ssr.noExternal: ['@silver-formily/antd', 'antd', /^@ant-design\//, /^@rc-component\//]` so the bundler transforms the internal ESM entry points.
 

@@ -39,15 +39,15 @@ The command includes required peer dependencies. Existing projects can keep depe
 ```tsx
 import { createForm } from '@silver-formily/core'
 import { connect, Field, FormProvider, mapProps } from '@silver-formily/react'
-import { useState } from 'react'
 
 const Input = connect(
   props => <input {...props} />,
   mapProps({ value: true, onChange: true }),
 )
 
+const form = createForm()
+
 export default function App() {
-  const [form] = useState(() => createForm())
   return (
     <FormProvider form={form}>
       <Field name="name" component={[Input]} />
@@ -55,6 +55,9 @@ export default function App() {
   )
 }
 ```
+
+> [!TIP]
+> Examples call `createForm` outside the component to avoid recreating the form on every render. This instance is shared; if each component needs its own form (or SSR requests need isolation), use `const [form] = useState(() => createForm())` inside the component, or `const form = useMemo(() => createForm(), [])`, importing the corresponding Hook from `react`. Prefer `useState` for storing the instance; `useMemo` is a cache optimization and React may discard its cache in certain circumstances. Do not call `createForm()` directly in the component body.
 
 ## Positioning
 

@@ -36,10 +36,10 @@ pnpm add \
 import { Form, FormItem, Input, Submit } from '@silver-formily/antd'
 import { createForm } from '@silver-formily/core'
 import { Field } from '@silver-formily/react'
-import { useState } from 'react'
+
+const form = createForm()
 
 export default function Example() {
-  const [form] = useState(() => createForm())
   return (
     <Form form={form} onAutoSubmit={values => console.log(values)}>
       <Field name="name" title="Name" required decorator={[FormItem]} component={[Input]} />
@@ -48,6 +48,9 @@ export default function Example() {
   )
 }
 ```
+
+> [!TIP]
+> 示例统一在组件外调用 `createForm`，避免在每次渲染时重新创建表单。组件外的实例会被共享；如果需要每个组件拥有独立的表单（或在 SSR 中隔离请求），请在组件内使用 `const [form] = useState(() => createForm())`，也可以使用 `const form = useMemo(() => createForm(), [])`，并从 `react` 导入对应 Hook。优先使用 `useState` 保存实例；`useMemo` 是缓存优化，React 在特定情况下可能丢弃缓存。不要直接在组件函数体中调用 `createForm()`。
 
 样式随组件自动加载，不支持 Ant Design 4 Less 文件及 `@formily/*` 导入。Vite SSR 项目应配置 `ssr.noExternal: ['@silver-formily/antd', 'antd', /^@ant-design\//, /^@rc-component\//]`，由构建工具编译内部 ESM 入口。
 
