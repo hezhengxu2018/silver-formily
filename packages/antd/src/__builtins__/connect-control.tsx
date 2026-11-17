@@ -7,10 +7,11 @@ import { createElement, forwardRef } from 'react'
 import { useNativeFeedback } from './feedback'
 import { useControlProps } from './index'
 
-// Adapters preserve native props, callbacks and generics; connect hoists statics.
+// Preserve native signatures by default. Mappers that change the public contract
+// must supply the adapted component signature as the second type argument.
 // Apply mappers left-to-right so value adaptation also applies to readPretty.
-export function connectControl<T extends ComponentType<any>>(target: T, ...mappers: IComponentMapper<NoInfer<T>>[]): T {
-  return connect(target, ...[...mappers].reverse(), mapProps((props: ComponentProps<T>) => useControlProps(props))) as unknown as T
+export function connectControl<T extends ComponentType<any>, Output extends ComponentType<any> = T>(target: T, ...mappers: IComponentMapper<NoInfer<T>>[]): Output {
+  return connect(target, ...[...mappers].reverse(), mapProps((props: ComponentProps<T>) => useControlProps(props))) as unknown as Output
 }
 
 export function mapOptions(target: 'options' | 'treeData' | 'dataSource') {

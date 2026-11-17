@@ -12,7 +12,21 @@ export type TimePickerComponent = (<F extends DateValueFormat = string>(props: T
   RangePicker: <F extends DateValueFormat = string>(props: TimeRangePickerProps<F>) => ReactElement
 }
 
-export const TimePicker = Object.assign(connectControl(AntdTimePicker, mapDateValue('time'), mapLoadingIcon(), mapReadPrettyControl(PreviewText.TimePicker)), {
-  RangePicker: connectControl(AntdTimePicker.RangePicker, mapDateValue('time'), mapProps(props => ({ id: typeof props.id === 'string' ? { start: props.id, end: `${props.id}-end` } : props.id })), mapLoadingIcon(), mapReadPrettyControl(PreviewText.TimeRangePicker)),
-}) as unknown as TimePickerComponent
+export const TimePicker: TimePickerComponent = Object.assign(
+  connectControl<typeof AntdTimePicker, Omit<TimePickerComponent, 'RangePicker'> & (<F extends DateValueFormat = string>(props: TimePickerProps<F>) => ReactElement)>(
+    AntdTimePicker,
+    mapDateValue('time'),
+    mapLoadingIcon(),
+    mapReadPrettyControl(PreviewText.TimePicker),
+  ),
+  {
+    RangePicker: connectControl<typeof AntdTimePicker.RangePicker, TimePickerComponent['RangePicker']>(
+      AntdTimePicker.RangePicker,
+      mapDateValue('time'),
+      mapProps(props => ({ id: typeof props.id === 'string' ? { start: props.id, end: `${props.id}-end` } : props.id })),
+      mapLoadingIcon(),
+      mapReadPrettyControl(PreviewText.TimeRangePicker),
+    ),
+  },
+)
 export default TimePicker

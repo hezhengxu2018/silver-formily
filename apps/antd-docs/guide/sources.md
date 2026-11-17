@@ -81,3 +81,5 @@ Switch 补充官方 Markup Schema、JSON Schema 与纯 JSX 三个示例，表单
 AutoComplete、Mentions 为本项目新增控件，上游基线没有对应章节。每个组件提供基础用法和 JSON Schema 示例，展示 `dataSource` / `enum`、原生字符串值、阅读态和重置；这些示例不计入官方原例数量。
 
 日期与时间基础示例新增字符串初始值、独立展示/提交格式及 `valueFormat={false}` 的 Dayjs 模式；日期、时间文档新增 Schema 配置说明。PreviewText 中原有 Dayjs 示例仍保留。
+
+DatePicker 与 TimePicker 补充官方 Markup Schema、JSON Schema、纯 JSX 三种写法。日期覆盖周、月、季度、年及对应范围，保留起止字段解构；范围字段改为数组类型。时间另补充 12 小时制和分钟步长配置。默认使用字符串值，每个 demo 独立创建表单实例。

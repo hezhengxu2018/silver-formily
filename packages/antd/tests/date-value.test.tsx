@@ -159,7 +159,7 @@ it('applies defaults to every static picker and independent time ranges in readP
       <Field name="month" component={[DatePicker.MonthPicker]} />
       <Field name="year" component={[DatePicker.YearPicker]} />
       <Field name="quarter" component={[DatePicker.QuarterPicker]} />
-      <Field name="time" component={[DatePicker.TimePicker]} />
+      <Field name="time" component={[TimePicker]} />
       <Field name="range" component={[TimePicker.RangePicker, { format: 'hh:mm a' }]} />
     </Form>,
   )

@@ -35,9 +35,13 @@ export const Submit = observer(forwardRef<ComponentRef<typeof Button>, ISubmitPr
             return
           event.preventDefault()
           pending.current = true
-          void Promise.resolve().then(() => form.submit(onSubmit)).then(onSubmitSuccess).catch(onSubmitFailed ?? console.error).finally(() => {
-            pending.current = false
-          })
+          void Promise.resolve()
+            .then(() => form.submit(onSubmit))
+            .then(onSubmitSuccess)
+            .catch(onSubmitFailed ?? console.error)
+            .finally(() => {
+              pending.current = false
+            })
         }}
       >
         {children}

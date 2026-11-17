@@ -115,3 +115,16 @@ it('retains native generic value and event signatures', () => {
   ]
   expectTypeOf(controls).toBeArray()
 })
+
+it('accepts adapted range input ids and retains serialized callbacks', () => {
+  const controls = [
+    <DatePicker.RangePicker id="dates" onChange={value => expectTypeOf(value).toEqualTypeOf<[string | null, string | null] | null>()} />,
+    <TimePicker.RangePicker id={{ start: 'start', end: 'end' }} />,
+    <TimePicker.RangePicker id="times" valueFormat={false} onChange={value => expectTypeOf(value).toEqualTypeOf<[Dayjs | null, Dayjs | null] | null>()} />,
+  ]
+  void controls
+})
+
+it('exposes time selection only through the standalone component', () => {
+  expectTypeOf<'TimePicker'>().not.toExtend<keyof typeof DatePicker>()
+})

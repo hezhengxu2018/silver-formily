@@ -28,7 +28,8 @@ export type DateValueProps<P, F extends DateValueFormat, M extends boolean = fal
   defaultValue?: DateMultiple<DateInput<NoInfer<F>>, M> | null
   onChange?: (value: DateMultiple<DateOutput<NoInfer<F>>, M> | null, dateString: DateMultiple<string, M> | null) => void
 }
-export type DateRangeValueProps<P, F extends DateValueFormat> = Omit<P, 'value' | 'defaultValue' | 'onChange'> & {
+export type DateRangeValueProps<P, F extends DateValueFormat> = Omit<P, 'value' | 'defaultValue' | 'onChange' | 'id'> & {
+  id?: string | { start?: string, end?: string }
   valueFormat?: F
   value?: [DateInput<NoInfer<F>> | null, DateInput<NoInfer<F>> | null] | null
   defaultValue?: [DateInput<NoInfer<F>> | null, DateInput<NoInfer<F>> | null] | null

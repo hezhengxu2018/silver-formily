@@ -1,10 +1,10 @@
 # DatePicker 日期选择
 
-::: warning 与原生 antd 及旧版本的差异
-默认字段值改为字符串，`format` 只控制展示；`valueFormat` 独立控制字段值格式。依赖本包此前 Dayjs 提交值或回调首参的代码需设置 `valueFormat={false}`。不支持 Moment。
-:::
+> 用于表单中的日期选择
 
-DatePicker 用于表单中的日期选择，支持 Field 与 Schema 绑定。
+::: warning 注意
+由于 `antd` 的升级,官方的 `DatePicker`的`onChange`事件会有两个入参。对大部分表单来说,提交给后端的值不可能是`dayjs`的实例，经过封装后现在默认触发值是字符串类型，如果需要`dayjs`作为表单的值，需设置 `valueFormat={false}`。不再支持 Moment。
+:::
 
 ## 基础用法
 
@@ -14,19 +14,37 @@ DatePicker 用于表单中的日期选择，支持 Field 与 Schema 绑定。
 date-picker/basic.tsx
 :::
 
+## Markup Schema 案例
+
+:::demo
+date-picker/markup-schema.tsx
+:::
+
+## JSON Schema 案例
+
+:::demo
+date-picker/json-schema.tsx
+:::
+
+## 纯 JSX 案例
+
+:::demo
+date-picker/jsx.tsx
+:::
+
 ## API
 
-| 接口                           | 行为                                                                                                      |
-| ------------------------------ | --------------------------------------------------------------------------------------------------------- |
-| `valueFormat`                  | `string \| false`；字符串指定输入解析和输出格式，`false` 保留原生 Dayjs 协议；默认格式见下文              |
-| `format`                       | 原生展示格式，支持字符串、数组、函数及 mask 配置；阅读态使用首个格式                                      |
-| `value` / `defaultValue`       | 默认接受字符串，也兼容 Dayjs 初始值；范围为包含两个值的元组，允许 `null` 端点                             |
-| `onChange(value, dateStrings)` | 首参按 `valueFormat` 转换，第二参数保留 antd 的展示字符串；字段保存首参                                   |
-| 其他属性、事件及 ref           | 遵循 [Ant Design 6 DatePicker](https://ant.design/components/date-picker)；日期回调及面板属性仍使用 Dayjs |
-| `pattern="readPretty"`         | 按 `format` 展示，空值使用 PreviewText 占位配置，不修改字段                                               |
-| disabled、校验状态             | 继承字段与 FormItem 的原生反馈上下文                                                                      |
+| 接口          | 类型              | 说明                                                               |
+| ------------- | ----------------- | ------------------------------------------------------------------ |
+| `valueFormat` | `string \| false` | 字符串指定输入解析和输出格式，完整说明参考[默认值格式](默认值格式) |
 
-## 默认值格式
+其余配置项参考[Ant Design 6 DatePicker](https://ant.design/components/date-picker-cn)；日期回调及面板属性仍使用 `Dayjs`。阅读态会默认使用`format`的格式。
+
+### DatePicker.RangePicker
+
+同上
+
+#### 默认值格式
 
 默认值格式独立于 `format`，适用于 `picker` 属性及对应静态子组件；范围和 `multiple` 对每一项使用同一格式。
 
@@ -39,32 +57,4 @@ date-picker/basic.tsx
 | 日期带时间 | `YYYY-MM-DD HH:mm:ss`          |
 | 时间       | `HH:mm:ss`                     |
 
-`multiple` 接受和输出数组。`DatePicker.TimePicker` 与独立 `TimePicker` 使用相同值协议。
-
-## 输入、清空与迁移
-
-字符串按 `valueFormat` 严格解析，不依赖浏览器日期解析。空字符串视为空值；非法字符串显示为空，但不会自动改写字段。选择清空时输出 `null`，范围保留空端点，多选保留数组结构。日期格式支持 Dayjs 的 `customParseFormat`，并补充周格式 `gggg-wo`、`gggg-ww`、`GGGG-WW` 的解析；周编号按当前日期 locale 计算，ISO 周使用 ISO 周年规则。
-
-字符串模式兼容 Dayjs 初始值，但只在用户选择后转换成字符串；初始化、重置、阅读态切换不会改写原始字段。需要从初始化到提交始终保持字符串时，请使用字符串初始值。
-
-保留原生 Dayjs 行为：在 Field 的组件属性或 Schema 的 `x-component-props` 中设置 `valueFormat: false`。此时 `value`、`defaultValue` 和 `onChange` 首参均使用 Dayjs；`disabledDate`、`onCalendarChange` 等回调在所有模式下都保持原生日期类型。
-
-## Schema 配置
-
-```tsx
-const schema = {
-  type: 'object',
-  properties: {
-    value: {
-      'type': 'string',
-      'x-component': 'DatePicker',
-      'x-component-props': {
-        format: 'DD/MM/YYYY',
-        valueFormat: 'YYYY-MM-DD',
-      },
-    },
-  },
-}
-```
-
-展示格式与字段格式不同，例如日期显示 `06/11/2026`，字段保存 `2026-11-06`。`onChange` 的第二参数仍反映展示格式，不作为提交格式使用。
+`multiple` 接受和输出数组。时间选择请使用独立的 [TimePicker](./time-picker)。如果想使用 `dayjs`的实例作为onChange事件的抛出值需配置`valueFormat={false}`

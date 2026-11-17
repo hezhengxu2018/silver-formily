@@ -62,7 +62,7 @@ export default createDocsConfig({
   alias: { '@silver-formily/antd': `${path.resolve(currentDir, '../../../packages/antd/src')}/` },
   locales: { root: { label: '简体中文', lang: 'zh-CN' } },
   sidebar: {
-    '/guide/': [{ text: '指南', items: [{ text: '介绍与迁移范围', link: '/guide/' }, { text: '来源与示例适配', link: '/guide/sources' }] }],
+    '/guide/': [{ text: 'Guide', items: [{ text: '介绍', link: '/guide/' }, { text: '来源与示例适配', link: '/guide/sources' }] }],
     '/components/': componentSidebar,
   },
   themeConfig: {

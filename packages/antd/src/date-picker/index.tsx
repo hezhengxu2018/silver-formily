@@ -13,23 +13,50 @@ export type DatePickerProps<F extends DateValueFormat = string, M extends boolea
 export type RangePickerProps<F extends DateValueFormat = string> = DateRangeValueProps<ComponentProps<typeof AntdDatePicker.RangePicker>, F>
 type SinglePicker = <F extends DateValueFormat = string, M extends boolean = false>(props: DatePickerProps<F, M>) => ReactElement
 type FixedPicker = <F extends DateValueFormat = string, M extends boolean = false>(props: Omit<DatePickerProps<F, M>, 'picker'>) => ReactElement
-type DateTimePicker = <F extends DateValueFormat = string, M extends boolean = false>(props: DateValueProps<ComponentProps<typeof AntdDatePicker.TimePicker>, F, M>) => ReactElement
 type RangePicker = <F extends DateValueFormat = string>(props: RangePickerProps<F>) => ReactElement
 export type DatePickerComponent = SinglePicker & Omit<typeof AntdDatePicker, 'WeekPicker' | 'MonthPicker' | 'YearPicker' | 'QuarterPicker' | 'TimePicker' | 'RangePicker'> & {
   WeekPicker: FixedPicker
   MonthPicker: FixedPicker
   YearPicker: FixedPicker
   QuarterPicker: FixedPicker
-  TimePicker: DateTimePicker
   RangePicker: RangePicker
 }
 
-export const DatePicker = Object.assign(connectControl(AntdDatePicker, mapDateValue(), mapLoadingIcon(), mapReadPrettyControl(PreviewText.DatePicker)), {
-  WeekPicker: connectControl(AntdDatePicker.WeekPicker, mapDateValue('week'), mapLoadingIcon(), mapReadPrettyControl(PreviewText.DatePicker, { picker: 'week' })),
-  MonthPicker: connectControl(AntdDatePicker.MonthPicker, mapDateValue('month'), mapLoadingIcon(), mapReadPrettyControl(PreviewText.DatePicker, { picker: 'month' })),
-  YearPicker: connectControl(AntdDatePicker.YearPicker, mapDateValue('year'), mapLoadingIcon(), mapReadPrettyControl(PreviewText.DatePicker, { picker: 'year' })),
-  QuarterPicker: connectControl(AntdDatePicker.QuarterPicker, mapDateValue('quarter'), mapLoadingIcon(), mapReadPrettyControl(PreviewText.DatePicker, { picker: 'quarter' })),
-  TimePicker: connectControl(AntdDatePicker.TimePicker, mapDateValue('time'), mapLoadingIcon(), mapReadPrettyControl(PreviewText.TimePicker, { picker: 'time' })),
-  RangePicker: connectControl(AntdDatePicker.RangePicker, mapDateValue(), mapProps(props => ({ id: typeof props.id === 'string' ? { start: props.id, end: `${props.id}-end` } : props.id })), mapLoadingIcon(), mapReadPrettyControl(PreviewText.DateRangePicker)),
-}) as unknown as DatePickerComponent
+export const DatePicker: DatePickerComponent = Object.assign(
+  connectControl<typeof AntdDatePicker, Omit<DatePickerComponent, 'WeekPicker' | 'MonthPicker' | 'YearPicker' | 'QuarterPicker' | 'TimePicker' | 'RangePicker'> & SinglePicker>(AntdDatePicker, mapDateValue(), mapLoadingIcon(), mapReadPrettyControl(PreviewText.DatePicker)),
+  {
+    WeekPicker: connectControl<typeof AntdDatePicker.WeekPicker, FixedPicker>(
+      AntdDatePicker.WeekPicker,
+      mapDateValue('week'),
+      mapLoadingIcon(),
+      mapReadPrettyControl(PreviewText.DatePicker, { picker: 'week' }),
+    ),
+    MonthPicker: connectControl<typeof AntdDatePicker.MonthPicker, FixedPicker>(
+      AntdDatePicker.MonthPicker,
+      mapDateValue('month'),
+      mapLoadingIcon(),
+      mapReadPrettyControl(PreviewText.DatePicker, { picker: 'month' }),
+    ),
+    YearPicker: connectControl<typeof AntdDatePicker.YearPicker, FixedPicker>(
+      AntdDatePicker.YearPicker,
+      mapDateValue('year'),
+      mapLoadingIcon(),
+      mapReadPrettyControl(PreviewText.DatePicker, { picker: 'year' }),
+    ),
+    QuarterPicker: connectControl<typeof AntdDatePicker.QuarterPicker, FixedPicker>(
+      AntdDatePicker.QuarterPicker,
+      mapDateValue('quarter'),
+      mapLoadingIcon(),
+      mapReadPrettyControl(PreviewText.DatePicker, { picker: 'quarter' }),
+    ),
+    RangePicker: connectControl<typeof AntdDatePicker.RangePicker, RangePicker>(
+      AntdDatePicker.RangePicker,
+      mapDateValue(),
+      mapProps(props => ({ id: typeof props.id === 'string' ? { start: props.id, end: `${props.id}-end` } : props.id })),
+      mapLoadingIcon(),
+      mapReadPrettyControl(PreviewText.DateRangePicker),
+    ),
+  },
+)
+
 export default DatePicker
