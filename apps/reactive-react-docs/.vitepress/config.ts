@@ -54,8 +54,8 @@ export default createDocsConfig({
     { icon: 'github', link: 'https://github.com/hezhengxu2018/silver-formily' },
   ],
   vite: {
-    esbuild: {
-      jsx: 'automatic',
+    oxc: {
+      jsx: { runtime: 'automatic' },
     },
   },
   extra: {

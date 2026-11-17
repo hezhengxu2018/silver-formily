@@ -72,7 +72,7 @@ export default createDocsConfig({
   socialLinks: [{ icon: 'github', link: 'https://github.com/hezhengxu2018/silver-formily' }],
   footer: { message: 'Released under the MIT License.' },
   vite: {
-    esbuild: { jsx: 'automatic' },
+    oxc: { jsx: { runtime: 'automatic' } },
     ssr: { noExternal: ['antd', /^@ant-design\//, /^@rc-component\//] },
     optimizeDeps: {
       include: ['antd/es/config-provider/hooks/useCSSVarCls', 'antd/es/form/context', 'antd/es/form/style'],

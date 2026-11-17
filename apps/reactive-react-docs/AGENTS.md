@@ -18,7 +18,7 @@ This workspace hosts `reactive-react.silver-formily.org`. It shares most convent
 - File names are case-sensitive on CI but not on macOS: never create two demos that only differ in casing (e.g. `observer.tsx` vs `Observer.tsx`).
 - Every demo imports from `@silver-formily/reactive-react`, which is aliased to `packages/reactive-react/src` for hot reloads in `.vitepress/config.ts`.
 - Demos are statically imported during SSG; keep module top-level code free of `window`/`document` access.
-- `vite.esbuild.jsx` is pinned to `automatic` so `.tsx` demos compile without importing React.
+- `vite.oxc.jsx.runtime` is pinned to `automatic` so `.tsx` demos compile without importing React.
 - When documenting API changes from `packages/reactive-react`, update both this site and the package changelog.
 - Keep hook signatures in `api.md` in sync with `packages/reactive-react/src/types.ts` and the `src/hooks/*` implementations.
 

@@ -89,8 +89,8 @@ export default createDocsConfig({
       // Keep preview-only CSS in its lazy chunks instead of the site stylesheet.
       cssCodeSplit: true,
     },
-    esbuild: {
-      jsx: 'automatic',
+    oxc: {
+      jsx: { runtime: 'automatic' },
     },
     ssr: {
       // antd-mobile 的 CJS 入口会 require CSS，Node 直接加载会语法报错；
