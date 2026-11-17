@@ -5,6 +5,41 @@ async function loadShared() {
   return import('../shared')
 }
 
+it.each([
+  { setup: () => () => null },
+  { render: () => null },
+])('preserves Vue component definitions with empty production props: %o', async (implementation) => {
+  const { traverse, traverseSchema } = await loadShared()
+  const { compile } = await import('../compiler')
+  const component = {
+    ...implementation,
+    props: { modelValue: {}, multipleLimit: {} },
+    emits: ['update:modelValue'],
+    customOption: '{{ untouched }}',
+  }
+  const scope = { Component: component, label: 'Label' }
+  const source = {
+    'x-component': component,
+    'x-decorator': component,
+    'x-component-props': { config: { props: { title: '{{ label }}' } } },
+  }
+
+  expect(compile(component, scope)).toBe(component)
+  expect(compile('{{ Component }}', scope)).toBe(component)
+  expect(compile(source, scope)['x-component']).toBe(component)
+  for (const visit of [traverse, traverseSchema]) {
+    const result: Record<string, unknown> = {}
+    visit(source, (value, path) => {
+      FormPath.setIn(result, path, compile(value, scope))
+    })
+    expect(result['x-component']).toBe(component)
+    expect(result['x-decorator']).toBe(component)
+    expect(FormPath.getIn(result, 'x-component.props.modelValue')).toEqual({})
+    expect(FormPath.getIn(result, 'x-component-props.config.props.title')).toBe('Label')
+  }
+  expect(component.customOption).toBe('{{ untouched }}')
+})
+
 describe('traverse helpers', () => {
   beforeEach(() => {
     vi.resetModules()

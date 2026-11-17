@@ -154,6 +154,11 @@ export function traverseSchema(schema: ISchema, visitor: (value: any, path: any[
 }
 
 export function isNoNeedCompileObject(source: any) {
+  // Vue component definitions are runtime objects, not schema data. Production
+  // SFCs may contain empty prop declarations that recursive traversal would drop.
+  if (isFn(source.setup) || isFn(source.render)) {
+    return true
+  }
   // Preserve Vue 3 VNodes without compiling their internal props or children.
   if (source.__v_isVNode === true) {
     return true
